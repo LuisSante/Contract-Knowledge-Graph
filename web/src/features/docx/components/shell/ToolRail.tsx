@@ -6,7 +6,7 @@ import { RIGHT_PANEL_TOOLS } from '@/constants/docx-viewer';
 import type { RightPanelTab } from '@/types/document';
 import { RelatedParagraphsIcon } from '@/components/common/icons';
 
-const TOOL_BRAND_SHORT_NAME = 'ContraVis';
+const TOOL_BRAND_SHORT_NAME = 'Contracts';
 
 const TOOL_ICONS: Record<RightPanelTab, React.ComponentType<{ className?: string }>> = {
 	related: RelatedParagraphsIcon,

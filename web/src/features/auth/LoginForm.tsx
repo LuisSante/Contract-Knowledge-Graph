@@ -19,7 +19,7 @@ export function LoginForm() {
 		<Card className="w-full max-w-sm">
 			<CardHeader>
 				<CardTitle>Sign in</CardTitle>
-				<CardDescription>Access to ContraVis (backend pending).</CardDescription>
+				<CardDescription>Access to Contract Viewer (backend pending).</CardDescription>
 			</CardHeader>
 			<CardContent className="space-y-4">
 				<Input type="email" placeholder="Email" disabled />

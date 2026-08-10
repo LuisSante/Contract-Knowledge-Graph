@@ -181,44 +181,6 @@
 		transition: opacity 160ms ease;
 	}
 
-	.docx-paragraph-explanation-entity-link {
-		color: var(--entity-color, #2563eb);
-		text-decoration: underline;
-		text-decoration-thickness: 1.5px;
-		text-underline-offset: 2px;
-		text-decoration-color: var(--entity-color, #2563eb);
-		font-weight: 600;
-		cursor: pointer;
-		padding: 0 1px;
-		border-radius: 3px;
-		transition:
-			background-color 140ms ease,
-			color 140ms ease,
-			text-decoration-color 140ms ease;
-	}
-
-	.docx-paragraph-explanation-entity-token {
-		color: var(--entity-color, #2563eb);
-		text-decoration: underline;
-		text-decoration-thickness: 1.5px;
-		text-underline-offset: 2px;
-		text-decoration-color: var(--entity-color, #2563eb);
-		font-weight: 600;
-		padding: 0 1px;
-		border-radius: 3px;
-		cursor: pointer;
-		transition:
-			background-color 140ms ease,
-			color 140ms ease,
-			text-decoration-color 140ms ease;
-	}
-
-	.docx-paragraph-explanation-entity-link.is-entity-hovered,
-	.docx-paragraph-explanation-entity-token.is-entity-hovered {
-		background: var(--entity-color-soft, rgba(37, 99, 235, 0.16));
-		text-decoration-thickness: 2px;
-	}
-
 	.docx-paragraph-explanation-bracket {
 		position: absolute;
 		width: 2px;

@@ -11,6 +11,11 @@ dependencies = [
     # Domain models + config (reused from the service layer).
     "pydantic>=2.9",
     "pydantic-settings>=2.5",
+    # LLM clients + tokenizer used by the assistant/contradiction/llm modules.
+    # Light enough to install eagerly (unlike sentence-transformers/torch).
+    "openai>=2.0",
+    "google-genai>=1.0",
+    "tiktoken>=0.7",
     # Needed only to actually run POST /process (graph embeddings).
     # Heavy (pulls torch); install when you want the graph endpoint live:
     #   uv add sentence-transformers

@@ -57,6 +57,9 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.AllowAny",
     ],
+    # Maps service-layer RuntimeError/AppError to the same HTTP status the old
+    # FastAPI backend returned (see api/exceptions.py + server_old/core/errors.py).
+    "EXCEPTION_HANDLER": "api.exceptions.custom_exception_handler",
 }
 
 STATIC_URL = "static/"

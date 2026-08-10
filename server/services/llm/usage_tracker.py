@@ -1,29 +1,30 @@
 from __future__ import annotations
 
+import json
 import logging
-import sqlite3
 from pathlib import Path
 from threading import Lock
 
+# Simple running total of LLM cost, stored as a small JSON file (no database).
+# A real store (Postgres) will replace this later.
 _LOCK = Lock()
-_DB_PATH = Path(__file__).resolve().parents[2] / "data" / "llm_usage.sqlite3"
+_JSON_PATH = Path(__file__).resolve().parents[2] / "llm_usage.json"
 logger = logging.getLogger(__name__)
 
 
-def _ensure_db() -> None:
-    _DB_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with sqlite3.connect(_DB_PATH) as conn:
-        conn.execute(
-            """
-            CREATE TABLE IF NOT EXISTS llm_usage_total (
-                id INTEGER PRIMARY KEY CHECK (id = 1),
-                total_cost_usd REAL NOT NULL DEFAULT 0
-            )
-            """
-        )
-        conn.execute("INSERT OR IGNORE INTO llm_usage_total (id, total_cost_usd) VALUES (1, 0)")
-        conn.commit()
-    logger.info("[COST_DEBUG] usage DB ready at: %s", _DB_PATH)
+def _read_total() -> float:
+    try:
+        with open(_JSON_PATH, encoding="utf-8") as f:
+            data = json.load(f)
+        return float(data.get("total_cost_usd", 0.0) or 0.0)
+    except (FileNotFoundError, json.JSONDecodeError, ValueError, TypeError):
+        return 0.0
+
+
+def _write_total(total: float) -> None:
+    _JSON_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with open(_JSON_PATH, "w", encoding="utf-8") as f:
+        json.dump({"total_cost_usd": float(total)}, f, indent=2)
 
 
 def add_usage_cost(cost_usd: float | None) -> None:
@@ -34,31 +35,17 @@ def add_usage_cost(cost_usd: float | None) -> None:
         logger.info("[COST_DEBUG] add_usage_cost skipped: non-positive cost=%s", cost_usd)
         return
     with _LOCK:
-        _ensure_db()
-        with sqlite3.connect(_DB_PATH) as conn:
-            conn.execute(
-                "UPDATE llm_usage_total SET total_cost_usd = total_cost_usd + ? WHERE id = 1",
-                (float(cost_usd),),
-            )
-            conn.commit()
-            row = conn.execute(
-                "SELECT total_cost_usd FROM llm_usage_total WHERE id = 1"
-            ).fetchone()
-            new_total = float(row[0] if row and row[0] is not None else 0.0)
-            logger.info(
-                "[COST_DEBUG] add_usage_cost applied: delta=%0.9f new_total=%0.9f",
-                float(cost_usd),
-                new_total,
-            )
+        new_total = _read_total() + float(cost_usd)
+        _write_total(new_total)
+        logger.info(
+            "[COST_DEBUG] add_usage_cost applied: delta=%0.9f new_total=%0.9f",
+            float(cost_usd),
+            new_total,
+        )
 
 
 def get_total_usage_cost_usd() -> float:
     with _LOCK:
-        _ensure_db()
-        with sqlite3.connect(_DB_PATH) as conn:
-            row = conn.execute(
-                "SELECT total_cost_usd FROM llm_usage_total WHERE id = 1"
-            ).fetchone()
-            total = float(row[0] if row and row[0] is not None else 0.0)
-            logger.info("[COST_DEBUG] get_total_usage_cost_usd returning: %0.9f", total)
-            return total
+        total = _read_total()
+        logger.info("[COST_DEBUG] get_total_usage_cost_usd returning: %0.9f", total)
+        return total

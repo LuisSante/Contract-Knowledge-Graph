@@ -32,6 +32,10 @@ class Settings(BaseSettings):
     LLM_TIMEOUT_SECONDS: float = 60.0
     LLM_MAX_RETRIES: int = 2
 
+    SECRET_KEY: str = "dev-insecure-change-me"
+    DEBUG: bool = True
+    ALLOWED_HOSTS: list[str] = ["localhost", "127.0.0.1"]
+
     @field_validator("NEO4J_URI", "NEO4J_USERNAME", "NEO4J_PASSWORD")
     @classmethod
     def _strip(cls, value: str) -> str:
@@ -58,9 +62,9 @@ class Settings(BaseSettings):
     def _clamp_threshold(cls, value: float) -> float:
         return max(0.0, min(1.0, value))
 
-    @field_validator("CORS_ORIGINS", mode="before")
+    @field_validator("CORS_ORIGINS", "ALLOWED_HOSTS", mode="before")
     @classmethod
-    def _split_origins(cls, value):
+    def _split_list(cls, value):
         if isinstance(value, str) and not value.strip().startswith("["):
             return [item.strip() for item in value.split(",") if item.strip()]
         return value

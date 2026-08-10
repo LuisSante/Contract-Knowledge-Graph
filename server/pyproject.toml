@@ -1,40 +1,28 @@
 [project]
 name = "contravis-backend"
 version = "0.1.0"
-description = "Add your description here"
+description = "ContraVis backend — Django REST Framework (document viewer + paragraph graph)"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "fastapi>=0.138.1",
-    "openai>=2.44.0",
-    "pandas>=3.0.3",
-    "pydantic>=2.13.4",
-    "pydantic-settings>=2.14.2",
-    "python-dotenv>=1.2.2",
-    "python-multipart>=0.0.32",
-    "sentence-transformers>=5.6.0",
-    "tiktoken>=0.13.0",
-    "torch>=2.12.1",
-    "tqdm>=4.68.3",
-    "uvicorn[standard]>=0.49.0",
+    "django>=5.1",
+    "djangorestframework>=3.15",
+    "django-cors-headers>=4.4",
+    # Domain models + config (reused from the service layer).
+    "pydantic>=2.9",
+    "pydantic-settings>=2.5",
+    # LLM clients + tokenizer used by the assistant/contradiction/llm modules.
+    # Light enough to install eagerly (unlike sentence-transformers/torch).
+    "openai>=2.0",
+    "google-genai>=1.0",
+    "tiktoken>=0.7",
+    # Needed only to actually run POST /process (graph embeddings).
+    # Heavy (pulls torch); install when you want the graph endpoint live:
+    #   uv add sentence-transformers
+    # "sentence-transformers>=3.0",
 ]
 
 [dependency-groups]
 dev = [
-    "httpx>=0.28.1",
-    "pytest>=9.1.1",
-    "ruff>=0.15.20",
+    "ruff>=0.6",
 ]
-
-[tool.ruff]
-line-length = 100
-target-version = "py312"
-
-[tool.ruff.lint]
-select = ["E", "F", "I", "UP", "B"]
-
-[tool.ruff.lint.per-file-ignores]
-"main.py" = ["E402"]
-
-[tool.ruff.lint.flake8-bugbear]
-extend-immutable-calls = ["fastapi.Query", "fastapi.Depends", "fastapi.Path", "fastapi.Body", "fastapi.Header", "fastapi.Form"]

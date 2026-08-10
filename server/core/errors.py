@@ -1,9 +1,11 @@
-import logging
+"""Domain error types shared by the service layer.
 
-from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
-
-logger = logging.getLogger(__name__)
+Ported from the FastAPI backend. The original also defined
+``register_exception_handlers(app)`` to wire these into FastAPI; under Django
+that job is done by ``api/exceptions.py`` (a DRF ``EXCEPTION_HANDLER``), so the
+FastAPI-only helper — and its ``fastapi`` import — is dropped here. The exception
+classes themselves are framework-agnostic and used unchanged by the services.
+"""
 
 
 class AppError(Exception):
@@ -18,18 +20,3 @@ class AppError(Exception):
 
 class NotFoundError(AppError):
     status_code = 404
-
-
-def register_exception_handlers(app: FastAPI) -> None:
-    @app.exception_handler(AppError)
-    async def _handle_app_error(request: Request, exc: AppError):
-        return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
-
-    @app.exception_handler(RuntimeError)
-    async def _handle_runtime_error(request: Request, exc: RuntimeError):
-        return JSONResponse(status_code=400, content={"detail": str(exc)})
-
-    @app.exception_handler(Exception)
-    async def _handle_unexpected(request: Request, exc: Exception):
-        logger.exception("Unhandled error")
-        return JSONResponse(status_code=500, content={"detail": "Internal server error"})

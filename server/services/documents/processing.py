@@ -1,24 +1,17 @@
-import logging
+"""Paragraph extraction from the docx viewer payload.
+
+Ported verbatim from the FastAPI `/process` route: strips page markers and
+repeated header/footer boundaries, then flattens pages into paragraph rows
+ready for graph generation.
+"""
+
 import re
 from collections import Counter
 
-from fastapi import APIRouter, HTTPException
-from fastapi.responses import FileResponse
-
-from api.deps import document_store
-from schemas.types import (
-    DatasetDocument,
-    ProcessCacheMeta,
-    ProcessDocumentRequest,
-    ProcessDocumentResponse,
-)
-from services.graph.relations import generate_graph_data
-
-router = APIRouter()
-logger = logging.getLogger(__name__)
-
 PAGE_NUMBER_ONLY_RE = re.compile(r"^(?:\d+|[ivxlcdm]{1,8})$", re.IGNORECASE)
-PAGE_LABEL_RE = re.compile(r"^(?:page|pagina|p[aÃ¡]g\.?)\s*\d+(?:\s*(?:\/|of|de)\s*\d+)?$", re.IGNORECASE)
+PAGE_LABEL_RE = re.compile(
+    r"^(?:page|pagina|p[aá]g\.?)\s*\d+(?:\s*(?:\/|of|de)\s*\d+)?$", re.IGNORECASE
+)
 BOUNDARY_SCAN_LINES = 3
 
 
@@ -41,9 +34,7 @@ def is_repeated_boundary_candidate(text: str) -> bool:
     return 0 < len(words) <= 22
 
 
-def detect_repeated_boundary_texts(
-    pages: list[dict],
-) -> tuple[dict[int, dict[str, list[tuple[int, str]]]], set[str], set[str]]:
+def detect_repeated_boundary_texts(pages: list[dict]):
     boundaries_by_page: dict[int, dict[str, list[tuple[int, str]]]] = {}
     top_counts: Counter[str] = Counter()
     bottom_counts: Counter[str] = Counter()
@@ -81,39 +72,10 @@ def detect_repeated_boundary_texts(
     return boundaries_by_page, repeated_top, repeated_bottom
 
 
-@router.get("/list_documents", response_model=list[DatasetDocument])
-def list_documents():
-    document_store.ensure_initialized()
-
-    return document_store.get_documents()
-
-
-@router.get("/document_file/{doc_id}")
-def get_document_file(doc_id: str):
-    document_store.ensure_initialized()
-
-    path = document_store.get_path(doc_id)
-    if path is None or not path.exists():
-        raise HTTPException(status_code=404, detail="Document not found")
-
-    if path.suffix.lower() != ".docx":
-        raise HTTPException(status_code=400, detail="Only DOCX documents are supported")
-
-    return FileResponse(
-        path=path,
-        media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        filename=path.name,
-    )
-
-
-@router.post("/process", response_model=ProcessDocumentResponse)
-async def process_document(payload: ProcessDocumentRequest) -> ProcessDocumentResponse:
-    raw_doc_id = payload.documentId
-    doc_id = document_store.get_canonical_id(raw_doc_id) or raw_doc_id
-    pages = [page.model_dump() for page in payload.pages]
+def build_paragraphs(pages: list[dict], doc_id: str) -> list[dict]:
     boundaries_by_page, repeated_top_texts, repeated_bottom_texts = detect_repeated_boundary_texts(pages)
 
-    all_paragraphs_input = []
+    all_paragraphs_input: list[dict] = []
 
     for page_idx, page in enumerate(pages):
         boundary = boundaries_by_page.get(page_idx, {})
@@ -124,7 +86,6 @@ async def process_document(payload: ProcessDocumentRequest) -> ProcessDocumentRe
             text_content = normalize_text(str(el.get("text", "")))
             if not text_content:
                 continue
-
             if is_page_marker(text_content):
                 continue
 
@@ -134,7 +95,6 @@ async def process_document(payload: ProcessDocumentRequest) -> ProcessDocumentRe
                 for boundary_idx, boundary_text in top_boundary
             ):
                 continue
-
             if text_key in repeated_bottom_texts and any(
                 idx == boundary_idx and text_key == boundary_text
                 for boundary_idx, boundary_text in bottom_boundary
@@ -151,16 +111,4 @@ async def process_document(payload: ProcessDocumentRequest) -> ProcessDocumentRe
                 }
             )
 
-    graph_obj = generate_graph_data(all_paragraphs_input)
-
-    return ProcessDocumentResponse(
-        status="success",
-        documentId=doc_id,
-        graph=graph_obj,
-        cache=ProcessCacheMeta(),
-    )
-
-
-@router.get("/")
-def document_init():
-    return {"message": "Document initialization endpoint"}
+    return all_paragraphs_input

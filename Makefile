@@ -14,7 +14,7 @@ help:
 	@echo "Commands available:"
 	@echo "  make install      - Install backend deps (uv sync: Python + uv.lock)"
 	@echo "  make finstall     - Install frontend dependencies"
-	@echo "  make run          - Run FastAPI (uv run uvicorn)"
+	@echo "  make run          - Run Django (manage.py runserver)"
 	@echo "  make frun         - Run Next.js"
 	@echo "  make fbuild       - Build Next.js"
 	@echo "  make sinstall     - Install legacy Svelte dependencies"
@@ -34,8 +34,8 @@ finstall:
 	$(PNPM) install
 
 run:
-	@echo "Starting FastAPI (uv)..."
-	cd server && uv run uvicorn main:app --reload --port 8300
+	@echo "Starting Django (uv)..."
+	cd server && uv run python manage.py runserver 8300
 
 frun:
 	@echo "Starting Next.js..."

@@ -4,9 +4,6 @@ import type { DocumentMeta, Node } from '@/types/document';
 /**
  * Global state for the active document (replaces the Svelte writable stores
  * `currentDocument`, `paragraphs`, `loading`, `error`, `selectedParagraph`).
- *
- * Additional slices (contradiction / assistant / paragraphExplanation) will be
- * added when porting the docx panel — see the migration plan.
  */
 interface DocumentState {
 	currentDocument: DocumentMeta | null;

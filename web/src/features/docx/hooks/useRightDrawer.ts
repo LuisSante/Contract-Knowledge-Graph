@@ -18,7 +18,7 @@ import type { RightPanelTab } from '@/types/document';
  * The drag-resize logic (pointer events) will be added on iteration — see the
  * decomposition map of the plan.
  */
-export function useRightDrawer(initialTab: RightPanelTab = 'analysis') {
+export function useRightDrawer(initialTab: RightPanelTab = 'related') {
 	const [isOpen, setIsOpen] = useState(true);
 	const [width, setWidthState] = useState(RIGHT_DRAWER_DEFAULT_WIDTH);
 	const [activeTab, setActiveTab] = useState<RightPanelTab>(initialTab);

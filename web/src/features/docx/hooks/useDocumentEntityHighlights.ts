@@ -18,8 +18,8 @@ interface UseDocumentEntityHighlightsParams {
 }
 
 /**
- * Highlights the active entities (from Paragraph Explanation or the contradiction
- * why/risk) inside the document body, not just in the chat. Re-applies on
+ * Highlights the active entities (from Paragraph Explanation) inside the
+ * document body, not just in the chat. Re-applies on
  * selection/entities/render change and syncs the hover between document and chat.
  * Port of `applyParagraphExplanationHighlights` (the entities part) from the Svelte.
  */

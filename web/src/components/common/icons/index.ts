@@ -2,7 +2,6 @@ export { AmbiguityAnalysisIcon } from './AmbiguityAnalysisIcon';
 export { ChatIcon } from './ChatIcon';
 export { CloseIcon } from './CloseIcon';
 export { ContractChatAssistantIcon } from './ContractChatAssistantIcon';
-export { ContradictionAnalysisIcon } from './ContradictionAnalysisIcon';
 export { DocumentIcon } from './DocumentIcon';
 export { HammerShieldIcon } from './HammerShieldIcon';
 export { LightningBoltIcon } from './LightningBoltIcon';

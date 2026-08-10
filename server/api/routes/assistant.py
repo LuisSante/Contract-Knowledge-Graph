@@ -7,7 +7,6 @@ from schemas.types import (
     SimplifySelectionResponse,
 )
 from services.assistant.contract_assistant import (
-    fix_contradiction_selection,
     generate_assistant_response,
     simplify_paragraph_selection,
 )
@@ -23,8 +22,3 @@ def assistant_chat(payload: AssistantChatRequest):
 @router.post("/assistant/simplify", response_model=SimplifySelectionResponse)
 def assistant_simplify(payload: SimplifySelectionRequest):
     return simplify_paragraph_selection(payload)
-
-
-@router.post("/assistant/fix_contradiction", response_model=SimplifySelectionResponse)
-def assistant_fix_contradiction(payload: SimplifySelectionRequest):
-    return fix_contradiction_selection(payload)

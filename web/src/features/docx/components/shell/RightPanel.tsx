@@ -8,19 +8,17 @@ import type { RightPanelTab } from '@/types/document';
 import {
 	ChatIcon,
 	CloseIcon,
-	ContradictionAnalysisIcon,
 	ParagraphExplanationIcon,
 	RelatedParagraphsIcon,
 } from '@/components/common/icons';
 
 const HEADER_ICONS: Record<RightPanelTab, React.ComponentType<{ className?: string }>> = {
-	analysis: ContradictionAnalysisIcon,
 	related: RelatedParagraphsIcon,
 	paragraph_explanation: ParagraphExplanationIcon,
 	assistant: ChatIcon,
-	redundancy: ContradictionAnalysisIcon,
+	redundancy: RelatedParagraphsIcon,
 	summarize: ParagraphExplanationIcon,
-	ambiguity: ContradictionAnalysisIcon,
+	ambiguity: RelatedParagraphsIcon,
 	revisions: ParagraphExplanationIcon,
 };
 

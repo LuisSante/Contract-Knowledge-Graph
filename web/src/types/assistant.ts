@@ -1,9 +1,4 @@
 import type { RelationKind } from './graph';
-import type {
-	FixContradictionSuggestion,
-	FreeContradictionExplanation,
-	StructuredContradictionAnalysis,
-} from './contradiction';
 
 export type AssistantMode = 'explain' | 'suggest_questions';
 export type AssistantScope = 'selected' | 'full_contract';
@@ -30,9 +25,6 @@ export type AssistantChatMessage = {
 		color: string;
 		softColor: string;
 	}>;
-	structuredContradiction?: StructuredContradictionAnalysis;
-	freeContradictionExplanation?: FreeContradictionExplanation;
-	fixContradictionSuggestion?: FixContradictionSuggestion;
 };
 
 export type AssistantContextNode = {

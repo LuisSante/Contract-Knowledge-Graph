@@ -15,8 +15,6 @@ import {
 import type { AssistantChatMessage } from '@/types/document';
 
 import { CitationChips } from '@/features/docx/components/assistant/CitationChips';
-import { ContradictionActionMessageCard } from '@/features/docx/components/contradiction/ContradictionActionMessageCard';
-import { StructuredContradictionMessage } from '@/features/docx/components/contradiction/StructuredContradictionMessage';
 import { SuggestedQuestions } from '@/features/docx/components/assistant/SuggestedQuestions';
 
 interface AssistantMessageProps {
@@ -25,10 +23,7 @@ interface AssistantMessageProps {
 	onFocusNodeFromPanel: (nodeId: string, emphasize?: boolean) => void;
 	/** Whether message entities are highlighted (toggle on click). */
 	entityHighlightsEnabled?: boolean;
-	/** Rewrite in progress: disables the fix card button. */
-	rewriteBusy?: boolean;
 	onToggleEntityHighlights?: () => void;
-	onAcceptFixSuggestion?: (messageId: string) => void | Promise<void>;
 }
 
 /**
@@ -78,17 +73,14 @@ function renderSegments(
 
 /**
  * A single chat message (user vs assistant). Ported from the message-rendering
- * block of the Svelte `RightPanelAssistant` component. The "fix contradiction"
- * action card is intentionally not ported in this migration step.
+ * block of the Svelte `RightPanelAssistant` component.
  */
 export function AssistantMessage({
 	message,
 	onSuggestedQuestionClick,
 	onFocusNodeFromPanel,
 	entityHighlightsEnabled = true,
-	rewriteBusy = false,
 	onToggleEntityHighlights = () => {},
-	onAcceptFixSuggestion = () => {},
 }: AssistantMessageProps) {
 	const isUser = message.role === 'user';
 	const isAssistant = message.role === 'assistant';
@@ -111,24 +103,6 @@ export function AssistantMessage({
 		</MessageAvatar>
 	);
 
-	// Contradiction actions (structured fix / free explanation) keep their own
-	// card, but ride inside the shared Message/avatar layout.
-	if (message.fixContradictionSuggestion || message.freeContradictionExplanation) {
-		return (
-			<Message align={align}>
-				{avatar}
-				<MessageContent>
-					<ContradictionActionMessageCard
-						message={message}
-						rewriteBusy={rewriteBusy}
-						onFocusNodeFromPanel={onFocusNodeFromPanel}
-						onAcceptFixSuggestion={onAcceptFixSuggestion}
-					/>
-				</MessageContent>
-			</Message>
-		);
-	}
-
 	const entities = message.entityHighlights ?? [];
 	const canToggleEntities = isAssistant && entities.length > 0;
 
@@ -145,33 +119,26 @@ export function AssistantMessage({
 						className={`text-xs ${canToggleEntities ? 'cursor-pointer' : ''}`}
 						onClick={canToggleEntities ? () => onToggleEntityHighlights() : undefined}
 					>
-						{isAssistant && message.structuredContradiction ? (
-							<StructuredContradictionMessage
-								messageContent={message.content}
-								structuredContradiction={message.structuredContradiction}
-							/>
-						) : (
-							(() => {
-								const { label, rest } = isAssistant
-									? splitLeadLabel(message.content)
-									: { label: null, rest: message.content };
-								return (
-									<>
-										{label ? (
-											<p className="mb-1 text-xs font-bold text-foreground">{label}</p>
-										) : null}
-										<p className="leading-5 whitespace-pre-wrap">
-											{renderSegments(
-												entityHighlightsEnabled && entities.length
-													? splitReferenceAndEntityText(rest, entities)
-													: splitReferenceText(rest),
-												`${message.id}-content`,
-											)}
-										</p>
-									</>
-								);
-							})()
-						)}
+						{(() => {
+							const { label, rest } = isAssistant
+								? splitLeadLabel(message.content)
+								: { label: null, rest: message.content };
+							return (
+								<>
+									{label ? (
+										<p className="mb-1 text-xs font-bold text-foreground">{label}</p>
+									) : null}
+									<p className="leading-5 whitespace-pre-wrap">
+										{renderSegments(
+											entityHighlightsEnabled && entities.length
+												? splitReferenceAndEntityText(rest, entities)
+												: splitReferenceText(rest),
+											`${message.id}-content`,
+										)}
+									</p>
+								</>
+							);
+						})()}
 
 						{message.suggestedQuestions?.length ? (
 							<SuggestedQuestions

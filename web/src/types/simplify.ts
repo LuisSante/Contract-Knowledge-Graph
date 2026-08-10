@@ -30,7 +30,6 @@ export type SimplifySelectionRequest = {
 	paragraphText: string;
 	selectionStart: number;
 	selectionEnd: number;
-	contradictionReason?: string;
 	relatedParagraphs?: SimplifyRelatedParagraph[];
 };
 

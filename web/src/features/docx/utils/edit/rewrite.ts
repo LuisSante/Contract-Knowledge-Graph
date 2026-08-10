@@ -1,8 +1,5 @@
 import type {
 	AssistantProvider,
-	ContradictionParagraphResult,
-	ParagraphEditState,
-	RelatedParagraph,
 	SimplifyAuditRecord,
 	SimplifySelectionRequest,
 	SimplifyResultState
@@ -17,8 +14,7 @@ import {
 	replaceParagraphTextRange,
 	type SimplifyTarget
 } from '@/features/docx/utils/edit/simplify-selection';
-import { buildFixRelatedContext } from '@/features/docx/utils/assistant/assistant';
-import { fetchFixContradictionSelection, fetchSimplifySelection } from '@/services/assistant';
+import { fetchSimplifySelection } from '@/services/assistant';
 import { normalizeEditableText } from '@/features/docx/utils/docx-engine/paragraph';
 
 type ErrorResolver = (error: unknown, fallbackMessage: string) => string;
@@ -42,28 +38,10 @@ type ResolveTargetParams = {
 	fallbackTarget: SimplifyTarget | null;
 };
 
-type ExecuteFixParams = ResolveTargetParams & {
-	activeDocumentId: string | null;
-	assistantProvider: AssistantProvider;
-	contradictionResultsByParagraphId: Map<string, ContradictionParagraphResult>;
-	selectedRelatedParagraphs: RelatedParagraph[];
-	nodeEditStateById: Map<string, ParagraphEditState>;
-	fixRelatedLimit: number;
-	resolveErrorMessage: ErrorResolver;
-	confirmLlmEstimate?: (
-		callType: 'assistant_fix_contradiction',
-		payload: SimplifySelectionRequest
-	) => Promise<boolean>;
-};
-
 type ExecuteSimplifyParams = ResolveTargetParams & {
 	activeDocumentId: string | null;
 	assistantProvider: AssistantProvider;
 	resolveErrorMessage: ErrorResolver;
-	confirmLlmEstimate?: (
-		callType: 'assistant_simplify',
-		payload: SimplifySelectionRequest
-	) => Promise<boolean>;
 };
 
 type ApplyRewriteParams = {
@@ -122,88 +100,6 @@ function createAuditRecord(params: {
 	};
 }
 
-export async function executeFixContradictionRewrite(
-	params: ExecuteFixParams
-): Promise<RewriteExecutionResult> {
-	if (!params.activeDocumentId) {
-		return { ok: false, error: 'No document is loaded.' };
-	}
-
-	const target = resolveActiveRewriteTarget(params);
-	if (!target) {
-		return {
-			ok: false,
-			error: 'Select text in a paragraph or focus a paragraph to fix contradictions.'
-		};
-	}
-
-	const contradiction = params.contradictionResultsByParagraphId.get(target.paragraphId);
-	if (!contradiction) {
-		return {
-			ok: false,
-			error:
-				'No contradiction result is available for this paragraph yet. Run "Search contradictions" first.'
-		};
-	}
-
-	if (!contradiction.contradiction) {
-		return { ok: false, error: 'This paragraph is not currently classified as contradiction.' };
-	}
-
-	const bounds = normalizeBounds(
-		target.selectionStart,
-		target.selectionEnd,
-		target.paragraphText.length
-	);
-	const selectionStart = bounds.start;
-	const selectionEnd = bounds.end === bounds.start ? target.paragraphText.length : bounds.end;
-
-	try {
-		const requestPayload: SimplifySelectionRequest = {
-			documentId: params.activeDocumentId,
-			provider: params.assistantProvider,
-			paragraphId: target.paragraphId,
-			paragraphText: target.paragraphText,
-			selectionStart,
-			selectionEnd,
-			contradictionReason: contradiction.brief_reason,
-			relatedParagraphs: buildFixRelatedContext(
-				params.selectedRelatedParagraphs,
-				params.nodeEditStateById,
-				params.fixRelatedLimit
-			)
-		};
-		if (params.confirmLlmEstimate) {
-			const approved = await params.confirmLlmEstimate('assistant_fix_contradiction', requestPayload);
-			if (!approved) return { ok: false, error: 'Request canceled by user.' };
-		}
-		const response = await fetchFixContradictionSelection(requestPayload);
-
-		const createdAt = new Date().toISOString();
-		const result: SimplifyResultState = {
-			payload: response,
-			paragraphTextSnapshot: target.paragraphText,
-			createdAt
-		};
-
-		return {
-			ok: true,
-			target,
-			result,
-			auditRecord: createAuditRecord({
-				documentId: params.activeDocumentId,
-				createdAt,
-				response
-			})
-		};
-	} catch (error) {
-		return {
-			ok: false,
-			error: params.resolveErrorMessage(error, 'Failed to fix contradiction for selected text.')
-		};
-	}
-}
-
 export async function executeSimplifyRewrite(
 	params: ExecuteSimplifyParams
 ): Promise<RewriteExecutionResult> {
@@ -233,10 +129,6 @@ export async function executeSimplifyRewrite(
 			selectionStart,
 			selectionEnd
 		};
-		if (params.confirmLlmEstimate) {
-			const approved = await params.confirmLlmEstimate('assistant_simplify', requestPayload);
-			if (!approved) return { ok: false, error: 'Request canceled by user.' };
-		}
 		const response = await fetchSimplifySelection(requestPayload);
 
 		const createdAt = new Date().toISOString();

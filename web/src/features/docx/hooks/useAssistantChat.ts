@@ -11,17 +11,12 @@ import {
 	resolveAssistantSuggestedQuestions,
 } from '@/features/docx/utils/assistant/assistant';
 import { buildUserMessage } from '@/features/docx/utils/assistant/message-builders';
-import {
-	useContradictionQuickActions,
-	type ConfirmLlmEstimate,
-} from '@/features/docx/hooks/useContradictionQuickActions';
 import type {
 	AssistantChatMessage,
 	AssistantChatRequest,
 	AssistantMode,
 	AssistantProvider,
 	AssistantScope,
-	ContradictionParagraphResult,
 	ParagraphEditState,
 	RelatedParagraph,
 } from '@/types/document';
@@ -29,38 +24,22 @@ import type {
 interface UseAssistantChatParams {
 	docId: string;
 	nodeEditStateById: Map<string, ParagraphEditState>;
-	/** Returns the container of the rendered document (fix target). */
-	getViewerElement?: () => HTMLElement | null;
-	/** Map of paragraph id → DOM element (used to apply the rewrite). */
-	paragraphElementById?: Map<string, HTMLElement>;
-	/** Contradiction results per paragraph (feed the quick-actions). */
-	contradictionResultsByParagraphId?: Map<string, ContradictionParagraphResult>;
-	/** Related paragraphs of the selected one (fix context). */
+	/** Related paragraphs of the selected one (context). */
 	selectedRelatedParagraphs?: RelatedParagraph[];
 	/** Global analysis model (optional, forwarded to the backend). */
 	model?: string;
-	/** LLM cost confirmation before each call (if omitted, none is requested). */
-	confirmLlmEstimate?: ConfirmLlmEstimate;
 }
 
 /**
- * Assistant chat over the contract. A single `messages` array feeds both the
- * Contract Chat Assistant and the chat embedded in Contradiction Analysis, so
- * whatever is typed in one appears in the other (parity with the Svelte version).
- *
- * This hook is the **core** (free-text question + thread state) and composes
- * `useContradictionQuickActions` (why/risks/fix/entities) over the same thread,
- * exposing a single API. The message builders live in `utils/assistant`.
+ * Generic assistant chat over the contract: a single `messages` thread with
+ * free-text questions, citations, suggested questions, and entity-highlight
+ * toggling in the chat bubbles. The message builders live in `utils/assistant`.
  */
 export function useAssistantChat({
 	docId,
 	nodeEditStateById,
-	getViewerElement,
-	paragraphElementById,
-	contradictionResultsByParagraphId,
 	selectedRelatedParagraphs = [],
 	model,
-	confirmLlmEstimate,
 }: UseAssistantChatParams) {
 	const [messages, setMessages] = useState<AssistantChatMessage[]>([]);
 	const [input, setInput] = useState('');
@@ -69,6 +48,7 @@ export function useAssistantChat({
 	const [mode] = useState<AssistantMode>('explain');
 	const [scope, setScope] = useState<AssistantScope>('full_contract');
 	const [provider, setProvider] = useState<AssistantProvider>('openai');
+	const [entityHighlightsEnabled, setEntityHighlightsEnabled] = useState(true);
 
 	// Mirror of `messages` to build the history without depending on the re-render.
 	const messagesRef = useRef<AssistantChatMessage[]>([]);
@@ -130,10 +110,6 @@ export function useAssistantChat({
 		};
 
 		try {
-			if (confirmLlmEstimate) {
-				const approved = await confirmLlmEstimate('assistant_chat', payload);
-				if (!approved) return;
-			}
 			const response = await fetchAssistantResponse(payload);
 			setMessages((prev) => [
 				...prev,
@@ -162,43 +138,12 @@ export function useAssistantChat({
 
 	const submit = (questionOverride?: string) => submitAssistantQuestion(questionOverride);
 
-	/** Free question inside the contradiction chat (always selected scope). */
-	const submitContradictionQuestion = (questionOverride?: string) =>
-		submitAssistantQuestion(questionOverride, { scope: 'selected' });
-
-	// Contradiction quick-actions (why/risks/fix/entities) over the same thread.
-	const quickActions = useContradictionQuickActions({
-		docId,
-		nodeEditStateById,
-		provider,
-		model,
-		selectedRelatedParagraphs,
-		contradictionResultsByParagraphId,
-		paragraphElementById,
-		getViewerElement,
-		confirmLlmEstimate,
-		messages,
-		messagesRef,
-		setMessages,
-		loading,
-		setLoading,
-		setError,
-		nextMessageId,
-		submitContradictionQuestion,
-	});
+	const toggleEntityHighlights = () => setEntityHighlightsEnabled((prev) => !prev);
 
 	const handleKeydown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
 		if (event.key === 'Enter' && !event.shiftKey) {
 			event.preventDefault();
 			void submit();
-		}
-	};
-
-	/** Cmd/Ctrl+Enter sends in the contradiction chat (selected scope). */
-	const handleContradictionKeydown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-		if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
-			event.preventDefault();
-			void submitContradictionQuestion();
 		}
 	};
 
@@ -209,20 +154,12 @@ export function useAssistantChat({
 		error,
 		scope,
 		provider,
-		entityHighlightsEnabled: quickActions.entityHighlightsEnabled,
-		contradictionEntities: quickActions.contradictionEntities,
-		rewriteBusy: quickActions.rewriteBusy,
+		entityHighlightsEnabled,
 		setScope,
 		setProvider,
 		setInput,
 		submit,
 		handleKeydown,
-		// Contradiction chat (shared):
-		askQuickAction: quickActions.askQuickAction,
-		suggestContradictionFix: quickActions.suggestContradictionFix,
-		acceptFixSuggestion: quickActions.acceptFixSuggestion,
-		toggleEntityHighlights: quickActions.toggleEntityHighlights,
-		submitContradictionQuestion,
-		handleContradictionKeydown,
+		toggleEntityHighlights,
 	};
 }

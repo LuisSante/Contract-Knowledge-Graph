@@ -19,13 +19,3 @@ export async function fetchSimplifySelection(
 	const response = await api.post<SimplifySelectionResponse>('/assistant/simplify', payload);
 	return response.data;
 }
-
-export async function fetchFixContradictionSelection(
-	payload: SimplifySelectionRequest
-): Promise<SimplifySelectionResponse> {
-	const response = await api.post<SimplifySelectionResponse>(
-		'/assistant/fix_contradiction',
-		payload
-	);
-	return response.data;
-}

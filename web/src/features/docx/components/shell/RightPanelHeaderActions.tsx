@@ -17,11 +17,6 @@ const ACTION_BTN =
 
 interface RightPanelHeaderActionsProps {
 	activeTab: RightPanelTab;
-	// analysis
-	contradictionLoading: boolean;
-	relatedLoading: boolean;
-	onLoadSaved: () => void;
-	onSearch: () => void;
 	// paragraph_explanation
 	explanationDisabled: boolean;
 	onExplain: () => void;
@@ -33,16 +28,12 @@ interface RightPanelHeaderActionsProps {
 }
 
 /**
- * Right-panel header actions, specific per tab: Saved/Search in analysis,
- * Explain/Simplify in explanation, and provider + scope in the assistant.
- * Extracted from `DocxViewer` to slim it down.
+ * Right-panel header actions, specific per tab: Explain/Simplify in explanation,
+ * and provider + scope in the assistant. Extracted from `DocxViewer` to slim it
+ * down.
  */
 export function RightPanelHeaderActions({
 	activeTab,
-	contradictionLoading,
-	relatedLoading,
-	onLoadSaved,
-	onSearch,
 	explanationDisabled,
 	onExplain,
 	provider,
@@ -50,32 +41,6 @@ export function RightPanelHeaderActions({
 	scope,
 	onScopeChange,
 }: RightPanelHeaderActionsProps) {
-	if (activeTab === 'analysis') {
-		return (
-			<div className="flex shrink-0 items-center gap-1.5">
-				<Button
-					variant="outline"
-					size="sm"
-					className={ACTION_BTN}
-					disabled={contradictionLoading}
-					onClick={onLoadSaved}
-				>
-					Saved
-				</Button>
-				<Button
-					variant="outline"
-					size="sm"
-					className={ACTION_BTN}
-					disabled={contradictionLoading || relatedLoading}
-					title="Search contradictions with LLM"
-					onClick={onSearch}
-				>
-					Search
-				</Button>
-			</div>
-		);
-	}
-
 	if (activeTab === 'paragraph_explanation') {
 		return (
 			<div className="flex shrink-0 items-center gap-1.5">

@@ -4,8 +4,6 @@ import logging
 from typing import Any
 
 from services.llm.base import LLMProvider
-from services.llm.cost_estimator import estimate_model_cost_usd, format_cost
-from services.llm.usage_tracker import add_usage_cost
 
 logger = logging.getLogger(__name__)
 
@@ -93,29 +91,10 @@ class OpenAIProvider(LLMProvider):
         )
 
         effective_model = str(getattr(response, "model", self._model) or self._model)
-        estimated_cost = estimate_model_cost_usd(
-            model_name=effective_model,
-            input_tokens=prompt_tokens,
-            output_tokens=completion_tokens,
-        )
         logger.info(
-            "[COST_DEBUG] openai usage parsed: model=%s prompt=%d completion=%d total=%d estimated_cost=%s",
+            "OpenAI usage model=%s prompt_tokens=%d completion_tokens=%d total_tokens=%d",
             effective_model,
             prompt_tokens,
             completion_tokens,
             total_tokens,
-            format_cost(estimated_cost),
-        )
-        add_usage_cost(estimated_cost)
-
-        logger.info(
-            (
-                "OpenAI usage model=%s prompt_tokens=%d completion_tokens=%d "
-                "total_tokens=%d est_cost_usd=%s"
-            ),
-            effective_model,
-            prompt_tokens,
-            completion_tokens,
-            total_tokens,
-            format_cost(estimated_cost),
         )

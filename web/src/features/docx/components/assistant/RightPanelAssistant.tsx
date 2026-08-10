@@ -13,14 +13,12 @@ interface RightPanelAssistantProps {
 	loading: boolean;
 	error: string | null;
 	entityHighlightsEnabled?: boolean;
-	rewriteBusy?: boolean;
 	onInputChange: (value: string) => void;
 	onSubmit: () => void;
 	onKeydown: (event: KeyboardEvent<HTMLTextAreaElement>) => void;
 	onSuggestedQuestionClick: (question: string) => void;
 	onFocusNodeFromPanel: (nodeId: string, emphasize?: boolean) => void;
 	onToggleEntityHighlights?: () => void;
-	onAcceptFixSuggestion?: (messageId: string) => void | Promise<void>;
 	/** Initial quick questions (empty chat). */
 	initialSuggestions?: string[];
 	onInitialSuggestionClick?: (question: string) => void;
@@ -29,9 +27,7 @@ interface RightPanelAssistantProps {
 /**
  * Contract chat assistant panel: scrollable message list + bottom input box +
  * error display. Faithful port of the chat half of the Svelte
- * `RightPanelAssistant` component. The quick-action suggestions, entity-
- * highlight toggle, and fix-contradiction action card are intentionally
- * dropped/stubbed in this migration step.
+ * `RightPanelAssistant` component.
  */
 export function RightPanelAssistant({
 	messages,
@@ -39,14 +35,12 @@ export function RightPanelAssistant({
 	loading,
 	error,
 	entityHighlightsEnabled = true,
-	rewriteBusy = false,
 	onInputChange,
 	onSubmit,
 	onKeydown,
 	onSuggestedQuestionClick,
 	onFocusNodeFromPanel,
 	onToggleEntityHighlights,
-	onAcceptFixSuggestion,
 	initialSuggestions,
 	onInitialSuggestionClick,
 }: RightPanelAssistantProps) {
@@ -56,11 +50,9 @@ export function RightPanelAssistant({
 				messages={messages}
 				loading={loading}
 				entityHighlightsEnabled={entityHighlightsEnabled}
-				rewriteBusy={rewriteBusy}
 				onSuggestedQuestionClick={onSuggestedQuestionClick}
 				onFocusNodeFromPanel={onFocusNodeFromPanel}
 				onToggleEntityHighlights={onToggleEntityHighlights}
-				onAcceptFixSuggestion={onAcceptFixSuggestion}
 			/>
 
 			{error ? (

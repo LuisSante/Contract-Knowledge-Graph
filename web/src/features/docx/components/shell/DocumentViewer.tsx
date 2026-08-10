@@ -2,7 +2,6 @@
 
 import {
 	useRef,
-	type CSSProperties,
 	type MouseEvent as ReactMouseEvent,
 	type RefObject,
 } from 'react';
@@ -10,28 +9,17 @@ import {
 /** Scrub multiplier when dragging the rail (1px of mouse → N px of scroll). */
 const MANUAL_SCROLL_DRAG_SPEED = 100;
 import type { DocumentViewerStatus } from '@/features/docx/hooks/useDocumentViewer';
-import { useContradictionScrollMarkers } from '@/features/docx/hooks/useContradictionScrollMarkers';
 import { useRelatedBridge } from '@/features/docx/hooks/useRelatedBridge';
 import { RelatedBridgeOverlay } from '@/features/docx/components/related/RelatedBridgeOverlay';
-import type {
-	ContradictionParagraphResult,
-	Node as ParagraphNode,
-	RelatedParagraph,
-} from '@/types/document';
+import type { Node as ParagraphNode, RelatedParagraph } from '@/types/document';
 
 interface DocumentViewerProps {
 	containerRef: RefObject<HTMLDivElement | null>;
 	status: DocumentViewerStatus;
 	/** Dims and disables the document while the graph is being built. */
 	dimmed?: boolean;
-	/** Contradiction visualization (rail + A↔B link). */
-	contradictionActive: boolean;
 	renderEpoch: number;
-	resultsByParagraphId: Map<string, ContradictionParagraphResult>;
 	paragraphElementById: Map<string, HTMLElement>;
-	selectedParagraphId: string | null;
-	categoryColor: string;
-	onMarkerClick: (paragraphId: string) => void;
 	/** Related-paragraphs bridge (connector + Shift+Scroll + labels). */
 	relatedBridgeActive: boolean;
 	selectedParagraph: ParagraphNode | null;
@@ -40,34 +28,19 @@ interface DocumentViewerProps {
 
 /**
  * Central viewer area: scroll-host with the DOM rendered by docx4js
- * (managed by ref) + the absolute contradiction-visualization layers
- * (marker rail and A↔B evidence link).
+ * (managed by ref) + the absolute related-paragraphs bridge overlay.
  */
 export function DocumentViewer({
 	containerRef,
 	status,
 	dimmed,
-	contradictionActive,
 	renderEpoch,
-	resultsByParagraphId,
 	paragraphElementById,
-	selectedParagraphId,
-	categoryColor,
-	onMarkerClick,
 	relatedBridgeActive,
 	selectedParagraph,
 	relatedBridgeParagraphs,
 }: DocumentViewerProps) {
 	const scrollHostRef = useRef<HTMLElement>(null);
-
-	const { markers, link, collapsedCards } = useContradictionScrollMarkers({
-		active: contradictionActive,
-		renderEpoch,
-		scrollHostRef,
-		paragraphElementById,
-		resultsByParagraphId,
-		selectedParagraphId,
-	});
 
 	const relatedBridge = useRelatedBridge({
 		active: relatedBridgeActive,
@@ -123,16 +96,6 @@ export function DocumentViewer({
 		window.setTimeout(() => element.classList.remove('docx-citation-flash'), 1300);
 	};
 
-	const handleMarkerClick = (paragraphId: string) => {
-		if (suppressMarkerClickRef.current) return;
-		onMarkerClick(paragraphId);
-	};
-
-	const linkVars = {
-		'--contradiction-a-color': categoryColor,
-		'--contradiction-b-color': categoryColor,
-	} as CSSProperties;
-
 	return (
 		<div className="relative flex min-h-0 flex-1">
 			<section
@@ -157,89 +120,6 @@ export function DocumentViewer({
 						onJumpToParagraph={jumpToParagraph}
 						onRailMouseDown={startRailScrub}
 					/>
-			)}
-
-			{contradictionActive && markers.length > 0 && (
-				<div className="absolute top-2 right-1 bottom-2 z-20 w-2" onMouseDown={startRailScrub}>
-					{markers.map((marker) => (
-						<span
-							key={marker.paragraphId}
-							className={`docx-contradiction-scroll-marker docx-contradiction-scroll-marker--${marker.confidenceBand}`}
-							style={{ top: `${marker.topPercent}%` }}
-							role="button"
-							tabIndex={0}
-							aria-label={`Go to contradiction in paragraph ${marker.paragraphId}`}
-							onClick={() => handleMarkerClick(marker.paragraphId)}
-							onKeyDown={(event) => {
-								if (event.key === 'Enter' || event.key === ' ') {
-									event.preventDefault();
-									handleMarkerClick(marker.paragraphId);
-								}
-							}}
-						/>
-					))}
-				</div>
-			)}
-
-			{contradictionActive && link && (
-				<div
-					className="pointer-events-none absolute inset-0 z-20 overflow-hidden"
-					style={linkVars}
-				>
-					<span
-						className="docx-contradiction-evidence-bracket"
-						style={{
-							left: link.leftPx,
-							top: link.topPx,
-							height: Math.max(6, link.bottomPx - link.topPx),
-						}}
-					/>
-					{link.showA && (
-						<>
-							<span
-								className="docx-contradiction-evidence-cap"
-								style={{ left: link.leftPx, top: link.aCenterPx }}
-							/>
-							<span
-								className="docx-contradiction-evidence-dot docx-contradiction-evidence-dot--a"
-								style={{ left: link.leftPx, top: link.aCenterPx }}
-							/>
-							<span
-								className="docx-contradiction-evidence-label docx-contradiction-evidence-label--a"
-								style={{ left: link.leftPx, top: link.aCenterPx }}
-							>
-								A
-							</span>
-						</>
-					)}
-					{link.showB && (
-						<>
-							<span
-								className="docx-contradiction-evidence-cap"
-								style={{ left: link.leftPx, top: link.bCenterPx }}
-							/>
-							<span
-								className="docx-contradiction-evidence-dot docx-contradiction-evidence-dot--b"
-								style={{ left: link.leftPx, top: link.bCenterPx }}
-							/>
-							<span
-								className="docx-contradiction-evidence-label docx-contradiction-evidence-label--b"
-								style={{ left: link.leftPx, top: link.bCenterPx }}
-							>
-								B
-							</span>
-						</>
-					)}
-					{collapsedCards.map((card, index) => (
-						<div
-							key={`contradiction-collapsed-${index}`}
-							className="docx-paragraph-explanation-collapsed-card"
-							style={{ left: card.leftPx, top: card.topPx, width: card.widthPx }}
-							// HTML cloned from the document itself (static).
-							dangerouslySetInnerHTML={{ __html: card.html }}
-						/>
-					))}
-				</div>
 			)}
 		</div>
 	);

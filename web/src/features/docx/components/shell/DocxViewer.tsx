@@ -5,21 +5,16 @@ import { DocxPageHeader } from '@/features/docx/components/shell/DocxPageHeader'
 import { DocumentViewer } from '@/features/docx/components/shell/DocumentViewer';
 import { RightPanel } from '@/features/docx/components/shell/RightPanel';
 import { ToolRail } from '@/features/docx/components/shell/ToolRail';
-import { LlmEstimateDialog } from '@/features/docx/components/shell/LlmEstimateDialog';
 import { RightPanelHeaderActions } from '@/features/docx/components/shell/RightPanelHeaderActions';
 import { RightPanelContent } from '@/features/docx/components/shell/RightPanelContent';
 import { useRightDrawer } from '@/features/docx/hooks/useRightDrawer';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
-import { useLlmEstimate } from '@/features/docx/hooks/useLlmEstimate';
 import { useDocumentEntityHighlights } from '@/features/docx/hooks/useDocumentEntityHighlights';
 import { useRelatedBadges } from '@/features/docx/hooks/useRelatedBadges';
 import { useDocumentViewer } from '@/features/docx/hooks/useDocumentViewer';
-import { useContradictionAnalysis } from '@/features/docx/hooks/useContradictionAnalysis';
-import { useContradictionDecorations } from '@/features/docx/hooks/useContradictionDecorations';
 import { useAssistantChat } from '@/features/docx/hooks/useAssistantChat';
 import { useParagraphExplanation } from '@/features/docx/hooks/useParagraphExplanation';
 import { useRelatedGraph } from '@/features/docx/hooks/useRelatedGraph';
-import { useLlmTotalCost } from '@/features/docx/hooks/useLlmTotalCost';
 import { useDocumentStore } from '@/stores/document';
 import { RIGHT_DRAWER_KEYBOARD_STEP } from '@/constants/docx-viewer';
 import { buildBridgeRelatedParagraphs } from '@/features/docx/utils/related/related-bridge';
@@ -29,9 +24,9 @@ interface DocxViewerProps {
 }
 
 /**
- * Docx viewer orchestrator (client): document render, contradictions
- * (panel + decorations + rail/link), assistant chat, and paragraph explanation.
- * Layout faithful to the original: content + sliding panel + icon rail.
+ * Docx viewer orchestrator (client): document render, assistant chat,
+ * related paragraphs, and paragraph explanation. Layout faithful to the
+ * original: content + sliding panel + icon rail.
  */
 export function DocxViewer({ searchParams }: DocxViewerProps) {
 	const params = use(searchParams);
@@ -54,7 +49,6 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 		}
 		wasDesktopRef.current = isDesktop;
 	}, [isDesktop, openDrawer, closeDrawer]);
-	const llmEstimate = useLlmEstimate();
 	// Confirming (Ctrl/Cmd+Enter) a paragraph edit recomputes the graph.
 	const onParagraphCommitRef = useRef<(() => void) | null>(null);
 	const viewer = useDocumentViewer(id, { onParagraphCommitRef });
@@ -64,38 +58,23 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	const setSelectedParagraph = useDocumentStore((s) => s.setSelectedParagraph);
 
 	const [model, setModel] = useState('gpt-4.1');
-	const { data: llmCost } = useLlmTotalCost();
-	const costLabel = llmCost ? `Cost: ${llmCost.totalCostUsdFormatted} $` : null;
 
 	const related = useRelatedGraph({ docId, maps: viewer.maps });
 
-	const contradiction = useContradictionAnalysis({
-		docId,
-		nodeEditStateById: nodeEditStateById.current,
-		backendEdges: related.edges,
-		model,
-		confirmLlmEstimate: llmEstimate.confirm,
-	});
 	const explanation = useParagraphExplanation({
 		docId,
 		nodeEditStateById: nodeEditStateById.current,
 	});
 
-	const analysisActive = drawer.isOpen && drawer.activeTab === 'analysis';
 	const explanationActive = drawer.isOpen && drawer.activeTab === 'paragraph_explanation';
 	const relatedActive = drawer.isOpen && drawer.activeTab === 'related';
 
-	// Shared chat: a single thread feeds the Contract Chat Assistant and the chat
-	// embedded in Contradiction Analysis (quick-actions + structured fix).
+	// Generic assistant chat over the contract.
 	const assistant = useAssistantChat({
 		docId,
 		nodeEditStateById: nodeEditStateById.current,
-		getViewerElement: () => viewer.containerRef.current,
-		paragraphElementById: paragraphElementById.current,
-		contradictionResultsByParagraphId: contradiction.resultsByParagraphId,
 		selectedRelatedParagraphs: related.selectedRelatedParagraphs,
 		model,
-		confirmLlmEstimate: llmEstimate.confirm,
 	});
 
 	// Related bridge: active in Related and in Paragraph Explanation. The list
@@ -111,14 +90,9 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 		[relatedActive, explanationActive, related.selectedRelatedParagraphs]
 	);
 
-	// Entity highlighting in the document body: from Paragraph Explanation or
-	// from the contradiction why/risk (toggle on). Applied to the selected
-	// paragraph and its related ones.
-	const documentEntities = explanationActive
-		? explanation.entities
-		: analysisActive
-			? assistant.contradictionEntities
-			: [];
+	// Entity highlighting in the document body: from Paragraph Explanation.
+	// Applied to the selected paragraph and its related ones.
+	const documentEntities = explanationActive ? explanation.entities : [];
 	const entityTargetIds = useMemo(
 		() =>
 			selectedParagraph
@@ -129,7 +103,7 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 		[selectedParagraph, relatedBridgeParagraphs]
 	);
 	useDocumentEntityHighlights({
-		active: documentEntities.length > 0 && (explanationActive || analysisActive),
+		active: documentEntities.length > 0 && explanationActive,
 		renderEpoch: viewer.renderEpoch,
 		paragraphElementById: paragraphElementById.current,
 		targetIds: entityTargetIds,
@@ -144,14 +118,6 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 		paragraphRelationHostById: viewer.maps.paragraphRelationHostById.current,
 		selectedParagraphId: selectedParagraph?.id ?? null,
 		related: related.selectedRelatedParagraphs,
-	});
-
-	useContradictionDecorations({
-		active: analysisActive,
-		renderEpoch: viewer.renderEpoch,
-		resultsByParagraphId: contradiction.resultsByParagraphId,
-		paragraphElementById: paragraphElementById.current,
-		selectedParagraphId: selectedParagraph?.id ?? null,
 	});
 
 	// The relations graph is built as soon as the document finishes rendering
@@ -175,9 +141,6 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	// navigation + step animation in the panel. (Released if the render fails.)
 	const graphBlocking =
 		id != null && (!relatedComputed || relatedLoading) && viewer.status !== 'error';
-
-	// Contradictions are loaded only on demand: "Saved" (stored) or
-	// "Search" (LLM search). They don't auto-load when the graph is built.
 
 	// Requests the explanation when opening its tab with a selected paragraph not yet explained.
 	const selectedParagraphId = selectedParagraph?.id ?? null;
@@ -234,18 +197,6 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 		if (emphasize && element) flashElement(element);
 	};
 
-	const onFocusEvidenceSnippet = (paragraphId: string, role: 'a' | 'b') => {
-		const mark = document.querySelector<HTMLElement>(
-			`mark.docx-contradiction-snippet[data-contradiction-owner="${paragraphId}"][data-contradiction-role="${role}"]`
-		);
-		if (mark) {
-			mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
-			flashElement(mark);
-		} else {
-			onFocusNodeFromPanel(paragraphId, true);
-		}
-	};
-
 	if (!id) {
 		return (
 			<div className="flex min-h-screen items-center justify-center">
@@ -272,22 +223,16 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 			<div className="relative flex min-w-0 flex-col border-r border-gray-300" style={{ width: leftWidth }}>
 				<DocxPageHeader
 					documentName={viewer.documentName}
-					costLabel={costLabel}
 					model={model}
 					onModelChange={setModel}
-					modelDisabled={contradiction.loading || explanation.loading}
+					modelDisabled={explanation.loading}
 				/>
 				<DocumentViewer
 					containerRef={viewer.containerRef}
 					status={viewer.status}
 					dimmed={graphBlocking}
-					contradictionActive={analysisActive}
 					renderEpoch={viewer.renderEpoch}
-					resultsByParagraphId={contradiction.resultsByParagraphId}
 					paragraphElementById={paragraphElementById.current}
-					selectedParagraphId={selectedParagraphId}
-					categoryColor={contradiction.selectedContradictionCategoryColor}
-					onMarkerClick={(paragraphId) => onFocusNodeFromPanel(paragraphId, true)}
 						relatedBridgeActive={relatedBridgeActive}
 						selectedParagraph={selectedParagraph}
 						relatedBridgeParagraphs={relatedBridgeParagraphs}
@@ -303,10 +248,6 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 						graphBlocking ? null : (
 							<RightPanelHeaderActions
 								activeTab={drawer.activeTab}
-								contradictionLoading={contradiction.loading}
-								relatedLoading={relatedLoading}
-								onLoadSaved={() => void contradiction.loadSavedContradictions()}
-								onSearch={() => void contradiction.searchContradictions()}
 								explanationDisabled={!selectedParagraph || explanation.loading}
 								onExplain={() => void explanation.submit()}
 								provider={assistant.provider}
@@ -324,12 +265,10 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 					graphBlocking={graphBlocking}
 					selectedParagraph={selectedParagraph}
 					nodeEditStateById={nodeEditStateById.current}
-					contradiction={contradiction}
 					assistant={assistant}
 					explanation={explanation}
 					related={related}
 					onFocusNodeFromPanel={onFocusNodeFromPanel}
-					onFocusEvidenceSnippet={onFocusEvidenceSnippet}
 				/>
 			</RightPanel>
 
@@ -365,12 +304,6 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 				disabled={graphBlocking}
 				onSelectTool={drawer.selectTool}
 				onToggleLabels={drawer.toggleLabels}
-			/>
-
-			<LlmEstimateDialog
-				estimate={llmEstimate.estimate}
-				isOpen={llmEstimate.isOpen}
-				onResolve={llmEstimate.resolve}
 			/>
 		</main>
 	);

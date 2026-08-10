@@ -57,7 +57,6 @@ export function highlightEntitiesInElement(
 		if (
 			parentElement &&
 			!parentElement.closest('.docx-paragraph-explanation-entity-link') &&
-			!parentElement.closest('mark.docx-contradiction-snippet') &&
 			rawText.trim()
 		) {
 			nodes.push(textNode);

@@ -8,7 +8,6 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore", case_sensitive=False)
 
     # Output paths (configurable per environment).
-    SAVED_CONTRADICTIONS_DIR: Path = Path("../infra/contradiction_results")
     GRAPH_OUTPUT_DIR: Path = Path("../infra/json/graph")
 
     # Neo4j (knowledge graph).

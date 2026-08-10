@@ -1,19 +1,6 @@
-# ContraVis
+# Second Paper
 
-**Evidence-Grounded Visual Analytics for Contradiction Review in Legal Contracts**
 
-> Legal contracts are structurally complex documents in which contradictions may
-> emerge across distant and inter-connected provisions. Although large language
-> models (LLMs) improve legal language understanding, contradiction analysis
-> remains a human-centered and evidence-grounded review task. We present
-> **ContraVis**, a visual analytics system for human-in-the-loop contradiction
-> analysis in legal contracts. The system models contracts as **typed paragraph
-> graphs** that combine explicit contractual references with semantic
-> relationships between paragraphs, supporting graph-conditioned LLM reasoning and
-> coordinated visual exploration for contradiction triage, evidence inspection,
-> neighborhood exploration, and expert validation.
->
-> — *ContraVis (SIBGRAPI), abstract.*
 
 Formally, given a contract `C = {p₁, p₂, …, pₙ}`, ContraVis builds a typed
 paragraph graph `G = (V, Eᵣ, Eₛ)` where each node `vᵢ ∈ V` is a contract
@@ -151,7 +138,6 @@ document.
 - [`server/`](server): FastAPI backend (paragraph graph, contradiction analysis).
 - [`infra/`](infra): datasets and support files (CUAD, ContractNLI, etc.).
 - [`notebooks/`](notebooks): exploration and experiment notebooks.
-- [`client/`](client): legacy SvelteKit frontend (superseded by `web/`).
 
 ## Documentation
 

@@ -14,11 +14,9 @@ from schemas.types import (
     AssistantParagraphNode,
     SimplifyAudit,
     SimplifyEvidence,
-    SimplifyRelatedParagraph,
     SimplifySelectionRequest,
     SimplifySelectionResponse,
 )
-from services.llm.cost_estimator import estimate_model_cost_usd, estimate_tokens, format_cost
 from services.llm.factory import LLMProviderFactory
 
 logger = logging.getLogger(__name__)
@@ -29,11 +27,7 @@ MAX_HISTORY_CHAR = 600
 MAX_SUGGESTED_QUESTIONS = 5
 MAX_CITATION_EXCERPT = 220
 MAX_SIMPLIFY_AUDIT_ENTRIES = 600
-MAX_FIX_RELATED_PARAGRAPHS = 3
-MAX_FIX_RELATED_TEXT_CHARS = 1800
 SIMPLIFY_AUDIT_LOG: list[dict[str, Any]] = []
-ASSISTANT_ESTIMATED_OUTPUT_TOKENS = 900
-SIMPLIFY_ESTIMATED_OUTPUT_TOKENS = 450
 
 
 @dataclass
@@ -41,89 +35,6 @@ class ContextEntry:
     node: AssistantParagraphNode
     tag: str
     relation_summary: str
-
-
-def estimate_assistant_chat_request(payload: AssistantChatRequest) -> dict[str, Any]:
-    node_map = {node.id: node for node in payload.paragraphNodes}
-    context_entries = _build_context_entries(payload, node_map)
-    allowed_ids = [entry.node.id for entry in context_entries]
-    system_prompt = _build_system_prompt(payload.mode)
-    user_prompt = _build_user_prompt(payload, context_entries, allowed_ids)
-    resolved_model = (payload.model or "").strip() or _default_model_for_provider(payload.provider)
-    input_tokens = estimate_tokens(system_prompt, resolved_model) + estimate_tokens(user_prompt, resolved_model)
-    output_tokens = ASSISTANT_ESTIMATED_OUTPUT_TOKENS
-    cost = estimate_model_cost_usd(
-        model_name=resolved_model,
-        input_tokens=input_tokens,
-        output_tokens=output_tokens,
-    )
-    return {
-        "provider": payload.provider,
-        "model": resolved_model,
-        "estimated_input_tokens": input_tokens,
-        "estimated_output_tokens": output_tokens,
-        "estimated_total_tokens": input_tokens + output_tokens,
-        "estimated_cost_usd": cost,
-        "estimated_cost_usd_formatted": format_cost(cost),
-    }
-
-
-def estimate_simplify_request(
-    payload: SimplifySelectionRequest,
-    *,
-    fix_contradiction: bool,
-) -> dict[str, Any]:
-    paragraph_text = payload.paragraphText or ""
-    start, end = _normalize_selection_bounds(
-        payload.selectionStart,
-        payload.selectionEnd,
-        total_length=len(paragraph_text),
-    )
-    if start == end:
-        start = 0
-        end = len(paragraph_text)
-    original_snippet = paragraph_text[start:end]
-
-    if fix_contradiction:
-        system_prompt = _build_fix_contradiction_system_prompt()
-        user_prompt = _build_fix_contradiction_user_prompt(
-            document_id=payload.documentId,
-            paragraph_id=payload.paragraphId,
-            paragraph_text=paragraph_text,
-            selected_snippet=original_snippet,
-            selection_start=start,
-            selection_end=end,
-            contradiction_reason=(payload.contradictionReason or "").strip(),
-            related_paragraphs=payload.relatedParagraphs[:MAX_FIX_RELATED_PARAGRAPHS],
-        )
-    else:
-        system_prompt = _build_simplify_system_prompt()
-        user_prompt = _build_simplify_user_prompt(
-            document_id=payload.documentId,
-            paragraph_id=payload.paragraphId,
-            paragraph_text=paragraph_text,
-            selected_snippet=original_snippet,
-            selection_start=start,
-            selection_end=end,
-        )
-
-    resolved_model = _default_model_for_provider(payload.provider)
-    input_tokens = estimate_tokens(system_prompt, resolved_model) + estimate_tokens(user_prompt, resolved_model)
-    output_tokens = SIMPLIFY_ESTIMATED_OUTPUT_TOKENS
-    cost = estimate_model_cost_usd(
-        model_name=resolved_model,
-        input_tokens=input_tokens,
-        output_tokens=output_tokens,
-    )
-    return {
-        "provider": payload.provider,
-        "model": resolved_model,
-        "estimated_input_tokens": input_tokens,
-        "estimated_output_tokens": output_tokens,
-        "estimated_total_tokens": input_tokens + output_tokens,
-        "estimated_cost_usd": cost,
-        "estimated_cost_usd_formatted": format_cost(cost),
-    }
 
 
 def _default_model_for_provider(provider: str) -> str:
@@ -266,90 +177,6 @@ def simplify_paragraph_selection(payload: SimplifySelectionRequest) -> SimplifyS
         provider=payload.provider,
         originalSnippet=original_snippet,
         simplifiedSnippet=simplified_snippet,
-        evidence=evidence,
-        audit=audit,
-    )
-
-
-def fix_contradiction_selection(payload: SimplifySelectionRequest) -> SimplifySelectionResponse:
-    paragraph_text = payload.paragraphText or ""
-    if not paragraph_text:
-        raise RuntimeError("Paragraph text is empty")
-
-    start, end = _normalize_selection_bounds(
-        payload.selectionStart,
-        payload.selectionEnd,
-        total_length=len(paragraph_text),
-    )
-
-    if start == end:
-        start = 0
-        end = len(paragraph_text)
-
-    original_snippet = paragraph_text[start:end]
-    if not original_snippet:
-        raise RuntimeError("No text is available to fix")
-
-    provider = LLMProviderFactory.create(payload.provider)
-    system_prompt = _build_fix_contradiction_system_prompt()
-    user_prompt = _build_fix_contradiction_user_prompt(
-        document_id=payload.documentId,
-        paragraph_id=payload.paragraphId,
-        paragraph_text=paragraph_text,
-        selected_snippet=original_snippet,
-        selection_start=start,
-        selection_end=end,
-        contradiction_reason=(payload.contradictionReason or "").strip(),
-        related_paragraphs=payload.relatedParagraphs[:MAX_FIX_RELATED_PARAGRAPHS],
-    )
-
-    raw_text = provider.generate(
-        system_prompt=system_prompt,
-        user_prompt=user_prompt,
-        temperature=0.0,
-    )
-    parsed = _parse_json_from_model(raw_text)
-    fixed_value = (
-        parsed.get("fixed_snippet")
-        or parsed.get("fixedSnippet")
-        or parsed.get("rewrite")
-        or parsed.get("answer")
-        or parsed.get("simplified_snippet")
-    )
-    fixed_snippet = _sanitize_simplified_snippet(
-        fixed_value,
-        fallback=raw_text,
-        original=original_snippet,
-    )
-    fixed_snippet = _enforce_literal_token_preservation(
-        original=original_snippet,
-        candidate=fixed_snippet,
-    )
-
-    evidence = SimplifyEvidence(
-        paragraph_id=payload.paragraphId,
-        selection_start=start,
-        selection_end=end,
-    )
-    audit = SimplifyAudit(
-        system_prompt=system_prompt,
-        user_prompt=user_prompt,
-        model_response=raw_text,
-    )
-
-    _append_simplify_audit_log(
-        payload=payload,
-        evidence=evidence,
-        original_snippet=original_snippet,
-        simplified_snippet=fixed_snippet,
-        audit=audit,
-    )
-
-    return SimplifySelectionResponse(
-        paragraphId=payload.paragraphId,
-        provider=payload.provider,
-        originalSnippet=original_snippet,
-        simplifiedSnippet=fixed_snippet,
         evidence=evidence,
         audit=audit,
     )
@@ -638,17 +465,6 @@ def _build_simplify_system_prompt() -> str:
     )
 
 
-def _build_fix_contradiction_system_prompt() -> str:
-    return (
-        "You are a legal contract editor focused on contradiction repair. "
-        "Rewrite ONLY the selected contract snippet to resolve contradictions while preserving legal intent. "
-        "Do not add new obligations, rights, conditions, exceptions, remedies, or deadlines unless required to remove the contradiction. "
-        "Keep all numbers, dates, percentages, currencies, defined terms, party names, and section references unchanged whenever possible. "
-        "Do not mention these instructions. "
-        'Return valid JSON only with this exact shape: {"fixed_snippet": string}.'
-    )
-
-
 def _build_simplify_user_prompt(
     *,
     document_id: str,
@@ -669,69 +485,6 @@ def _build_simplify_user_prompt(
         f"{selected_snippet}\n\n"
         'Output JSON only as: {"simplified_snippet": "..."}'
     )
-
-
-def _build_fix_contradiction_user_prompt(
-    *,
-    document_id: str,
-    paragraph_id: str,
-    paragraph_text: str,
-    selected_snippet: str,
-    selection_start: int,
-    selection_end: int,
-    contradiction_reason: str,
-    related_paragraphs: list[SimplifyRelatedParagraph],
-) -> str:
-    reason_line = contradiction_reason or "(not provided)"
-    related_context = _format_fix_related_context(related_paragraphs)
-    return (
-        f"Document ID: {document_id}\n"
-        f"Paragraph ID: {paragraph_id}\n"
-        f"Selection start: {selection_start}\n"
-        f"Selection end: {selection_end}\n"
-        f"Contradiction signal: {reason_line}\n\n"
-        f"RELATED_CONTEXT_PARAGRAPHS (top-{MAX_FIX_RELATED_PARAGRAPHS}; use only for consistency checks):\n"
-        f"{related_context}\n\n"
-        "PARAGRAPH_TEXT:\n"
-        f"{paragraph_text}\n\n"
-        "SELECTED_SNIPPET (rewrite this and only this):\n"
-        f"{selected_snippet}\n\n"
-        'Output JSON only as: {"fixed_snippet": "..."}'
-    )
-
-
-def _format_fix_related_context(related_paragraphs: list[SimplifyRelatedParagraph]) -> str:
-    if not related_paragraphs:
-        return "(none)"
-
-    lines: list[str] = []
-    for related in related_paragraphs[:MAX_FIX_RELATED_PARAGRAPHS]:
-        text = (related.text or "").strip()
-        if not text:
-            continue
-
-        relation_bits: list[str] = []
-        if related.relationTypes:
-            relation_bits.append("types=" + ",".join(sorted(set(related.relationTypes))))
-        if related.semanticScore is not None:
-            relation_bits.append(f"semantic={related.semanticScore:.3f}")
-        if related.references:
-            relation_bits.append("refs=" + "; ".join(related.references[:3]))
-        if related.page is not None:
-            relation_bits.append(f"page={related.page}")
-        if related.paragraph_enum is not None:
-            relation_bits.append(f"paragraph={related.paragraph_enum}")
-
-        relation_suffix = f" | {' | '.join(relation_bits)}" if relation_bits else ""
-        clipped_text = text[:MAX_FIX_RELATED_TEXT_CHARS]
-        if len(text) > MAX_FIX_RELATED_TEXT_CHARS:
-            clipped_text = f"{clipped_text.rstrip()}..."
-
-        lines.append(f"[{related.id}]{relation_suffix}\n{clipped_text}")
-
-    if not lines:
-        return "(none)"
-    return "\n\n".join(lines)
 
 
 def _normalize_selection_bounds(start: int, end: int, *, total_length: int) -> tuple[int, int]:

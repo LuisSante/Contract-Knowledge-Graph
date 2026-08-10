@@ -11,3 +11,4 @@ infra/neo4j/logs/
 infra/neo4j/plugins/
 backups
 .impeccable/
+server_old

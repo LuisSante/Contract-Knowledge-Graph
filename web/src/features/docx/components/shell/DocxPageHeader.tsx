@@ -3,32 +3,14 @@
 import Link from 'next/link';
 import { FileText, ChevronLeft } from 'lucide-react';
 
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/ui/select';
-import { GLOBAL_ANALYSIS_MODEL_OPTIONS } from '@/constants/docx-viewer';
-
 interface DocxPageHeaderProps {
 	documentName: string | null;
-	model: string;
-	onModelChange: (value: string) => void;
-	modelDisabled?: boolean;
 }
 
 /**
- * Top header of the viewer: "Document" label + name and global model selector
- * (Paragraph Explanation).
+ * Top header of the viewer: "Document" label + name.
  */
-export function DocxPageHeader({
-	documentName,
-	model,
-	onModelChange,
-	modelDisabled,
-}: DocxPageHeaderProps) {
+export function DocxPageHeader({ documentName }: DocxPageHeaderProps) {
 	return (
 		<header className="flex flex-none items-center gap-3 border-b border-border bg-header px-4 py-2.5">
 			<Link
@@ -47,29 +29,6 @@ export function DocxPageHeader({
 				<div className="min-w-0 truncate text-sm font-medium text-header-foreground">
 					{documentName || 'No document selected'}
 				</div>
-			</div>
-
-			<div className="flex shrink-0 items-center gap-2.5">
-				<Select value={model} onValueChange={onModelChange} disabled={modelDisabled}>
-					<SelectTrigger
-						size="sm"
-						className="h-7 w-[88px] shrink-0 border-transparent bg-card px-2 text-2xs text-primary shadow-sm hover:bg-card/90 focus-visible:ring-header-foreground/40 [&_svg]:text-primary"
-						title="Global model for Paragraph Explanation"
-					>
-						<SelectValue />
-					</SelectTrigger>
-					<SelectContent className="min-w-0">
-						{GLOBAL_ANALYSIS_MODEL_OPTIONS.map((option) => (
-							<SelectItem
-								key={option.value}
-								value={option.value}
-								className="text-2xs whitespace-nowrap"
-							>
-								{option.label}
-							</SelectItem>
-						))}
-					</SelectContent>
-				</Select>
 			</div>
 		</header>
 	);

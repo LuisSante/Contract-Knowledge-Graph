@@ -5,21 +5,10 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { RIGHT_PANEL_TOOLS } from '@/constants/docx-viewer';
 import type { RightPanelTab } from '@/types/document';
-import {
-	ChatIcon,
-	CloseIcon,
-	ParagraphExplanationIcon,
-	RelatedParagraphsIcon,
-} from '@/components/common/icons';
+import { CloseIcon, RelatedParagraphsIcon } from '@/components/common/icons';
 
 const HEADER_ICONS: Record<RightPanelTab, React.ComponentType<{ className?: string }>> = {
 	related: RelatedParagraphsIcon,
-	paragraph_explanation: ParagraphExplanationIcon,
-	assistant: ChatIcon,
-	redundancy: RelatedParagraphsIcon,
-	summarize: ParagraphExplanationIcon,
-	ambiguity: RelatedParagraphsIcon,
-	revisions: ParagraphExplanationIcon,
 };
 
 interface RightPanelProps {

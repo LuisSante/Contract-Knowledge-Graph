@@ -2,8 +2,7 @@
 
 from fastapi import APIRouter
 
-from api.routes import assistant, documents
+from api.routes import documents
 
 api_router = APIRouter()
 api_router.include_router(documents.router)
-api_router.include_router(assistant.router)

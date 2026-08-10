@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useEffect, useMemo, useRef, useState } from 'react';
+import { use, useEffect, useRef } from 'react';
 import { DocxPageHeader } from '@/features/docx/components/shell/DocxPageHeader';
 import { DocumentViewer } from '@/features/docx/components/shell/DocumentViewer';
 import { RightPanel } from '@/features/docx/components/shell/RightPanel';
@@ -9,24 +9,19 @@ import { RightPanelHeaderActions } from '@/features/docx/components/shell/RightP
 import { RightPanelContent } from '@/features/docx/components/shell/RightPanelContent';
 import { useRightDrawer } from '@/features/docx/hooks/useRightDrawer';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
-import { useDocumentEntityHighlights } from '@/features/docx/hooks/useDocumentEntityHighlights';
 import { useRelatedBadges } from '@/features/docx/hooks/useRelatedBadges';
 import { useDocumentViewer } from '@/features/docx/hooks/useDocumentViewer';
-import { useAssistantChat } from '@/features/docx/hooks/useAssistantChat';
-import { useParagraphExplanation } from '@/features/docx/hooks/useParagraphExplanation';
 import { useRelatedGraph } from '@/features/docx/hooks/useRelatedGraph';
 import { useDocumentStore } from '@/stores/document';
 import { RIGHT_DRAWER_KEYBOARD_STEP } from '@/constants/docx-viewer';
-import { buildBridgeRelatedParagraphs } from '@/features/docx/utils/related/related-bridge';
 
 interface DocxViewerProps {
 	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 /**
- * Docx viewer orchestrator (client): document render, assistant chat,
- * related paragraphs, and paragraph explanation. Layout faithful to the
- * original: content + sliding panel + icon rail.
+ * Docx viewer orchestrator (client): document render and related paragraphs.
+ * Layout faithful to the original: content + sliding panel + icon rail.
  */
 export function DocxViewer({ searchParams }: DocxViewerProps) {
 	const params = use(searchParams);
@@ -57,58 +52,14 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	const selectedParagraph = useDocumentStore((s) => s.selectedParagraph);
 	const setSelectedParagraph = useDocumentStore((s) => s.setSelectedParagraph);
 
-	const [model, setModel] = useState('gpt-4.1');
-
 	const related = useRelatedGraph({ docId, maps: viewer.maps });
 
-	const explanation = useParagraphExplanation({
-		docId,
-		nodeEditStateById: nodeEditStateById.current,
-	});
-
-	const explanationActive = drawer.isOpen && drawer.activeTab === 'paragraph_explanation';
 	const relatedActive = drawer.isOpen && drawer.activeTab === 'related';
 
-	// Generic assistant chat over the contract.
-	const assistant = useAssistantChat({
-		docId,
-		nodeEditStateById: nodeEditStateById.current,
-		selectedRelatedParagraphs: related.selectedRelatedParagraphs,
-		model,
-	});
-
-	// Related bridge: active in Related and in Paragraph Explanation. The list
-	// differs by tab (all vs the tail after the top-5 the panel already shows).
-	const relatedBridgeActive = relatedActive || explanationActive;
-	const relatedBridgeParagraphs = useMemo(
-		() =>
-			relatedActive
-				? related.selectedRelatedParagraphs
-				: explanationActive
-					? buildBridgeRelatedParagraphs(related.selectedRelatedParagraphs, 'paragraph_explanation')
-					: [],
-		[relatedActive, explanationActive, related.selectedRelatedParagraphs]
-	);
-
-	// Entity highlighting in the document body: from Paragraph Explanation.
-	// Applied to the selected paragraph and its related ones.
-	const documentEntities = explanationActive ? explanation.entities : [];
-	const entityTargetIds = useMemo(
-		() =>
-			selectedParagraph
-				? Array.from(
-						new Set([selectedParagraph.id, ...relatedBridgeParagraphs.map((item) => item.node.id)])
-					)
-				: [],
-		[selectedParagraph, relatedBridgeParagraphs]
-	);
-	useDocumentEntityHighlights({
-		active: documentEntities.length > 0 && explanationActive,
-		renderEpoch: viewer.renderEpoch,
-		paragraphElementById: paragraphElementById.current,
-		targetIds: entityTargetIds,
-		entities: documentEntities,
-	});
+	// Related bridge: active in the Related tab, feeding all of the paragraph's
+	// related ones into the connector/overlay.
+	const relatedBridgeActive = relatedActive;
+	const relatedBridgeParagraphs = relatedActive ? related.selectedRelatedParagraphs : [];
 
 	// Relation badges: emphasis + direction (reference/similarity) when selecting
 	// in the Related tab.
@@ -141,24 +92,6 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	// navigation + step animation in the panel. (Released if the render fails.)
 	const graphBlocking =
 		id != null && (!relatedComputed || relatedLoading) && viewer.status !== 'error';
-
-	// Requests the explanation when opening its tab with a selected paragraph not yet explained.
-	const selectedParagraphId = selectedParagraph?.id ?? null;
-	const {
-		loadedForParagraphId: explanationLoadedId,
-		loading: explanationLoading,
-		submit: submitExplanation,
-	} = explanation;
-	useEffect(() => {
-		if (
-			explanationActive &&
-			selectedParagraphId &&
-			explanationLoadedId !== selectedParagraphId &&
-			!explanationLoading
-		) {
-			void submitExplanation();
-		}
-	}, [explanationActive, selectedParagraphId, explanationLoadedId, explanationLoading, submitExplanation]);
 
 	// Resize of the right drawer by dragging the vertical separator.
 	const startDrawerResize = (event: React.MouseEvent) => {
@@ -221,12 +154,7 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 			} ${relatedFocusOn ? 'related-focus-on' : ''}`}
 		>
 			<div className="relative flex min-w-0 flex-col border-r border-gray-300" style={{ width: leftWidth }}>
-				<DocxPageHeader
-					documentName={viewer.documentName}
-					model={model}
-					onModelChange={setModel}
-					modelDisabled={explanation.loading}
-				/>
+				<DocxPageHeader documentName={viewer.documentName} />
 				<DocumentViewer
 					containerRef={viewer.containerRef}
 					status={viewer.status}
@@ -245,17 +173,7 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 				width={drawer.width}
 				sidebarWidth={drawer.sidebarWidth}
 				headerActions={
-						graphBlocking ? null : (
-							<RightPanelHeaderActions
-								activeTab={drawer.activeTab}
-								explanationDisabled={!selectedParagraph || explanation.loading}
-								onExplain={() => void explanation.submit()}
-								provider={assistant.provider}
-								onProviderChange={assistant.setProvider}
-								scope={assistant.scope}
-								onScopeChange={assistant.setScope}
-							/>
-						)
+						graphBlocking ? null : <RightPanelHeaderActions activeTab={drawer.activeTab} />
 					}
 				onClose={drawer.close}
 				closeDisabled={graphBlocking}
@@ -265,8 +183,6 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 					graphBlocking={graphBlocking}
 					selectedParagraph={selectedParagraph}
 					nodeEditStateById={nodeEditStateById.current}
-					assistant={assistant}
-					explanation={explanation}
 					related={related}
 					onFocusNodeFromPanel={onFocusNodeFromPanel}
 				/>

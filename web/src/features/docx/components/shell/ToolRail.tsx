@@ -4,22 +4,12 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { RIGHT_PANEL_TOOLS } from '@/constants/docx-viewer';
 import type { RightPanelTab } from '@/types/document';
-import {
-	ChatIcon,
-	ParagraphExplanationIcon,
-	RelatedParagraphsIcon,
-} from '@/components/common/icons';
+import { RelatedParagraphsIcon } from '@/components/common/icons';
 
 const TOOL_BRAND_SHORT_NAME = 'ContraVis';
 
 const TOOL_ICONS: Record<RightPanelTab, React.ComponentType<{ className?: string }>> = {
 	related: RelatedParagraphsIcon,
-	paragraph_explanation: ParagraphExplanationIcon,
-	assistant: ChatIcon,
-	redundancy: RelatedParagraphsIcon,
-	summarize: ParagraphExplanationIcon,
-	ambiguity: RelatedParagraphsIcon,
-	revisions: ParagraphExplanationIcon,
 };
 
 interface ToolRailProps {

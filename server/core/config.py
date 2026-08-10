@@ -28,9 +28,6 @@ class Settings(BaseSettings):
         "http://127.0.0.1:3000",
     ]
 
-    LLM_TIMEOUT_SECONDS: float = 60.0
-    LLM_MAX_RETRIES: int = 2
-
     @field_validator("NEO4J_URI", "NEO4J_USERNAME", "NEO4J_PASSWORD")
     @classmethod
     def _strip(cls, value: str) -> str:

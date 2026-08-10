@@ -83,39 +83,6 @@ export function resolveRelatedVisualKind(related: RelatedParagraph): RelatedVisu
 	return isReference ? 'reference' : 'reference';
 }
 
-/** Sorts the related paragraphs prioritizing reference > semantic score > ref count > order. */
-export function sortRelatedParagraphs(related: RelatedParagraph[]): RelatedParagraph[] {
-	return [...related].sort((left, right) => {
-		const leftReference = left.relationTypes.includes('reference') ? 1 : 0;
-		const rightReference = right.relationTypes.includes('reference') ? 1 : 0;
-		if (rightReference !== leftReference) return rightReference - leftReference;
-
-		const leftSemantic = left.semanticScore ?? 0;
-		const rightSemantic = right.semanticScore ?? 0;
-		if (rightSemantic !== leftSemantic) return rightSemantic - leftSemantic;
-
-		const leftReferences = left.references.length;
-		const rightReferences = right.references.length;
-		if (rightReferences !== leftReferences) return rightReferences - leftReferences;
-
-		return left.node.paragraph_enum - right.node.paragraph_enum;
-	});
-}
-
-/**
- * List of related paragraphs that feeds the bridge depending on the active tab:
- * - `related`: all of the paragraph's related ones.
- * - `paragraph_explanation`: the tail (beyond the top 5), which is what is no
- *   longer shown in the explanation panel.
- */
-export function buildBridgeRelatedParagraphs(
-	related: RelatedParagraph[],
-	tab: 'related' | 'paragraph_explanation'
-): RelatedParagraph[] {
-	if (tab === 'related') return related;
-	return sortRelatedParagraphs(related).slice(5);
-}
-
 interface ComputeRelatedBridgeParams {
 	scrollHost: HTMLElement;
 	paragraphElementById: Map<string, HTMLElement>;

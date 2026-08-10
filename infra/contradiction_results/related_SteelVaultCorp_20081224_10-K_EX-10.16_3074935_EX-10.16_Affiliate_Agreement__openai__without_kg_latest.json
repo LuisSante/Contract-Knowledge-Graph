@@ -1,0 +1,484 @@
+{
+  "documentId": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement",
+  "documentRelativePath": "related/SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement.docx",
+  "documentGroup": "related",
+  "provider": "openai",
+  "temperature": 0.3,
+  "mode": "without_kg",
+  "savedAt": "2026-05-15T11:45:04.942407+00:00",
+  "paragraphResults": [
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-5",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-6",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-7",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-8",
+      "contradiction": true,
+      "confidence": 95,
+      "brief_reason": "This paragraph allows independent solicitation of existing Equidata customers, but related paragraph 22 prohibits it except for joint marketing.",
+      "contradiction_type": "policy_reversal",
+      "evidence": {
+        "snippet_a": "Marketing Affiliate may directly or indirectly solicit existing business customers of Equidata for its own independent marketing purposes without any requirement that such solicitations be conducted as joint marketing activities.",
+        "snippet_b": "Marketing Affiliate shall not directly or indirectly solicit an existing business customer of Equidata during the term and condition of this Agreement other than for joint marketing purposes.",
+        "source_a": "paragraph",
+        "source_b": "context",
+        "evidence_status": "exact",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-9",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-10",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-11",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-12",
+      "contradiction": true,
+      "confidence": 90,
+      "brief_reason": "This paragraph requires written permission to market or sell Equidata services, but related paragraph 22 allows it without such permission.",
+      "contradiction_type": "authority",
+      "evidence": {
+        "snippet_a": "Marketing Affiliate may not otherwise offer for sale, market, sell or distribute the Services of Equidata without express written permission.",
+        "snippet_b": "Marketing Affiliate may offer for sale, market, sell or distribute the Services of Equidata without obtaining any prior written permission from Equidata.",
+        "source_a": "paragraph",
+        "source_b": "context",
+        "evidence_status": "exact",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-13",
+      "contradiction": true,
+      "confidence": 98,
+      "brief_reason": "This paragraph allows deferral of payment for at least 120 days, but related paragraph 14 requires payment within 10 days.",
+      "contradiction_type": "temporal",
+      "evidence": {
+        "snippet_a": "the Marketing Affiliate shall not be obligated to pay any charges incurred through services rendered until at least 120 days after being billed, and may defer payment beyond such period at its sole discretion without being considered in default.",
+        "snippet_b": "all such invoiced amounts shall be due and payable in full by the Marketing Affiliate no later than 10 days from the invoice date.",
+        "source_a": "paragraph",
+        "source_b": "context",
+        "evidence_status": "exact",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-14",
+      "contradiction": true,
+      "confidence": 98,
+      "brief_reason": "This paragraph requires payment within 10 days, but related paragraph 13 allows deferral for at least 120 days.",
+      "contradiction_type": "temporal",
+      "evidence": {
+        "snippet_a": "all such invoiced amounts shall be due and payable in full by the Marketing Affiliate no later than 10 days from the invoice date.",
+        "snippet_b": "the Marketing Affiliate shall not be obligated to pay any charges incurred through services rendered until at least 120 days after being billed, and may defer payment beyond such period at its sole discretion without being considered in default.",
+        "source_a": "paragraph",
+        "source_b": "context",
+        "evidence_status": "exact",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-15",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-16",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-18",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-20",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-21",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-22",
+      "contradiction": true,
+      "confidence": 95,
+      "brief_reason": "This paragraph prohibits solicitation of existing customers except for joint marketing, but related paragraph 8 allows independent solicitation.",
+      "contradiction_type": "policy_reversal",
+      "evidence": {
+        "snippet_a": "Marketing Affiliate shall not directly or indirectly solicit an existing business customer of Equidata during the term and condition of this Agreement other than for joint marketing purposes.",
+        "snippet_b": "Marketing Affiliate may directly or indirectly solicit existing business customers of Equidata for its own independent marketing purposes without any requirement that such solicitations be conducted as joint marketing activities.",
+        "source_a": "paragraph",
+        "source_b": "context",
+        "evidence_status": "exact",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-23",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-24",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-25",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-26",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-27",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-28",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-29",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-30",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-31",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-32",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-33",
+      "contradiction": false,
+      "confidence": 90,
+      "brief_reason": "Termination provisions and obligations are consistent with related paragraphs.",
+      "contradiction_type": null,
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-34",
+      "contradiction": false,
+      "confidence": 90,
+      "brief_reason": "Obligations regarding URL data removal and cost liability are consistent with termination provisions.",
+      "contradiction_type": null,
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-35",
+      "contradiction": false,
+      "confidence": 90,
+      "brief_reason": "Immediate termination for cause by CRAs is not contradicted by related termination provisions.",
+      "contradiction_type": null,
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-36",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-37",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-38",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-39",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-41",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-42",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-44",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-46",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-47",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-48",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-49",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-50",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-51",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-53",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-55",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-59",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-60",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-61",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-64",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-66",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-68",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-70",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    },
+    {
+      "paragraph_id": "related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-72",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "contradiction_type": null,
+      "evidence": null
+    }
+  ],
+  "rawResponse": "{\"mode\": \"batched\", \"target_batch_input_tokens\": 75000, \"estimated_input_tokens_total\": 3911, \"estimated_output_tokens_total\": 2184, \"estimated_cost_usd\": \"0.025294\", \"batches\": [{\"batch\": 1, \"rows\": 8, \"estimated_input_tokens\": 3911, \"estimated_output_tokens\": 336, \"estimated_cost_usd\": \"0.010510\", \"response_chars\": 5889, \"response_preview\": \"{\\n  \\\"paragraph_results\\\": [\\n    {\\n      \\\"paragraph_id\\\": \\\"related::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate_Agreement-p-8\\\",\\n      \\\"contradiction\\\": true,\\n      \\\"confidence\\\": 95,\\n      \\\"contradiction_type\\\": \\\"policy_reversal\\\",\\n      \\\"brief_reason\\\": \\\"This paragraph allows independent solicitation of existing Equidata customers, but related paragraph 22 prohibits it except for joint marketing.\\\",\\n      \\\"evidence\\\": {\\n        \\\"snippet_a\\\": \\\"Marketing Affiliate may directly or indire\"}]}"
+}

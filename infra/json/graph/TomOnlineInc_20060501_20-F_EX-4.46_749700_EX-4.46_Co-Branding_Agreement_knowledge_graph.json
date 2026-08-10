@@ -1,0 +1,465 @@
+{
+  "source_file": "TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding_Agreement.json",
+  "contract_ids": [
+    "TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement"
+  ],
+  "source_paragraph_ids": [
+    "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-166",
+    "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-167",
+    "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168"
+  ],
+  "nodes": [
+    {
+      "id": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-166",
+      "node_type": "CLAUSE",
+      "source_paragraph_id": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-166",
+      "text": "5.3.3 The Parties agree to provide such further information relating to Adjusted Net Revenue as may be reasonably available and as may be reasonably requested by the other Parties by giving 14 days’ prior written notice to the relevant Party from time to time.",
+      "paragraph_enum": 123,
+      "clause_id": "5.3.3",
+      "title": null,
+      "level": null
+    },
+    {
+      "id": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-167",
+      "node_type": "CLAUSE",
+      "source_paragraph_id": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-167",
+      "text": "5.3.4 All sums payable to a Party under this Agreement shall be made to such Party by bank wire transfer to the account set forth in accordance with details given by such Party from time to time and shall only be treated as received when credited to such Party’s account by its bank.",
+      "paragraph_enum": 124,
+      "clause_id": "5.3.4",
+      "title": null,
+      "level": null
+    },
+    {
+      "id": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "node_type": "CLAUSE",
+      "source_paragraph_id": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "text": "5.3.5 All payments will be made without deduction, withholding, counterclaim or set-off of any kind or nature. The Parties will supply each other with all appropriate forms required to be submitted to avoid withholding taxes insofar as local laws allow and shall give each other reasonable help in completing and filing these forms and shall give each other a certificate for any such tax which is withheld. In the event that the law requires deduction or withholding from any payments due to a receiving Party under this Agreement, the paying Party shall increase the applicable gross amounts payable to the extent necessary to ensure that the amount received by the receiving Party is not less than the stated amounts due hereunder. If the receiving Party receives the benefit of a tax credit or an allowance resulting from a payment which includes such an additional amount, the receiving Party shall pay to the paying Party such part of that benefit as in its opinion will leave it (after such payments) in no more and no less favourable a position then it would have been in if no deduction or withholding had been made.",
+      "paragraph_enum": 125,
+      "clause_id": "5.3.5",
+      "title": null,
+      "level": null
+    },
+    {
+      "id": "condition:credited to Party's account by its bank",
+      "node_type": "CONDITION",
+      "trigger": "credited to such Party’s account by its bank",
+      "operator": "WHEN"
+    },
+    {
+      "id": "condition:information reasonably available",
+      "node_type": "CONDITION",
+      "trigger": "such further information relating to Adjusted Net Revenue as may be reasonably available",
+      "operator": "WHEN"
+    },
+    {
+      "id": "condition:law requires deduction or withholding from payments due to receiving Party",
+      "node_type": "CONDITION",
+      "trigger": "the law requires deduction or withholding from any payments due to a receiving Party under this Agreement",
+      "operator": "IF"
+    },
+    {
+      "id": "condition:local laws allow",
+      "node_type": "CONDITION",
+      "trigger": "local laws allow",
+      "operator": "SUBJECT TO"
+    },
+    {
+      "id": "condition:receiving Party receives tax credit or allowance benefit",
+      "node_type": "CONDITION",
+      "trigger": "the receiving Party receives the benefit of a tax credit or an allowance resulting from a payment which includes such an additional amount",
+      "operator": "IF"
+    },
+    {
+      "id": "condition:requested by other Parties with prior written notice",
+      "node_type": "CONDITION",
+      "trigger": "as may be reasonably requested by the other Parties by giving 14 days’ prior written notice to the relevant Party from time to time",
+      "operator": "WHEN"
+    },
+    {
+      "id": "condition:tax is withheld",
+      "node_type": "CONDITION",
+      "trigger": "any such tax is withheld",
+      "operator": "WHEN"
+    },
+    {
+      "id": "obligation:give certificate for withheld tax",
+      "node_type": "OBLIGATION",
+      "action": "give each other a certificate for any such tax which is withheld",
+      "deadline": null
+    },
+    {
+      "id": "obligation:give reasonable help completing and filing forms",
+      "node_type": "OBLIGATION",
+      "action": "give each other reasonable help in completing and filing these forms",
+      "deadline": null
+    },
+    {
+      "id": "obligation:increase gross amounts payable",
+      "node_type": "OBLIGATION",
+      "action": "increase the applicable gross amounts payable to the extent necessary to ensure that the amount received by the receiving Party is not less than the stated amounts due hereunder",
+      "deadline": null
+    },
+    {
+      "id": "obligation:make payments without deduction withholding counterclaim or set-off",
+      "node_type": "OBLIGATION",
+      "action": "make all payments without deduction, withholding, counterclaim or set-off of any kind or nature",
+      "deadline": null
+    },
+    {
+      "id": "obligation:make sums payable by bank wire transfer",
+      "node_type": "OBLIGATION",
+      "action": "All sums payable to a Party under this Agreement shall be made to such Party by bank wire transfer to the account set forth in accordance with details given by such Party from time to time",
+      "deadline": null
+    },
+    {
+      "id": "obligation:pay tax benefit to paying Party",
+      "node_type": "OBLIGATION",
+      "action": "pay to the paying Party such part of the benefit of a tax credit or an allowance as in the receiving Party's opinion will leave it in no more and no less favourable a position than it would have been in if no deduction or withholding had been made",
+      "deadline": null
+    },
+    {
+      "id": "obligation:provide further information relating to Adjusted Net Revenue",
+      "node_type": "OBLIGATION",
+      "action": "provide such further information relating to Adjusted Net Revenue",
+      "deadline": null
+    },
+    {
+      "id": "obligation:supply appropriate forms to avoid withholding taxes",
+      "node_type": "OBLIGATION",
+      "action": "supply each other with all appropriate forms required to be submitted to avoid withholding taxes",
+      "deadline": null
+    },
+    {
+      "id": "party:Parties",
+      "node_type": "PARTY",
+      "name": "Parties",
+      "role": "Parties",
+      "address": null
+    },
+    {
+      "id": "party:Party",
+      "node_type": "PARTY",
+      "name": "Party",
+      "role": "Party",
+      "address": null
+    },
+    {
+      "id": "party:paying Party",
+      "node_type": "PARTY",
+      "name": "paying Party",
+      "role": "paying Party",
+      "address": null
+    },
+    {
+      "id": "party:receiving Party",
+      "node_type": "PARTY",
+      "name": "receiving Party",
+      "role": "receiving Party",
+      "address": null
+    },
+    {
+      "id": "reference:local laws",
+      "node_type": "REFERENCE",
+      "name": "local laws",
+      "citation": null
+    },
+    {
+      "id": "term:Adjusted Net Revenue",
+      "node_type": "DEFINED_TERM",
+      "term": "Adjusted Net Revenue",
+      "definition": null
+    },
+    {
+      "id": "term:Agreement",
+      "node_type": "DEFINED_TERM",
+      "term": "Agreement",
+      "definition": null
+    },
+    {
+      "id": "term:Parties",
+      "node_type": "DEFINED_TERM",
+      "term": "Parties",
+      "definition": null
+    },
+    {
+      "id": "term:Party",
+      "node_type": "DEFINED_TERM",
+      "term": "Party",
+      "definition": null
+    },
+    {
+      "id": "value:14 days",
+      "node_type": "VALUE",
+      "value_type": "Days",
+      "amount": "14",
+      "unit": "days"
+    }
+  ],
+  "edges": [
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-166",
+      "tgt": "condition:information reasonably available",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-166",
+      "tgt": "condition:requested by other Parties with prior written notice",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-166",
+      "tgt": "obligation:provide further information relating to Adjusted Net Revenue",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-166",
+      "tgt": "party:Parties",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-166",
+      "tgt": "term:Adjusted Net Revenue",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-166",
+      "tgt": "term:Parties",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-166",
+      "tgt": "term:Party",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-166",
+      "tgt": "value:14 days",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-166",
+      "tgt": "party:Parties",
+      "type": "MENTIONS_PARTY"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-166",
+      "tgt": "term:Adjusted Net Revenue",
+      "type": "USES"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-166",
+      "tgt": "term:Parties",
+      "type": "USES"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-166",
+      "tgt": "term:Party",
+      "type": "USES"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-167",
+      "tgt": "condition:credited to Party's account by its bank",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-167",
+      "tgt": "obligation:make sums payable by bank wire transfer",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-167",
+      "tgt": "party:Party",
+      "type": "MENTIONS_PARTY"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-167",
+      "tgt": "term:Agreement",
+      "type": "USES"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-167",
+      "tgt": "term:Party",
+      "type": "USES"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "tgt": "reference:local laws",
+      "type": "CITES"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "tgt": "condition:law requires deduction or withholding from payments due to receiving Party",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "tgt": "condition:local laws allow",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "tgt": "condition:receiving Party receives tax credit or allowance benefit",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "tgt": "condition:tax is withheld",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "tgt": "obligation:give certificate for withheld tax",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "tgt": "obligation:give reasonable help completing and filing forms",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "tgt": "obligation:increase gross amounts payable",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "tgt": "obligation:make payments without deduction withholding counterclaim or set-off",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "tgt": "obligation:pay tax benefit to paying Party",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "tgt": "obligation:supply appropriate forms to avoid withholding taxes",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "tgt": "party:Parties",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "tgt": "party:paying Party",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "tgt": "party:receiving Party",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "tgt": "reference:local laws",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "tgt": "term:Agreement",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "tgt": "term:Party",
+      "type": "CONTAINS"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "tgt": "party:Parties",
+      "type": "MENTIONS_PARTY"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "tgt": "party:paying Party",
+      "type": "MENTIONS_PARTY"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "tgt": "party:receiving Party",
+      "type": "MENTIONS_PARTY"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "tgt": "term:Agreement",
+      "type": "USES"
+    },
+    {
+      "src": "clause:root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+      "tgt": "term:Party",
+      "type": "USES"
+    },
+    {
+      "src": "condition:requested by other Parties with prior written notice",
+      "tgt": "value:14 days",
+      "type": "HAS_VALUE"
+    },
+    {
+      "src": "obligation:give certificate for withheld tax",
+      "tgt": "party:Parties",
+      "type": "ASSIGNS_OBLIGATION_TO"
+    },
+    {
+      "src": "obligation:give certificate for withheld tax",
+      "tgt": "condition:tax is withheld",
+      "type": "DEPENDS_ON"
+    },
+    {
+      "src": "obligation:give reasonable help completing and filing forms",
+      "tgt": "party:Parties",
+      "type": "ASSIGNS_OBLIGATION_TO"
+    },
+    {
+      "src": "obligation:increase gross amounts payable",
+      "tgt": "party:paying Party",
+      "type": "ASSIGNS_OBLIGATION_TO"
+    },
+    {
+      "src": "obligation:increase gross amounts payable",
+      "tgt": "condition:law requires deduction or withholding from payments due to receiving Party",
+      "type": "DEPENDS_ON"
+    },
+    {
+      "src": "obligation:make sums payable by bank wire transfer",
+      "tgt": "condition:credited to Party's account by its bank",
+      "type": "DEPENDS_ON"
+    },
+    {
+      "src": "obligation:pay tax benefit to paying Party",
+      "tgt": "party:receiving Party",
+      "type": "ASSIGNS_OBLIGATION_TO"
+    },
+    {
+      "src": "obligation:pay tax benefit to paying Party",
+      "tgt": "condition:receiving Party receives tax credit or allowance benefit",
+      "type": "DEPENDS_ON"
+    },
+    {
+      "src": "obligation:provide further information relating to Adjusted Net Revenue",
+      "tgt": "party:Parties",
+      "type": "ASSIGNS_OBLIGATION_TO"
+    },
+    {
+      "src": "obligation:provide further information relating to Adjusted Net Revenue",
+      "tgt": "condition:information reasonably available",
+      "type": "DEPENDS_ON"
+    },
+    {
+      "src": "obligation:provide further information relating to Adjusted Net Revenue",
+      "tgt": "condition:requested by other Parties with prior written notice",
+      "type": "DEPENDS_ON"
+    },
+    {
+      "src": "obligation:supply appropriate forms to avoid withholding taxes",
+      "tgt": "party:Parties",
+      "type": "ASSIGNS_OBLIGATION_TO"
+    },
+    {
+      "src": "obligation:supply appropriate forms to avoid withholding taxes",
+      "tgt": "condition:local laws allow",
+      "type": "DEPENDS_ON"
+    }
+  ]
+}

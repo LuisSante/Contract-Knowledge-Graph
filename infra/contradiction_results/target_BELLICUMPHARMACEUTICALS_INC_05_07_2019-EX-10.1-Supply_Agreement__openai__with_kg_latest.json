@@ -1,0 +1,3134 @@
+{
+  "documentId": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement",
+  "documentRelativePath": "target/BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement.docx",
+  "documentGroup": "target",
+  "provider": "openai",
+  "temperature": 0.3,
+  "mode": "with_kg",
+  "savedAt": "2026-04-29T12:12:30.369738+00:00",
+  "paragraphResults": [
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-1",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-2",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-4",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-5",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-8",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-9",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-10",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-11",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-12",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-13",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-14",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-15",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-16",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-17",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-18",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-19",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-20",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-26",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-28",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-30",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-32",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-34",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-36",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-38",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-40",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-42",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-44",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-46",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-50",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-52",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-53",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-54",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-56",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-58",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-59",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-60",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-62",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-64",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-66",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-67",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-68",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-70",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-71",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-72",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-78",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-80",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-82",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-84",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-86",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-88",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-90",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-92",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-94",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-96",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-102",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-104",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-105",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-106",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-108",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-110",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-111",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-112",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-113",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-114",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-116",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-118",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-120",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-121",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-122",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-124",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-132",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-133",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-134",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-135",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-136",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-137",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-138",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-139",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-148",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-149",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-151",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-152",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-153",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-154",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-155",
+      "contradiction": true,
+      "confidence": 95,
+      "brief_reason": "The paragraph states both that Licensees/Subcontractors may use Miltenyi Products only if in compliance with the Agreement and Applicable Laws, and that they may use them even if not in compliance, which are mutually exclusive.",
+      "evidence": {
+        "snippet_a": "Bellicum may offer and permit its Licensees and Subcontractors (if any) to use the Miltenyi Products supplied hereunder only if and so long as such use is in compliance with the terms and conditions of this Agreement and Applicable Laws.",
+        "snippet_b": "Bellicum may offer and permit its Licensees and Subcontractors to use the Miltenyi Products supplied hereunder even if such use is not in compliance with the terms and conditions of this Agreement or Applicable Laws.",
+        "source_a": "paragraph",
+        "source_b": "paragraph",
+        "evidence_status": "exact",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-156",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-157",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-158",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-162",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-163",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-164",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-165",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-166",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-167",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-168",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-169",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-170",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-174",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-175",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-176",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-177",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-178",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-179",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-183",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-184",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-186",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-187",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-188",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-189",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-190",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-191",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-193",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-200",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-201",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-202",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-203",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-204",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-205",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-206",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-207",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-211",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-212",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-213",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-214",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-215",
+      "contradiction": false,
+      "confidence": 90,
+      "brief_reason": "The paragraph distinguishes between Required Changes and Bellicum-Specific Required Changes and sets clear conditions for each, without internal contradiction.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-216",
+      "contradiction": false,
+      "confidence": 90,
+      "brief_reason": "This is an incomplete sentence fragment and does not contain sufficient content to present a contradiction.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-220",
+      "contradiction": false,
+      "confidence": 90,
+      "brief_reason": "The paragraph consistently states that Miltenyi's consent and cost review are required for Bellicum-Requested Changes; no internal contradiction is present.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-221",
+      "contradiction": true,
+      "confidence": 95,
+      "brief_reason": "The paragraph first states Miltenyi implements changes at its own cost, then states all costs are borne exclusively by Bellicum, which is mutually exclusive.",
+      "evidence": {
+        "snippet_a": "Miltenyi shall implement such Miltenyi-Requested Change at its own cost and expense.",
+        "snippet_b": "Notwithstanding the foregoing, all costs and expenses associated with implementing any Miltenyi-Requested Change shall be borne exclusively by Bellicum.",
+        "source_a": "paragraph",
+        "source_b": "paragraph",
+        "evidence_status": "exact",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-222",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph only requires cooperation and good faith between the parties and does not contain any mutually incompatible statements.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-223",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph provides a conditional continued supply obligation and does not contain mutually exclusive statements.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-224",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "This is a sentence fragment and does not contain two or more obligations or rights that could be mutually incompatible.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-228",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph provides a conditional waiver of obligations and does not contain mutually exclusive statements.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-229",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph describes a sequence of obligations and exceptions but does not contain mutually exclusive or incompatible obligations.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-230",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph simply states that certain requirements do not apply to Research Grade Products and does not contain conflicting statements.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-231",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph assigns responsibility for regulatory filing fees to Bellicum and does not contain any conflicting statements.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-232",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "This is a section heading and does not contain any substantive obligations or statements that could conflict.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-233",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "This is a section heading and does not contain any substantive obligations or statements that could conflict.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-234",
+      "contradiction": true,
+      "confidence": 100,
+      "brief_reason": "The paragraph assigns sole regulatory responsibility for Bellicum Products to both Bellicum and Miltenyi, which is mutually exclusive.",
+      "evidence": {
+        "snippet_a": "Bellicum will be solely responsible for all regulatory activities with respect to any Bellicum Product, including the manufacture and quality control thereof.",
+        "snippet_b": "Miltenyi shall be solely responsible for all regulatory activities with respect to any Bellicum Product, including the manufacture and quality control thereof.",
+        "source_a": "paragraph",
+        "source_b": "paragraph",
+        "evidence_status": "exact",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-235",
+      "contradiction": true,
+      "confidence": 100,
+      "brief_reason": "The paragraph assigns sole regulatory responsibility for Miltenyi Products to both Miltenyi and Bellicum, which is mutually exclusive.",
+      "evidence": {
+        "snippet_a": "Miltenyi will be solely responsible for all regulatory activities with respect to any Miltenyi Product, including the manufacture and quality control thereof.",
+        "snippet_b": "Bellicum shall be solely responsible for all regulatory activities with respect to any Miltenyi Product, including the manufacture and quality control thereof.",
+        "source_a": "paragraph",
+        "source_b": "paragraph",
+        "evidence_status": "exact",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-236",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "This is an introductory disclaimer and does not contain two or more obligations or rights that could be mutually incompatible.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-240",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph consistently assigns responsibility for testing and validation to Bellicum and does not contain conflicting statements.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-241",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph consistently assigns responsibility for regulatory compliance to Bellicum and does not contain conflicting statements.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-242",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph describes Miltenyi's regulatory obligations and limitations without any mutually exclusive statements.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-243",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph describes the process for requesting additional regulatory work and does not contain conflicting obligations.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-244",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph describes amendment requirements for additional regulatory work and does not contain conflicting obligations.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-248",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph describes the content of amendments for additional regulatory work and does not contain conflicting obligations.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-249",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph describes the process for cross-referencing Master Files and does not contain conflicting obligations.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-250",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph describes Miltenyi's exclusive rights to Master Files and does not contain conflicting obligations.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-251",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "This is a section heading and does not contain any substantive obligations or statements that could conflict.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-252",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph describes notification requirements for regulatory communications and does not contain conflicting obligations.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-253",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph assigns responsibility for regulatory responses based on product and does not contain conflicting obligations.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-257",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "This is a sentence fragment and does not contain two or more obligations or rights that could be mutually incompatible.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-258",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph describes procedures for required communications and does not contain conflicting obligations.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-259",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph describes assistance and payment terms for regulatory consulting and does not contain conflicting obligations.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-260",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph describes the process for additional regulatory filings and does not contain conflicting obligations.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-261",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph is a disclaimer of warranty and does not contain conflicting obligations.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-274",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "This is a section heading and does not contain any substantive obligations or statements that could conflict.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-275",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph describes the forecasting process and does not contain conflicting obligations.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-276",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph describes the process for monthly forecasts and does not contain conflicting obligations.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-277",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph describes the binding nature of the Firm Zone and does not contain conflicting obligations.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-278",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph describes non-binding quarterly forecasts and does not contain conflicting obligations.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-287",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph describes non-binding long-term forecasts and does not contain conflicting obligations.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-288",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph describes the process for updating forecasts and does not contain conflicting obligations.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-289",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-290",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-291",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-292",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-293",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-297",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-298",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-299",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-300",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-301",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-302",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-303",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-307",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-308",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-309",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-310",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-311",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-312",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-313",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-314",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-316",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-317",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-318",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-322",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-323",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-324",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-325",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-326",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-327",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-328",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-329",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-333",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-334",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-335",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-336",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-337",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-338",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-342",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-343",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-344",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-345",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-346",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-347",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-348",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-352",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-353",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-354",
+      "contradiction": false,
+      "confidence": 90,
+      "brief_reason": "The paragraph defines a specific supply failure event and its exceptions, which are consistent with related provisions on delivery shortfalls and remedies.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-356",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-357",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-359",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-361",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-363",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-365",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-369",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-370",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-371",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-372",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-374",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-376",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-378",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-380",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-381",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-382",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-383",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-385",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-389",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-390",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-391",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-392",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-393",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-397",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-398",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-399",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-400",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-401",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-402",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-403",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-404",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-408",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-409",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-410",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-411",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-412",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-413",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-417",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-418",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-419",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-420",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-421",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-422",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-423",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-424",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-425",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-431",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-432",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-433",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-434",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-435",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-436",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-437",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-438",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-447",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-448",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-449",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-450",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-451",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-452",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "The paragraph sets out the Miltenyi Product Warranty and references a disclaimer in Section 11.4, but does not contain any internal contradiction.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-453",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-454",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-455",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-456",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-457",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-458",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-464",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-466",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-467",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-468",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-469",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-470",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-471",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-472",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-473",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-474",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-475",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-476",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-480",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-481",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-482",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-483",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-484",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-485",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-486",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-487",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-491",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-492",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-493",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-494",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-495",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-496",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-497",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-498",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-499",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-503",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-504",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-505",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-506",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-510",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-511",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-512",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-513",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-514",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-518",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-519",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-521",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-522",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-523",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-524",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-525",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-526",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-530",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-531",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-532",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-533",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-534",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-535",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-536",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-537",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-541",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-542",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-543",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-544",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-545",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-546",
+      "contradiction": false,
+      "confidence": 100,
+      "brief_reason": "This paragraph is a section heading and contains no substantive statements that could contradict each other.",
+      "evidence": {
+        "snippet_a": "",
+        "snippet_b": "",
+        "source_a": "unknown",
+        "source_b": "unknown",
+        "evidence_status": "missing",
+        "evidence_note": ""
+      }
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-547",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-556",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-557",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-558",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-559",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-561",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-562",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-563",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-564",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-565",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-566",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-567",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-568",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-570",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-572",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-573",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-574",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-575",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-577",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-578",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-579",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-588",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-589",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-590",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-591",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-592",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-593",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-594",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-595",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-599",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-600",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-602",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-603",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-604",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-605",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-606",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-610",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-611",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-612",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-613",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-614",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-621",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-623",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-626",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-628",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-631",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-634",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-636",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-638",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-653",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-657",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-659",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-660",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-661",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-674",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-691",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-704",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-706",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-707",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-708",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-720",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-736",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-738",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-751",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-757",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-779",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    },
+    {
+      "paragraph_id": "target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-781",
+      "contradiction": false,
+      "confidence": 0,
+      "brief_reason": "",
+      "evidence": null
+    }
+  ],
+  "rawResponse": "{\"mode\": \"batched\", \"target_batch_input_tokens\": 75000, \"estimated_input_tokens_total\": 352529, \"estimated_output_tokens_total\": 16926, \"estimated_cost_usd\": \"0.840466\", \"batches\": [{\"batch\": 1, \"rows\": 124, \"estimated_input_tokens\": 74743, \"estimated_output_tokens\": 5208, \"estimated_cost_usd\": \"0.191150\", \"response_chars\": 1049, \"response_preview\": \"{\\n  \\\"paragraph_results\\\": [\\n    {\\n      \\\"paragraph_id\\\": \\\"target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-155\\\",\\n      \\\"contradiction\\\": true,\\n      \\\"confidence\\\": 95,\\n      \\\"brief_reason\\\": \\\"The paragraph states both that Licensees/Subcontractors may use Miltenyi Products only if in compliance with the Agreement and Applicable Laws, and that they may use them even if not in compliance, which are mutually exclusive.\\\",\\n      \\\"evidence\\\": {\\n        \\\"snippet_a\\\": \\\"Bellicum may off\"}, {\"batch\": 2, \"rows\": 39, \"estimated_input_tokens\": 73168, \"estimated_output_tokens\": 1638, \"estimated_cost_usd\": \"0.159440\", \"response_chars\": 18179, \"response_preview\": \"{\\n  \\\"paragraph_results\\\": [\\n    {\\n      \\\"paragraph_id\\\": \\\"target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-234\\\",\\n      \\\"contradiction\\\": true,\\n      \\\"confidence\\\": 100,\\n      \\\"brief_reason\\\": \\\"The paragraph assigns sole regulatory responsibility for Bellicum Products to both Bellicum and Miltenyi, which is mutually exclusive.\\\",\\n      \\\"evidence\\\": {\\n        \\\"snippet_a\\\": \\\"Bellicum will be solely responsible for all regulatory activities with respect to any Bellicum Product, incl\"}, {\"batch\": 3, \"rows\": 70, \"estimated_input_tokens\": 74947, \"estimated_output_tokens\": 2940, \"estimated_cost_usd\": \"0.173414\", \"response_chars\": 507, \"response_preview\": \"{\\n  \\\"paragraph_results\\\": [\\n    {\\n      \\\"paragraph_id\\\": \\\"target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-354\\\",\\n      \\\"contradiction\\\": false,\\n      \\\"confidence\\\": 90,\\n      \\\"brief_reason\\\": \\\"The paragraph defines a specific supply failure event and its exceptions, which are consistent with related provisions on delivery shortfalls and remedies.\\\",\\n      \\\"evidence\\\": {\\n        \\\"snippet_a\\\": \\\"\\\",\\n        \\\"snippet_b\\\": \\\"\\\",\\n        \\\"source_a\\\": \\\"\\\",\\n        \\\"source_b\\\": \\\"\\\"\\n      }\\n    \"}, {\"batch\": 4, \"rows\": 81, \"estimated_input_tokens\": 74529, \"estimated_output_tokens\": 3402, \"estimated_cost_usd\": \"0.176274\", \"response_chars\": 499, \"response_preview\": \"{\\n  \\\"paragraph_results\\\": [\\n    {\\n      \\\"paragraph_id\\\": \\\"target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-452\\\",\\n      \\\"contradiction\\\": false,\\n      \\\"confidence\\\": 100,\\n      \\\"brief_reason\\\": \\\"The paragraph sets out the Miltenyi Product Warranty and references a disclaimer in Section 11.4, but does not contain any internal contradiction.\\\",\\n      \\\"evidence\\\": {\\n        \\\"snippet_a\\\": \\\"\\\",\\n        \\\"snippet_b\\\": \\\"\\\",\\n        \\\"source_a\\\": \\\"\\\",\\n        \\\"source_b\\\": \\\"\\\"\\n      }\\n    }\\n  ]\\n}\"}, {\"batch\": 5, \"rows\": 89, \"estimated_input_tokens\": 55142, \"estimated_output_tokens\": 3738, \"estimated_cost_usd\": \"0.140188\", \"response_chars\": 461, \"response_preview\": \"{\\n  \\\"paragraph_results\\\": [\\n    {\\n      \\\"paragraph_id\\\": \\\"target::BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10.1-Supply_Agreement-p-546\\\",\\n      \\\"contradiction\\\": false,\\n      \\\"confidence\\\": 100,\\n      \\\"brief_reason\\\": \\\"This paragraph is a section heading and contains no substantive statements that could contradict each other.\\\",\\n      \\\"evidence\\\": {\\n        \\\"snippet_a\\\": \\\"\\\",\\n        \\\"snippet_b\\\": \\\"\\\",\\n        \\\"source_a\\\": \\\"\\\",\\n        \\\"source_b\\\": \\\"\\\"\\n      }\\n    }\\n  ]\\n}\"}]}"
+}

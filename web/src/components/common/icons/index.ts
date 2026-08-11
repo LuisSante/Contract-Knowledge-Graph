@@ -5,6 +5,7 @@ export { ContractChatAssistantIcon } from './ContractChatAssistantIcon';
 export { ContradictionAnalysisIcon } from './ContradictionAnalysisIcon';
 export { DocumentIcon } from './DocumentIcon';
 export { HammerShieldIcon } from './HammerShieldIcon';
+export { KnowledgeGraphIcon } from './KnowledgeGraphIcon';
 export { LightningBoltIcon } from './LightningBoltIcon';
 export { ParagraphExplanationIcon } from './ParagraphExplanationIcon';
 export { ParagraphRevisionsIcon } from './ParagraphRevisionsIcon';

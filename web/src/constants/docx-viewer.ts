@@ -92,15 +92,18 @@ export const CONTRADICTION_CLAIM_SIDE_COLORS: Readonly<Record<'a' | 'b', string>
 };
 
 export const RIGHT_PANEL_TOOLS: Array<{ id: RightPanelTab; label: string }> = [
-	{ id: 'analysis', label: 'Contradiction Analysis' },
+	// Temporarily hidden while cleaning the frontend for KG visualization
+	// (the code/hook/panel are kept in features/docx):
+	// { id: 'analysis', label: 'Contradiction Analysis' },
 	// { id: 'redundancy', label: 'Redundancy Analysis' },
 	{ id: 'related', label: 'Related Paragraphs' },
+	{ id: 'knowledge_graph', label: 'Knowledge Graph' },
 	// Hidden from the rail (the code/hook/panel are kept in features/docx):
 	// { id: 'paragraph_explanation', label: 'Paragraph Explanation' },
 	// { id: 'summarize', label: 'Summarize & Simplify' },
 	// { id: 'ambiguity', label: 'Ambiguity Analysis' },
 	// { id: 'revisions', label: 'Paragraph Revisions' },
-	{ id: 'assistant', label: 'Contract Chat Assistant' }
+	// { id: 'assistant', label: 'Contract Chat Assistant' }
 ];
  
 export const RIGHT_TOOLBAR_WIDTH = 42;

@@ -321,6 +321,7 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 			>
 				<RightPanelContent
 					activeTab={drawer.activeTab}
+					docId={docId}
 					graphBlocking={graphBlocking}
 					selectedParagraph={selectedParagraph}
 					nodeEditStateById={nodeEditStateById.current}

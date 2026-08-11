@@ -13,6 +13,7 @@ from api.serializers import (
 from core.config import settings
 from services.documents.processing import build_paragraphs, save_paragraphs_dump
 from services.documents.store import DocumentStore
+from services.graph.knowledge.store import load_knowledge_graph
 
 logger = logging.getLogger(__name__)
 
@@ -76,3 +77,27 @@ class ProcessDocumentView(APIView):
             }
         )
         return Response(response.data)
+
+
+class KnowledgeGraphView(APIView):
+    """Serve the pre-generated deontic knowledge graph for a document.
+
+    The KG is built offline (notebooks/KG) and saved under KNOWLEDGE_GRAPH_DIR;
+    this endpoint only reads it. Returns 404 if it has not been generated yet.
+    """
+
+    def get(self, request, doc_id: str):
+        document_store.ensure_initialized()
+        canonical_id = document_store.get_canonical_id(doc_id) or doc_id
+
+        payload = load_knowledge_graph(canonical_id, settings.KNOWLEDGE_GRAPH_DIR)
+        if payload is None:
+            raise NotFound("Knowledge graph not generated for this document")
+
+        return Response(
+            {
+                "status": "success",
+                "documentId": canonical_id,
+                "knowledgeGraph": payload,
+            }
+        )

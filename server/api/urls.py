@@ -9,6 +9,7 @@ urlpatterns = [
     path("list_documents", views.ListDocumentsView.as_view()),
     path("document_file/<str:doc_id>", views.DocumentFileView.as_view()),
     path("process", views.ProcessDocumentView.as_view()),
+    path("knowledge_graph/<str:doc_id>", views.KnowledgeGraphView.as_view()),
     # Phase 2 — assistant.
     path("assistant/chat", views_assistant.AssistantChatView.as_view()),
     path("assistant/simplify", views_assistant.AssistantSimplifyView.as_view()),

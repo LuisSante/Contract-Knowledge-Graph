@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     SAVED_CONTRADICTIONS_DIR: Path = Path("../infra/contradiction_results")
     GRAPH_OUTPUT_DIR: Path = Path("../infra/json/graph")
     PARAGRAPHS_OUTPUT_DIR: Path = Path("../infra/json/paragraphs")
+    KNOWLEDGE_GRAPH_DIR: Path = Path("../infra/json/kg")
 
     # this extract paragraphs from a document
     EXTRACT_PARAGRAPHS: bool = False
@@ -29,6 +30,16 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "dev-insecure-change-me"
     DEBUG: bool = True
     ALLOWED_HOSTS: list[str] = ["localhost", "127.0.0.1"]
+
+    @field_validator("DEBUG", mode="before")
+    @classmethod
+    def _parse_debug(cls, value):
+        if isinstance(value, bool):
+            return value
+        normalized = str(value).strip().lower()
+        if normalized in {"1", "true", "yes", "on", "debug", "dev", "development"}:
+            return True
+        return False
 
     @field_validator("SEMANTIC_RELATED_MODE")
     @classmethod

@@ -9,6 +9,7 @@ import {
 	ChatIcon,
 	CloseIcon,
 	ContradictionAnalysisIcon,
+	KnowledgeGraphIcon,
 	ParagraphExplanationIcon,
 	RelatedParagraphsIcon,
 } from '@/components/common/icons';
@@ -16,6 +17,7 @@ import {
 const HEADER_ICONS: Record<RightPanelTab, React.ComponentType<{ className?: string }>> = {
 	analysis: ContradictionAnalysisIcon,
 	related: RelatedParagraphsIcon,
+	knowledge_graph: KnowledgeGraphIcon,
 	paragraph_explanation: ParagraphExplanationIcon,
 	assistant: ChatIcon,
 	redundancy: ContradictionAnalysisIcon,

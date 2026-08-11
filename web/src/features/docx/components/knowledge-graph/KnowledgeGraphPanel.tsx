@@ -1,0 +1,358 @@
+'use client';
+
+import { useEffect, useMemo, useRef, useState } from 'react';
+import * as d3 from 'd3';
+import { fetchKnowledgeGraph } from '@/services/knowledge';
+import type { KgNodeKind, KnowledgeGraph, ProvisionType } from '@/types/knowledge';
+
+interface KnowledgeGraphPanelProps {
+	docId: string;
+}
+
+type SimNode = d3.SimulationNodeDatum & {
+	id: string;
+	kind: KgNodeKind;
+	label: string;
+	title: string;
+	provisionType?: ProvisionType;
+	radius: number;
+};
+
+type SimLink = d3.SimulationLinkDatum<SimNode> & {
+	type: 'introduces' | 'burdens' | 'benefits';
+};
+
+const NODE_COLORS: Record<KgNodeKind, string> = {
+	party: '#7c3aed',
+	clause: '#0ea5e9',
+	provision: '#94a3b8',
+};
+
+const PROVISION_COLORS: Record<ProvisionType, string> = {
+	obligation: '#ef4444',
+	right: '#22c55e',
+	prohibition: '#f59e0b',
+};
+
+const EDGE_COLORS: Record<SimLink['type'], string> = {
+	introduces: '#cbd5e1',
+	burdens: '#fca5a5',
+	benefits: '#86efac',
+};
+
+const NODE_LEGEND: Array<{ color: string; label: string }> = [
+	{ color: NODE_COLORS.party, label: 'Party' },
+	{ color: NODE_COLORS.clause, label: 'Clause' },
+	{ color: PROVISION_COLORS.obligation, label: 'Obligation' },
+	{ color: PROVISION_COLORS.right, label: 'Right' },
+	{ color: PROVISION_COLORS.prohibition, label: 'Prohibition' },
+];
+
+const EDGE_LEGEND: Array<{ color: string; label: string }> = [
+	{ color: EDGE_COLORS.introduces, label: 'introduces (clause → provision)' },
+	{ color: EDGE_COLORS.burdens, label: 'burdens (provision → party)' },
+	{ color: EDGE_COLORS.benefits, label: 'benefits (provision → party)' },
+];
+
+function nodeColor(node: SimNode): string {
+	if (node.kind === 'provision' && node.provisionType) {
+		return PROVISION_COLORS[node.provisionType];
+	}
+	return NODE_COLORS[node.kind];
+}
+
+function buildGraph(kg: KnowledgeGraph): { nodes: SimNode[]; links: SimLink[] } {
+	const nodes: SimNode[] = [];
+
+	for (const party of kg.parties) {
+		nodes.push({
+			id: party.id,
+			kind: 'party',
+			label: party.name,
+			title: `${party.role || 'Party'}: ${party.name}`,
+			radius: 13,
+		});
+	}
+	for (const clause of kg.clauses) {
+		const label = clause.ref || clause.heading || clause.id;
+		nodes.push({
+			id: clause.id,
+			kind: 'clause',
+			label,
+			title: `Clause ${label}${clause.heading ? ` — ${clause.heading}` : ''}`,
+			radius: 8,
+		});
+	}
+	for (const provision of kg.provisions) {
+		nodes.push({
+			id: provision.id,
+			kind: 'provision',
+			provisionType: provision.type,
+			label: provision.type,
+			title: `${provision.type.toUpperCase()}: ${provision.summary}`,
+			radius: 5.5,
+		});
+	}
+
+	const nodeIds = new Set(nodes.map((n) => n.id));
+	const links: SimLink[] = kg.edges
+		.filter((e) => nodeIds.has(e.source) && nodeIds.has(e.target))
+		.map((e) => ({ source: e.source, target: e.target, type: e.type }));
+
+	return { nodes, links };
+}
+
+export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
+	const containerRef = useRef<HTMLDivElement>(null);
+	const svgRef = useRef<SVGSVGElement>(null);
+	const [size, setSize] = useState({ width: 0, height: 0 });
+	const [kg, setKg] = useState<KnowledgeGraph | null>(null);
+	const [status, setStatus] = useState<'loading' | 'ready' | 'missing' | 'error'>('loading');
+	const [hover, setHover] = useState<{ x: number; y: number; text: string } | null>(null);
+
+	// Fetch the pre-generated KG for the current document.
+	useEffect(() => {
+		if (!docId) return;
+		let cancelled = false;
+		setStatus('loading');
+		setKg(null);
+		fetchKnowledgeGraph(docId)
+			.then((graph) => {
+				if (cancelled) return;
+				if (!graph) {
+					setStatus('missing');
+					return;
+				}
+				setKg(graph);
+				setStatus('ready');
+			})
+			.catch(() => {
+				if (!cancelled) setStatus('error');
+			});
+		return () => {
+			cancelled = true;
+		};
+	}, [docId]);
+
+	// Track container size so the graph fills the (resizable) panel.
+	useEffect(() => {
+		const el = containerRef.current;
+		if (!el) return;
+		const observer = new ResizeObserver((entries) => {
+			const rect = entries[0]?.contentRect;
+			if (rect) setSize({ width: rect.width, height: rect.height });
+		});
+		observer.observe(el);
+		return () => observer.disconnect();
+	}, []);
+
+	const graph = useMemo(() => (kg ? buildGraph(kg) : null), [kg]);
+
+	// d3-force simulation + render.
+	useEffect(() => {
+		if (!graph || !svgRef.current || size.width === 0 || size.height === 0) return;
+		const { width, height } = size;
+		const nodes = graph.nodes.map((n) => ({ ...n }));
+		const links = graph.links.map((l) => ({ ...l }));
+
+		const svg = d3.select(svgRef.current);
+		svg.selectAll('*').remove();
+
+		const root = svg.append('g');
+
+		const zoom = d3
+			.zoom<SVGSVGElement, unknown>()
+			.scaleExtent([0.2, 4])
+			.on('zoom', (event) => root.attr('transform', event.transform.toString()));
+		svg.call(zoom).on('dblclick.zoom', null);
+
+		const link = root
+			.append('g')
+			.attr('stroke-opacity', 0.8)
+			.selectAll<SVGLineElement, SimLink>('line')
+			.data(links)
+			.join('line')
+			.attr('stroke', (d) => EDGE_COLORS[d.type])
+			.attr('stroke-width', 1.2);
+
+		const node = root
+			.append('g')
+			.attr('stroke', '#fff')
+			.attr('stroke-width', 1.2)
+			.selectAll<SVGCircleElement, SimNode>('circle')
+			.data(nodes)
+			.join('circle')
+			.attr('r', (d) => d.radius)
+			.attr('fill', (d) => nodeColor(d))
+			.attr('cursor', 'grab');
+
+		node
+			.on('mouseenter', (event: MouseEvent, d) => {
+				const rect = containerRef.current?.getBoundingClientRect();
+				setHover({
+					x: event.clientX - (rect?.left ?? 0) + 12,
+					y: event.clientY - (rect?.top ?? 0) + 12,
+					text: d.title,
+				});
+			})
+			.on('mousemove', (event: MouseEvent, d) => {
+				const rect = containerRef.current?.getBoundingClientRect();
+				setHover({
+					x: event.clientX - (rect?.left ?? 0) + 12,
+					y: event.clientY - (rect?.top ?? 0) + 12,
+					text: d.title,
+				});
+			})
+			.on('mouseleave', () => setHover(null));
+
+		// More breathing room the bigger the graph: stronger repulsion + longer links.
+		const chargeStrength = -220 - nodes.length * 1.5;
+
+		const simulation = d3
+			.forceSimulation<SimNode>(nodes)
+			.force(
+				'link',
+				d3
+					.forceLink<SimNode, SimLink>(links)
+					.id((d) => d.id)
+					.distance(70)
+					.strength(0.5)
+			)
+			.force('charge', d3.forceManyBody<SimNode>().strength(chargeStrength).distanceMax(600))
+			.force('center', d3.forceCenter(width / 2, height / 2))
+			.force('x', d3.forceX(width / 2).strength(0.03))
+			.force('y', d3.forceY(height / 2).strength(0.03))
+			.force(
+				'collide',
+				d3.forceCollide<SimNode>().radius((d) => d.radius + 7)
+			);
+
+		// After the layout settles, zoom/pan to fit the whole graph in view.
+		const fitToView = () => {
+			const pad = 24;
+			const xs = nodes.map((n) => n.x ?? 0);
+			const ys = nodes.map((n) => n.y ?? 0);
+			const minX = Math.min(...xs);
+			const maxX = Math.max(...xs);
+			const minY = Math.min(...ys);
+			const maxY = Math.max(...ys);
+			const gw = Math.max(maxX - minX, 1);
+			const gh = Math.max(maxY - minY, 1);
+			const k = Math.min((width - pad * 2) / gw, (height - pad * 2) / gh, 1.5);
+			const tx = width / 2 - k * ((minX + maxX) / 2);
+			const ty = height / 2 - k * ((minY + maxY) / 2);
+			svg
+				.transition()
+				.duration(400)
+				.call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(k));
+		};
+
+		simulation.on('tick', () => {
+			link
+				.attr('x1', (d) => (d.source as SimNode).x ?? 0)
+				.attr('y1', (d) => (d.source as SimNode).y ?? 0)
+				.attr('x2', (d) => (d.target as SimNode).x ?? 0)
+				.attr('y2', (d) => (d.target as SimNode).y ?? 0);
+			node.attr('cx', (d) => d.x ?? 0).attr('cy', (d) => d.y ?? 0);
+		});
+		simulation.on('end', fitToView);
+
+		const drag = d3
+			.drag<SVGCircleElement, SimNode>()
+			.on('start', (event, d) => {
+				if (!event.active) simulation.alphaTarget(0.3).restart();
+				d.fx = d.x;
+				d.fy = d.y;
+			})
+			.on('drag', (event, d) => {
+				d.fx = event.x;
+				d.fy = event.y;
+			})
+			.on('end', (event, d) => {
+				if (!event.active) simulation.alphaTarget(0);
+				d.fx = null;
+				d.fy = null;
+			});
+		node.call(drag);
+
+		return () => {
+			simulation.stop();
+		};
+	}, [graph, size]);
+
+	const counts = kg
+		? {
+				parties: kg.parties.length,
+				clauses: kg.clauses.length,
+				provisions: kg.provisions.length,
+			}
+		: null;
+
+	return (
+		<div className="flex h-full flex-col">
+			{status === 'ready' && counts && (
+				<div className="space-y-1.5 border-b border-border/60 px-3 py-2 text-2xs text-muted-foreground">
+					<div>
+						{counts.parties} parties · {counts.clauses} clauses · {counts.provisions} provisions
+					</div>
+					<div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+						<span className="font-medium text-foreground/70">Nodes</span>
+						{NODE_LEGEND.map((item) => (
+							<span key={item.label} className="inline-flex items-center gap-1">
+								<span
+									className="inline-block h-2 w-2 rounded-full"
+									style={{ backgroundColor: item.color }}
+								/>
+								{item.label}
+							</span>
+						))}
+					</div>
+					<div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+						<span className="font-medium text-foreground/70">Edges</span>
+						{EDGE_LEGEND.map((item) => (
+							<span key={item.label} className="inline-flex items-center gap-1">
+								<span
+									className="inline-block h-0.5 w-4 rounded-full"
+									style={{ backgroundColor: item.color }}
+								/>
+								{item.label}
+							</span>
+						))}
+					</div>
+				</div>
+			)}
+
+			<div ref={containerRef} className="relative min-h-0 flex-1">
+				{status === 'loading' && (
+					<div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+						Loading knowledge graph…
+					</div>
+				)}
+				{status === 'missing' && (
+					<div className="flex h-full items-center justify-center px-6 text-center text-sm text-muted-foreground">
+						No knowledge graph generated for this document yet. Build it with the
+						notebook (notebooks/KG/build_kg.ipynb) into infra/json/kg/.
+					</div>
+				)}
+				{status === 'error' && (
+					<div className="flex h-full items-center justify-center text-sm text-destructive">
+						Failed to load the knowledge graph.
+					</div>
+				)}
+				{status === 'ready' && (
+					<>
+						<svg ref={svgRef} className="h-full w-full" />
+						{hover && (
+							<div
+								className="pointer-events-none absolute z-10 max-w-[280px] rounded-md border border-border bg-popover px-2 py-1 text-2xs text-popover-foreground shadow-md"
+								style={{ left: hover.x, top: hover.y }}
+							>
+								{hover.text}
+							</div>
+						)}
+					</>
+				)}
+			</div>
+		</div>
+	);
+}

@@ -18,6 +18,7 @@ import { ContradictionChatPanel } from '@/features/docx/components/contradiction
 import { RightPanelAssistant } from '@/features/docx/components/assistant/RightPanelAssistant';
 import { RightPanelParagraphExplanation } from '@/features/docx/components/paragraph-explanation/RightPanelParagraphExplanation';
 import { RightPanelRelated } from '@/features/docx/components/related/RightPanelRelated';
+import { KnowledgeGraphPanel } from '@/features/docx/components/knowledge-graph/KnowledgeGraphPanel';
 
 // Steps shown while the relations graph builds/recomputes.
 const GRAPH_PROCESSING_STEPS: ProcessingStep[] = [
@@ -34,6 +35,7 @@ const ASSISTANT_CHAT_SUGGESTIONS = QUICK_ACTIONS.filter(
 
 interface RightPanelContentProps {
 	activeTab: RightPanelTab;
+	docId: string;
 	graphBlocking: boolean;
 	selectedParagraph: ParagraphNode | null;
 	nodeEditStateById: Map<string, ParagraphEditState>;
@@ -51,6 +53,7 @@ interface RightPanelContentProps {
  */
 export function RightPanelContent({
 	activeTab,
+	docId,
 	graphBlocking,
 	selectedParagraph,
 	nodeEditStateById,
@@ -61,6 +64,11 @@ export function RightPanelContent({
 	onFocusNodeFromPanel,
 	onFocusEvidenceSnippet,
 }: RightPanelContentProps) {
+	// Independent layer: not gated by the paragraph-graph build.
+	if (activeTab === 'knowledge_graph') {
+		return <KnowledgeGraphPanel docId={docId} />;
+	}
+
 	if (graphBlocking) {
 		return (
 			<div className="p-3">

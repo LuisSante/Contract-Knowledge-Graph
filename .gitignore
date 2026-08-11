@@ -6,9 +6,5 @@
 .comands
 words_paragraph.json
 __pycache__/
-infra/neo4j/data/
-infra/neo4j/logs/
-infra/neo4j/plugins/
-backups
 .impeccable/
 server_old

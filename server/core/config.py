@@ -11,12 +11,6 @@ class Settings(BaseSettings):
     SAVED_CONTRADICTIONS_DIR: Path = Path("../infra/contradiction_results")
     GRAPH_OUTPUT_DIR: Path = Path("../infra/json/graph")
 
-    # Neo4j (knowledge graph).
-    NEO4J_URI: str = ""
-    NEO4J_USERNAME: str = ""
-    NEO4J_PASSWORD: str = ""
-    NEO4J_DATABASE: str = "neo4j"
-
     # Related paragraphs (semantic similarity).
     SEMANTIC_RELATED_MODE: str = "top_k"
     SEMANTIC_TOP_K: int = 5
@@ -35,16 +29,6 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "dev-insecure-change-me"
     DEBUG: bool = True
     ALLOWED_HOSTS: list[str] = ["localhost", "127.0.0.1"]
-
-    @field_validator("NEO4J_URI", "NEO4J_USERNAME", "NEO4J_PASSWORD")
-    @classmethod
-    def _strip(cls, value: str) -> str:
-        return value.strip()
-
-    @field_validator("NEO4J_DATABASE")
-    @classmethod
-    def _strip_or_default(cls, value: str) -> str:
-        return value.strip() or "neo4j"
 
     @field_validator("SEMANTIC_RELATED_MODE")
     @classmethod

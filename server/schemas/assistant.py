@@ -34,7 +34,7 @@ class AssistantChatRequest(BaseModel):
     question: str
     mode: AssistantMode = "explain"
     scope: AssistantScope = "selected"
-    provider: AssistantProvider = "gemini"
+    provider: AssistantProvider = "openai"
     model: str | None = None
     selectedParagraphId: str | None = None
     relatedParagraphs: list[AssistantRelatedParagraph] = Field(default_factory=list)
@@ -82,7 +82,7 @@ class SimplifyRelatedParagraph(BaseModel):
 
 class SimplifySelectionRequest(BaseModel):
     documentId: str
-    provider: AssistantProvider = "gemini"
+    provider: AssistantProvider = "openai"
     paragraphId: str
     paragraphText: str
     selectionStart: int = 0

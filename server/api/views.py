@@ -1,5 +1,3 @@
-"""DRF views mirroring the FastAPI document + graph endpoints (Phase 1)."""
-
 import logging
 
 from django.http import FileResponse
@@ -12,7 +10,8 @@ from api.serializers import (
     ProcessDocumentRequestSerializer,
     ProcessDocumentResponseSerializer,
 )
-from services.documents.processing import build_paragraphs
+from core.config import settings
+from services.documents.processing import build_paragraphs, save_paragraphs_dump
 from services.documents.store import DocumentStore
 
 logger = logging.getLogger(__name__)
@@ -58,8 +57,12 @@ class ProcessDocumentView(APIView):
         doc_id = document_store.get_canonical_id(raw_doc_id) or raw_doc_id
         paragraphs = build_paragraphs(payload["pages"], doc_id)
 
-        # Lazy import: pulls sentence-transformers/torch only when /process runs,
-        # so the app boots (and the other endpoints work) without the ML deps.
+        if settings.EXTRACT_PARAGRAPHS:
+            try:
+                save_paragraphs_dump(doc_id, paragraphs, settings.PARAGRAPHS_OUTPUT_DIR)
+            except Exception:
+                logger.exception("Failed to dump paragraphs for %s", doc_id)
+
         from services.graph.relations import generate_graph_data
 
         graph = generate_graph_data(paragraphs)

@@ -127,7 +127,7 @@ def estimate_simplify_request(
 
 
 def _default_model_for_provider(provider: str) -> str:
-    return "gpt-4.1" if provider == "openai" else "gemini-2.5-flash"
+    return "gpt-4.1"
 
 
 def generate_assistant_response(payload: AssistantChatRequest) -> AssistantChatResponse:

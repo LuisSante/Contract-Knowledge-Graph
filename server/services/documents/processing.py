@@ -1,12 +1,10 @@
-"""Paragraph extraction from the docx viewer payload.
-
-Ported verbatim from the FastAPI `/process` route: strips page markers and
-repeated header/footer boundaries, then flattens pages into paragraph rows
-ready for graph generation.
-"""
-
+import json
+import logging
 import re
 from collections import Counter
+from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 PAGE_NUMBER_ONLY_RE = re.compile(r"^(?:\d+|[ivxlcdm]{1,8})$", re.IGNORECASE)
 PAGE_LABEL_RE = re.compile(
@@ -112,3 +110,30 @@ def build_paragraphs(pages: list[dict], doc_id: str) -> list[dict]:
             )
 
     return all_paragraphs_input
+
+
+def _safe_filename(value: str) -> str:
+    token = re.sub(r"[^a-zA-Z0-9_-]+", "_", (value or "").strip())
+    token = re.sub(r"_+", "_", token).strip("_")
+    return token or "unknown"
+
+
+def save_paragraphs_dump(doc_id: str, paragraphs: list[dict], output_dir: Path) -> Path:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "documentId": doc_id,
+        "paragraphs": [
+            {
+                "id": row.get("id"),
+                "text": row.get("text", ""),
+                "paragraph_enum": row.get("paragraph_enum", 0),
+                "page": row.get("page"),
+            }
+            for row in paragraphs
+        ],
+    }
+    path = output_dir / f"{_safe_filename(doc_id)}.json"
+    with path.open("w", encoding="utf-8") as handle:
+        json.dump(payload, handle, ensure_ascii=False, indent=2)
+    logger.info("Saved %d paragraphs to %s", len(payload["paragraphs"]), path)
+    return path

@@ -7,18 +7,18 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore", case_sensitive=False)
 
-    # Output paths (configurable per environment).
     SAVED_CONTRADICTIONS_DIR: Path = Path("../infra/contradiction_results")
     GRAPH_OUTPUT_DIR: Path = Path("../infra/json/graph")
+    PARAGRAPHS_OUTPUT_DIR: Path = Path("../infra/json/paragraphs")
 
-    # Related paragraphs (semantic similarity).
+    # this extract paragraphs from a document
+    EXTRACT_PARAGRAPHS: bool = False
+
     SEMANTIC_RELATED_MODE: str = "top_k"
     SEMANTIC_TOP_K: int = 5
-    SEMANTIC_SIMILARITY_THRESHOLD: float = 0.79
+    SEMANTIC_SIMILARITY_THRESHOLD: float = 0.80
 
     CORS_ORIGINS: list[str] = [
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
         "http://localhost:3000",
         "http://127.0.0.1:3000",
     ]

@@ -76,7 +76,7 @@ class ProcessDocumentResponseSerializer(serializers.Serializer):
 
 _ASSISTANT_MODE_CHOICES = ["explain", "suggest_questions"]
 _ASSISTANT_SCOPE_CHOICES = ["selected", "full_contract"]
-_ASSISTANT_PROVIDER_CHOICES = ["openai", "gemini"]
+_ASSISTANT_PROVIDER_CHOICES = ["openai"]
 _ASSISTANT_ROLE_CHOICES = ["user", "assistant"]
 _RELATION_TYPE_CHOICES = ["reference", "semantic_similarity"]
 
@@ -111,7 +111,7 @@ class AssistantChatRequestSerializer(serializers.Serializer):
     question = serializers.CharField(allow_blank=True)
     mode = serializers.ChoiceField(choices=_ASSISTANT_MODE_CHOICES, default="explain")
     scope = serializers.ChoiceField(choices=_ASSISTANT_SCOPE_CHOICES, default="selected")
-    provider = serializers.ChoiceField(choices=_ASSISTANT_PROVIDER_CHOICES, default="gemini")
+    provider = serializers.ChoiceField(choices=_ASSISTANT_PROVIDER_CHOICES, default="openai")
     model = serializers.CharField(required=False, allow_null=True)
     selectedParagraphId = serializers.CharField(required=False, allow_null=True)
     relatedParagraphs = AssistantRelatedParagraphSerializer(many=True, required=False, default=list)
@@ -165,7 +165,7 @@ class SimplifyRelatedParagraphSerializer(serializers.Serializer):
 
 class SimplifySelectionRequestSerializer(serializers.Serializer):
     documentId = serializers.CharField()
-    provider = serializers.ChoiceField(choices=_ASSISTANT_PROVIDER_CHOICES, default="gemini")
+    provider = serializers.ChoiceField(choices=_ASSISTANT_PROVIDER_CHOICES, default="openai")
     paragraphId = serializers.CharField()
     paragraphText = serializers.CharField(allow_blank=True)
     selectionStart = serializers.IntegerField(default=0)

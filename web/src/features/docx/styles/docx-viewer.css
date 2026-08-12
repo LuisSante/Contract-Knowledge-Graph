@@ -406,6 +406,41 @@
 			0 0 0 2px rgba(37, 99, 235, 0.35);
 	}
 
+	/* Knowledge Graph deontic rail: burden = red, benefit = green; the inline
+	   opacity encodes the attention score of that paragraph. */
+	.docx-kg-scroll-marker {
+		position: absolute;
+		left: 0;
+		right: 0;
+		height: 3px;
+		transform: translateY(-50%);
+		border-radius: 9999px;
+		box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.88);
+		cursor: pointer;
+		transition:
+			transform 120ms ease,
+			opacity 120ms ease,
+			box-shadow 120ms ease;
+	}
+
+	.docx-kg-scroll-marker--burden {
+		background: #ef4444;
+	}
+
+	.docx-kg-scroll-marker--benefit {
+		background: #22c55e;
+	}
+
+	.docx-kg-scroll-marker:hover,
+	.docx-kg-scroll-marker:focus-visible {
+		outline: none;
+		opacity: 1 !important;
+		transform: translateY(-50%) scaleY(1.5);
+		box-shadow:
+			0 0 0 1px rgba(255, 255, 255, 0.95),
+			0 0 0 2px rgba(124, 58, 237, 0.35);
+	}
+
 	/* .docx-contradiction-highlight {
 		background: transparent;
 		box-shadow: inset 3px 0 0 #dc2626;

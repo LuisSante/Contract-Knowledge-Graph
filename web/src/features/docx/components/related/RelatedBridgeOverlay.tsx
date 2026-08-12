@@ -8,6 +8,12 @@ interface RelatedBridgeOverlayProps {
 	onJumpToParagraph: (paragraphId: string) => void;
 	/** Dragging the rail scrolls the document (scrub). */
 	onRailMouseDown?: (event: MouseEvent) => void;
+	/**
+	 * Knowledge Graph deontic rail: when provided, scroll markers are colored by
+	 * burden/benefit and faded by attention score instead of reference/similarity.
+	 */
+	toneByParagraphId?: Record<string, 'burden' | 'benefit'>;
+	scoreByParagraphId?: Record<string, number>;
 }
 
 /**
@@ -20,8 +26,11 @@ export function RelatedBridgeOverlay({
 	bridge,
 	onJumpToParagraph,
 	onRailMouseDown,
+	toneByParagraphId,
+	scoreByParagraphId,
 }: RelatedBridgeOverlayProps) {
 	const { connectors, primaryConnector, folds, collapsedCards, scrollMarkers } = bridge;
+	const deonticRail = toneByParagraphId != null;
 
 	return (
 		<>
@@ -120,23 +129,46 @@ export function RelatedBridgeOverlay({
 
 			{scrollMarkers.length > 0 ? (
 				<div className="absolute top-2 right-1 bottom-2 z-20 w-2" onMouseDown={onRailMouseDown}>
-					{scrollMarkers.map((marker) => (
-						<span
-							key={`related-marker-${marker.paragraphId}`}
-							className={`docx-related-scroll-marker docx-related-scroll-marker--${marker.kind}`}
-							style={{ top: `${marker.topPercent}%` }}
-							role="button"
-							tabIndex={0}
-							aria-label={`Go to ${marker.kind} paragraph ${marker.paragraphId}`}
-							onClick={() => onJumpToParagraph(marker.paragraphId)}
-							onKeyDown={(event) => {
-								if (event.key === 'Enter' || event.key === ' ') {
-									event.preventDefault();
-									onJumpToParagraph(marker.paragraphId);
-								}
-							}}
-						/>
-					))}
+					{scrollMarkers.map((marker) => {
+						if (deonticRail) {
+							const tone = toneByParagraphId?.[marker.paragraphId] ?? 'burden';
+							const score = scoreByParagraphId?.[marker.paragraphId] ?? 0;
+							return (
+								<span
+									key={`kg-marker-${marker.paragraphId}`}
+									className={`docx-kg-scroll-marker docx-kg-scroll-marker--${tone}`}
+									style={{ top: `${marker.topPercent}%`, opacity: 0.35 + 0.65 * score }}
+									role="button"
+									tabIndex={0}
+									aria-label={`Go to ${tone} paragraph ${marker.paragraphId}`}
+									onClick={() => onJumpToParagraph(marker.paragraphId)}
+									onKeyDown={(event) => {
+										if (event.key === 'Enter' || event.key === ' ') {
+											event.preventDefault();
+											onJumpToParagraph(marker.paragraphId);
+										}
+									}}
+								/>
+							);
+						}
+						return (
+							<span
+								key={`related-marker-${marker.paragraphId}`}
+								className={`docx-related-scroll-marker docx-related-scroll-marker--${marker.kind}`}
+								style={{ top: `${marker.topPercent}%` }}
+								role="button"
+								tabIndex={0}
+								aria-label={`Go to ${marker.kind} paragraph ${marker.paragraphId}`}
+								onClick={() => onJumpToParagraph(marker.paragraphId)}
+								onKeyDown={(event) => {
+									if (event.key === 'Enter' || event.key === ' ') {
+										event.preventDefault();
+										onJumpToParagraph(marker.paragraphId);
+									}
+								}}
+							/>
+						);
+					})}
 				</div>
 			) : null}
 		</>

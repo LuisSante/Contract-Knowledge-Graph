@@ -21,6 +21,7 @@ import { useParagraphExplanation } from '@/features/docx/hooks/useParagraphExpla
 import { useRelatedGraph } from '@/features/docx/hooks/useRelatedGraph';
 import { useLlmTotalCost } from '@/features/docx/hooks/useLlmTotalCost';
 import { useDocumentStore } from '@/stores/document';
+import { useKnowledgeGraphStore } from '@/stores/knowledgeGraph';
 import { RIGHT_DRAWER_KEYBOARD_STEP } from '@/constants/docx-viewer';
 import { buildBridgeRelatedParagraphs } from '@/features/docx/utils/related/related-bridge';
 
@@ -84,6 +85,22 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	const analysisActive = drawer.isOpen && drawer.activeTab === 'analysis';
 	const explanationActive = drawer.isOpen && drawer.activeTab === 'paragraph_explanation';
 	const relatedActive = drawer.isOpen && drawer.activeTab === 'related';
+	const knowledgeGraphActive = drawer.isOpen && drawer.activeTab === 'knowledge_graph';
+
+	// Knowledge Graph bridge payload (anchor + related paragraphs + entity spans),
+	// derived in the panel from the focused node. It feeds the SAME Related bridge
+	// (bring-closer + scroll-rail markers) and the entity underlines below.
+	const kgAnchorParagraphId = useKnowledgeGraphStore((s) => s.anchorParagraphId);
+	const kgRelatedParagraphs = useKnowledgeGraphStore((s) => s.relatedParagraphs);
+	const kgEntities = useKnowledgeGraphStore((s) => s.entities);
+	const kgParagraphIds = useKnowledgeGraphStore((s) => s.paragraphIds);
+	const kgToneByParagraphId = useKnowledgeGraphStore((s) => s.toneByParagraphId);
+	const kgScoreByParagraphId = useKnowledgeGraphStore((s) => s.scoreByParagraphId);
+	const paragraphs = useDocumentStore((s) => s.paragraphs);
+	const kgAnchorParagraph = useMemo(
+		() => (kgAnchorParagraphId ? paragraphs.find((n) => n.id === kgAnchorParagraphId) ?? null : null),
+		[paragraphs, kgAnchorParagraphId]
+	);
 
 	// Shared chat: a single thread feeds the Contract Chat Assistant and the chat
 	// embedded in Contradiction Analysis (quick-actions + structured fix).
@@ -111,6 +128,13 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 		[relatedActive, explanationActive, related.selectedRelatedParagraphs]
 	);
 
+	// The bridge (bring-closer + scroll-rail) serves either the Related/Explanation
+	// tabs or the Knowledge Graph focus — whichever is active. Same overlay, same
+	// Shift+Scroll gesture; only the anchor + list differ.
+	const bridgeActive = relatedBridgeActive || knowledgeGraphActive;
+	const bridgeSelectedParagraph = knowledgeGraphActive ? kgAnchorParagraph : selectedParagraph;
+	const bridgeParagraphs = knowledgeGraphActive ? kgRelatedParagraphs : relatedBridgeParagraphs;
+
 	// Entity highlighting in the document body: from Paragraph Explanation or
 	// from the contradiction why/risk (toggle on). Applied to the selected
 	// paragraph and its related ones.
@@ -118,23 +142,40 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 		? explanation.entities
 		: analysisActive
 			? assistant.contradictionEntities
-			: [];
+			: knowledgeGraphActive
+				? kgEntities
+				: [];
 	const entityTargetIds = useMemo(
 		() =>
-			selectedParagraph
-				? Array.from(
-						new Set([selectedParagraph.id, ...relatedBridgeParagraphs.map((item) => item.node.id)])
-					)
-				: [],
-		[selectedParagraph, relatedBridgeParagraphs]
+			knowledgeGraphActive
+				? kgParagraphIds
+				: selectedParagraph
+					? Array.from(
+							new Set([selectedParagraph.id, ...relatedBridgeParagraphs.map((item) => item.node.id)])
+						)
+					: [],
+		[knowledgeGraphActive, kgParagraphIds, selectedParagraph, relatedBridgeParagraphs]
 	);
 	useDocumentEntityHighlights({
-		active: documentEntities.length > 0 && (explanationActive || analysisActive),
+		active:
+			documentEntities.length > 0 &&
+			(explanationActive || analysisActive || knowledgeGraphActive),
 		renderEpoch: viewer.renderEpoch,
 		paragraphElementById: paragraphElementById.current,
 		targetIds: entityTargetIds,
 		entities: documentEntities,
 	});
+
+	// Knowledge Graph → document: scroll to the first paragraph of the match when
+	// the focus changes (the "take me there" part). The bring-closer bridge and
+	// scroll-rail markers are handled by the shared Related machinery below.
+	useEffect(() => {
+		if (!knowledgeGraphActive || !kgAnchorParagraphId || viewer.renderEpoch === 0) return;
+		const element = paragraphElementById.current.get(kgAnchorParagraphId);
+		if (!element) return;
+		element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+		flashElement(element);
+	}, [knowledgeGraphActive, kgAnchorParagraphId, viewer.renderEpoch, paragraphElementById]);
 
 	// Relation badges: emphasis + direction (reference/similarity) when selecting
 	// in the Related tab.
@@ -288,9 +329,11 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 					selectedParagraphId={selectedParagraphId}
 					categoryColor={contradiction.selectedContradictionCategoryColor}
 					onMarkerClick={(paragraphId) => onFocusNodeFromPanel(paragraphId, true)}
-						relatedBridgeActive={relatedBridgeActive}
-						selectedParagraph={selectedParagraph}
-						relatedBridgeParagraphs={relatedBridgeParagraphs}
+						relatedBridgeActive={bridgeActive}
+						selectedParagraph={bridgeSelectedParagraph}
+						relatedBridgeParagraphs={bridgeParagraphs}
+						deonticToneByParagraphId={knowledgeGraphActive ? kgToneByParagraphId : undefined}
+						deonticScoreByParagraphId={knowledgeGraphActive ? kgScoreByParagraphId : undefined}
 				/>
 			</div>
 

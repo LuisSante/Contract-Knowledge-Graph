@@ -3,6 +3,16 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { fetchKnowledgeGraph } from '@/services/knowledge';
+import { useDocumentStore } from '@/stores/document';
+import {
+	KG_TOP_K_STEP_SIZE,
+	MAX_KG_HOPS,
+	MAX_KG_TOP_K,
+	MIN_KG_TOP_K,
+	useKnowledgeGraphStore,
+} from '@/stores/knowledgeGraph';
+import { buildKnowledgeGraphBridge } from '@/features/docx/utils/knowledge/kg-bridge';
+import type { KgLedger } from '@/features/docx/utils/knowledge/attention';
 import type { KgNodeKind, KnowledgeGraph, ProvisionType } from '@/types/knowledge';
 
 interface KnowledgeGraphPanelProps {
@@ -21,6 +31,9 @@ type SimNode = d3.SimulationNodeDatum & {
 type SimLink = d3.SimulationLinkDatum<SimNode> & {
 	type: 'introduces' | 'burdens' | 'benefits';
 };
+
+type NodeSelection = d3.Selection<SVGCircleElement, SimNode, SVGGElement, unknown>;
+type LinkSelection = d3.Selection<SVGLineElement, SimLink, SVGGElement, unknown>;
 
 const NODE_COLORS: Record<KgNodeKind, string> = {
 	party: '#7c3aed',
@@ -53,6 +66,9 @@ const EDGE_LEGEND: Array<{ color: string; label: string }> = [
 	{ color: EDGE_COLORS.burdens, label: 'burdens (provision → party)' },
 	{ color: EDGE_COLORS.benefits, label: 'benefits (provision → party)' },
 ];
+
+const DIMMED_NODE_OPACITY = 0.1;
+const DIMMED_LINK_OPACITY = 0.04;
 
 function nodeColor(node: SimNode): string {
 	if (node.kind === 'provision' && node.provisionType) {
@@ -102,22 +118,111 @@ function buildGraph(kg: KnowledgeGraph): { nodes: SimNode[]; links: SimLink[] } 
 	return { nodes, links };
 }
 
+/** Compact impact ledger for the focused party (burden ↔ benefit + top clauses). */
+function LedgerCard({
+	ledger,
+	onSelectClause,
+}: {
+	ledger: KgLedger;
+	onSelectClause: (clauseId: string) => void;
+}) {
+	const total = ledger.burdenWeight + ledger.benefitWeight;
+	const burdenPct = total > 0 ? (ledger.burdenWeight / total) * 100 : 50;
+	const benefitPct = 100 - burdenPct;
+
+	return (
+		<div className="absolute right-3 top-3 z-10 w-56 space-y-2 rounded-md border border-border bg-popover/95 p-2.5 text-2xs text-popover-foreground shadow-md backdrop-blur">
+			<div className="truncate font-semibold" title={ledger.partyName}>
+				{ledger.partyName}
+			</div>
+
+			<div>
+				<div className="mb-0.5 flex justify-between text-muted-foreground">
+					<span>Burden {ledger.burdenWeight.toFixed(1)}</span>
+					<span>Benefit {ledger.benefitWeight.toFixed(1)}</span>
+				</div>
+				<div className="flex h-2 w-full overflow-hidden rounded-full bg-muted">
+					<span style={{ width: `${burdenPct}%`, backgroundColor: '#ef4444' }} />
+					<span style={{ width: `${benefitPct}%`, backgroundColor: '#22c55e' }} />
+				</div>
+			</div>
+
+			<div className="flex flex-wrap gap-x-3 gap-y-0.5 text-muted-foreground">
+				<span>
+					<span className="font-medium text-foreground">{ledger.obligations}</span> obligations
+				</span>
+				<span>
+					<span className="font-medium text-foreground">{ledger.prohibitions}</span> prohibitions
+				</span>
+				<span>
+					<span className="font-medium text-foreground">{ledger.rights}</span> rights
+				</span>
+			</div>
+
+			{ledger.topClauses.length > 0 && (
+				<div className="space-y-1">
+					<div className="font-medium text-foreground/70">Heaviest clauses</div>
+					{ledger.topClauses.map((clause) => (
+						<button
+							key={clause.id}
+							type="button"
+							onClick={() => onSelectClause(clause.id)}
+							className="flex w-full items-center gap-1.5 text-left hover:text-foreground"
+							title={clause.label}
+						>
+							<span className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
+								<span
+									className="block h-full rounded-full bg-primary"
+									style={{ width: `${Math.max(6, clause.score * 100)}%` }}
+								/>
+							</span>
+							<span className="w-20 truncate">{clause.label}</span>
+						</button>
+					))}
+				</div>
+			)}
+		</div>
+	);
+}
+
 export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const svgRef = useRef<SVGSVGElement>(null);
+	const nodeSelRef = useRef<NodeSelection | null>(null);
+	const linkSelRef = useRef<LinkSelection | null>(null);
+	const draggedRef = useRef(false);
 	const [size, setSize] = useState({ width: 0, height: 0 });
 	const [kg, setKg] = useState<KnowledgeGraph | null>(null);
 	const [status, setStatus] = useState<'loading' | 'ready' | 'missing' | 'error'>('loading');
 	const [hover, setHover] = useState<{ x: number; y: number; text: string } | null>(null);
+	// Bumped whenever the d3 selections are rebuilt, so the styling effect re-runs.
+	const [graphVersion, setGraphVersion] = useState(0);
+
+	const focusNodeId = useKnowledgeGraphStore((s) => s.focusNodeId);
+	const hops = useKnowledgeGraphStore((s) => s.hops);
+	const topK = useKnowledgeGraphStore((s) => s.topK);
+	const focusNode = useKnowledgeGraphStore((s) => s.focusNode);
+	const setHops = useKnowledgeGraphStore((s) => s.setHops);
+	const setTopK = useKnowledgeGraphStore((s) => s.setTopK);
+	const clearFocus = useKnowledgeGraphStore((s) => s.clearFocus);
+	const setBridgePayload = useKnowledgeGraphStore((s) => s.setBridgePayload);
+	const focusNodeIds = useKnowledgeGraphStore((s) => s.focusNodeIds);
+	const nodeScores = useKnowledgeGraphStore((s) => s.nodeScores);
+	const ledger = useKnowledgeGraphStore((s) => s.ledger);
+	const paragraphs = useDocumentStore((s) => s.paragraphs);
+	const nodesById = useMemo(() => new Map(paragraphs.map((n) => [n.id, n])), [paragraphs]);
 
 	// Fetch the pre-generated KG for the current document.
 	useEffect(() => {
 		if (!docId) return;
 		let cancelled = false;
-		setStatus('loading');
-		setKg(null);
-		fetchKnowledgeGraph(docId)
-			.then((graph) => {
+		clearFocus();
+
+		const load = async () => {
+			setStatus('loading');
+			setKg(null);
+			try {
+				const graph = await fetchKnowledgeGraph(docId);
 				if (cancelled) return;
 				if (!graph) {
 					setStatus('missing');
@@ -125,14 +230,16 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				}
 				setKg(graph);
 				setStatus('ready');
-			})
-			.catch(() => {
+			} catch {
 				if (!cancelled) setStatus('error');
-			});
+			}
+		};
+		void load();
+
 		return () => {
 			cancelled = true;
 		};
-	}, [docId]);
+	}, [docId, clearFocus]);
 
 	// Track container size so the graph fills the (resizable) panel.
 	useEffect(() => {
@@ -147,8 +254,26 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	}, []);
 
 	const graph = useMemo(() => (kg ? buildGraph(kg) : null), [kg]);
+	const focusedNode = useMemo(
+		() => graph?.nodes.find((n) => n.id === focusNodeId) ?? null,
+		[graph, focusNodeId]
+	);
+	const isPartyFocus = focusedNode?.kind === 'party';
 
-	// d3-force simulation + render.
+	// The bright set comes from the derived payload (party top-K or neighborhood).
+	const highlightIds = useMemo<Set<string> | null>(
+		() => (focusNodeIds.length > 0 ? new Set(focusNodeIds) : null),
+		[focusNodeIds]
+	);
+
+	// Derive the bridge payload (anchor + related paragraphs + entity spans +
+	// deontic rail + ledger) and hand it to the document viewer.
+	useEffect(() => {
+		if (!kg || !focusNodeId) return;
+		setBridgePayload(buildKnowledgeGraphBridge(kg, focusNodeId, hops, topK, nodesById));
+	}, [kg, focusNodeId, hops, topK, nodesById, setBridgePayload]);
+
+	// d3-force simulation + render. Rebuilds only when the graph or size changes.
 	useEffect(() => {
 		if (!graph || !svgRef.current || size.width === 0 || size.height === 0) return;
 		const { width, height } = size;
@@ -165,6 +290,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			.scaleExtent([0.2, 4])
 			.on('zoom', (event) => root.attr('transform', event.transform.toString()));
 		svg.call(zoom).on('dblclick.zoom', null);
+		svg.on('click', () => clearFocus());
 
 		const link = root
 			.append('g')
@@ -184,7 +310,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			.join('circle')
 			.attr('r', (d) => d.radius)
 			.attr('fill', (d) => nodeColor(d))
-			.attr('cursor', 'grab');
+			.attr('cursor', 'pointer');
 
 		node
 			.on('mouseenter', (event: MouseEvent, d) => {
@@ -203,9 +329,16 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 					text: d.title,
 				});
 			})
-			.on('mouseleave', () => setHover(null));
+			.on('mouseleave', () => setHover(null))
+			.on('click', (event: MouseEvent, d) => {
+				event.stopPropagation();
+				if (draggedRef.current) return; // ignore the click that ends a drag
+				focusNode(d.id);
+			});
 
-		// More breathing room the bigger the graph: stronger repulsion + longer links.
+		nodeSelRef.current = node;
+		linkSelRef.current = link;
+
 		const chargeStrength = -220 - nodes.length * 1.5;
 
 		const simulation = d3
@@ -227,7 +360,6 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				d3.forceCollide<SimNode>().radius((d) => d.radius + 7)
 			);
 
-		// After the layout settles, zoom/pan to fit the whole graph in view.
 		const fitToView = () => {
 			const pad = 24;
 			const xs = nodes.map((n) => n.x ?? 0);
@@ -260,11 +392,13 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		const drag = d3
 			.drag<SVGCircleElement, SimNode>()
 			.on('start', (event, d) => {
+				draggedRef.current = false;
 				if (!event.active) simulation.alphaTarget(0.3).restart();
 				d.fx = d.x;
 				d.fy = d.y;
 			})
 			.on('drag', (event, d) => {
+				draggedRef.current = true;
 				d.fx = event.x;
 				d.fy = event.y;
 			})
@@ -275,10 +409,52 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			});
 		node.call(drag);
 
+		setGraphVersion((v) => v + 1);
+
 		return () => {
 			simulation.stop();
+			nodeSelRef.current = null;
+			linkSelRef.current = null;
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [graph, size]);
+
+	// Restyle (highlight / dim / size-by-attention) without rebuilding the sim.
+	useEffect(() => {
+		const node = nodeSelRef.current;
+		const link = linkSelRef.current;
+		if (!node || !link) return;
+
+		if (!highlightIds) {
+			node
+				.attr('opacity', 1)
+				.attr('stroke', '#fff')
+				.attr('stroke-width', 1.2)
+				.attr('r', (d) => d.radius);
+			link.attr('stroke-opacity', 0.8);
+			return;
+		}
+
+		const radiusFor = (d: SimNode): number => {
+			if (!highlightIds.has(d.id)) return d.radius;
+			const score = nodeScores[d.id];
+			// Attention-scaled radius for party focus; otherwise a light emphasis.
+			if (score != null) return d.radius * (0.7 + 1.7 * score);
+			return d.id === focusNodeId ? d.radius * 1.55 : d.radius;
+		};
+
+		node
+			.attr('opacity', (d) => (highlightIds.has(d.id) ? 1 : DIMMED_NODE_OPACITY))
+			.attr('stroke', (d) => (d.id === focusNodeId ? '#0f172a' : '#fff'))
+			.attr('stroke-width', (d) => (d.id === focusNodeId ? 2.6 : highlightIds.has(d.id) ? 1.5 : 1))
+			.attr('r', radiusFor);
+
+		link.attr('stroke-opacity', (d) => {
+			const source = typeof d.source === 'string' ? d.source : (d.source as SimNode).id;
+			const target = typeof d.target === 'string' ? d.target : (d.target as SimNode).id;
+			return highlightIds.has(source) && highlightIds.has(target) ? 0.95 : DIMMED_LINK_OPACITY;
+		});
+	}, [graphVersion, highlightIds, focusNodeId, nodeScores]);
 
 	const counts = kg
 		? {
@@ -330,8 +506,8 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				)}
 				{status === 'missing' && (
 					<div className="flex h-full items-center justify-center px-6 text-center text-sm text-muted-foreground">
-						No knowledge graph generated for this document yet. Build it with the
-						notebook (notebooks/KG/build_kg.ipynb) into infra/json/kg/.
+						No knowledge graph generated for this document yet. Build it with the notebook
+						(notebooks/KG/build_kg.ipynb) into infra/json/kg/.
 					</div>
 				)}
 				{status === 'error' && (
@@ -341,6 +517,68 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				)}
 				{status === 'ready' && (
 					<>
+						{focusedNode && (
+							<div className="absolute left-3 top-3 z-10 flex items-center gap-1.5 rounded-md border border-border bg-popover/95 px-2 py-1 text-2xs text-popover-foreground shadow-sm backdrop-blur">
+								<span className="max-w-[160px] truncate font-medium" title={focusedNode.label}>
+									{focusedNode.label}
+								</span>
+								{isPartyFocus ? (
+									<>
+										<span className="text-muted-foreground">· top {topK}</span>
+										<button
+											type="button"
+											aria-label="Fewer clauses"
+											disabled={topK <= MIN_KG_TOP_K}
+											onClick={() => setTopK((k) => k - KG_TOP_K_STEP_SIZE)}
+											className="flex h-4 w-4 items-center justify-center rounded border border-border leading-none hover:bg-muted disabled:opacity-40"
+										>
+											−
+										</button>
+										<button
+											type="button"
+											aria-label="More clauses"
+											disabled={topK >= MAX_KG_TOP_K}
+											onClick={() => setTopK((k) => k + KG_TOP_K_STEP_SIZE)}
+											className="flex h-4 w-4 items-center justify-center rounded border border-border leading-none hover:bg-muted disabled:opacity-40"
+										>
+											+
+										</button>
+									</>
+								) : (
+									<>
+										<span className="text-muted-foreground">· {hops}-hop</span>
+										<button
+											type="button"
+											aria-label="Fewer hops"
+											disabled={hops <= 0}
+											onClick={() => setHops((h) => h - 1)}
+											className="flex h-4 w-4 items-center justify-center rounded border border-border leading-none hover:bg-muted disabled:opacity-40"
+										>
+											−
+										</button>
+										<button
+											type="button"
+											aria-label="More hops"
+											disabled={hops >= MAX_KG_HOPS}
+											onClick={() => setHops((h) => h + 1)}
+											className="flex h-4 w-4 items-center justify-center rounded border border-border leading-none hover:bg-muted disabled:opacity-40"
+										>
+											+
+										</button>
+									</>
+								)}
+								<button
+									type="button"
+									onClick={() => clearFocus()}
+									className="rounded border border-border px-1.5 leading-none hover:bg-muted"
+								>
+									Clear
+								</button>
+							</div>
+						)}
+
+						{ledger && <LedgerCard ledger={ledger} onSelectClause={(id) => focusNode(id)} />}
+
 						<svg ref={svgRef} className="h-full w-full" />
 						{hover && (
 							<div

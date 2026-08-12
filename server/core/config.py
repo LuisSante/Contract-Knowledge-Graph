@@ -28,7 +28,7 @@ class Settings(BaseSettings):
     LLM_MAX_RETRIES: int = 2
 
     SECRET_KEY: str = "dev-insecure-change-me"
-    DEBUG: bool = True
+    DEBUG: bool = False
     ALLOWED_HOSTS: list[str] = ["localhost", "127.0.0.1"]
 
     @field_validator("DEBUG", mode="before")

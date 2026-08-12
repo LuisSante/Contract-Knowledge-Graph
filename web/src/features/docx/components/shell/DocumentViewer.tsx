@@ -36,6 +36,9 @@ interface DocumentViewerProps {
 	relatedBridgeActive: boolean;
 	selectedParagraph: ParagraphNode | null;
 	relatedBridgeParagraphs: RelatedParagraph[];
+	/** Knowledge Graph deontic rail: color by burden/benefit, opacity by attention. */
+	deonticToneByParagraphId?: Record<string, 'burden' | 'benefit'>;
+	deonticScoreByParagraphId?: Record<string, number>;
 }
 
 /**
@@ -57,6 +60,8 @@ export function DocumentViewer({
 	relatedBridgeActive,
 	selectedParagraph,
 	relatedBridgeParagraphs,
+	deonticToneByParagraphId,
+	deonticScoreByParagraphId,
 }: DocumentViewerProps) {
 	const scrollHostRef = useRef<HTMLElement>(null);
 
@@ -156,6 +161,8 @@ export function DocumentViewer({
 						bridge={relatedBridge}
 						onJumpToParagraph={jumpToParagraph}
 						onRailMouseDown={startRailScrub}
+						toneByParagraphId={deonticToneByParagraphId}
+						scoreByParagraphId={deonticScoreByParagraphId}
 					/>
 			)}
 

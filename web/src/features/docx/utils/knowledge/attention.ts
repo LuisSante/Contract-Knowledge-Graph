@@ -81,10 +81,17 @@ function personalizedPageRank(adjacency: number[][], seedIndex: number): number[
 }
 
 export function computePartyAttention(kg: KnowledgeGraph, partyId: string): PartyAttention {
+	// Every node kind takes part in the walk: defined terms, conditions, references
+	// and values are what carry attention across clauses that never cite each other
+	// (a term defined once and used in twelve clauses links all twelve).
 	const ids: string[] = [
 		...kg.parties.map((p) => p.id),
 		...kg.clauses.map((c) => c.id),
+		...kg.definedTerms.map((t) => t.id),
 		...kg.provisions.map((v) => v.id),
+		...kg.conditions.map((c) => c.id),
+		...kg.references.map((r) => r.id),
+		...kg.values.map((v) => v.id),
 	];
 	const index = new Map(ids.map((id, i) => [id, i]));
 	const adjacency: number[][] = ids.map(() => []);
@@ -128,12 +135,20 @@ export function computePartyAttention(kg: KnowledgeGraph, partyId: string): Part
 	for (const [id, s] of clauseScore) nodeScore.set(id, s);
 	nodeScore.set(partyId, 1);
 
-	// Burden/benefit relative to the focused party, from its incident edges.
+	// Burden/benefit relative to the focused party, read from the provision fields
+	// rather than from the edges. The ontology only attaches a provision to the
+	// party that bears it (assigns_obligation_to / grants_right_to), so the edges
+	// alone cannot express "the counterparty owes this to me" — a duty owed *to*
+	// the party is a benefit for it, and that is where most of its upside lives.
 	const toneByProvision = new Map<string, DeonticTone>();
-	for (const edge of kg.edges) {
-		if (edge.target !== partyId) continue;
-		if (edge.type === 'burdens') toneByProvision.set(edge.source, 'burden');
-		else if (edge.type === 'benefits') toneByProvision.set(edge.source, 'benefit');
+	for (const v of kg.provisions) {
+		const isRight = v.type === 'right';
+		if (!isRight && v.obligorPartyId === partyId) {
+			toneByProvision.set(v.id, 'burden'); // the party must comply
+		} else if (v.beneficiaryPartyId === partyId) {
+			// A right it holds, or a duty the counterparty owes it.
+			toneByProvision.set(v.id, 'benefit');
+		}
 	}
 
 	// Ledger over the provisions tied to this party.

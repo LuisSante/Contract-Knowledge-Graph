@@ -13,7 +13,7 @@ import {
 } from '@/stores/knowledgeGraph';
 import { buildKnowledgeGraphBridge } from '@/features/docx/utils/knowledge/kg-bridge';
 import type { KgLedger } from '@/features/docx/utils/knowledge/attention';
-import type { KgNodeKind, KnowledgeGraph, ProvisionType } from '@/types/knowledge';
+import type { KgEdgeType, KgNodeKind, KnowledgeGraph, ProvisionType } from '@/types/knowledge';
 
 interface KnowledgeGraphPanelProps {
 	docId: string;
@@ -29,7 +29,7 @@ type SimNode = d3.SimulationNodeDatum & {
 };
 
 type SimLink = d3.SimulationLinkDatum<SimNode> & {
-	type: 'introduces' | 'burdens' | 'benefits';
+	type: KgEdgeType;
 };
 
 type NodeSelection = d3.Selection<SVGCircleElement, SimNode, SVGGElement, unknown>;
@@ -38,7 +38,11 @@ type LinkSelection = d3.Selection<SVGLineElement, SimLink, SVGGElement, unknown>
 const NODE_COLORS: Record<KgNodeKind, string> = {
 	party: '#7c3aed',
 	clause: '#0ea5e9',
+	definedTerm: '#14b8a6',
 	provision: '#94a3b8',
+	condition: '#a855f7',
+	reference: '#64748b',
+	value: '#eab308',
 };
 
 const PROVISION_COLORS: Record<ProvisionType, string> = {
@@ -47,10 +51,20 @@ const PROVISION_COLORS: Record<ProvisionType, string> = {
 	prohibition: '#f59e0b',
 };
 
-const EDGE_COLORS: Record<SimLink['type'], string> = {
-	introduces: '#cbd5e1',
-	burdens: '#fca5a5',
-	benefits: '#86efac',
+const EDGE_COLORS: Record<KgEdgeType, string> = {
+	// Structure — muted, it is the scaffolding.
+	is_part_of: '#cbd5e1',
+	defines: '#5eead4',
+	// Party attachment — the deontic tone.
+	assigns_obligation_to: '#fca5a5',
+	grants_right_to: '#86efac',
+	// Semantic cross-clause links — what carries impact between clauses.
+	uses: '#7dd3fc',
+	references: '#94a3b8',
+	depends_on: '#c084fc',
+	supersedes: '#fb923c',
+	modifies: '#fbbf24',
+	contradicts: '#e11d48',
 };
 
 const NODE_LEGEND: Array<{ color: string; label: string }> = [
@@ -59,12 +73,21 @@ const NODE_LEGEND: Array<{ color: string; label: string }> = [
 	{ color: PROVISION_COLORS.obligation, label: 'Obligation' },
 	{ color: PROVISION_COLORS.right, label: 'Right' },
 	{ color: PROVISION_COLORS.prohibition, label: 'Prohibition' },
+	{ color: NODE_COLORS.definedTerm, label: 'Defined term' },
+	{ color: NODE_COLORS.condition, label: 'Condition' },
+	{ color: NODE_COLORS.reference, label: 'Reference' },
+	{ color: NODE_COLORS.value, label: 'Value' },
 ];
 
 const EDGE_LEGEND: Array<{ color: string; label: string }> = [
-	{ color: EDGE_COLORS.introduces, label: 'introduces (clause → provision)' },
-	{ color: EDGE_COLORS.burdens, label: 'burdens (provision → party)' },
-	{ color: EDGE_COLORS.benefits, label: 'benefits (provision → party)' },
+	{ color: EDGE_COLORS.assigns_obligation_to, label: 'assigns obligation to (→ party)' },
+	{ color: EDGE_COLORS.grants_right_to, label: 'grants right to (→ party)' },
+	{ color: EDGE_COLORS.depends_on, label: 'depends on (gated by a clause)' },
+	{ color: EDGE_COLORS.references, label: 'references (neutral mention)' },
+	{ color: EDGE_COLORS.uses, label: 'uses (→ defined term)' },
+	{ color: EDGE_COLORS.defines, label: 'defines (clause → term)' },
+	{ color: EDGE_COLORS.is_part_of, label: 'is part of (containment)' },
+	{ color: EDGE_COLORS.supersedes, label: 'supersedes / modifies' },
 ];
 
 const DIMMED_NODE_OPACITY = 0.1;
@@ -99,14 +122,52 @@ function buildGraph(kg: KnowledgeGraph): { nodes: SimNode[]; links: SimLink[] } 
 			radius: 8,
 		});
 	}
+	for (const term of kg.definedTerms) {
+		nodes.push({
+			id: term.id,
+			kind: 'definedTerm',
+			label: term.term,
+			title: `TERM ${term.term}${term.definition ? ` — ${term.definition}` : ''}`,
+			radius: 7,
+		});
+	}
 	for (const provision of kg.provisions) {
 		nodes.push({
 			id: provision.id,
 			kind: 'provision',
 			provisionType: provision.type,
-			label: provision.type,
+			label: provision.action || provision.type,
 			title: `${provision.type.toUpperCase()}: ${provision.summary}`,
 			radius: 5.5,
+		});
+	}
+	for (const condition of kg.conditions) {
+		nodes.push({
+			id: condition.id,
+			kind: 'condition',
+			label: condition.operator || 'IF',
+			title: `${condition.operator || 'IF'}: ${condition.trigger}`,
+			radius: 4.5,
+		});
+	}
+	for (const reference of kg.references) {
+		const label = [reference.name, reference.citation].filter(Boolean).join(' ');
+		nodes.push({
+			id: reference.id,
+			kind: 'reference',
+			label: reference.name,
+			title: `REFERENCE: ${label}`,
+			radius: 4.5,
+		});
+	}
+	for (const value of kg.values) {
+		const label = [value.amount, value.unit].filter(Boolean).join(' ');
+		nodes.push({
+			id: value.id,
+			kind: 'value',
+			label,
+			title: `${value.valueType || 'VALUE'}: ${label}`,
+			radius: 4.5,
 		});
 	}
 

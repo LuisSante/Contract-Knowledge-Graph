@@ -5,11 +5,12 @@ import type { KnowledgeGraphBridgePayload } from '@/stores/knowledgeGraph';
 import { computePartyAttention, type DeonticTone } from '@/features/docx/utils/knowledge/attention';
 
 
-type EntityKind = 'party' | 'clause' | ProvisionType;
+type EntityKind = 'party' | 'clause' | 'definedTerm' | ProvisionType;
 
 const KIND_COLORS: Record<EntityKind, { color: string; soft: string }> = {
 	party: { color: '#7c3aed', soft: 'rgba(124, 58, 237, 0.16)' },
 	clause: { color: '#0ea5e9', soft: 'rgba(14, 165, 233, 0.16)' },
+	definedTerm: { color: '#14b8a6', soft: 'rgba(20, 184, 166, 0.16)' },
 	obligation: { color: '#ef4444', soft: 'rgba(239, 68, 68, 0.16)' },
 	right: { color: '#22c55e', soft: 'rgba(34, 197, 94, 0.16)' },
 	prohibition: { color: '#f59e0b', soft: 'rgba(245, 158, 11, 0.16)' },
@@ -92,6 +93,7 @@ export function buildKnowledgeGraphBridge(
 	const partyById = new Map(kg.parties.map((p) => [p.id, p]));
 	const clauseById = new Map(kg.clauses.map((c) => [c.id, c]));
 	const provisionById = new Map(kg.provisions.map((p) => [p.id, p]));
+	const termById = new Map(kg.definedTerms.map((t) => [t.id, t]));
 
 	const enumOf = (pid: string): number =>
 		nodesById.get(pid)?.paragraph_enum ?? Number(pid.match(/-p-(\d+)$/)?.[1] ?? '0');
@@ -189,6 +191,12 @@ export function buildKnowledgeGraphBridge(
 		if (provision) {
 			for (const pid of provision.paragraphIds) paragraphSet.add(pid);
 			if (provision.text) add(provision.text, `kg-${id}`, provision.type);
+			continue;
+		}
+		const term = termById.get(id);
+		if (term) {
+			for (const pid of term.paragraphIds) paragraphSet.add(pid);
+			add(term.term, `kg-${id}`, 'definedTerm');
 		}
 	}
 

@@ -233,8 +233,11 @@ function LedgerCard({
 						>
 							<span className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
 								<span
-									className="block h-full rounded-full bg-primary"
-									style={{ width: `${Math.max(6, clause.score * 100)}%` }}
+									className="block h-full rounded-full"
+									style={{
+										width: `${Math.max(6, clause.score * 100)}%`,
+										backgroundColor: clause.tone === 'burden' ? '#ef4444' : '#22c55e',
+									}}
 								/>
 							</span>
 							<span className="w-20 truncate">{clause.label}</span>

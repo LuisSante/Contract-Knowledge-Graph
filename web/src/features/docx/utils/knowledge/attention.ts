@@ -1,15 +1,10 @@
 import type { KnowledgeGraph, ProvisionType } from '@/types/knowledge';
 
 /**
- * Party-centric attention score for the deontic KG.
+ * Party-centric attention over the deontic KG.
  *
- *   attention(v | party) = PPR_party(v) × severity(type(v))
- *
- * PPR_party is Personalized PageRank restarted on the focused party (importance
- * *relative to that party*, so far-away provisions decay), and severity encodes
- * the deontic weight (a prohibition on the party weighs more than a right). The
- * clause score aggregates its provisions. Everything is normalized to 0..1 for
- * visual encoding (node size, rail opacity, the impact ledger).
+ *   magnitude(v|P) = PPR_P(v) · severity(type)     unsigned, every provision — visual weight
+ *   impact(v|P)    = magnitude · sign(tone(v,P))   signed, P's provisions only — the ledger
  */
 
 export type DeonticTone = 'burden' | 'benefit';
@@ -17,7 +12,11 @@ export type DeonticTone = 'burden' | 'benefit';
 export interface KgLedgerClause {
 	id: string;
 	label: string;
+	/** Unsigned 0..1, for the bar width. */
 	score: number;
+	/** Signed -1..1: negative costs the party. */
+	impact: number;
+	tone: DeonticTone;
 }
 
 export interface KgLedger {
@@ -29,13 +28,14 @@ export interface KgLedger {
 	/** Severity-weighted totals — the diverging bar. */
 	burdenWeight: number;
 	benefitWeight: number;
+	/** Ranked by |impact|. */
 	topClauses: KgLedgerClause[];
 }
 
 export interface PartyAttention {
-	/** Normalized 0..1 attention per provision. */
+	/** Normalized 0..1 magnitude per provision. */
 	provisionScore: Map<string, number>;
-	/** Normalized 0..1 attention per clause. */
+	/** Normalized 0..1 magnitude per clause. */
 	clauseScore: Map<string, number>;
 	/** Normalized 0..1 per node (provisions + clauses; party = 1), for node sizing. */
 	nodeScore: Map<string, number>;
@@ -44,14 +44,44 @@ export interface PartyAttention {
 	ledger: KgLedger;
 }
 
+/** Deontic weight of a provision type. */
 const SEVERITY: Record<ProvisionType, number> = {
 	prohibition: 1.0,
 	obligation: 0.7,
 	right: 0.3,
 };
 
+const SIGN: Record<DeonticTone, number> = { burden: -1, benefit: 1 };
+
 const RESTART = 0.15;
 const ITERATIONS = 80;
+const TOP_CLAUSES = 5;
+
+/** Every node id in the graph, in a stable order. */
+function graphNodeIds(kg: KnowledgeGraph): string[] {
+	return [
+		...kg.parties.map((p) => p.id),
+		...kg.clauses.map((c) => c.id),
+		...kg.definedTerms.map((t) => t.id),
+		...kg.provisions.map((v) => v.id),
+		...kg.conditions.map((c) => c.id),
+		...kg.references.map((r) => r.id),
+		...kg.values.map((v) => v.id),
+	];
+}
+
+/** Undirected adjacency list over every edge whose endpoints are known. */
+function buildAdjacency(kg: KnowledgeGraph, index: Map<string, number>): number[][] {
+	const adjacency: number[][] = Array.from({ length: index.size }, () => []);
+	for (const edge of kg.edges) {
+		const source = index.get(edge.source);
+		const target = index.get(edge.target);
+		if (source == null || target == null) continue;
+		adjacency[source].push(target);
+		adjacency[target].push(source);
+	}
+	return adjacency;
+}
 
 /** Personalized PageRank restarted on `seedIndex` over an undirected graph. */
 function personalizedPageRank(adjacency: number[][], seedIndex: number): number[] {
@@ -72,7 +102,7 @@ function personalizedPageRank(adjacency: number[][], seedIndex: number): number[
 			const share = ((1 - RESTART) * rank[j]) / degree;
 			for (const neighbor of adjacency[j]) next[neighbor] += share;
 		}
-		// Restart mass + dangling mass both fall back onto the seed.
+		// Restart + dangling mass fall back onto the seed.
 		const reinjected = RESTART + (1 - RESTART) * dangling;
 		for (let i = 0; i < n; i += 1) next[i] += reinjected * restart[i];
 		rank = next;
@@ -80,108 +110,101 @@ function personalizedPageRank(adjacency: number[][], seedIndex: number): number[
 	return rank;
 }
 
-export function computePartyAttention(kg: KnowledgeGraph, partyId: string): PartyAttention {
-	// Every node kind takes part in the walk: defined terms, conditions, references
-	// and values are what carry attention across clauses that never cite each other
-	// (a term defined once and used in twelve clauses links all twelve).
-	const ids: string[] = [
-		...kg.parties.map((p) => p.id),
-		...kg.clauses.map((c) => c.id),
-		...kg.definedTerms.map((t) => t.id),
-		...kg.provisions.map((v) => v.id),
-		...kg.conditions.map((c) => c.id),
-		...kg.references.map((r) => r.id),
-		...kg.values.map((v) => v.id),
-	];
-	const index = new Map(ids.map((id, i) => [id, i]));
-	const adjacency: number[][] = ids.map(() => []);
-	for (const edge of kg.edges) {
-		const source = index.get(edge.source);
-		const target = index.get(edge.target);
-		if (source == null || target == null) continue;
-		adjacency[source].push(target);
-		adjacency[target].push(source);
+/** Tone relative to the focused party, from the obligor/beneficiary fields. Others are omitted. */
+function classifyTone(kg: KnowledgeGraph, partyId: string): Map<string, DeonticTone> {
+	const tone = new Map<string, DeonticTone>();
+	for (const v of kg.provisions) {
+		const isRight = v.type === 'right';
+		if (!isRight && v.obligorPartyId === partyId) {
+			tone.set(v.id, 'burden');
+		} else if (v.beneficiaryPartyId === partyId) {
+			tone.set(v.id, 'benefit'); // a right it holds, or a duty owed to it
+		}
 	}
+	return tone;
+}
 
-	const rank = personalizedPageRank(adjacency, index.get(partyId) ?? -1);
+/** Scale a map so its largest absolute value becomes 1, preserving sign. */
+function normalize(values: Map<string, number>): Map<string, number> {
+	let peak = 0;
+	for (const value of values.values()) peak = Math.max(peak, Math.abs(value));
+	if (peak <= 0) return new Map(values);
+	return new Map([...values].map(([id, value]) => [id, value / peak] as const));
+}
 
-	const provisionById = new Map(kg.provisions.map((v) => [v.id, v]));
+export function computePartyAttention(kg: KnowledgeGraph, partyId: string): PartyAttention {
+	// 1. Walk the graph from the focused party.
+	const ids = graphNodeIds(kg);
+	const index = new Map(ids.map((id, i) => [id, i]));
+	const rank = personalizedPageRank(buildAdjacency(kg, index), index.get(partyId) ?? -1);
 
-	// Raw attention = PPR × severity.
-	const provisionAttention = new Map<string, number>();
+	// 2. Which provisions concern this party.
+	const toneByProvision = classifyTone(kg, partyId);
+
+	// 3. Magnitude for all; impact only where there is a tone.
+	const provisionMagnitude = new Map<string, number>();
+	const provisionImpact = new Map<string, number>();
 	for (const v of kg.provisions) {
 		const i = index.get(v.id);
 		if (i == null) continue;
-		provisionAttention.set(v.id, rank[i] * SEVERITY[v.type]);
-	}
-	const clauseAttention = new Map<string, number>();
-	for (const v of kg.provisions) {
-		if (!v.clauseId) continue;
-		clauseAttention.set(
-			v.clauseId,
-			(clauseAttention.get(v.clauseId) ?? 0) + (provisionAttention.get(v.id) ?? 0)
-		);
+		const magnitude = rank[i] * SEVERITY[v.type];
+		provisionMagnitude.set(v.id, magnitude);
+		const tone = toneByProvision.get(v.id);
+		if (tone) provisionImpact.set(v.id, magnitude * SIGN[tone]);
 	}
 
-	const maxProvision = Math.max(1e-9, ...provisionAttention.values());
-	const maxClause = Math.max(1e-9, ...clauseAttention.values());
-	const provisionScore = new Map(
-		[...provisionAttention].map(([id, s]) => [id, s / maxProvision] as const)
-	);
-	const clauseScore = new Map([...clauseAttention].map(([id, s]) => [id, s / maxClause] as const));
+	// 4. Roll up to the clause.
+	const clauseMagnitude = new Map<string, number>();
+	const clauseImpact = new Map<string, number>();
+	for (const v of kg.provisions) {
+		if (!v.clauseId) continue;
+		clauseMagnitude.set(v.clauseId, (clauseMagnitude.get(v.clauseId) ?? 0) + (provisionMagnitude.get(v.id) ?? 0));
+		const impact = provisionImpact.get(v.id);
+		if (impact != null) clauseImpact.set(v.clauseId, (clauseImpact.get(v.clauseId) ?? 0) + impact);
+	}
+
+	// 5. Each quantity against its own peak.
+	const provisionScore = normalize(provisionMagnitude);
+	const clauseScore = normalize(clauseMagnitude);
+	const clauseImpactScore = normalize(clauseImpact);
 
 	const nodeScore = new Map<string, number>();
 	for (const [id, s] of provisionScore) nodeScore.set(id, s);
 	for (const [id, s] of clauseScore) nodeScore.set(id, s);
 	nodeScore.set(partyId, 1);
 
-	// Burden/benefit relative to the focused party, read from the provision fields
-	// rather than from the edges. The ontology only attaches a provision to the
-	// party that bears it (assigns_obligation_to / grants_right_to), so the edges
-	// alone cannot express "the counterparty owes this to me" — a duty owed *to*
-	// the party is a benefit for it, and that is where most of its upside lives.
-	const toneByProvision = new Map<string, DeonticTone>();
-	for (const v of kg.provisions) {
-		const isRight = v.type === 'right';
-		if (!isRight && v.obligorPartyId === partyId) {
-			toneByProvision.set(v.id, 'burden'); // the party must comply
-		} else if (v.beneficiaryPartyId === partyId) {
-			// A right it holds, or a duty the counterparty owes it.
-			toneByProvision.set(v.id, 'benefit');
-		}
-	}
-
-	// Ledger over the provisions tied to this party.
+	// 6. Deontic tallies.
+	const provisionById = new Map(kg.provisions.map((v) => [v.id, v]));
 	let obligations = 0;
 	let rights = 0;
 	let prohibitions = 0;
 	let burdenWeight = 0;
 	let benefitWeight = 0;
-	const partyClauseScore = new Map<string, number>();
 	for (const [provisionId, tone] of toneByProvision) {
 		const v = provisionById.get(provisionId);
 		if (!v) continue;
 		if (v.type === 'obligation') obligations += 1;
 		else if (v.type === 'right') rights += 1;
-		else if (v.type === 'prohibition') prohibitions += 1;
+		else prohibitions += 1;
 		if (tone === 'burden') burdenWeight += SEVERITY[v.type];
 		else benefitWeight += SEVERITY[v.type];
-		if (v.clauseId) {
-			partyClauseScore.set(
-				v.clauseId,
-				(partyClauseScore.get(v.clauseId) ?? 0) + (provisionAttention.get(v.id) ?? 0)
-			);
-		}
 	}
 
+	// 7. Heaviest clauses.
 	const clauseLabel = (id: string): string => {
-		const c = kg.clauses.find((clause) => clause.id === id);
-		return c?.ref || c?.heading || id;
+		const clause = kg.clauses.find((c) => c.id === id);
+		return clause?.ref || clause?.heading || id;
 	};
-	const topClauses: KgLedgerClause[] = [...partyClauseScore]
-		.sort((a, b) => b[1] - a[1])
-		.slice(0, 5)
-		.map(([id, s]) => ({ id, label: clauseLabel(id), score: s / maxClause }));
+	const topClauses: KgLedgerClause[] = [...clauseImpactScore]
+		.sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]))
+		.slice(0, TOP_CLAUSES)
+		.map(([id, impact]) => ({
+			id,
+			label: clauseLabel(id),
+			score: Math.abs(impact),
+			impact,
+			tone: impact < 0 ? ('burden' as const) : ('benefit' as const),
+		}));
 
 	const party = kg.parties.find((p) => p.id === partyId);
 	const ledger: KgLedger = {

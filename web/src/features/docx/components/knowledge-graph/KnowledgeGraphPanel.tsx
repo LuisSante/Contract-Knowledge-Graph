@@ -13,11 +13,21 @@ import {
 } from '@/stores/knowledgeGraph';
 import { buildKnowledgeGraphBridge } from '@/features/docx/utils/knowledge/kg-bridge';
 import type { KgLedger } from '@/features/docx/utils/knowledge/attention';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { KgEdgeType, KgNodeKind, KnowledgeGraph, ProvisionType } from '@/types/knowledge';
 
 interface KnowledgeGraphPanelProps {
 	docId: string;
 }
+
+/**
+ * `parties` starts from the handful of party nodes and only expands the subgraph
+ * once one is picked; `general` is the whole graph at once.
+ */
+type GraphView = 'parties' | 'general';
+
+/** Parties carry the whole canvas on the entry view, so they get drawn larger. */
+const PARTY_ENTRY_RADIUS = 24;
 
 type SimNode = d3.SimulationNodeDatum & {
 	id: string;
@@ -259,6 +269,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const [kg, setKg] = useState<KnowledgeGraph | null>(null);
 	const [status, setStatus] = useState<'loading' | 'ready' | 'missing' | 'error'>('loading');
 	const [hover, setHover] = useState<{ x: number; y: number; text: string } | null>(null);
+	const [view, setView] = useState<GraphView>('parties');
 	// Bumped whenever the d3 selections are rebuilt, so the styling effect re-runs.
 	const [graphVersion, setGraphVersion] = useState(0);
 
@@ -317,12 +328,35 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		return () => observer.disconnect();
 	}, []);
 
-	const graph = useMemo(() => (kg ? buildGraph(kg) : null), [kg]);
+	const fullGraph = useMemo(() => (kg ? buildGraph(kg) : null), [kg]);
+
+	// On the `parties` view the simulation only ever runs over the visible slice:
+	// the parties themselves, then the induced subgraph of whatever is in focus.
+	const graph = useMemo(() => {
+		if (!fullGraph) return null;
+		if (view === 'general') return fullGraph;
+
+		if (focusNodeIds.length === 0) {
+			const nodes = fullGraph.nodes
+				.filter((n) => n.kind === 'party')
+				.map((n) => ({ ...n, radius: PARTY_ENTRY_RADIUS }));
+			const ids = new Set(nodes.map((n) => n.id));
+			return { nodes, links: fullGraph.links.filter((l) => ids.has(l.source as string) && ids.has(l.target as string)) };
+		}
+
+		const ids = new Set(focusNodeIds);
+		return {
+			nodes: fullGraph.nodes.filter((n) => ids.has(n.id)),
+			links: fullGraph.links.filter((l) => ids.has(l.source as string) && ids.has(l.target as string)),
+		};
+	}, [fullGraph, view, focusNodeIds]);
+
 	const focusedNode = useMemo(
-		() => graph?.nodes.find((n) => n.id === focusNodeId) ?? null,
-		[graph, focusNodeId]
+		() => fullGraph?.nodes.find((n) => n.id === focusNodeId) ?? null,
+		[fullGraph, focusNodeId]
 	);
 	const isPartyFocus = focusedNode?.kind === 'party';
+	const isPartyEntry = view === 'parties' && focusNodeIds.length === 0;
 
 	// The bright set comes from the derived payload (party top-K or neighborhood).
 	const highlightIds = useMemo<Set<string> | null>(
@@ -400,6 +434,19 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				focusNode(d.id);
 			});
 
+		// Party names stay readable at every zoom level — they are the entry point.
+		const label = root
+			.append('g')
+			.attr('pointer-events', 'none')
+			.selectAll<SVGTextElement, SimNode>('text')
+			.data(nodes.filter((d) => d.kind === 'party'))
+			.join('text')
+			.text((d) => d.label)
+			.attr('font-size', 11)
+			.attr('font-weight', 500)
+			.attr('text-anchor', 'middle')
+			.attr('fill', 'currentColor');
+
 		nodeSelRef.current = node;
 		linkSelRef.current = link;
 
@@ -450,6 +497,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				.attr('x2', (d) => (d.target as SimNode).x ?? 0)
 				.attr('y2', (d) => (d.target as SimNode).y ?? 0);
 			node.attr('cx', (d) => d.x ?? 0).attr('cy', (d) => d.y ?? 0);
+			label.attr('x', (d) => d.x ?? 0).attr('y', (d) => (d.y ?? 0) + d.radius + 13);
 		});
 		simulation.on('end', fitToView);
 
@@ -532,33 +580,51 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		<div className="flex h-full flex-col">
 			{status === 'ready' && counts && (
 				<div className="space-y-1.5 border-b border-border/60 px-3 py-2 text-2xs text-muted-foreground">
-					<div>
-						{counts.parties} parties · {counts.clauses} clauses · {counts.provisions} provisions
+					<div className="flex items-center justify-between gap-2">
+						<Tabs value={view} onValueChange={(v) => setView(v as GraphView)}>
+							<TabsList variant="line" className="h-7">
+								<TabsTrigger value="parties" className="text-xs">
+									Parties
+								</TabsTrigger>
+								<TabsTrigger value="general" className="text-xs">
+									General
+								</TabsTrigger>
+							</TabsList>
+						</Tabs>
+						<span>
+							{counts.parties} parties · {counts.clauses} clauses · {counts.provisions} provisions
+						</span>
 					</div>
-					<div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-						<span className="font-medium text-foreground/70">Nodes</span>
-						{NODE_LEGEND.map((item) => (
-							<span key={item.label} className="inline-flex items-center gap-1">
-								<span
-									className="inline-block h-2 w-2 rounded-full"
-									style={{ backgroundColor: item.color }}
-								/>
-								{item.label}
-							</span>
-						))}
-					</div>
-					<div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-						<span className="font-medium text-foreground/70">Edges</span>
-						{EDGE_LEGEND.map((item) => (
-							<span key={item.label} className="inline-flex items-center gap-1">
-								<span
-									className="inline-block h-0.5 w-4 rounded-full"
-									style={{ backgroundColor: item.color }}
-								/>
-								{item.label}
-							</span>
-						))}
-					</div>
+
+					{/* The entry view only draws parties, so the full legend would be noise. */}
+					{!isPartyEntry && (
+						<>
+							<div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+								<span className="font-medium text-foreground/70">Nodes</span>
+								{NODE_LEGEND.map((item) => (
+									<span key={item.label} className="inline-flex items-center gap-1">
+										<span
+											className="inline-block h-2 w-2 rounded-full"
+											style={{ backgroundColor: item.color }}
+										/>
+										{item.label}
+									</span>
+								))}
+							</div>
+							<div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+								<span className="font-medium text-foreground/70">Edges</span>
+								{EDGE_LEGEND.map((item) => (
+									<span key={item.label} className="inline-flex items-center gap-1">
+										<span
+											className="inline-block h-0.5 w-4 rounded-full"
+											style={{ backgroundColor: item.color }}
+										/>
+										{item.label}
+									</span>
+								))}
+							</div>
+						</>
+					)}
 				</div>
 			)}
 
@@ -643,7 +709,13 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 
 						{ledger && <LedgerCard ledger={ledger} onSelectClause={(id) => focusNode(id)} />}
 
-						<svg ref={svgRef} className="h-full w-full" />
+						{isPartyEntry && (
+							<div className="pointer-events-none absolute inset-x-0 bottom-3 z-10 text-center text-2xs text-muted-foreground">
+								Pick a party to expand the clauses that weigh on it.
+							</div>
+						)}
+
+						<svg ref={svgRef} className="h-full w-full text-foreground" />
 						{hover && (
 							<div
 								className="pointer-events-none absolute z-10 max-w-[280px] rounded-md border border-border bg-popover px-2 py-1 text-2xs text-popover-foreground shadow-md"

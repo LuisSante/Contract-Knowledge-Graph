@@ -22,7 +22,7 @@ DEONTIC_KIND_GUIDE: dict[str, str] = {
 
 LLM_RELATION_GUIDE: dict[str, str] = {
     "uses": (
-        "a clause or provision invokes a defined term. target = the exact term string "
+        "a clause or statement invokes a defined term. target = the exact term string "
         "(e.g. \"Confidential Information\")."
     ),
     "references": (

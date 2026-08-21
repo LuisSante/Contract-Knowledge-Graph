@@ -38,7 +38,7 @@ _DEONTIC_MODEL_BY_KIND: dict[str, type[_KgDeontic]] = {
 }
 VALID_RELATION_TYPES = set(RELATION_TYPES)
 
-# Numbering token inside a clause reference: "Section 3.1" -> "3.1".
+# "Section 3.1" -> "3.1", so a reference matches a clause by bare numbering.
 _REF_NUMBER = re.compile(r"\d+(?:[.\-]\d+)*")
 
 
@@ -113,9 +113,6 @@ class _GraphAccumulator:
         self._clause_key_to_id: dict[str, str] = {}
         # Resolution-only index (ref + bare numbering) for cross-chunk targets.
         self._clause_lookup: dict[str, str] = {}
-        # The three deontic collections (no "provision" node). Kept as separate
-        # lists so each is its own node type; `_deontic_kind` tracks a node's
-        # kind by global id for edge derivation.
         self.obligations: list[KgObligation] = []
         self.rights: list[KgRight] = []
         self.prohibitions: list[KgProhibition] = []
@@ -124,19 +121,17 @@ class _GraphAccumulator:
             "right": self.rights,
             "prohibition": self.prohibitions,
         }
-        self._deontic_kind: dict[str, str] = {}  # global id -> kind
-        self._deontic_keys: dict[str, str] = {}  # dedup key -> global id
-        # One counter per kind, so ids read "obligation-1", "prohibition-1", "right-1".
+        self._deontic_keys: dict[str, str] = {}
         self._deontic_seq_by_prefix: dict[str, int] = {}
         self.definedTerms: dict[str, KgDefinedTerm] = {}
-        self._term_key_to_id: dict[str, str] = {}  # normalized term -> global id
+        self._term_key_to_id: dict[str, str] = {}
         self.conditions: list[KgCondition] = []
         self._condition_keys: set[str] = set()
         self.references: list[KgReference] = []
         self._reference_keys: set[str] = set()
         self.values: list[KgValue] = []
         self._value_keys: set[str] = set()
-        # (type, source global id, target string, evidence, paragraph ids)
+        # (rtype, source id, target string, evidence, paragraph ids)
         self._pending_relations: list[tuple[str, str, str, str, list[str]]] = []
         self._party_seq = 0
         self._clause_seq = 0
@@ -171,7 +166,6 @@ class _GraphAccumulator:
             )
 
         party = self.parties[existing_id]
-        # Merge aliases + role + provenance.
         alias_pool = {*party.aliases, *aliases}
         if name and _normalize(name) != _normalize(party.name):
             alias_pool.add(name)
@@ -293,7 +287,6 @@ class _GraphAccumulator:
         self._deontic_seq_by_prefix[prefix] = seq
         global_id = f"{prefix}-{seq}"
         self._deontic_keys[dedup_key] = global_id
-        self._deontic_kind[global_id] = kind
         self._deontic_list_by_kind[kind].append(
             _DEONTIC_MODEL_BY_KIND[kind](
                 id=global_id,
@@ -520,9 +513,6 @@ def _derive_edges(
     return edges
 
 
-# --------------------------------------------------------------------------- #
-# Public entry point
-# --------------------------------------------------------------------------- #
 def build_knowledge_graph(
     paragraphs_data: list[dict[str, Any]],
     provider: LLMProvider,
@@ -587,7 +577,7 @@ def _ingest_chunk(
     index_to_id: dict[int, str],
     accumulator: _GraphAccumulator,
 ) -> None:
-    # Map this chunk's local ids (P1/C1) to resolved global ids.
+    # Map this chunk's local ids to resolved global ids.
     local_party_to_global: dict[str, str] = {}
     for raw_party in payload.get("parties") or []:
         local_id = str(raw_party.get("id") or "").strip()

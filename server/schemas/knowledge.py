@@ -76,7 +76,7 @@ class KgCondition(BaseModel):
     id: str
     trigger: str  # verbatim span stating the prerequisite
     operator: str = ""  # IF | UNLESS | UNTIL | UPON
-    gatesId: str | None = None  # provision or clause the condition gates
+    gatesId: str | None = None  # statement or clause the condition gates
     paragraphIds: list[str] = Field(default_factory=list)
 
 
@@ -84,7 +84,7 @@ class KgReference(BaseModel):
     id: str
     name: str  # "ISO 27001", "GDPR"
     citation: str = ""  # "Article 30"
-    citedById: str | None = None  # clause or provision doing the citing
+    citedById: str | None = None  # clause or statement doing the citing
     paragraphIds: list[str] = Field(default_factory=list)
 
 
@@ -93,7 +93,7 @@ class KgValue(BaseModel):
     valueType: str = ""  # Currency | Percentage | Duration | Quantity
     amount: str = ""
     unit: str = ""
-    quantifiesId: str | None = None  # provision or clause the value belongs to
+    quantifiesId: str | None = None  # statement or clause the value belongs to
     paragraphIds: list[str] = Field(default_factory=list)
 
 

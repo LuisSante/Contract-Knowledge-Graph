@@ -54,8 +54,8 @@ export interface KgDeontic {
 	action: string;
 	summary: string;
 	text: string;
-	obligorPartyId: string | null;
-	beneficiaryPartyId: string | null;
+	burdenPartyId: string | null;
+	benefitPartyId: string | null;
 	clauseId: string | null;
 	deadline: string;
 	frequency: string;

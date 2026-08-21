@@ -1,7 +1,13 @@
 import { create } from 'zustand';
 import type { RelatedParagraph } from '@/types/document';
+import type { DeonticKind } from '@/types/knowledge';
 import type { DocumentEntityHighlight } from '@/features/docx/utils/assistant/entity-marks';
-import type { DeonticTone, KgLedger } from '@/features/docx/utils/knowledge/attention';
+import type {
+	DeonticSeverity,
+	DeonticTone,
+	KgLedger,
+} from '@/features/docx/utils/knowledge/attention';
+import { DEFAULT_SEVERITY } from '@/features/docx/utils/knowledge/attention';
 
 export const MAX_KG_HOPS = 5;
 export const DEFAULT_KG_TOP_K = 10;
@@ -48,10 +54,13 @@ interface KnowledgeGraphState extends KnowledgeGraphBridgePayload {
 	hops: number;
 	/** Number of top-attention statements shown for a party focus. */
 	topK: number;
+	/** User-tunable importance weight per deontic kind (persists across focus). */
+	severity: DeonticSeverity;
 
 	focusNode: (nodeId: string) => void;
 	setHops: (updater: number | ((prev: number) => number)) => void;
 	setTopK: (updater: number | ((prev: number) => number)) => void;
+	setSeverity: (kind: DeonticKind, value: number) => void;
 	clearFocus: () => void;
 	setBridgePayload: (payload: KnowledgeGraphBridgePayload) => void;
 }
@@ -60,9 +69,14 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 	focusNodeId: null,
 	hops: 1,
 	topK: DEFAULT_KG_TOP_K,
+	severity: DEFAULT_SEVERITY,
 	...EMPTY_PAYLOAD,
 
 	focusNode: (focusNodeId) => set({ focusNodeId, hops: 1 }),
+	setSeverity: (kind, value) =>
+		set((state) => ({
+			severity: { ...state.severity, [kind]: Math.min(1, Math.max(0, value)) },
+		})),
 	setHops: (updater) =>
 		set((state) => {
 			const next = typeof updater === 'function' ? updater(state.hops) : updater;

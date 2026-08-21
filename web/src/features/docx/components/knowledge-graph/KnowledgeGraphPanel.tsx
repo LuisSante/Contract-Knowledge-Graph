@@ -14,7 +14,7 @@ import {
 import { buildKnowledgeGraphBridge } from '@/features/docx/utils/knowledge/kg-bridge';
 import type { KgLedger } from '@/features/docx/utils/knowledge/attention';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import type { KgEdgeType, KgNodeKind, KnowledgeGraph } from '@/types/knowledge';
+import type { DeonticKind, KgEdgeType, KgNodeKind, KnowledgeGraph } from '@/types/knowledge';
 import { deonticNodes } from '@/types/knowledge';
 
 interface KnowledgeGraphPanelProps {
@@ -181,6 +181,39 @@ function buildGraph(kg: KnowledgeGraph): { nodes: SimNode[]; links: SimLink[] } 
 	return { nodes, links };
 }
 
+const SEVERITY_ROWS: Array<{ kind: DeonticKind; label: string; color: string }> = [
+	{ kind: 'obligation', label: 'Obligation', color: NODE_COLORS.obligation },
+	{ kind: 'right', label: 'Right', color: NODE_COLORS.right },
+	{ kind: 'prohibition', label: 'Prohibition', color: NODE_COLORS.prohibition },
+];
+
+/** Sliders that reweight each deontic kind; recompute is live via the store. */
+function SeveritySliders() {
+	const severity = useKnowledgeGraphStore((s) => s.severity);
+	const setSeverity = useKnowledgeGraphStore((s) => s.setSeverity);
+	return (
+		<div className="space-y-1 border-t border-border/60 pt-1.5">
+			<div className="font-medium text-foreground/70">Severity weights</div>
+			{SEVERITY_ROWS.map(({ kind, label, color }) => (
+				<label key={kind} className="flex items-center gap-1.5">
+					<span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: color }} />
+					<span className="w-16">{label}</span>
+					<input
+						type="range"
+						min={0}
+						max={1}
+						step={0.05}
+						value={severity[kind]}
+						onChange={(event) => setSeverity(kind, Number(event.target.value))}
+						className="h-1 flex-1 cursor-pointer accent-primary"
+					/>
+					<span className="w-7 text-right tabular-nums">{severity[kind].toFixed(2)}</span>
+				</label>
+			))}
+		</div>
+	);
+}
+
 /** Compact impact ledger for the focused party (burden ↔ benefit + top clauses). */
 function LedgerCard({
 	ledger,
@@ -247,6 +280,8 @@ function LedgerCard({
 					))}
 				</div>
 			)}
+
+			<SeveritySliders />
 		</div>
 	);
 }
@@ -268,6 +303,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const focusNodeId = useKnowledgeGraphStore((s) => s.focusNodeId);
 	const hops = useKnowledgeGraphStore((s) => s.hops);
 	const topK = useKnowledgeGraphStore((s) => s.topK);
+	const severity = useKnowledgeGraphStore((s) => s.severity);
 	const focusNode = useKnowledgeGraphStore((s) => s.focusNode);
 	const setHops = useKnowledgeGraphStore((s) => s.setHops);
 	const setTopK = useKnowledgeGraphStore((s) => s.setTopK);
@@ -360,8 +396,8 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	// deontic rail + ledger) and hand it to the document viewer.
 	useEffect(() => {
 		if (!kg || !focusNodeId) return;
-		setBridgePayload(buildKnowledgeGraphBridge(kg, focusNodeId, hops, topK, nodesById));
-	}, [kg, focusNodeId, hops, topK, nodesById, setBridgePayload]);
+		setBridgePayload(buildKnowledgeGraphBridge(kg, focusNodeId, hops, topK, nodesById, severity));
+	}, [kg, focusNodeId, hops, topK, nodesById, severity, setBridgePayload]);
 
 	// d3-force simulation + render. Rebuilds only when the graph or size changes.
 	useEffect(() => {

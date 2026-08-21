@@ -3,7 +3,11 @@ import { deonticNodes } from '@/types/knowledge';
 import type { Node as ParagraphNode, RelatedParagraph } from '@/types/document';
 import type { DocumentEntityHighlight } from '@/features/docx/utils/assistant/entity-marks';
 import type { KnowledgeGraphBridgePayload } from '@/stores/knowledgeGraph';
-import { computePartyAttention, type DeonticTone } from '@/features/docx/utils/knowledge/attention';
+import {
+	computePartyAttention,
+	type DeonticSeverity,
+	type DeonticTone,
+} from '@/features/docx/utils/knowledge/attention';
 
 
 type EntityKind = 'party' | 'clause' | 'definedTerm' | DeonticKind;
@@ -87,7 +91,8 @@ export function buildKnowledgeGraphBridge(
 	focusNodeId: string | null,
 	hops: number,
 	topK: number,
-	nodesById: Map<string, ParagraphNode>
+	nodesById: Map<string, ParagraphNode>,
+	severity: DeonticSeverity
 ): KnowledgeGraphBridgePayload {
 	if (!focusNodeId) return EMPTY;
 
@@ -107,7 +112,7 @@ export function buildKnowledgeGraphBridge(
 	// ---- Party focus: attention-ranked top-K statements ----------------------
 	if (partyById.has(focusNodeId)) {
 		const party = partyById.get(focusNodeId)!;
-		const attention = computePartyAttention(kg, focusNodeId);
+		const attention = computePartyAttention(kg, focusNodeId, severity);
 
 		const rankedStatements = [...attention.toneByDeontic.keys()]
 			.map((id) => deonticById.get(id))

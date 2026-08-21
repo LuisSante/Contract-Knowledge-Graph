@@ -293,8 +293,8 @@ class _GraphAccumulator:
                 action=action.strip(),
                 summary=summary.strip(),
                 text=text.strip(),
-                obligorPartyId=obligor,
-                beneficiaryPartyId=beneficiary,
+                burdenPartyId=obligor,
+                benefitPartyId=beneficiary,
                 clauseId=clause,
                 deadline=deadline.strip(),
                 frequency=frequency.strip(),
@@ -497,11 +497,11 @@ def _derive_edges(
     # Rights attach to their holder (the beneficiary).
     for right in rights:
         _add(right.id, right.clauseId, "is_part_of")
-        _add(right.id, right.beneficiaryPartyId, "grants_right_to")
+        _add(right.id, right.benefitPartyId, "grants_right_to")
     # A prohibition is an obligation not to act: both attach to the obligor party.
     for statement in (*obligations, *prohibitions):
         _add(statement.id, statement.clauseId, "is_part_of")
-        _add(statement.id, statement.obligorPartyId, "assigns_obligation_to")
+        _add(statement.id, statement.burdenPartyId, "assigns_obligation_to")
     for term in defined_terms:
         _add(term.definedInClauseId, term.id, "defines")
     for condition in conditions:

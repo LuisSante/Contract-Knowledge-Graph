@@ -45,8 +45,10 @@ export interface PartyAttention {
 	ledger: KgLedger;
 }
 
-/** Deontic weight of each kind. */
-const SEVERITY: Record<DeonticKind, number> = {
+/** User-tunable importance weight per deontic kind (the severity sliders). */
+export type DeonticSeverity = Record<DeonticKind, number>;
+
+export const DEFAULT_SEVERITY: DeonticSeverity = {
 	prohibition: 1.0,
 	obligation: 0.7,
 	right: 0.3,
@@ -119,7 +121,11 @@ function normalize(values: Map<string, number>): Map<string, number> {
 	return new Map([...values].map(([id, value]) => [id, value / peak] as const));
 }
 
-export function computePartyAttention(kg: KnowledgeGraph, partyId: string): PartyAttention {
+export function computePartyAttention(
+	kg: KnowledgeGraph,
+	partyId: string,
+	severity: DeonticSeverity = DEFAULT_SEVERITY
+): PartyAttention {
 	const deontic = deonticNodes(kg);
 
 	// 1. Walk the graph from the focused party.
@@ -130,9 +136,9 @@ export function computePartyAttention(kg: KnowledgeGraph, partyId: string): Part
 	// 2. Which statements concern this party (tone from obligor/beneficiary).
 	const toneByDeontic = new Map<string, DeonticTone>();
 	for (const v of deontic) {
-		if (v.kind !== 'right' && v.obligorPartyId === partyId) {
+		if (v.kind !== 'right' && v.burdenPartyId === partyId) {
 			toneByDeontic.set(v.id, 'burden');
-		} else if (v.beneficiaryPartyId === partyId) {
+		} else if (v.benefitPartyId === partyId) {
 			toneByDeontic.set(v.id, 'benefit'); // a right it holds, or a duty owed to it
 		}
 	}
@@ -143,7 +149,7 @@ export function computePartyAttention(kg: KnowledgeGraph, partyId: string): Part
 	for (const v of deontic) {
 		const i = index.get(v.id);
 		if (i == null) continue;
-		const magnitude = rank[i] * SEVERITY[v.kind];
+		const magnitude = rank[i] * severity[v.kind];
 		deonticMagnitude.set(v.id, magnitude);
 		const tone = toneByDeontic.get(v.id);
 		if (tone) deonticImpact.set(v.id, magnitude * SIGN[tone]);
@@ -185,8 +191,8 @@ export function computePartyAttention(kg: KnowledgeGraph, partyId: string): Part
 		if (kind === 'obligation') obligations += 1;
 		else if (kind === 'right') rights += 1;
 		else prohibitions += 1;
-		if (tone === 'burden') burdenWeight += SEVERITY[kind];
-		else benefitWeight += SEVERITY[kind];
+		if (tone === 'burden') burdenWeight += severity[kind];
+		else benefitWeight += severity[kind];
 	}
 
 	// 7. Heaviest clauses.

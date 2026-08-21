@@ -52,8 +52,8 @@ class _KgDeontic(BaseModel):
     action: str = ""  # short verb phrase, e.g. "Pay Invoices"
     summary: str  # short paraphrase of the duty/right/restriction
     text: str = ""  # verbatim span copied from the source paragraph (provenance)
-    obligorPartyId: str | None = None  # party that must comply / is prohibited
-    beneficiaryPartyId: str | None = None  # party that benefits / holds the right
+    burdenPartyId: str | None = None  # party that must comply / is prohibited
+    benefitPartyId: str | None = None  # party that benefits / holds the right
     clauseId: str | None = None
     deadline: str = ""  # "within 30 days of receipt"
     frequency: str = ""  # "once per calendar year"

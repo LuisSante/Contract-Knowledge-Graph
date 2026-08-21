@@ -9,7 +9,7 @@ import { cloneParagraphForCard } from '@/features/docx/utils/docx-engine/clone-p
  * the Svelte `+page.svelte`, without React.
  */
 
-export type RelatedVisualKind = 'reference' | 'similarity';
+export type RelatedVisualKind = 'reference' | 'similarity' | 'plain';
 
 const PARAGRAPH_GAP_PX = 10;
 const STACK_OFFSET_PX = 18;
@@ -80,7 +80,8 @@ export function resolveRelatedVisualKind(related: RelatedParagraph): RelatedVisu
 		related.relationTypes.some((relationType) =>
 			String(relationType).toLowerCase().includes('reference')
 		) || related.references.length > 0;
-	return isReference ? 'reference' : 'reference';
+	// KG bridge sends no relationTypes: those connectors are plain (no label).
+	return isReference ? 'reference' : 'plain';
 }
 
 /** Sorts the related paragraphs prioritizing reference > semantic score > ref count > order. */
@@ -176,7 +177,8 @@ export function computeRelatedBridge({
 			paragraphId: item.node.id,
 			paragraphEnum: item.node.paragraph_enum,
 			relationKind,
-			relationLabel: relationKind === 'similarity' ? 'Similarity' : 'Reference',
+			relationLabel:
+				relationKind === 'similarity' ? 'Similarity' : relationKind === 'reference' ? 'Reference' : '',
 			top: relatedRect.top - hostRect.top,
 			width: relatedRect.width,
 			html: cloneParagraphForCard(relatedElement),

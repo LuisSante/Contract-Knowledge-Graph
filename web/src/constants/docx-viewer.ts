@@ -96,7 +96,8 @@ export const RIGHT_PANEL_TOOLS: Array<{ id: RightPanelTab; label: string }> = [
 	// (the code/hook/panel are kept in features/docx):
 	// { id: 'analysis', label: 'Contradiction Analysis' },
 	// { id: 'redundancy', label: 'Redundancy Analysis' },
-	{ id: 'related', label: 'Related Paragraphs' },
+	// Related Paragraphs hidden while the ContraVis paragraph graph is disabled:
+	// { id: 'related', label: 'Related Paragraphs' },
 	{ id: 'knowledge_graph', label: 'Knowledge Graph' },
 	// Hidden from the rail (the code/hook/panel are kept in features/docx):
 	// { id: 'paragraph_explanation', label: 'Paragraph Explanation' },

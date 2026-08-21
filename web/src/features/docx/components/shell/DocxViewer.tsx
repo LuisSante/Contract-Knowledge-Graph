@@ -195,14 +195,15 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 		selectedParagraphId: selectedParagraph?.id ?? null,
 	});
 
-	// The relations graph is built as soon as the document finishes rendering
-	// (not when opening Related). While it builds, navigation is blocked (below).
-	const { computed: relatedComputed, loading: relatedLoading, recompute: recomputeRelated } = related;
-	useEffect(() => {
-		if (id && viewer.renderEpoch > 0 && !relatedComputed && !relatedLoading) {
-			void recomputeRelated();
-		}
-	}, [id, viewer.renderEpoch, relatedComputed, relatedLoading, recomputeRelated]);
+	// ContraVis paragraph graph disabled for now: the KG has its own bridge and we
+	// don't want the /process embedding compute on load. Re-enable by uncommenting
+	// this effect and restoring graphBlocking below.
+	const { loading: relatedLoading, recompute: recomputeRelated } = related;
+	// useEffect(() => {
+	// 	if (id && viewer.renderEpoch > 0 && !relatedComputed && !relatedLoading) {
+	// 		void recomputeRelated();
+	// 	}
+	// }, [id, viewer.renderEpoch, relatedComputed, relatedLoading, recomputeRelated]);
 
 	// Confirming a paragraph edit (Ctrl/Cmd+Enter) recomputes the graph.
 	useEffect(() => {
@@ -212,10 +213,8 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 		};
 	}, [recomputeRelated]);
 
-	// Global block while the graph builds/recomputes: dimmed document + no
-	// navigation + step animation in the panel. (Released if the render fails.)
-	const graphBlocking =
-		id != null && (!relatedComputed || relatedLoading) && viewer.status !== 'error';
+	// Paragraph graph disabled → nothing to block on.
+	const graphBlocking = false;
 
 	// Contradictions are loaded only on demand: "Saved" (stored) or
 	// "Search" (LLM search). They don't auto-load when the graph is built.

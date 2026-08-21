@@ -89,19 +89,21 @@ export function RelatedBridgeOverlay({
 						/>
 					))}
 
-					{connectors.map((connector, index) => (
-						<span
-							key={`connector-label-${connector.paragraphId}-${index}`}
-							className={`docx-paragraph-explanation-cap-label ${
-								connector.relationKind === 'similarity'
-									? 'docx-paragraph-explanation-cap-label--similarity'
-									: 'docx-paragraph-explanation-cap-label--reference'
-							}`}
-							style={{ left: connector.labelLeftPx, top: connector.relatedCapTopPx }}
-						>
-							{connector.relationLabel}
-						</span>
-					))}
+					{connectors.map((connector, index) =>
+						connector.relationLabel ? (
+							<span
+								key={`connector-label-${connector.paragraphId}-${index}`}
+								className={`docx-paragraph-explanation-cap-label ${
+									connector.relationKind === 'similarity'
+										? 'docx-paragraph-explanation-cap-label--similarity'
+										: 'docx-paragraph-explanation-cap-label--reference'
+								}`}
+								style={{ left: connector.labelLeftPx, top: connector.relatedCapTopPx }}
+							>
+								{connector.relationLabel}
+							</span>
+						) : null
+					)}
 
 					{folds.map((fold, index) => (
 						<svg

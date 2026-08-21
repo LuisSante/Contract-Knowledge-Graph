@@ -191,8 +191,19 @@ const SEVERITY_ROWS: Array<{ kind: DeonticKind; label: string; color: string }> 
 function SeveritySliders() {
 	const severity = useKnowledgeGraphStore((s) => s.severity);
 	const setSeverity = useKnowledgeGraphStore((s) => s.setSeverity);
+	const usePageRank = useKnowledgeGraphStore((s) => s.usePageRank);
+	const setUsePageRank = useKnowledgeGraphStore((s) => s.setUsePageRank);
 	return (
 		<div className="space-y-1 border-t border-border/60 pt-1.5">
+			<label className="flex cursor-pointer items-center justify-between">
+				<span className="font-medium text-foreground/70">Weight by PageRank</span>
+				<input
+					type="checkbox"
+					checked={usePageRank}
+					onChange={(event) => setUsePageRank(event.target.checked)}
+					className="cursor-pointer accent-primary"
+				/>
+			</label>
 			<div className="font-medium text-foreground/70">Severity weights</div>
 			{SEVERITY_ROWS.map(({ kind, label, color }) => (
 				<label key={kind} className="flex items-center gap-1.5">
@@ -214,6 +225,23 @@ function SeveritySliders() {
 	);
 }
 
+function DivergingBar({ label, burdenPct }: { label: string; burdenPct: number }) {
+	return (
+		<div>
+			<div className="flex justify-between text-muted-foreground">
+				<span>{label}</span>
+				<span>
+					{Math.round(burdenPct)}% / {Math.round(100 - burdenPct)}%
+				</span>
+			</div>
+			<div className="flex h-2 w-full overflow-hidden rounded-full bg-muted">
+				<span style={{ width: `${burdenPct}%`, backgroundColor: '#ef4444' }} />
+				<span style={{ width: `${100 - burdenPct}%`, backgroundColor: '#22c55e' }} />
+			</div>
+		</div>
+	);
+}
+
 /** Compact impact ledger for the focused party (burden ↔ benefit + top clauses). */
 function LedgerCard({
 	ledger,
@@ -224,7 +252,11 @@ function LedgerCard({
 }) {
 	const total = ledger.burdenWeight + ledger.benefitWeight;
 	const burdenPct = total > 0 ? (ledger.burdenWeight / total) * 100 : 50;
-	const benefitPct = 100 - burdenPct;
+	const burdenIntensity = ledger.burdenCount > 0 ? ledger.burdenWeight / ledger.burdenCount : 0;
+	const benefitIntensity = ledger.benefitCount > 0 ? ledger.benefitWeight / ledger.benefitCount : 0;
+	const intensityTotal = burdenIntensity + benefitIntensity;
+	const intensityBurdenPct = intensityTotal > 0 ? (burdenIntensity / intensityTotal) * 100 : 50;
+	const maxClauseTotal = Math.max(...ledger.topClauses.map((c) => c.burden + c.benefit), 1e-9);
 
 	return (
 		<div className="absolute right-3 top-3 z-10 w-56 space-y-2 rounded-md border border-border bg-popover/95 p-2.5 text-2xs text-popover-foreground shadow-md backdrop-blur">
@@ -232,15 +264,19 @@ function LedgerCard({
 				{ledger.partyName}
 			</div>
 
-			<div>
-				<div className="mb-0.5 flex justify-between text-muted-foreground">
-					<span>Burden {ledger.burdenWeight.toFixed(1)}</span>
-					<span>Benefit {ledger.benefitWeight.toFixed(1)}</span>
+			<div className="space-y-1">
+				<div className="flex justify-between text-muted-foreground">
+					<span className="inline-flex items-center gap-1">
+						<span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: '#ef4444' }} />
+						Burden
+					</span>
+					<span className="inline-flex items-center gap-1">
+						Benefit
+						<span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: '#22c55e' }} />
+					</span>
 				</div>
-				<div className="flex h-2 w-full overflow-hidden rounded-full bg-muted">
-					<span style={{ width: `${burdenPct}%`, backgroundColor: '#ef4444' }} />
-					<span style={{ width: `${benefitPct}%`, backgroundColor: '#22c55e' }} />
-				</div>
+				<DivergingBar label="Total" burdenPct={burdenPct} />
+				<DivergingBar label="Intensity" burdenPct={intensityBurdenPct} />
 			</div>
 
 			<div className="flex flex-wrap gap-x-3 gap-y-0.5 text-muted-foreground">
@@ -258,26 +294,28 @@ function LedgerCard({
 			{ledger.topClauses.length > 0 && (
 				<div className="space-y-1">
 					<div className="font-medium text-foreground/70">Heaviest clauses</div>
-					{ledger.topClauses.map((clause) => (
-						<button
-							key={clause.id}
-							type="button"
-							onClick={() => onSelectClause(clause.id)}
-							className="flex w-full items-center gap-1.5 text-left hover:text-foreground"
-							title={clause.label}
-						>
-							<span className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
-								<span
-									className="block h-full rounded-full"
-									style={{
-										width: `${Math.max(6, clause.score * 100)}%`,
-										backgroundColor: clause.tone === 'burden' ? '#ef4444' : '#22c55e',
-									}}
-								/>
-							</span>
-							<span className="w-20 truncate">{clause.label}</span>
-						</button>
-					))}
+					{ledger.topClauses.map((clause) => {
+						const clauseTotal = clause.burden + clause.benefit;
+						const lengthPct = Math.max(8, (clauseTotal / maxClauseTotal) * 100);
+						const burdenShare = clauseTotal > 0 ? clause.burden / clauseTotal : 0;
+						return (
+							<button
+								key={clause.id}
+								type="button"
+								onClick={() => onSelectClause(clause.id)}
+								className="flex w-full items-center gap-1.5 text-left hover:text-foreground"
+								title={`${clause.label} — burden ${clause.burden.toFixed(2)} / benefit ${clause.benefit.toFixed(2)}`}
+							>
+								<span className="flex h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
+									<span style={{ width: `${lengthPct * burdenShare}%`, backgroundColor: '#ef4444' }} />
+									<span
+										style={{ width: `${lengthPct * (1 - burdenShare)}%`, backgroundColor: '#22c55e' }}
+									/>
+								</span>
+								<span className="w-20 truncate">{clause.label}</span>
+							</button>
+						);
+					})}
 				</div>
 			)}
 
@@ -304,6 +342,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const hops = useKnowledgeGraphStore((s) => s.hops);
 	const topK = useKnowledgeGraphStore((s) => s.topK);
 	const severity = useKnowledgeGraphStore((s) => s.severity);
+	const usePageRank = useKnowledgeGraphStore((s) => s.usePageRank);
 	const focusNode = useKnowledgeGraphStore((s) => s.focusNode);
 	const setHops = useKnowledgeGraphStore((s) => s.setHops);
 	const setTopK = useKnowledgeGraphStore((s) => s.setTopK);
@@ -396,8 +435,10 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	// deontic rail + ledger) and hand it to the document viewer.
 	useEffect(() => {
 		if (!kg || !focusNodeId) return;
-		setBridgePayload(buildKnowledgeGraphBridge(kg, focusNodeId, hops, topK, nodesById, severity));
-	}, [kg, focusNodeId, hops, topK, nodesById, severity, setBridgePayload]);
+		setBridgePayload(
+			buildKnowledgeGraphBridge(kg, focusNodeId, hops, topK, nodesById, severity, usePageRank)
+		);
+	}, [kg, focusNodeId, hops, topK, nodesById, severity, usePageRank, setBridgePayload]);
 
 	// d3-force simulation + render. Rebuilds only when the graph or size changes.
 	useEffect(() => {

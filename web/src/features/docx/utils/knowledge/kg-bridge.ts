@@ -92,7 +92,8 @@ export function buildKnowledgeGraphBridge(
 	hops: number,
 	topK: number,
 	nodesById: Map<string, ParagraphNode>,
-	severity: DeonticSeverity
+	severity: DeonticSeverity,
+	usePageRank: boolean
 ): KnowledgeGraphBridgePayload {
 	if (!focusNodeId) return EMPTY;
 
@@ -112,7 +113,7 @@ export function buildKnowledgeGraphBridge(
 	// ---- Party focus: attention-ranked top-K statements ----------------------
 	if (partyById.has(focusNodeId)) {
 		const party = partyById.get(focusNodeId)!;
-		const attention = computePartyAttention(kg, focusNodeId, severity);
+		const attention = computePartyAttention(kg, focusNodeId, severity, usePageRank);
 
 		const rankedStatements = [...attention.toneByDeontic.keys()]
 			.map((id) => deonticById.get(id))

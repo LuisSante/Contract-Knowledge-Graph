@@ -56,11 +56,14 @@ interface KnowledgeGraphState extends KnowledgeGraphBridgePayload {
 	topK: number;
 	/** User-tunable importance weight per deontic kind (persists across focus). */
 	severity: DeonticSeverity;
+	/** Weight the impact by Personalized PageRank (structural) vs raw severity. */
+	usePageRank: boolean;
 
 	focusNode: (nodeId: string) => void;
 	setHops: (updater: number | ((prev: number) => number)) => void;
 	setTopK: (updater: number | ((prev: number) => number)) => void;
 	setSeverity: (kind: DeonticKind, value: number) => void;
+	setUsePageRank: (value: boolean) => void;
 	clearFocus: () => void;
 	setBridgePayload: (payload: KnowledgeGraphBridgePayload) => void;
 }
@@ -70,6 +73,7 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 	hops: 1,
 	topK: DEFAULT_KG_TOP_K,
 	severity: DEFAULT_SEVERITY,
+	usePageRank: true,
 	...EMPTY_PAYLOAD,
 
 	focusNode: (focusNodeId) => set({ focusNodeId, hops: 1 }),
@@ -77,6 +81,7 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 		set((state) => ({
 			severity: { ...state.severity, [kind]: Math.min(1, Math.max(0, value)) },
 		})),
+	setUsePageRank: (usePageRank) => set({ usePageRank }),
 	setHops: (updater) =>
 		set((state) => {
 			const next = typeof updater === 'function' ? updater(state.hops) : updater;

@@ -13,11 +13,10 @@ export type DeonticTone = 'burden' | 'benefit';
 export interface KgLedgerClause {
 	id: string;
 	label: string;
-	/** Unsigned 0..1, for the bar width. */
-	score: number;
-	/** Signed -1..1: negative costs the party. */
-	impact: number;
-	tone: DeonticTone;
+	/** Summed magnitude of this clause's provisions that burden the party. */
+	burden: number;
+	/** ...and of the ones that benefit it. */
+	benefit: number;
 }
 
 export interface KgLedger {
@@ -26,10 +25,13 @@ export interface KgLedger {
 	obligations: number;
 	rights: number;
 	prohibitions: number;
-	/** Severity-weighted totals — the diverging bar. */
+	/** Summed magnitude per side — the volume bar. */
 	burdenWeight: number;
 	benefitWeight: number;
-	/** Ranked by |impact|. */
+	/** Count of statements per side — divides the sums into the intensity bar. */
+	burdenCount: number;
+	benefitCount: number;
+	/** Ranked by total involvement (burden + benefit). */
 	topClauses: KgLedgerClause[];
 }
 
@@ -53,8 +55,6 @@ export const DEFAULT_SEVERITY: DeonticSeverity = {
 	obligation: 0.7,
 	right: 0.3,
 };
-
-const SIGN: Record<DeonticTone, number> = { burden: -1, benefit: 1 };
 
 const RESTART = 0.15;
 const ITERATIONS = 80;
@@ -124,14 +124,17 @@ function normalize(values: Map<string, number>): Map<string, number> {
 export function computePartyAttention(
 	kg: KnowledgeGraph,
 	partyId: string,
-	severity: DeonticSeverity = DEFAULT_SEVERITY
+	severity: DeonticSeverity = DEFAULT_SEVERITY,
+	usePageRank = true
 ): PartyAttention {
 	const deontic = deonticNodes(kg);
 
-	// 1. Walk the graph from the focused party.
+	// With PPR off, every node weighs 1, so magnitude = severity — the raw baseline.
 	const ids = graphNodeIds(kg);
 	const index = new Map(ids.map((id, i) => [id, i]));
-	const rank = personalizedPageRank(buildAdjacency(kg, index), index.get(partyId) ?? -1);
+	const rank = usePageRank
+		? personalizedPageRank(buildAdjacency(kg, index), index.get(partyId) ?? -1)
+		: null;
 
 	// 2. Which statements concern this party (tone from obligor/beneficiary).
 	const toneByDeontic = new Map<string, DeonticTone>();
@@ -143,73 +146,76 @@ export function computePartyAttention(
 		}
 	}
 
-	// 3. Magnitude for all; impact only where there is a tone.
+	// 3. Magnitude = weight × severity for every statement.
 	const deonticMagnitude = new Map<string, number>();
-	const deonticImpact = new Map<string, number>();
 	for (const v of deontic) {
 		const i = index.get(v.id);
 		if (i == null) continue;
-		const magnitude = rank[i] * severity[v.kind];
-		deonticMagnitude.set(v.id, magnitude);
-		const tone = toneByDeontic.get(v.id);
-		if (tone) deonticImpact.set(v.id, magnitude * SIGN[tone]);
+		deonticMagnitude.set(v.id, (rank ? rank[i] : 1) * severity[v.kind]);
 	}
 
-	// 4. Roll up to the clause.
+	// 4. Roll up to the clause: total magnitude, plus the burden/benefit split.
 	const clauseMagnitude = new Map<string, number>();
-	const clauseImpact = new Map<string, number>();
+	const clauseBurden = new Map<string, number>();
+	const clauseBenefit = new Map<string, number>();
 	for (const v of deontic) {
 		if (!v.clauseId) continue;
-		clauseMagnitude.set(
-			v.clauseId,
-			(clauseMagnitude.get(v.clauseId) ?? 0) + (deonticMagnitude.get(v.id) ?? 0)
-		);
-		const impact = deonticImpact.get(v.id);
-		if (impact != null) clauseImpact.set(v.clauseId, (clauseImpact.get(v.clauseId) ?? 0) + impact);
+		const magnitude = deonticMagnitude.get(v.id) ?? 0;
+		clauseMagnitude.set(v.clauseId, (clauseMagnitude.get(v.clauseId) ?? 0) + magnitude);
+		const tone = toneByDeontic.get(v.id);
+		if (tone === 'burden') clauseBurden.set(v.clauseId, (clauseBurden.get(v.clauseId) ?? 0) + magnitude);
+		else if (tone === 'benefit')
+			clauseBenefit.set(v.clauseId, (clauseBenefit.get(v.clauseId) ?? 0) + magnitude);
 	}
 
 	// 5. Each quantity against its own peak.
 	const deonticScore = normalize(deonticMagnitude);
 	const clauseScore = normalize(clauseMagnitude);
-	const clauseImpactScore = normalize(clauseImpact);
 
 	const nodeScore = new Map<string, number>();
 	for (const [id, s] of deonticScore) nodeScore.set(id, s);
 	for (const [id, s] of clauseScore) nodeScore.set(id, s);
 	nodeScore.set(partyId, 1);
 
-	// 6. Deontic tallies.
+	// 6. Party-level tallies (counts + the burden/benefit bar).
 	const kindById = new Map(deontic.map((v) => [v.id, v.kind]));
 	let obligations = 0;
 	let rights = 0;
 	let prohibitions = 0;
 	let burdenWeight = 0;
 	let benefitWeight = 0;
+	let burdenCount = 0;
+	let benefitCount = 0;
 	for (const [statementId, tone] of toneByDeontic) {
 		const kind = kindById.get(statementId);
 		if (!kind) continue;
 		if (kind === 'obligation') obligations += 1;
 		else if (kind === 'right') rights += 1;
 		else prohibitions += 1;
-		if (tone === 'burden') burdenWeight += severity[kind];
-		else benefitWeight += severity[kind];
+		const magnitude = deonticMagnitude.get(statementId) ?? 0;
+		if (tone === 'burden') {
+			burdenWeight += magnitude;
+			burdenCount += 1;
+		} else {
+			benefitWeight += magnitude;
+			benefitCount += 1;
+		}
 	}
 
-	// 7. Heaviest clauses.
+	// 7. Heaviest clauses, ranked by total involvement (burden + benefit).
 	const clauseLabel = (id: string): string => {
 		const clause = kg.clauses.find((c) => c.id === id);
 		return clause?.ref || clause?.heading || id;
 	};
-	const topClauses: KgLedgerClause[] = [...clauseImpactScore]
-		.sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]))
-		.slice(0, TOP_CLAUSES)
-		.map(([id, impact]) => ({
+	const topClauses: KgLedgerClause[] = [...new Set([...clauseBurden.keys(), ...clauseBenefit.keys()])]
+		.map((id) => ({
 			id,
 			label: clauseLabel(id),
-			score: Math.abs(impact),
-			impact,
-			tone: impact < 0 ? ('burden' as const) : ('benefit' as const),
-		}));
+			burden: clauseBurden.get(id) ?? 0,
+			benefit: clauseBenefit.get(id) ?? 0,
+		}))
+		.sort((a, b) => b.burden + b.benefit - (a.burden + a.benefit))
+		.slice(0, TOP_CLAUSES);
 
 	const party = kg.parties.find((p) => p.id === partyId);
 	const ledger: KgLedger = {
@@ -220,6 +226,8 @@ export function computePartyAttention(
 		prohibitions,
 		burdenWeight,
 		benefitWeight,
+		burdenCount,
+		benefitCount,
 		topClauses,
 	};
 

@@ -3,15 +3,15 @@ from __future__ import annotations
 import json
 
 from services.graph.knowledge.ontology import (
+    DEONTIC_KIND_GUIDE,
+    DEONTIC_KINDS,
     LLM_RELATION_GUIDE,
     OUTPUT_SHAPE,
-    PROVISION_TYPE_GUIDE,
-    PROVISION_TYPES,
     RELATION_TYPES,
 )
 
 _TYPE_GUIDE_TEXT = "\n".join(
-    f"- {name}: {PROVISION_TYPE_GUIDE[name]}" for name in PROVISION_TYPES
+    f"- {name}: {DEONTIC_KIND_GUIDE[name]}" for name in DEONTIC_KINDS
 )
 
 _RELATION_GUIDE_TEXT = "\n".join(
@@ -31,16 +31,18 @@ NODES — abstract these kinds of nodes from the given paragraphs:
 3. DEFINED TERMS — terms the contract assigns a specific meaning to, identified by
    capitalized syntax and/or a defining formula ("X means ...", "X shall mean ...").
    Do NOT list party names here — those belong in the party "aliases" field.
-4. PROVISIONS — deontic statements, each classified as one of:
+4. DEONTIC STATEMENTS — emit them in THREE separate lists by their modality
+   (there is no generic "provision" node; the list a statement is in IS its type):
 {_TYPE_GUIDE_TEXT}
-5. CONDITIONS — prerequisites that gate a provision or clause. "gates" is the id of
-   the provision or clause that only applies once the trigger holds.
+5. CONDITIONS — prerequisites that gate a deontic statement or clause. "gates" is the
+   id of the statement or clause that only applies once the trigger holds.
 6. REFERENCES — external standards, laws or documents the contract points to
-   (e.g. "ISO 27001", "Article 30 GDPR"). "citedBy" is the citing clause/provision.
+   (e.g. "ISO 27001", "Article 30 GDPR"). "citedBy" is the citing clause/statement.
 7. VALUES — specific quanta: amounts, percentages, durations. "quantifies" is the
-   provision or clause the value belongs to.
+   statement or clause the value belongs to.
 
-For every provision you MUST identify, from the perspective of the parties:
+For every obligation, right and prohibition you MUST identify, from the perspective
+of the parties:
 - obligor: the party that must comply, or that is prohibited (for obligation/prohibition).
 - beneficiary: the party that benefits or holds the right (for right, and the
   counterparty that an obligation is owed to when it is clear).
@@ -67,12 +69,13 @@ STRICT RULES:
   your paraphrase.
 - Every node and every relation MUST carry "paragraphs"; an item you cannot trace back
   to a paragraph index must be omitted rather than emitted without provenance.
-- Reference parties, clauses, provisions and terms only by the ids you assigned
-  (P1, C1, T1, V1, N1, R1, D1).
+- Reference parties, clauses, deontic statements and terms only by the ids you
+  assigned; give each a self-describing prefix and number: party1, clause1,
+  term1, obligation1, right1, prohibition1, condition1, reference1, value1.
 - "paragraphs" must contain only integer indices taken from the provided list.
 - If any field is unknown, use null. Do not invent parties, clauses or references.
-- Extract every distinct provision; do not stop at the first one per paragraph.
-- Do NOT emit party->provision or clause->provision links: those are derived from
+- Extract every distinct statement; do not stop at the first one per paragraph.
+- Do NOT emit party->statement or clause->statement links: those are derived from
   the obligor / beneficiary / clause fields.
 - Do NOT emit contradiction links; conflicts are detected by a separate analysis.
 - Omit a list entirely rather than inventing entries for it.

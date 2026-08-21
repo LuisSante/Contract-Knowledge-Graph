@@ -1,6 +1,6 @@
 // Party-centric deontic knowledge graph (mirrors server/schemas/knowledge.py).
 
-export type ProvisionType = 'obligation' | 'right' | 'prohibition';
+export type DeonticKind = 'obligation' | 'right' | 'prohibition';
 
 /** Edges derived in code from node fields or from clause numbering. */
 export type DerivedEdgeType =
@@ -47,9 +47,10 @@ export interface KgDefinedTerm {
 	paragraphIds: string[];
 }
 
-export interface KgProvision {
+/** Shared shape of the three deontic node kinds. The collection a node lives in
+ *  (obligations / rights / prohibitions) is its kind — there is no `type` field. */
+export interface KgDeontic {
 	id: string;
-	type: ProvisionType;
 	action: string;
 	summary: string;
 	text: string;
@@ -60,6 +61,10 @@ export interface KgProvision {
 	frequency: string;
 	paragraphIds: string[];
 }
+
+export type KgObligation = KgDeontic;
+export type KgRight = KgDeontic;
+export type KgProhibition = KgDeontic;
 
 export interface KgCondition {
 	id: string;
@@ -99,7 +104,9 @@ export interface KnowledgeGraph {
 	parties: KgParty[];
 	clauses: KgClause[];
 	definedTerms: KgDefinedTerm[];
-	provisions: KgProvision[];
+	obligations: KgObligation[];
+	rights: KgRight[];
+	prohibitions: KgProhibition[];
 	conditions: KgCondition[];
 	references: KgReference[];
 	values: KgValue[];
@@ -117,7 +124,23 @@ export type KgNodeKind =
 	| 'party'
 	| 'clause'
 	| 'definedTerm'
-	| 'provision'
+	| 'obligation'
+	| 'right'
+	| 'prohibition'
 	| 'condition'
 	| 'reference'
 	| 'value';
+
+/** Flatten the three deontic collections into one list, tagging each with its
+ *  kind — a convenience iterator for consumers, not a persisted "provision" node. */
+export interface KgDeonticNode extends KgDeontic {
+	kind: DeonticKind;
+}
+
+export function deonticNodes(kg: KnowledgeGraph): KgDeonticNode[] {
+	return [
+		...kg.obligations.map((n) => ({ ...n, kind: 'obligation' as const })),
+		...kg.rights.map((n) => ({ ...n, kind: 'right' as const })),
+		...kg.prohibitions.map((n) => ({ ...n, kind: 'prohibition' as const })),
+	];
+}

@@ -2,21 +2,13 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-ProvisionType = Literal["obligation", "right", "prohibition"]
-
-# Edges derived in code from node fields or from clause numbering.
 DerivedEdgeType = Literal[
-    # Containment, child -> parent. Carries the whole document tree: a nested
-    # clause inside its section, and every provision / condition / value /
-    # reference inside the clause it belongs to.
     "is_part_of",
-    "assigns_obligation_to",  # provision (obligation | prohibition) -> obligor party
-    "grants_right_to",  # provision (right)                    -> holder party
+    "assigns_obligation_to",  # obligation | prohibition -> obligor party
+    "grants_right_to",  # right                    -> holder party
     "defines",  # clause -> defined term
 ]
 
-# Edges the LLM extracts, emitted with a string target and resolved after the
-# per-chunk merge (see services/graph/knowledge/ontology.py).
 ExtractedEdgeType = Literal[
     "uses",
     "references",
@@ -25,7 +17,6 @@ ExtractedEdgeType = Literal[
     "modifies",
 ]
 
-# Produced by contradiction analysis, never by the extraction prompt.
 AnalysisEdgeType = Literal["contradicts"]
 
 EdgeType = DerivedEdgeType | ExtractedEdgeType | AnalysisEdgeType
@@ -56,9 +47,8 @@ class KgDefinedTerm(BaseModel):
     paragraphIds: list[str] = Field(default_factory=list)
 
 
-class KgProvision(BaseModel):
+class _KgDeontic(BaseModel):
     id: str
-    type: ProvisionType
     action: str = ""  # short verb phrase, e.g. "Pay Invoices"
     summary: str  # short paraphrase of the duty/right/restriction
     text: str = ""  # verbatim span copied from the source paragraph (provenance)
@@ -68,6 +58,18 @@ class KgProvision(BaseModel):
     deadline: str = ""  # "within 30 days of receipt"
     frequency: str = ""  # "once per calendar year"
     paragraphIds: list[str] = Field(default_factory=list)
+
+
+class KgObligation(_KgDeontic):
+    pass
+
+
+class KgRight(_KgDeontic):
+    pass
+
+
+class KgProhibition(_KgDeontic):
+    pass
 
 
 class KgCondition(BaseModel):
@@ -107,7 +109,9 @@ class KnowledgeGraph(BaseModel):
     parties: list[KgParty] = Field(default_factory=list)
     clauses: list[KgClause] = Field(default_factory=list)
     definedTerms: list[KgDefinedTerm] = Field(default_factory=list)
-    provisions: list[KgProvision] = Field(default_factory=list)
+    obligations: list[KgObligation] = Field(default_factory=list)
+    rights: list[KgRight] = Field(default_factory=list)
+    prohibitions: list[KgProhibition] = Field(default_factory=list)
     conditions: list[KgCondition] = Field(default_factory=list)
     references: list[KgReference] = Field(default_factory=list)
     values: list[KgValue] = Field(default_factory=list)

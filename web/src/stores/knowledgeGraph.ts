@@ -14,11 +14,11 @@ export interface KnowledgeGraphBridgePayload {
 	anchorParagraphId: string | null;
 	/** Paragraphs of the focus set, brought closer to the anchor. */
 	relatedParagraphs: RelatedParagraph[];
-	/** Entity fragments (party names, provision spans, clause refs) to underline. */
+	/** Entity fragments (party names, statement spans, clause refs) to underline. */
 	entities: DocumentEntityHighlight[];
 	/** Every paragraph touched by the focus (anchor + related), for entity marks. */
 	paragraphIds: string[];
-	/** KG node ids in focus (party + top provisions + clauses, or the neighborhood). */
+	/** KG node ids in focus (party + top statements + clauses, or the neighborhood). */
 	focusNodeIds: string[];
 	/** Per-node normalized attention (0..1) for node sizing (party focus only). */
 	nodeScores: Record<string, number>;
@@ -26,7 +26,7 @@ export interface KnowledgeGraphBridgePayload {
 	scoreByParagraphId: Record<string, number>;
 	/** Per-paragraph burden/benefit tone for the deontic rail color. */
 	toneByParagraphId: Record<string, DeonticTone>;
-	/** Impact ledger for the focused party (null for clause/provision focus). */
+	/** Impact ledger for the focused party (null for clause/statement focus). */
 	ledger: KgLedger | null;
 }
 
@@ -44,9 +44,9 @@ const EMPTY_PAYLOAD: KnowledgeGraphBridgePayload = {
 
 interface KnowledgeGraphState extends KnowledgeGraphBridgePayload {
 	focusNodeId: string | null;
-	/** Neighborhood radius for clause/provision focus. */
+	/** Neighborhood radius for clause/statement focus. */
 	hops: number;
-	/** Number of top-attention provisions shown for a party focus. */
+	/** Number of top-attention statements shown for a party focus. */
 	topK: number;
 
 	focusNode: (nodeId: string) => void;

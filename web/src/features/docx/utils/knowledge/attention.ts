@@ -1,10 +1,11 @@
-import type { KnowledgeGraph, ProvisionType } from '@/types/knowledge';
+import type { DeonticKind, KnowledgeGraph } from '@/types/knowledge';
+import { deonticNodes } from '@/types/knowledge';
 
 /**
  * Party-centric attention over the deontic KG.
  *
- *   magnitude(v|P) = PPR_P(v) · severity(type)     unsigned, every provision — visual weight
- *   impact(v|P)    = magnitude · sign(tone(v,P))   signed, P's provisions only — the ledger
+ *   magnitude(v|P) = PPR_P(v) · severity(kind)     unsigned, every statement — visual weight
+ *   impact(v|P)    = magnitude · sign(tone(v,P))   signed, P's statements only — the ledger
  */
 
 export type DeonticTone = 'burden' | 'benefit';
@@ -33,19 +34,19 @@ export interface KgLedger {
 }
 
 export interface PartyAttention {
-	/** Normalized 0..1 magnitude per provision. */
-	provisionScore: Map<string, number>;
+	/** Normalized 0..1 magnitude per deontic statement. */
+	deonticScore: Map<string, number>;
 	/** Normalized 0..1 magnitude per clause. */
 	clauseScore: Map<string, number>;
-	/** Normalized 0..1 per node (provisions + clauses; party = 1), for node sizing. */
+	/** Normalized 0..1 per node (statements + clauses; party = 1), for node sizing. */
 	nodeScore: Map<string, number>;
-	/** Whether each provision burdens or benefits the focused party. */
-	toneByProvision: Map<string, DeonticTone>;
+	/** Whether each statement burdens or benefits the focused party. */
+	toneByDeontic: Map<string, DeonticTone>;
 	ledger: KgLedger;
 }
 
-/** Deontic weight of a provision type. */
-const SEVERITY: Record<ProvisionType, number> = {
+/** Deontic weight of each kind. */
+const SEVERITY: Record<DeonticKind, number> = {
 	prohibition: 1.0,
 	obligation: 0.7,
 	right: 0.3,
@@ -63,7 +64,7 @@ function graphNodeIds(kg: KnowledgeGraph): string[] {
 		...kg.parties.map((p) => p.id),
 		...kg.clauses.map((c) => c.id),
 		...kg.definedTerms.map((t) => t.id),
-		...kg.provisions.map((v) => v.id),
+		...deonticNodes(kg).map((v) => v.id),
 		...kg.conditions.map((c) => c.id),
 		...kg.references.map((r) => r.id),
 		...kg.values.map((v) => v.id),
@@ -110,20 +111,6 @@ function personalizedPageRank(adjacency: number[][], seedIndex: number): number[
 	return rank;
 }
 
-/** Tone relative to the focused party, from the obligor/beneficiary fields. Others are omitted. */
-function classifyTone(kg: KnowledgeGraph, partyId: string): Map<string, DeonticTone> {
-	const tone = new Map<string, DeonticTone>();
-	for (const v of kg.provisions) {
-		const isRight = v.type === 'right';
-		if (!isRight && v.obligorPartyId === partyId) {
-			tone.set(v.id, 'burden');
-		} else if (v.beneficiaryPartyId === partyId) {
-			tone.set(v.id, 'benefit'); // a right it holds, or a duty owed to it
-		}
-	}
-	return tone;
-}
-
 /** Scale a map so its largest absolute value becomes 1, preserving sign. */
 function normalize(values: Map<string, number>): Map<string, number> {
 	let peak = 0;
@@ -133,61 +120,73 @@ function normalize(values: Map<string, number>): Map<string, number> {
 }
 
 export function computePartyAttention(kg: KnowledgeGraph, partyId: string): PartyAttention {
+	const deontic = deonticNodes(kg);
+
 	// 1. Walk the graph from the focused party.
 	const ids = graphNodeIds(kg);
 	const index = new Map(ids.map((id, i) => [id, i]));
 	const rank = personalizedPageRank(buildAdjacency(kg, index), index.get(partyId) ?? -1);
 
-	// 2. Which provisions concern this party.
-	const toneByProvision = classifyTone(kg, partyId);
+	// 2. Which statements concern this party (tone from obligor/beneficiary).
+	const toneByDeontic = new Map<string, DeonticTone>();
+	for (const v of deontic) {
+		if (v.kind !== 'right' && v.obligorPartyId === partyId) {
+			toneByDeontic.set(v.id, 'burden');
+		} else if (v.beneficiaryPartyId === partyId) {
+			toneByDeontic.set(v.id, 'benefit'); // a right it holds, or a duty owed to it
+		}
+	}
 
 	// 3. Magnitude for all; impact only where there is a tone.
-	const provisionMagnitude = new Map<string, number>();
-	const provisionImpact = new Map<string, number>();
-	for (const v of kg.provisions) {
+	const deonticMagnitude = new Map<string, number>();
+	const deonticImpact = new Map<string, number>();
+	for (const v of deontic) {
 		const i = index.get(v.id);
 		if (i == null) continue;
-		const magnitude = rank[i] * SEVERITY[v.type];
-		provisionMagnitude.set(v.id, magnitude);
-		const tone = toneByProvision.get(v.id);
-		if (tone) provisionImpact.set(v.id, magnitude * SIGN[tone]);
+		const magnitude = rank[i] * SEVERITY[v.kind];
+		deonticMagnitude.set(v.id, magnitude);
+		const tone = toneByDeontic.get(v.id);
+		if (tone) deonticImpact.set(v.id, magnitude * SIGN[tone]);
 	}
 
 	// 4. Roll up to the clause.
 	const clauseMagnitude = new Map<string, number>();
 	const clauseImpact = new Map<string, number>();
-	for (const v of kg.provisions) {
+	for (const v of deontic) {
 		if (!v.clauseId) continue;
-		clauseMagnitude.set(v.clauseId, (clauseMagnitude.get(v.clauseId) ?? 0) + (provisionMagnitude.get(v.id) ?? 0));
-		const impact = provisionImpact.get(v.id);
+		clauseMagnitude.set(
+			v.clauseId,
+			(clauseMagnitude.get(v.clauseId) ?? 0) + (deonticMagnitude.get(v.id) ?? 0)
+		);
+		const impact = deonticImpact.get(v.id);
 		if (impact != null) clauseImpact.set(v.clauseId, (clauseImpact.get(v.clauseId) ?? 0) + impact);
 	}
 
 	// 5. Each quantity against its own peak.
-	const provisionScore = normalize(provisionMagnitude);
+	const deonticScore = normalize(deonticMagnitude);
 	const clauseScore = normalize(clauseMagnitude);
 	const clauseImpactScore = normalize(clauseImpact);
 
 	const nodeScore = new Map<string, number>();
-	for (const [id, s] of provisionScore) nodeScore.set(id, s);
+	for (const [id, s] of deonticScore) nodeScore.set(id, s);
 	for (const [id, s] of clauseScore) nodeScore.set(id, s);
 	nodeScore.set(partyId, 1);
 
 	// 6. Deontic tallies.
-	const provisionById = new Map(kg.provisions.map((v) => [v.id, v]));
+	const kindById = new Map(deontic.map((v) => [v.id, v.kind]));
 	let obligations = 0;
 	let rights = 0;
 	let prohibitions = 0;
 	let burdenWeight = 0;
 	let benefitWeight = 0;
-	for (const [provisionId, tone] of toneByProvision) {
-		const v = provisionById.get(provisionId);
-		if (!v) continue;
-		if (v.type === 'obligation') obligations += 1;
-		else if (v.type === 'right') rights += 1;
+	for (const [statementId, tone] of toneByDeontic) {
+		const kind = kindById.get(statementId);
+		if (!kind) continue;
+		if (kind === 'obligation') obligations += 1;
+		else if (kind === 'right') rights += 1;
 		else prohibitions += 1;
-		if (tone === 'burden') burdenWeight += SEVERITY[v.type];
-		else benefitWeight += SEVERITY[v.type];
+		if (tone === 'burden') burdenWeight += SEVERITY[kind];
+		else benefitWeight += SEVERITY[kind];
 	}
 
 	// 7. Heaviest clauses.
@@ -218,5 +217,5 @@ export function computePartyAttention(kg: KnowledgeGraph, partyId: string): Part
 		topClauses,
 	};
 
-	return { provisionScore, clauseScore, nodeScore, toneByProvision, ledger };
+	return { deonticScore, clauseScore, nodeScore, toneByDeontic, ledger };
 }

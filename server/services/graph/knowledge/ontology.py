@@ -1,18 +1,20 @@
 from __future__ import annotations
 
-# Deontic modality of a provision.
-PROVISION_TYPES: tuple[str, ...] = ("obligation", "right", "prohibition")
+DEONTIC_KINDS: tuple[str, ...] = ("obligation", "right", "prohibition")
 
-# Node id prefix per modality, so an id reads as its deontic type ("proh-12")
-# instead of a generic "prov-12". Each type numbers independently.
-PROVISION_ID_PREFIX: dict[str, str] = {
-    "obligation": "obl",
-    "prohibition": "proh",
-    "right": "perm",
+DEONTIC_COLLECTION_BY_KIND: dict[str, str] = {
+    "obligation": "obligations",
+    "right": "rights",
+    "prohibition": "prohibitions",
 }
 
-# Human-readable description of each provision type, injected into the prompt.
-PROVISION_TYPE_GUIDE: dict[str, str] = {
+DEONTIC_ID_PREFIX: dict[str, str] = {
+    "obligation": "obligation",
+    "prohibition": "prohibition",
+    "right": "right",
+}
+
+DEONTIC_KIND_GUIDE: dict[str, str] = {
     "obligation": "a duty the obligor party MUST perform ('shall', 'must', 'agrees to').",
     "right": "an entitlement/permission the beneficiary party HOLDS ('may', 'is entitled to').",
     "prohibition": "a restriction the obligor party MUST NOT breach ('shall not', 'may not').",
@@ -51,7 +53,7 @@ RELATION_TYPES: tuple[str, ...] = tuple(LLM_RELATION_GUIDE)
 OUTPUT_SHAPE = {
     "parties": [
         {
-            "id": "P1",
+            "id": "party1",
             "name": "full legal name as written",
             "role": "short role label (e.g. Company, Distributor, Supplier)",
             "address": "physical address if stated, else null",
@@ -61,7 +63,7 @@ OUTPUT_SHAPE = {
     ],
     "clauses": [
         {
-            "id": "C1",
+            "id": "clause1",
             "ref": "Section 3.2 | Article 5 | null",
             "heading": "clause heading if any",
             "level": 1,
@@ -70,60 +72,87 @@ OUTPUT_SHAPE = {
     ],
     "definedTerms": [
         {
-            "id": "T1",
+            "id": "term1",
             "term": "Confidential Information",
             "definition": "verbatim substring copied exactly from a paragraph",
-            "definedIn": "C1 | null",
+            "definedIn": "clause1 | null",
             "paragraphs": [0],
         }
     ],
-    "provisions": [
+    "obligations": [
         {
-            "id": "V1",
-            "type": "obligation | right | prohibition",
+            "id": "obligation1",
             "action": "short verb phrase (e.g. Pay Invoices, Audit Records)",
-            "summary": "one short sentence paraphrasing the duty/right/restriction",
+            "summary": "one short sentence paraphrasing the duty",
             "text": "verbatim substring copied exactly from a paragraph",
-            "obligor": "P1 | null",
-            "beneficiary": "P2 | null",
-            "clause": "C1 | null",
+            "obligor": "party1 | null",
+            "beneficiary": "party2 | null",
+            "clause": "clause1 | null",
             "deadline": "within 30 days of receipt | null",
             "frequency": "once per calendar year | null",
             "paragraphs": [0],
         }
     ],
+    "rights": [
+        {
+            "id": "right1",
+            "action": "short verb phrase",
+            "summary": "one short sentence paraphrasing the entitlement",
+            "text": "verbatim substring copied exactly from a paragraph",
+            "obligor": "party1 | null",
+            "beneficiary": "party2 | null",
+            "clause": "clause1 | null",
+            "deadline": "null",
+            "frequency": "null",
+            "paragraphs": [0],
+        }
+    ],
+    "prohibitions": [
+        {
+            "id": "prohibition1",
+            "action": "short verb phrase",
+            "summary": "one short sentence paraphrasing the restriction",
+            "text": "verbatim substring copied exactly from a paragraph",
+            "obligor": "party1 | null",
+            "beneficiary": "party2 | null",
+            "clause": "clause1 | null",
+            "deadline": "null",
+            "frequency": "null",
+            "paragraphs": [0],
+        }
+    ],
     "conditions": [
         {
-            "id": "N1",
+            "id": "condition1",
             "trigger": "verbatim substring stating the prerequisite",
             "operator": "IF | UNLESS | UNTIL | UPON",
-            "gates": "V1 | C1",
+            "gates": "obligation1 | clause1",
             "paragraphs": [0],
         }
     ],
     "references": [
         {
-            "id": "R1",
+            "id": "reference1",
             "name": "ISO 27001 | GDPR | Delaware General Corporation Law",
             "citation": "Article 30 | Section 262 | null",
-            "citedBy": "C1 | V1",
+            "citedBy": "clause1 | obligation1",
             "paragraphs": [0],
         }
     ],
     "values": [
         {
-            "id": "D1",
+            "id": "value1",
             "valueType": "Currency | Percentage | Duration | Quantity",
             "amount": "5,000,000",
             "unit": "USD | % | days",
-            "quantifies": "V1 | C1",
+            "quantifies": "obligation1 | clause1",
             "paragraphs": [0],
         }
     ],
     "relations": [
         {
             "type": " | ".join(RELATION_TYPES),
-            "source": "C1 | V1",
+            "source": "clause1 | obligation1",
             "target": "Section 3.1 | Confidential Information",
             "evidence": "verbatim substring that states the link",
             "paragraphs": [0],

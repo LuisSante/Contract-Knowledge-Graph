@@ -10,20 +10,32 @@ from schemas.knowledge import (
     KgCondition,
     KgDefinedTerm,
     KgEdge,
+    KgObligation,
     KgParty,
-    KgProvision,
+    KgProhibition,
     KgReference,
+    KgRight,
     KgValue,
     KnowledgeGraph,
+    _KgDeontic,
 )
-from services.graph.knowledge.ontology import PROVISION_ID_PREFIX, RELATION_TYPES
+from services.graph.knowledge.ontology import (
+    DEONTIC_COLLECTION_BY_KIND,
+    DEONTIC_ID_PREFIX,
+    RELATION_TYPES,
+)
 from services.graph.knowledge.prompts import SYSTEM_PROMPT, build_user_prompt
 from services.llm.base import LLMProvider
 
 logger = logging.getLogger(__name__)
 
 CHUNK_CHAR_BUDGET = 9000
-VALID_PROVISION_TYPES = {"obligation", "right", "prohibition"}
+
+_DEONTIC_MODEL_BY_KIND: dict[str, type[_KgDeontic]] = {
+    "obligation": KgObligation,
+    "right": KgRight,
+    "prohibition": KgProhibition,
+}
 VALID_RELATION_TYPES = set(RELATION_TYPES)
 
 # Numbering token inside a clause reference: "Section 3.1" -> "3.1".
@@ -101,10 +113,21 @@ class _GraphAccumulator:
         self._clause_key_to_id: dict[str, str] = {}
         # Resolution-only index (ref + bare numbering) for cross-chunk targets.
         self._clause_lookup: dict[str, str] = {}
-        self.provisions: list[KgProvision] = []
-        self._provision_keys: dict[str, str] = {}  # dedup key -> global id
-        # One counter per deontic type, so ids read "obl-1", "proh-1", "perm-1".
-        self._provision_seq_by_type: dict[str, int] = {}
+        # The three deontic collections (no "provision" node). Kept as separate
+        # lists so each is its own node type; `_deontic_kind` tracks a node's
+        # kind by global id for edge derivation.
+        self.obligations: list[KgObligation] = []
+        self.rights: list[KgRight] = []
+        self.prohibitions: list[KgProhibition] = []
+        self._deontic_list_by_kind: dict[str, list] = {
+            "obligation": self.obligations,
+            "right": self.rights,
+            "prohibition": self.prohibitions,
+        }
+        self._deontic_kind: dict[str, str] = {}  # global id -> kind
+        self._deontic_keys: dict[str, str] = {}  # dedup key -> global id
+        # One counter per kind, so ids read "obligation-1", "prohibition-1", "right-1".
+        self._deontic_seq_by_prefix: dict[str, int] = {}
         self.definedTerms: dict[str, KgDefinedTerm] = {}
         self._term_key_to_id: dict[str, str] = {}  # normalized term -> global id
         self.conditions: list[KgCondition] = []
@@ -243,11 +266,11 @@ class _GraphAccumulator:
     def resolve_term(self, term: str) -> str | None:
         return self._term_key_to_id.get(_normalize(term))
 
-    # -- provisions ------------------------------------------------------- #
-    def add_provision(
+    # -- deontic statements (obligation / right / prohibition) ------------ #
+    def add_deontic(
         self,
         *,
-        ptype: str,
+        kind: str,
         action: str,
         summary: str,
         text: str,
@@ -259,21 +282,21 @@ class _GraphAccumulator:
         paragraph_ids: list[str],
     ) -> str:
         dedup_key = "|".join(
-            [ptype, _normalize(summary)[:120], obligor or "", beneficiary or ""]
+            [kind, _normalize(summary)[:120], obligor or "", beneficiary or ""]
         )
-        existing_id = self._provision_keys.get(dedup_key)
+        existing_id = self._deontic_keys.get(dedup_key)
         if existing_id:
             return existing_id
 
-        prefix = PROVISION_ID_PREFIX.get(ptype, "prov")
-        seq = self._provision_seq_by_type.get(prefix, 0) + 1
-        self._provision_seq_by_type[prefix] = seq
+        prefix = DEONTIC_ID_PREFIX[kind]
+        seq = self._deontic_seq_by_prefix.get(prefix, 0) + 1
+        self._deontic_seq_by_prefix[prefix] = seq
         global_id = f"{prefix}-{seq}"
-        self._provision_keys[dedup_key] = global_id
-        self.provisions.append(
-            KgProvision(
+        self._deontic_keys[dedup_key] = global_id
+        self._deontic_kind[global_id] = kind
+        self._deontic_list_by_kind[kind].append(
+            _DEONTIC_MODEL_BY_KIND[kind](
                 id=global_id,
-                type=ptype,  # type: ignore[arg-type]
                 action=action.strip(),
                 summary=summary.strip(),
                 text=text.strip(),
@@ -302,7 +325,7 @@ class _GraphAccumulator:
         self._condition_seq += 1
         self.conditions.append(
             KgCondition(
-                id=f"cond-{self._condition_seq}",
+                id=f"condition-{self._condition_seq}",
                 trigger=trigger,
                 operator=str(raw.get("operator") or "").strip().upper(),
                 gatesId=gates_id,
@@ -325,7 +348,7 @@ class _GraphAccumulator:
         self._reference_seq += 1
         self.references.append(
             KgReference(
-                id=f"ref-{self._reference_seq}",
+                id=f"reference-{self._reference_seq}",
                 name=name,
                 citation=citation,
                 citedById=cited_by_id,
@@ -348,7 +371,7 @@ class _GraphAccumulator:
         self._value_seq += 1
         self.values.append(
             KgValue(
-                id=f"val-{self._value_seq}",
+                id=f"value-{self._value_seq}",
                 valueType=str(raw.get("valueType") or "").strip(),
                 amount=amount,
                 unit=unit,
@@ -423,7 +446,9 @@ class _GraphAccumulator:
 
     def build(self) -> KnowledgeGraph:
         edges = _derive_edges(
-            provisions=self.provisions,
+            obligations=self.obligations,
+            rights=self.rights,
+            prohibitions=self.prohibitions,
             defined_terms=list(self.definedTerms.values()),
             conditions=self.conditions,
             references=self.references,
@@ -443,7 +468,9 @@ class _GraphAccumulator:
             parties=list(self.parties.values()),
             clauses=list(self.clauses.values()),
             definedTerms=list(self.definedTerms.values()),
-            provisions=self.provisions,
+            obligations=self.obligations,
+            rights=self.rights,
+            prohibitions=self.prohibitions,
             conditions=self.conditions,
             references=self.references,
             values=self.values,
@@ -453,7 +480,9 @@ class _GraphAccumulator:
 
 def _derive_edges(
     *,
-    provisions: list[KgProvision],
+    obligations: list[KgObligation],
+    rights: list[KgRight],
+    prohibitions: list[KgProhibition],
     defined_terms: list[KgDefinedTerm],
     conditions: list[KgCondition],
     references: list[KgReference],
@@ -472,15 +501,14 @@ def _derive_edges(
         seen.add(key)
         edges.append(KgEdge(source=source, target=target, type=etype))  # type: ignore[arg-type]
 
-    for prov in provisions:
-        _add(prov.id, prov.clauseId, "is_part_of")
-        if prov.type == "right":
-            # The holder of a right is its beneficiary.
-            _add(prov.id, prov.beneficiaryPartyId, "grants_right_to")
-        else:
-            # A prohibition is an obligation not to act: prohibido(a) == obligatorio(!a),
-            # so both attach to the party that must comply.
-            _add(prov.id, prov.obligorPartyId, "assigns_obligation_to")
+    # Rights attach to their holder (the beneficiary).
+    for right in rights:
+        _add(right.id, right.clauseId, "is_part_of")
+        _add(right.id, right.beneficiaryPartyId, "grants_right_to")
+    # A prohibition is an obligation not to act: both attach to the obligor party.
+    for statement in (*obligations, *prohibitions):
+        _add(statement.id, statement.clauseId, "is_part_of")
+        _add(statement.id, statement.obligorPartyId, "assigns_obligation_to")
     for term in defined_terms:
         _add(term.definedInClauseId, term.id, "defines")
     for condition in conditions:
@@ -590,34 +618,32 @@ def _ingest_chunk(
         if local_id and global_id:
             local_term_to_global[local_id] = global_id
 
-    local_provision_to_global: dict[str, str] = {}
-    for raw_prov in payload.get("provisions") or []:
-        ptype = _normalize(str(raw_prov.get("type")))
-        if ptype not in VALID_PROVISION_TYPES:
-            continue
-        summary = str(raw_prov.get("summary") or "").strip()
-        if not summary:
-            continue
+    # Three separate deontic lists; the list a statement is in IS its kind.
+    local_deontic_to_global: dict[str, str] = {}
+    for kind, collection_key in DEONTIC_COLLECTION_BY_KIND.items():
+        for raw in payload.get(collection_key) or []:
+            summary = str(raw.get("summary") or "").strip()
+            if not summary:
+                continue
+            local_id = str(raw.get("id") or "").strip()
+            global_id = accumulator.add_deontic(
+                kind=kind,
+                action=str(raw.get("action") or ""),
+                summary=summary,
+                text=str(raw.get("text") or ""),
+                obligor=_resolve(raw.get("obligor"), local_party_to_global),
+                beneficiary=_resolve(raw.get("beneficiary"), local_party_to_global),
+                clause=_resolve(raw.get("clause"), local_clause_to_global),
+                deadline=str(raw.get("deadline") or ""),
+                frequency=str(raw.get("frequency") or ""),
+                paragraph_ids=_paragraph_ids_from(raw.get("paragraphs"), index_to_id),
+            )
+            if local_id:
+                local_deontic_to_global[local_id] = global_id
 
-        local_id = str(raw_prov.get("id") or "").strip()
-        global_id = accumulator.add_provision(
-            ptype=ptype,
-            action=str(raw_prov.get("action") or ""),
-            summary=summary,
-            text=str(raw_prov.get("text") or ""),
-            obligor=_resolve(raw_prov.get("obligor"), local_party_to_global),
-            beneficiary=_resolve(raw_prov.get("beneficiary"), local_party_to_global),
-            clause=_resolve(raw_prov.get("clause"), local_clause_to_global),
-            deadline=str(raw_prov.get("deadline") or ""),
-            frequency=str(raw_prov.get("frequency") or ""),
-            paragraph_ids=_paragraph_ids_from(raw_prov.get("paragraphs"), index_to_id),
-        )
-        if local_id:
-            local_provision_to_global[local_id] = global_id
-
-    # Conditions, references and values attach to a clause or a provision.
+    # Conditions, references and values attach to a clause or a deontic statement.
     def _resolve_attachment(local_ref: Any) -> str | None:
-        return _resolve(local_ref, local_provision_to_global) or _resolve(
+        return _resolve(local_ref, local_deontic_to_global) or _resolve(
             local_ref, local_clause_to_global
         )
 

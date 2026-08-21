@@ -14,7 +14,8 @@ import {
 import { buildKnowledgeGraphBridge } from '@/features/docx/utils/knowledge/kg-bridge';
 import type { KgLedger } from '@/features/docx/utils/knowledge/attention';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import type { KgEdgeType, KgNodeKind, KnowledgeGraph, ProvisionType } from '@/types/knowledge';
+import type { KgEdgeType, KgNodeKind, KnowledgeGraph } from '@/types/knowledge';
+import { deonticNodes } from '@/types/knowledge';
 
 interface KnowledgeGraphPanelProps {
 	docId: string;
@@ -34,7 +35,6 @@ type SimNode = d3.SimulationNodeDatum & {
 	kind: KgNodeKind;
 	label: string;
 	title: string;
-	provisionType?: ProvisionType;
 	radius: number;
 };
 
@@ -49,16 +49,12 @@ const NODE_COLORS: Record<KgNodeKind, string> = {
 	party: '#7c3aed',
 	clause: '#0ea5e9',
 	definedTerm: '#14b8a6',
-	provision: '#94a3b8',
-	condition: '#a855f7',
-	reference: '#64748b',
-	value: '#eab308',
-};
-
-const PROVISION_COLORS: Record<ProvisionType, string> = {
 	obligation: '#ef4444',
 	right: '#22c55e',
 	prohibition: '#f59e0b',
+	condition: '#a855f7',
+	reference: '#64748b',
+	value: '#eab308',
 };
 
 const EDGE_COLORS: Record<KgEdgeType, string> = {
@@ -80,9 +76,9 @@ const EDGE_COLORS: Record<KgEdgeType, string> = {
 const NODE_LEGEND: Array<{ color: string; label: string }> = [
 	{ color: NODE_COLORS.party, label: 'Party' },
 	{ color: NODE_COLORS.clause, label: 'Clause' },
-	{ color: PROVISION_COLORS.obligation, label: 'Obligation' },
-	{ color: PROVISION_COLORS.right, label: 'Right' },
-	{ color: PROVISION_COLORS.prohibition, label: 'Prohibition' },
+	{ color: NODE_COLORS.obligation, label: 'Obligation' },
+	{ color: NODE_COLORS.right, label: 'Right' },
+	{ color: NODE_COLORS.prohibition, label: 'Prohibition' },
 	{ color: NODE_COLORS.definedTerm, label: 'Defined term' },
 	{ color: NODE_COLORS.condition, label: 'Condition' },
 	{ color: NODE_COLORS.reference, label: 'Reference' },
@@ -104,9 +100,6 @@ const DIMMED_NODE_OPACITY = 0.1;
 const DIMMED_LINK_OPACITY = 0.04;
 
 function nodeColor(node: SimNode): string {
-	if (node.kind === 'provision' && node.provisionType) {
-		return PROVISION_COLORS[node.provisionType];
-	}
 	return NODE_COLORS[node.kind];
 }
 
@@ -141,13 +134,12 @@ function buildGraph(kg: KnowledgeGraph): { nodes: SimNode[]; links: SimLink[] } 
 			radius: 7,
 		});
 	}
-	for (const provision of kg.provisions) {
+	for (const statement of deonticNodes(kg)) {
 		nodes.push({
-			id: provision.id,
-			kind: 'provision',
-			provisionType: provision.type,
-			label: provision.action || provision.type,
-			title: `${provision.type.toUpperCase()}: ${provision.summary}`,
+			id: statement.id,
+			kind: statement.kind,
+			label: statement.action || statement.kind,
+			title: `${statement.kind.toUpperCase()}: ${statement.summary}`,
 			radius: 5.5,
 		});
 	}
@@ -572,7 +564,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		? {
 				parties: kg.parties.length,
 				clauses: kg.clauses.length,
-				provisions: kg.provisions.length,
+				statements: kg.obligations.length + kg.rights.length + kg.prohibitions.length,
 			}
 		: null;
 
@@ -592,7 +584,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 							</TabsList>
 						</Tabs>
 						<span>
-							{counts.parties} parties · {counts.clauses} clauses · {counts.provisions} provisions
+							{counts.parties} parties · {counts.clauses} clauses · {counts.statements} statements
 						</span>
 					</div>
 

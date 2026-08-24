@@ -342,6 +342,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const [hover, setHover] = useState<{ x: number; y: number; text: string } | null>(null);
 	const [view, setView] = useState<GraphView>('parties');
 	const [mergeHints, setMergeHints] = useState<Record<string, string[]>>({});
+	const [mergeEntities, setMergeEntities] = useState<string[]>([]);
 	const [hintsLoading, setHintsLoading] = useState(false);
 	// Bumped whenever the d3 selections are rebuilt, so the styling effect re-runs.
 	const [graphVersion, setGraphVersion] = useState(0);
@@ -388,10 +389,14 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				setKg(graph);
 				setStatus('ready');
 				setMergeHints({});
+				setMergeEntities([]);
 				setHintsLoading(true);
 				fetchPartyMergeHints(docId)
 					.then((hints) => {
-						if (!cancelled) setMergeHints(hints);
+						if (!cancelled) {
+							setMergeHints(hints.candidates);
+							setMergeEntities(hints.entities);
+						}
 					})
 					.finally(() => {
 						if (!cancelled) setHintsLoading(false);
@@ -440,6 +445,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		() => Object.fromEntries(mergeGroups.map((g) => [g.id, g.members])),
 		[mergeGroups]
 	);
+
 
 	// On the `parties` view the simulation only ever runs over the visible slice:
 	// the parties themselves, then the induced subgraph of whatever is in focus.
@@ -667,16 +673,32 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		if (!node || !link) return;
 
 		const selectedSet = new Set(selectedPartyIds);
-		const selectedRaw = new Set(selectedPartyIds.flatMap((id) => membersOf[id] ?? [id]));
-		const compatibleRaw = new Set([...selectedRaw].flatMap((raw) => mergeHints[raw] ?? []));
+		const entitySet = new Set(mergeEntities);
+		const hasEntityInfo = entitySet.size > 0;
+		const selectedRaw = selectedPartyIds.flatMap((id) => membersOf[id] ?? [id]);
+		const selHasEntity = selectedRaw.some((r) => entitySet.has(r));
+		const selHasRole = selectedRaw.some((r) => !entitySet.has(r));
+		const complete = hasEntityInfo && selHasEntity && selHasRole;
+		const compatibleRaw = new Set(selectedRaw.flatMap((raw) => mergeHints[raw] ?? []));
+		// Only decorate when the resolver gave us something (pairs or entity typing).
+		const hasHintData = compatibleRaw.size > 0 || hasEntityInfo;
 		const hintByNode = new Map<string, 'suggested' | 'discouraged'>(
-			compatibleRaw.size === 0 || !viewKg
+			selectedRaw.length === 0 || !viewKg || !hasHintData
 				? []
 				: viewKg.parties
 						.filter((p) => !selectedSet.has(p.id))
 						.map((p) => {
 							const raws = membersOf[p.id] ?? [p.id];
-							return [p.id, raws.some((r) => compatibleRaw.has(r)) ? 'suggested' : 'discouraged'] as const;
+							const paired = raws.some((r) => compatibleRaw.has(r));
+							const cHasEntity = raws.some((r) => entitySet.has(r));
+							// Entity-aware blocks only apply when we know which parties are entities;
+							// otherwise fall back to the pure pairwise hint (never over-restrict).
+							const blocked =
+								hasEntityInfo &&
+								(complete || (selHasEntity && cHasEntity) || (!selHasEntity && !cHasEntity));
+							const tone: 'suggested' | 'discouraged' =
+								!blocked && paired ? 'suggested' : 'discouraged';
+							return [p.id, tone] as const;
 						})
 		);
 		// Resolver hint (green = plausible merge, amber = not) + the selection ring,
@@ -732,7 +754,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			return highlightIds.has(source) && highlightIds.has(target) ? 0.95 : DIMMED_LINK_OPACITY;
 		});
 		applySelection();
-	}, [graphVersion, highlightIds, focusNodeId, nodeScores, selectedPartyIds, membersOf, mergeHints, viewKg]);
+	}, [graphVersion, highlightIds, focusNodeId, nodeScores, selectedPartyIds, membersOf, mergeHints, mergeEntities, viewKg]);
 
 	const counts = viewKg
 		? {

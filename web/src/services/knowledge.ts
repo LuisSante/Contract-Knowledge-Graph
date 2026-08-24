@@ -24,18 +24,24 @@ export async function fetchKnowledgeGraph(docId: string): Promise<KnowledgeGraph
 	}
 }
 
+export interface PartyMergeHints {
+	/** party id -> party ids it may merge with (same real party, or a role it plays). */
+	candidates: Record<string, string[]>;
+	/** party ids that denote a distinct real party (a merge must not combine two). */
+	entities: string[];
+}
+
 /**
- * Resolver hint: which party nodes may be merged (same real party, or a role one
- * plays). Maps party id -> compatible party ids. Empty on any failure — the merge
- * UI works without hints, it just loses the green/amber tint.
+ * Resolver hint for the merge UI. Empty on any failure — the UI still works, it
+ * just loses the green/amber tint.
  */
-export async function fetchPartyMergeHints(docId: string): Promise<Record<string, string[]>> {
+export async function fetchPartyMergeHints(docId: string): Promise<PartyMergeHints> {
 	try {
-		const response = await api.get<{ candidates?: Record<string, string[]> }>(
+		const response = await api.get<Partial<PartyMergeHints>>(
 			`/knowledge_graph/${encodeURIComponent(docId)}/party_hints`
 		);
-		return response.data.candidates ?? {};
+		return { candidates: response.data.candidates ?? {}, entities: response.data.entities ?? [] };
 	} catch {
-		return {};
+		return { candidates: {}, entities: [] };
 	}
 }

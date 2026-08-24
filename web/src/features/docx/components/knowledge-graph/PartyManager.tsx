@@ -17,10 +17,6 @@ interface PartyManagerProps {
 export function PartyManager({ hidden, hasView, hintsLoading, onUnhide, onReset }: PartyManagerProps) {
 	return (
 		<div className="flex items-center gap-2 border-t border-border/60 px-3 py-1.5 text-2xs text-muted-foreground">
-			<span>
-				<kbd className="rounded border border-border px-1">Ctrl</kbd>+click parties to select, then use
-				the header menu.
-			</span>
 			{hintsLoading && <span className="text-foreground/40">loading hints…</span>}
 
 			{hidden.length > 0 && (

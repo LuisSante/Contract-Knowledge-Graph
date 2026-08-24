@@ -1,16 +1,8 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/ui/select';
-import { PROVIDER_OPTIONS } from '@/constants/docx-viewer';
-import type { AssistantProvider, AssistantScope, RightPanelTab } from '@/types/document';
+import { useKnowledgeGraphStore } from '@/stores/knowledgeGraph';
+import type { RightPanelTab } from '@/types/document';
 
 const ACTION_BTN =
 	'h-7 border-transparent bg-card px-2 text-2xs text-primary shadow-sm hover:bg-card/90 hover:text-primary disabled:opacity-50';
@@ -25,16 +17,11 @@ interface RightPanelHeaderActionsProps {
 	// paragraph_explanation
 	explanationDisabled: boolean;
 	onExplain: () => void;
-	// assistant
-	provider: AssistantProvider;
-	onProviderChange: (provider: AssistantProvider) => void;
-	scope: AssistantScope;
-	onScopeChange: (scope: AssistantScope) => void;
 }
 
 /**
  * Right-panel header actions, specific per tab: Saved/Search in analysis,
- * Explain/Simplify in explanation, and provider + scope in the assistant.
+ * Explain/Simplify in explanation, and the focused-party chip in the chat.
  * Extracted from `DocxViewer` to slim it down.
  */
 export function RightPanelHeaderActions({
@@ -45,11 +32,8 @@ export function RightPanelHeaderActions({
 	onSearch,
 	explanationDisabled,
 	onExplain,
-	provider,
-	onProviderChange,
-	scope,
-	onScopeChange,
 }: RightPanelHeaderActionsProps) {
+	const focusedPartyName = useKnowledgeGraphStore((state) => state.ledger?.partyName ?? null);
 	if (activeTab === 'analysis') {
 		return (
 			<div className="flex shrink-0 items-center gap-1.5">
@@ -97,36 +81,14 @@ export function RightPanelHeaderActions({
 
 	if (activeTab === 'assistant') {
 		return (
-			<div className="flex shrink-0 items-center gap-1.5">
-				<Select value={provider} onValueChange={(value) => onProviderChange(value as AssistantProvider)}>
-					<SelectTrigger
-						size="sm"
-						className="h-7 w-[92px] shrink-0 border-header-foreground/20 bg-header-foreground/10 px-1.5 text-2xs text-header-foreground [&_svg]:text-header-foreground/70"
-						title="Assistant provider"
-					>
-						<SelectValue />
-					</SelectTrigger>
-					<SelectContent className="min-w-0">
-						{PROVIDER_OPTIONS.map((option) => (
-							<SelectItem
-								key={option.value}
-								value={option.value}
-								className="text-2xs whitespace-nowrap"
-							>
-								{option.label}
-							</SelectItem>
-						))}
-					</SelectContent>
-				</Select>
-				<div className="flex h-7 items-center gap-1.5 rounded-md border border-header-foreground/20 bg-header-foreground/10 px-2">
-					<span className="text-2xs font-semibold text-header-foreground/90">Paragraph</span>
-					<Switch
-						className="data-[state=checked]:bg-header-foreground data-[state=checked]:[&>span]:bg-header data-[state=unchecked]:bg-header-foreground/30"
-						checked={scope === 'full_contract'}
-						onCheckedChange={(checked) => onScopeChange(checked ? 'full_contract' : 'selected')}
-					/>
-					<span className="text-2xs font-semibold text-header-foreground/90">Full contract</span>
-				</div>
+			<div
+				className="flex h-7 min-w-0 shrink-0 items-center gap-1.5 rounded-md border border-header-foreground/15 bg-header-foreground/5 px-2"
+				title={focusedPartyName ? `Chatting about ${focusedPartyName}` : 'Focus a party in the Knowledge Graph'}
+			>
+				<span className="text-2xs font-medium text-header-foreground/50">Party</span>
+				<span className="truncate text-2xs font-medium text-header-foreground/80">
+					{focusedPartyName ?? 'none focused'}
+				</span>
 			</div>
 		);
 	}

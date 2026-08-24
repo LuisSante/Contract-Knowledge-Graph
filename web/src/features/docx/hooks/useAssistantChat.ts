@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useDocumentStore } from '@/stores/document';
+import { useKnowledgeGraphStore } from '@/stores/knowledgeGraph';
 import { fetchAssistantResponse } from '@/services/assistant';
 import { getAxiosErrorMessage } from '@/features/docx/utils/docx-engine/http-error';
 import {
@@ -106,6 +107,11 @@ export function useAssistantChat({
 			setError('Select a paragraph before asking in selected-paragraph mode.');
 			return;
 		}
+		const kgState = effectiveScope === 'kg_node' ? useKnowledgeGraphStore.getState() : null;
+		if (effectiveScope === 'kg_node' && !kgState?.ledger) {
+			setError('Focus a party in the Knowledge Graph before asking about it.');
+			return;
+		}
 
 		setError(null);
 		const historyBeforeAnswer: AssistantChatMessage[] = [
@@ -127,6 +133,25 @@ export function useAssistantChat({
 			relatedParagraphs: buildAssistantRelatedContext(selectedRelatedParagraphs),
 			paragraphNodes,
 			history: buildAssistantHistoryPayload(historyBeforeAnswer),
+			...(kgState?.ledger
+				? {
+						focusNodeId: kgState.ledger.partyId,
+						focusNodeLabel: kgState.ledger.partyName,
+						focusNodeKind: 'party',
+						focusParagraphIds: kgState.paragraphIds,
+						kgLedger: {
+							obligations: kgState.ledger.obligations,
+							rights: kgState.ledger.rights,
+							prohibitions: kgState.ledger.prohibitions,
+							burdenWeight: kgState.ledger.burdenWeight,
+							benefitWeight: kgState.ledger.benefitWeight,
+							burdenCount: kgState.ledger.burdenCount,
+							benefitCount: kgState.ledger.benefitCount,
+							usePageRank: kgState.usePageRank,
+							topClauses: kgState.ledger.topClauses,
+						},
+					}
+				: {}),
 		};
 
 		try {
@@ -166,6 +191,10 @@ export function useAssistantChat({
 	const submitContradictionQuestion = (questionOverride?: string) =>
 		submitAssistantQuestion(questionOverride, { scope: 'selected' });
 
+	/** Question about the focused KG party (burden/benefit of its clauses). */
+	const submitKgNodeQuestion = (questionOverride?: string) =>
+		submitAssistantQuestion(questionOverride, { scope: 'kg_node' });
+
 	// Contradiction quick-actions (why/risks/fix/entities) over the same thread.
 	const quickActions = useContradictionQuickActions({
 		docId,
@@ -191,6 +220,14 @@ export function useAssistantChat({
 		if (event.key === 'Enter' && !event.shiftKey) {
 			event.preventDefault();
 			void submit();
+		}
+	};
+
+	/** Enter sends the question about the focused KG party. */
+	const handleKgNodeKeydown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+		if (event.key === 'Enter' && !event.shiftKey) {
+			event.preventDefault();
+			void submitKgNodeQuestion();
 		}
 	};
 
@@ -224,5 +261,8 @@ export function useAssistantChat({
 		toggleEntityHighlights: quickActions.toggleEntityHighlights,
 		submitContradictionQuestion,
 		handleContradictionKeydown,
+		// Knowledge Graph chat (focused party):
+		submitKgNodeQuestion,
+		handleKgNodeKeydown,
 	};
 }

@@ -2,10 +2,9 @@
 
 import { ProcessingIndicator, type ProcessingStep } from '@/components/common/ProcessingIndicator';
 import {
-	QUICK_ACTIONS,
+	ASSISTANT_KG_SUGGESTIONS,
 	QUICK_ACTION_CONTRADICTION_RISKS,
 	QUICK_ACTION_WHY_CONTRADICTION_AI,
-	QUICK_ACTION_WHY_CONTRADICTION_FREE,
 } from '@/constants/docx-viewer';
 import type { useAssistantChat } from '@/features/docx/hooks/useAssistantChat';
 import type { useContradictionAnalysis } from '@/features/docx/hooks/useContradictionAnalysis';
@@ -26,12 +25,6 @@ const GRAPH_PROCESSING_STEPS: ProcessingStep[] = [
 	{ label: 'Analyzing paragraph relations', active: false },
 	{ label: 'Searching linked context', active: false },
 ];
-
-// Initial quick questions for the Contract Chat Assistant (without the contradiction ones).
-const ASSISTANT_CHAT_SUGGESTIONS = QUICK_ACTIONS.filter(
-	(action) =>
-		action !== QUICK_ACTION_WHY_CONTRADICTION_FREE && action !== QUICK_ACTION_WHY_CONTRADICTION_AI
-);
 
 interface RightPanelContentProps {
 	activeTab: RightPanelTab;
@@ -124,14 +117,14 @@ export function RightPanelContent({
 				entityHighlightsEnabled={assistant.entityHighlightsEnabled}
 				rewriteBusy={assistant.rewriteBusy}
 				onInputChange={assistant.setInput}
-				onSubmit={() => void assistant.submit()}
-				onKeydown={assistant.handleKeydown}
-				onSuggestedQuestionClick={(question) => void assistant.submit(question)}
+				onSubmit={() => void assistant.submitKgNodeQuestion()}
+				onKeydown={assistant.handleKgNodeKeydown}
+				onSuggestedQuestionClick={(question) => void assistant.submitKgNodeQuestion(question)}
 				onFocusNodeFromPanel={onFocusNodeFromPanel}
 				onToggleEntityHighlights={assistant.toggleEntityHighlights}
 				onAcceptFixSuggestion={assistant.acceptFixSuggestion}
-				initialSuggestions={ASSISTANT_CHAT_SUGGESTIONS}
-				onInitialSuggestionClick={(question) => void assistant.submit(question)}
+				initialSuggestions={ASSISTANT_KG_SUGGESTIONS}
+				onInitialSuggestionClick={(question) => void assistant.submitKgNodeQuestion(question)}
 			/>
 		);
 	}

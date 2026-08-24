@@ -45,16 +45,18 @@ type SimLink = d3.SimulationLinkDatum<SimNode> & {
 type NodeSelection = d3.Selection<SVGCircleElement, SimNode, SVGGElement, unknown>;
 type LinkSelection = d3.Selection<SVGLineElement, SimLink, SVGGElement, unknown>;
 
+// ColorBrewer 9-class Set1 (qualitative), mapped to keep the deontic tone:
+// red = obligation, green = right, orange = prohibition.
 const NODE_COLORS: Record<KgNodeKind, string> = {
-	party: '#7c3aed',
-	clause: '#0ea5e9',
-	definedTerm: '#14b8a6',
-	obligation: '#ef4444',
-	right: '#22c55e',
-	prohibition: '#f59e0b',
-	condition: '#a855f7',
-	reference: '#64748b',
-	value: '#eab308',
+	party: '#984ea3',
+	clause: '#377eb8',
+	obligation: '#e41a1c',
+	right: '#4daf4a',
+	prohibition: '#ff7f00',
+	definedTerm: '#a65628',
+	condition: '#f781bf',
+	reference: '#999999',
+	value: '#ffff33',
 };
 
 const EDGE_COLORS: Record<KgEdgeType, string> = {
@@ -452,12 +454,19 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 
 		const root = svg.append('g');
 
+		// Auto-fit runs once after the layout settles, but a manual zoom/pan cancels
+		// it for good so the view never snaps back under the user.
+		let userZoomed = false;
+		let didFit = false;
+
 		const zoom = d3
 			.zoom<SVGSVGElement, unknown>()
 			.scaleExtent([0.2, 4])
-			.on('zoom', (event) => root.attr('transform', event.transform.toString()));
+			.on('zoom', (event) => {
+				if (event.sourceEvent) userZoomed = true;
+				root.attr('transform', event.transform.toString());
+			});
 		svg.call(zoom).on('dblclick.zoom', null);
-		svg.on('click', () => clearFocus());
 
 		const link = root
 			.append('g')
@@ -568,7 +577,11 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			node.attr('cx', (d) => d.x ?? 0).attr('cy', (d) => d.y ?? 0);
 			label.attr('x', (d) => d.x ?? 0).attr('y', (d) => (d.y ?? 0) + d.radius + 13);
 		});
-		simulation.on('end', fitToView);
+		simulation.on('end', () => {
+			if (userZoomed || didFit) return;
+			didFit = true;
+			fitToView();
+		});
 
 		const drag = d3
 			.drag<SVGCircleElement, SimNode>()
@@ -665,35 +678,6 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 						</span>
 					</div>
 
-					{/* The entry view only draws parties, so the full legend would be noise. */}
-					{!isPartyEntry && (
-						<>
-							<div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-								<span className="font-medium text-foreground/70">Nodes</span>
-								{NODE_LEGEND.map((item) => (
-									<span key={item.label} className="inline-flex items-center gap-1">
-										<span
-											className="inline-block h-2 w-2 rounded-full"
-											style={{ backgroundColor: item.color }}
-										/>
-										{item.label}
-									</span>
-								))}
-							</div>
-							<div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-								<span className="font-medium text-foreground/70">Edges</span>
-								{EDGE_LEGEND.map((item) => (
-									<span key={item.label} className="inline-flex items-center gap-1">
-										<span
-											className="inline-block h-0.5 w-4 rounded-full"
-											style={{ backgroundColor: item.color }}
-										/>
-										{item.label}
-									</span>
-								))}
-							</div>
-						</>
-					)}
 				</div>
 			)}
 
@@ -778,13 +762,10 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 
 						{ledger && <LedgerCard ledger={ledger} onSelectClause={(id) => focusNode(id)} />}
 
-						{isPartyEntry && (
-							<div className="pointer-events-none absolute inset-x-0 bottom-3 z-10 text-center text-2xs text-muted-foreground">
-								Pick a party to expand the clauses that weigh on it.
-							</div>
-						)}
-
-						<svg ref={svgRef} className="h-full w-full text-foreground" />
+						<svg
+							ref={svgRef}
+							className="h-full w-full cursor-grab text-foreground active:cursor-grabbing"
+						/>
 						{hover && (
 							<div
 								className="pointer-events-none absolute z-10 max-w-[280px] rounded-md border border-border bg-popover px-2 py-1 text-2xs text-popover-foreground shadow-md"
@@ -796,6 +777,40 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 					</>
 				)}
 			</div>
+
+			{/* The entry view only draws parties, so the full legend would be noise. */}
+			{status === 'ready' && !isPartyEntry && (
+				<div className="space-y-2 border-t border-border/60 px-3 py-2 text-2xs text-muted-foreground">
+					<div>
+						<div className="mb-1 font-medium text-foreground/50">Nodes</div>
+						<div className="grid grid-cols-5 gap-x-3 gap-y-1">
+							{NODE_LEGEND.map((item) => (
+								<span key={item.label} className="inline-flex items-center gap-1.5">
+									<span
+										className="inline-block h-2 w-2 shrink-0 rounded-full"
+										style={{ backgroundColor: item.color }}
+									/>
+									<span className="truncate">{item.label}</span>
+								</span>
+							))}
+						</div>
+					</div>
+					<div>
+						<div className="mb-1 font-medium text-foreground/50">Edges</div>
+						<div className="grid grid-cols-4 gap-x-3 gap-y-1">
+							{EDGE_LEGEND.map((item) => (
+								<span key={item.label} className="inline-flex items-center gap-1.5" title={item.label}>
+									<span
+										className="inline-block h-0.5 w-4 shrink-0 rounded-full"
+										style={{ backgroundColor: item.color }}
+									/>
+									<span className="truncate">{item.label}</span>
+								</span>
+							))}
+						</div>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }

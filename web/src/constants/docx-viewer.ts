@@ -18,6 +18,13 @@ export const QUICK_ACTIONS = [
 	"What happens if I don't?",
 ];
 
+// Quick questions for the KG chat about the focused party (burden/benefit of its clauses).
+export const ASSISTANT_KG_SUGGESTIONS = [
+	'Why does the contract burden this party?',
+	'Which clause is riskiest for this party?',
+	'Which clauses benefit this party the most?',
+];
+
 export const MODE_OPTIONS: ReadonlyArray<{ value: AssistantMode; label: string }> = [
 	{ value: 'explain', label: 'Explain' },
 	{ value: 'suggest_questions', label: 'Suggestion Question' }
@@ -99,18 +106,18 @@ export const RIGHT_PANEL_TOOLS: Array<{ id: RightPanelTab; label: string }> = [
 	// Related Paragraphs hidden while the ContraVis paragraph graph is disabled:
 	// { id: 'related', label: 'Related Paragraphs' },
 	{ id: 'knowledge_graph', label: 'Knowledge Graph' },
+	{ id: 'assistant', label: 'Chat' },
 	// Hidden from the rail (the code/hook/panel are kept in features/docx):
 	// { id: 'paragraph_explanation', label: 'Paragraph Explanation' },
 	// { id: 'summarize', label: 'Summarize & Simplify' },
 	// { id: 'ambiguity', label: 'Ambiguity Analysis' },
 	// { id: 'revisions', label: 'Paragraph Revisions' },
-	// { id: 'assistant', label: 'Contract Chat Assistant' }
 ];
  
 export const RIGHT_TOOLBAR_WIDTH = 42;
 export const RIGHT_TOOLBAR_EXPANDED_WIDTH = 162;
 export const RIGHT_DRAWER_MIN_WIDTH = 360;
-export const RIGHT_DRAWER_DEFAULT_WIDTH = 550;
+export const RIGHT_DRAWER_DEFAULT_WIDTH = 760;
 export const RIGHT_DRAWER_MAX_RATIO = 0.68;
 export const RIGHT_DRAWER_KEYBOARD_STEP = 24;
 export const FIX_CONTRADICTION_TOP_RELATED = 3;

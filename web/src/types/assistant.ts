@@ -6,8 +6,29 @@ import type {
 } from './contradiction';
 
 export type AssistantMode = 'explain' | 'suggest_questions';
-export type AssistantScope = 'selected' | 'full_contract';
+export type AssistantScope = 'selected' | 'full_contract' | 'kg_node';
 export type AssistantProvider = 'openai' | 'gemini';
+
+export type KgChatClause = {
+	id: string;
+	label: string;
+	burden: number;
+	benefit: number;
+};
+
+/** Deterministic burden/benefit facts for the focused party, sent verbatim to the
+ * chat so it explains them instead of recomputing. Mirrors backend KgChatLedger. */
+export type KgChatLedger = {
+	obligations: number;
+	rights: number;
+	prohibitions: number;
+	burdenWeight: number;
+	benefitWeight: number;
+	burdenCount: number;
+	benefitCount: number;
+	usePageRank: boolean;
+	topClauses: KgChatClause[];
+};
 
 export type AssistantCitation = {
 	id: string;
@@ -65,6 +86,11 @@ export type AssistantChatRequest = {
 	relatedParagraphs: AssistantContextRelation[];
 	paragraphNodes: AssistantContextNode[];
 	history: AssistantHistoryMessage[];
+	focusNodeId?: string | null;
+	focusNodeLabel?: string | null;
+	focusNodeKind?: string | null;
+	focusParagraphIds?: string[];
+	kgLedger?: KgChatLedger | null;
 };
 
 export type AssistantChatResponse = {

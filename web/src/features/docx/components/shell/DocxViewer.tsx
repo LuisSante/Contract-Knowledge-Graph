@@ -351,10 +351,6 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 								onSearch={() => void contradiction.searchContradictions()}
 								explanationDisabled={!selectedParagraph || explanation.loading}
 								onExplain={() => void explanation.submit()}
-								provider={assistant.provider}
-								onProviderChange={assistant.setProvider}
-								scope={assistant.scope}
-								onScopeChange={assistant.setScope}
 							/>
 						)
 					}

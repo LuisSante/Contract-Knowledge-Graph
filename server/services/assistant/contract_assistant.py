@@ -47,7 +47,7 @@ def estimate_assistant_chat_request(payload: AssistantChatRequest) -> dict[str, 
     node_map = {node.id: node for node in payload.paragraphNodes}
     context_entries = _build_context_entries(payload, node_map)
     allowed_ids = [entry.node.id for entry in context_entries]
-    system_prompt = _build_system_prompt(payload.mode)
+    system_prompt = _build_system_prompt(payload.mode, payload.scope)
     user_prompt = _build_user_prompt(payload, context_entries, allowed_ids)
     resolved_model = (payload.model or "").strip() or _default_model_for_provider(payload.provider)
     input_tokens = estimate_tokens(system_prompt, resolved_model) + estimate_tokens(user_prompt, resolved_model)
@@ -152,7 +152,7 @@ def generate_assistant_response(payload: AssistantChatRequest) -> AssistantChatR
         payload.scope,
         payload.mode,
     )
-    system_prompt = _build_system_prompt(payload.mode)
+    system_prompt = _build_system_prompt(payload.mode, payload.scope)
     user_prompt = _build_user_prompt(payload, context_entries, allowed_ids)
 
     raw_text = provider.generate(system_prompt=system_prompt, user_prompt=user_prompt, temperature=0.2)
@@ -407,6 +407,17 @@ def _build_context_entries(
         )
         return _apply_context_budget(selected + related_sorted)
 
+    if payload.scope == "kg_node":
+        focus_ids = [pid for pid in dict.fromkeys(payload.focusParagraphIds) if pid in node_map]
+        if focus_ids:
+            focus_entries = [
+                ContextEntry(node=node_map[pid], tag="kg_focus", relation_summary="")
+                for pid in focus_ids
+            ]
+            focus_entries.sort(key=lambda entry: (entry.node.page, entry.node.paragraph_enum))
+            return _apply_context_budget(focus_entries)
+        # No focus paragraphs from the client: fall back to the full contract.
+
     full_entries = [
         ContextEntry(node=node, tag="contract", relation_summary="")
         for node in sorted(payload.paragraphNodes, key=lambda item: (item.page, item.paragraph_enum))
@@ -430,37 +441,40 @@ def _apply_context_budget(entries: list[ContextEntry]) -> list[ContextEntry]:
     return selected_entries
 
 
-def _build_system_prompt(mode: str) -> str:
-    mode_instruction = {
-        "explain": "Explain in plain language and avoid legal jargon when possible.",
-        "suggest_questions": "Focus on generating concise follow-up questions grounded in the contract.",
-    }.get(mode, "Explain in plain language.")
+def _build_system_prompt(mode: str, scope: str = "selected") -> str:
+    if scope == "kg_node":
+        prompt = (
+            "You are a Contract Impact Assistant for a deontic knowledge graph. "
+            "One party (a graph node) is in focus, and you are GIVEN precomputed burden/benefit facts for it. "
+            "Treat every number, weight, and clause ranking as ground truth: never recompute, reweight, or contradict them. "
+            "Your job is to EXPLAIN, in plain language, why the contract burdens or benefits this party and which clauses drive it, "
+            "grounding every claim in the provided paragraph text. "
+            "Never invent paragraph IDs or facts. "
+            "Always return valid JSON with this shape: "
+            '{"answer": string, "citations": [string], "suggested_questions": [string]}. '
+            "Citations must be exact paragraph IDs from ALLOWED_PARAGRAPH_IDS. "
+            "If the facts are insufficient, say so plainly and cite the closest supporting paragraphs."
+        )
+    else:
+        mode_instruction = {
+            "explain": "Explain in plain language and avoid legal jargon when possible.",
+            "suggest_questions": "Focus on generating concise follow-up questions grounded in the contract.",
+        }.get(mode, "Explain in plain language.")
+        prompt = (
+            "You are a What-if Contract Assistant. "
+            "Use only the provided contract paragraph context. "
+            "Never invent paragraph IDs or facts. "
+            "Always return valid JSON with this shape: "
+            '{"answer": string, "citations": [string], "suggested_questions": [string]}. '
+            "Citations must include one or more exact paragraph IDs from ALLOWED_PARAGRAPH_IDS. "
+            "If information is incomplete, state that clearly but still cite the best supporting paragraphs. "
+            f"{mode_instruction}"
+        )
 
     logger.info("\t\t SYSTEM PROMPT")
-    logger.info (
-        f"\n\n\n"
-        "You are a What-if Contract Assistant. "
-        "Use only the provided contract paragraph context. "
-        "Never invent paragraph IDs or facts. "
-        "Always return valid JSON with this shape: "
-        '{"answer": string, "citations": [string], "suggested_questions": [string]}. '
-        "Citations must include one or more exact paragraph IDs from ALLOWED_PARAGRAPH_IDS. "
-        "If information is incomplete, state that clearly but still cite the best supporting paragraphs. "
-        f"{mode_instruction}"
-        f"\n\n\n"
-    )
+    logger.info("\n\n\n%s\n\n\n", prompt)
     logger.info("======================")
-
-    return (
-        "You are a What-if Contract Assistant. "
-        "Use only the provided contract paragraph context. "
-        "Never invent paragraph IDs or facts. "
-        "Always return valid JSON with this shape: "
-        '{"answer": string, "citations": [string], "suggested_questions": [string]}. '
-        "Citations must include one or more exact paragraph IDs from ALLOWED_PARAGRAPH_IDS. "
-        "If information is incomplete, state that clearly but still cite the best supporting paragraphs. "
-        f"{mode_instruction}"
-    )
+    return prompt
 
 
 def _build_user_prompt(
@@ -488,33 +502,53 @@ def _build_user_prompt(
     context_block = "\n\n".join(context_lines)
     allowed_block = ", ".join(allowed_ids)
 
-    logger.info("\t\t USER PROMPT")
-    logger.info(
-        f"\n\n\n"
-        f"Document ID: {payload.documentId}\n"
-        f"Mode: {payload.mode}\n"
-        f"Scope: {payload.scope}\n"
-        f"Question: {payload.question.strip()}\n\n"
-        f"ALLOWED_PARAGRAPH_IDS: [{allowed_block}]\n\n"
-        f"Conversation History:\n{history_block}\n\n"
-        f"Contract Context:\n{context_block}\n\n"
-        "Output JSON only. "
-        "For citations, include only IDs from ALLOWED_PARAGRAPH_IDS."
-        f"\n\n\n"
-    )
-    logger.info("======================")
+    kg_block = ""
+    if payload.scope == "kg_node":
+        kg_block = (
+            "Knowledge Graph Facts (ground truth — explain, do not recompute):\n"
+            f"{_format_kg_facts(payload)}\n\n"
+        )
 
-    return (
+    prompt = (
         f"Document ID: {payload.documentId}\n"
         f"Mode: {payload.mode}\n"
         f"Scope: {payload.scope}\n"
         f"Question: {payload.question.strip()}\n\n"
+        f"{kg_block}"
         f"ALLOWED_PARAGRAPH_IDS: [{allowed_block}]\n\n"
         f"Conversation History:\n{history_block}\n\n"
         f"Contract Context:\n{context_block}\n\n"
         "Output JSON only. "
         "For citations, include only IDs from ALLOWED_PARAGRAPH_IDS."
     )
+
+    logger.info("\t\t USER PROMPT")
+    logger.info("\n\n\n%s\n\n\n", prompt)
+    logger.info("======================")
+    return prompt
+
+
+def _format_kg_facts(payload: AssistantChatRequest) -> str:
+    ledger = payload.kgLedger
+    party = payload.focusNodeLabel or payload.focusNodeId or "(unknown)"
+    if ledger is None:
+        return f"Focused party: {party}\n(no impact facts were provided)"
+
+    weighting = "Personalized PageRank × severity" if ledger.usePageRank else "severity only"
+    lines = [
+        f"Focused party: {party}",
+        f"Impact weighting: {weighting}",
+        f"Burden total weight: {ledger.burdenWeight:.3f} across {ledger.burdenCount} statement(s)",
+        f"Benefit total weight: {ledger.benefitWeight:.3f} across {ledger.benefitCount} statement(s)",
+        f"Deontic mix: {ledger.obligations} obligation(s), {ledger.rights} right(s), {ledger.prohibitions} prohibition(s)",
+    ]
+    if ledger.topClauses:
+        lines.append("Heaviest clauses (already ranked):")
+        lines.extend(
+            f"  - {clause.label} [{clause.id}]: burden={clause.burden:.3f}, benefit={clause.benefit:.3f}"
+            for clause in ledger.topClauses
+        )
+    return "\n".join(lines)
 
 
 def _parse_json_from_model(text: str) -> dict[str, Any]:

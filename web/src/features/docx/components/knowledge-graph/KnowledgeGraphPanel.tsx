@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import * as d3 from 'd3';
-import { fetchKnowledgeGraph } from '@/services/knowledge';
+import { fetchKnowledgeGraph, fetchPartyMergeHints } from '@/services/knowledge';
 import { useDocumentStore } from '@/stores/document';
 import {
 	KG_TOP_K_STEP_SIZE,
@@ -12,6 +12,8 @@ import {
 	useKnowledgeGraphStore,
 } from '@/stores/knowledgeGraph';
 import { buildKnowledgeGraphBridge } from '@/features/docx/utils/knowledge/kg-bridge';
+import { applyPartyView } from '@/features/docx/utils/knowledge/party-view';
+import { PartyManager } from '@/features/docx/components/knowledge-graph/PartyManager';
 import type { KgLedger } from '@/features/docx/utils/knowledge/attention';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { DeonticKind, KgEdgeType, KgNodeKind, KnowledgeGraph } from '@/types/knowledge';
@@ -75,27 +77,29 @@ const EDGE_COLORS: Record<KgEdgeType, string> = {
 	contradicts: '#e11d48',
 };
 
-const NODE_LEGEND: Array<{ color: string; label: string }> = [
-	{ color: NODE_COLORS.party, label: 'Party' },
-	{ color: NODE_COLORS.clause, label: 'Clause' },
-	{ color: NODE_COLORS.obligation, label: 'Obligation' },
-	{ color: NODE_COLORS.right, label: 'Right' },
-	{ color: NODE_COLORS.prohibition, label: 'Prohibition' },
-	{ color: NODE_COLORS.definedTerm, label: 'Defined term' },
-	{ color: NODE_COLORS.condition, label: 'Condition' },
-	{ color: NODE_COLORS.reference, label: 'Reference' },
-	{ color: NODE_COLORS.value, label: 'Value' },
+const NODE_LEGEND: Array<{ kind: KgNodeKind; label: string }> = [
+	{ kind: 'party', label: 'Party' },
+	{ kind: 'clause', label: 'Clause' },
+	{ kind: 'obligation', label: 'Obligation' },
+	{ kind: 'right', label: 'Right' },
+	{ kind: 'prohibition', label: 'Prohibition' },
+	{ kind: 'definedTerm', label: 'Defined term' },
+	{ kind: 'condition', label: 'Condition' },
+	{ kind: 'reference', label: 'Reference' },
+	{ kind: 'value', label: 'Value' },
 ];
 
-const EDGE_LEGEND: Array<{ color: string; label: string }> = [
-	{ color: EDGE_COLORS.assigns_obligation_to, label: 'assigns obligation to (→ party)' },
-	{ color: EDGE_COLORS.grants_right_to, label: 'grants right to (→ party)' },
-	{ color: EDGE_COLORS.depends_on, label: 'depends on (gated by a clause)' },
-	{ color: EDGE_COLORS.references, label: 'references (neutral mention)' },
-	{ color: EDGE_COLORS.uses, label: 'uses (→ defined term)' },
-	{ color: EDGE_COLORS.defines, label: 'defines (clause → term)' },
-	{ color: EDGE_COLORS.is_part_of, label: 'is part of (containment)' },
-	{ color: EDGE_COLORS.supersedes, label: 'supersedes / modifies' },
+// `types` groups the edge kinds one legend row stands for (supersedes/modifies share a row).
+const EDGE_LEGEND: Array<{ types: KgEdgeType[]; label: string }> = [
+	{ types: ['assigns_obligation_to'], label: 'assigns obligation to (→ party)' },
+	{ types: ['grants_right_to'], label: 'grants right to (→ party)' },
+	{ types: ['depends_on'], label: 'depends on (gated by a clause)' },
+	{ types: ['references'], label: 'references (neutral mention)' },
+	{ types: ['uses'], label: 'uses (→ defined term)' },
+	{ types: ['defines'], label: 'defines (clause → term)' },
+	{ types: ['is_part_of'], label: 'is part of (containment)' },
+	{ types: ['supersedes', 'modifies'], label: 'supersedes / modifies' },
+	{ types: ['contradicts'], label: 'contradicts' },
 ];
 
 const DIMMED_NODE_OPACITY = 0.1;
@@ -337,6 +341,8 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const [status, setStatus] = useState<'loading' | 'ready' | 'missing' | 'error'>('loading');
 	const [hover, setHover] = useState<{ x: number; y: number; text: string } | null>(null);
 	const [view, setView] = useState<GraphView>('parties');
+	const [mergeHints, setMergeHints] = useState<Record<string, string[]>>({});
+	const [hintsLoading, setHintsLoading] = useState(false);
 	// Bumped whenever the d3 selections are rebuilt, so the styling effect re-runs.
 	const [graphVersion, setGraphVersion] = useState(0);
 
@@ -350,6 +356,13 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const setTopK = useKnowledgeGraphStore((s) => s.setTopK);
 	const clearFocus = useKnowledgeGraphStore((s) => s.clearFocus);
 	const setBridgePayload = useKnowledgeGraphStore((s) => s.setBridgePayload);
+	const mergeGroups = useKnowledgeGraphStore((s) => s.mergeGroups);
+	const hiddenParties = useKnowledgeGraphStore((s) => s.hiddenParties);
+	const unhideParty = useKnowledgeGraphStore((s) => s.unhideParty);
+	const clearPartyView = useKnowledgeGraphStore((s) => s.clearPartyView);
+	const selectedPartyIds = useKnowledgeGraphStore((s) => s.selectedPartyIds);
+	const toggleSelectedParty = useKnowledgeGraphStore((s) => s.toggleSelectedParty);
+	const clearSelectedParties = useKnowledgeGraphStore((s) => s.clearSelectedParties);
 	const focusNodeIds = useKnowledgeGraphStore((s) => s.focusNodeIds);
 	const nodeScores = useKnowledgeGraphStore((s) => s.nodeScores);
 	const ledger = useKnowledgeGraphStore((s) => s.ledger);
@@ -374,6 +387,15 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				}
 				setKg(graph);
 				setStatus('ready');
+				setMergeHints({});
+				setHintsLoading(true);
+				fetchPartyMergeHints(docId)
+					.then((hints) => {
+						if (!cancelled) setMergeHints(hints);
+					})
+					.finally(() => {
+						if (!cancelled) setHintsLoading(false);
+					});
 			} catch {
 				if (!cancelled) setStatus('error');
 			}
@@ -397,7 +419,27 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		return () => observer.disconnect();
 	}, []);
 
-	const fullGraph = useMemo(() => (kg ? buildGraph(kg) : null), [kg]);
+	// The user's merge/hide choices canonicalize parties view-time; the stored KG
+	// is never mutated, so every downstream computation runs over this view.
+	const viewKg = useMemo(
+		() => (kg ? applyPartyView(kg, mergeGroups, new Set(hiddenParties)) : null),
+		[kg, mergeGroups, hiddenParties]
+	);
+
+	const fullGraph = useMemo(() => (viewKg ? buildGraph(viewKg) : null), [viewKg]);
+
+	const rawPartyName = useMemo(
+		() => new Map((kg?.parties ?? []).map((p) => [p.id, p.name] as const)),
+		[kg]
+	);
+	const hiddenNamed = useMemo(
+		() => hiddenParties.map((id) => ({ id, name: rawPartyName.get(id) ?? id })),
+		[hiddenParties, rawPartyName]
+	);
+	const membersOf = useMemo<Record<string, string[]>>(
+		() => Object.fromEntries(mergeGroups.map((g) => [g.id, g.members])),
+		[mergeGroups]
+	);
 
 	// On the `parties` view the simulation only ever runs over the visible slice:
 	// the parties themselves, then the induced subgraph of whatever is in focus.
@@ -436,11 +478,11 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	// Derive the bridge payload (anchor + related paragraphs + entity spans +
 	// deontic rail + ledger) and hand it to the document viewer.
 	useEffect(() => {
-		if (!kg || !focusNodeId) return;
+		if (!viewKg || !focusNodeId) return;
 		setBridgePayload(
-			buildKnowledgeGraphBridge(kg, focusNodeId, hops, topK, nodesById, severity, usePageRank)
+			buildKnowledgeGraphBridge(viewKg, focusNodeId, hops, topK, nodesById, severity, usePageRank)
 		);
-	}, [kg, focusNodeId, hops, topK, nodesById, severity, usePageRank, setBridgePayload]);
+	}, [viewKg, focusNodeId, hops, topK, nodesById, severity, usePageRank, setBridgePayload]);
 
 	// d3-force simulation + render. Rebuilds only when the graph or size changes.
 	useEffect(() => {
@@ -509,6 +551,11 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			.on('click', (event: MouseEvent, d) => {
 				event.stopPropagation();
 				if (draggedRef.current) return; // ignore the click that ends a drag
+				if ((event.ctrlKey || event.metaKey) && d.kind === 'party') {
+					toggleSelectedParty(d.id); // Ctrl/Cmd-click builds the action selection
+					return;
+				}
+				clearSelectedParties();
 				focusNode(d.id);
 			});
 
@@ -619,6 +666,41 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		const link = linkSelRef.current;
 		if (!node || !link) return;
 
+		const selectedSet = new Set(selectedPartyIds);
+		const selectedRaw = new Set(selectedPartyIds.flatMap((id) => membersOf[id] ?? [id]));
+		const compatibleRaw = new Set([...selectedRaw].flatMap((raw) => mergeHints[raw] ?? []));
+		const hintByNode = new Map<string, 'suggested' | 'discouraged'>(
+			compatibleRaw.size === 0 || !viewKg
+				? []
+				: viewKg.parties
+						.filter((p) => !selectedSet.has(p.id))
+						.map((p) => {
+							const raws = membersOf[p.id] ?? [p.id];
+							return [p.id, raws.some((r) => compatibleRaw.has(r)) ? 'suggested' : 'discouraged'] as const;
+						})
+		);
+		// Resolver hint (green = plausible merge, amber = not) + the selection ring,
+		// which wins over the hint. Both only show while a party is selected.
+		const applySelection = () => {
+			if (selectedSet.size > 0) {
+				node
+					.filter((d) => hintByNode.get(d.id) === 'suggested')
+					.attr('opacity', 1)
+					.attr('stroke', '#22c55e')
+					.attr('stroke-width', 2.4);
+				node
+					.filter((d) => hintByNode.get(d.id) === 'discouraged')
+					.attr('opacity', 1)
+					.attr('stroke', '#f59e0b')
+					.attr('stroke-width', 2);
+			}
+			node
+				.filter((d) => selectedSet.has(d.id))
+				.attr('opacity', 1)
+				.attr('stroke', '#7c3aed')
+				.attr('stroke-width', 3);
+		};
+
 		if (!highlightIds) {
 			node
 				.attr('opacity', 1)
@@ -626,6 +708,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				.attr('stroke-width', 1.2)
 				.attr('r', (d) => d.radius);
 			link.attr('stroke-opacity', 0.8);
+			applySelection();
 			return;
 		}
 
@@ -648,15 +731,24 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			const target = typeof d.target === 'string' ? d.target : (d.target as SimNode).id;
 			return highlightIds.has(source) && highlightIds.has(target) ? 0.95 : DIMMED_LINK_OPACITY;
 		});
-	}, [graphVersion, highlightIds, focusNodeId, nodeScores]);
+		applySelection();
+	}, [graphVersion, highlightIds, focusNodeId, nodeScores, selectedPartyIds, membersOf, mergeHints, viewKg]);
 
-	const counts = kg
+	const counts = viewKg
 		? {
-				parties: kg.parties.length,
-				clauses: kg.clauses.length,
-				statements: kg.obligations.length + kg.rights.length + kg.prohibitions.length,
+				parties: viewKg.parties.length,
+				clauses: viewKg.clauses.length,
+				statements: viewKg.obligations.length + viewKg.rights.length + viewKg.prohibitions.length,
 			}
 		: null;
+
+	// The legend mirrors the canvas: only the node kinds and edge types actually drawn.
+	const presentNodeKinds = new Set((graph?.nodes ?? []).map((n) => n.kind));
+	const presentEdgeTypes = new Set((graph?.links ?? []).map((l) => l.type));
+	const visibleNodeLegend = NODE_LEGEND.filter((item) => presentNodeKinds.has(item.kind));
+	const visibleEdgeLegend = EDGE_LEGEND.filter((item) =>
+		item.types.some((t) => presentEdgeTypes.has(t))
+	);
 
 	return (
 		<div className="flex h-full flex-col">
@@ -778,37 +870,51 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				)}
 			</div>
 
-			{/* The entry view only draws parties, so the full legend would be noise. */}
-			{status === 'ready' && !isPartyEntry && (
+			{status === 'ready' && view === 'parties' && (
+				<PartyManager
+					hidden={hiddenNamed}
+					hasView={mergeGroups.length > 0 || hiddenParties.length > 0}
+					hintsLoading={hintsLoading}
+					onUnhide={unhideParty}
+					onReset={clearPartyView}
+				/>
+			)}
+
+			{/* The legend mirrors the canvas; the entry view (parties only) needs none. */}
+			{status === 'ready' && !isPartyEntry && (visibleNodeLegend.length > 0 || visibleEdgeLegend.length > 0) && (
 				<div className="space-y-2 border-t border-border/60 px-3 py-2 text-2xs text-muted-foreground">
-					<div>
-						<div className="mb-1 font-medium text-foreground/50">Nodes</div>
-						<div className="grid grid-cols-5 gap-x-3 gap-y-1">
-							{NODE_LEGEND.map((item) => (
-								<span key={item.label} className="inline-flex items-center gap-1.5">
-									<span
-										className="inline-block h-2 w-2 shrink-0 rounded-full"
-										style={{ backgroundColor: item.color }}
-									/>
-									<span className="truncate">{item.label}</span>
-								</span>
-							))}
+					{visibleNodeLegend.length > 0 && (
+						<div>
+							<div className="mb-1 font-medium text-foreground/50">Nodes</div>
+							<div className="grid grid-cols-5 gap-x-3 gap-y-1">
+								{visibleNodeLegend.map((item) => (
+									<span key={item.kind} className="inline-flex items-center gap-1.5">
+										<span
+											className="inline-block h-2 w-2 shrink-0 rounded-full"
+											style={{ backgroundColor: NODE_COLORS[item.kind] }}
+										/>
+										<span className="truncate">{item.label}</span>
+									</span>
+								))}
+							</div>
 						</div>
-					</div>
-					<div>
-						<div className="mb-1 font-medium text-foreground/50">Edges</div>
-						<div className="grid grid-cols-4 gap-x-3 gap-y-1">
-							{EDGE_LEGEND.map((item) => (
-								<span key={item.label} className="inline-flex items-center gap-1.5" title={item.label}>
-									<span
-										className="inline-block h-0.5 w-4 shrink-0 rounded-full"
-										style={{ backgroundColor: item.color }}
-									/>
-									<span className="truncate">{item.label}</span>
-								</span>
-							))}
+					)}
+					{visibleEdgeLegend.length > 0 && (
+						<div>
+							<div className="mb-1 font-medium text-foreground/50">Edges</div>
+							<div className="grid grid-cols-4 gap-x-3 gap-y-1">
+								{visibleEdgeLegend.map((item) => (
+									<span key={item.label} className="inline-flex items-center gap-1.5" title={item.label}>
+										<span
+											className="inline-block h-0.5 w-4 shrink-0 rounded-full"
+											style={{ backgroundColor: EDGE_COLORS[item.types[0]] }}
+										/>
+										<span className="truncate">{item.label}</span>
+									</span>
+								))}
+							</div>
 						</div>
-					</div>
+					)}
 				</div>
 			)}
 		</div>

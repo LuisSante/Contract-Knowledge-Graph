@@ -1,3 +1,4 @@
+import json
 import logging
 
 from django.http import FileResponse
@@ -11,8 +12,9 @@ from api.serializers import (
     ProcessDocumentResponseSerializer,
 )
 from core.config import settings
-from services.documents.processing import build_paragraphs, save_paragraphs_dump
+from services.documents.processing import _safe_filename, build_paragraphs, save_paragraphs_dump
 from services.documents.store import DocumentStore
+from services.graph.knowledge.party_hints import suggest_party_merges
 from services.graph.knowledge.store import load_knowledge_graph
 
 logger = logging.getLogger(__name__)
@@ -101,3 +103,43 @@ class KnowledgeGraphView(APIView):
                 "knowledgeGraph": payload,
             }
         )
+
+
+class KnowledgePartyHintsView(APIView):
+    """Suggest which party nodes MAY be merged (resolver-as-hint). Never mutates the
+    KG; the user decides in the UI. Cached per document to avoid repeat LLM calls."""
+
+    _cache: dict[str, dict] = {}
+
+    def get(self, request, doc_id: str):
+        document_store.ensure_initialized()
+        canonical_id = document_store.get_canonical_id(doc_id) or doc_id
+        if canonical_id in self._cache:
+            return Response(self._cache[canonical_id])
+
+        kg = load_knowledge_graph(canonical_id, settings.KNOWLEDGE_GRAPH_DIR)
+        if kg is None:
+            raise NotFound("Knowledge graph not generated for this document")
+
+        para_text, para_enum = _load_paragraph_index(canonical_id)
+        try:
+            result = suggest_party_merges(kg, para_text, para_enum)
+        except Exception:
+            logger.exception("party merge hints failed for %s", canonical_id)
+            result = {"candidates": {}}
+        self._cache[canonical_id] = result
+        return Response(result)
+
+
+def _load_paragraph_index(canonical_id: str) -> tuple[dict[str, str], dict[str, int]]:
+    path = settings.PARAGRAPHS_OUTPUT_DIR / f"{_safe_filename(canonical_id)}.json"
+    if not path.exists():
+        return {}, {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}, {}
+    paragraphs = data.get("paragraphs", [])
+    text = {p["id"]: p.get("text", "") for p in paragraphs}
+    enum = {p["id"]: p.get("paragraph_enum", 10**9) for p in paragraphs}
+    return text, enum

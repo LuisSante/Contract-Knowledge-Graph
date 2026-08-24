@@ -8,6 +8,7 @@ import type {
 	KgLedger,
 } from '@/features/docx/utils/knowledge/attention';
 import { DEFAULT_SEVERITY } from '@/features/docx/utils/knowledge/attention';
+import type { MergeGroup } from '@/features/docx/utils/knowledge/party-view';
 
 export const MAX_KG_HOPS = 5;
 export const DEFAULT_KG_TOP_K = 10;
@@ -58,12 +59,24 @@ interface KnowledgeGraphState extends KnowledgeGraphBridgePayload {
 	severity: DeonticSeverity;
 	/** Weight the impact by Personalized PageRank (structural) vs raw severity. */
 	usePageRank: boolean;
+	/** User-driven party canonicalization (persists across focus). */
+	mergeGroups: MergeGroup[];
+	hiddenParties: string[];
+	/** Parties Ctrl/Cmd-clicked in the graph, the target of the header actions. */
+	selectedPartyIds: string[];
 
 	focusNode: (nodeId: string) => void;
 	setHops: (updater: number | ((prev: number) => number)) => void;
 	setTopK: (updater: number | ((prev: number) => number)) => void;
 	setSeverity: (kind: DeonticKind, value: number) => void;
 	setUsePageRank: (value: boolean) => void;
+	mergeParties: (ids: string[]) => void;
+	splitGroup: (groupId: string) => void;
+	hideParty: (id: string) => void;
+	unhideParty: (id: string) => void;
+	clearPartyView: () => void;
+	toggleSelectedParty: (id: string) => void;
+	clearSelectedParties: () => void;
 	clearFocus: () => void;
 	setBridgePayload: (payload: KnowledgeGraphBridgePayload) => void;
 }
@@ -74,6 +87,9 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 	topK: DEFAULT_KG_TOP_K,
 	severity: DEFAULT_SEVERITY,
 	usePageRank: true,
+	mergeGroups: [],
+	hiddenParties: [],
+	selectedPartyIds: [],
 	...EMPTY_PAYLOAD,
 
 	focusNode: (focusNodeId) => set({ focusNodeId, hops: 1 }),
@@ -82,6 +98,51 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 			severity: { ...state.severity, [kind]: Math.min(1, Math.max(0, value)) },
 		})),
 	setUsePageRank: (usePageRank) => set({ usePageRank }),
+	mergeParties: (ids) =>
+		set((state) => {
+			const groupById = new Map(state.mergeGroups.map((g) => [g.id, g]));
+			const members = new Set<string>();
+			for (const id of ids) {
+				const group = groupById.get(id);
+				if (group) group.members.forEach((m) => members.add(m));
+				else members.add(id);
+			}
+			if (members.size < 2) return {};
+			const sorted = [...members].sort();
+			const newGroup: MergeGroup = { id: `merge:${sorted.join('+')}`, members: sorted };
+			const kept = state.mergeGroups.filter((g) => !g.members.some((m) => members.has(m)));
+			const focusNodeId =
+				state.focusNodeId && members.has(state.focusNodeId) ? newGroup.id : state.focusNodeId;
+			return { mergeGroups: [...kept, newGroup], focusNodeId, selectedPartyIds: [] };
+		}),
+	splitGroup: (groupId) =>
+		set((state) => ({
+			mergeGroups: state.mergeGroups.filter((g) => g.id !== groupId),
+			selectedPartyIds: [],
+			...(state.focusNodeId === groupId ? { focusNodeId: null, ...EMPTY_PAYLOAD } : {}),
+		})),
+	hideParty: (id) =>
+		set((state) => {
+			const group = state.mergeGroups.find((g) => g.id === id);
+			const toHide = group ? group.members : [id];
+			const clears = state.focusNodeId === id || toHide.includes(state.focusNodeId ?? '');
+			return {
+				hiddenParties: Array.from(new Set([...state.hiddenParties, ...toHide])),
+				mergeGroups: group ? state.mergeGroups.filter((g) => g.id !== id) : state.mergeGroups,
+				selectedPartyIds: state.selectedPartyIds.filter((s) => s !== id && !toHide.includes(s)),
+				...(clears ? { focusNodeId: null, ...EMPTY_PAYLOAD } : {}),
+			};
+		}),
+	unhideParty: (id) =>
+		set((state) => ({ hiddenParties: state.hiddenParties.filter((h) => h !== id) })),
+	toggleSelectedParty: (id) =>
+		set((state) => ({
+			selectedPartyIds: state.selectedPartyIds.includes(id)
+				? state.selectedPartyIds.filter((x) => x !== id)
+				: [...state.selectedPartyIds, id],
+		})),
+	clearSelectedParties: () => set({ selectedPartyIds: [] }),
+	clearPartyView: () => set({ mergeGroups: [], hiddenParties: [] }),
 	setHops: (updater) =>
 		set((state) => {
 			const next = typeof updater === 'function' ? updater(state.hops) : updater;

@@ -1,6 +1,8 @@
 'use client';
 
+import { Minus, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import {
 	Select,
 	SelectContent,
@@ -8,7 +10,13 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { useKnowledgeGraphStore } from '@/stores/knowledgeGraph';
+import {
+	KG_TOP_K_STEP_SIZE,
+	MAX_KG_HOPS,
+	MAX_KG_TOP_K,
+	MIN_KG_TOP_K,
+	useKnowledgeGraphStore,
+} from '@/stores/knowledgeGraph';
 import type { RightPanelTab } from '@/types/document';
 
 const ACTION_BTN =
@@ -46,6 +54,12 @@ export function RightPanelHeaderActions({
 	const mergeParties = useKnowledgeGraphStore((state) => state.mergeParties);
 	const splitGroup = useKnowledgeGraphStore((state) => state.splitGroup);
 	const hideParty = useKnowledgeGraphStore((state) => state.hideParty);
+	const focusMeta = useKnowledgeGraphStore((state) => state.focusMeta);
+	const hops = useKnowledgeGraphStore((state) => state.hops);
+	const topK = useKnowledgeGraphStore((state) => state.topK);
+	const setHops = useKnowledgeGraphStore((state) => state.setHops);
+	const setTopK = useKnowledgeGraphStore((state) => state.setTopK);
+	const clearFocus = useKnowledgeGraphStore((state) => state.clearFocus);
 
 	if (activeTab === 'knowledge_graph') {
 		const n = selectedPartyIds.length;
@@ -59,8 +73,60 @@ export function RightPanelHeaderActions({
 			else if (action === 'split') splitGroup(ids[0]);
 			else if (action === 'delete') ids.forEach((id) => hideParty(id));
 		};
+		// A party focus tunes how many statements are shown; anything else tunes the
+		// neighbourhood radius. Same two buttons, different quantity.
+		const partyFocus = focusMeta?.kind === 'party';
+		const step = (delta: number) =>
+			partyFocus ? setTopK((k) => k + delta * KG_TOP_K_STEP_SIZE) : setHops((h) => h + delta);
+		const atMin = partyFocus ? topK <= MIN_KG_TOP_K : hops <= 0;
+		const atMax = partyFocus ? topK >= MAX_KG_TOP_K : hops >= MAX_KG_HOPS;
+		const stepUnit = partyFocus ? 'statements' : 'hops';
+
 		return (
 			<div className="flex shrink-0 items-center gap-1.5">
+				{focusMeta && (
+					<div className="flex h-7 items-center rounded-md bg-card pl-2 pr-1 shadow-sm">
+						<span
+							className="max-w-[130px] truncate text-2xs font-medium text-primary"
+							title={focusMeta.label}
+						>
+							{focusMeta.label}
+						</span>
+						<Separator orientation="vertical" className="mx-1.5 h-3.5! bg-primary/20" />
+						<span className="whitespace-nowrap text-2xs tabular-nums text-primary/60">
+							{partyFocus ? `top ${topK}` : `${hops}-hop`}
+						</span>
+						<Button
+							variant="ghost"
+							size="icon-xs"
+							className="ml-0.5 size-5 text-primary hover:bg-primary/10 hover:text-primary"
+							aria-label={`Fewer ${stepUnit}`}
+							disabled={atMin}
+							onClick={() => step(-1)}
+						>
+							<Minus />
+						</Button>
+						<Button
+							variant="ghost"
+							size="icon-xs"
+							className="size-5 text-primary hover:bg-primary/10 hover:text-primary"
+							aria-label={`More ${stepUnit}`}
+							disabled={atMax}
+							onClick={() => step(1)}
+						>
+							<Plus />
+						</Button>
+						<Separator orientation="vertical" className="mx-1.5 h-3.5! bg-primary/20" />
+						<Button
+							variant="ghost"
+							size="xs"
+							className="h-5 px-1.5 text-2xs text-primary hover:bg-primary/10 hover:text-primary"
+							onClick={clearFocus}
+						>
+							Clear
+						</Button>
+					</div>
+				)}
 				<span className="text-2xs text-header-foreground/60">
 					{n === 0 ? 'no selection' : `${n} selected`}
 				</span>

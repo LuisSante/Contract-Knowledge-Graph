@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { RelatedParagraph } from '@/types/document';
-import type { DeonticKind } from '@/types/knowledge';
+import type { DeonticKind, KgNodeKind } from '@/types/knowledge';
 import type { DocumentEntityHighlight } from '@/features/docx/utils/assistant/entity-marks';
 import type {
 	DeonticSeverity,
@@ -49,8 +49,18 @@ const EMPTY_PAYLOAD: KnowledgeGraphBridgePayload = {
 	ledger: null,
 };
 
+/** Label + kind of the focused node, so the header can render its chip without the graph. */
+export interface KgFocusMeta {
+	label: string;
+	kind: KgNodeKind;
+}
+
+/** Everything that must reset when the focused node goes away. */
+const CLEARED_FOCUS = { focusNodeId: null, focusMeta: null, ...EMPTY_PAYLOAD };
+
 interface KnowledgeGraphState extends KnowledgeGraphBridgePayload {
 	focusNodeId: string | null;
+	focusMeta: KgFocusMeta | null;
 	/** Neighborhood radius for clause/statement focus. */
 	hops: number;
 	/** Number of top-attention statements shown for a party focus. */
@@ -66,6 +76,7 @@ interface KnowledgeGraphState extends KnowledgeGraphBridgePayload {
 	selectedPartyIds: string[];
 
 	focusNode: (nodeId: string) => void;
+	setFocusMeta: (meta: KgFocusMeta | null) => void;
 	setHops: (updater: number | ((prev: number) => number)) => void;
 	setTopK: (updater: number | ((prev: number) => number)) => void;
 	setSeverity: (kind: DeonticKind, value: number) => void;
@@ -83,6 +94,7 @@ interface KnowledgeGraphState extends KnowledgeGraphBridgePayload {
 
 export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 	focusNodeId: null,
+	focusMeta: null,
 	hops: 1,
 	topK: DEFAULT_KG_TOP_K,
 	severity: DEFAULT_SEVERITY,
@@ -93,6 +105,7 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 	...EMPTY_PAYLOAD,
 
 	focusNode: (focusNodeId) => set({ focusNodeId, hops: 1 }),
+	setFocusMeta: (focusMeta) => set({ focusMeta }),
 	setSeverity: (kind, value) =>
 		set((state) => ({
 			severity: { ...state.severity, [kind]: Math.min(1, Math.max(0, value)) },
@@ -119,7 +132,7 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 		set((state) => ({
 			mergeGroups: state.mergeGroups.filter((g) => g.id !== groupId),
 			selectedPartyIds: [],
-			...(state.focusNodeId === groupId ? { focusNodeId: null, ...EMPTY_PAYLOAD } : {}),
+			...(state.focusNodeId === groupId ? CLEARED_FOCUS : {}),
 		})),
 	hideParty: (id) =>
 		set((state) => {
@@ -130,7 +143,7 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 				hiddenParties: Array.from(new Set([...state.hiddenParties, ...toHide])),
 				mergeGroups: group ? state.mergeGroups.filter((g) => g.id !== id) : state.mergeGroups,
 				selectedPartyIds: state.selectedPartyIds.filter((s) => s !== id && !toHide.includes(s)),
-				...(clears ? { focusNodeId: null, ...EMPTY_PAYLOAD } : {}),
+				...(clears ? CLEARED_FOCUS : {}),
 			};
 		}),
 	unhideParty: (id) =>
@@ -142,7 +155,17 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 				: [...state.selectedPartyIds, id],
 		})),
 	clearSelectedParties: () => set({ selectedPartyIds: [] }),
-	clearPartyView: () => set({ mergeGroups: [], hiddenParties: [] }),
+	clearPartyView: () =>
+		set((state) => {
+			// Dissolving the groups strands a focus that points at a group id.
+			const stranded = state.mergeGroups.some((g) => g.id === state.focusNodeId);
+			return {
+				mergeGroups: [],
+				hiddenParties: [],
+				selectedPartyIds: [],
+				...(stranded ? CLEARED_FOCUS : {}),
+			};
+		}),
 	setHops: (updater) =>
 		set((state) => {
 			const next = typeof updater === 'function' ? updater(state.hops) : updater;
@@ -154,7 +177,7 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 			const snapped = Math.round(raw / KG_TOP_K_STEP) * KG_TOP_K_STEP;
 			return { topK: Math.min(MAX_KG_TOP_K, Math.max(MIN_KG_TOP_K, snapped)) };
 		}),
-	clearFocus: () => set({ focusNodeId: null, hops: 1, ...EMPTY_PAYLOAD }),
+	clearFocus: () => set({ ...CLEARED_FOCUS, hops: 1 }),
 	setBridgePayload: (payload) => set(payload),
 }));
 

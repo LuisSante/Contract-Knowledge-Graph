@@ -4,18 +4,18 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { fetchKnowledgeGraph, fetchPartyMergeHints } from '@/services/knowledge';
 import { useDocumentStore } from '@/stores/document';
-import {
-	KG_TOP_K_STEP_SIZE,
-	MAX_KG_HOPS,
-	MAX_KG_TOP_K,
-	MIN_KG_TOP_K,
-	useKnowledgeGraphStore,
-} from '@/stores/knowledgeGraph';
+import { useKnowledgeGraphStore } from '@/stores/knowledgeGraph';
 import { buildKnowledgeGraphBridge } from '@/features/docx/utils/knowledge/kg-bridge';
 import { applyPartyView } from '@/features/docx/utils/knowledge/party-view';
 import { PartyManager } from '@/features/docx/components/knowledge-graph/PartyManager';
 import type { KgLedger } from '@/features/docx/utils/knowledge/attention';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from '@/components/ui/tooltip';
 import type { DeonticKind, KgEdgeType, KgNodeKind, KnowledgeGraph } from '@/types/knowledge';
 import { deonticNodes } from '@/types/knowledge';
 
@@ -36,7 +36,8 @@ type SimNode = d3.SimulationNodeDatum & {
 	id: string;
 	kind: KgNodeKind;
 	label: string;
-	title: string;
+	/** Tooltip body. The kind is rendered separately, so it is not repeated here. */
+	detail: string;
 	radius: number;
 };
 
@@ -102,6 +103,10 @@ const EDGE_LEGEND: Array<{ types: KgEdgeType[]; label: string }> = [
 	{ types: ['contradicts'], label: 'contradicts' },
 ];
 
+const KIND_LABEL: Record<KgNodeKind, string> = Object.fromEntries(
+	NODE_LEGEND.map((item) => [item.kind, item.label])
+) as Record<KgNodeKind, string>;
+
 const DIMMED_NODE_OPACITY = 0.1;
 const DIMMED_LINK_OPACITY = 0.04;
 
@@ -117,7 +122,7 @@ function buildGraph(kg: KnowledgeGraph): { nodes: SimNode[]; links: SimLink[] } 
 			id: party.id,
 			kind: 'party',
 			label: party.name,
-			title: `${party.role || 'Party'}: ${party.name}`,
+			detail: `${party.name}${party.role ? ` \u2014 ${party.role}` : ''}`,
 			radius: 13,
 		});
 	}
@@ -127,7 +132,7 @@ function buildGraph(kg: KnowledgeGraph): { nodes: SimNode[]; links: SimLink[] } 
 			id: clause.id,
 			kind: 'clause',
 			label,
-			title: `Clause ${label}${clause.heading ? ` — ${clause.heading}` : ''}`,
+			detail: `${label}${clause.heading ? ` \u2014 ${clause.heading}` : ''}`,
 			radius: 8,
 		});
 	}
@@ -136,7 +141,7 @@ function buildGraph(kg: KnowledgeGraph): { nodes: SimNode[]; links: SimLink[] } 
 			id: term.id,
 			kind: 'definedTerm',
 			label: term.term,
-			title: `TERM ${term.term}${term.definition ? ` — ${term.definition}` : ''}`,
+			detail: `${term.term}${term.definition ? ` \u2014 ${term.definition}` : ''}`,
 			radius: 7,
 		});
 	}
@@ -145,7 +150,7 @@ function buildGraph(kg: KnowledgeGraph): { nodes: SimNode[]; links: SimLink[] } 
 			id: statement.id,
 			kind: statement.kind,
 			label: statement.action || statement.kind,
-			title: `${statement.kind.toUpperCase()}: ${statement.summary}`,
+			detail: statement.summary || statement.action,
 			radius: 5.5,
 		});
 	}
@@ -154,7 +159,7 @@ function buildGraph(kg: KnowledgeGraph): { nodes: SimNode[]; links: SimLink[] } 
 			id: condition.id,
 			kind: 'condition',
 			label: condition.operator || 'IF',
-			title: `${condition.operator || 'IF'}: ${condition.trigger}`,
+			detail: `${condition.operator || 'IF'} ${condition.trigger}`,
 			radius: 4.5,
 		});
 	}
@@ -164,7 +169,7 @@ function buildGraph(kg: KnowledgeGraph): { nodes: SimNode[]; links: SimLink[] } 
 			id: reference.id,
 			kind: 'reference',
 			label: reference.name,
-			title: `REFERENCE: ${label}`,
+			detail: label,
 			radius: 4.5,
 		});
 	}
@@ -174,7 +179,7 @@ function buildGraph(kg: KnowledgeGraph): { nodes: SimNode[]; links: SimLink[] } 
 			id: value.id,
 			kind: 'value',
 			label,
-			title: `${value.valueType || 'VALUE'}: ${label}`,
+			detail: `${label}${value.valueType ? ` \u2014 ${value.valueType}` : ''}`,
 			radius: 4.5,
 		});
 	}
@@ -336,10 +341,19 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const nodeSelRef = useRef<NodeSelection | null>(null);
 	const linkSelRef = useRef<LinkSelection | null>(null);
 	const draggedRef = useRef(false);
+	// Layout carried across rebuilds: a top-K or severity change swaps the node set,
+	// and without these the whole subgraph re-seeds and the camera snaps back.
+	const posRef = useRef(new Map<string, { x: number; y: number }>());
+	const transformRef = useRef<d3.ZoomTransform | null>(null);
 	const [size, setSize] = useState({ width: 0, height: 0 });
 	const [kg, setKg] = useState<KnowledgeGraph | null>(null);
 	const [status, setStatus] = useState<'loading' | 'ready' | 'missing' | 'error'>('loading');
-	const [hover, setHover] = useState<{ x: number; y: number; text: string } | null>(null);
+	const [hover, setHover] = useState<{
+		x: number;
+		y: number;
+		kind: KgNodeKind;
+		detail: string;
+	} | null>(null);
 	const [view, setView] = useState<GraphView>('parties');
 	const [mergeHints, setMergeHints] = useState<Record<string, string[]>>({});
 	const [mergeEntities, setMergeEntities] = useState<string[]>([]);
@@ -353,9 +367,8 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const severity = useKnowledgeGraphStore((s) => s.severity);
 	const usePageRank = useKnowledgeGraphStore((s) => s.usePageRank);
 	const focusNode = useKnowledgeGraphStore((s) => s.focusNode);
-	const setHops = useKnowledgeGraphStore((s) => s.setHops);
-	const setTopK = useKnowledgeGraphStore((s) => s.setTopK);
 	const clearFocus = useKnowledgeGraphStore((s) => s.clearFocus);
+	const setFocusMeta = useKnowledgeGraphStore((s) => s.setFocusMeta);
 	const setBridgePayload = useKnowledgeGraphStore((s) => s.setBridgePayload);
 	const mergeGroups = useKnowledgeGraphStore((s) => s.mergeGroups);
 	const hiddenParties = useKnowledgeGraphStore((s) => s.hiddenParties);
@@ -375,6 +388,8 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		if (!docId) return;
 		let cancelled = false;
 		clearFocus();
+		posRef.current.clear();
+		transformRef.current = null;
 
 		const load = async () => {
 			setStatus('loading');
@@ -472,8 +487,12 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		() => fullGraph?.nodes.find((n) => n.id === focusNodeId) ?? null,
 		[fullGraph, focusNodeId]
 	);
-	const isPartyFocus = focusedNode?.kind === 'party';
 	const isPartyEntry = view === 'parties' && focusNodeIds.length === 0;
+
+	// The focus chip lives in the panel header, which has no access to the graph.
+	useEffect(() => {
+		setFocusMeta(focusedNode ? { label: focusedNode.label, kind: focusedNode.kind } : null);
+	}, [focusedNode, setFocusMeta]);
 
 	// The bright set comes from the derived payload (party top-K or neighborhood).
 	const highlightIds = useMemo<Set<string> | null>(
@@ -494,8 +513,20 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	useEffect(() => {
 		if (!graph || !svgRef.current || size.width === 0 || size.height === 0) return;
 		const { width, height } = size;
-		const nodes = graph.nodes.map((n) => ({ ...n }));
+		// Nodes we have already laid out keep their position; the rest fan out from
+		// the centre on a golden-angle spiral so they never start stacked.
+		const positions = posRef.current;
+		const nodes: SimNode[] = graph.nodes.map((n, i) => {
+			const prev = positions.get(n.id);
+			if (prev) return { ...n, x: prev.x, y: prev.y };
+			const angle = i * 2.399963;
+			return { ...n, x: width / 2 + Math.cos(angle) * 30, y: height / 2 + Math.sin(angle) * 30 };
+		});
 		const links = graph.links.map((l) => ({ ...l }));
+		// Mostly-known node set => this is a refinement, not a new graph: settle gently
+		// and leave the camera alone.
+		const known = nodes.filter((n) => positions.has(n.id)).length;
+		const warmStart = nodes.length > 0 && known / nodes.length > 0.8;
 
 		const svg = d3.select(svgRef.current);
 		svg.selectAll('*').remove();
@@ -505,16 +536,31 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		// Auto-fit runs once after the layout settles, but a manual zoom/pan cancels
 		// it for good so the view never snaps back under the user.
 		let userZoomed = false;
-		let didFit = false;
+		let didFit = warmStart;
+		let panned = false;
 
 		const zoom = d3
 			.zoom<SVGSVGElement, unknown>()
 			.scaleExtent([0.2, 4])
 			.on('zoom', (event) => {
-				if (event.sourceEvent) userZoomed = true;
+				if (event.sourceEvent) {
+					userZoomed = true;
+					panned = true;
+				}
+				transformRef.current = event.transform;
 				root.attr('transform', event.transform.toString());
 			});
 		svg.call(zoom).on('dblclick.zoom', null);
+
+		if (warmStart && transformRef.current) svg.call(zoom.transform, transformRef.current);
+
+		svg.on('pointerdown', () => {
+			panned = false;
+		});
+		svg.on('click', (event: MouseEvent) => {
+			if (panned || event.target !== svgRef.current) return;
+			clearFocus();
+		});
 
 		const link = root
 			.append('g')
@@ -536,23 +582,21 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			.attr('fill', (d) => nodeColor(d))
 			.attr('cursor', 'pointer');
 
+		// The tooltip is anchored to an invisible element at the cursor, so it only
+		// needs container-relative coordinates; Radix handles offset and flipping.
+		const track = (event: MouseEvent, d: SimNode) => {
+			const rect = containerRef.current?.getBoundingClientRect();
+			setHover({
+				x: event.clientX - (rect?.left ?? 0),
+				y: event.clientY - (rect?.top ?? 0),
+				kind: d.kind,
+				detail: d.detail,
+			});
+		};
+
 		node
-			.on('mouseenter', (event: MouseEvent, d) => {
-				const rect = containerRef.current?.getBoundingClientRect();
-				setHover({
-					x: event.clientX - (rect?.left ?? 0) + 12,
-					y: event.clientY - (rect?.top ?? 0) + 12,
-					text: d.title,
-				});
-			})
-			.on('mousemove', (event: MouseEvent, d) => {
-				const rect = containerRef.current?.getBoundingClientRect();
-				setHover({
-					x: event.clientX - (rect?.left ?? 0) + 12,
-					y: event.clientY - (rect?.top ?? 0) + 12,
-					text: d.title,
-				});
-			})
+			.on('mouseenter', track)
+			.on('mousemove', track)
 			.on('mouseleave', () => setHover(null))
 			.on('click', (event: MouseEvent, d) => {
 				event.stopPropagation();
@@ -600,7 +644,8 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			.force(
 				'collide',
 				d3.forceCollide<SimNode>().radius((d) => d.radius + 7)
-			);
+			)
+			.alpha(warmStart ? 0.35 : 1);
 
 		const fitToView = () => {
 			const pad = 24;
@@ -660,6 +705,10 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 
 		return () => {
 			simulation.stop();
+			// Hand the settled layout to the next rebuild.
+			for (const n of nodes) {
+				if (n.x != null && n.y != null) positions.set(n.id, { x: n.x, y: n.y });
+			}
 			nodeSelRef.current = null;
 			linkSelRef.current = null;
 		};
@@ -814,80 +863,42 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				)}
 				{status === 'ready' && (
 					<>
-						{focusedNode && (
-							<div className="absolute left-3 top-3 z-10 flex items-center gap-1.5 rounded-md border border-border bg-popover/95 px-2 py-1 text-2xs text-popover-foreground shadow-sm backdrop-blur">
-								<span className="max-w-[160px] truncate font-medium" title={focusedNode.label}>
-									{focusedNode.label}
-								</span>
-								{isPartyFocus ? (
-									<>
-										<span className="text-muted-foreground">· top {topK}</span>
-										<button
-											type="button"
-											aria-label="Fewer clauses"
-											disabled={topK <= MIN_KG_TOP_K}
-											onClick={() => setTopK((k) => k - KG_TOP_K_STEP_SIZE)}
-											className="flex h-4 w-4 items-center justify-center rounded border border-border leading-none hover:bg-muted disabled:opacity-40"
-										>
-											−
-										</button>
-										<button
-											type="button"
-											aria-label="More clauses"
-											disabled={topK >= MAX_KG_TOP_K}
-											onClick={() => setTopK((k) => k + KG_TOP_K_STEP_SIZE)}
-											className="flex h-4 w-4 items-center justify-center rounded border border-border leading-none hover:bg-muted disabled:opacity-40"
-										>
-											+
-										</button>
-									</>
-								) : (
-									<>
-										<span className="text-muted-foreground">· {hops}-hop</span>
-										<button
-											type="button"
-											aria-label="Fewer hops"
-											disabled={hops <= 0}
-											onClick={() => setHops((h) => h - 1)}
-											className="flex h-4 w-4 items-center justify-center rounded border border-border leading-none hover:bg-muted disabled:opacity-40"
-										>
-											−
-										</button>
-										<button
-											type="button"
-											aria-label="More hops"
-											disabled={hops >= MAX_KG_HOPS}
-											onClick={() => setHops((h) => h + 1)}
-											className="flex h-4 w-4 items-center justify-center rounded border border-border leading-none hover:bg-muted disabled:opacity-40"
-										>
-											+
-										</button>
-									</>
-								)}
-								<button
-									type="button"
-									onClick={() => clearFocus()}
-									className="rounded border border-border px-1.5 leading-none hover:bg-muted"
-								>
-									Clear
-								</button>
-							</div>
-						)}
-
 						{ledger && <LedgerCard ledger={ledger} onSelectClause={(id) => focusNode(id)} />}
 
 						<svg
 							ref={svgRef}
 							className="h-full w-full cursor-grab text-foreground active:cursor-grabbing"
 						/>
-						{hover && (
-							<div
-								className="pointer-events-none absolute z-10 max-w-[280px] rounded-md border border-border bg-popover px-2 py-1 text-2xs text-popover-foreground shadow-md"
-								style={{ left: hover.x, top: hover.y }}
-							>
-								{hover.text}
-							</div>
-						)}
+						<TooltipProvider>
+							<Tooltip open={hover !== null}>
+								<TooltipTrigger asChild>
+									<span
+										aria-hidden
+										className="pointer-events-none absolute size-0"
+										style={{ left: hover?.x ?? 0, top: hover?.y ?? 0 }}
+									/>
+								</TooltipTrigger>
+								{hover && (
+									<TooltipContent
+										side="top"
+										sideOffset={10}
+										className="max-w-[280px] border-2 px-2.5 py-1.5"
+										style={{ borderColor: NODE_COLORS[hover.kind] }}
+									>
+										<span className="flex items-center gap-1.5">
+											<span
+												className="size-2 shrink-0 rounded-full"
+												style={{ backgroundColor: NODE_COLORS[hover.kind] }}
+											/>
+											<span className="text-2xs font-medium uppercase tracking-wide opacity-70">
+												{KIND_LABEL[hover.kind]}
+											</span>
+										</span>
+										<span className="mt-1 block text-2xs leading-snug">{hover.detail}</span>
+									</TooltipContent>
+								)}
+							</Tooltip>
+						</TooltipProvider>
 					</>
 				)}
 			</div>

@@ -212,7 +212,7 @@ function SeveritySliders() {
 	const usePageRank = useKnowledgeGraphStore((s) => s.usePageRank);
 	const setUsePageRank = useKnowledgeGraphStore((s) => s.setUsePageRank);
 	return (
-		<div className="space-y-1 border-t border-border/60 pt-1.5">
+		<div className="min-w-[210px] flex-1 space-y-1">
 			<label className="flex cursor-pointer items-center justify-between">
 				<span className="font-medium text-foreground/70">Weight by PageRank</span>
 				<input
@@ -277,40 +277,46 @@ function LedgerCard({
 	const maxClauseTotal = Math.max(...ledger.topClauses.map((c) => c.burden + c.benefit), 1e-9);
 
 	return (
-		<div className="absolute right-3 top-3 z-10 w-56 space-y-2 rounded-md border border-border bg-popover/95 p-2.5 text-2xs text-popover-foreground shadow-md backdrop-blur">
-			<div className="truncate font-semibold" title={ledger.partyName}>
-				{ledger.partyName}
-			</div>
-
-			<div className="space-y-1">
-				<div className="flex justify-between text-muted-foreground">
-					<span className="inline-flex items-center gap-1">
-						<span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: '#ef4444' }} />
-						Burden
+		<div className="flex flex-wrap items-start gap-x-6 gap-y-2 border-t border-border/60 px-3 py-2 text-2xs text-popover-foreground">
+			<div className="min-w-[190px] flex-1 space-y-1.5">
+				<div className="truncate font-semibold" title={ledger.partyName}>
+					{ledger.partyName}
+				</div>
+				<div className="space-y-1">
+					<div className="flex justify-between text-muted-foreground">
+						<span className="inline-flex items-center gap-1">
+							<span
+								className="inline-block h-2 w-2 rounded-full"
+								style={{ backgroundColor: '#ef4444' }}
+							/>
+							Burden
+						</span>
+						<span className="inline-flex items-center gap-1">
+							Benefit
+							<span
+								className="inline-block h-2 w-2 rounded-full"
+								style={{ backgroundColor: '#22c55e' }}
+							/>
+						</span>
+					</div>
+					<DivergingBar label="Total" burdenPct={burdenPct} />
+					<DivergingBar label="Intensity" burdenPct={intensityBurdenPct} />
+				</div>
+				<div className="flex flex-wrap gap-x-3 gap-y-0.5 text-muted-foreground">
+					<span>
+						<span className="font-medium text-foreground">{ledger.obligations}</span> obligations
 					</span>
-					<span className="inline-flex items-center gap-1">
-						Benefit
-						<span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: '#22c55e' }} />
+					<span>
+						<span className="font-medium text-foreground">{ledger.prohibitions}</span> prohibitions
+					</span>
+					<span>
+						<span className="font-medium text-foreground">{ledger.rights}</span> rights
 					</span>
 				</div>
-				<DivergingBar label="Total" burdenPct={burdenPct} />
-				<DivergingBar label="Intensity" burdenPct={intensityBurdenPct} />
-			</div>
-
-			<div className="flex flex-wrap gap-x-3 gap-y-0.5 text-muted-foreground">
-				<span>
-					<span className="font-medium text-foreground">{ledger.obligations}</span> obligations
-				</span>
-				<span>
-					<span className="font-medium text-foreground">{ledger.prohibitions}</span> prohibitions
-				</span>
-				<span>
-					<span className="font-medium text-foreground">{ledger.rights}</span> rights
-				</span>
 			</div>
 
 			{ledger.topClauses.length > 0 && (
-				<div className="space-y-1">
+				<div className="min-w-[170px] flex-1 space-y-1">
 					<div className="font-medium text-foreground/70">Heaviest clauses</div>
 					{ledger.topClauses.map((clause) => {
 						const clauseTotal = clause.burden + clause.benefit;
@@ -525,7 +531,6 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		[fullGraph, focusNodeId]
 	);
 	const isPartyFocus = focusedNode?.kind === 'party';
-	const isPartyEntry = !scopeIds && visibleKinds.size === 1 && visibleKinds.has('party');
 
 	// Laid out over the whole graph, not the filtered slice, so the ring stays put
 	// when kinds are toggled — only which nodes get drawn changes.
@@ -967,9 +972,27 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			{status === 'ready' && counts && (
 				<div className="border-b border-border/60 px-3 py-2 text-2xs text-muted-foreground">
 					<div className="flex items-center justify-between gap-2">
-						<span>
-							{counts.parties} parties · {counts.clauses} clauses · {counts.statements} statements
-						</span>
+						<div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-0.5">
+							<span>
+								{counts.parties} parties · {counts.clauses} clauses · {counts.statements} statements
+							</span>
+							{Object.keys(toneSplit).length > 0 && (
+								<span className="flex items-center gap-1.5">
+									<span className="font-medium text-foreground/50">Ring</span>
+									<span
+										className="inline-block h-2 w-2 shrink-0 rounded-full border-2"
+										style={{ borderColor: BURDEN_COLOR }}
+									/>
+									<span>burden</span>
+									<span
+										className="ml-1 inline-block h-2 w-2 shrink-0 rounded-full border-2"
+										style={{ borderColor: BENEFIT_COLOR }}
+									/>
+									<span>benefit</span>
+									<span className="text-foreground/40">· share of the node&apos;s weight</span>
+								</span>
+							)}
+						</div>
 						<Button
 							variant="ghost"
 							size="xs"
@@ -987,63 +1010,130 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				</div>
 			)}
 
-			<div ref={containerRef} className="relative min-h-0 flex-1">
-				{status === 'loading' && (
-					<div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-						Loading knowledge graph…
-					</div>
-				)}
-				{status === 'missing' && (
-					<div className="flex h-full items-center justify-center px-6 text-center text-sm text-muted-foreground">
-						No knowledge graph generated for this document yet. Build it with the notebook
-						(notebooks/KG/build_kg.ipynb) into infra/json/kg/.
-					</div>
-				)}
-				{status === 'error' && (
-					<div className="flex h-full items-center justify-center text-sm text-destructive">
-						Failed to load the knowledge graph.
-					</div>
-				)}
-				{status === 'ready' && (
-					<>
-						{ledger && <LedgerCard ledger={ledger} onSelectClause={(id) => focusNode(id)} />}
-						<svg
-							ref={svgRef}
-							className="h-full w-full cursor-grab text-foreground active:cursor-grabbing"
-						/>
-						<TooltipProvider>
-							<Tooltip open={hover !== null}>
-								<TooltipTrigger asChild>
-									<span
-										aria-hidden
-										className="pointer-events-none absolute size-0"
-										style={{ left: hover?.x ?? 0, top: hover?.y ?? 0 }}
-									/>
-								</TooltipTrigger>
-								{hover && (
-									<TooltipContent
-										side="top"
-										sideOffset={10}
-										className="max-w-[280px] border-2 px-2.5 py-1.5"
-										style={{ borderColor: NODE_COLORS[hover.kind] }}
-									>
-										<span className="flex items-center gap-1.5">
-											<span
-												className="size-2 shrink-0 rounded-full"
-												style={{ backgroundColor: NODE_COLORS[hover.kind] }}
-											/>
-											<span className="text-2xs font-medium uppercase tracking-wide opacity-70">
-												{KIND_LABEL[hover.kind]}
+			<div className="flex min-h-0 flex-1">
+				<div ref={containerRef} className="relative min-h-0 flex-1">
+					{status === 'loading' && (
+						<div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+							Loading knowledge graph…
+						</div>
+					)}
+					{status === 'missing' && (
+						<div className="flex h-full items-center justify-center px-6 text-center text-sm text-muted-foreground">
+							No knowledge graph generated for this document yet. Build it with the notebook
+							(notebooks/KG/build_kg.ipynb) into infra/json/kg/.
+						</div>
+					)}
+					{status === 'error' && (
+						<div className="flex h-full items-center justify-center text-sm text-destructive">
+							Failed to load the knowledge graph.
+						</div>
+					)}
+					{status === 'ready' && (
+						<>
+							<svg
+								ref={svgRef}
+								className="h-full w-full cursor-grab text-foreground active:cursor-grabbing"
+							/>
+							<TooltipProvider>
+								<Tooltip open={hover !== null}>
+									<TooltipTrigger asChild>
+										<span
+											aria-hidden
+											className="pointer-events-none absolute size-0"
+											style={{ left: hover?.x ?? 0, top: hover?.y ?? 0 }}
+										/>
+									</TooltipTrigger>
+									{hover && (
+										<TooltipContent
+											side="top"
+											sideOffset={10}
+											className="max-w-[280px] border-2 px-2.5 py-1.5"
+											style={{ borderColor: NODE_COLORS[hover.kind] }}
+										>
+											<span className="flex items-center gap-1.5">
+												<span
+													className="size-2 shrink-0 rounded-full"
+													style={{ backgroundColor: NODE_COLORS[hover.kind] }}
+												/>
+												<span className="text-2xs font-medium uppercase tracking-wide opacity-70">
+													{KIND_LABEL[hover.kind]}
+												</span>
 											</span>
+											<span className="mt-1 block text-2xs leading-snug">{hover.detail}</span>
+										</TooltipContent>
+									)}
+								</Tooltip>
+							</TooltipProvider>
+						</>
+					)}
+				</div>
+
+				{/* Legend / kind filter — right sidebar, full height, narrow (labels truncate to a tooltip). */}
+				{status === 'ready' && (
+					<aside className="w-32 shrink-0 space-y-2 overflow-y-auto border-l border-border/60 px-2 py-2 text-2xs text-muted-foreground">
+						<div>
+							<div className="mb-1 font-medium text-foreground/50">Nodes</div>
+							<div className="grid grid-cols-1 gap-y-1">
+								{NODE_LEGEND.map((item) => {
+									const count = kindCounts[item.kind] ?? 0;
+									const color = NODE_COLORS[item.kind];
+									const checked = visibleKinds.has(item.kind);
+									return (
+										<label
+											key={item.kind}
+											className={`inline-flex min-w-0 items-center gap-1.5 ${
+												count === 0 ? 'opacity-40' : 'cursor-pointer'
+											}`}
+										>
+											<Checkbox
+												checked={checked}
+												disabled={count === 0}
+												onCheckedChange={(value) => toggleKind(item.kind, value === true)}
+												className="size-3.5 shrink-0 border-current data-[state=checked]:text-white"
+												style={{
+													color,
+													backgroundColor: checked ? color : undefined,
+													borderColor: color,
+												}}
+												aria-label={`${item.label} (${count})`}
+											/>
+											<span className="truncate" title={item.label}>
+												{item.label}
+											</span>
+											<span className="ml-auto shrink-0 tabular-nums opacity-60">{count}</span>
+										</label>
+									);
+								})}
+							</div>
+						</div>
+						{visibleEdgeLegend.length > 0 && (
+							<div>
+								<div className="mb-1 font-medium text-foreground/50">Edges</div>
+								<div className="grid grid-cols-1 gap-y-1">
+									{visibleEdgeLegend.map((item) => (
+										<span
+											key={item.label}
+											className="inline-flex items-center gap-1.5"
+											title={item.label}
+										>
+											<span
+												className="inline-block h-0.5 w-4 shrink-0 rounded-full"
+												style={{ backgroundColor: EDGE_COLORS[item.types[0]] }}
+											/>
+											<span className="truncate">{item.label}</span>
 										</span>
-										<span className="mt-1 block text-2xs leading-snug">{hover.detail}</span>
-									</TooltipContent>
-								)}
-							</Tooltip>
-						</TooltipProvider>
-					</>
+									))}
+								</div>
+							</div>
+						)}
+					</aside>
 				)}
 			</div>
+
+			{/* Controls + metrics — bottom bar, only when a party is focused. */}
+			{status === 'ready' && ledger && (
+				<LedgerCard ledger={ledger} onSelectClause={(id) => focusNode(id)} />
+			)}
 
 			{status === 'ready' && visibleKinds.has('party') && (
 				<PartyManager
@@ -1053,78 +1143,6 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 					onUnhide={unhideParty}
 					onReset={clearPartyView}
 				/>
-			)}
-
-			{/* The legend is the filter: each kind is a checkbox in its own colour, and
-			    the count is how many that kind has inside the current scope. */}
-			{status === 'ready' && (
-				<div className="space-y-2 border-t border-border/60 px-3 py-2 text-2xs text-muted-foreground">
-					<div>
-						<div className="mb-1 font-medium text-foreground/50">Nodes</div>
-						<div className="grid grid-cols-3 gap-x-3 gap-y-1">
-							{NODE_LEGEND.map((item) => {
-								const count = kindCounts[item.kind] ?? 0;
-								const color = NODE_COLORS[item.kind];
-								const checked = visibleKinds.has(item.kind);
-								return (
-									<label
-										key={item.kind}
-										className={`inline-flex min-w-0 items-center gap-1.5 ${
-											count === 0 ? 'opacity-40' : 'cursor-pointer'
-										}`}
-									>
-										<Checkbox
-											checked={checked}
-											disabled={count === 0}
-											onCheckedChange={(value) => toggleKind(item.kind, value === true)}
-											className="size-3.5 shrink-0 border-current data-[state=checked]:text-white"
-											style={{
-												color,
-												backgroundColor: checked ? color : undefined,
-												borderColor: color,
-											}}
-											aria-label={`${item.label} (${count})`}
-										/>
-										<span className="truncate">{item.label}</span>
-										<span className="ml-auto shrink-0 tabular-nums opacity-60">{count}</span>
-									</label>
-								);
-							})}
-						</div>
-					</div>
-					{Object.keys(toneSplit).length > 0 && (
-						<div className="flex items-center gap-1.5">
-							<span className="font-medium text-foreground/50">Ring</span>
-							<span
-								className="inline-block h-2 w-2 shrink-0 rounded-full border-2"
-								style={{ borderColor: BURDEN_COLOR }}
-							/>
-							<span>burden</span>
-							<span
-								className="ml-1 inline-block h-2 w-2 shrink-0 rounded-full border-2"
-								style={{ borderColor: BENEFIT_COLOR }}
-							/>
-							<span>benefit</span>
-							<span className="text-foreground/40">· share of the node&apos;s weight</span>
-						</div>
-					)}
-					{visibleEdgeLegend.length > 0 && (
-						<div>
-							<div className="mb-1 font-medium text-foreground/50">Edges</div>
-							<div className="grid grid-cols-4 gap-x-3 gap-y-1">
-								{visibleEdgeLegend.map((item) => (
-									<span key={item.label} className="inline-flex items-center gap-1.5" title={item.label}>
-										<span
-											className="inline-block h-0.5 w-4 shrink-0 rounded-full"
-											style={{ backgroundColor: EDGE_COLORS[item.types[0]] }}
-										/>
-										<span className="truncate">{item.label}</span>
-									</span>
-								))}
-							</div>
-						</div>
-					)}
-				</div>
 			)}
 		</div>
 	);

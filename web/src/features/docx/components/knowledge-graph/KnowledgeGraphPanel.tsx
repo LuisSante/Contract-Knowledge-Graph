@@ -374,6 +374,9 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const [mergeHints, setMergeHints] = useState<Record<string, string[]>>({});
 	const [mergeEntities, setMergeEntities] = useState<string[]>([]);
 	const [hintsLoading, setHintsLoading] = useState(false);
+	// `is_part_of` (containment) is normally hidden — position already encodes it — but a
+	// toggle draws it faintly to prove a clause is connected to the statements it holds.
+	const [showContainment, setShowContainment] = useState(false);
 	// Bumped whenever the d3 selections are rebuilt, so the styling effect re-runs.
 	const [graphVersion, setGraphVersion] = useState(0);
 
@@ -517,14 +520,15 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			nodes,
 			links: fullGraph.links.filter(
 				(l) =>
-					// Containment is already encoded by which sector a node sits in, so drawing
-					// it again adds 556 of the 1083 chords and says nothing new.
-					l.type !== 'is_part_of' &&
+					// Containment is already encoded by which sector a node sits in, so it is
+					// hidden by default (556 of 1083 chords that say nothing new) unless the
+					// user opts in to see it.
+					(showContainment || l.type !== 'is_part_of') &&
 					ids.has(l.source as string) &&
 					ids.has(l.target as string)
 			),
 		};
-	}, [fullGraph, visibleKinds, scopeIds]);
+	}, [fullGraph, visibleKinds, scopeIds, showContainment]);
 
 	const focusedNode = useMemo(
 		() => fullGraph?.nodes.find((n) => n.id === focusNodeId) ?? null,
@@ -989,23 +993,38 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 										style={{ borderColor: BENEFIT_COLOR }}
 									/>
 									<span>benefit</span>
-									<span className="text-foreground/40">· share of the node&apos;s weight</span>
 								</span>
 							)}
 						</div>
-						<Button
-							variant="ghost"
-							size="xs"
-							className="h-6 px-1.5 text-2xs"
-							onClick={() => {
-								filterTouchedRef.current = true;
-								setVisibleKinds(
-									allKindsOn ? new Set(['party']) : new Set(NODE_LEGEND.map((i) => i.kind))
-								);
-							}}
-						>
-							{allKindsOn ? 'Only parties' : 'Select all'}
-						</Button>
+						<div className="flex shrink-0 items-center gap-2">
+							{scopeIds && (
+								<label
+									className="flex cursor-pointer items-center gap-1.5"
+									title="Draw the is_part_of edges (statement → its clause). Off by default: position already encodes containment."
+								>
+									<input
+										type="checkbox"
+										checked={showContainment}
+										onChange={(event) => setShowContainment(event.target.checked)}
+										className="cursor-pointer accent-primary"
+									/>
+									Containment
+								</label>
+							)}
+							<Button
+								variant="ghost"
+								size="xs"
+								className="h-6 px-1.5 text-2xs"
+								onClick={() => {
+									filterTouchedRef.current = true;
+									setVisibleKinds(
+										allKindsOn ? new Set(['party']) : new Set(NODE_LEGEND.map((i) => i.kind))
+									);
+								}}
+							>
+								{allKindsOn ? 'Only parties' : 'Select all'}
+							</Button>
+						</div>
 					</div>
 				</div>
 			)}

@@ -9,7 +9,8 @@ import { buildKnowledgeGraphBridge } from '@/features/docx/utils/knowledge/kg-br
 import { applyPartyView } from '@/features/docx/utils/knowledge/party-view';
 import { PartyManager } from '@/features/docx/components/knowledge-graph/PartyManager';
 import type { KgLedger } from '@/features/docx/utils/knowledge/attention';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
 	Tooltip,
 	TooltipContent,
@@ -22,12 +23,6 @@ import { deonticNodes } from '@/types/knowledge';
 interface KnowledgeGraphPanelProps {
 	docId: string;
 }
-
-/**
- * `parties` starts from the handful of party nodes and only expands the subgraph
- * once one is picked; `general` is the whole graph at once.
- */
-type GraphView = 'parties' | 'general';
 
 /** Parties carry the whole canvas on the entry view, so they get drawn larger. */
 const PARTY_ENTRY_RADIUS = 24;
@@ -354,7 +349,12 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		kind: KgNodeKind;
 		detail: string;
 	} | null>(null);
-	const [view, setView] = useState<GraphView>('parties');
+	// The kind filter doubles as the zoom level: only `party` is the entry view,
+	// everything checked is the full graph.
+	const [visibleKinds, setVisibleKinds] = useState<Set<KgNodeKind>>(() => new Set(['party']));
+	// Until the user touches the filter the initial `{party}` is just a default, so
+	// the first drill-down may replace it. After that the filter is theirs to keep.
+	const filterTouchedRef = useRef(false);
 	const [mergeHints, setMergeHints] = useState<Record<string, string[]>>({});
 	const [mergeEntities, setMergeEntities] = useState<string[]>([]);
 	const [hintsLoading, setHintsLoading] = useState(false);
@@ -462,32 +462,53 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	);
 
 
-	// On the `parties` view the simulation only ever runs over the visible slice:
-	// the parties themselves, then the induced subgraph of whatever is in focus.
+	// Scope is the focus subgraph, or the whole graph when nothing is focused.
+	// Everything downstream reads it, so the kind filter composes on top.
+	const scopeIds = useMemo<Set<string> | null>(
+		() => (focusNodeIds.length > 0 ? new Set(focusNodeIds) : null),
+		[focusNodeIds]
+	);
+
+	/** How many nodes of each kind the current scope holds, filter aside. */
+	const kindCounts = useMemo(() => {
+		const counts = {} as Record<KgNodeKind, number>;
+		for (const node of fullGraph?.nodes ?? []) {
+			if (scopeIds && !scopeIds.has(node.id)) continue;
+			counts[node.kind] = (counts[node.kind] ?? 0) + 1;
+		}
+		return counts;
+	}, [fullGraph, scopeIds]);
+
+	// visible = (focus ? subgraph : everything) ∩ checked kinds.
 	const graph = useMemo(() => {
 		if (!fullGraph) return null;
-		if (view === 'general') return fullGraph;
-
-		if (focusNodeIds.length === 0) {
-			const nodes = fullGraph.nodes
-				.filter((n) => n.kind === 'party')
-				.map((n) => ({ ...n, radius: PARTY_ENTRY_RADIUS }));
-			const ids = new Set(nodes.map((n) => n.id));
-			return { nodes, links: fullGraph.links.filter((l) => ids.has(l.source as string) && ids.has(l.target as string)) };
-		}
-
-		const ids = new Set(focusNodeIds);
+		const soloParties = visibleKinds.size === 1 && visibleKinds.has('party');
+		const nodes = fullGraph.nodes
+			.filter((n) => visibleKinds.has(n.kind) && (!scopeIds || scopeIds.has(n.id)))
+			// The bare parties carry the whole canvas, so they are drawn larger.
+			.map((n) => (soloParties && !scopeIds ? { ...n, radius: PARTY_ENTRY_RADIUS } : n));
+		const ids = new Set(nodes.map((n) => n.id));
 		return {
-			nodes: fullGraph.nodes.filter((n) => ids.has(n.id)),
-			links: fullGraph.links.filter((l) => ids.has(l.source as string) && ids.has(l.target as string)),
+			nodes,
+			links: fullGraph.links.filter(
+				(l) => ids.has(l.source as string) && ids.has(l.target as string)
+			),
 		};
-	}, [fullGraph, view, focusNodeIds]);
+	}, [fullGraph, visibleKinds, scopeIds]);
 
 	const focusedNode = useMemo(
 		() => fullGraph?.nodes.find((n) => n.id === focusNodeId) ?? null,
 		[fullGraph, focusNodeId]
 	);
-	const isPartyEntry = view === 'parties' && focusNodeIds.length === 0;
+	const isPartyEntry = !scopeIds && visibleKinds.size === 1 && visibleKinds.has('party');
+
+	// First drill-down out of the pristine entry view: open every kind so the
+	// subgraph is actually visible instead of being filtered down to the party.
+	useEffect(() => {
+		if (!focusNodeId || filterTouchedRef.current) return;
+		filterTouchedRef.current = true;
+		setVisibleKinds(new Set(NODE_LEGEND.map((item) => item.kind)));
+	}, [focusNodeId]);
 
 	// The focus chip lives in the panel header, which has no access to the graph.
 	useEffect(() => {
@@ -813,34 +834,47 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			}
 		: null;
 
-	// The legend mirrors the canvas: only the node kinds and edge types actually drawn.
-	const presentNodeKinds = new Set((graph?.nodes ?? []).map((n) => n.kind));
+	// Edge legend still mirrors the canvas: only the edge types actually drawn.
 	const presentEdgeTypes = new Set((graph?.links ?? []).map((l) => l.type));
-	const visibleNodeLegend = NODE_LEGEND.filter((item) => presentNodeKinds.has(item.kind));
 	const visibleEdgeLegend = EDGE_LEGEND.filter((item) =>
 		item.types.some((t) => presentEdgeTypes.has(t))
 	);
+	const allKindsOn = NODE_LEGEND.every(
+		(item) => kindCounts[item.kind] === undefined || visibleKinds.has(item.kind)
+	);
+
+	const toggleKind = (kind: KgNodeKind, on: boolean) => {
+		filterTouchedRef.current = true;
+		setVisibleKinds((prev) => {
+			const next = new Set(prev);
+			if (on) next.add(kind);
+			else next.delete(kind);
+			return next;
+		});
+	};
 
 	return (
 		<div className="flex h-full flex-col">
 			{status === 'ready' && counts && (
-				<div className="space-y-1.5 border-b border-border/60 px-3 py-2 text-2xs text-muted-foreground">
+				<div className="border-b border-border/60 px-3 py-2 text-2xs text-muted-foreground">
 					<div className="flex items-center justify-between gap-2">
-						<Tabs value={view} onValueChange={(v) => setView(v as GraphView)}>
-							<TabsList variant="line" className="h-7">
-								<TabsTrigger value="parties" className="text-xs">
-									Parties
-								</TabsTrigger>
-								<TabsTrigger value="general" className="text-xs">
-									General
-								</TabsTrigger>
-							</TabsList>
-						</Tabs>
 						<span>
 							{counts.parties} parties · {counts.clauses} clauses · {counts.statements} statements
 						</span>
+						<Button
+							variant="ghost"
+							size="xs"
+							className="h-6 px-1.5 text-2xs"
+							onClick={() => {
+								filterTouchedRef.current = true;
+								setVisibleKinds(
+									allKindsOn ? new Set(['party']) : new Set(NODE_LEGEND.map((i) => i.kind))
+								);
+							}}
+						>
+							{allKindsOn ? 'Only parties' : 'Select all'}
+						</Button>
 					</div>
-
 				</div>
 			)}
 
@@ -864,7 +898,6 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				{status === 'ready' && (
 					<>
 						{ledger && <LedgerCard ledger={ledger} onSelectClause={(id) => focusNode(id)} />}
-
 						<svg
 							ref={svgRef}
 							className="h-full w-full cursor-grab text-foreground active:cursor-grabbing"
@@ -903,7 +936,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				)}
 			</div>
 
-			{status === 'ready' && view === 'parties' && (
+			{status === 'ready' && visibleKinds.has('party') && (
 				<PartyManager
 					hidden={hiddenNamed}
 					hasView={mergeGroups.length > 0 || hiddenParties.length > 0}
@@ -913,25 +946,43 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				/>
 			)}
 
-			{/* The legend mirrors the canvas; the entry view (parties only) needs none. */}
-			{status === 'ready' && !isPartyEntry && (visibleNodeLegend.length > 0 || visibleEdgeLegend.length > 0) && (
+			{/* The legend is the filter: each kind is a checkbox in its own colour, and
+			    the count is how many that kind has inside the current scope. */}
+			{status === 'ready' && (
 				<div className="space-y-2 border-t border-border/60 px-3 py-2 text-2xs text-muted-foreground">
-					{visibleNodeLegend.length > 0 && (
-						<div>
-							<div className="mb-1 font-medium text-foreground/50">Nodes</div>
-							<div className="grid grid-cols-5 gap-x-3 gap-y-1">
-								{visibleNodeLegend.map((item) => (
-									<span key={item.kind} className="inline-flex items-center gap-1.5">
-										<span
-											className="inline-block h-2 w-2 shrink-0 rounded-full"
-											style={{ backgroundColor: NODE_COLORS[item.kind] }}
+					<div>
+						<div className="mb-1 font-medium text-foreground/50">Nodes</div>
+						<div className="grid grid-cols-3 gap-x-3 gap-y-1">
+							{NODE_LEGEND.map((item) => {
+								const count = kindCounts[item.kind] ?? 0;
+								const color = NODE_COLORS[item.kind];
+								const checked = visibleKinds.has(item.kind);
+								return (
+									<label
+										key={item.kind}
+										className={`inline-flex min-w-0 items-center gap-1.5 ${
+											count === 0 ? 'opacity-40' : 'cursor-pointer'
+										}`}
+									>
+										<Checkbox
+											checked={checked}
+											disabled={count === 0}
+											onCheckedChange={(value) => toggleKind(item.kind, value === true)}
+											className="size-3.5 shrink-0 border-current data-[state=checked]:text-white"
+											style={{
+												color,
+												backgroundColor: checked ? color : undefined,
+												borderColor: color,
+											}}
+											aria-label={`${item.label} (${count})`}
 										/>
 										<span className="truncate">{item.label}</span>
-									</span>
-								))}
-							</div>
+										<span className="ml-auto shrink-0 tabular-nums opacity-60">{count}</span>
+									</label>
+								);
+							})}
 						</div>
-					)}
+					</div>
 					{visibleEdgeLegend.length > 0 && (
 						<div>
 							<div className="mb-1 font-medium text-foreground/50">Edges</div>

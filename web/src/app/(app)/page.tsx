@@ -11,7 +11,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useDocuments } from '@/hooks/useDocuments';
 import type { DocumentMeta } from '@/types/document';
 
-/** Derive a short, readable title from a CUAD filename (the agreement type). */
 function agreementTitle(name: string): string {
 	const base = name.replace(/\.docx$/i, '');
 	const match = base.match(/EX-[\d.]+[-_](?:.*EX-[\d.]+[-_])?(.+)$/);
@@ -19,7 +18,6 @@ function agreementTitle(name: string): string {
 	return tail.replace(/_/g, ' ').trim() || base;
 }
 
-/** First segment of the filename (the company), lightly title-cased. */
 function companyHint(name: string): string {
 	const head = name.split(/_\d/)[0]?.replace(/_/g, ' ').trim() ?? '';
 	return head

@@ -23,19 +23,12 @@ interface AssistantMessageProps {
 	message: AssistantChatMessage;
 	onSuggestedQuestionClick: (question: string) => void;
 	onFocusNodeFromPanel: (nodeId: string, emphasize?: boolean) => void;
-	/** Whether message entities are highlighted (toggle on click). */
 	entityHighlightsEnabled?: boolean;
-	/** Rewrite in progress: disables the fix card button. */
 	rewriteBusy?: boolean;
 	onToggleEntityHighlights?: () => void;
 	onAcceptFixSuggestion?: (messageId: string) => void | Promise<void>;
 }
 
-/**
- * Peels a leading "Paragraph"/"Párrafo" word off the assistant content so it can
- * be shown as a bold mini-header (matching the "Suggested questions" header),
- * while the rest of the text keeps its reference/entity chips.
- */
 function splitLeadLabel(content: string): { label: string | null; rest: string } {
 	const match = content.match(/^\s*(Paragraph|Párrafo)\b[ \t:]*/i);
 	if (!match) return { label: null, rest: content };
@@ -76,11 +69,6 @@ function renderSegments(
 	});
 }
 
-/**
- * A single chat message (user vs assistant). Ported from the message-rendering
- * block of the Svelte `RightPanelAssistant` component. The "fix contradiction"
- * action card is intentionally not ported in this migration step.
- */
 export function AssistantMessage({
 	message,
 	onSuggestedQuestionClick,
@@ -95,7 +83,6 @@ export function AssistantMessage({
 
 	const align = isUser ? 'end' : 'start';
 
-	// Avatar shared by every branch so user/assistant figures stay consistent.
 	const avatar = (
 		<MessageAvatar>
 			<Avatar size="sm">
@@ -111,8 +98,6 @@ export function AssistantMessage({
 		</MessageAvatar>
 	);
 
-	// Contradiction actions (structured fix / free explanation) keep their own
-	// card, but ride inside the shared Message/avatar layout.
 	if (message.fixContradictionSuggestion || message.freeContradictionExplanation) {
 		return (
 			<Message align={align}>

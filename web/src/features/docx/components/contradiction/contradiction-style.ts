@@ -15,10 +15,6 @@ export type EvidenceDiffSegment = {
 	changed: boolean;
 };
 
-/**
- * Resolved visual style for a contradiction taxonomy type. Mirrors the helper
- * of the same name in the original Svelte `RightPanelAnalysis` component.
- */
 export function resolveContradictionTypeStyle(
 	contradictionType: ContradictionTaxonomyType | null | undefined,
 ) {
@@ -42,10 +38,6 @@ function resolveContradictionTypeForSelected(
 	return nextType;
 }
 
-/**
- * Visual style for "Snippet B", derived from the selected contradiction's
- * taxonomy type.
- */
 export function resolveSnippetBStyle(
 	selectedContradictionResult: ContradictionParagraphResult | null,
 ) {
@@ -63,10 +55,6 @@ export function resolveSnippetBStyle(
 	};
 }
 
-/**
- * Word-level diff between the two evidence snippets. Removed words are marked
- * `changed` on snippet A, added words on snippet B.
- */
 export function buildEvidenceDiffSegments(
 	snippetA: string,
 	snippetB: string,
@@ -90,10 +78,6 @@ export function buildEvidenceDiffSegments(
 	return { a: aSegments, b: bSegments };
 }
 
-/**
- * Human-readable scope of the evidence: "intra paragraph" when both sides come
- * from the paragraph, otherwise "inter paragraph".
- */
 export function resolveEvidenceScopeLabel(
 	evidence: ContradictionParagraphResult['evidence'],
 ): string {
@@ -101,6 +85,5 @@ export function resolveEvidenceScopeLabel(
 	const sourceB = (evidence?.source_b || '').trim().toLowerCase();
 	if (sourceA === 'paragraph' && sourceB === 'paragraph') return 'intra paragraph';
 	if (sourceA === 'context' || sourceB === 'context') return 'inter paragraph';
-	// Fallback to keep the tag always visible when legacy payloads return unknown sources.
 	return sourceA === 'paragraph' || sourceB === 'paragraph' ? 'intra paragraph' : 'inter paragraph';
 }

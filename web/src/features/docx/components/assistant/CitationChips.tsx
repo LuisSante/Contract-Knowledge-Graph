@@ -8,11 +8,6 @@ interface CitationChipsProps {
 	onFocusNodeFromPanel: (nodeId: string, emphasize?: boolean) => void;
 }
 
-/**
- * Clickable citation chips rendered under an assistant message. Each chip
- * focuses the referenced paragraph node. Ported from the `message.citations`
- * block of the Svelte `RightPanelAssistant` component.
- */
 export function CitationChips({ citations, onFocusNodeFromPanel }: CitationChipsProps) {
 	if (!citations.length) return null;
 

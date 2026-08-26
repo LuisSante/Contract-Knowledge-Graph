@@ -1,15 +1,11 @@
-// Party-centric deontic knowledge graph (mirrors server/schemas/knowledge.py).
-
 export type DeonticKind = 'obligation' | 'right' | 'prohibition';
 
-/** Edges derived in code from node fields or from clause numbering. */
 export type DerivedEdgeType =
 	| 'is_part_of'
 	| 'assigns_obligation_to'
 	| 'grants_right_to'
 	| 'defines';
 
-/** Edges the LLM extracts; targets are resolved server-side after the chunk merge. */
 export type ExtractedEdgeType =
 	| 'uses'
 	| 'references'
@@ -17,7 +13,6 @@ export type ExtractedEdgeType =
 	| 'supersedes'
 	| 'modifies';
 
-/** Produced by contradiction analysis, never by extraction. */
 export type AnalysisEdgeType = 'contradicts';
 
 export type KgEdgeType = DerivedEdgeType | ExtractedEdgeType | AnalysisEdgeType;
@@ -47,8 +42,6 @@ export interface KgDefinedTerm {
 	paragraphIds: string[];
 }
 
-/** Shared shape of the three deontic node kinds. The collection a node lives in
- *  (obligations / rights / prohibitions) is its kind — there is no `type` field. */
 export interface KgDeontic {
 	id: string;
 	action: string;
@@ -95,7 +88,6 @@ export interface KgEdge {
 	source: string;
 	target: string;
 	type: KgEdgeType;
-	/** Verbatim wording that states the link, for extracted edges. */
 	evidence: string;
 	paragraphIds: string[];
 }
@@ -119,7 +111,6 @@ export interface KnowledgeGraphResponse {
 	knowledgeGraph: KnowledgeGraph;
 }
 
-// Node kinds used by the visualization layer.
 export type KgNodeKind =
 	| 'party'
 	| 'clause'
@@ -131,8 +122,6 @@ export type KgNodeKind =
 	| 'reference'
 	| 'value';
 
-/** Flatten the three deontic collections into one list, tagging each with its
- *  kind — a convenience iterator for consumers, not a persisted "provision" node. */
 export interface KgDeonticNode extends KgDeontic {
 	kind: DeonticKind;
 }

@@ -1,9 +1,7 @@
 'use client';
 
 import type { KeyboardEvent } from 'react';
-
 import type { AssistantChatMessage } from '@/types/document';
-
 import { AssistantInputBox } from '@/features/docx/components/assistant/AssistantInputBox';
 import { AssistantMessageList } from '@/features/docx/components/assistant/AssistantMessageList';
 
@@ -21,18 +19,10 @@ interface RightPanelAssistantProps {
 	onFocusNodeFromPanel: (nodeId: string, emphasize?: boolean) => void;
 	onToggleEntityHighlights?: () => void;
 	onAcceptFixSuggestion?: (messageId: string) => void | Promise<void>;
-	/** Initial quick questions (empty chat). */
 	initialSuggestions?: string[];
 	onInitialSuggestionClick?: (question: string) => void;
 }
 
-/**
- * Contract chat assistant panel: scrollable message list + bottom input box +
- * error display. Faithful port of the chat half of the Svelte
- * `RightPanelAssistant` component. The quick-action suggestions, entity-
- * highlight toggle, and fix-contradiction action card are intentionally
- * dropped/stubbed in this migration step.
- */
 export function RightPanelAssistant({
 	messages,
 	input,

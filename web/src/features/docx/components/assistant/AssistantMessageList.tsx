@@ -30,7 +30,6 @@ interface AssistantMessageListProps {
 	onAcceptFixSuggestion?: (messageId: string) => void | Promise<void>;
 }
 
-/** Assistant "thinking" placeholder: a muted bubble with a shimmering status. */
 function LoadingBubble() {
 	return (
 		<Message align="start">
@@ -58,11 +57,6 @@ function LoadingBubble() {
 	);
 }
 
-/**
- * Scrollable list of chat messages plus the loading skeleton. Auto-scrolls to
- * the latest message via the shadcn message-scroller (autoScroll + last-anchor),
- * and exposes a "scroll to latest" button when the user scrolls up.
- */
 export function AssistantMessageList({
 	messages,
 	loading,

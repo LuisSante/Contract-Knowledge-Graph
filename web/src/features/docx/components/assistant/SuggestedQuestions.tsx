@@ -7,11 +7,6 @@ interface SuggestedQuestionsProps {
 	onSuggestedQuestionClick: (question: string) => void;
 }
 
-/**
- * Suggested follow-up question chips rendered under an assistant message.
- * Ported from the `message.suggestedQuestions` block of the Svelte
- * `RightPanelAssistant` component.
- */
 export function SuggestedQuestions({
 	questions,
 	onSuggestedQuestionClick,

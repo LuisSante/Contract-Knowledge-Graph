@@ -16,8 +16,6 @@ export type KgChatClause = {
 	benefit: number;
 };
 
-/** Deterministic burden/benefit facts for the focused party, sent verbatim to the
- * chat so it explains them instead of recomputing. Mirrors backend KgChatLedger. */
 export type KgChatLedger = {
 	obligations: number;
 	rights: number;

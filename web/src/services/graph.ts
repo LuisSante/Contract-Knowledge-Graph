@@ -40,14 +40,12 @@ function buildDirectionalRelationsByNodeId(
 
 	for (const edge of edges) {
 		if (edge.type === 'reference') {
-			// Keep references directional: source -> target
 			const sourceNeighbors = neighborsByNodeId.get(edge.source);
 			if (sourceNeighbors) sourceNeighbors.add(edge.target);
 			continue;
 		}
 
 		if (edge.type === 'semantic_similarity') {
-			// Semantic similarity is symmetric.
 			const sourceNeighbors = neighborsByNodeId.get(edge.source);
 			if (sourceNeighbors) sourceNeighbors.add(edge.target);
 

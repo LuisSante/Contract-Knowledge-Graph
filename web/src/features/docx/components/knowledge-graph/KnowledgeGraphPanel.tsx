@@ -7,6 +7,10 @@ import { useDocumentStore } from '@/stores/document';
 import { useKnowledgeGraphStore } from '@/stores/knowledgeGraph';
 import { buildKnowledgeGraphBridge } from '@/features/docx/utils/knowledge/kg-bridge';
 import { applyPartyView } from '@/features/docx/utils/knowledge/party-view';
+import {
+	computeRadialLayout,
+	type RadialSector,
+} from '@/features/docx/utils/knowledge/radial-layout';
 import { PartyManager } from '@/features/docx/components/knowledge-graph/PartyManager';
 import type { KgLedger } from '@/features/docx/utils/knowledge/attention';
 import { Button } from '@/components/ui/button';
@@ -101,6 +105,14 @@ const EDGE_LEGEND: Array<{ types: KgEdgeType[]; label: string }> = [
 const KIND_LABEL: Record<KgNodeKind, string> = Object.fromEntries(
 	NODE_LEGEND.map((item) => [item.kind, item.label])
 ) as Record<KgNodeKind, string>;
+
+// The arc glyph reuses the deontic palette on purpose: a burden is what an obligation
+// colour already means to the reader, a benefit what a right means.
+const BURDEN_COLOR = NODE_COLORS.obligation;
+const BENEFIT_COLOR = NODE_COLORS.right;
+/** Gap between a node's edge and the ring drawn around it. */
+const ARC_OFFSET = 3.5;
+const ARC_WIDTH = 2.5;
 
 const DIMMED_NODE_OPACITY = 0.1;
 const DIMMED_LINK_OPACITY = 0.04;
@@ -335,10 +347,8 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const svgRef = useRef<SVGSVGElement>(null);
 	const nodeSelRef = useRef<NodeSelection | null>(null);
 	const linkSelRef = useRef<LinkSelection | null>(null);
-	const draggedRef = useRef(false);
-	// Layout carried across rebuilds: a top-K or severity change swaps the node set,
-	// and without these the whole subgraph re-seeds and the camera snaps back.
-	const posRef = useRef(new Map<string, { x: number; y: number }>());
+	// Only the camera survives a rebuild now — node positions are a pure function of
+	// the graph, so there is nothing else to carry over.
 	const transformRef = useRef<d3.ZoomTransform | null>(null);
 	const [size, setSize] = useState({ width: 0, height: 0 });
 	const [kg, setKg] = useState<KnowledgeGraph | null>(null);
@@ -379,16 +389,20 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const clearSelectedParties = useKnowledgeGraphStore((s) => s.clearSelectedParties);
 	const focusNodeIds = useKnowledgeGraphStore((s) => s.focusNodeIds);
 	const nodeScores = useKnowledgeGraphStore((s) => s.nodeScores);
+	const toneSplit = useKnowledgeGraphStore((s) => s.toneSplit);
 	const ledger = useKnowledgeGraphStore((s) => s.ledger);
 	const paragraphs = useDocumentStore((s) => s.paragraphs);
 	const nodesById = useMemo(() => new Map(paragraphs.map((n) => [n.id, n])), [paragraphs]);
+	const paragraphOrder = useMemo(
+		() => new Map(paragraphs.map((n) => [n.id, n.paragraph_enum])),
+		[paragraphs]
+	);
 
 	// Fetch the pre-generated KG for the current document.
 	useEffect(() => {
 		if (!docId) return;
 		let cancelled = false;
 		clearFocus();
-		posRef.current.clear();
 		transformRef.current = null;
 
 		const load = async () => {
@@ -473,25 +487,35 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const kindCounts = useMemo(() => {
 		const counts = {} as Record<KgNodeKind, number>;
 		for (const node of fullGraph?.nodes ?? []) {
-			if (scopeIds && !scopeIds.has(node.id)) continue;
+			// No focus means the entry view, which only ever holds the parties.
+			if (scopeIds ? !scopeIds.has(node.id) : node.kind !== 'party') continue;
 			counts[node.kind] = (counts[node.kind] ?? 0) + 1;
 		}
 		return counts;
 	}, [fullGraph, scopeIds]);
 
-	// visible = (focus ? subgraph : everything) ∩ checked kinds.
+	// visible = (focus ? subgraph ∩ checked kinds : just the parties).
+	//
+	// Without a focus there is no attention to encode, so every node would share a
+	// radius and the ring would collapse into one dense necklace. The radial map is a
+	// focused view by construction; unfocused it stays on the entry state.
 	const graph = useMemo(() => {
 		if (!fullGraph) return null;
-		const soloParties = visibleKinds.size === 1 && visibleKinds.has('party');
-		const nodes = fullGraph.nodes
-			.filter((n) => visibleKinds.has(n.kind) && (!scopeIds || scopeIds.has(n.id)))
-			// The bare parties carry the whole canvas, so they are drawn larger.
-			.map((n) => (soloParties && !scopeIds ? { ...n, radius: PARTY_ENTRY_RADIUS } : n));
+		const nodes = scopeIds
+			? fullGraph.nodes.filter((n) => visibleKinds.has(n.kind) && scopeIds.has(n.id))
+			: fullGraph.nodes
+					.filter((n) => n.kind === 'party')
+					.map((n) => ({ ...n, radius: PARTY_ENTRY_RADIUS }));
 		const ids = new Set(nodes.map((n) => n.id));
 		return {
 			nodes,
 			links: fullGraph.links.filter(
-				(l) => ids.has(l.source as string) && ids.has(l.target as string)
+				(l) =>
+					// Containment is already encoded by which sector a node sits in, so drawing
+					// it again adds 556 of the 1083 chords and says nothing new.
+					l.type !== 'is_part_of' &&
+					ids.has(l.source as string) &&
+					ids.has(l.target as string)
 			),
 		};
 	}, [fullGraph, visibleKinds, scopeIds]);
@@ -500,7 +524,24 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		() => fullGraph?.nodes.find((n) => n.id === focusNodeId) ?? null,
 		[fullGraph, focusNodeId]
 	);
+	const isPartyFocus = focusedNode?.kind === 'party';
 	const isPartyEntry = !scopeIds && visibleKinds.size === 1 && visibleKinds.has('party');
+
+	// Laid out over the whole graph, not the filtered slice, so the ring stays put
+	// when kinds are toggled — only which nodes get drawn changes.
+	const layout = useMemo(
+		() =>
+			viewKg && size.width > 0 && size.height > 0
+				? computeRadialLayout(viewKg, {
+						width: size.width,
+						height: size.height,
+						scores: nodeScores,
+						paragraphOrder,
+						centerNodeId: isPartyFocus ? focusNodeId : null,
+					})
+				: null,
+		[viewKg, size, nodeScores, paragraphOrder, focusNodeId, isPartyFocus]
+	);
 
 	// First drill-down out of the pristine entry view: open every kind so the
 	// subgraph is actually visible instead of being filtered down to the party.
@@ -530,50 +571,39 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		);
 	}, [viewKg, focusNodeId, hops, topK, nodesById, severity, usePageRank, setBridgePayload]);
 
-	// d3-force simulation + render. Rebuilds only when the graph or size changes.
+	// Deterministic radial render: every position comes from the layout module, so
+	// there is no simulation, no settling and no reshuffle when the filter changes.
 	useEffect(() => {
-		if (!graph || !svgRef.current || size.width === 0 || size.height === 0) return;
-		const { width, height } = size;
-		// Nodes we have already laid out keep their position; the rest fan out from
-		// the centre on a golden-angle spiral so they never start stacked.
-		const positions = posRef.current;
-		const nodes: SimNode[] = graph.nodes.map((n, i) => {
-			const prev = positions.get(n.id);
-			if (prev) return { ...n, x: prev.x, y: prev.y };
-			const angle = i * 2.399963;
-			return { ...n, x: width / 2 + Math.cos(angle) * 30, y: height / 2 + Math.sin(angle) * 30 };
-		});
-		const links = graph.links.map((l) => ({ ...l }));
-		// Mostly-known node set => this is a refinement, not a new graph: settle gently
-		// and leave the camera alone.
-		const known = nodes.filter((n) => positions.has(n.id)).length;
-		const warmStart = nodes.length > 0 && known / nodes.length > 0.8;
+		if (!graph || !layout || !svgRef.current || size.width === 0 || size.height === 0) return;
+
+		const nodes: SimNode[] = [];
+		for (const item of graph.nodes) {
+			const position = layout.positions.get(item.id);
+			if (position) nodes.push({ ...item, x: position.x, y: position.y });
+		}
+		const placed = new Set(nodes.map((n) => n.id));
+		const links = graph.links
+			.filter((l) => placed.has(l.source as string) && placed.has(l.target as string))
+			.map((l) => ({ ...l }));
+		const byId = new Map(nodes.map((n) => [n.id, n] as const));
 
 		const svg = d3.select(svgRef.current);
 		svg.selectAll('*').remove();
-
 		const root = svg.append('g');
 
-		// Auto-fit runs once after the layout settles, but a manual zoom/pan cancels
-		// it for good so the view never snaps back under the user.
-		let userZoomed = false;
-		let didFit = warmStart;
 		let panned = false;
-
 		const zoom = d3
 			.zoom<SVGSVGElement, unknown>()
 			.scaleExtent([0.2, 4])
 			.on('zoom', (event) => {
-				if (event.sourceEvent) {
-					userZoomed = true;
-					panned = true;
-				}
+				if (event.sourceEvent) panned = true;
 				transformRef.current = event.transform;
 				root.attr('transform', event.transform.toString());
 			});
 		svg.call(zoom).on('dblclick.zoom', null);
-
-		if (warmStart && transformRef.current) svg.call(zoom.transform, transformRef.current);
+		// The layout is already sized to the container, so identity fits by construction.
+		// Only the user's own pan/zoom needs carrying across a rebuild.
+		if (transformRef.current) svg.call(zoom.transform, transformRef.current);
 
 		svg.on('pointerdown', () => {
 			panned = false;
@@ -583,6 +613,128 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			clearFocus();
 		});
 
+		const { x: cx, y: cy } = layout.center;
+		const pointAt = (angle: number, distance: number) =>
+			[cx + Math.cos(angle) * distance, cy + Math.sin(angle) * distance] as const;
+		const arcPath = (radius: number, from: number, to: number) => {
+			const [x0, y0] = pointAt(from, radius);
+			const [x1, y1] = pointAt(to, radius);
+			return `M${x0},${y0}A${radius},${radius},0,${to - from > Math.PI ? 1 : 0},1,${x1},${y1}`;
+		};
+
+		// Hovering a sector lights the whole wedge, so it goes in first and everything
+		// else draws over it.
+		const wedge = root
+			.append('path')
+			.attr('fill', NODE_COLORS.clause)
+			.attr('fill-opacity', 0.09)
+			.attr('pointer-events', 'none')
+			.attr('visibility', 'hidden');
+
+		// --- the ring: one arc per clause, in document order, width by attention ---
+		const scaffold = root.append('g').attr('pointer-events', 'none').attr('fill', 'none');
+		scaffold
+			.append('circle')
+			.attr('cx', cx)
+			.attr('cy', cy)
+			.attr('r', layout.boundaryRadius)
+			.attr('stroke', 'currentColor')
+			.attr('stroke-opacity', 0.16)
+			.attr('stroke-dasharray', '4 5');
+
+		const peakWeight = Math.max(...layout.sectors.map((s) => s.weight), 1e-9);
+		scaffold
+			.selectAll<SVGPathElement, RadialSector>('path')
+			.data(layout.sectors)
+			.join('path')
+			// A hair of padding each side keeps neighbouring sectors legible as separate.
+			.attr('d', (d) => arcPath(layout.ringRadius, d.startAngle + 0.004, d.endAngle - 0.004))
+			.attr('stroke', NODE_COLORS.clause)
+			.attr('stroke-width', (d) => 2 + 5 * (d.weight / peakWeight))
+			.attr('stroke-linecap', 'round')
+			.attr('stroke-opacity', (d) => 0.25 + 0.6 * (d.weight / peakWeight));
+
+		/** Keep a ring label from overrunning the circle it belongs to. */
+		const anchorFor = (angle: number) =>
+			Math.cos(angle) < -0.1 ? 'end' : Math.cos(angle) > 0.1 ? 'start' : 'middle';
+
+		// Labelling 142 sectors is unreadable, so only the ones that carry weight.
+		const labelled = [...layout.sectors]
+			.filter((s: RadialSector) => s.weight > 0)
+			.sort((a, b) => b.weight - a.weight)
+			.slice(0, 14);
+		scaffold
+			.append('g')
+			.selectAll<SVGTextElement, RadialSector>('text')
+			.data(labelled)
+			.join('text')
+			.attr('x', (d) => pointAt((d.startAngle + d.endAngle) / 2, layout.ringRadius + 9)[0])
+			.attr('y', (d) => pointAt((d.startAngle + d.endAngle) / 2, layout.ringRadius + 9)[1])
+			.attr('text-anchor', (d) => anchorFor((d.startAngle + d.endAngle) / 2))
+			.attr('dominant-baseline', 'middle')
+			.attr('font-size', 9)
+			.attr('fill', 'currentColor')
+			.attr('fill-opacity', 0.55)
+			.text((d) => d.label);
+
+		// The ref of whichever sector is under the cursor, including the ones too light
+		// to have earned a permanent label.
+		const hoverLabel = root
+			.append('text')
+			.attr('pointer-events', 'none')
+			.attr('dominant-baseline', 'middle')
+			.attr('font-size', 10)
+			.attr('font-weight', 500)
+			.attr('fill', 'currentColor')
+			.attr('visibility', 'hidden');
+
+		// Sector hit areas — a fat invisible stroke over the ring. Appended before the
+		// nodes so that wherever the two overlap the node still wins the pointer.
+		root
+			.append('g')
+			.attr('fill', 'none')
+			.attr('stroke', 'transparent')
+			.attr('stroke-width', 16)
+			.attr('cursor', 'pointer')
+			.selectAll<SVGPathElement, RadialSector>('path')
+			.data(layout.sectors)
+			.join('path')
+			.attr('d', (d) => arcPath(layout.ringRadius, d.startAngle, d.endAngle))
+			.on('mouseenter mousemove', (event: MouseEvent, d) => {
+				const mid = (d.startAngle + d.endAngle) / 2;
+				const [sx, sy] = pointAt(d.startAngle, layout.ringRadius);
+				const [ex, ey] = pointAt(d.endAngle, layout.ringRadius);
+				const large = d.endAngle - d.startAngle > Math.PI ? 1 : 0;
+				const r = layout.ringRadius;
+				wedge
+					.attr('d', `M${cx},${cy}L${sx},${sy}A${r},${r},0,${large},1,${ex},${ey}Z`)
+					.attr('visibility', 'visible');
+				const [lx, ly] = pointAt(mid, layout.ringRadius + 9);
+				hoverLabel
+					.attr('x', lx)
+					.attr('y', ly)
+					.attr('text-anchor', anchorFor(mid))
+					.text(d.label)
+					.attr('visibility', 'visible');
+				const rect = containerRef.current?.getBoundingClientRect();
+				setHover({
+					x: event.clientX - (rect?.left ?? 0),
+					y: event.clientY - (rect?.top ?? 0),
+					kind: 'clause',
+					detail: d.weight > 0 ? `${d.label} — weight ${d.weight.toFixed(2)}` : d.label,
+				});
+			})
+			.on('mouseleave', () => {
+				wedge.attr('visibility', 'hidden');
+				hoverLabel.attr('visibility', 'hidden');
+				setHover(null);
+			})
+			.on('click', (event: MouseEvent, d) => {
+				event.stopPropagation();
+				clearSelectedParties();
+				focusNode(d.clauseId);
+			});
+
 		const link = root
 			.append('g')
 			.attr('stroke-opacity', 0.8)
@@ -590,7 +742,45 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			.data(links)
 			.join('line')
 			.attr('stroke', (d) => EDGE_COLORS[d.type])
-			.attr('stroke-width', 1.2);
+			.attr('stroke-width', 1.2)
+			.attr('x1', (d) => byId.get(d.source as string)?.x ?? 0)
+			.attr('y1', (d) => byId.get(d.source as string)?.y ?? 0)
+			.attr('x2', (d) => byId.get(d.target as string)?.x ?? 0)
+			.attr('y2', (d) => byId.get(d.target as string)?.y ?? 0);
+
+		// --- the arc glyph: how this node's weight splits burden vs benefit ---
+		//
+		// Two concentric dashed rings rather than path arcs: the dash length is the
+		// share, and the rotation is where the second one starts. Drawn under the nodes
+		// so a node never sits on top of its own reading.
+		const arcs = nodes
+			.map((d) => ({ node: d, split: toneSplit[d.id] }))
+			.filter((item) => item.split && item.split.burden + item.split.benefit > 0);
+		const arcLayer = root.append('g').attr('pointer-events', 'none').attr('fill', 'none');
+		for (const side of ['burden', 'benefit'] as const) {
+			arcLayer
+				.append('g')
+				.selectAll<SVGCircleElement, (typeof arcs)[number]>('circle')
+				.data(arcs)
+				.join('circle')
+				.attr('cx', (d) => d.node.x ?? 0)
+				.attr('cy', (d) => d.node.y ?? 0)
+				.attr('r', (d) => d.node.radius + ARC_OFFSET)
+				.attr('stroke', side === 'burden' ? BURDEN_COLOR : BENEFIT_COLOR)
+				.attr('stroke-width', ARC_WIDTH)
+				.attr('stroke-dasharray', (d) => {
+					const total = d.split!.burden + d.split!.benefit;
+					const share = (side === 'burden' ? d.split!.burden : d.split!.benefit) / total;
+					const circumference = 2 * Math.PI * (d.node.radius + ARC_OFFSET);
+					return `${circumference * share} ${circumference * (1 - share)}`;
+				})
+				// Burden starts at 12 o'clock; benefit picks up where it ends.
+				.attr('transform', (d) => {
+					const total = d.split!.burden + d.split!.benefit;
+					const start = side === 'burden' ? 0 : (d.split!.burden / total) * 360;
+					return `rotate(${start - 90} ${d.node.x ?? 0} ${d.node.y ?? 0})`;
+				});
+		}
 
 		const node = root
 			.append('g')
@@ -599,6 +789,8 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			.selectAll<SVGCircleElement, SimNode>('circle')
 			.data(nodes)
 			.join('circle')
+			.attr('cx', (d) => d.x ?? 0)
+			.attr('cy', (d) => d.y ?? 0)
 			.attr('r', (d) => d.radius)
 			.attr('fill', (d) => nodeColor(d))
 			.attr('cursor', 'pointer');
@@ -621,7 +813,6 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			.on('mouseleave', () => setHover(null))
 			.on('click', (event: MouseEvent, d) => {
 				event.stopPropagation();
-				if (draggedRef.current) return; // ignore the click that ends a drag
 				if ((event.ctrlKey || event.metaKey) && d.kind === 'party') {
 					toggleSelectedParty(d.id); // Ctrl/Cmd-click builds the action selection
 					return;
@@ -631,13 +822,15 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			});
 
 		// Party names stay readable at every zoom level — they are the entry point.
-		const label = root
+		root
 			.append('g')
 			.attr('pointer-events', 'none')
 			.selectAll<SVGTextElement, SimNode>('text')
 			.data(nodes.filter((d) => d.kind === 'party'))
 			.join('text')
 			.text((d) => d.label)
+			.attr('x', (d) => d.x ?? 0)
+			.attr('y', (d) => (d.y ?? 0) + d.radius + 13)
 			.attr('font-size', 11)
 			.attr('font-weight', 500)
 			.attr('text-anchor', 'middle')
@@ -645,96 +838,14 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 
 		nodeSelRef.current = node;
 		linkSelRef.current = link;
-
-		const chargeStrength = -220 - nodes.length * 1.5;
-
-		const simulation = d3
-			.forceSimulation<SimNode>(nodes)
-			.force(
-				'link',
-				d3
-					.forceLink<SimNode, SimLink>(links)
-					.id((d) => d.id)
-					.distance(70)
-					.strength(0.5)
-			)
-			.force('charge', d3.forceManyBody<SimNode>().strength(chargeStrength).distanceMax(600))
-			.force('center', d3.forceCenter(width / 2, height / 2))
-			.force('x', d3.forceX(width / 2).strength(0.03))
-			.force('y', d3.forceY(height / 2).strength(0.03))
-			.force(
-				'collide',
-				d3.forceCollide<SimNode>().radius((d) => d.radius + 7)
-			)
-			.alpha(warmStart ? 0.35 : 1);
-
-		const fitToView = () => {
-			const pad = 24;
-			const xs = nodes.map((n) => n.x ?? 0);
-			const ys = nodes.map((n) => n.y ?? 0);
-			const minX = Math.min(...xs);
-			const maxX = Math.max(...xs);
-			const minY = Math.min(...ys);
-			const maxY = Math.max(...ys);
-			const gw = Math.max(maxX - minX, 1);
-			const gh = Math.max(maxY - minY, 1);
-			const k = Math.min((width - pad * 2) / gw, (height - pad * 2) / gh, 1.5);
-			const tx = width / 2 - k * ((minX + maxX) / 2);
-			const ty = height / 2 - k * ((minY + maxY) / 2);
-			svg
-				.transition()
-				.duration(400)
-				.call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(k));
-		};
-
-		simulation.on('tick', () => {
-			link
-				.attr('x1', (d) => (d.source as SimNode).x ?? 0)
-				.attr('y1', (d) => (d.source as SimNode).y ?? 0)
-				.attr('x2', (d) => (d.target as SimNode).x ?? 0)
-				.attr('y2', (d) => (d.target as SimNode).y ?? 0);
-			node.attr('cx', (d) => d.x ?? 0).attr('cy', (d) => d.y ?? 0);
-			label.attr('x', (d) => d.x ?? 0).attr('y', (d) => (d.y ?? 0) + d.radius + 13);
-		});
-		simulation.on('end', () => {
-			if (userZoomed || didFit) return;
-			didFit = true;
-			fitToView();
-		});
-
-		const drag = d3
-			.drag<SVGCircleElement, SimNode>()
-			.on('start', (event, d) => {
-				draggedRef.current = false;
-				if (!event.active) simulation.alphaTarget(0.3).restart();
-				d.fx = d.x;
-				d.fy = d.y;
-			})
-			.on('drag', (event, d) => {
-				draggedRef.current = true;
-				d.fx = event.x;
-				d.fy = event.y;
-			})
-			.on('end', (event, d) => {
-				if (!event.active) simulation.alphaTarget(0);
-				d.fx = null;
-				d.fy = null;
-			});
-		node.call(drag);
-
 		setGraphVersion((v) => v + 1);
 
 		return () => {
-			simulation.stop();
-			// Hand the settled layout to the next rebuild.
-			for (const n of nodes) {
-				if (n.x != null && n.y != null) positions.set(n.id, { x: n.x, y: n.y });
-			}
 			nodeSelRef.current = null;
 			linkSelRef.current = null;
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [graph, size]);
+	}, [graph, layout, size, toneSplit]);
 
 	// Restyle (highlight / dim / size-by-attention) without rebuilding the sim.
 	useEffect(() => {
@@ -804,13 +915,11 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			return;
 		}
 
-		const radiusFor = (d: SimNode): number => {
-			if (!highlightIds.has(d.id)) return d.radius;
-			const score = nodeScores[d.id];
-			// Attention-scaled radius for party focus; otherwise a light emphasis.
-			if (score != null) return d.radius * (0.7 + 1.7 * score);
-			return d.id === focusNodeId ? d.radius * 1.55 : d.radius;
-		};
+		// Size stays a function of the node kind. Attention already has a channel —
+		// distance from the centre — and encoding it twice makes near and far nodes of
+		// the same kind look like different things.
+		const radiusFor = (d: SimNode): number =>
+			d.id === focusNodeId ? d.radius * 1.55 : d.radius;
 
 		node
 			.attr('opacity', (d) => (highlightIds.has(d.id) ? 1 : DIMMED_NODE_OPACITY))
@@ -983,6 +1092,22 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 							})}
 						</div>
 					</div>
+					{Object.keys(toneSplit).length > 0 && (
+						<div className="flex items-center gap-1.5">
+							<span className="font-medium text-foreground/50">Ring</span>
+							<span
+								className="inline-block h-2 w-2 shrink-0 rounded-full border-2"
+								style={{ borderColor: BURDEN_COLOR }}
+							/>
+							<span>burden</span>
+							<span
+								className="ml-1 inline-block h-2 w-2 shrink-0 rounded-full border-2"
+								style={{ borderColor: BENEFIT_COLOR }}
+							/>
+							<span>benefit</span>
+							<span className="text-foreground/40">· share of the node&apos;s weight</span>
+						</div>
+					)}
 					{visibleEdgeLegend.length > 0 && (
 						<div>
 							<div className="mb-1 font-medium text-foreground/50">Edges</div>

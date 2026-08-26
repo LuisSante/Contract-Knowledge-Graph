@@ -44,6 +44,9 @@ export interface PartyAttention {
 	nodeScore: Map<string, number>;
 	/** Whether each statement burdens or benefits the focused party. */
 	toneByDeontic: Map<string, DeonticTone>;
+	/** Per clause, the magnitude summed on each side — the split the arc glyph draws. */
+	clauseBurden: Map<string, number>;
+	clauseBenefit: Map<string, number>;
 	ledger: KgLedger;
 }
 
@@ -231,5 +234,13 @@ export function computePartyAttention(
 		topClauses,
 	};
 
-	return { deonticScore, clauseScore, nodeScore, toneByDeontic, ledger };
+	return {
+		deonticScore,
+		clauseScore,
+		nodeScore,
+		toneByDeontic,
+		clauseBurden,
+		clauseBenefit,
+		ledger,
+	};
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { fetchKnowledgeGraph, fetchPartyMergeHints } from '@/services/knowledge';
 import { useDocumentStore } from '@/stores/document';
@@ -12,6 +12,12 @@ import {
 	type RadialSector,
 } from '@/features/docx/utils/knowledge/radial-layout';
 import { PartyManager } from '@/features/docx/components/knowledge-graph/PartyManager';
+import {
+	MembraneRing,
+	SIDE_COLORS,
+	type MembraneHover,
+} from '@/features/docx/components/knowledge-graph/MembraneRing';
+import { computeDyadAnalysis, defaultDyad } from '@/features/docx/utils/knowledge/dyadic';
 import type { KgLedger } from '@/features/docx/utils/knowledge/attention';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -400,6 +406,14 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const nodeScores = useKnowledgeGraphStore((s) => s.nodeScores);
 	const toneSplit = useKnowledgeGraphStore((s) => s.toneSplit);
 	const ledger = useKnowledgeGraphStore((s) => s.ledger);
+	const viewMode = useKnowledgeGraphStore((s) => s.viewMode);
+	const dyad = useKnowledgeGraphStore((s) => s.dyad);
+	const showControl = useKnowledgeGraphStore((s) => s.showControl);
+	const setViewMode = useKnowledgeGraphStore((s) => s.setViewMode);
+	const setDyad = useKnowledgeGraphStore((s) => s.setDyad);
+	const swapDyad = useKnowledgeGraphStore((s) => s.swapDyad);
+	const setShowControl = useKnowledgeGraphStore((s) => s.setShowControl);
+	const [dyadHover, setDyadHover] = useState<MembraneHover | null>(null);
 	const paragraphs = useDocumentStore((s) => s.paragraphs);
 	const nodesById = useMemo(() => new Map(paragraphs.map((n) => [n.id, n])), [paragraphs]);
 	const paragraphOrder = useMemo(
@@ -450,13 +464,17 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		};
 	}, [docId, clearFocus]);
 
-	// Track container size so the graph fills the (resizable) panel.
+	// Track container size so the graph fills the (resizable) panel. Measured once up
+	// front as well: the observer's first callback needs a paint, which never comes if
+	// the panel mounts in a tab that is not compositing.
 	useEffect(() => {
 		const el = containerRef.current;
 		if (!el) return;
+		const rect = el.getBoundingClientRect();
+		if (rect.width > 0 && rect.height > 0) setSize({ width: rect.width, height: rect.height });
 		const observer = new ResizeObserver((entries) => {
-			const rect = entries[0]?.contentRect;
-			if (rect) setSize({ width: rect.width, height: rect.height });
+			const box = entries[0]?.contentRect;
+			if (box) setSize({ width: box.width, height: box.height });
 		});
 		observer.observe(el);
 		return () => observer.disconnect();
@@ -551,6 +569,32 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				: null,
 		[viewKg, size, nodeScores, paragraphOrder, focusNodeId, isPartyFocus]
 	);
+
+	// The bilateral pair: whatever the user picked, else the two parties that actually
+	// carry the contract. Recomputed over `viewKg` so merges/hides are respected.
+	const activeDyad = useMemo<[string, string] | null>(() => {
+		if (!viewKg) return null;
+		const known = new Set(viewKg.parties.map((p) => p.id));
+		if (dyad && known.has(dyad[0]) && known.has(dyad[1])) return dyad;
+		return defaultDyad(viewKg);
+	}, [viewKg, dyad]);
+
+	const analysis = useMemo(
+		() =>
+			viewKg && activeDyad && viewMode === 'dyad'
+				? computeDyadAnalysis(viewKg, activeDyad[0], activeDyad[1], severity, usePageRank)
+				: null,
+		[viewKg, activeDyad, viewMode, severity, usePageRank]
+	);
+
+	const selectClause = useCallback(
+		(clauseId: string) => {
+			clearSelectedParties();
+			focusNode(clauseId);
+		},
+		[clearSelectedParties, focusNode]
+	);
+	const selectStatement = useCallback((id: string) => focusNode(id), [focusNode]);
 
 	// First drill-down out of the pristine entry view: open every kind so the
 	// subgraph is actually visible instead of being filtered down to the party.
@@ -980,7 +1024,34 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 							<span>
 								{counts.parties} parties · {counts.clauses} clauses · {counts.statements} statements
 							</span>
-							{Object.keys(toneSplit).length > 0 && (
+							{viewMode === 'dyad' && analysis && (
+								<span className="flex items-center gap-1.5">
+									<span
+										className="inline-block h-2 w-2 shrink-0 rounded-full"
+										style={{ backgroundColor: SIDE_COLORS.A }}
+									/>
+									<span className="max-w-[110px] truncate">{analysis.partyA.name}</span>
+									<span className="font-medium text-foreground/70">
+										{Math.round((analysis.massA / (analysis.totalWeight || 1)) * 100)}% /{' '}
+										{Math.round((analysis.massB / (analysis.totalWeight || 1)) * 100)}%
+									</span>
+									<span className="max-w-[110px] truncate">{analysis.partyB.name}</span>
+									<span
+										className="inline-block h-2 w-2 shrink-0 rounded-full"
+										style={{ backgroundColor: SIDE_COLORS.B }}
+									/>
+									<Button
+										variant="ghost"
+										size="xs"
+										className="h-5 px-1 text-2xs"
+										title="Swap A and B — the angles hold, only the radial encoding mirrors"
+										onClick={() => swapDyad()}
+									>
+										swap
+									</Button>
+								</span>
+							)}
+							{viewMode === 'ego' && Object.keys(toneSplit).length > 0 && (
 								<span className="flex items-center gap-1.5">
 									<span className="font-medium text-foreground/50">Ring</span>
 									<span
@@ -997,7 +1068,52 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 							)}
 						</div>
 						<div className="flex shrink-0 items-center gap-2">
-							{scopeIds && (
+							<div className="flex overflow-hidden rounded border border-border/70">
+								{(['ego', 'dyad'] as const).map((mode) => (
+									<button
+										key={mode}
+										type="button"
+										onClick={() => setViewMode(mode)}
+										className={
+											viewMode === mode
+												? 'bg-primary px-1.5 py-0.5 text-2xs text-primary-foreground'
+												: 'px-1.5 py-0.5 text-2xs hover:bg-muted'
+										}
+									>
+										{mode === 'ego' ? 'Party' : 'Bilateral'}
+									</button>
+								))}
+							</div>
+							{viewMode === 'ego' && selectedPartyIds.length === 2 && (
+								<Button
+									variant="ghost"
+									size="xs"
+									className="h-6 px-1.5 text-2xs"
+									title="Draw the bilateral ring between the two selected parties"
+									onClick={() => {
+										setDyad([selectedPartyIds[0], selectedPartyIds[1]]);
+										setViewMode('dyad');
+										clearSelectedParties();
+									}}
+								>
+									Compare pair
+								</Button>
+							)}
+							{viewMode === 'dyad' && (
+								<label
+									className="flex cursor-pointer items-center gap-1.5"
+									title="Highlight the gating layer: a halo on every conditioned provision, plus the conditions that reach into another clause."
+								>
+									<input
+										type="checkbox"
+										checked={showControl}
+										onChange={(event) => setShowControl(event.target.checked)}
+										className="cursor-pointer accent-primary"
+									/>
+									Control
+								</label>
+							)}
+							{viewMode === 'ego' && scopeIds && (
 								<label
 									className="flex cursor-pointer items-center gap-1.5"
 									title="Draw the is_part_of edges (statement → its clause). Off by default: position already encodes containment."
@@ -1015,6 +1131,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 								variant="ghost"
 								size="xs"
 								className="h-6 px-1.5 text-2xs"
+								disabled={viewMode === 'dyad'}
 								onClick={() => {
 									filterTouchedRef.current = true;
 									setVisibleKinds(
@@ -1047,7 +1164,44 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 							Failed to load the knowledge graph.
 						</div>
 					)}
-					{status === 'ready' && (
+					{status === 'ready' && viewMode === 'dyad' && !analysis && (
+						<div className="flex h-full items-center justify-center px-6 text-center text-sm text-muted-foreground">
+							The bilateral view needs two parties that carry provisions. Merge the placeholder
+							parties, or switch back to the party view.
+						</div>
+					)}
+					{status === 'ready' && viewMode === 'dyad' && viewKg && analysis && (
+						<>
+							<MembraneRing
+								kg={viewKg}
+								analysis={analysis}
+								paragraphOrder={paragraphOrder}
+								width={size.width}
+								height={size.height}
+								showControl={showControl}
+								onHover={setDyadHover}
+								onSelectClause={selectClause}
+								onSelectStatement={selectStatement}
+								onBackgroundClick={clearFocus}
+							/>
+							{dyadHover && (
+								<div
+									className="pointer-events-none absolute z-10 max-w-[280px] -translate-x-1/2 -translate-y-[calc(100%+12px)] rounded-md border-2 bg-popover px-2.5 py-1.5 shadow-md"
+									style={{
+										left: dyadHover.x,
+										top: dyadHover.y,
+										borderColor: dyadHover.color,
+									}}
+								>
+									<span className="text-2xs font-medium uppercase tracking-wide opacity-70">
+										{dyadHover.title}
+									</span>
+									<span className="mt-1 block text-2xs leading-snug">{dyadHover.detail}</span>
+								</div>
+							)}
+						</>
+					)}
+					{status === 'ready' && viewMode === 'ego' && (
 						<>
 							<svg
 								ref={svgRef}
@@ -1087,8 +1241,109 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 					)}
 				</div>
 
+				{/* Bilateral rail: the split, the clauses with most at play, and what the
+				    control layer can and cannot yet say. */}
+				{status === 'ready' && viewMode === 'dyad' && analysis && (
+					<aside className="w-56 shrink-0 space-y-3 overflow-y-auto border-l border-border/60 px-2.5 py-2 text-2xs text-muted-foreground">
+						<div>
+							<div className="mb-1.5 font-medium text-foreground/50">Split of the contract</div>
+							<div className="flex h-5 w-full overflow-hidden rounded-sm">
+								{(
+									[
+										[analysis.massA, SIDE_COLORS.A],
+										[analysis.massNeutral, SIDE_COLORS.neutral],
+										[analysis.massB, SIDE_COLORS.B],
+									] as const
+								).map(([mass, color], i) => (
+									<span
+										key={i}
+										style={{
+											width: `${(mass / (analysis.totalWeight || 1)) * 100}%`,
+											backgroundColor: color,
+										}}
+									/>
+								))}
+							</div>
+							<div className="mt-1 leading-snug">
+								Neutral {Math.round((analysis.massNeutral / (analysis.totalWeight || 1)) * 100)}% —{' '}
+								{[...analysis.side.values()].filter((v) => v === 'neutral').length} statements with no
+								assignable side.
+							</div>
+						</div>
+
+						<div>
+							<div className="mb-1 font-medium text-foreground/50">Most at play</div>
+							<div className="space-y-1">
+								{[...analysis.clauses]
+									.sort((a, b) => b.stakes - a.stakes)
+									.slice(0, 8)
+									.map((clause) => (
+										<button
+											key={clause.id}
+											type="button"
+											onClick={() => selectClause(clause.id)}
+											title={`${clause.label} — ${clause.heading}`}
+											className="block w-full text-left hover:text-foreground"
+										>
+											<span className="block truncate">{clause.label}</span>
+											<span className="mt-0.5 flex h-1.5 w-full justify-center overflow-hidden">
+												<span className="flex w-full justify-end">
+													<span
+														style={{
+															width: `${50 * (clause.stakes / analysis.peakStakes) ** 0.6 * clause.shareA * 2}%`,
+															backgroundColor: SIDE_COLORS.A,
+														}}
+													/>
+												</span>
+												<span className="flex w-full justify-start">
+													<span
+														style={{
+															width: `${50 * (clause.stakes / analysis.peakStakes) ** 0.6 * clause.shareB * 2}%`,
+															backgroundColor: SIDE_COLORS.B,
+														}}
+													/>
+												</span>
+											</span>
+										</button>
+									))}
+							</div>
+						</div>
+
+						<div>
+							<div className="mb-1 font-medium text-foreground/50">Control layer</div>
+							<ul className="space-y-0.5 leading-snug">
+								<li>
+									{analysis.control.resolved} of {analysis.control.total} conditions resolve to a
+									provision
+								</li>
+								<li>
+									They gate {Math.round(analysis.control.gatedWeightShare * 100)}% of the deontic
+									weight
+								</li>
+								<li>
+									{analysis.control.sameClause} same-clause · {analysis.control.crossClause}{' '}
+									cross-clause · {analysis.control.unlocated} unlocated
+								</li>
+								<li>
+									Bearer: {analysis.control.bearerA} / {analysis.control.bearerB}
+								</li>
+								<li className="text-foreground/40">
+									Who controls the trigger is not extracted yet — direction is unknown.
+								</li>
+							</ul>
+						</div>
+
+						{analysis.unplacedStatementIds.length > 0 && (
+							<div className="text-foreground/40 leading-snug">
+								{analysis.unplacedStatementIds.length} statements have no resolvable clause and sit
+								in the core without a document position.
+							</div>
+						)}
+					</aside>
+				)}
+
 				{/* Legend / kind filter — right sidebar, full height, narrow (labels truncate to a tooltip). */}
-				{status === 'ready' && (
+				{status === 'ready' && viewMode === 'ego' && (
 					<aside className="w-32 shrink-0 space-y-2 overflow-y-auto border-l border-border/60 px-2 py-2 text-2xs text-muted-foreground">
 						<div>
 							<div className="mb-1 font-medium text-foreground/50">Nodes</div>

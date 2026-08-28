@@ -93,6 +93,30 @@ const LOCAL_OUTER = 0.85;
 const CLAUSE_INNER = 0.89;
 const CLAUSE_OUTER = 0.94;
 
+/**
+ * Where a clause sits in the document: the **median** of its paragraphs, not the first.
+ *
+ * Extraction anchors a clause to every paragraph that mentions it, including forward
+ * references from the definitions article ("'Firm Zone' shall have the meaning provided
+ * in Section 5.1(a)"). Taking the minimum lets one such stray drag a late clause to the
+ * front of the ring — Section 15.1 lands on paragraph 42 by first-mention but on 191 by
+ * median. Do not "simplify" this back to `min`.
+ *
+ * Clauses with no resolvable paragraph sink to the end; callers break the tie by id.
+ */
+export function clauseDocumentPosition(
+	paragraphIds: string[],
+	paragraphOrder: Map<string, number>
+): number {
+	const positions = paragraphIds
+		.map((pid) => paragraphOrder.get(pid))
+		.filter((position): position is number => position != null)
+		.sort((a, b) => a - b);
+	if (positions.length === 0) return Number.MAX_SAFE_INTEGER;
+	const mid = Math.floor(positions.length / 2);
+	return positions.length % 2 === 0 ? (positions[mid - 1] + positions[mid]) / 2 : positions[mid];
+}
+
 /** Ids of every node kind the graph draws, so orphans are not silently dropped. */
 function allNodeIds(kg: KnowledgeGraph): string[] {
 	return [
@@ -217,24 +241,7 @@ export function computeRadialLayout(
 	const usable = Math.max(1, Math.min(width, height) / 2 - 28);
 
 	// 1. Clauses in document order.
-	//
-	// The median paragraph, not the first: extraction anchors a clause to every
-	// paragraph that mentions it, including forward references from the definitions
-	// article ("'Firm Zone' shall have the meaning provided in Section 5.1(a)"). Taking
-	// the minimum lets one such stray drag a late clause to the front of the ring —
-	// Section 15.1 lands on paragraph 42 by first-mention but on 191 by median.
-	const orderOf = (paragraphIds: string[]): number => {
-		const positions = paragraphIds
-			.map((pid) => paragraphOrder.get(pid))
-			.filter((position): position is number => position != null)
-			.sort((a, b) => a - b);
-		// Clauses with no resolvable paragraph sink to the end, ordered by id for stability.
-		if (positions.length === 0) return Number.MAX_SAFE_INTEGER;
-		const mid = Math.floor(positions.length / 2);
-		return positions.length % 2 === 0
-			? (positions[mid - 1] + positions[mid]) / 2
-			: positions[mid];
-	};
+	const orderOf = (paragraphIds: string[]) => clauseDocumentPosition(paragraphIds, paragraphOrder);
 	const ordered = kg.clauses
 		.map((clause) => ({
 			clause,

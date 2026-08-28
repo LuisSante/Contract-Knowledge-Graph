@@ -64,7 +64,7 @@ const ITERATIONS = 80;
 const TOP_CLAUSES = 5;
 
 /** Every node id in the graph, in a stable order. */
-function graphNodeIds(kg: KnowledgeGraph): string[] {
+export function graphNodeIds(kg: KnowledgeGraph): string[] {
 	return [
 		...kg.parties.map((p) => p.id),
 		...kg.clauses.map((c) => c.id),
@@ -76,24 +76,35 @@ function graphNodeIds(kg: KnowledgeGraph): string[] {
 	];
 }
 
-/** Undirected adjacency list over every edge whose endpoints are known. */
-function buildAdjacency(kg: KnowledgeGraph, index: Map<string, number>): number[][] {
+/**
+ * Undirected adjacency list over every edge whose endpoints are known. `extraPairs`
+ * adds links that are not in `kg.edges` — the gating relation lives on
+ * `Condition.gatesId`, a field, so it has to be injected to be walkable.
+ */
+export function buildAdjacency(
+	kg: KnowledgeGraph,
+	index: Map<string, number>,
+	extraPairs: ReadonlyArray<readonly [string, string]> = []
+): number[][] {
 	const adjacency: number[][] = Array.from({ length: index.size }, () => []);
-	for (const edge of kg.edges) {
-		const source = index.get(edge.source);
-		const target = index.get(edge.target);
-		if (source == null || target == null) continue;
+	const link = (a: string, b: string) => {
+		const source = index.get(a);
+		const target = index.get(b);
+		if (source == null || target == null) return;
 		adjacency[source].push(target);
 		adjacency[target].push(source);
-	}
+	};
+	for (const edge of kg.edges) link(edge.source, edge.target);
+	for (const [a, b] of extraPairs) link(a, b);
 	return adjacency;
 }
 
-/** Personalized PageRank restarted on `seedIndex` over an undirected graph. */
-function personalizedPageRank(adjacency: number[][], seedIndex: number): number[] {
+/**
+ * Personalized PageRank over an undirected graph. `restart` is the teleport
+ * distribution (it must sum to 1): one-hot for a single ego, split for a dyad.
+ */
+export function personalizedPageRank(adjacency: number[][], restart: number[]): number[] {
 	const n = adjacency.length;
-	const restart = new Array<number>(n).fill(0);
-	if (seedIndex >= 0) restart[seedIndex] = 1;
 	let rank = restart.slice();
 
 	for (let iteration = 0; iteration < ITERATIONS; iteration += 1) {
@@ -135,9 +146,10 @@ export function computePartyAttention(
 	// With PPR off, every node weighs 1, so magnitude = severity — the raw baseline.
 	const ids = graphNodeIds(kg);
 	const index = new Map(ids.map((id, i) => [id, i]));
-	const rank = usePageRank
-		? personalizedPageRank(buildAdjacency(kg, index), index.get(partyId) ?? -1)
-		: null;
+	const seed = new Array<number>(ids.length).fill(0);
+	const seedIndex = index.get(partyId);
+	if (seedIndex != null) seed[seedIndex] = 1;
+	const rank = usePageRank ? personalizedPageRank(buildAdjacency(kg, index), seed) : null;
 
 	// 2. Which statements concern this party (tone from obligor/beneficiary).
 	const toneByDeontic = new Map<string, DeonticTone>();

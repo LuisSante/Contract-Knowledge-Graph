@@ -61,6 +61,12 @@ export interface KgFocusMeta {
 	kind: KgNodeKind;
 }
 
+/**
+ * `ego` is the party-centric ring (one party at the centre); `dyad` is the bilateral
+ * membrane ring, where the two parties are the two sides of the seam rather than nodes.
+ */
+export type KgViewMode = 'ego' | 'dyad';
+
 /** Everything that must reset when the focused node goes away. */
 const CLEARED_FOCUS = { focusNodeId: null, focusMeta: null, ...EMPTY_PAYLOAD };
 
@@ -80,6 +86,11 @@ interface KnowledgeGraphState extends KnowledgeGraphBridgePayload {
 	hiddenParties: string[];
 	/** Parties Ctrl/Cmd-clicked in the graph, the target of the header actions. */
 	selectedPartyIds: string[];
+	viewMode: KgViewMode;
+	/** The pair the bilateral view is drawn between. Null falls back to `defaultDyad`. */
+	dyad: [string, string] | null;
+	/** Bring the gating layer (halos + cross-clause chords) forward. */
+	showControl: boolean;
 
 	focusNode: (nodeId: string) => void;
 	setFocusMeta: (meta: KgFocusMeta | null) => void;
@@ -96,6 +107,10 @@ interface KnowledgeGraphState extends KnowledgeGraphBridgePayload {
 	clearSelectedParties: () => void;
 	clearFocus: () => void;
 	setBridgePayload: (payload: KnowledgeGraphBridgePayload) => void;
+	setViewMode: (mode: KgViewMode) => void;
+	setDyad: (dyad: [string, string] | null) => void;
+	swapDyad: () => void;
+	setShowControl: (value: boolean) => void;
 }
 
 export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
@@ -108,6 +123,9 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 	mergeGroups: [],
 	hiddenParties: [],
 	selectedPartyIds: [],
+	viewMode: 'ego',
+	dyad: null,
+	showControl: true,
 	...EMPTY_PAYLOAD,
 
 	focusNode: (focusNodeId) => set({ focusNodeId, hops: 1 }),
@@ -132,7 +150,13 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 			const kept = state.mergeGroups.filter((g) => !g.members.some((m) => members.has(m)));
 			const focusNodeId =
 				state.focusNodeId && members.has(state.focusNodeId) ? newGroup.id : state.focusNodeId;
-			return { mergeGroups: [...kept, newGroup], focusNodeId, selectedPartyIds: [] };
+			const dyad = state.dyad?.map((id) => (members.has(id) ? newGroup.id : id)) ?? null;
+			return {
+				mergeGroups: [...kept, newGroup],
+				focusNodeId,
+				selectedPartyIds: [],
+				dyad: dyad && dyad[0] !== dyad[1] ? ([dyad[0], dyad[1]] as [string, string]) : null,
+			};
 		}),
 	splitGroup: (groupId) =>
 		set((state) => ({
@@ -145,7 +169,9 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 			const group = state.mergeGroups.find((g) => g.id === id);
 			const toHide = group ? group.members : [id];
 			const clears = state.focusNodeId === id || toHide.includes(state.focusNodeId ?? '');
+			const strandsDyad = state.dyad?.some((d) => d === id || toHide.includes(d)) ?? false;
 			return {
+				...(strandsDyad ? { dyad: null } : {}),
 				hiddenParties: Array.from(new Set([...state.hiddenParties, ...toHide])),
 				mergeGroups: group ? state.mergeGroups.filter((g) => g.id !== id) : state.mergeGroups,
 				selectedPartyIds: state.selectedPartyIds.filter((s) => s !== id && !toHide.includes(s)),
@@ -169,6 +195,7 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 				mergeGroups: [],
 				hiddenParties: [],
 				selectedPartyIds: [],
+				dyad: null,
 				...(stranded ? CLEARED_FOCUS : {}),
 			};
 		}),
@@ -185,6 +212,12 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 		}),
 	clearFocus: () => set({ ...CLEARED_FOCUS, hops: 1 }),
 	setBridgePayload: (payload) => set(payload),
+	setViewMode: (viewMode) => set({ viewMode }),
+	setDyad: (dyad) => set({ dyad }),
+	// Flipping A and B mirrors the radial encoding without reordering the angles, so
+	// the two readings of the same contract stay comparable.
+	swapDyad: () => set((state) => ({ dyad: state.dyad ? [state.dyad[1], state.dyad[0]] : null })),
+	setShowControl: (showControl) => set({ showControl }),
 }));
 
 export const KG_TOP_K_STEP_SIZE = KG_TOP_K_STEP;

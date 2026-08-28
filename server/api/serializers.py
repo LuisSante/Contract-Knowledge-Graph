@@ -57,6 +57,14 @@ class ProcessDocumentRequestSerializer(serializers.Serializer):
     pages = ProcessPageSerializer(many=True, required=False, default=list)
 
 
+class ExtractParagraphsResponseSerializer(serializers.Serializer):
+    status = serializers.CharField(default="success")
+    documentId = serializers.CharField()
+    enabled = serializers.BooleanField()
+    saved = serializers.IntegerField()
+    path = serializers.CharField(required=False, allow_null=True)
+
+
 class ProcessCacheMetaSerializer(serializers.Serializer):
     enabled = serializers.BooleanField(default=False)
     hit = serializers.BooleanField(default=False)

@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     KNOWLEDGE_GRAPH_DIR: Path = Path("../infra/json/kg")
 
     # this extract paragraphs from a document
-    EXTRACT_PARAGRAPHS: bool = False
+    EXTRACT_PARAGRAPHS: bool = True
 
     SEMANTIC_RELATED_MODE: str = "top_k"
     SEMANTIC_TOP_K: int = 5

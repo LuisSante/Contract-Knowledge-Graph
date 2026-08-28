@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 
 from api.serializers import (
     DatasetDocumentSerializer,
+    ExtractParagraphsResponseSerializer,
     ProcessDocumentRequestSerializer,
     ProcessDocumentResponseSerializer,
 )
@@ -75,6 +76,40 @@ class ProcessDocumentView(APIView):
                 "documentId": doc_id,
                 "graph": graph,
                 "cache": {"enabled": False, "hit": False, "key": None},
+            }
+        )
+        return Response(response.data)
+
+
+class ExtractParagraphsView(APIView):
+    """Dump the document's paragraphs to PARAGRAPHS_OUTPUT_DIR without building the
+    relations graph. Split out of /process so the dump does not require the
+    embedding compute, which is disabled on load."""
+
+    def post(self, request):
+        serializer = ProcessDocumentRequestSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        payload = serializer.validated_data
+
+        raw_doc_id = payload["documentId"]
+        doc_id = document_store.get_canonical_id(raw_doc_id) or raw_doc_id
+
+        if not settings.EXTRACT_PARAGRAPHS:
+            response = ExtractParagraphsResponseSerializer(
+                {"status": "skipped", "documentId": doc_id, "enabled": False, "saved": 0, "path": None}
+            )
+            return Response(response.data)
+
+        paragraphs = build_paragraphs(payload["pages"], doc_id)
+        path = save_paragraphs_dump(doc_id, paragraphs, settings.PARAGRAPHS_OUTPUT_DIR)
+
+        response = ExtractParagraphsResponseSerializer(
+            {
+                "status": "success",
+                "documentId": doc_id,
+                "enabled": True,
+                "saved": len(paragraphs),
+                "path": str(path),
             }
         )
         return Response(response.data)

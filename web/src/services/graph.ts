@@ -61,6 +61,18 @@ function buildDirectionalRelationsByNodeId(
 	);
 }
 
+/** Dump paragraphs server-side without building the relations graph. */
+export async function extractParagraphs(
+	docId: string,
+	nodesSnapshot: ParagraphNode[],
+	nodeEditStateById: Map<string, ParagraphEditState>
+): Promise<void> {
+	await api.post('/extract_paragraphs', {
+		documentId: docId,
+		pages: buildProcessPages(nodesSnapshot, nodeEditStateById),
+	});
+}
+
 export async function fetchBackendGraph(
 	docId: string,
 	nodesSnapshot: ParagraphNode[],

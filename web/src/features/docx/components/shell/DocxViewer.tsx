@@ -24,6 +24,7 @@ import { useDocumentStore } from '@/stores/document';
 import { useKnowledgeGraphStore } from '@/stores/knowledgeGraph';
 import { RIGHT_DRAWER_KEYBOARD_STEP } from '@/constants/docx-viewer';
 import { buildBridgeRelatedParagraphs } from '@/features/docx/utils/related/related-bridge';
+import { extractParagraphs } from '@/services/graph';
 
 interface DocxViewerProps {
 	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -199,6 +200,23 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	// don't want the /process embedding compute on load. Re-enable by uncommenting
 	// this effect and restoring graphBlocking below.
 	const { loading: relatedLoading, recompute: recomputeRelated } = related;
+
+	// The paragraph dump is independent of the graph, so it still runs on load via
+	// /extract_paragraphs (no embeddings). Gated server-side by EXTRACT_PARAGRAPHS.
+	const extractedDocIdRef = useRef<string | null>(null);
+	useEffect(() => {
+		if (!docId || viewer.renderEpoch === 0) return;
+		if (extractedDocIdRef.current === docId) return;
+
+		const snapshot = useDocumentStore.getState().paragraphs;
+		if (snapshot.length === 0) return;
+
+		extractedDocIdRef.current = docId;
+		void extractParagraphs(docId, snapshot, nodeEditStateById.current).catch((error) => {
+			extractedDocIdRef.current = null;
+			console.error('Failed to extract paragraphs:', error);
+		});
+	}, [docId, viewer.renderEpoch, nodeEditStateById]);
 	// useEffect(() => {
 	// 	if (id && viewer.renderEpoch > 0 && !relatedComputed && !relatedLoading) {
 	// 		void recomputeRelated();

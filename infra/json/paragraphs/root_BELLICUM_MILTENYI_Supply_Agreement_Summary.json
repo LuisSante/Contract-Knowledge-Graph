@@ -1,0 +1,149 @@
+{
+  "documentId": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary",
+  "paragraphs": [
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-2",
+      "text": "Effective 27 March 2019 · Contract No. MBGCR 19001 · SEC Exhibit 10.1. Numerous commercial figures are redacted in the filed document (\"[***]\"); shown here as \"[red.]\" rather than estimated.",
+      "paragraph_enum": 0,
+      "page": 1
+    },
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-3",
+      "text": "Parties, Purpose, Structure",
+      "paragraph_enum": 1,
+      "page": 1
+    },
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-4",
+      "text": "Miltenyi Biotec GmbH (Germany) supplies; Bellicum Pharmaceuticals, Inc. (Houston, TX), for itself and its Affiliates, buys. Miltenyi non-exclusively sells the cell-processing \"Miltenyi Products\" of Exhibit B (Clinical and Research Grade) so Bellicum, its Subcontractors and Licensees can manufacture cell-based therapies (\"Bellicum Products\") for preclinical, clinical and commercial use. It is a master contract: product-specific commercial terms sit in Modules, and the Agreement prevails over a conflicting Module unless that Module expressly says otherwise for the matter concerned; Purchase Order boilerplate has no effect. A Joint Steering Committee and two Alliance Managers oversee performance but cannot modify the Agreement, Quality Agreement or any Module.",
+      "paragraph_enum": 2,
+      "page": 1
+    },
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-5",
+      "text": "Term and Termination",
+      "paragraph_enum": 3,
+      "page": 1
+    },
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6",
+      "text": "Initial Term 10 years. Bellicum alone holds options for successive 5-year renewals, on written notice ≥6 months before expiry and only if not then in default. Either Party may terminate for material breach uncured in 30 days (or, if not curable then, absent a satisfactory remedial plan submitted and implemented within those 30 days); for insolvency on 30 days' notice; and for Force Majeure not abated within 3 continuous months. Bellicum may also terminate for convenience on 90 days' notice, with or without cause. Termination does not release Bellicum from paying for delivered Product, accepted Purchase Orders, Firm Zone quantities, the Upfront Fee and earned Milestones — except that if Bellicum terminates for cause it owes nothing for Forecast periods after termination. Sums paid under §§8.1–8.3 are non-refundable. Permitted Use, IP, Warranty, Liability, Indemnity/Insurance, Confidentiality, Assignment and Dispute Resolution survive.",
+      "paragraph_enum": 4,
+      "page": 1
+    },
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-7",
+      "text": "Rights Granted and Restrictions on Bellicum",
+      "paragraph_enum": 5,
+      "page": 1
+    },
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8",
+      "text": "Permitted Use: a limited, non-exclusive, non-transferable right and licence under Miltenyi Technology to use the Products solely for Ex Vivo Cell Processing in manufacturing Bellicum Products, only in the Designated Countries named in the Module. Sublicensable through multiple tiers to Licensees and Subcontractors but never to a Miltenyi Competitor (Exhibit G). No right to make, import or sell Miltenyi Products. Bellicum — and, by imposition, its Subcontractors and Licensees — may not: administer the Products in vivo in humans; use them as an ingredient of a Bellicum Product; modify or reverse engineer them (provided that defect identification, troubleshooting and testing remain allowed); transfer them to Third Parties other than Subcontractors/Licensees for the Permitted Use or for training and validation; resell without Miltenyi's prior express written permission; or use, import or export them outside the Designated Countries. An Additional Country requires good-faith negotiation of \"Additional Work\" and ≥12 months' written notice before any regulatory filing there. Miltenyi expressly reserves the right to supply anyone, including Bellicum's competitors; each Party remains primarily liable for its Affiliates, Subcontractors and Licensees.",
+      "paragraph_enum": 6,
+      "page": 1
+    },
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-9",
+      "text": "Quality, Change Control, Regulatory",
+      "paragraph_enum": 7,
+      "page": 1
+    },
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10",
+      "text": "Miltenyi manufactures to Product Specifications and Agreed Standards and tests each batch. A Quality Agreement must be signed within [red.] days and before the first Clinical Grade delivery; the Agreement prevails in conflict except on quality issues. Material Changes need advance notification ([red.] months in §3.2(b); §3.2(e) states ≥6 months for a Miltenyi-Requested Change; 1 month for Research Grade, which is exempt from the Material Change and continued-supply rules). Required (regulatory/safety) Changes are at Miltenyi's cost unless Bellicum-specific, where Bellicum reimburses documented costs and price must be agreed first. Bellicum-Requested Changes need Miltenyi's consent — refusable for non-compliance or adverse impact on its manufacturing or other customers — plus a cost review at Bellicum's expense. Miltenyi keeps supplying the unchanged Product while Bellicum files, capped at 6 months; until costs are agreed, Bellicum's Firm Zone and variance duties for that Product lapse. Miltenyi is never obliged to supply a Product to which a Required Change must be applied. Each Party owns its own regulatory activities; Miltenyi disclaims that its Products are approved for therapeutic use or validated for Bellicum's use, and Bellicum indemnifies it for regulatory non-compliance. Miltenyi solely owns the Master Files and Bellicum has no access; it files cross-reference letters in Designated Countries but is not obliged to file in new jurisdictions absent a separate written agreement including compensation, and warrants no approval of any Master File, IND or BLA.",
+      "paragraph_enum": 8,
+      "page": 1
+    },
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-11",
+      "text": "Forecasts, Orders, Minimum Purchase",
+      "paragraph_enum": 9,
+      "page": 1
+    },
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-12",
+      "text": "A rolling 12-month Monthly Forecast applies, whose first 3 months form the \"Firm Zone\": [red.]% is binding and must be covered by Purchase Orders. Quarterly and 3-year forecasts are non-binding. Outside the Firm Zone, variance is capped at [red.]% for months 4–6 and [red.]% for months 7–12; inside it, no variance is acceptable. Miltenyi need not supply above [red.]% of the latest Forecast but must accept orders within Firm Zone amounts (acceptance due within [red.] Business Days). Firm Zone Shortfall (take-or-pay): binding from the Effective Date but not in the first three months; quarterly, Miltenyi invoices the gap between the Firm Zone Requirement and quantities actually ordered, payable within [red.] days, after which Bellicum may claim remaining stock of equal value. Minimum Purchase: per Calendar Year, the higher of [red.]% of the rolling Monthly Forecast or €[red.] (reduced for 2019 only); on shortfall Bellicum has [red.] days to place a firm covering order, and if it does not, Miltenyi may — at sole discretion, effective immediately on notice — cease to be bound (i) not to discontinue any Product, (ii) to ensure continuous supply per Forecasts, and (iii) to provide Regulatory Work, until the level is met again and the Parties agree to resume.",
+      "paragraph_enum": 10,
+      "page": 1
+    },
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-13",
+      "text": "Delivery, Continuity of Supply, Second Sourcing",
+      "paragraph_enum": 11,
+      "page": 1
+    },
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-14",
+      "text": "FCA (Incoterms 2010) Miltenyi's Facility; title and risk pass on Delivery; Bellicum pays freight, insurance and import clearance. Delay over 10 days lets Bellicum cut its current Monthly Forecast pro rata; if no acceptable delivery plan is offered, or delay exceeds 30 days past the confirmed date, Bellicum may cancel orders without penalty. On shortage Miltenyi must give Bellicum priority access by purchase volume and critical medical need. Minimum shelf life sits in Exhibit B, which Miltenyi may amend by written notice. Continuity of supply is contingent on Bellicum meeting its forecast obligations and does not oblige Miltenyi to incur significant expense for new equipment or capacity. \"Supply Failure\" = failing to deliver ≥[red.]% of an accepted order within a reasonable time after the agreed date — including by Force Majeure — more than twice in a Calendar Year, excluding causes attributable to Bellicum, its designated suppliers, Required Changes or Applicable Laws. Bellicum may then demand a Secondary Location at Miltenyi's cost; if Miltenyi declines or fails within a reasonable time, Bellicum may qualify a Third-Party Second-Source Supplier at its own cost, subject to Miltenyi's consent (not unreasonably withheld except to protect its IP from a competitor); absent agreement within 30 days, Bellicum may choose its own, never a Miltenyi Competitor. Miltenyi must then grant a limited one-site production licence for the affected Product only, with know-how transfer, and Bellicum reimburses Miltenyi's costs unless Miltenyi is in material breach. Separately, failing to deliver ≥[red.]% of an accepted order moves that Product one step down the Exhibit F discount scale for 2 Calendar Quarters, with further steps for repeat failures.",
+      "paragraph_enum": 12,
+      "page": 1
+    },
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-15",
+      "text": "Acceptance, Warranty, Remedies",
+      "paragraph_enum": 13,
+      "page": 1
+    },
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16",
+      "text": "Visual inspection on Delivery, then [red.] days for incoming QA testing; a shipment is deemed accepted absent a reasoned Rejection Notice within [red.] days of receipt (§7.2 later refers to \"said 30-day period\"). Latent defects may be rejected within [red.] days of awareness, provided shelf life has not expired and the defect is unrelated to post-Delivery handling; disputes go to an agreed independent laboratory whose findings bind, at the cost of the Party shown wrong. Miltenyi warrants that Product at Delivery conforms to Specifications, is made and tested to Agreed Standards and Applicable Laws, holds stated quality and purity through expiry, is not adulterated or mislabelled, and carries full title free of liens, and that it holds the necessary rights in Miltenyi Technology with no infringement allegations received and no payment-imposing Third-Party agreements beyond Exhibit D. All implied warranties are disclaimed, as is any warranty of suitability for Bellicum Product manufacture or of regulatory approval. Refund/credit or replacement, at Bellicum's option, is the sole and exclusive remedy for non-conforming Product, and does not cover damage caused by Bellicum or arising after Delivery. On Third-Party IP infringement Miltenyi must license or design around at its own expense; failing that, Bellicum may offset royalties actually paid against that Product's price in the same Contract Year, capped at [red.]%, with carry-forward.",
+      "paragraph_enum": 14,
+      "page": 1
+    },
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-17",
+      "text": "Financial Terms",
+      "paragraph_enum": 15,
+      "page": 1
+    },
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18",
+      "text": "Upfront Fee: €2,000,000, non-refundable, in two installments (amounts redacted) — invoiced after execution and after the first anniversary of the Effective Date. Milestones: per Bellicum Product, one-time payments of €[red.] each on redacted events, set in the relevant Module. Third-Party royalties under Exhibit D are reimbursed by Bellicum only to the extent required for the Permitted Use, not otherwise passed through, and actually paid by Miltenyi. Prices per Exhibit E, less volume-tiered Discounts (Exhibit F) on the consolidated volumes of Bellicum, its Subcontractors and Licensees. Increases: at most one per Product per Contract Year after Year 1; above [red.]% p.a. the Parties must adjust the discount back within the cap, except where driven by a documented >[red.]% rise in raw material, packaging or component costs, and the price may never exceed Miltenyi's published list price in the destination country. These caps do not apply to increases from Required or Bellicum-Requested Changes. Payment is due within [red.] days of invoice, by wire, in the invoicing Miltenyi entity's local currency, exclusive of sales tax and VAT; a late fee of [red.]% per month (or the legal maximum) applies and failure to pay is expressly a material breach. Bellicum may not set off unless agreed or after a final non-appealable judgment. Miltenyi may suspend performance if Bellicum fails to pay and does not cure within 5 Business Days of notice; Bellicum may suspend payment if Miltenyi materially fails to perform.",
+      "paragraph_enum": 16,
+      "page": 1
+    },
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-19",
+      "text": "Audit, IP, Confidentiality",
+      "paragraph_enum": 17,
+      "page": 1
+    },
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-20",
+      "text": "Bellicum or its Licensees may audit the relevant Facility parts on ≥[red.] days' notice, at most once every [red.] months except for cause, extra audits at Bellicum's expense; Miltenyi may exempt documentation to protect trade secrets. Each Party keeps its own Technology, with no implied licences. Confidentiality runs for the Term plus 5 years; the existence of the Agreement may be disclosed but its terms are confidential, subject to carve-outs for securities filings, advisors, enforcement and M&A. No press release or use of the other's name or marks without prior written consent unless legally required.",
+      "paragraph_enum": 18,
+      "page": 1
+    },
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-21",
+      "text": "Liability, Indemnity, Insurance, Dispute Resolution",
+      "paragraph_enum": 19,
+      "page": 1
+    },
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22",
+      "text": "Except for confidentiality breach, IP infringement or misappropriation, and gross negligence or wilful misconduct: no punitive, indirect, incidental, special or consequential damages, and each Party's aggregate liability is capped at direct actual damages not exceeding the Product Prices paid by Bellicum in the preceding 12 months — and further not exceeding that Party's insurance coverage. Bellicum bears sole risk and liability for Bellicum Product safety, clinical trials and commercialisation, including product liability. Each Party indemnifies the other against Third-Party claims from its material breach or gross negligence/wilful misconduct, Bellicum additionally for the development, manufacture, use or sale of Bellicum Products, except to the extent caused by the indemnitee's own breach or misconduct; no settlement or admission of liability without the indemnitee's prior express written permission. Indemnities survive termination; both Parties carry general and product liability insurance for the Term plus 5 years. Assignment needs prior written consent (not unreasonably withheld for a financing transaction), except to an acquirer of all or substantially all the relevant business or assets, or to an Affiliate on notice, with the assignor remaining liable and the acquirer's own IP excluded from the licensed technology; contravening assignment is null and void. Force Majeure excludes inability to meet financial obligations. Governing law: State of New York, excluding conflicts rules and the CISG, provided that IP scope/validity/infringement disputes follow the law where the right applies. Escalation runs representatives and Alliance Managers 30 days → Vice Presidents 15 days → CEOs 5 Business Days, then the U.S. District Court for the Southern District of New York, with waiver of venue objections and waiver of jury trial; injunctive relief may be sought at any time without proving actual damages and without posting a bond.",
+      "paragraph_enum": 20,
+      "page": 1
+    },
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-23",
+      "text": "High-Risk Provisions, Dependencies and Drafting Inconsistencies",
+      "paragraph_enum": 21,
+      "page": 1
+    },
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-24",
+      "text": "Highest-risk terms: the Firm Zone take-or-pay, which survives termination for convenience; the Minimum Purchase trigger, where one missed year lets Miltenyi immediately drop its non-discontinuation, continuity-of-supply and Regulatory Work obligations; the double liability cap (12 months of Product Prices and insurance coverage) combined with a refund-or-replace sole remedy excluding downtime, lost batches and lost profits; regulatory dependence (no Master File access, no obligation to file in new jurisdictions, 12 months' notice for Additional Countries); the high Supply Failure threshold — more than twice a year, Force Majeure included — before second-sourcing arises, at Bellicum's cost; asymmetric competition terms (Miltenyi may supply competitors; Bellicum may not use any listed Miltenyi Competitor); unilateral Exhibit B amendment of shelf life by Miltenyi; no set-off until final judgment; and the absolute ban on in vivo use and on inclusion as an ingredient, which constrains therapeutic design, not merely process.",
+      "paragraph_enum": 22,
+      "page": 1
+    },
+    {
+      "id": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-25",
+      "text": "Dependencies: much of the commercial substance sits in the Modules and in Exhibits B (products, lead times, shelf life), D (Third-Party royalties), E (prices), F (discount scale, which also drives the delivery-failure penalty) and G (Competitor list), plus the Quality Agreement, a precondition to Clinical Grade delivery that prevails on quality issues. Change control, forecasts/Firm Zone, Minimum Purchase and continuity of supply interlock: a change-control dispute suspends Firm Zone obligations, which feeds the Minimum Purchase calculation and Miltenyi's supply commitments. Inconsistencies in the text itself (observations, not legal conclusions): §3.2(g) states both a six-month and a three-month threshold for the same remediation meeting, and that \"three months\" sentence also appears out of context in §5.1; §5.6's list of obligations Miltenyi may drop contains an unrelated Change Notification sentence; §11.2(d) ends with a sentence saying all rights and obligations terminate 30 days after termination, conflicting with §15.6, which says they terminate immediately subject to the survival list; §7.2 sets a redacted rejection window then refers to a \"30-day period\". Where these passages conflict, the intended rule cannot be determined from the document alone.",
+      "paragraph_enum": 23,
+      "page": 1
+    }
+  ]
+}

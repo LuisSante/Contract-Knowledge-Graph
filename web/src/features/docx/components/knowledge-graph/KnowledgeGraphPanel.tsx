@@ -12,7 +12,11 @@ import {
 	type RadialSector,
 } from '@/features/docx/utils/knowledge/radial-layout';
 import { PartyManager } from '@/features/docx/components/knowledge-graph/PartyManager';
-import { computePairAttention, type PairOwner } from '@/features/docx/utils/knowledge/pair';
+import { computePairAttention, defaultDyad, type PairOwner } from '@/features/docx/utils/knowledge/pair';
+import {
+	PartySelection,
+	type PartyCardData,
+} from '@/features/docx/components/knowledge-graph/PartySelection';
 import type { KgLedger } from '@/features/docx/utils/knowledge/attention';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -423,6 +427,9 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const ledger = useKnowledgeGraphStore((s) => s.ledger);
 	const secondPartyId = useKnowledgeGraphStore((s) => s.secondPartyId);
 	const setSecondParty = useKnowledgeGraphStore((s) => s.setSecondParty);
+	const focusPair = useKnowledgeGraphStore((s) => s.focusPair);
+	/** Null until the user touches a card — then it is authoritative over the suggestion. */
+	const [slotOverride, setSlotOverride] = useState<[string | null, string | null] | null>(null);
 	const [partyPickerOpen, setPartyPickerOpen] = useState(false);
 	const paragraphs = useDocumentStore((s) => s.paragraphs);
 	const nodesById = useMemo(() => new Map(paragraphs.map((n) => [n.id, n])), [paragraphs]);
@@ -513,6 +520,41 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				: null,
 		[viewKg, isPartyFocus, focusNodeId, secondPartyId, topK, severity, usePageRank]
 	);
+	// Entry view: each party carries the count of provisions it is party to, so the
+	// choice is informed instead of two identical dots.
+	const partyCards = useMemo<PartyCardData[]>(() => {
+		if (!viewKg) return [];
+		const tally = new Map<string, PartyCardData>(
+			viewKg.parties.map((p) => [
+				p.id,
+				{ id: p.id, name: p.name, role: p.role, obligations: 0, rights: 0, prohibitions: 0, total: 0 },
+			])
+		);
+		for (const v of deonticNodes(viewKg)) {
+			for (const partyId of new Set([v.burdenPartyId, v.benefitPartyId])) {
+				const row = partyId ? tally.get(partyId) : undefined;
+				if (!row) continue;
+				if (v.kind === 'obligation') row.obligations += 1;
+				else if (v.kind === 'right') row.rights += 1;
+				else row.prohibitions += 1;
+				row.total += 1;
+			}
+		}
+		return [...tally.values()].sort((a, b) => b.total - a.total || a.name.localeCompare(b.name));
+	}, [viewKg]);
+
+	// The pair the contract is actually between is seated by default, so the common case
+	// is one click of confirmation. Derived rather than synced: a merge or a hide can
+	// retire a party id, and pruning here keeps the seats honest without an effect.
+	const slots = useMemo<[string | null, string | null]>(() => {
+		if (!viewKg) return [null, null];
+		const known = new Set(viewKg.parties.map((p) => p.id));
+		const prune = (seat: string | null) => (seat && known.has(seat) ? seat : null);
+		if (slotOverride) return [prune(slotOverride[0]), prune(slotOverride[1])];
+		const suggested = defaultDyad(viewKg);
+		return suggested ? [suggested[0], suggested[1]] : [null, null];
+	}, [viewKg, slotOverride]);
+
 	const effectiveScores = pair ? pair.nodeScores : nodeScores;
 	const effectiveFocusIds = useMemo(
 		() => (pair ? pair.focusNodeIds : focusNodeIds),
@@ -1246,7 +1288,34 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 							Failed to load the knowledge graph.
 						</div>
 					)}
-					{status === 'ready' && (
+					{/* Entry view: the pair is chosen before anything is drawn, in one place. */}
+					{status === 'ready' && !focusNodeId && (
+						<PartySelection
+							parties={partyCards}
+							slots={slots}
+							slotColors={[NODE_COLORS.party, PAIR_SECOND_COLOR]}
+							onAssign={(id) =>
+								setSlotOverride(
+									slots[0] === null ? [id, slots[1]] : slots[1] === null ? [slots[0], id] : slots
+								)
+							}
+							onRelease={(side) => {
+								const next: [string | null, string | null] = [...slots];
+								next[side] = null;
+								setSlotOverride(next);
+							}}
+							selectedPartyIds={selectedPartyIds}
+							onToggleSelect={toggleSelectedParty}
+							mergeHints={mergeHints}
+							onContinue={() => {
+								if (slots[0] && slots[1]) {
+									clearSelectedParties();
+									focusPair(slots[0], slots[1]);
+								}
+							}}
+						/>
+					)}
+					{status === 'ready' && focusNodeId && (
 						<>
 							<svg
 								ref={svgRef}
@@ -1286,8 +1355,9 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 					)}
 				</div>
 
-				{/* Legend / kind filter — right sidebar, full height, narrow (labels truncate to a tooltip). */}
-				{status === 'ready' && (
+				{/* Legend / kind filter — right sidebar, full height, narrow (labels truncate to a
+				    tooltip). Hidden on the entry view: every count there is zero. */}
+				{status === 'ready' && focusNodeId && (
 					<aside className="w-32 shrink-0 space-y-2 overflow-y-auto border-l border-border/60 px-2 py-2 text-2xs text-muted-foreground">
 						<div>
 							<div className="mb-1 font-medium text-foreground/50">Nodes</div>

@@ -39,6 +39,27 @@ export interface PairAttention {
 	sharedStatementIds: string[];
 }
 
+/**
+ * The two parties the contract is actually between: the ones named most often as obligor
+ * or beneficiary. Placeholders ("Receiving Party") and third parties carry far fewer
+ * provisions, so they lose without needing a heuristic on the name.
+ */
+export function defaultDyad(kg: KnowledgeGraph): [string, string] | null {
+	const involvement = new Map<string, number>();
+	const bump = (id: string | null) => {
+		if (id) involvement.set(id, (involvement.get(id) ?? 0) + 1);
+	};
+	for (const v of deonticNodes(kg)) {
+		bump(v.burdenPartyId);
+		bump(v.benefitPartyId);
+	}
+	const ranked = kg.parties
+		.map((p) => ({ id: p.id, score: involvement.get(p.id) ?? 0 }))
+		.sort((a, b) => b.score - a.score || a.id.localeCompare(b.id));
+	if (ranked.length < 2 || ranked[1].score === 0) return null;
+	return [ranked[0].id, ranked[1].id];
+}
+
 export function computePairAttention(
 	kg: KnowledgeGraph,
 	partyAId: string,

@@ -102,6 +102,8 @@ interface KnowledgeGraphState extends KnowledgeGraphBridgePayload {
 	clearFocus: () => void;
 	setBridgePayload: (payload: KnowledgeGraphBridgePayload) => void;
 	setSecondParty: (id: string | null) => void;
+	/** Enter the pair view in one step — `focusNode` alone would clear the second party. */
+	focusPair: (anchorId: string, secondId: string) => void;
 }
 
 export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
@@ -207,6 +209,8 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 	clearFocus: () => set({ ...CLEARED_FOCUS, hops: 1, secondPartyId: null }),
 	setBridgePayload: (payload) => set(payload),
 	setSecondParty: (secondPartyId) => set({ secondPartyId }),
+	focusPair: (focusNodeId, secondPartyId) =>
+		set({ focusNodeId, secondPartyId, hops: 1 }),
 }));
 
 export const KG_TOP_K_STEP_SIZE = KG_TOP_K_STEP;

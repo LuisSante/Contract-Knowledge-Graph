@@ -80,6 +80,11 @@ interface KnowledgeGraphState extends KnowledgeGraphBridgePayload {
 	hiddenParties: string[];
 	/** Parties Ctrl/Cmd-clicked in the graph, the target of the header actions. */
 	selectedPartyIds: string[];
+	/**
+	 * Second party of the pair view, added from the header picker. The first is the
+	 * focused party, so this alone flips the ring from one ego view to the union.
+	 */
+	secondPartyId: string | null;
 
 	focusNode: (nodeId: string) => void;
 	setFocusMeta: (meta: KgFocusMeta | null) => void;
@@ -96,6 +101,7 @@ interface KnowledgeGraphState extends KnowledgeGraphBridgePayload {
 	clearSelectedParties: () => void;
 	clearFocus: () => void;
 	setBridgePayload: (payload: KnowledgeGraphBridgePayload) => void;
+	setSecondParty: (id: string | null) => void;
 }
 
 export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
@@ -108,9 +114,10 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 	mergeGroups: [],
 	hiddenParties: [],
 	selectedPartyIds: [],
+	secondPartyId: null,
 	...EMPTY_PAYLOAD,
 
-	focusNode: (focusNodeId) => set({ focusNodeId, hops: 1 }),
+	focusNode: (focusNodeId) => set({ focusNodeId, hops: 1, secondPartyId: null }),
 	setFocusMeta: (focusMeta) => set({ focusMeta }),
 	setSeverity: (kind, value) =>
 		set((state) => ({
@@ -132,12 +139,22 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 			const kept = state.mergeGroups.filter((g) => !g.members.some((m) => members.has(m)));
 			const focusNodeId =
 				state.focusNodeId && members.has(state.focusNodeId) ? newGroup.id : state.focusNodeId;
-			return { mergeGroups: [...kept, newGroup], focusNodeId, selectedPartyIds: [] };
+			const secondPartyId =
+				state.secondPartyId && members.has(state.secondPartyId)
+					? newGroup.id
+					: state.secondPartyId;
+			return {
+				mergeGroups: [...kept, newGroup],
+				focusNodeId,
+				selectedPartyIds: [],
+				secondPartyId: secondPartyId === focusNodeId ? null : secondPartyId,
+			};
 		}),
 	splitGroup: (groupId) =>
 		set((state) => ({
 			mergeGroups: state.mergeGroups.filter((g) => g.id !== groupId),
 			selectedPartyIds: [],
+			...(state.secondPartyId === groupId ? { secondPartyId: null } : {}),
 			...(state.focusNodeId === groupId ? CLEARED_FOCUS : {}),
 		})),
 	hideParty: (id) =>
@@ -145,7 +162,10 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 			const group = state.mergeGroups.find((g) => g.id === id);
 			const toHide = group ? group.members : [id];
 			const clears = state.focusNodeId === id || toHide.includes(state.focusNodeId ?? '');
+			const strandsSecond =
+				state.secondPartyId === id || toHide.includes(state.secondPartyId ?? '');
 			return {
+				...(strandsSecond ? { secondPartyId: null } : {}),
 				hiddenParties: Array.from(new Set([...state.hiddenParties, ...toHide])),
 				mergeGroups: group ? state.mergeGroups.filter((g) => g.id !== id) : state.mergeGroups,
 				selectedPartyIds: state.selectedPartyIds.filter((s) => s !== id && !toHide.includes(s)),
@@ -169,6 +189,7 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 				mergeGroups: [],
 				hiddenParties: [],
 				selectedPartyIds: [],
+				secondPartyId: null,
 				...(stranded ? CLEARED_FOCUS : {}),
 			};
 		}),
@@ -183,8 +204,9 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 			const snapped = Math.round(raw / KG_TOP_K_STEP) * KG_TOP_K_STEP;
 			return { topK: Math.min(MAX_KG_TOP_K, Math.max(MIN_KG_TOP_K, snapped)) };
 		}),
-	clearFocus: () => set({ ...CLEARED_FOCUS, hops: 1 }),
+	clearFocus: () => set({ ...CLEARED_FOCUS, hops: 1, secondPartyId: null }),
 	setBridgePayload: (payload) => set(payload),
+	setSecondParty: (secondPartyId) => set({ secondPartyId }),
 }));
 
 export const KG_TOP_K_STEP_SIZE = KG_TOP_K_STEP;

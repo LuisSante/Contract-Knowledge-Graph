@@ -12,6 +12,7 @@ import {
 	type RadialSector,
 } from '@/features/docx/utils/knowledge/radial-layout';
 import { PartyManager } from '@/features/docx/components/knowledge-graph/PartyManager';
+import { computePairAttention, type PairOwner } from '@/features/docx/utils/knowledge/pair';
 import type { KgLedger } from '@/features/docx/utils/knowledge/attention';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -30,6 +31,24 @@ interface KnowledgeGraphPanelProps {
 
 /** Parties carry the whole canvas on the entry view, so they get drawn larger. */
 const PARTY_ENTRY_RADIUS = 24;
+
+/**
+ * The two party colours of the pair view, by selection order. The anchor keeps the
+ * palette's party purple — it is the same colour the document viewer underlines party
+ * mentions with, and it does not change when the second party joins, so going from one
+ * node to two is continuous. The second is a teal deliberately outside the Set1 palette
+ * below, so a sector or an owner ring can never be misread as a node kind.
+ */
+const PAIR_SECOND_COLOR = '#0d9488';
+/** A sector no focused party has any weight in — grey reads as "concerns nobody here". */
+const UNCLAIMED_SECTOR_COLOR = '#94a3b8';
+/** Owner ring: outside the burden/benefit arc glyph so the two never collide. */
+const OWNER_OFFSET = 7.5;
+const OWNER_WIDTH = 2;
+/** The focused node grows so it reads as the anchor. */
+const FOCUS_RADIUS_SCALE = 1.55;
+/** In the pair view it grows further: two halves need room to read as two. */
+const PAIR_CENTER_SCALE = 2.1;
 
 type SimNode = d3.SimulationNodeDatum & {
 	id: string;
@@ -364,6 +383,8 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		y: number;
 		kind: KgNodeKind;
 		detail: string;
+		/** Overrides the kind colour — the pair view needs one colour per party. */
+		color?: string;
 	} | null>(null);
 	// The kind filter doubles as the zoom level: only `party` is the entry view,
 	// everything checked is the full graph.
@@ -400,6 +421,9 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const nodeScores = useKnowledgeGraphStore((s) => s.nodeScores);
 	const toneSplit = useKnowledgeGraphStore((s) => s.toneSplit);
 	const ledger = useKnowledgeGraphStore((s) => s.ledger);
+	const secondPartyId = useKnowledgeGraphStore((s) => s.secondPartyId);
+	const setSecondParty = useKnowledgeGraphStore((s) => s.setSecondParty);
+	const [partyPickerOpen, setPartyPickerOpen] = useState(false);
 	const paragraphs = useDocumentStore((s) => s.paragraphs);
 	const nodesById = useMemo(() => new Map(paragraphs.map((n) => [n.id, n])), [paragraphs]);
 	const paragraphOrder = useMemo(
@@ -450,10 +474,14 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		};
 	}, [docId, clearFocus]);
 
-	// Track container size so the graph fills the (resizable) panel.
+	// Track container size so the graph fills the (resizable) panel. Measured once up
+	// front as well: the observer's first callback needs a paint, which never arrives if
+	// the panel mounts in a tab that is not compositing, leaving the canvas blank.
 	useEffect(() => {
 		const el = containerRef.current;
 		if (!el) return;
+		const rect = el.getBoundingClientRect();
+		if (rect.width > 0 && rect.height > 0) setSize({ width: rect.width, height: rect.height });
 		const observer = new ResizeObserver((entries) => {
 			const rect = entries[0]?.contentRect;
 			if (rect) setSize({ width: rect.width, height: rect.height });
@@ -470,6 +498,26 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	);
 
 	const fullGraph = useMemo(() => (viewKg ? buildGraph(viewKg) : null), [viewKg]);
+
+	const isPartyFocus = useMemo(
+		() => Boolean(focusNodeId && viewKg?.parties.some((p) => p.id === focusNodeId)),
+		[viewKg, focusNodeId]
+	);
+
+	// Two ego views overlaid. Null unless a second party is picked, so the single-party
+	// path stays exactly as it was.
+	const pair = useMemo(
+		() =>
+			viewKg && isPartyFocus && focusNodeId && secondPartyId && secondPartyId !== focusNodeId
+				? computePairAttention(viewKg, focusNodeId, secondPartyId, topK, severity, usePageRank)
+				: null,
+		[viewKg, isPartyFocus, focusNodeId, secondPartyId, topK, severity, usePageRank]
+	);
+	const effectiveScores = pair ? pair.nodeScores : nodeScores;
+	const effectiveFocusIds = useMemo(
+		() => (pair ? pair.focusNodeIds : focusNodeIds),
+		[pair, focusNodeIds]
+	);
 
 	const rawPartyName = useMemo(
 		() => new Map((kg?.parties ?? []).map((p) => [p.id, p.name] as const)),
@@ -488,8 +536,8 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	// Scope is the focus subgraph, or the whole graph when nothing is focused.
 	// Everything downstream reads it, so the kind filter composes on top.
 	const scopeIds = useMemo<Set<string> | null>(
-		() => (focusNodeIds.length > 0 ? new Set(focusNodeIds) : null),
-		[focusNodeIds]
+		() => (effectiveFocusIds.length > 0 ? new Set(effectiveFocusIds) : null),
+		[effectiveFocusIds]
 	);
 
 	/** How many nodes of each kind the current scope holds, filter aside. */
@@ -534,8 +582,6 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		() => fullGraph?.nodes.find((n) => n.id === focusNodeId) ?? null,
 		[fullGraph, focusNodeId]
 	);
-	const isPartyFocus = focusedNode?.kind === 'party';
-
 	// Laid out over the whole graph, not the filtered slice, so the ring stays put
 	// when kinds are toggled — only which nodes get drawn changes.
 	const layout = useMemo(
@@ -544,12 +590,12 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				? computeRadialLayout(viewKg, {
 						width: size.width,
 						height: size.height,
-						scores: nodeScores,
+						scores: effectiveScores,
 						paragraphOrder,
 						centerNodeId: isPartyFocus ? focusNodeId : null,
 					})
 				: null,
-		[viewKg, size, nodeScores, paragraphOrder, focusNodeId, isPartyFocus]
+		[viewKg, size, effectiveScores, paragraphOrder, focusNodeId, isPartyFocus]
 	);
 
 	// First drill-down out of the pristine entry view: open every kind so the
@@ -567,8 +613,8 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 
 	// The bright set comes from the derived payload (party top-K or neighborhood).
 	const highlightIds = useMemo<Set<string> | null>(
-		() => (focusNodeIds.length > 0 ? new Set(focusNodeIds) : null),
-		[focusNodeIds]
+		() => (effectiveFocusIds.length > 0 ? new Set(effectiveFocusIds) : null),
+		[effectiveFocusIds]
 	);
 
 	// Derive the bridge payload (anchor + related paragraphs + entity spans +
@@ -587,6 +633,8 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 
 		const nodes: SimNode[] = [];
 		for (const item of graph.nodes) {
+			// The second party has no place of its own: it is the other half of the centre.
+			if (pair && item.id === pair.partyBId) continue;
 			const position = layout.positions.get(item.id);
 			if (position) nodes.push({ ...item, x: position.x, y: position.y });
 		}
@@ -652,39 +700,52 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			.attr('stroke-dasharray', '4 5');
 
 		const peakWeight = Math.max(...layout.sectors.map((s) => s.weight), 1e-9);
-		scaffold
-			.selectAll<SVGPathElement, RadialSector>('path')
-			.data(layout.sectors)
-			.join('path')
+
+		// The ring's colour channel says *whose* a clause is, in both modes. With one party
+		// that is its colour against grey; with two the sector is cut into contiguous
+		// sub-arcs sized by how much each pulls. A clause enters the union by being
+		// *present* in someone's top-K, which says nothing about balance — clause-3 is
+		// 94/6 — so a blended colour would report "both" where the cut reports who, and by
+		// how much. Blue stays with the clause *nodes*, where the legend puts it.
+		type SectorArc = { sector: RadialSector; from: number; to: number; color: string };
+		const sectorArcs: SectorArc[] = [];
+		for (const sector of layout.sectors) {
 			// A hair of padding each side keeps neighbouring sectors legible as separate.
-			.attr('d', (d) => arcPath(layout.ringRadius, d.startAngle + 0.004, d.endAngle - 0.004))
-			.attr('stroke', NODE_COLORS.clause)
-			.attr('stroke-width', (d) => 2 + 5 * (d.weight / peakWeight))
-			.attr('stroke-linecap', 'round')
-			.attr('stroke-opacity', (d) => 0.25 + 0.6 * (d.weight / peakWeight));
+			const from = sector.startAngle + 0.004;
+			const to = sector.endAngle - 0.004;
+			const split = pair?.clauseSplit[sector.clauseId];
+			const total = split ? split.a + split.b : 0;
+			if (pair && split && total > 0) {
+				const cut = from + (to - from) * (split.a / total);
+				if (cut > from) sectorArcs.push({ sector, from, to: cut, color: NODE_COLORS.party });
+				if (to > cut) sectorArcs.push({ sector, from: cut, to, color: PAIR_SECOND_COLOR });
+				continue;
+			}
+			sectorArcs.push({
+				sector,
+				from,
+				to,
+				color: !pair && sector.weight > 0 ? NODE_COLORS.party : UNCLAIMED_SECTOR_COLOR,
+			});
+		}
+		scaffold
+			.selectAll<SVGPathElement, SectorArc>('path')
+			.data(sectorArcs)
+			.join('path')
+			.attr('d', (d) => arcPath(layout.ringRadius, d.from, d.to))
+			.attr('stroke', (d) => d.color)
+			.attr('stroke-width', (d) => 2 + 5 * (d.sector.weight / peakWeight))
+			// Round caps would make the two halves of a split sector overlap.
+			.attr('stroke-linecap', pair ? 'butt' : 'round')
+			.attr('stroke-opacity', (d) => 0.25 + 0.6 * (d.sector.weight / peakWeight));
 
 		/** Keep a ring label from overrunning the circle it belongs to. */
 		const anchorFor = (angle: number) =>
 			Math.cos(angle) < -0.1 ? 'end' : Math.cos(angle) > 0.1 ? 'start' : 'middle';
 
-		// Labelling 142 sectors is unreadable, so only the ones that carry weight.
-		const labelled = [...layout.sectors]
-			.filter((s: RadialSector) => s.weight > 0)
-			.sort((a, b) => b.weight - a.weight)
-			.slice(0, 14);
-		scaffold
-			.append('g')
-			.selectAll<SVGTextElement, RadialSector>('text')
-			.data(labelled)
-			.join('text')
-			.attr('x', (d) => pointAt((d.startAngle + d.endAngle) / 2, layout.ringRadius + 9)[0])
-			.attr('y', (d) => pointAt((d.startAngle + d.endAngle) / 2, layout.ringRadius + 9)[1])
-			.attr('text-anchor', (d) => anchorFor((d.startAngle + d.endAngle) / 2))
-			.attr('dominant-baseline', 'middle')
-			.attr('font-size', 9)
-			.attr('fill', 'currentColor')
-			.attr('fill-opacity', 0.55)
-			.text((d) => d.label);
+		// No standing sector labels. Neighbouring sectors are only a couple of degrees
+		// apart, so their labels pile up on each other around the bottom of the ring —
+		// and the ref is one hover away, from anywhere inside the wedge.
 
 		// The ref of whichever sector is under the cursor, including the ones too light
 		// to have earned a permanent label.
@@ -697,27 +758,31 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			.attr('fill', 'currentColor')
 			.attr('visibility', 'hidden');
 
-		// Sector hit areas — a fat invisible stroke over the ring. Appended before the
+		/** Pie slice from the centre out to `radius`, spanning the sector. */
+		const wedgePath = (d: RadialSector, radius: number) => {
+			const [sx, sy] = pointAt(d.startAngle, radius);
+			const [ex, ey] = pointAt(d.endAngle, radius);
+			const large = d.endAngle - d.startAngle > Math.PI ? 1 : 0;
+			return `M${cx},${cy}L${sx},${sy}A${radius},${radius},0,${large},1,${ex},${ey}Z`;
+		};
+
+		// Sector hit areas — the whole wedge, not just the arc, so the sector lights up
+		// from anywhere inside it including the empty space between nodes. Reaches past
+		// the ring to keep covering the arc itself and its label. Appended before the
 		// nodes so that wherever the two overlap the node still wins the pointer.
 		root
 			.append('g')
-			.attr('fill', 'none')
-			.attr('stroke', 'transparent')
-			.attr('stroke-width', 16)
+			.attr('fill', 'transparent')
+			.attr('stroke', 'none')
 			.attr('cursor', 'pointer')
 			.selectAll<SVGPathElement, RadialSector>('path')
 			.data(layout.sectors)
 			.join('path')
-			.attr('d', (d) => arcPath(layout.ringRadius, d.startAngle, d.endAngle))
+			.attr('d', (d) => wedgePath(d, layout.ringRadius + 10))
 			.on('mouseenter mousemove', (event: MouseEvent, d) => {
 				const mid = (d.startAngle + d.endAngle) / 2;
-				const [sx, sy] = pointAt(d.startAngle, layout.ringRadius);
-				const [ex, ey] = pointAt(d.endAngle, layout.ringRadius);
-				const large = d.endAngle - d.startAngle > Math.PI ? 1 : 0;
-				const r = layout.ringRadius;
-				wedge
-					.attr('d', `M${cx},${cy}L${sx},${sy}A${r},${r},0,${large},1,${ex},${ey}Z`)
-					.attr('visibility', 'visible');
+				// The highlight stops at the ring even though the hit area overshoots it.
+				wedge.attr('d', wedgePath(d, layout.ringRadius)).attr('visibility', 'visible');
 				const [lx, ly] = pointAt(mid, layout.ringRadius + 9);
 				hoverLabel
 					.attr('x', lx)
@@ -801,8 +866,82 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			.attr('cx', (d) => d.x ?? 0)
 			.attr('cy', (d) => d.y ?? 0)
 			.attr('r', (d) => d.radius)
-			.attr('fill', (d) => nodeColor(d))
+			.attr('fill', (d) => (pair && d.id === pair.partyAId ? NODE_COLORS.party : nodeColor(d)))
 			.attr('cursor', 'pointer');
+
+		if (pair) {
+			// The centre is one disc halved — it only says both parties are in play, so
+			// the order of the halves carries no meaning.
+			const centre = byId.get(pair.partyAId);
+			if (centre) {
+				// Must match what the styling pass resizes the anchor to, or the half lands
+				// inset inside a larger disc and reads as a sliver instead of a half.
+				const r = centre.radius * PAIR_CENTER_SCALE - 1.3;
+				const x = centre.x ?? 0;
+				const y = centre.y ?? 0;
+				const centreLayer = root.append('g');
+				// Its own hit target: without one every hover falls through to the disc
+				// underneath, and both halves answer with the anchor party.
+				const partyB = graph.nodes.find((n) => n.id === pair.partyBId);
+				centreLayer
+					.append('path')
+					.attr('fill', PAIR_SECOND_COLOR)
+					.attr('cursor', 'pointer')
+					.attr('d', `M${x},${y - r}A${r},${r},0,0,1,${x},${y + r}Z`)
+					.on('mouseenter mousemove', (event: MouseEvent) => {
+						const rect = containerRef.current?.getBoundingClientRect();
+						setHover({
+							x: event.clientX - (rect?.left ?? 0),
+							y: event.clientY - (rect?.top ?? 0),
+							kind: 'party',
+							detail: partyB?.detail ?? pair.partyBId,
+							color: PAIR_SECOND_COLOR,
+						});
+					})
+					.on('mouseleave', () => setHover(null));
+				// A seam down the diameter: without it the two fills touch and the eye reads
+				// one shape with a colour gradient rather than two halves.
+				centreLayer
+					.append('line')
+					.attr('pointer-events', 'none')
+					.attr('x1', x)
+					.attr('y1', y - r)
+					.attr('x2', x)
+					.attr('y2', y + r)
+					.attr('stroke', '#fff')
+					.attr('stroke-width', 2);
+			}
+
+			// Owner ring: whose top-K earned this node its place. Half-and-half when both
+			// claim it — over half the statements name both parties, so that case is the
+			// rule, not the exception, and it is the overlap worth seeing.
+			const owned = nodes
+				.map((d) => ({ node: d, owner: pair.ownerByNode[d.id] as PairOwner | undefined }))
+				.filter((item): item is { node: SimNode; owner: PairOwner } => Boolean(item.owner));
+			const ownerLayer = root.append('g').attr('pointer-events', 'none').attr('fill', 'none');
+			for (const [index, color] of [NODE_COLORS.party, PAIR_SECOND_COLOR].entries()) {
+				const side: PairOwner = index === 0 ? 'a' : 'b';
+				ownerLayer
+					.append('g')
+					.selectAll<SVGCircleElement, (typeof owned)[number]>('circle')
+					.data(owned.filter((d) => d.owner === side || d.owner === 'both'))
+					.join('circle')
+					.attr('cx', (d) => d.node.x ?? 0)
+					.attr('cy', (d) => d.node.y ?? 0)
+					.attr('r', (d) => d.node.radius + OWNER_OFFSET)
+					.attr('stroke', color)
+					.attr('stroke-width', OWNER_WIDTH)
+					.attr('stroke-dasharray', (d) => {
+						const circumference = 2 * Math.PI * (d.node.radius + OWNER_OFFSET);
+						const share = d.owner === 'both' ? 0.5 : 1;
+						return `${circumference * share} ${circumference * (1 - share)}`;
+					})
+					.attr('transform', (d) => {
+						const start = d.owner === 'both' && index === 1 ? 180 : 0;
+						return `rotate(${start - 90} ${d.node.x ?? 0} ${d.node.y ?? 0})`;
+					});
+			}
+		}
 
 		// The tooltip is anchored to an invisible element at the cursor, so it only
 		// needs container-relative coordinates; Radix handles offset and flipping.
@@ -813,6 +952,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				y: event.clientY - (rect?.top ?? 0),
 				kind: d.kind,
 				detail: d.detail,
+				color: pair && d.id === pair.partyAId ? NODE_COLORS.party : undefined,
 			});
 		};
 
@@ -830,12 +970,15 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				focusNode(d.id);
 			});
 
-		// Party names stay readable at every zoom level — they are the entry point.
+		// Party names label the entry view, where several parties sit side by side and the
+		// name is the only thing telling them apart. The focused node is never labelled:
+		// the header chip already names it, the tooltip answers on hover, and in the pair
+		// view naming one of the two halves under the disc would be plainly wrong.
 		root
 			.append('g')
 			.attr('pointer-events', 'none')
 			.selectAll<SVGTextElement, SimNode>('text')
-			.data(nodes.filter((d) => d.kind === 'party'))
+			.data(nodes.filter((d) => d.kind === 'party' && d.id !== focusNodeId))
 			.join('text')
 			.text((d) => d.label)
 			.attr('x', (d) => d.x ?? 0)
@@ -854,7 +997,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			linkSelRef.current = null;
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [graph, layout, size, toneSplit]);
+	}, [graph, layout, size, toneSplit, pair]);
 
 	// Restyle (highlight / dim / size-by-attention) without rebuilding the sim.
 	useEffect(() => {
@@ -928,7 +1071,9 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		// distance from the centre — and encoding it twice makes near and far nodes of
 		// the same kind look like different things.
 		const radiusFor = (d: SimNode): number =>
-			d.id === focusNodeId ? d.radius * 1.55 : d.radius;
+			d.id === focusNodeId
+				? d.radius * (pair ? PAIR_CENTER_SCALE : FOCUS_RADIUS_SCALE)
+				: d.radius;
 
 		node
 			.attr('opacity', (d) => (highlightIds.has(d.id) ? 1 : DIMMED_NODE_OPACITY))
@@ -942,7 +1087,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			return highlightIds.has(source) && highlightIds.has(target) ? 0.95 : DIMMED_LINK_OPACITY;
 		});
 		applySelection();
-	}, [graphVersion, highlightIds, focusNodeId, nodeScores, selectedPartyIds, membersOf, mergeHints, mergeEntities, viewKg]);
+	}, [graphVersion, highlightIds, focusNodeId, nodeScores, selectedPartyIds, membersOf, mergeHints, mergeEntities, viewKg, pair]);
 
 	const counts = viewKg
 		? {
@@ -977,8 +1122,62 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				<div className="border-b border-border/60 px-3 py-2 text-2xs text-muted-foreground">
 					<div className="flex items-center justify-between gap-2">
 						<div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-0.5">
-							<span>
-								{counts.parties} parties · {counts.clauses} clauses · {counts.statements} statements
+							<span className="flex items-center gap-1">
+								{isPartyFocus ? (
+									<span className="relative">
+										<button
+											type="button"
+											onClick={() => setPartyPickerOpen((open) => !open)}
+											className="rounded border border-border/70 px-1.5 py-0.5 hover:bg-muted"
+											title="Add a second party to compare the two side by side"
+										>
+											{secondPartyId ? '2 of' : '1 of'} {counts.parties} parties ▾
+										</button>
+										{partyPickerOpen && (
+											<span className="absolute top-full left-0 z-20 mt-1 flex w-56 flex-col gap-1 rounded-md border border-border bg-popover p-2 shadow-md">
+												{(viewKg?.parties ?? []).map((party) => {
+													const isAnchor = party.id === focusNodeId;
+													const checked = isAnchor || party.id === secondPartyId;
+													const color = isAnchor
+														? NODE_COLORS.party
+														: party.id === secondPartyId
+															? PAIR_SECOND_COLOR
+															: 'transparent';
+													return (
+														<label
+															key={party.id}
+															className={
+																isAnchor
+																	? 'flex cursor-default items-center gap-2 opacity-70'
+																	: 'flex cursor-pointer items-center gap-2 hover:text-foreground'
+															}
+														>
+															<input
+																type="checkbox"
+																checked={checked}
+																disabled={isAnchor}
+																onChange={() =>
+																	setSecondParty(party.id === secondPartyId ? null : party.id)
+																}
+																className="cursor-pointer accent-primary"
+															/>
+															<span
+																className="inline-block h-2 w-2 shrink-0 rounded-full border"
+																style={{ backgroundColor: color, borderColor: 'currentColor' }}
+															/>
+															<span className="truncate">{party.name}</span>
+														</label>
+													);
+												})}
+											</span>
+										)}
+									</span>
+								) : (
+									<span>{counts.parties} parties</span>
+								)}
+								<span>
+									· {counts.clauses} clauses · {counts.statements} statements
+								</span>
 							</span>
 							{Object.keys(toneSplit).length > 0 && (
 								<span className="flex items-center gap-1.5">
@@ -1067,12 +1266,12 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 											side="top"
 											sideOffset={10}
 											className="max-w-[280px] border-2 px-2.5 py-1.5"
-											style={{ borderColor: NODE_COLORS[hover.kind] }}
+											style={{ borderColor: hover.color ?? NODE_COLORS[hover.kind] }}
 										>
 											<span className="flex items-center gap-1.5">
 												<span
 													className="size-2 shrink-0 rounded-full"
-													style={{ backgroundColor: NODE_COLORS[hover.kind] }}
+													style={{ backgroundColor: hover.color ?? NODE_COLORS[hover.kind] }}
 												/>
 												<span className="text-2xs font-medium uppercase tracking-wide opacity-70">
 													{KIND_LABEL[hover.kind]}
@@ -1097,6 +1296,9 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 									const count = kindCounts[item.kind] ?? 0;
 									const color = NODE_COLORS[item.kind];
 									const checked = visibleKinds.has(item.kind);
+									// With a pair on the canvas the Party row stands for two, so its swatch
+									// carries both colours in the same order as the centre disc.
+									const splitSwatch = item.kind === 'party' && Boolean(pair);
 									return (
 										<label
 											key={item.kind}
@@ -1111,7 +1313,13 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 												className="size-3.5 shrink-0 border-current data-[state=checked]:text-white"
 												style={{
 													color,
-													backgroundColor: checked ? color : undefined,
+													...(splitSwatch
+														? {
+																background: checked
+																	? `linear-gradient(90deg, ${NODE_COLORS.party} 0 50%, ${PAIR_SECOND_COLOR} 50% 100%)`
+																	: undefined,
+															}
+														: { backgroundColor: checked ? color : undefined }),
 													borderColor: color,
 												}}
 												aria-label={`${item.label} (${count})`}

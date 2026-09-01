@@ -17,7 +17,7 @@ import {
 	PartySelection,
 	type PartyCardData,
 } from '@/features/docx/components/knowledge-graph/PartySelection';
-import type { KgLedger } from '@/features/docx/utils/knowledge/attention';
+// PARKED (burden/benefit): import type { KgLedger } from '@/features/docx/utils/knowledge/attention';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -46,8 +46,8 @@ const PARTY_ENTRY_RADIUS = 24;
 const PAIR_SECOND_COLOR = '#0d9488';
 /** A sector no focused party has any weight in — grey reads as "concerns nobody here". */
 const UNCLAIMED_SECTOR_COLOR = '#94a3b8';
-/** Owner ring: outside the burden/benefit arc glyph so the two never collide. */
-const OWNER_OFFSET = 7.5;
+/** Owner ring, hugging the node now that no burden/benefit arc sits outside it. */
+const OWNER_OFFSET = 4;
 const OWNER_WIDTH = 2;
 /** The focused node grows so it reads as the anchor. */
 const FOCUS_RADIUS_SCALE = 1.55;
@@ -131,11 +131,12 @@ const KIND_LABEL: Record<KgNodeKind, string> = Object.fromEntries(
 
 // The arc glyph reuses the deontic palette on purpose: a burden is what an obligation
 // colour already means to the reader, a benefit what a right means.
-const BURDEN_COLOR = NODE_COLORS.obligation;
-const BENEFIT_COLOR = NODE_COLORS.right;
+// PARKED (burden/benefit):
+// const BURDEN_COLOR = NODE_COLORS.obligation;
+// const BENEFIT_COLOR = NODE_COLORS.right;
 /** Gap between a node's edge and the ring drawn around it. */
-const ARC_OFFSET = 3.5;
-const ARC_WIDTH = 2.5;
+// const ARC_OFFSET = 3.5;
+// const ARC_WIDTH = 2.5;
 
 const DIMMED_NODE_OPACITY = 0.1;
 /** The other party's top-K when one half of the centre is picked: present, not the subject. */
@@ -268,110 +269,112 @@ function SeveritySliders() {
 	);
 }
 
-function DivergingBar({ label, burdenPct }: { label: string; burdenPct: number }) {
-	return (
-		<div>
-			<div className="flex justify-between text-muted-foreground">
-				<span>{label}</span>
-				<span>
-					{Math.round(burdenPct)}% / {Math.round(100 - burdenPct)}%
-				</span>
-			</div>
-			<div className="flex h-2 w-full overflow-hidden rounded-full bg-muted">
-				<span style={{ width: `${burdenPct}%`, backgroundColor: '#ef4444' }} />
-				<span style={{ width: `${100 - burdenPct}%`, backgroundColor: '#22c55e' }} />
-			</div>
-		</div>
-	);
-}
+// --- PARKED (burden/benefit: the diverging Total / Intensity bar) ---
+// function DivergingBar({ label, burdenPct }: { label: string; burdenPct: number }) {
+// 	return (
+// 		<div>
+// 			<div className="flex justify-between text-muted-foreground">
+// 				<span>{label}</span>
+// 				<span>
+// 					{Math.round(burdenPct)}% / {Math.round(100 - burdenPct)}%
+// 				</span>
+// 			</div>
+// 			<div className="flex h-2 w-full overflow-hidden rounded-full bg-muted">
+// 				<span style={{ width: `${burdenPct}%`, backgroundColor: '#ef4444' }} />
+// 				<span style={{ width: `${100 - burdenPct}%`, backgroundColor: '#22c55e' }} />
+// 			</div>
+// 		</div>
+// 	);
+// }
 
-/** Compact impact ledger for the focused party (burden ↔ benefit + top clauses). */
-function LedgerCard({
-	ledger,
-	onSelectClause,
-}: {
-	ledger: KgLedger;
-	onSelectClause: (clauseId: string) => void;
-}) {
-	const total = ledger.burdenWeight + ledger.benefitWeight;
-	const burdenPct = total > 0 ? (ledger.burdenWeight / total) * 100 : 50;
-	const burdenIntensity = ledger.burdenCount > 0 ? ledger.burdenWeight / ledger.burdenCount : 0;
-	const benefitIntensity = ledger.benefitCount > 0 ? ledger.benefitWeight / ledger.benefitCount : 0;
-	const intensityTotal = burdenIntensity + benefitIntensity;
-	const intensityBurdenPct = intensityTotal > 0 ? (burdenIntensity / intensityTotal) * 100 : 50;
-	const maxClauseTotal = Math.max(...ledger.topClauses.map((c) => c.burden + c.benefit), 1e-9);
-
-	return (
-		<div className="flex flex-wrap items-start gap-x-6 gap-y-2 border-t border-border/60 px-3 py-2 text-2xs text-popover-foreground">
-			<div className="min-w-[190px] flex-1 space-y-1.5">
-				<div className="truncate font-semibold" title={ledger.partyName}>
-					{ledger.partyName}
-				</div>
-				<div className="space-y-1">
-					<div className="flex justify-between text-muted-foreground">
-						<span className="inline-flex items-center gap-1">
-							<span
-								className="inline-block h-2 w-2 rounded-full"
-								style={{ backgroundColor: '#ef4444' }}
-							/>
-							Burden
-						</span>
-						<span className="inline-flex items-center gap-1">
-							Benefit
-							<span
-								className="inline-block h-2 w-2 rounded-full"
-								style={{ backgroundColor: '#22c55e' }}
-							/>
-						</span>
-					</div>
-					<DivergingBar label="Total" burdenPct={burdenPct} />
-					<DivergingBar label="Intensity" burdenPct={intensityBurdenPct} />
-				</div>
-				<div className="flex flex-wrap gap-x-3 gap-y-0.5 text-muted-foreground">
-					<span>
-						<span className="font-medium text-foreground">{ledger.obligations}</span> obligations
-					</span>
-					<span>
-						<span className="font-medium text-foreground">{ledger.prohibitions}</span> prohibitions
-					</span>
-					<span>
-						<span className="font-medium text-foreground">{ledger.rights}</span> rights
-					</span>
-				</div>
-			</div>
-
-			{ledger.topClauses.length > 0 && (
-				<div className="min-w-[170px] flex-1 space-y-1">
-					<div className="font-medium text-foreground/70">Heaviest clauses</div>
-					{ledger.topClauses.map((clause) => {
-						const clauseTotal = clause.burden + clause.benefit;
-						const lengthPct = Math.max(8, (clauseTotal / maxClauseTotal) * 100);
-						const burdenShare = clauseTotal > 0 ? clause.burden / clauseTotal : 0;
-						return (
-							<button
-								key={clause.id}
-								type="button"
-								onClick={() => onSelectClause(clause.id)}
-								className="flex w-full items-center gap-1.5 text-left hover:text-foreground"
-								title={`${clause.label} — burden ${clause.burden.toFixed(2)} / benefit ${clause.benefit.toFixed(2)}`}
-							>
-								<span className="flex h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
-									<span style={{ width: `${lengthPct * burdenShare}%`, backgroundColor: '#ef4444' }} />
-									<span
-										style={{ width: `${lengthPct * (1 - burdenShare)}%`, backgroundColor: '#22c55e' }}
-									/>
-								</span>
-								<span className="w-20 truncate">{clause.label}</span>
-							</button>
-						);
-					})}
-				</div>
-			)}
-
-			<SeveritySliders />
-		</div>
-	);
-}
+// --- PARKED (burden/benefit ledger: the bars, the counts and the heaviest-clause list) ---
+// /** Compact impact ledger for the focused party (burden ↔ benefit + top clauses). */
+// function LedgerCard({
+// 	ledger,
+// 	onSelectClause,
+// }: {
+// 	ledger: KgLedger;
+// 	onSelectClause: (clauseId: string) => void;
+// }) {
+// 	const total = ledger.burdenWeight + ledger.benefitWeight;
+// 	const burdenPct = total > 0 ? (ledger.burdenWeight / total) * 100 : 50;
+// 	const burdenIntensity = ledger.burdenCount > 0 ? ledger.burdenWeight / ledger.burdenCount : 0;
+// 	const benefitIntensity = ledger.benefitCount > 0 ? ledger.benefitWeight / ledger.benefitCount : 0;
+// 	const intensityTotal = burdenIntensity + benefitIntensity;
+// 	const intensityBurdenPct = intensityTotal > 0 ? (burdenIntensity / intensityTotal) * 100 : 50;
+// 	const maxClauseTotal = Math.max(...ledger.topClauses.map((c) => c.burden + c.benefit), 1e-9);
+//
+// 	return (
+// 		<div className="flex flex-wrap items-start gap-x-6 gap-y-2 border-t border-border/60 px-3 py-2 text-2xs text-popover-foreground">
+// 			<div className="min-w-[190px] flex-1 space-y-1.5">
+// 				<div className="truncate font-semibold" title={ledger.partyName}>
+// 					{ledger.partyName}
+// 				</div>
+// 				<div className="space-y-1">
+// 					<div className="flex justify-between text-muted-foreground">
+// 						<span className="inline-flex items-center gap-1">
+// 							<span
+// 								className="inline-block h-2 w-2 rounded-full"
+// 								style={{ backgroundColor: '#ef4444' }}
+// 							/>
+// 							Burden
+// 						</span>
+// 						<span className="inline-flex items-center gap-1">
+// 							Benefit
+// 							<span
+// 								className="inline-block h-2 w-2 rounded-full"
+// 								style={{ backgroundColor: '#22c55e' }}
+// 							/>
+// 						</span>
+// 					</div>
+// 					<DivergingBar label="Total" burdenPct={burdenPct} />
+// 					<DivergingBar label="Intensity" burdenPct={intensityBurdenPct} />
+// 				</div>
+// 				<div className="flex flex-wrap gap-x-3 gap-y-0.5 text-muted-foreground">
+// 					<span>
+// 						<span className="font-medium text-foreground">{ledger.obligations}</span> obligations
+// 					</span>
+// 					<span>
+// 						<span className="font-medium text-foreground">{ledger.prohibitions}</span> prohibitions
+// 					</span>
+// 					<span>
+// 						<span className="font-medium text-foreground">{ledger.rights}</span> rights
+// 					</span>
+// 				</div>
+// 			</div>
+//
+// 			{ledger.topClauses.length > 0 && (
+// 				<div className="min-w-[170px] flex-1 space-y-1">
+// 					<div className="font-medium text-foreground/70">Heaviest clauses</div>
+// 					{ledger.topClauses.map((clause) => {
+// 						const clauseTotal = clause.burden + clause.benefit;
+// 						const lengthPct = Math.max(8, (clauseTotal / maxClauseTotal) * 100);
+// 						const burdenShare = clauseTotal > 0 ? clause.burden / clauseTotal : 0;
+// 						return (
+// 							<button
+// 								key={clause.id}
+// 								type="button"
+// 								onClick={() => onSelectClause(clause.id)}
+// 								className="flex w-full items-center gap-1.5 text-left hover:text-foreground"
+// 								title={`${clause.label} — burden ${clause.burden.toFixed(2)} / benefit ${clause.benefit.toFixed(2)}`}
+// 							>
+// 								<span className="flex h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
+// 									<span style={{ width: `${lengthPct * burdenShare}%`, backgroundColor: '#ef4444' }} />
+// 									<span
+// 										style={{ width: `${lengthPct * (1 - burdenShare)}%`, backgroundColor: '#22c55e' }}
+// 									/>
+// 								</span>
+// 								<span className="w-20 truncate">{clause.label}</span>
+// 							</button>
+// 						);
+// 					})}
+// 				</div>
+// 			)}
+//
+// 			<SeveritySliders />
+// 		</div>
+// 	);
+// }
 
 export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -438,8 +441,8 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const clearSelectedParties = useKnowledgeGraphStore((s) => s.clearSelectedParties);
 	const focusNodeIds = useKnowledgeGraphStore((s) => s.focusNodeIds);
 	const nodeScores = useKnowledgeGraphStore((s) => s.nodeScores);
-	const toneSplit = useKnowledgeGraphStore((s) => s.toneSplit);
-	const ledger = useKnowledgeGraphStore((s) => s.ledger);
+	// PARKED (burden/benefit): const toneSplit = useKnowledgeGraphStore((s) => s.toneSplit);
+	// PARKED (burden/benefit): const ledger = useKnowledgeGraphStore((s) => s.ledger);
 	const secondPartyId = useKnowledgeGraphStore((s) => s.secondPartyId);
 	const setSecondParty = useKnowledgeGraphStore((s) => s.setSecondParty);
 	const focusPair = useKnowledgeGraphStore((s) => s.focusPair);
@@ -757,14 +760,6 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 
 		// --- the ring: one arc per clause, in document order, width by attention ---
 		const scaffold = root.append('g').attr('pointer-events', 'none').attr('fill', 'none');
-		scaffold
-			.append('circle')
-			.attr('cx', cx)
-			.attr('cy', cy)
-			.attr('r', layout.boundaryRadius)
-			.attr('stroke', 'currentColor')
-			.attr('stroke-opacity', 0.16)
-			.attr('stroke-dasharray', '4 5');
 
 		const peakWeight = Math.max(...layout.sectors.map((s) => s.weight), 1e-9);
 
@@ -889,43 +884,44 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			.attr('x2', (d) => byId.get(d.target as string)?.x ?? 0)
 			.attr('y2', (d) => byId.get(d.target as string)?.y ?? 0);
 
-		// --- the arc glyph: how this node's weight splits burden vs benefit ---
-		//
-		// Two concentric dashed rings rather than path arcs: the dash length is the
-		// share, and the rotation is where the second one starts. Drawn under the nodes
-		// so a node never sits on top of its own reading.
-		const arcs = nodes
-			.map((d) => ({ node: d, split: toneSplit[d.id] }))
-			.filter((item) => item.split && item.split.burden + item.split.benefit > 0);
-		const arcLayer = root.append('g').attr('pointer-events', 'none').attr('fill', 'none');
-		decorSelRef.current = [];
-		for (const side of ['burden', 'benefit'] as const) {
-			const arcSide = arcLayer
-				.append('g')
-				.selectAll<SVGCircleElement, (typeof arcs)[number]>('circle')
-				.data(arcs)
-				.join('circle')
-				.attr('cx', (d) => d.node.x ?? 0)
-				.attr('cy', (d) => d.node.y ?? 0)
-				.attr('r', (d) => d.node.radius + ARC_OFFSET)
-				.attr('stroke', side === 'burden' ? BURDEN_COLOR : BENEFIT_COLOR)
-				.attr('stroke-width', ARC_WIDTH)
-				.attr('stroke-dasharray', (d) => {
-					const total = d.split!.burden + d.split!.benefit;
-					const share = (side === 'burden' ? d.split!.burden : d.split!.benefit) / total;
-					const circumference = 2 * Math.PI * (d.node.radius + ARC_OFFSET);
-					return `${circumference * share} ${circumference * (1 - share)}`;
-				})
-				// Burden starts at 12 o'clock; benefit picks up where it ends.
-				.attr('transform', (d) => {
-					const total = d.split!.burden + d.split!.benefit;
-					const start = side === 'burden' ? 0 : (d.split!.burden / total) * 360;
-					return `rotate(${start - 90} ${d.node.x ?? 0} ${d.node.y ?? 0})`;
-				});
-			decorSelRef.current.push((opacityOf) =>
-				arcSide.attr('opacity', (d) => opacityOf(d.node.id))
-			);
-		}
+// --- PARKED (burden/benefit: the red/green ring around every node) ---
+// 		// --- the arc glyph: how this node's weight splits burden vs benefit ---
+// 		//
+// 		// Two concentric dashed rings rather than path arcs: the dash length is the
+// 		// share, and the rotation is where the second one starts. Drawn under the nodes
+// 		// so a node never sits on top of its own reading.
+// 		const arcs = nodes
+// 			.map((d) => ({ node: d, split: toneSplit[d.id] }))
+// 			.filter((item) => item.split && item.split.burden + item.split.benefit > 0);
+// 		const arcLayer = root.append('g').attr('pointer-events', 'none').attr('fill', 'none');
+// 		decorSelRef.current = [];
+// 		for (const side of ['burden', 'benefit'] as const) {
+// 			const arcSide = arcLayer
+// 				.append('g')
+// 				.selectAll<SVGCircleElement, (typeof arcs)[number]>('circle')
+// 				.data(arcs)
+// 				.join('circle')
+// 				.attr('cx', (d) => d.node.x ?? 0)
+// 				.attr('cy', (d) => d.node.y ?? 0)
+// 				.attr('r', (d) => d.node.radius + ARC_OFFSET)
+// 				.attr('stroke', side === 'burden' ? BURDEN_COLOR : BENEFIT_COLOR)
+// 				.attr('stroke-width', ARC_WIDTH)
+// 				.attr('stroke-dasharray', (d) => {
+// 					const total = d.split!.burden + d.split!.benefit;
+// 					const share = (side === 'burden' ? d.split!.burden : d.split!.benefit) / total;
+// 					const circumference = 2 * Math.PI * (d.node.radius + ARC_OFFSET);
+// 					return `${circumference * share} ${circumference * (1 - share)}`;
+// 				})
+// 				// Burden starts at 12 o'clock; benefit picks up where it ends.
+// 				.attr('transform', (d) => {
+// 					const total = d.split!.burden + d.split!.benefit;
+// 					const start = side === 'burden' ? 0 : (d.split!.burden / total) * 360;
+// 					return `rotate(${start - 90} ${d.node.x ?? 0} ${d.node.y ?? 0})`;
+// 				});
+// 			decorSelRef.current.push((opacityOf) =>
+// 				arcSide.attr('opacity', (d) => opacityOf(d.node.id))
+// 			);
+// 		}
 
 		const node = root
 			.append('g')
@@ -1082,7 +1078,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			decorSelRef.current = [];
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [graph, layout, size, toneSplit, pair]);
+	}, [graph, layout, size, pair]);
 
 	// Restyle (highlight / dim / size-by-attention) without rebuilding the sim.
 	useEffect(() => {
@@ -1286,6 +1282,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 									· {counts.clauses} clauses · {counts.statements} statements
 								</span>
 							</span>
+							{/* PARKED (burden/benefit): the Ring key.
 							{Object.keys(toneSplit).length > 0 && (
 								<span className="flex items-center gap-1.5">
 									<span className="font-medium text-foreground/50">Ring</span>
@@ -1301,6 +1298,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 									<span>benefit</span>
 								</span>
 							)}
+							*/}
 						</div>
 						<div className="flex shrink-0 items-center gap-2">
 							{scopeIds && (
@@ -1492,9 +1490,12 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				)}
 			</div>
 
-			{/* Controls + metrics — bottom bar, only when a party is focused. */}
-			{status === 'ready' && ledger && (
-				<LedgerCard ledger={ledger} onSelectClause={(id) => focusNode(id)} />
+			{/* Controls — bottom bar, once a party is focused. The burden/benefit ledger
+			    that used to live here is parked above; these still drive the ring. */}
+			{status === 'ready' && focusNodeId && (
+				<div className="flex flex-wrap items-start gap-x-6 gap-y-2 border-t border-border/60 px-3 py-2 text-2xs text-popover-foreground">
+					<SeveritySliders />
+				</div>
 			)}
 
 			{status === 'ready' && visibleKinds.has('party') && (

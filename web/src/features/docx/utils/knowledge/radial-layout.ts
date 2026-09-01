@@ -18,11 +18,10 @@ import { deonticNodes } from '@/types/knowledge';
  */
 
 /**
- * `connector` bridges several clauses and sits inside the dashed boundary; `local`
- * lives in one clause and sits outside it; `clause` is the sector anchor itself, on
- * its own band against the ring.
+ * `node` is anything that inhabits the ring's interior; `clause` is the sector anchor
+ * itself, on its own band against the ring.
  */
-export type RadialBand = 'center' | 'connector' | 'local' | 'clause';
+export type RadialBand = 'center' | 'node' | 'clause';
 
 export interface RadialPosition {
 	x: number;
@@ -53,8 +52,6 @@ export interface RadialLayout {
 	center: { x: number; y: number };
 	/** Radius of the outer ring, where the sector ticks are drawn. */
 	ringRadius: number;
-	/** Radius of the dashed circle splitting connectors from local nodes. */
-	boundaryRadius: number;
 }
 
 export interface RadialLayoutOptions {
@@ -74,19 +71,15 @@ export interface RadialLayoutOptions {
 const MIN_SECTOR_RAD = (1.4 * Math.PI) / 180;
 const TAU = Math.PI * 2;
 
-// Band extents as a fraction of the usable radius. Each band is split in two: nodes
+// Band extents as a fraction of the usable radius. One band for every interior node:
+// how many clauses a node touches no longer moves it. The band is split in two — nodes
 // that carry attention are placed by value in the inner part, and nodes with none are
 // fanned out across the outer part. Mapping score 0 to a single radius is what turns
 // the unscored majority — defined terms, conditions, values — into one dense necklace.
-const CONNECTOR_INNER = 0.2;
-const CONNECTOR_SCORED_OUTER = 0.42;
-const CONNECTOR_UNSCORED_INNER = 0.45;
-const CONNECTOR_OUTER = 0.53;
-const BOUNDARY = 0.58;
-const LOCAL_INNER = 0.62;
-const LOCAL_SCORED_OUTER = 0.74;
-const LOCAL_UNSCORED_INNER = 0.77;
-const LOCAL_OUTER = 0.85;
+const NODE_INNER = 0.22;
+const NODE_SCORED_OUTER = 0.74;
+const NODE_UNSCORED_INNER = 0.77;
+const NODE_OUTER = 0.85;
 // Clauses anchor their sector rather than inhabit it, so they ring the outside on a
 // band of their own. Each one owns a unique angle, which is why an unscored clause can
 // share a radius with another without ever colliding.
@@ -187,17 +180,11 @@ function radiusFor(
 	return usable * (band.unscoredInner + (band.outer - band.unscoredInner) * step);
 }
 
-const CONNECTOR_BAND = {
-	inner: CONNECTOR_INNER,
-	scoredOuter: CONNECTOR_SCORED_OUTER,
-	unscoredInner: CONNECTOR_UNSCORED_INNER,
-	outer: CONNECTOR_OUTER,
-};
-const LOCAL_BAND = {
-	inner: LOCAL_INNER,
-	scoredOuter: LOCAL_SCORED_OUTER,
-	unscoredInner: LOCAL_UNSCORED_INNER,
-	outer: LOCAL_OUTER,
+const NODE_BAND = {
+	inner: NODE_INNER,
+	scoredOuter: NODE_SCORED_OUTER,
+	unscoredInner: NODE_UNSCORED_INNER,
+	outer: NODE_OUTER,
 };
 
 export function computeRadialLayout(
@@ -281,7 +268,7 @@ export function computeRadialLayout(
 	const membership = clauseMembership(kg);
 	const isClause = new Set(kg.clauses.map((c) => c.id));
 	const bySector = new Map<string, string[]>();
-	const connectors: string[] = [];
+	const multiClause: string[] = [];
 	const orphans: string[] = [];
 
 	for (const id of allNodeIds(kg)) {
@@ -292,7 +279,7 @@ export function computeRadialLayout(
 			const list = bySector.get(clauses[0]);
 			if (list) list.push(id);
 			else bySector.set(clauses[0], [id]);
-		} else connectors.push(id);
+		} else multiClause.push(id);
 	}
 
 	const positions = new Map<string, RadialPosition>();
@@ -339,24 +326,27 @@ export function computeRadialLayout(
 		return { index: new Map(unscored.map((id, i) => [id, i] as const)), count: unscored.length };
 	};
 
-	// Connectors: angled at the circular mean of the clauses they bridge.
-	const connectorRanks = unscoredRanks(connectors);
-	for (const id of connectors) {
+	// One ranking across every interior node, scored or not — there is only one band now.
+	const nodeRanks = unscoredRanks([...multiClause, ...[...bySector.values()].flat()]);
+
+	// A node in several clauses has no sector of its own, so it is angled at the circular
+	// mean of the ones it bridges. That is an angle rule, not a radius one: it sits in the
+	// same band as everything else.
+	for (const id of multiClause) {
 		const clauses = [...(membership.get(id) ?? [])].filter((c) => sectorById.has(c));
 		const angle = circularMean(clauses.map((c) => midAngle(sectorById.get(c)!)));
 		const distance = radiusFor(
 			scores[id] ?? 0,
-			connectorRanks.index.get(id) ?? 0,
-			connectorRanks.count,
-			CONNECTOR_BAND,
+			nodeRanks.index.get(id) ?? 0,
+			nodeRanks.count,
+			NODE_BAND,
 			usable
 		);
-		place(id, angle, distance, 'connector', clauses);
+		place(id, angle, distance, 'node', clauses);
 	}
 
-	// Locals: angle from their own sector, radius from the band-wide ranking.
-	const localRanks = unscoredRanks([...bySector.values()].flat());
-	const bandSpan = usable * (LOCAL_OUTER - LOCAL_INNER);
+	// Single-clause nodes: angle from their own sector.
+	const bandSpan = usable * (NODE_OUTER - NODE_INNER);
 	for (const [clauseId, members] of bySector) {
 		const sector = sectorById.get(clauseId)!;
 		const span = sector.endAngle - sector.startAngle;
@@ -369,9 +359,9 @@ export function computeRadialLayout(
 				id,
 				distance: radiusFor(
 					scores[id] ?? 0,
-					localRanks.index.get(id) ?? 0,
-					localRanks.count,
-					LOCAL_BAND,
+					nodeRanks.index.get(id) ?? 0,
+					nodeRanks.count,
+					NODE_BAND,
 					usable
 				),
 			};
@@ -392,21 +382,21 @@ export function computeRadialLayout(
 		}
 		// Pushing outward can run the tail past the band and into the clause ring, so
 		// slide the whole group back in — the gaps are what matter, not the offset.
-		const overflow = placements[placements.length - 1].distance - usable * LOCAL_OUTER;
+		const overflow = placements[placements.length - 1].distance - usable * NODE_OUTER;
 		if (overflow > 0) {
-			const shift = Math.min(overflow, placements[0].distance - usable * LOCAL_INNER);
+			const shift = Math.min(overflow, placements[0].distance - usable * NODE_INNER);
 			if (shift > 0) for (const item of placements) item.distance -= shift;
 		}
 
 		for (const { id, distance } of placements) {
-			place(id, angleOf.get(id)!, distance, 'local', [clauseId]);
+			place(id, angleOf.get(id)!, distance, 'node', [clauseId]);
 		}
 	}
 
 	// Orphans have no clause to sit in; ring them just outside so they stay visible.
 	for (const [index, id] of orphans.sort((a, b) => a.localeCompare(b)).entries()) {
 		const angle = -Math.PI / 2 + (TAU * index) / Math.max(1, orphans.length);
-		place(id, angle, usable * LOCAL_OUTER, 'local', []);
+		place(id, angle, usable * NODE_OUTER, 'node', []);
 	}
 
 	return {
@@ -414,6 +404,5 @@ export function computeRadialLayout(
 		sectors,
 		center,
 		ringRadius: usable * 0.96,
-		boundaryRadius: usable * BOUNDARY,
 	};
 }

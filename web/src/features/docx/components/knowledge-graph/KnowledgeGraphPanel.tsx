@@ -138,6 +138,8 @@ const ARC_OFFSET = 3.5;
 const ARC_WIDTH = 2.5;
 
 const DIMMED_NODE_OPACITY = 0.1;
+/** The other party's top-K when one half of the centre is picked: present, not the subject. */
+const MUTED_OWNER_OPACITY = 0.25;
 const DIMMED_LINK_OPACITY = 0.04;
 
 function nodeColor(node: SimNode): string {
@@ -376,6 +378,10 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const svgRef = useRef<SVGSVGElement>(null);
 	const nodeSelRef = useRef<NodeSelection | null>(null);
 	const linkSelRef = useRef<LinkSelection | null>(null);
+	// A node's arc glyph and owner ring have to mute with it, or a muted circle keeps a
+	// bright ring around it. Held as appliers rather than selections: d3 is invariant in
+	// the datum type, so the two layers' selections have no common supertype.
+	const decorSelRef = useRef<Array<(opacityOf: (id: string) => number) => void>>([]);
 	// Only the camera survives a rebuild now — node positions are a pure function of
 	// the graph, so there is nothing else to carry over.
 	const transformRef = useRef<d3.ZoomTransform | null>(null);
@@ -393,6 +399,15 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	// The kind filter doubles as the zoom level: only `party` is the entry view,
 	// everything checked is the full graph.
 	const [visibleKinds, setVisibleKinds] = useState<Set<KgNodeKind>>(() => new Set(['party']));
+	/**
+	 * Which half of the pair's centre disc is singled out. Clicking one half mutes the
+	 * other party's top-K so only this one's reads; clicking it again clears. Statements
+	 * both parties claim stay lit — they are in this party's top-K too.
+	 *
+	 * Stored against the pair it was chosen for, so swapping either party simply makes
+	 * it stop applying instead of needing an effect to reset it.
+	 */
+	const [emphasis, setEmphasis] = useState<{ pairKey: string; owner: 'a' | 'b' } | null>(null);
 	// Until the user touches the filter the initial `{party}` is just a default, so
 	// the first drill-down may replace it. After that the filter is theirs to keep.
 	const filterTouchedRef = useRef(false);
@@ -520,6 +535,16 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				: null,
 		[viewKg, isPartyFocus, focusNodeId, secondPartyId, topK, severity, usePageRank]
 	);
+
+	const pairKey = pair ? `${pair.partyAId}|${pair.partyBId}` : null;
+	/** Null once the pair it was chosen for is gone — no reset effect needed. */
+	const emphasisOwner = emphasis && emphasis.pairKey === pairKey ? emphasis.owner : null;
+	const toggleEmphasis = (owner: 'a' | 'b') => {
+		if (!pairKey) return;
+		setEmphasis((prev) =>
+			prev && prev.pairKey === pairKey && prev.owner === owner ? null : { pairKey, owner }
+		);
+	};
 	// Entry view: each party carries the count of provisions it is party to, so the
 	// choice is informed instead of two identical dots.
 	const partyCards = useMemo<PartyCardData[]>(() => {
@@ -873,8 +898,9 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			.map((d) => ({ node: d, split: toneSplit[d.id] }))
 			.filter((item) => item.split && item.split.burden + item.split.benefit > 0);
 		const arcLayer = root.append('g').attr('pointer-events', 'none').attr('fill', 'none');
+		decorSelRef.current = [];
 		for (const side of ['burden', 'benefit'] as const) {
-			arcLayer
+			const arcSide = arcLayer
 				.append('g')
 				.selectAll<SVGCircleElement, (typeof arcs)[number]>('circle')
 				.data(arcs)
@@ -896,6 +922,9 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 					const start = side === 'burden' ? 0 : (d.split!.burden / total) * 360;
 					return `rotate(${start - 90} ${d.node.x ?? 0} ${d.node.y ?? 0})`;
 				});
+			decorSelRef.current.push((opacityOf) =>
+				arcSide.attr('opacity', (d) => opacityOf(d.node.id))
+			);
 		}
 
 		const node = root
@@ -940,7 +969,11 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 							color: PAIR_SECOND_COLOR,
 						});
 					})
-					.on('mouseleave', () => setHover(null));
+					.on('mouseleave', () => setHover(null))
+					.on('click', (event: MouseEvent) => {
+						event.stopPropagation();
+						toggleEmphasis('b');
+					});
 				// A seam down the diameter: without it the two fills touch and the eye reads
 				// one shape with a colour gradient rather than two halves.
 				centreLayer
@@ -963,7 +996,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			const ownerLayer = root.append('g').attr('pointer-events', 'none').attr('fill', 'none');
 			for (const [index, color] of [NODE_COLORS.party, PAIR_SECOND_COLOR].entries()) {
 				const side: PairOwner = index === 0 ? 'a' : 'b';
-				ownerLayer
+				const ownerSide = ownerLayer
 					.append('g')
 					.selectAll<SVGCircleElement, (typeof owned)[number]>('circle')
 					.data(owned.filter((d) => d.owner === side || d.owner === 'both'))
@@ -982,6 +1015,9 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 						const start = d.owner === 'both' && index === 1 ? 180 : 0;
 						return `rotate(${start - 90} ${d.node.x ?? 0} ${d.node.y ?? 0})`;
 					});
+				decorSelRef.current.push((opacityOf) =>
+					ownerSide.attr('opacity', (d) => opacityOf(d.node.id))
+				);
 			}
 		}
 
@@ -1006,6 +1042,12 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				event.stopPropagation();
 				if ((event.ctrlKey || event.metaKey) && d.kind === 'party') {
 					toggleSelectedParty(d.id); // Ctrl/Cmd-click builds the action selection
+					return;
+				}
+				// In the pair view this circle is the anchor's half of the centre disc, so
+				// clicking it singles that party out instead of re-focusing the whole view.
+				if (pair && d.id === pair.partyAId) {
+					toggleEmphasis('a');
 					return;
 				}
 				clearSelectedParties();
@@ -1037,6 +1079,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		return () => {
 			nodeSelRef.current = null;
 			linkSelRef.current = null;
+			decorSelRef.current = [];
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [graph, layout, size, toneSplit, pair]);
@@ -1105,6 +1148,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				.attr('stroke-width', 1.2)
 				.attr('r', (d) => d.radius);
 			link.attr('stroke-opacity', 0.8);
+			for (const applyDecorOpacity of decorSelRef.current) applyDecorOpacity(() => 1);
 			applySelection();
 			return;
 		}
@@ -1117,19 +1161,40 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				? d.radius * (pair ? PAIR_CENTER_SCALE : FOCUS_RADIUS_SCALE)
 				: d.radius;
 
+		/**
+		 * With one half of the centre disc picked, the other party's top-K is muted. A
+		 * node both parties claim is in the picked party's top-K too, so it stays lit;
+		 * the centre disc itself is never muted, since it is what you clicked.
+		 */
+		const mutedByEmphasis = (id: string): boolean => {
+			if (!pair || !emphasisOwner) return false;
+			if (id === pair.partyAId || id === pair.partyBId) return false;
+			const owner = pair.ownerByNode[id];
+			return Boolean(owner) && owner !== 'both' && owner !== emphasisOwner;
+		};
+		const opacityFor = (id: string): number => {
+			if (!highlightIds.has(id)) return DIMMED_NODE_OPACITY;
+			return mutedByEmphasis(id) ? MUTED_OWNER_OPACITY : 1;
+		};
+
 		node
-			.attr('opacity', (d) => (highlightIds.has(d.id) ? 1 : DIMMED_NODE_OPACITY))
+			.attr('opacity', (d) => opacityFor(d.id))
 			.attr('stroke', (d) => (d.id === focusNodeId ? '#0f172a' : '#fff'))
 			.attr('stroke-width', (d) => (d.id === focusNodeId ? 2.6 : highlightIds.has(d.id) ? 1.5 : 1))
 			.attr('r', radiusFor);
 
+		// Arc glyphs and owner rings follow their node, so a muted circle never keeps a
+		// fully lit ring around it.
+		for (const applyDecorOpacity of decorSelRef.current) applyDecorOpacity(opacityFor);
+
 		link.attr('stroke-opacity', (d) => {
 			const source = typeof d.source === 'string' ? d.source : (d.source as SimNode).id;
 			const target = typeof d.target === 'string' ? d.target : (d.target as SimNode).id;
-			return highlightIds.has(source) && highlightIds.has(target) ? 0.95 : DIMMED_LINK_OPACITY;
+			if (!highlightIds.has(source) || !highlightIds.has(target)) return DIMMED_LINK_OPACITY;
+			return mutedByEmphasis(source) || mutedByEmphasis(target) ? 0.18 : 0.95;
 		});
 		applySelection();
-	}, [graphVersion, highlightIds, focusNodeId, nodeScores, selectedPartyIds, membersOf, mergeHints, mergeEntities, viewKg, pair]);
+	}, [graphVersion, highlightIds, focusNodeId, nodeScores, selectedPartyIds, membersOf, mergeHints, mergeEntities, viewKg, pair, emphasisOwner]);
 
 	const counts = viewKg
 		? {

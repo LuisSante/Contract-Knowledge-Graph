@@ -91,6 +91,37 @@ function paragraphEnum(pid: string, nodesById: Map<string, ParagraphNode>): numb
 	return nodesById.get(pid)?.paragraph_enum ?? Number(pid.match(/-p-(\d+)$/)?.[1] ?? '0');
 }
 
+/**
+ * Which fragments of a statement to underline.
+ *
+ * `evidenceSpans` holds every fragment the evidence pass located. When the model
+ * stitched a shared preamble onto each item of a list — one sentence of the reference
+ * contract carries six prohibitions, and all six repeat
+ * "Bellicum ... may not:" — that preamble is identical across them, so underlining it
+ * would hand one arbitrary statement a span six of them claim. Only the fragments that
+ * tell them apart are kept; if every fragment is shared, the longest stands in.
+ */
+function evidenceLabels(
+	statement: KgDeonticNode,
+	spanOwners: Map<string, number>
+): string[] {
+	const spans = statement.evidenceSpans?.length ? statement.evidenceSpans : [statement.text];
+	const distinctive = spans.filter((span) => span && (spanOwners.get(span) ?? 0) <= 1);
+	if (distinctive.length > 0) return distinctive;
+	return spans.filter(Boolean).sort((left, right) => right.length - left.length).slice(0, 1);
+}
+
+/** How many statements claim each fragment, so a shared preamble can be told apart. */
+function countSpanOwners(kg: KnowledgeGraph): Map<string, number> {
+	const counts = new Map<string, number>();
+	for (const statement of deonticNodes(kg)) {
+		for (const span of new Set(statement.evidenceSpans ?? [])) {
+			counts.set(span, (counts.get(span) ?? 0) + 1);
+		}
+	}
+	return counts;
+}
+
 /** The document-side half of the payload: where to scroll and what to underline. */
 export type KnowledgeGraphDocumentTarget = Pick<
 	KnowledgeGraphBridgePayload,
@@ -132,7 +163,9 @@ export function buildNodeDocumentTarget(
 		if (clause.ref) add(clause.ref, `kg-${clause.id}`, 'clause');
 	} else if (statement) {
 		paragraphIds = statement.paragraphIds;
-		if (statement.text) add(statement.text, `kg-${statement.id}`, statement.kind);
+		for (const span of evidenceLabels(statement, countSpanOwners(kg))) {
+			add(span, `kg-${statement.id}`, statement.kind);
+		}
 		const home = kg.clauses.find((c) => c.id === statement.clauseId);
 		if (home?.ref) add(home.ref, `kg-${home.id}`, 'clause');
 	} else if (term) {
@@ -204,13 +237,14 @@ export function buildKnowledgeGraphBridge(
 		add(party.name, `kg-${party.id}`, 'party');
 		for (const alias of party.aliases) add(alias, `kg-${party.id}`, 'party');
 
+		const spanOwners = countSpanOwners(kg);
 		const paragraphSet = new Set<string>();
 		const scoreByParagraphId: Record<string, number> = {};
 		const toneByParagraphId: Record<string, DeonticTone> = {};
 		for (const v of topStatements) {
 			const score = attention.deonticScore.get(v.id) ?? 0;
 			const tone = attention.toneByDeontic.get(v.id) ?? 'burden';
-			if (v.text) add(v.text, `kg-${v.id}`, v.kind);
+			for (const span of evidenceLabels(v, spanOwners)) add(span, `kg-${v.id}`, v.kind);
 			const clause = v.clauseId ? clauseById.get(v.clauseId) : undefined;
 			if (clause?.ref) add(clause.ref, `kg-${clause.id}`, 'clause');
 			for (const pid of v.paragraphIds) {

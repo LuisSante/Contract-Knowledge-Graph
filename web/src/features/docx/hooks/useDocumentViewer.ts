@@ -30,7 +30,7 @@ export type DocumentViewerStatus = 'idle' | 'loading' | 'ready' | 'error';
  * and syncs the paragraphs to the Zustand store.
  *
  * Scope of this feature: render + paragraph store + basic selection. Deferred:
- * contradiction markers, related, explanation connectors and the graph recompute
+ * related connectors and the graph recompute
  * on commit of edits.
  */
 export function useDocumentViewer(
@@ -42,7 +42,7 @@ export function useDocumentViewer(
 	const [status, setStatus] = useState<DocumentViewerStatus>('idle');
 	const [documentName, setDocumentName] = useState<string | null>(null);
 	// Incremented every time a render finishes: the features that decorate the
-	// DOM (contradictions, related…) depend on it to re-apply themselves.
+	// DOM (related, knowledge-graph marks…) depend on it to re-apply themselves.
 	const [renderEpoch, setRenderEpoch] = useState(0);
 
 	// Mutable document maps (refs: they must not trigger a re-render).

@@ -19,19 +19,11 @@ import {
 } from '@/stores/knowledgeGraph';
 import type { RightPanelTab } from '@/types/document';
 
-const ACTION_BTN =
-	'h-7 border-transparent bg-card px-2 text-2xs text-primary shadow-sm hover:bg-card/90 hover:text-primary disabled:opacity-50';
 
 interface RightPanelHeaderActionsProps {
 	activeTab: RightPanelTab;
 	// analysis
-	contradictionLoading: boolean;
-	relatedLoading: boolean;
-	onLoadSaved: () => void;
-	onSearch: () => void;
 	// paragraph_explanation
-	explanationDisabled: boolean;
-	onExplain: () => void;
 }
 
 /**
@@ -41,12 +33,6 @@ interface RightPanelHeaderActionsProps {
  */
 export function RightPanelHeaderActions({
 	activeTab,
-	contradictionLoading,
-	relatedLoading,
-	onLoadSaved,
-	onSearch,
-	explanationDisabled,
-	onExplain,
 }: RightPanelHeaderActionsProps) {
 	const focusedPartyName = useKnowledgeGraphStore((state) => state.ledger?.partyName ?? null);
 	const selectedPartyIds = useKnowledgeGraphStore((state) => state.selectedPartyIds);
@@ -151,51 +137,6 @@ export function RightPanelHeaderActions({
 						</SelectItem>
 					</SelectContent>
 				</Select>
-			</div>
-		);
-	}
-
-	if (activeTab === 'analysis') {
-		return (
-			<div className="flex shrink-0 items-center gap-1.5">
-				<Button
-					variant="outline"
-					size="sm"
-					className={ACTION_BTN}
-					disabled={contradictionLoading}
-					onClick={onLoadSaved}
-				>
-					Saved
-				</Button>
-				<Button
-					variant="outline"
-					size="sm"
-					className={ACTION_BTN}
-					disabled={contradictionLoading || relatedLoading}
-					title="Search contradictions with LLM"
-					onClick={onSearch}
-				>
-					Search
-				</Button>
-			</div>
-		);
-	}
-
-	if (activeTab === 'paragraph_explanation') {
-		return (
-			<div className="flex shrink-0 items-center gap-1.5">
-				<Button
-					variant="outline"
-					size="sm"
-					className={ACTION_BTN}
-					disabled={explanationDisabled}
-					onClick={onExplain}
-				>
-					Explain paragraph
-				</Button>
-				<Button variant="outline" size="sm" className={ACTION_BTN} disabled title="Simplify — coming soon">
-					Simplify
-				</Button>
 			</div>
 		);
 	}

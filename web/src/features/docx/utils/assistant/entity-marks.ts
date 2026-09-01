@@ -1,9 +1,8 @@
-import { escapeRegex } from '@/features/docx/utils/text';
-import { normalizeParagraphExplanationEntityKey } from '@/features/docx/utils/assistant/paragraph-explanation';
+import { escapeRegex, normalizeEntityKey } from '@/features/docx/utils/text';
 
 /**
  * Entity highlighting within the document body (not only in the chat).
- * Wraps each entity occurrence in a `<span.docx-paragraph-explanation-entity-link>`
+ * Wraps each entity occurrence in a `<span.docx-entity-mark>`
  * with its `data-entity-key` and color, so they match the entities in the
  * panel/chat and sync on hover. Port of
  * `highlightParagraphExplanationEntitiesInElement` / `clearParagraphExplanationEntityMarks`
@@ -19,7 +18,7 @@ export type DocumentEntityHighlight = {
 
 /** Removes entity markers from an element, restoring the text. */
 export function clearEntityMarks(element: HTMLElement) {
-	const marks = element.querySelectorAll<HTMLElement>('span.docx-paragraph-explanation-entity-link');
+	const marks = element.querySelectorAll<HTMLElement>('span.docx-entity-mark');
 	for (const mark of marks) {
 		const parent = mark.parentNode;
 		if (!parent) continue;
@@ -50,7 +49,7 @@ export function highlightEntitiesInElement(
 	if (labels.length === 0) return;
 
 	const entityByNormalizedLabel = new Map(
-		entities.map((entity) => [normalizeParagraphExplanationEntityKey(entity.label), entity])
+		entities.map((entity) => [normalizeEntityKey(entity.label), entity])
 	);
 	const entityPattern = new RegExp(
 		labels.map((label) => escapeRegex(label).replace(/\s+/g, '\\s+')).join('|'),
@@ -68,8 +67,7 @@ export function highlightEntitiesInElement(
 		const parentElement = textNode.parentElement;
 		if (
 			parentElement &&
-			!parentElement.closest('.docx-paragraph-explanation-entity-link') &&
-			!parentElement.closest('mark.docx-contradiction-snippet')
+			!parentElement.closest('.docx-entity-mark')
 		) {
 			nodes.push({ node: textNode, start: text.length });
 			text += textNode.nodeValue ?? '';
@@ -87,7 +85,7 @@ export function highlightEntitiesInElement(
 		if (!value) continue;
 		const from = match.index ?? 0;
 		const to = from + value.length;
-		const meta = entityByNormalizedLabel.get(normalizeParagraphExplanationEntityKey(value));
+		const meta = entityByNormalizedLabel.get(normalizeEntityKey(value));
 		for (const { node, start } of nodes) {
 			const length = node.nodeValue?.length ?? 0;
 			const sliceStart = Math.max(from, start);
@@ -109,7 +107,7 @@ export function highlightEntitiesInElement(
 				fragment.appendChild(document.createTextNode(originalText.slice(cursor, slice.start)));
 			}
 			const marker = document.createElement('span');
-			marker.className = 'docx-paragraph-explanation-entity-link';
+			marker.className = 'docx-entity-mark';
 			if (slice.meta) {
 				marker.dataset.entityKey = slice.meta.key;
 				marker.style.setProperty('--entity-color', slice.meta.color);

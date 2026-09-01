@@ -12,11 +12,6 @@ from schemas.types import (
     AssistantChatResponse,
     AssistantCitation,
     AssistantParagraphNode,
-    SimplifyAudit,
-    SimplifyEvidence,
-    SimplifyRelatedParagraph,
-    SimplifySelectionRequest,
-    SimplifySelectionResponse,
 )
 from services.llm.cost_estimator import estimate_model_cost_usd, estimate_tokens, format_cost
 from services.llm.factory import LLMProviderFactory
@@ -52,64 +47,6 @@ def estimate_assistant_chat_request(payload: AssistantChatRequest) -> dict[str, 
     resolved_model = (payload.model or "").strip() or _default_model_for_provider(payload.provider)
     input_tokens = estimate_tokens(system_prompt, resolved_model) + estimate_tokens(user_prompt, resolved_model)
     output_tokens = ASSISTANT_ESTIMATED_OUTPUT_TOKENS
-    cost = estimate_model_cost_usd(
-        model_name=resolved_model,
-        input_tokens=input_tokens,
-        output_tokens=output_tokens,
-    )
-    return {
-        "provider": payload.provider,
-        "model": resolved_model,
-        "estimated_input_tokens": input_tokens,
-        "estimated_output_tokens": output_tokens,
-        "estimated_total_tokens": input_tokens + output_tokens,
-        "estimated_cost_usd": cost,
-        "estimated_cost_usd_formatted": format_cost(cost),
-    }
-
-
-def estimate_simplify_request(
-    payload: SimplifySelectionRequest,
-    *,
-    fix_contradiction: bool,
-) -> dict[str, Any]:
-    paragraph_text = payload.paragraphText or ""
-    start, end = _normalize_selection_bounds(
-        payload.selectionStart,
-        payload.selectionEnd,
-        total_length=len(paragraph_text),
-    )
-    if start == end:
-        start = 0
-        end = len(paragraph_text)
-    original_snippet = paragraph_text[start:end]
-
-    if fix_contradiction:
-        system_prompt = _build_fix_contradiction_system_prompt()
-        user_prompt = _build_fix_contradiction_user_prompt(
-            document_id=payload.documentId,
-            paragraph_id=payload.paragraphId,
-            paragraph_text=paragraph_text,
-            selected_snippet=original_snippet,
-            selection_start=start,
-            selection_end=end,
-            contradiction_reason=(payload.contradictionReason or "").strip(),
-            related_paragraphs=payload.relatedParagraphs[:MAX_FIX_RELATED_PARAGRAPHS],
-        )
-    else:
-        system_prompt = _build_simplify_system_prompt()
-        user_prompt = _build_simplify_user_prompt(
-            document_id=payload.documentId,
-            paragraph_id=payload.paragraphId,
-            paragraph_text=paragraph_text,
-            selected_snippet=original_snippet,
-            selection_start=start,
-            selection_end=end,
-        )
-
-    resolved_model = _default_model_for_provider(payload.provider)
-    input_tokens = estimate_tokens(system_prompt, resolved_model) + estimate_tokens(user_prompt, resolved_model)
-    output_tokens = SIMPLIFY_ESTIMATED_OUTPUT_TOKENS
     cost = estimate_model_cost_usd(
         model_name=resolved_model,
         input_tokens=input_tokens,
@@ -175,183 +112,6 @@ def generate_assistant_response(payload: AssistantChatRequest) -> AssistantChatR
         mode=payload.mode,
         scope=payload.scope,
         provider=payload.provider,
-    )
-
-
-def simplify_paragraph_selection(payload: SimplifySelectionRequest) -> SimplifySelectionResponse:
-    paragraph_text = payload.paragraphText or ""
-    if not paragraph_text:
-        raise RuntimeError("Paragraph text is empty")
-
-    start, end = _normalize_selection_bounds(
-        payload.selectionStart,
-        payload.selectionEnd,
-        total_length=len(paragraph_text),
-    )
-
-    if start == end:
-        start = 0
-        end = len(paragraph_text)
-
-    original_snippet = paragraph_text[start:end]
-    if not original_snippet:
-        raise RuntimeError("No text is available to simplify")
-
-    provider = LLMProviderFactory.create(payload.provider)
-    system_prompt = _build_simplify_system_prompt()
-    user_prompt = _build_simplify_user_prompt(
-        document_id=payload.documentId,
-        paragraph_id=payload.paragraphId,
-        paragraph_text=paragraph_text,
-        selected_snippet=original_snippet,
-        selection_start=start,
-        selection_end=end,
-    )
-
-    raw_text = provider.generate(
-        system_prompt=system_prompt,
-        user_prompt=user_prompt,
-        temperature=0.0,
-    )
-    parsed = _parse_json_from_model(raw_text)
-    simplified_value = (
-        parsed.get("simplified_snippet")
-        or parsed.get("simplifiedSnippet")
-        or parsed.get("rewrite")
-        or parsed.get("answer")
-    )
-    simplified_snippet = _sanitize_simplified_snippet(
-        simplified_value,
-        fallback=raw_text,
-        original=original_snippet,
-    )
-    simplified_snippet = _enforce_literal_token_preservation(
-        original=original_snippet,
-        candidate=simplified_snippet,
-    )
-
-    evidence = SimplifyEvidence(
-        paragraph_id=payload.paragraphId,
-        selection_start=start,
-        selection_end=end,
-    )
-    audit = SimplifyAudit(
-        system_prompt=system_prompt,
-        user_prompt=user_prompt,
-        model_response=raw_text,
-    )
-
-    _append_simplify_audit_log(
-        payload=payload,
-        evidence=evidence,
-        original_snippet=original_snippet,
-        simplified_snippet=simplified_snippet,
-        audit=audit,
-    )
-
-    logger.info("======================")
-    logger.info("\t\t SIMPLIFY AUDIT LOG ENTRY")
-    logger.info(SimplifySelectionResponse(
-        paragraphId=payload.paragraphId,
-        provider=payload.provider,
-        originalSnippet=original_snippet,
-        simplifiedSnippet=simplified_snippet,
-        evidence=evidence,
-        audit=audit,
-    ))
-    logger.info("======================")
-
-    return SimplifySelectionResponse(
-        paragraphId=payload.paragraphId,
-        provider=payload.provider,
-        originalSnippet=original_snippet,
-        simplifiedSnippet=simplified_snippet,
-        evidence=evidence,
-        audit=audit,
-    )
-
-
-def fix_contradiction_selection(payload: SimplifySelectionRequest) -> SimplifySelectionResponse:
-    paragraph_text = payload.paragraphText or ""
-    if not paragraph_text:
-        raise RuntimeError("Paragraph text is empty")
-
-    start, end = _normalize_selection_bounds(
-        payload.selectionStart,
-        payload.selectionEnd,
-        total_length=len(paragraph_text),
-    )
-
-    if start == end:
-        start = 0
-        end = len(paragraph_text)
-
-    original_snippet = paragraph_text[start:end]
-    if not original_snippet:
-        raise RuntimeError("No text is available to fix")
-
-    provider = LLMProviderFactory.create(payload.provider)
-    system_prompt = _build_fix_contradiction_system_prompt()
-    user_prompt = _build_fix_contradiction_user_prompt(
-        document_id=payload.documentId,
-        paragraph_id=payload.paragraphId,
-        paragraph_text=paragraph_text,
-        selected_snippet=original_snippet,
-        selection_start=start,
-        selection_end=end,
-        contradiction_reason=(payload.contradictionReason or "").strip(),
-        related_paragraphs=payload.relatedParagraphs[:MAX_FIX_RELATED_PARAGRAPHS],
-    )
-
-    raw_text = provider.generate(
-        system_prompt=system_prompt,
-        user_prompt=user_prompt,
-        temperature=0.0,
-    )
-    parsed = _parse_json_from_model(raw_text)
-    fixed_value = (
-        parsed.get("fixed_snippet")
-        or parsed.get("fixedSnippet")
-        or parsed.get("rewrite")
-        or parsed.get("answer")
-        or parsed.get("simplified_snippet")
-    )
-    fixed_snippet = _sanitize_simplified_snippet(
-        fixed_value,
-        fallback=raw_text,
-        original=original_snippet,
-    )
-    fixed_snippet = _enforce_literal_token_preservation(
-        original=original_snippet,
-        candidate=fixed_snippet,
-    )
-
-    evidence = SimplifyEvidence(
-        paragraph_id=payload.paragraphId,
-        selection_start=start,
-        selection_end=end,
-    )
-    audit = SimplifyAudit(
-        system_prompt=system_prompt,
-        user_prompt=user_prompt,
-        model_response=raw_text,
-    )
-
-    _append_simplify_audit_log(
-        payload=payload,
-        evidence=evidence,
-        original_snippet=original_snippet,
-        simplified_snippet=fixed_snippet,
-        audit=audit,
-    )
-
-    return SimplifySelectionResponse(
-        paragraphId=payload.paragraphId,
-        provider=payload.provider,
-        originalSnippet=original_snippet,
-        simplifiedSnippet=fixed_snippet,
-        evidence=evidence,
-        audit=audit,
     )
 
 
@@ -766,14 +526,6 @@ def _format_fix_related_context(related_paragraphs: list[SimplifyRelatedParagrap
     if not lines:
         return "(none)"
     return "\n\n".join(lines)
-
-
-def _normalize_selection_bounds(start: int, end: int, *, total_length: int) -> tuple[int, int]:
-    normalized_start = max(0, min(int(start), total_length))
-    normalized_end = max(0, min(int(end), total_length))
-    if normalized_end < normalized_start:
-        normalized_start, normalized_end = normalized_end, normalized_start
-    return normalized_start, normalized_end
 
 
 def _sanitize_simplified_snippet(value: Any, *, fallback: str, original: str) -> str:

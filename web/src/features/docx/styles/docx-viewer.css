@@ -186,7 +186,7 @@
 		transition: opacity 160ms ease;
 	}
 
-	.docx-paragraph-explanation-entity-link {
+	.docx-entity-mark {
 		color: var(--entity-color, #2563eb);
 		text-decoration: underline;
 		text-decoration-thickness: 1.5px;
@@ -218,7 +218,7 @@
 			text-decoration-color 140ms ease;
 	}
 
-	.docx-paragraph-explanation-entity-link.is-entity-hovered,
+	.docx-entity-mark.is-entity-hovered,
 	.docx-paragraph-explanation-entity-token.is-entity-hovered {
 		background: var(--entity-color-soft, rgba(37, 99, 235, 0.16));
 		text-decoration-thickness: 2px;

@@ -65,7 +65,7 @@ export function DocxPageHeader({
 					<SelectTrigger
 						size="sm"
 						className="h-7 w-[88px] shrink-0 border-transparent bg-card px-2 text-2xs text-primary shadow-sm hover:bg-card/90 focus-visible:ring-header-foreground/40 [&_svg]:text-primary"
-						title="Global model for Contradiction Analysis and Paragraph Explanation"
+						title="Global model for the assistant and knowledge-graph extraction"
 					>
 						<SelectValue />
 					</SelectTrigger>

@@ -14,11 +14,7 @@ from api.serializers import (
     LlmUsageTotalResponseSerializer,
 )
 from schemas.types import LlmEstimateRequest, LlmEstimateResponse, LlmUsageTotalResponse
-from services.assistant.contract_assistant import (
-    estimate_assistant_chat_request,
-    estimate_simplify_request,
-)
-from services.contradictions.analysis import estimate_contradiction_analysis_request
+from services.assistant.contract_assistant import estimate_assistant_chat_request
 from services.llm.cost_estimator import format_cost
 from services.llm.usage_tracker import get_total_usage_cost_usd
 
@@ -31,24 +27,11 @@ class LlmEstimateView(APIView):
         serializer.is_valid(raise_exception=True)
         payload = LlmEstimateRequest(**serializer.validated_data)
 
-        if payload.callType == "assistant_chat":
-            if payload.assistantChat is None:
-                raise RuntimeError("assistantChat payload is required")
-            estimate = estimate_assistant_chat_request(payload.assistantChat)
-        elif payload.callType == "assistant_simplify":
-            if payload.simplifySelection is None:
-                raise RuntimeError("simplifySelection payload is required")
-            estimate = estimate_simplify_request(payload.simplifySelection, fix_contradiction=False)
-        elif payload.callType == "assistant_fix_contradiction":
-            if payload.simplifySelection is None:
-                raise RuntimeError("simplifySelection payload is required")
-            estimate = estimate_simplify_request(payload.simplifySelection, fix_contradiction=True)
-        elif payload.callType == "contradictions_analyze":
-            if payload.contradictionAnalysis is None:
-                raise RuntimeError("contradictionAnalysis payload is required")
-            estimate = estimate_contradiction_analysis_request(payload.contradictionAnalysis)
-        else:
+        if payload.callType != "assistant_chat":
             raise RuntimeError("Unsupported callType")
+        if payload.assistantChat is None:
+            raise RuntimeError("assistantChat payload is required")
+        estimate = estimate_assistant_chat_request(payload.assistantChat)
 
         response = LlmEstimateResponse(
             callType=payload.callType,

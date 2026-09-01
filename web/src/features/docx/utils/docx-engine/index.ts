@@ -12,7 +12,7 @@
  *   4. optional: `detectDocxNoiseNodeIds(viewer)` to exclude repeated
  *      headers/footers and page numbers from any later analysis.
  *
- * The app features (editing, badges, contradictions) plug in via the
+ * The app features (editing, badges, entity marks) plug in via the
  * `callbacks`/`deps` injected into `createRenderer` — the engine does not know them.
  */
 

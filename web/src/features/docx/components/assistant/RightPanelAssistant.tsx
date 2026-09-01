@@ -11,14 +11,12 @@ interface RightPanelAssistantProps {
 	loading: boolean;
 	error: string | null;
 	entityHighlightsEnabled?: boolean;
-	rewriteBusy?: boolean;
 	onInputChange: (value: string) => void;
 	onSubmit: () => void;
 	onKeydown: (event: KeyboardEvent<HTMLTextAreaElement>) => void;
 	onSuggestedQuestionClick: (question: string) => void;
 	onFocusNodeFromPanel: (nodeId: string, emphasize?: boolean) => void;
 	onToggleEntityHighlights?: () => void;
-	onAcceptFixSuggestion?: (messageId: string) => void | Promise<void>;
 	initialSuggestions?: string[];
 	onInitialSuggestionClick?: (question: string) => void;
 }
@@ -29,14 +27,12 @@ export function RightPanelAssistant({
 	loading,
 	error,
 	entityHighlightsEnabled = true,
-	rewriteBusy = false,
 	onInputChange,
 	onSubmit,
 	onKeydown,
 	onSuggestedQuestionClick,
 	onFocusNodeFromPanel,
 	onToggleEntityHighlights,
-	onAcceptFixSuggestion,
 	initialSuggestions,
 	onInitialSuggestionClick,
 }: RightPanelAssistantProps) {
@@ -46,11 +42,9 @@ export function RightPanelAssistant({
 				messages={messages}
 				loading={loading}
 				entityHighlightsEnabled={entityHighlightsEnabled}
-				rewriteBusy={rewriteBusy}
 				onSuggestedQuestionClick={onSuggestedQuestionClick}
 				onFocusNodeFromPanel={onFocusNodeFromPanel}
 				onToggleEntityHighlights={onToggleEntityHighlights}
-				onAcceptFixSuggestion={onAcceptFixSuggestion}
 			/>
 
 			{error ? (

@@ -25,9 +25,7 @@ interface AssistantMessageListProps {
 	onSuggestedQuestionClick: (question: string) => void;
 	onFocusNodeFromPanel: (nodeId: string, emphasize?: boolean) => void;
 	entityHighlightsEnabled?: boolean;
-	rewriteBusy?: boolean;
 	onToggleEntityHighlights?: () => void;
-	onAcceptFixSuggestion?: (messageId: string) => void | Promise<void>;
 }
 
 function LoadingBubble() {
@@ -63,9 +61,7 @@ export function AssistantMessageList({
 	onSuggestedQuestionClick,
 	onFocusNodeFromPanel,
 	entityHighlightsEnabled = true,
-	rewriteBusy = false,
 	onToggleEntityHighlights,
-	onAcceptFixSuggestion,
 }: AssistantMessageListProps) {
 	const lastIndex = messages.length - 1;
 
@@ -105,9 +101,7 @@ export function AssistantMessageList({
 									onSuggestedQuestionClick={onSuggestedQuestionClick}
 									onFocusNodeFromPanel={onFocusNodeFromPanel}
 									entityHighlightsEnabled={entityHighlightsEnabled}
-									rewriteBusy={rewriteBusy}
 									onToggleEntityHighlights={onToggleEntityHighlights}
-									onAcceptFixSuggestion={onAcceptFixSuggestion}
 								/>
 							</MessageScrollerItem>
 						))}

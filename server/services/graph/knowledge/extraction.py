@@ -24,6 +24,7 @@ from services.graph.knowledge.ontology import (
     DEONTIC_ID_PREFIX,
     RELATION_TYPES,
 )
+from services.graph.knowledge.evidence import anchor_to_evidence
 from services.graph.knowledge.prompts import SYSTEM_PROMPT, build_user_prompt
 from services.llm.base import LLMProvider
 
@@ -274,6 +275,8 @@ class _GraphAccumulator:
         deadline: str,
         frequency: str,
         paragraph_ids: list[str],
+        evidence_spans: list[str],
+        evidence_verified: bool | None,
     ) -> str:
         dedup_key = "|".join(
             [kind, _normalize(summary)[:120], obligor or "", beneficiary or ""]
@@ -299,6 +302,8 @@ class _GraphAccumulator:
                 deadline=deadline.strip(),
                 frequency=frequency.strip(),
                 paragraphIds=paragraph_ids,
+                evidenceVerified=evidence_verified,
+                evidenceSpans=evidence_spans,
             )
         )
         return global_id
@@ -523,6 +528,7 @@ def build_knowledge_graph(
     # Assign a stable sequential index per paragraph and remember its real id.
     indexed: list[dict[str, Any]] = []
     index_to_id: dict[int, str] = {}
+    paragraph_texts: list[tuple[str, str]] = []
     for i, row in enumerate(paragraphs_data):
         text = str(row.get("text") or "").strip()
         if not text:
@@ -530,6 +536,7 @@ def build_knowledge_graph(
         real_id = str(row.get("id"))
         indexed.append({"i": i, "text": text})
         index_to_id[i] = real_id
+        paragraph_texts.append((real_id, text))
 
     logger.info("KG extraction: %d paragraphs", len(indexed))
     accumulator = _GraphAccumulator()
@@ -554,7 +561,7 @@ def build_knowledge_graph(
             logger.warning("KG extraction: empty payload on chunk %d", chunk_no)
             continue
 
-        _ingest_chunk(payload, index_to_id, accumulator)
+        _ingest_chunk(payload, index_to_id, paragraph_texts, accumulator)
 
     return accumulator.build()
 
@@ -575,6 +582,7 @@ def _paragraph_ids_from(raw_paragraphs: Any, index_to_id: dict[int, str]) -> lis
 def _ingest_chunk(
     payload: dict[str, Any],
     index_to_id: dict[int, str],
+    paragraph_texts: list[tuple[str, str]],
     accumulator: _GraphAccumulator,
 ) -> None:
     # Map this chunk's local ids to resolved global ids.
@@ -601,7 +609,11 @@ def _ingest_chunk(
     local_term_to_global: dict[str, str] = {}
     for raw_term in payload.get("definedTerms") or []:
         local_id = str(raw_term.get("id") or "").strip()
-        pids = _paragraph_ids_from(raw_term.get("paragraphs"), index_to_id)
+        pids, _, _ = anchor_to_evidence(
+            str(raw_term.get("definition") or ""),
+            _paragraph_ids_from(raw_term.get("paragraphs"), index_to_id),
+            paragraph_texts,
+        )
         global_id = accumulator.add_defined_term(
             raw_term, _resolve(raw_term.get("definedIn"), local_clause_to_global), pids
         )
@@ -616,6 +628,11 @@ def _ingest_chunk(
             if not summary:
                 continue
             local_id = str(raw.get("id") or "").strip()
+            pids, spans, verified = anchor_to_evidence(
+                str(raw.get("text") or ""),
+                _paragraph_ids_from(raw.get("paragraphs"), index_to_id),
+                paragraph_texts,
+            )
             global_id = accumulator.add_deontic(
                 kind=kind,
                 action=str(raw.get("action") or ""),
@@ -626,7 +643,9 @@ def _ingest_chunk(
                 clause=_resolve(raw.get("clause"), local_clause_to_global),
                 deadline=str(raw.get("deadline") or ""),
                 frequency=str(raw.get("frequency") or ""),
-                paragraph_ids=_paragraph_ids_from(raw.get("paragraphs"), index_to_id),
+                paragraph_ids=pids,
+                evidence_spans=spans,
+                evidence_verified=verified,
             )
             if local_id:
                 local_deontic_to_global[local_id] = global_id
@@ -638,10 +657,15 @@ def _ingest_chunk(
         )
 
     for raw_condition in payload.get("conditions") or []:
+        condition_pids, _, _ = anchor_to_evidence(
+            str(raw_condition.get("trigger") or ""),
+            _paragraph_ids_from(raw_condition.get("paragraphs"), index_to_id),
+            paragraph_texts,
+        )
         accumulator.add_condition(
             raw_condition,
             _resolve_attachment(raw_condition.get("gates")),
-            _paragraph_ids_from(raw_condition.get("paragraphs"), index_to_id),
+            condition_pids,
         )
 
     for raw_reference in payload.get("references") or []:

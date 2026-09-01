@@ -15,8 +15,6 @@ import {
 import type { AssistantChatMessage } from '@/types/document';
 
 import { CitationChips } from '@/features/docx/components/assistant/CitationChips';
-import { ContradictionActionMessageCard } from '@/features/docx/components/contradiction/ContradictionActionMessageCard';
-import { StructuredContradictionMessage } from '@/features/docx/components/contradiction/StructuredContradictionMessage';
 import { SuggestedQuestions } from '@/features/docx/components/assistant/SuggestedQuestions';
 
 interface AssistantMessageProps {
@@ -24,9 +22,7 @@ interface AssistantMessageProps {
 	onSuggestedQuestionClick: (question: string) => void;
 	onFocusNodeFromPanel: (nodeId: string, emphasize?: boolean) => void;
 	entityHighlightsEnabled?: boolean;
-	rewriteBusy?: boolean;
 	onToggleEntityHighlights?: () => void;
-	onAcceptFixSuggestion?: (messageId: string) => void | Promise<void>;
 }
 
 function splitLeadLabel(content: string): { label: string | null; rest: string } {
@@ -74,9 +70,7 @@ export function AssistantMessage({
 	onSuggestedQuestionClick,
 	onFocusNodeFromPanel,
 	entityHighlightsEnabled = true,
-	rewriteBusy = false,
 	onToggleEntityHighlights = () => {},
-	onAcceptFixSuggestion = () => {},
 }: AssistantMessageProps) {
 	const isUser = message.role === 'user';
 	const isAssistant = message.role === 'assistant';
@@ -98,22 +92,6 @@ export function AssistantMessage({
 		</MessageAvatar>
 	);
 
-	if (message.fixContradictionSuggestion || message.freeContradictionExplanation) {
-		return (
-			<Message align={align}>
-				{avatar}
-				<MessageContent>
-					<ContradictionActionMessageCard
-						message={message}
-						rewriteBusy={rewriteBusy}
-						onFocusNodeFromPanel={onFocusNodeFromPanel}
-						onAcceptFixSuggestion={onAcceptFixSuggestion}
-					/>
-				</MessageContent>
-			</Message>
-		);
-	}
-
 	const entities = message.entityHighlights ?? [];
 	const canToggleEntities = isAssistant && entities.length > 0;
 
@@ -130,13 +108,7 @@ export function AssistantMessage({
 						className={`text-xs ${canToggleEntities ? 'cursor-pointer' : ''}`}
 						onClick={canToggleEntities ? () => onToggleEntityHighlights() : undefined}
 					>
-						{isAssistant && message.structuredContradiction ? (
-							<StructuredContradictionMessage
-								messageContent={message.content}
-								structuredContradiction={message.structuredContradiction}
-							/>
-						) : (
-							(() => {
+						{(() => {
 								const { label, rest } = isAssistant
 									? splitLeadLabel(message.content)
 									: { label: null, rest: message.content };
@@ -155,8 +127,7 @@ export function AssistantMessage({
 										</p>
 									</>
 								);
-							})()
-						)}
+						})()}
 
 						{message.suggestedQuestions?.length ? (
 							<SuggestedQuestions

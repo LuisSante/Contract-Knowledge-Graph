@@ -4,29 +4,18 @@ import { useCallback, useRef, useState } from 'react';
 import { fetchLlmEstimate } from '@/services/llm';
 import type {
 	AssistantChatRequest,
-	ContradictionAnalysisRequest,
 	LlmEstimateCallType,
 	LlmEstimateRequest,
 	LlmEstimateResponse,
-	SimplifySelectionRequest,
 } from '@/types/document';
 
-type ConfirmPayload =
-	| AssistantChatRequest
-	| SimplifySelectionRequest
-	| ContradictionAnalysisRequest;
+type ConfirmPayload = AssistantChatRequest;
 
 function buildEstimateRequest(
 	callType: LlmEstimateCallType,
 	payload: ConfirmPayload
 ): LlmEstimateRequest {
-	if (callType === 'assistant_chat') {
-		return { callType, assistantChat: payload as AssistantChatRequest };
-	}
-	if (callType === 'contradictions_analyze') {
-		return { callType, contradictionAnalysis: payload as ContradictionAnalysisRequest };
-	}
-	return { callType, simplifySelection: payload as SimplifySelectionRequest };
+	return { callType, assistantChat: payload };
 }
 
 /**

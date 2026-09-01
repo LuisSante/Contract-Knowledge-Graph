@@ -12,20 +12,21 @@ import {
 	resolveAssistantSuggestedQuestions,
 } from '@/features/docx/utils/assistant/assistant';
 import { buildUserMessage } from '@/features/docx/utils/assistant/message-builders';
-import {
-	useContradictionQuickActions,
-	type ConfirmLlmEstimate,
-} from '@/features/docx/hooks/useContradictionQuickActions';
 import type {
 	AssistantChatMessage,
 	AssistantChatRequest,
 	AssistantMode,
 	AssistantProvider,
 	AssistantScope,
-	ContradictionParagraphResult,
 	ParagraphEditState,
 	RelatedParagraph,
 } from '@/types/document';
+
+/** Gate in front of a billable call: resolves false when the user declines the cost. */
+export type ConfirmLlmEstimate = (
+	callType: 'assistant_chat',
+	payload: AssistantChatRequest
+) => Promise<boolean>;
 
 interface UseAssistantChatParams {
 	docId: string;
@@ -34,8 +35,6 @@ interface UseAssistantChatParams {
 	getViewerElement?: () => HTMLElement | null;
 	/** Map of paragraph id → DOM element (used to apply the rewrite). */
 	paragraphElementById?: Map<string, HTMLElement>;
-	/** Contradiction results per paragraph (feed the quick-actions). */
-	contradictionResultsByParagraphId?: Map<string, ContradictionParagraphResult>;
 	/** Related paragraphs of the selected one (fix context). */
 	selectedRelatedParagraphs?: RelatedParagraph[];
 	/** Global analysis model (optional, forwarded to the backend). */
@@ -46,19 +45,15 @@ interface UseAssistantChatParams {
 
 /**
  * Assistant chat over the contract. A single `messages` array feeds both the
- * Contract Chat Assistant and the chat embedded in Contradiction Analysis, so
+ * Contract Chat Assistant, so
  * whatever is typed in one appears in the other (parity with the Svelte version).
  *
  * This hook is the **core** (free-text question + thread state) and composes
- * `useContradictionQuickActions` (why/risks/fix/entities) over the same thread,
  * exposing a single API. The message builders live in `utils/assistant`.
  */
 export function useAssistantChat({
 	docId,
 	nodeEditStateById,
-	getViewerElement,
-	paragraphElementById,
-	contradictionResultsByParagraphId,
 	selectedRelatedParagraphs = [],
 	model,
 	confirmLlmEstimate,
@@ -187,34 +182,9 @@ export function useAssistantChat({
 
 	const submit = (questionOverride?: string) => submitAssistantQuestion(questionOverride);
 
-	/** Free question inside the contradiction chat (always selected scope). */
-	const submitContradictionQuestion = (questionOverride?: string) =>
-		submitAssistantQuestion(questionOverride, { scope: 'selected' });
-
 	/** Question about the focused KG party (burden/benefit of its clauses). */
 	const submitKgNodeQuestion = (questionOverride?: string) =>
 		submitAssistantQuestion(questionOverride, { scope: 'kg_node' });
-
-	// Contradiction quick-actions (why/risks/fix/entities) over the same thread.
-	const quickActions = useContradictionQuickActions({
-		docId,
-		nodeEditStateById,
-		provider,
-		model,
-		selectedRelatedParagraphs,
-		contradictionResultsByParagraphId,
-		paragraphElementById,
-		getViewerElement,
-		confirmLlmEstimate,
-		messages,
-		messagesRef,
-		setMessages,
-		loading,
-		setLoading,
-		setError,
-		nextMessageId,
-		submitContradictionQuestion,
-	});
 
 	const handleKeydown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
 		if (event.key === 'Enter' && !event.shiftKey) {
@@ -231,14 +201,6 @@ export function useAssistantChat({
 		}
 	};
 
-	/** Cmd/Ctrl+Enter sends in the contradiction chat (selected scope). */
-	const handleContradictionKeydown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-		if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
-			event.preventDefault();
-			void submitContradictionQuestion();
-		}
-	};
-
 	return {
 		messages,
 		input,
@@ -246,21 +208,11 @@ export function useAssistantChat({
 		error,
 		scope,
 		provider,
-		entityHighlightsEnabled: quickActions.entityHighlightsEnabled,
-		contradictionEntities: quickActions.contradictionEntities,
-		rewriteBusy: quickActions.rewriteBusy,
 		setScope,
 		setProvider,
 		setInput,
 		submit,
 		handleKeydown,
-		// Contradiction chat (shared):
-		askQuickAction: quickActions.askQuickAction,
-		suggestContradictionFix: quickActions.suggestContradictionFix,
-		acceptFixSuggestion: quickActions.acceptFixSuggestion,
-		toggleEntityHighlights: quickActions.toggleEntityHighlights,
-		submitContradictionQuestion,
-		handleContradictionKeydown,
 		// Knowledge Graph chat (focused party):
 		submitKgNodeQuestion,
 		handleKgNodeKeydown,

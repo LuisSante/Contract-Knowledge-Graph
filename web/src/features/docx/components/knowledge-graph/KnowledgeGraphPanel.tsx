@@ -5,15 +5,23 @@ import * as d3 from 'd3';
 import { fetchKnowledgeGraph, fetchPartyMergeHints } from '@/services/knowledge';
 import { useDocumentStore } from '@/stores/document';
 import { useKnowledgeGraphStore } from '@/stores/knowledgeGraph';
-import { buildKnowledgeGraphBridge } from '@/features/docx/utils/knowledge/kg-bridge';
+import {
+	buildKnowledgeGraphBridge,
+	buildNodeDocumentTarget,
+	buildPairBridge,
+} from '@/features/docx/utils/knowledge/kg-bridge';
 import { applyPartyView } from '@/features/docx/utils/knowledge/party-view';
 import {
 	computeRadialLayout,
 	type RadialSector,
 } from '@/features/docx/utils/knowledge/radial-layout';
 import { PartyManager } from '@/features/docx/components/knowledge-graph/PartyManager';
-import { computePairAttention, type PairOwner } from '@/features/docx/utils/knowledge/pair';
-import type { KgLedger } from '@/features/docx/utils/knowledge/attention';
+import { computePairAttention, defaultDyad, type PairOwner } from '@/features/docx/utils/knowledge/pair';
+import {
+	PartySelection,
+	type PartyCardData,
+} from '@/features/docx/components/knowledge-graph/PartySelection';
+// PARKED (burden/benefit): import type { KgLedger } from '@/features/docx/utils/knowledge/attention';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -42,8 +50,8 @@ const PARTY_ENTRY_RADIUS = 24;
 const PAIR_SECOND_COLOR = '#0d9488';
 /** A sector no focused party has any weight in — grey reads as "concerns nobody here". */
 const UNCLAIMED_SECTOR_COLOR = '#94a3b8';
-/** Owner ring: outside the burden/benefit arc glyph so the two never collide. */
-const OWNER_OFFSET = 7.5;
+/** Owner ring, hugging the node now that no burden/benefit arc sits outside it. */
+const OWNER_OFFSET = 4;
 const OWNER_WIDTH = 2;
 /** The focused node grows so it reads as the anchor. */
 const FOCUS_RADIUS_SCALE = 1.55;
@@ -127,13 +135,16 @@ const KIND_LABEL: Record<KgNodeKind, string> = Object.fromEntries(
 
 // The arc glyph reuses the deontic palette on purpose: a burden is what an obligation
 // colour already means to the reader, a benefit what a right means.
-const BURDEN_COLOR = NODE_COLORS.obligation;
-const BENEFIT_COLOR = NODE_COLORS.right;
+// PARKED (burden/benefit):
+// const BURDEN_COLOR = NODE_COLORS.obligation;
+// const BENEFIT_COLOR = NODE_COLORS.right;
 /** Gap between a node's edge and the ring drawn around it. */
-const ARC_OFFSET = 3.5;
-const ARC_WIDTH = 2.5;
+// const ARC_OFFSET = 3.5;
+// const ARC_WIDTH = 2.5;
 
 const DIMMED_NODE_OPACITY = 0.1;
+/** The other party's top-K when one half of the centre is picked: present, not the subject. */
+const MUTED_OWNER_OPACITY = 0.25;
 const DIMMED_LINK_OPACITY = 0.04;
 
 function nodeColor(node: SimNode): string {
@@ -148,7 +159,7 @@ function buildGraph(kg: KnowledgeGraph): { nodes: SimNode[]; links: SimLink[] } 
 			id: party.id,
 			kind: 'party',
 			label: party.name,
-			detail: `${party.name}${party.role ? ` \u2014 ${party.role}` : ''}`,
+			detail: party.role,
 			radius: 13,
 		});
 	}
@@ -158,7 +169,7 @@ function buildGraph(kg: KnowledgeGraph): { nodes: SimNode[]; links: SimLink[] } 
 			id: clause.id,
 			kind: 'clause',
 			label,
-			detail: `${label}${clause.heading ? ` \u2014 ${clause.heading}` : ''}`,
+			detail: clause.heading && clause.heading !== label ? clause.heading : '',
 			radius: 8,
 		});
 	}
@@ -262,116 +273,122 @@ function SeveritySliders() {
 	);
 }
 
-function DivergingBar({ label, burdenPct }: { label: string; burdenPct: number }) {
-	return (
-		<div>
-			<div className="flex justify-between text-muted-foreground">
-				<span>{label}</span>
-				<span>
-					{Math.round(burdenPct)}% / {Math.round(100 - burdenPct)}%
-				</span>
-			</div>
-			<div className="flex h-2 w-full overflow-hidden rounded-full bg-muted">
-				<span style={{ width: `${burdenPct}%`, backgroundColor: '#ef4444' }} />
-				<span style={{ width: `${100 - burdenPct}%`, backgroundColor: '#22c55e' }} />
-			</div>
-		</div>
-	);
-}
+// --- PARKED (burden/benefit: the diverging Total / Intensity bar) ---
+// function DivergingBar({ label, burdenPct }: { label: string; burdenPct: number }) {
+// 	return (
+// 		<div>
+// 			<div className="flex justify-between text-muted-foreground">
+// 				<span>{label}</span>
+// 				<span>
+// 					{Math.round(burdenPct)}% / {Math.round(100 - burdenPct)}%
+// 				</span>
+// 			</div>
+// 			<div className="flex h-2 w-full overflow-hidden rounded-full bg-muted">
+// 				<span style={{ width: `${burdenPct}%`, backgroundColor: '#ef4444' }} />
+// 				<span style={{ width: `${100 - burdenPct}%`, backgroundColor: '#22c55e' }} />
+// 			</div>
+// 		</div>
+// 	);
+// }
 
-/** Compact impact ledger for the focused party (burden ↔ benefit + top clauses). */
-function LedgerCard({
-	ledger,
-	onSelectClause,
-}: {
-	ledger: KgLedger;
-	onSelectClause: (clauseId: string) => void;
-}) {
-	const total = ledger.burdenWeight + ledger.benefitWeight;
-	const burdenPct = total > 0 ? (ledger.burdenWeight / total) * 100 : 50;
-	const burdenIntensity = ledger.burdenCount > 0 ? ledger.burdenWeight / ledger.burdenCount : 0;
-	const benefitIntensity = ledger.benefitCount > 0 ? ledger.benefitWeight / ledger.benefitCount : 0;
-	const intensityTotal = burdenIntensity + benefitIntensity;
-	const intensityBurdenPct = intensityTotal > 0 ? (burdenIntensity / intensityTotal) * 100 : 50;
-	const maxClauseTotal = Math.max(...ledger.topClauses.map((c) => c.burden + c.benefit), 1e-9);
-
-	return (
-		<div className="flex flex-wrap items-start gap-x-6 gap-y-2 border-t border-border/60 px-3 py-2 text-2xs text-popover-foreground">
-			<div className="min-w-[190px] flex-1 space-y-1.5">
-				<div className="truncate font-semibold" title={ledger.partyName}>
-					{ledger.partyName}
-				</div>
-				<div className="space-y-1">
-					<div className="flex justify-between text-muted-foreground">
-						<span className="inline-flex items-center gap-1">
-							<span
-								className="inline-block h-2 w-2 rounded-full"
-								style={{ backgroundColor: '#ef4444' }}
-							/>
-							Burden
-						</span>
-						<span className="inline-flex items-center gap-1">
-							Benefit
-							<span
-								className="inline-block h-2 w-2 rounded-full"
-								style={{ backgroundColor: '#22c55e' }}
-							/>
-						</span>
-					</div>
-					<DivergingBar label="Total" burdenPct={burdenPct} />
-					<DivergingBar label="Intensity" burdenPct={intensityBurdenPct} />
-				</div>
-				<div className="flex flex-wrap gap-x-3 gap-y-0.5 text-muted-foreground">
-					<span>
-						<span className="font-medium text-foreground">{ledger.obligations}</span> obligations
-					</span>
-					<span>
-						<span className="font-medium text-foreground">{ledger.prohibitions}</span> prohibitions
-					</span>
-					<span>
-						<span className="font-medium text-foreground">{ledger.rights}</span> rights
-					</span>
-				</div>
-			</div>
-
-			{ledger.topClauses.length > 0 && (
-				<div className="min-w-[170px] flex-1 space-y-1">
-					<div className="font-medium text-foreground/70">Heaviest clauses</div>
-					{ledger.topClauses.map((clause) => {
-						const clauseTotal = clause.burden + clause.benefit;
-						const lengthPct = Math.max(8, (clauseTotal / maxClauseTotal) * 100);
-						const burdenShare = clauseTotal > 0 ? clause.burden / clauseTotal : 0;
-						return (
-							<button
-								key={clause.id}
-								type="button"
-								onClick={() => onSelectClause(clause.id)}
-								className="flex w-full items-center gap-1.5 text-left hover:text-foreground"
-								title={`${clause.label} — burden ${clause.burden.toFixed(2)} / benefit ${clause.benefit.toFixed(2)}`}
-							>
-								<span className="flex h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
-									<span style={{ width: `${lengthPct * burdenShare}%`, backgroundColor: '#ef4444' }} />
-									<span
-										style={{ width: `${lengthPct * (1 - burdenShare)}%`, backgroundColor: '#22c55e' }}
-									/>
-								</span>
-								<span className="w-20 truncate">{clause.label}</span>
-							</button>
-						);
-					})}
-				</div>
-			)}
-
-			<SeveritySliders />
-		</div>
-	);
-}
+// --- PARKED (burden/benefit ledger: the bars, the counts and the heaviest-clause list) ---
+// /** Compact impact ledger for the focused party (burden ↔ benefit + top clauses). */
+// function LedgerCard({
+// 	ledger,
+// 	onSelectClause,
+// }: {
+// 	ledger: KgLedger;
+// 	onSelectClause: (clauseId: string) => void;
+// }) {
+// 	const total = ledger.burdenWeight + ledger.benefitWeight;
+// 	const burdenPct = total > 0 ? (ledger.burdenWeight / total) * 100 : 50;
+// 	const burdenIntensity = ledger.burdenCount > 0 ? ledger.burdenWeight / ledger.burdenCount : 0;
+// 	const benefitIntensity = ledger.benefitCount > 0 ? ledger.benefitWeight / ledger.benefitCount : 0;
+// 	const intensityTotal = burdenIntensity + benefitIntensity;
+// 	const intensityBurdenPct = intensityTotal > 0 ? (burdenIntensity / intensityTotal) * 100 : 50;
+// 	const maxClauseTotal = Math.max(...ledger.topClauses.map((c) => c.burden + c.benefit), 1e-9);
+//
+// 	return (
+// 		<div className="flex flex-wrap items-start gap-x-6 gap-y-2 border-t border-border/60 px-3 py-2 text-2xs text-popover-foreground">
+// 			<div className="min-w-[190px] flex-1 space-y-1.5">
+// 				<div className="truncate font-semibold" title={ledger.partyName}>
+// 					{ledger.partyName}
+// 				</div>
+// 				<div className="space-y-1">
+// 					<div className="flex justify-between text-muted-foreground">
+// 						<span className="inline-flex items-center gap-1">
+// 							<span
+// 								className="inline-block h-2 w-2 rounded-full"
+// 								style={{ backgroundColor: '#ef4444' }}
+// 							/>
+// 							Burden
+// 						</span>
+// 						<span className="inline-flex items-center gap-1">
+// 							Benefit
+// 							<span
+// 								className="inline-block h-2 w-2 rounded-full"
+// 								style={{ backgroundColor: '#22c55e' }}
+// 							/>
+// 						</span>
+// 					</div>
+// 					<DivergingBar label="Total" burdenPct={burdenPct} />
+// 					<DivergingBar label="Intensity" burdenPct={intensityBurdenPct} />
+// 				</div>
+// 				<div className="flex flex-wrap gap-x-3 gap-y-0.5 text-muted-foreground">
+// 					<span>
+// 						<span className="font-medium text-foreground">{ledger.obligations}</span> obligations
+// 					</span>
+// 					<span>
+// 						<span className="font-medium text-foreground">{ledger.prohibitions}</span> prohibitions
+// 					</span>
+// 					<span>
+// 						<span className="font-medium text-foreground">{ledger.rights}</span> rights
+// 					</span>
+// 				</div>
+// 			</div>
+//
+// 			{ledger.topClauses.length > 0 && (
+// 				<div className="min-w-[170px] flex-1 space-y-1">
+// 					<div className="font-medium text-foreground/70">Heaviest clauses</div>
+// 					{ledger.topClauses.map((clause) => {
+// 						const clauseTotal = clause.burden + clause.benefit;
+// 						const lengthPct = Math.max(8, (clauseTotal / maxClauseTotal) * 100);
+// 						const burdenShare = clauseTotal > 0 ? clause.burden / clauseTotal : 0;
+// 						return (
+// 							<button
+// 								key={clause.id}
+// 								type="button"
+// 								onClick={() => onSelectClause(clause.id)}
+// 								className="flex w-full items-center gap-1.5 text-left hover:text-foreground"
+// 								title={`${clause.label} — burden ${clause.burden.toFixed(2)} / benefit ${clause.benefit.toFixed(2)}`}
+// 							>
+// 								<span className="flex h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
+// 									<span style={{ width: `${lengthPct * burdenShare}%`, backgroundColor: '#ef4444' }} />
+// 									<span
+// 										style={{ width: `${lengthPct * (1 - burdenShare)}%`, backgroundColor: '#22c55e' }}
+// 									/>
+// 								</span>
+// 								<span className="w-20 truncate">{clause.label}</span>
+// 							</button>
+// 						);
+// 					})}
+// 				</div>
+// 			)}
+//
+// 			<SeveritySliders />
+// 		</div>
+// 	);
+// }
 
 export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const svgRef = useRef<SVGSVGElement>(null);
 	const nodeSelRef = useRef<NodeSelection | null>(null);
 	const linkSelRef = useRef<LinkSelection | null>(null);
+	// A node's arc glyph and owner ring have to mute with it, or a muted circle keeps a
+	// bright ring around it. Held as appliers rather than selections: d3 is invariant in
+	// the datum type, so the two layers' selections have no common supertype.
+	const decorSelRef = useRef<Array<(opacityOf: (id: string) => number) => void>>([]);
 	// Only the camera survives a rebuild now — node positions are a pure function of
 	// the graph, so there is nothing else to carry over.
 	const transformRef = useRef<d3.ZoomTransform | null>(null);
@@ -383,12 +400,25 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		y: number;
 		kind: KgNodeKind;
 		detail: string;
+		/** Which party the node belongs to — the second half of the tooltip title. */
+		owner?: string;
+		/** A number worth showing but too long for the title, e.g. a clause's split. */
+		note?: string;
 		/** Overrides the kind colour — the pair view needs one colour per party. */
 		color?: string;
 	} | null>(null);
 	// The kind filter doubles as the zoom level: only `party` is the entry view,
 	// everything checked is the full graph.
 	const [visibleKinds, setVisibleKinds] = useState<Set<KgNodeKind>>(() => new Set(['party']));
+	/**
+	 * Which half of the pair's centre disc is singled out. Clicking one half mutes the
+	 * other party's top-K so only this one's reads; clicking it again clears. Statements
+	 * both parties claim stay lit — they are in this party's top-K too.
+	 *
+	 * Stored against the pair it was chosen for, so swapping either party simply makes
+	 * it stop applying instead of needing an effect to reset it.
+	 */
+	const [emphasis, setEmphasis] = useState<{ pairKey: string; owner: 'a' | 'b' } | null>(null);
 	// Until the user touches the filter the initial `{party}` is just a default, so
 	// the first drill-down may replace it. After that the filter is theirs to keep.
 	const filterTouchedRef = useRef(false);
@@ -410,6 +440,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const clearFocus = useKnowledgeGraphStore((s) => s.clearFocus);
 	const setFocusMeta = useKnowledgeGraphStore((s) => s.setFocusMeta);
 	const setBridgePayload = useKnowledgeGraphStore((s) => s.setBridgePayload);
+	const setDocumentTarget = useKnowledgeGraphStore((s) => s.setDocumentTarget);
 	const mergeGroups = useKnowledgeGraphStore((s) => s.mergeGroups);
 	const hiddenParties = useKnowledgeGraphStore((s) => s.hiddenParties);
 	const unhideParty = useKnowledgeGraphStore((s) => s.unhideParty);
@@ -419,10 +450,13 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const clearSelectedParties = useKnowledgeGraphStore((s) => s.clearSelectedParties);
 	const focusNodeIds = useKnowledgeGraphStore((s) => s.focusNodeIds);
 	const nodeScores = useKnowledgeGraphStore((s) => s.nodeScores);
-	const toneSplit = useKnowledgeGraphStore((s) => s.toneSplit);
-	const ledger = useKnowledgeGraphStore((s) => s.ledger);
+	// PARKED (burden/benefit): const toneSplit = useKnowledgeGraphStore((s) => s.toneSplit);
+	// PARKED (burden/benefit): const ledger = useKnowledgeGraphStore((s) => s.ledger);
 	const secondPartyId = useKnowledgeGraphStore((s) => s.secondPartyId);
 	const setSecondParty = useKnowledgeGraphStore((s) => s.setSecondParty);
+	const focusPair = useKnowledgeGraphStore((s) => s.focusPair);
+	/** Null until the user touches a card — then it is authoritative over the suggestion. */
+	const [slotOverride, setSlotOverride] = useState<[string | null, string | null] | null>(null);
 	const [partyPickerOpen, setPartyPickerOpen] = useState(false);
 	const paragraphs = useDocumentStore((s) => s.paragraphs);
 	const nodesById = useMemo(() => new Map(paragraphs.map((n) => [n.id, n])), [paragraphs]);
@@ -513,6 +547,51 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				: null,
 		[viewKg, isPartyFocus, focusNodeId, secondPartyId, topK, severity, usePageRank]
 	);
+
+	const pairKey = pair ? `${pair.partyAId}|${pair.partyBId}` : null;
+	/** Null once the pair it was chosen for is gone — no reset effect needed. */
+	const emphasisOwner = emphasis && emphasis.pairKey === pairKey ? emphasis.owner : null;
+	const toggleEmphasis = (owner: 'a' | 'b') => {
+		if (!pairKey) return;
+		setEmphasis((prev) =>
+			prev && prev.pairKey === pairKey && prev.owner === owner ? null : { pairKey, owner }
+		);
+	};
+	// Entry view: each party carries the count of provisions it is party to, so the
+	// choice is informed instead of two identical dots.
+	const partyCards = useMemo<PartyCardData[]>(() => {
+		if (!viewKg) return [];
+		const tally = new Map<string, PartyCardData>(
+			viewKg.parties.map((p) => [
+				p.id,
+				{ id: p.id, name: p.name, role: p.role, obligations: 0, rights: 0, prohibitions: 0, total: 0 },
+			])
+		);
+		for (const v of deonticNodes(viewKg)) {
+			for (const partyId of new Set([v.burdenPartyId, v.benefitPartyId])) {
+				const row = partyId ? tally.get(partyId) : undefined;
+				if (!row) continue;
+				if (v.kind === 'obligation') row.obligations += 1;
+				else if (v.kind === 'right') row.rights += 1;
+				else row.prohibitions += 1;
+				row.total += 1;
+			}
+		}
+		return [...tally.values()].sort((a, b) => b.total - a.total || a.name.localeCompare(b.name));
+	}, [viewKg]);
+
+	// The pair the contract is actually between is seated by default, so the common case
+	// is one click of confirmation. Derived rather than synced: a merge or a hide can
+	// retire a party id, and pruning here keeps the seats honest without an effect.
+	const slots = useMemo<[string | null, string | null]>(() => {
+		if (!viewKg) return [null, null];
+		const known = new Set(viewKg.parties.map((p) => p.id));
+		const prune = (seat: string | null) => (seat && known.has(seat) ? seat : null);
+		if (slotOverride) return [prune(slotOverride[0]), prune(slotOverride[1])];
+		const suggested = defaultDyad(viewKg);
+		return suggested ? [suggested[0], suggested[1]] : [null, null];
+	}, [viewKg, slotOverride]);
+
 	const effectiveScores = pair ? pair.nodeScores : nodeScores;
 	const effectiveFocusIds = useMemo(
 		() => (pair ? pair.focusNodeIds : focusNodeIds),
@@ -622,9 +701,13 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	useEffect(() => {
 		if (!viewKg || !focusNodeId) return;
 		setBridgePayload(
-			buildKnowledgeGraphBridge(viewKg, focusNodeId, hops, topK, nodesById, severity, usePageRank)
+			// With a pair on the canvas the document has to answer for both parties, or the
+			// ring shows two and the page reflects one.
+			pair
+				? buildPairBridge(viewKg, pair, nodesById, [NODE_COLORS.party, PAIR_SECOND_COLOR])
+				: buildKnowledgeGraphBridge(viewKg, focusNodeId, hops, topK, nodesById, severity, usePageRank)
 		);
-	}, [viewKg, focusNodeId, hops, topK, nodesById, severity, usePageRank, setBridgePayload]);
+	}, [viewKg, pair, focusNodeId, hops, topK, nodesById, severity, usePageRank, setBridgePayload]);
 
 	// Deterministic radial render: every position comes from the layout module, so
 	// there is no simulation, no settling and no reshuffle when the filter changes.
@@ -673,6 +756,28 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		const { x: cx, y: cy } = layout.center;
 		const pointAt = (angle: number, distance: number) =>
 			[cx + Math.cos(angle) * distance, cy + Math.sin(angle) * distance] as const;
+		const partyNameById = new Map(
+			graph.nodes.filter((n) => n.kind === 'party').map((n) => [n.id, n.label] as const)
+		);
+		/**
+		 * A clause belongs to no one, so it reports who pulls on it. The title names the
+		 * dominant party — two names and two percentages there is a line nobody reads —
+		 * and the exact split goes to the note underneath.
+		 */
+		const sectorOwner = (clauseId: string): { owner?: string; note?: string } => {
+			if (!pair) {
+				return { owner: focusNodeId ? partyNameById.get(focusNodeId) : undefined };
+			}
+			const a = partyNameById.get(pair.partyAId) ?? '';
+			const b = partyNameById.get(pair.partyBId) ?? '';
+			const split = pair.clauseSplit[clauseId];
+			if (!split || split.a + split.b <= 0) return { owner: 'neither party' };
+			const share = Math.round((split.a / (split.a + split.b)) * 100);
+			return {
+				owner: share >= 60 ? a : share <= 40 ? b : 'both parties',
+				note: `${a} ${share}% · ${b} ${100 - share}%`,
+			};
+		};
 		const arcPath = (radius: number, from: number, to: number) => {
 			const [x0, y0] = pointAt(from, radius);
 			const [x1, y1] = pointAt(to, radius);
@@ -690,14 +795,6 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 
 		// --- the ring: one arc per clause, in document order, width by attention ---
 		const scaffold = root.append('g').attr('pointer-events', 'none').attr('fill', 'none');
-		scaffold
-			.append('circle')
-			.attr('cx', cx)
-			.attr('cy', cy)
-			.attr('r', layout.boundaryRadius)
-			.attr('stroke', 'currentColor')
-			.attr('stroke-opacity', 0.16)
-			.attr('stroke-dasharray', '4 5');
 
 		const peakWeight = Math.max(...layout.sectors.map((s) => s.weight), 1e-9);
 
@@ -796,6 +893,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 					y: event.clientY - (rect?.top ?? 0),
 					kind: 'clause',
 					detail: d.weight > 0 ? `${d.label} — weight ${d.weight.toFixed(2)}` : d.label,
+					...sectorOwner(d.clauseId),
 				});
 			})
 			.on('mouseleave', () => {
@@ -804,6 +902,10 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				setHover(null);
 			})
 			.on('click', (event: MouseEvent, d) => {
+				event.stopPropagation();
+				if (viewKg) setDocumentTarget(buildNodeDocumentTarget(viewKg, d.clauseId, nodesById));
+			})
+			.on('dblclick', (event: MouseEvent, d) => {
 				event.stopPropagation();
 				clearSelectedParties();
 				focusNode(d.clauseId);
@@ -822,39 +924,44 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			.attr('x2', (d) => byId.get(d.target as string)?.x ?? 0)
 			.attr('y2', (d) => byId.get(d.target as string)?.y ?? 0);
 
-		// --- the arc glyph: how this node's weight splits burden vs benefit ---
-		//
-		// Two concentric dashed rings rather than path arcs: the dash length is the
-		// share, and the rotation is where the second one starts. Drawn under the nodes
-		// so a node never sits on top of its own reading.
-		const arcs = nodes
-			.map((d) => ({ node: d, split: toneSplit[d.id] }))
-			.filter((item) => item.split && item.split.burden + item.split.benefit > 0);
-		const arcLayer = root.append('g').attr('pointer-events', 'none').attr('fill', 'none');
-		for (const side of ['burden', 'benefit'] as const) {
-			arcLayer
-				.append('g')
-				.selectAll<SVGCircleElement, (typeof arcs)[number]>('circle')
-				.data(arcs)
-				.join('circle')
-				.attr('cx', (d) => d.node.x ?? 0)
-				.attr('cy', (d) => d.node.y ?? 0)
-				.attr('r', (d) => d.node.radius + ARC_OFFSET)
-				.attr('stroke', side === 'burden' ? BURDEN_COLOR : BENEFIT_COLOR)
-				.attr('stroke-width', ARC_WIDTH)
-				.attr('stroke-dasharray', (d) => {
-					const total = d.split!.burden + d.split!.benefit;
-					const share = (side === 'burden' ? d.split!.burden : d.split!.benefit) / total;
-					const circumference = 2 * Math.PI * (d.node.radius + ARC_OFFSET);
-					return `${circumference * share} ${circumference * (1 - share)}`;
-				})
-				// Burden starts at 12 o'clock; benefit picks up where it ends.
-				.attr('transform', (d) => {
-					const total = d.split!.burden + d.split!.benefit;
-					const start = side === 'burden' ? 0 : (d.split!.burden / total) * 360;
-					return `rotate(${start - 90} ${d.node.x ?? 0} ${d.node.y ?? 0})`;
-				});
-		}
+// --- PARKED (burden/benefit: the red/green ring around every node) ---
+// 		// --- the arc glyph: how this node's weight splits burden vs benefit ---
+// 		//
+// 		// Two concentric dashed rings rather than path arcs: the dash length is the
+// 		// share, and the rotation is where the second one starts. Drawn under the nodes
+// 		// so a node never sits on top of its own reading.
+// 		const arcs = nodes
+// 			.map((d) => ({ node: d, split: toneSplit[d.id] }))
+// 			.filter((item) => item.split && item.split.burden + item.split.benefit > 0);
+// 		const arcLayer = root.append('g').attr('pointer-events', 'none').attr('fill', 'none');
+// 		decorSelRef.current = [];
+// 		for (const side of ['burden', 'benefit'] as const) {
+// 			const arcSide = arcLayer
+// 				.append('g')
+// 				.selectAll<SVGCircleElement, (typeof arcs)[number]>('circle')
+// 				.data(arcs)
+// 				.join('circle')
+// 				.attr('cx', (d) => d.node.x ?? 0)
+// 				.attr('cy', (d) => d.node.y ?? 0)
+// 				.attr('r', (d) => d.node.radius + ARC_OFFSET)
+// 				.attr('stroke', side === 'burden' ? BURDEN_COLOR : BENEFIT_COLOR)
+// 				.attr('stroke-width', ARC_WIDTH)
+// 				.attr('stroke-dasharray', (d) => {
+// 					const total = d.split!.burden + d.split!.benefit;
+// 					const share = (side === 'burden' ? d.split!.burden : d.split!.benefit) / total;
+// 					const circumference = 2 * Math.PI * (d.node.radius + ARC_OFFSET);
+// 					return `${circumference * share} ${circumference * (1 - share)}`;
+// 				})
+// 				// Burden starts at 12 o'clock; benefit picks up where it ends.
+// 				.attr('transform', (d) => {
+// 					const total = d.split!.burden + d.split!.benefit;
+// 					const start = side === 'burden' ? 0 : (d.split!.burden / total) * 360;
+// 					return `rotate(${start - 90} ${d.node.x ?? 0} ${d.node.y ?? 0})`;
+// 				});
+// 			decorSelRef.current.push((opacityOf) =>
+// 				arcSide.attr('opacity', (d) => opacityOf(d.node.id))
+// 			);
+// 		}
 
 		const node = root
 			.append('g')
@@ -894,11 +1001,16 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 							x: event.clientX - (rect?.left ?? 0),
 							y: event.clientY - (rect?.top ?? 0),
 							kind: 'party',
-							detail: partyB?.detail ?? pair.partyBId,
+							detail: partyB?.detail ?? '',
+							owner: partyB?.label ?? pair.partyBId,
 							color: PAIR_SECOND_COLOR,
 						});
 					})
-					.on('mouseleave', () => setHover(null));
+					.on('mouseleave', () => setHover(null))
+					.on('click', (event: MouseEvent) => {
+						event.stopPropagation();
+						toggleEmphasis('b');
+					});
 				// A seam down the diameter: without it the two fills touch and the eye reads
 				// one shape with a colour gradient rather than two halves.
 				centreLayer
@@ -921,7 +1033,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			const ownerLayer = root.append('g').attr('pointer-events', 'none').attr('fill', 'none');
 			for (const [index, color] of [NODE_COLORS.party, PAIR_SECOND_COLOR].entries()) {
 				const side: PairOwner = index === 0 ? 'a' : 'b';
-				ownerLayer
+				const ownerSide = ownerLayer
 					.append('g')
 					.selectAll<SVGCircleElement, (typeof owned)[number]>('circle')
 					.data(owned.filter((d) => d.owner === side || d.owner === 'both'))
@@ -940,11 +1052,31 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 						const start = d.owner === 'both' && index === 1 ? 180 : 0;
 						return `rotate(${start - 90} ${d.node.x ?? 0} ${d.node.y ?? 0})`;
 					});
+				decorSelRef.current.push((opacityOf) =>
+					ownerSide.attr('opacity', (d) => opacityOf(d.node.id))
+				);
 			}
 		}
 
 		// The tooltip is anchored to an invisible element at the cursor, so it only
 		// needs container-relative coordinates; Radix handles offset and flipping.
+		/**
+		 * Whose node this is. In the pair view that is the top-K it earned its place in —
+		 * often both, since over half the statements name the two parties. A clause belongs
+		 * to no one, so it reports the split instead.
+		 */
+		const ownerOf = (d: SimNode): string | undefined => {
+			if (d.kind === 'party') return partyNameById.get(d.id);
+			if (!pair) return focusNodeId ? partyNameById.get(focusNodeId) : undefined;
+			const a = partyNameById.get(pair.partyAId) ?? '';
+			const b = partyNameById.get(pair.partyBId) ?? '';
+			const owner = pair.ownerByNode[d.id];
+			if (owner === 'a') return a;
+			if (owner === 'b') return b;
+			if (owner === 'both') return `${a} & ${b}`;
+			return d.kind === 'clause' ? sectorOwner(d.id).owner : undefined;
+		};
+
 		const track = (event: MouseEvent, d: SimNode) => {
 			const rect = containerRef.current?.getBoundingClientRect();
 			setHover({
@@ -952,6 +1084,8 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				y: event.clientY - (rect?.top ?? 0),
 				kind: d.kind,
 				detail: d.detail,
+				owner: ownerOf(d),
+				note: d.kind === 'clause' ? sectorOwner(d.id).note : undefined,
 				color: pair && d.id === pair.partyAId ? NODE_COLORS.party : undefined,
 			});
 		};
@@ -960,12 +1094,26 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			.on('mouseenter', track)
 			.on('mousemove', track)
 			.on('mouseleave', () => setHover(null))
+			// One click takes the document to the node and leaves the ring alone; two
+			// clicks re-focus the ring on it. Reading and re-framing used to be the same
+			// gesture, so you could not look something up without losing your view.
 			.on('click', (event: MouseEvent, d) => {
 				event.stopPropagation();
 				if ((event.ctrlKey || event.metaKey) && d.kind === 'party') {
 					toggleSelectedParty(d.id); // Ctrl/Cmd-click builds the action selection
 					return;
 				}
+				// In the pair view this circle is the anchor's half of the centre disc, so
+				// clicking it singles that party out instead of re-focusing the whole view.
+				if (pair && d.id === pair.partyAId) {
+					toggleEmphasis('a');
+					return;
+				}
+				if (viewKg) setDocumentTarget(buildNodeDocumentTarget(viewKg, d.id, nodesById));
+			})
+			.on('dblclick', (event: MouseEvent, d) => {
+				event.stopPropagation();
+				if (pair && d.id === pair.partyAId) return;
 				clearSelectedParties();
 				focusNode(d.id);
 			});
@@ -995,9 +1143,10 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		return () => {
 			nodeSelRef.current = null;
 			linkSelRef.current = null;
+			decorSelRef.current = [];
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [graph, layout, size, toneSplit, pair]);
+	}, [graph, layout, size, pair, viewKg, nodesById, setDocumentTarget]);
 
 	// Restyle (highlight / dim / size-by-attention) without rebuilding the sim.
 	useEffect(() => {
@@ -1063,6 +1212,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				.attr('stroke-width', 1.2)
 				.attr('r', (d) => d.radius);
 			link.attr('stroke-opacity', 0.8);
+			for (const applyDecorOpacity of decorSelRef.current) applyDecorOpacity(() => 1);
 			applySelection();
 			return;
 		}
@@ -1075,19 +1225,40 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				? d.radius * (pair ? PAIR_CENTER_SCALE : FOCUS_RADIUS_SCALE)
 				: d.radius;
 
+		/**
+		 * With one half of the centre disc picked, the other party's top-K is muted. A
+		 * node both parties claim is in the picked party's top-K too, so it stays lit;
+		 * the centre disc itself is never muted, since it is what you clicked.
+		 */
+		const mutedByEmphasis = (id: string): boolean => {
+			if (!pair || !emphasisOwner) return false;
+			if (id === pair.partyAId || id === pair.partyBId) return false;
+			const owner = pair.ownerByNode[id];
+			return Boolean(owner) && owner !== 'both' && owner !== emphasisOwner;
+		};
+		const opacityFor = (id: string): number => {
+			if (!highlightIds.has(id)) return DIMMED_NODE_OPACITY;
+			return mutedByEmphasis(id) ? MUTED_OWNER_OPACITY : 1;
+		};
+
 		node
-			.attr('opacity', (d) => (highlightIds.has(d.id) ? 1 : DIMMED_NODE_OPACITY))
+			.attr('opacity', (d) => opacityFor(d.id))
 			.attr('stroke', (d) => (d.id === focusNodeId ? '#0f172a' : '#fff'))
 			.attr('stroke-width', (d) => (d.id === focusNodeId ? 2.6 : highlightIds.has(d.id) ? 1.5 : 1))
 			.attr('r', radiusFor);
 
+		// Arc glyphs and owner rings follow their node, so a muted circle never keeps a
+		// fully lit ring around it.
+		for (const applyDecorOpacity of decorSelRef.current) applyDecorOpacity(opacityFor);
+
 		link.attr('stroke-opacity', (d) => {
 			const source = typeof d.source === 'string' ? d.source : (d.source as SimNode).id;
 			const target = typeof d.target === 'string' ? d.target : (d.target as SimNode).id;
-			return highlightIds.has(source) && highlightIds.has(target) ? 0.95 : DIMMED_LINK_OPACITY;
+			if (!highlightIds.has(source) || !highlightIds.has(target)) return DIMMED_LINK_OPACITY;
+			return mutedByEmphasis(source) || mutedByEmphasis(target) ? 0.18 : 0.95;
 		});
 		applySelection();
-	}, [graphVersion, highlightIds, focusNodeId, nodeScores, selectedPartyIds, membersOf, mergeHints, mergeEntities, viewKg, pair]);
+	}, [graphVersion, highlightIds, focusNodeId, nodeScores, selectedPartyIds, membersOf, mergeHints, mergeEntities, viewKg, pair, emphasisOwner]);
 
 	const counts = viewKg
 		? {
@@ -1179,6 +1350,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 									· {counts.clauses} clauses · {counts.statements} statements
 								</span>
 							</span>
+							{/* PARKED (burden/benefit): the Ring key.
 							{Object.keys(toneSplit).length > 0 && (
 								<span className="flex items-center gap-1.5">
 									<span className="font-medium text-foreground/50">Ring</span>
@@ -1194,6 +1366,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 									<span>benefit</span>
 								</span>
 							)}
+							*/}
 						</div>
 						<div className="flex shrink-0 items-center gap-2">
 							{scopeIds && (
@@ -1246,7 +1419,34 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 							Failed to load the knowledge graph.
 						</div>
 					)}
-					{status === 'ready' && (
+					{/* Entry view: the pair is chosen before anything is drawn, in one place. */}
+					{status === 'ready' && !focusNodeId && (
+						<PartySelection
+							parties={partyCards}
+							slots={slots}
+							slotColors={[NODE_COLORS.party, PAIR_SECOND_COLOR]}
+							onAssign={(id) =>
+								setSlotOverride(
+									slots[0] === null ? [id, slots[1]] : slots[1] === null ? [slots[0], id] : slots
+								)
+							}
+							onRelease={(side) => {
+								const next: [string | null, string | null] = [...slots];
+								next[side] = null;
+								setSlotOverride(next);
+							}}
+							selectedPartyIds={selectedPartyIds}
+							onToggleSelect={toggleSelectedParty}
+							mergeHints={mergeHints}
+							onContinue={() => {
+								if (slots[0] && slots[1]) {
+									clearSelectedParties();
+									focusPair(slots[0], slots[1]);
+								}
+							}}
+						/>
+					)}
+					{status === 'ready' && focusNodeId && (
 						<>
 							<svg
 								ref={svgRef}
@@ -1264,20 +1464,30 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 									{hover && (
 										<TooltipContent
 											side="top"
-											sideOffset={10}
-											className="max-w-[280px] border-2 px-2.5 py-1.5"
-											style={{ borderColor: hover.color ?? NODE_COLORS[hover.kind] }}
+											sideOffset={12}
+											className="max-w-[360px] border-l-4 px-3.5 py-2.5 shadow-lg"
+											style={{ borderLeftColor: hover.color ?? NODE_COLORS[hover.kind] }}
 										>
-											<span className="flex items-center gap-1.5">
+											<span className="flex items-baseline gap-1.5 text-sm leading-snug">
 												<span
-													className="size-2 shrink-0 rounded-full"
+													className="relative top-[-1px] inline-block size-2.5 shrink-0 self-center rounded-full"
 													style={{ backgroundColor: hover.color ?? NODE_COLORS[hover.kind] }}
 												/>
-												<span className="text-2xs font-medium uppercase tracking-wide opacity-70">
-													{KIND_LABEL[hover.kind]}
-												</span>
+												<span className="font-semibold">{KIND_LABEL[hover.kind]}</span>
+												{hover.owner && (
+													<span className="min-w-0 opacity-80">— {hover.owner}</span>
+												)}
 											</span>
-											<span className="mt-1 block text-2xs leading-snug">{hover.detail}</span>
+											{hover.detail && (
+												<span className="mt-1.5 block text-xs leading-relaxed opacity-90">
+													{hover.detail}
+												</span>
+											)}
+											{hover.note && (
+												<span className="mt-1 block text-xs tabular-nums opacity-70">
+													{hover.note}
+												</span>
+											)}
 										</TooltipContent>
 									)}
 								</Tooltip>
@@ -1286,8 +1496,9 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 					)}
 				</div>
 
-				{/* Legend / kind filter — right sidebar, full height, narrow (labels truncate to a tooltip). */}
-				{status === 'ready' && (
+				{/* Legend / kind filter — right sidebar, full height, narrow (labels truncate to a
+				    tooltip). Hidden on the entry view: every count there is zero. */}
+				{status === 'ready' && focusNodeId && (
 					<aside className="w-32 shrink-0 space-y-2 overflow-y-auto border-l border-border/60 px-2 py-2 text-2xs text-muted-foreground">
 						<div>
 							<div className="mb-1 font-medium text-foreground/50">Nodes</div>
@@ -1357,9 +1568,12 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				)}
 			</div>
 
-			{/* Controls + metrics — bottom bar, only when a party is focused. */}
-			{status === 'ready' && ledger && (
-				<LedgerCard ledger={ledger} onSelectClause={(id) => focusNode(id)} />
+			{/* Controls — bottom bar, once a party is focused. The burden/benefit ledger
+			    that used to live here is parked above; these still drive the ring. */}
+			{status === 'ready' && focusNodeId && (
+				<div className="flex flex-wrap items-start gap-x-6 gap-y-2 border-t border-border/60 px-3 py-2 text-2xs text-popover-foreground">
+					<SeveritySliders />
+				</div>
 			)}
 
 			{status === 'ready' && visibleKinds.has('party') && (

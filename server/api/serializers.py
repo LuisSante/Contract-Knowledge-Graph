@@ -141,146 +141,16 @@ class AssistantChatResponseSerializer(serializers.Serializer):
     mode = serializers.ChoiceField(choices=_ASSISTANT_MODE_CHOICES)
     scope = serializers.ChoiceField(choices=_ASSISTANT_SCOPE_CHOICES)
     provider = serializers.ChoiceField(choices=_ASSISTANT_PROVIDER_CHOICES)
-
-
-class SimplifyEvidenceSerializer(serializers.Serializer):
-    paragraph_id = serializers.CharField()
-    selection_start = serializers.IntegerField()
-    selection_end = serializers.IntegerField()
-
-
-class SimplifyAuditSerializer(serializers.Serializer):
-    system_prompt = serializers.CharField(allow_blank=True)
-    user_prompt = serializers.CharField(allow_blank=True)
-    model_response = serializers.CharField(allow_blank=True)
-
-
-class SimplifyRelatedParagraphSerializer(serializers.Serializer):
-    id = serializers.CharField()
-    text = serializers.CharField(allow_blank=True)
-    paragraph_enum = serializers.IntegerField(required=False, allow_null=True)
-    page = serializers.IntegerField(required=False, allow_null=True)
-    relationTypes = serializers.ListField(
-        child=serializers.ChoiceField(choices=_RELATION_TYPE_CHOICES),
-        required=False,
-        default=list,
-    )
-    semanticScore = serializers.FloatField(required=False, allow_null=True)
-    references = serializers.ListField(
-        child=serializers.CharField(), required=False, default=list
-    )
-
-
-class SimplifySelectionRequestSerializer(serializers.Serializer):
-    documentId = serializers.CharField()
-    provider = serializers.ChoiceField(choices=_ASSISTANT_PROVIDER_CHOICES, default="openai")
-    paragraphId = serializers.CharField()
-    paragraphText = serializers.CharField(allow_blank=True)
-    selectionStart = serializers.IntegerField(default=0)
-    selectionEnd = serializers.IntegerField(default=0)
-    contradictionReason = serializers.CharField(required=False, allow_null=True)
-    relatedParagraphs = SimplifyRelatedParagraphSerializer(many=True, required=False, default=list)
-
-
-class SimplifySelectionResponseSerializer(serializers.Serializer):
-    paragraphId = serializers.CharField()
-    provider = serializers.ChoiceField(choices=_ASSISTANT_PROVIDER_CHOICES)
-    originalSnippet = serializers.CharField(allow_blank=True)
-    simplifiedSnippet = serializers.CharField(allow_blank=True)
-    evidence = SimplifyEvidenceSerializer()
-    audit = SimplifyAuditSerializer()
-
-
-# ---------------------------------------------------------------------------
-# Phase 2 — Contradiction serializers (mirror schemas/contradictions.py)
-# ---------------------------------------------------------------------------
-
-_GRAPH_MODE_CHOICES = ["with_kg", "without_kg"]
-_TAXONOMY_CHOICES = [
-    "temporal",
-    "numerical",
-    "authority",
-    "process",
-    "policy_reversal",
-    "specificity",
-]
-_EVIDENCE_SOURCE_CHOICES = ["paragraph", "context", "unknown"]
-_EVIDENCE_STATUS_CHOICES = ["exact", "missing", "approximate"]
-
-
-class ContradictionEvidenceSerializer(serializers.Serializer):
-    snippet_a = serializers.CharField(allow_blank=True, default="")
-    snippet_b = serializers.CharField(allow_blank=True, default="")
-    source_a = serializers.ChoiceField(choices=_EVIDENCE_SOURCE_CHOICES, default="unknown")
-    source_b = serializers.ChoiceField(choices=_EVIDENCE_SOURCE_CHOICES, default="unknown")
-    evidence_status = serializers.ChoiceField(choices=_EVIDENCE_STATUS_CHOICES, default="missing")
-    evidence_note = serializers.CharField(allow_blank=True, default="")
-
-
-class ContradictionFindingSerializer(serializers.Serializer):
-    confidence = serializers.IntegerField(min_value=0, max_value=100)
-    brief_reason = serializers.CharField(allow_blank=True, default="")
-    contradiction_type = serializers.ChoiceField(
-        choices=_TAXONOMY_CHOICES, required=False, allow_null=True
-    )
-    evidence = ContradictionEvidenceSerializer(required=False, allow_null=True)
-
-
-class ContradictionParagraphResultSerializer(serializers.Serializer):
-    paragraph_id = serializers.CharField()
-    contradiction = serializers.BooleanField()
-    confidence = serializers.IntegerField(min_value=0, max_value=100)
-    brief_reason = serializers.CharField(allow_blank=True, default="")
-    contradiction_type = serializers.ChoiceField(
-        choices=_TAXONOMY_CHOICES, required=False, allow_null=True
-    )
-    evidence = ContradictionEvidenceSerializer(required=False, allow_null=True)
-    contradictions = ContradictionFindingSerializer(many=True, required=False, default=list)
-
-
-class ContradictionAnalysisRequestSerializer(serializers.Serializer):
-    documentId = serializers.CharField()
-    graph = GraphSerializer()
-    provider = serializers.ChoiceField(choices=_ASSISTANT_PROVIDER_CHOICES, default="openai")
-    temperature = serializers.FloatField(default=0.1)
-    model = serializers.CharField(required=False, allow_null=True)
-    mode = serializers.ChoiceField(choices=_GRAPH_MODE_CHOICES, default="without_kg")
-
-
-class ContradictionAnalysisResponseSerializer(serializers.Serializer):
-    documentId = serializers.CharField()
-    provider = serializers.ChoiceField(choices=_ASSISTANT_PROVIDER_CHOICES)
-    temperature = serializers.FloatField()
-    model = serializers.CharField(required=False, allow_null=True)
-    mode = serializers.ChoiceField(choices=_GRAPH_MODE_CHOICES, default="without_kg")
-    paragraphResults = ContradictionParagraphResultSerializer(many=True)
-    rawResponse = serializers.CharField(allow_blank=True)
-
-
-class SavedContradictionsResponseSerializer(serializers.Serializer):
-    documentId = serializers.CharField()
-    sourceFile = serializers.CharField()
-    mode = serializers.ChoiceField(choices=_GRAPH_MODE_CHOICES)
-    paragraphResults = ContradictionParagraphResultSerializer(many=True)
-
-
 # ---------------------------------------------------------------------------
 # Phase 2 — LLM serializers (mirror schemas/llm.py)
 # ---------------------------------------------------------------------------
 
-_LLM_CALL_TYPE_CHOICES = [
-    "assistant_chat",
-    "assistant_simplify",
-    "assistant_fix_contradiction",
-    "contradictions_analyze",
-]
+_LLM_CALL_TYPE_CHOICES = ["assistant_chat"]
 
 
 class LlmEstimateRequestSerializer(serializers.Serializer):
     callType = serializers.ChoiceField(choices=_LLM_CALL_TYPE_CHOICES)
     assistantChat = AssistantChatRequestSerializer(required=False, allow_null=True)
-    simplifySelection = SimplifySelectionRequestSerializer(required=False, allow_null=True)
-    contradictionAnalysis = ContradictionAnalysisRequestSerializer(required=False, allow_null=True)
 
 
 class LlmEstimateResponseSerializer(serializers.Serializer):

@@ -53,6 +53,10 @@ export interface KgDeontic {
 	deadline: string;
 	frequency: string;
 	paragraphIds: string[];
+	/** Written by the evidence pass: null on graphs built before it ran. */
+	evidenceVerified?: boolean | null;
+	/** The verbatim fragments actually located. More than one when the model elided. */
+	evidenceSpans?: string[];
 }
 
 export type KgObligation = KgDeontic;

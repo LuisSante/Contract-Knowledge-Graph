@@ -52,6 +52,10 @@ class _KgDeontic(BaseModel):
     action: str = ""  # short verb phrase, e.g. "Pay Invoices"
     summary: str  # short paraphrase of the duty/right/restriction
     text: str = ""  # verbatim span copied from the source paragraph (provenance)
+    # Set by the evidence pass: True/False once checked, None on graphs built before it.
+    evidenceVerified: bool | None = None
+    # The fragments actually located. More than one when the model elided the middle.
+    evidenceSpans: list[str] = Field(default_factory=list)
     burdenPartyId: str | None = None  # party that must comply / is prohibited
     benefitPartyId: str | None = None  # party that benefits / holds the right
     clauseId: str | None = None

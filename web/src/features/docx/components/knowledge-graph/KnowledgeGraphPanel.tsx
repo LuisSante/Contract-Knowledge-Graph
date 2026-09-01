@@ -1,6 +1,13 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react';
+import {
+	Fragment,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+	type MouseEvent as ReactMouseEvent,
+} from 'react';
 import { fetchKnowledgeGraph, fetchPartyMergeHints } from '@/services/knowledge';
 import { useDocumentStore } from '@/stores/document';
 import { useKnowledgeGraphStore } from '@/stores/knowledgeGraph';
@@ -12,9 +19,12 @@ import {
 import { applyPartyView } from '@/features/docx/utils/knowledge/party-view';
 import {
 	buildStatementGrid,
+	DEONTIC_MARK_KINDS,
 	GRID_LANES,
+	MARK_KINDS,
 	type GridLane,
 	type GridMark,
+	type MarkKind,
 } from '@/features/docx/utils/knowledge/statement-grid';
 import { PartyManager } from '@/features/docx/components/knowledge-graph/PartyManager';
 import { computePairAttention, defaultDyad } from '@/features/docx/utils/knowledge/pair';
@@ -31,7 +41,7 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from '@/components/ui/tooltip';
-import type { DeonticKind, KnowledgeGraph } from '@/types/knowledge';
+import type { KnowledgeGraph } from '@/types/knowledge';
 import { deonticNodes } from '@/types/knowledge';
 
 interface KnowledgeGraphPanelProps {
@@ -47,24 +57,37 @@ interface KnowledgeGraphPanelProps {
 const PARTY_COLOR = '#984ea3';
 const PAIR_SECOND_COLOR = '#0d9488';
 
-const KIND_COLORS: Record<DeonticKind, string> = {
+const KIND_COLORS: Record<MarkKind, string> = {
 	obligation: '#e41a1c',
 	right: '#4daf4a',
 	prohibition: '#ff7f00',
+	definedTerm: '#a65628',
+	condition: '#f781bf',
+	// Set1's yellow is invisible on white; this is the same hue, dark enough to read.
+	value: '#d4a017',
+	reference: '#999999',
 };
 
-const KIND_LABEL: Record<DeonticKind, string> = {
+const KIND_LABEL: Record<MarkKind, string> = {
 	obligation: 'Obligation',
 	right: 'Right',
 	prohibition: 'Prohibition',
+	definedTerm: 'Defined term',
+	condition: 'Condition',
+	value: 'Value',
+	reference: 'Reference',
 };
 
-const DEONTIC_KINDS: DeonticKind[] = ['obligation', 'right', 'prohibition'];
-
-/** Row geometry. Marks are square so a lane reads as a count, not as a bar. */
-const ROW_HEIGHT = 32;
+/**
+ * Marks wrap into a fixed matrix instead of one long line. With the qualifiers on, a
+ * clause can hold thirty of them; a single row would stretch the lane and knock every
+ * other lane out of alignment, which is exactly the drift the columns exist to prevent.
+ */
+const LANE_COLUMNS = 10;
+const MARK_SIZE = 14;
+const MARK_GAP = 4;
+const LANE_WIDTH = LANE_COLUMNS * MARK_SIZE + (LANE_COLUMNS - 1) * MARK_GAP;
 const LABEL_WIDTH = 176;
-const SHARED_WIDTH = 128;
 
 /** The other party's lane when one is singled out: present, not the subject. */
 const MUTED_LANE_OPACITY = 0.22;
@@ -183,13 +206,15 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const [hover, setHover] = useState<{
 		x: number;
 		y: number;
-		kind: DeonticKind;
+		kind: MarkKind;
 		detail: string;
 		/** Which party the statement belongs to — the second half of the tooltip title. */
 		owner?: string;
 	} | null>(null);
-	const [visibleKinds, setVisibleKinds] = useState<Set<DeonticKind>>(
-		() => new Set(DEONTIC_KINDS)
+	// The deontic three are what the contract asserts; the qualifiers describe those
+	// assertions, so they start off and are opted into.
+	const [visibleKinds, setVisibleKinds] = useState<Set<MarkKind>>(
+		() => new Set(DEONTIC_MARK_KINDS)
 	);
 	/**
 	 * Clause picked in the grid. While one is picked the document answers for it alone
@@ -345,6 +370,19 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		[viewKg, focusNodeId, secondPartyId]
 	);
 
+	/**
+	 * A band only exists while it holds something you can see. Filtering the kinds can
+	 * empty a clause just as surely as the extraction can, and a row of nothing reads as
+	 * a finding either way — so rows follow the filter, and reappear when it changes.
+	 */
+	const visibleRows = useMemo(
+		() =>
+			(grid?.rows ?? []).filter((row) =>
+				GRID_LANES.some((lane) => row.marks[lane].some((mark) => visibleKinds.has(mark.kind)))
+			),
+		[grid, visibleKinds]
+	);
+
 	const laneByStatement = useMemo(() => {
 		const byId = new Map<string, GridLane>();
 		for (const row of grid?.rows ?? []) {
@@ -355,22 +393,11 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		return byId;
 	}, [grid]);
 
-	/** Self-pruning: a merge, a hide or a new document retires the id without an effect. */
+	/** Self-pruning: a merge, a hide or a filter that empties the band retires the id. */
 	const activeClause = useMemo(
-		() => grid?.rows.find((row) => row.clauseId && row.clauseId === selectedClauseId) ?? null,
-		[grid, selectedClauseId]
+		() => visibleRows.find((row) => row.clauseId && row.clauseId === selectedClauseId) ?? null,
+		[visibleRows, selectedClauseId]
 	);
-
-	/** How many statements of each kind the grid holds, filter aside. */
-	const kindCounts = useMemo(() => {
-		const counts = { obligation: 0, right: 0, prohibition: 0 } as Record<DeonticKind, number>;
-		for (const row of grid?.rows ?? []) {
-			for (const lane of GRID_LANES) {
-				for (const mark of row.marks[lane]) counts[mark.kind] += 1;
-			}
-		}
-		return counts;
-	}, [grid]);
 
 	// The focus chip lives in the panel header, which has no access to the graph.
 	const focusedPartyName = focusNodeId ? (partyNameById.get(focusNodeId) ?? null) : null;
@@ -427,19 +454,13 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		setBridgePayload,
 	]);
 
-	const counts = viewKg
-		? {
-				parties: viewKg.parties.length,
-				clauses: viewKg.clauses.length,
-				statements: viewKg.obligations.length + viewKg.rights.length + viewKg.prohibitions.length,
-			}
-		: null;
+	const partyCount = viewKg?.parties.length ?? null;
 
-	const allKindsOn = DEONTIC_KINDS.every(
-		(kind) => kindCounts[kind] === 0 || visibleKinds.has(kind)
+	const allKindsOn = MARK_KINDS.every(
+		(kind) => (grid?.countByKind[kind] ?? 0) === 0 || visibleKinds.has(kind)
 	);
 
-	const toggleKind = (kind: DeonticKind, on: boolean) => {
+	const toggleKind = (kind: MarkKind, on: boolean) => {
 		setVisibleKinds((prev) => {
 			const next = new Set(prev);
 			if (on) next.add(kind);
@@ -491,8 +512,10 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			<button
 				key={mark.id}
 				type="button"
-				className="size-3.5 shrink-0 rounded-[3px] transition-opacity hover:ring-2 hover:ring-foreground/30"
+				className="shrink-0 rounded-[3px] transition-opacity hover:ring-2 hover:ring-foreground/30"
 				style={{
+					width: MARK_SIZE,
+					height: MARK_SIZE,
 					backgroundColor: KIND_COLORS[mark.kind],
 					opacity: muted ? MUTED_LANE_OPACITY : mark.attributed ? 1 : UNATTRIBUTED_OPACITY,
 					// Dashed now means one thing only: the contract names nobody.
@@ -510,7 +533,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 
 	return (
 		<div className="flex h-full flex-col">
-			{status === 'ready' && counts && (
+			{status === 'ready' && partyCount !== null && (
 				<div className="border-b border-border/60 px-3 py-2 text-2xs text-muted-foreground">
 					<div className="flex items-center justify-between gap-2">
 						<div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-0.5">
@@ -523,7 +546,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 											className="rounded border border-border/70 px-1.5 py-0.5 hover:bg-muted"
 											title="Add a second party to compare the two side by side"
 										>
-											{secondPartyId ? '2 of' : '1 of'} {counts.parties} parties ▾
+											{secondPartyId ? '2 of' : '1 of'} {partyCount} parties ▾
 										</button>
 										{partyPickerOpen && (
 											<span className="absolute top-full left-0 z-20 mt-1 flex w-56 flex-col gap-1 rounded-md border border-border bg-popover p-2 shadow-md">
@@ -565,37 +588,15 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 										)}
 									</span>
 								) : (
-									<span>{counts.parties} parties</span>
+									<span>{partyCount} parties</span>
 								)}
-								<span>
-									· {counts.clauses} clauses · {counts.statements} statements
-								</span>
 							</span>
-							{grid && (grid.unfiled > 0 || grid.unattributed > 0) && (
-								<span
-									className="text-destructive/80"
-									title="Real gaps: statements with no clause of their own, and statements the contract attributes to nobody at all. Reciprocal provisions are not counted here — they name both parties on purpose."
-								>
-									{grid.unfiled > 0 && <>· {grid.unfiled} unfiled</>}
-									{grid.unattributed > 0 && <> · {grid.unattributed} unattributed</>}
-								</span>
-							)}
-							{grid && grid.emptyClauses > 0 && (
-								<span
-									className="opacity-70"
-									title="Clauses holding no statement, so they have no band. Some carry no duty by nature (Governing Law, Definitions); an empty operative clause is an extraction miss."
-								>
-									· {grid.emptyClauses} empty clauses
-								</span>
-							)}
 						</div>
 						<Button
 							variant="ghost"
 							size="xs"
 							className="h-6 shrink-0 px-1.5 text-2xs"
-							onClick={() =>
-								setVisibleKinds(allKindsOn ? new Set() : new Set(DEONTIC_KINDS))
-							}
+							onClick={() => setVisibleKinds(allKindsOn ? new Set() : new Set(MARK_KINDS))}
 						>
 							{allKindsOn ? 'Hide all' : 'Show all'}
 						</Button>
@@ -652,10 +653,10 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 						<>
 							<div className="h-full overflow-auto">
 								<div className="min-w-[620px]">
-									{/* Lane header. Clicking a party name singles its lane out. */}
+									{/* Lane header. Each checkbox decides whether that lane reaches the document. */}
 									<div className="sticky top-0 z-10 flex items-center gap-2 border-b border-border/60 bg-background/95 px-3 py-1.5 text-2xs backdrop-blur">
 										<span
-											className="shrink-0 font-medium text-muted-foreground/70"
+											className="mr-2 shrink-0 font-medium text-muted-foreground/70"
 											style={{ width: LABEL_WIDTH }}
 										>
 											CLAUSE
@@ -663,11 +664,14 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 										{(['a', 'b'] as const).map((lane) => (
 											<label
 												key={lane}
-												className={`flex min-w-0 flex-1 cursor-pointer items-center gap-1.5 font-semibold ${
+												className={`flex min-w-0 shrink-0 cursor-pointer items-center gap-1.5 font-semibold ${
 													lane === 'a' ? 'justify-end' : 'justify-start'
 												}`}
-												style={{ color: lane === 'a' ? PARTY_COLOR : PAIR_SECOND_COLOR }}
-												title={`Paint ${laneName(lane)}’s statements in the document`}
+												style={{
+													width: LANE_WIDTH,
+													color: lane === 'a' ? PARTY_COLOR : PAIR_SECOND_COLOR,
+												}}
+												title={`Paint ${laneName(lane)}’s entities in the document`}
 											>
 												{lane === 'b' && (
 													<Checkbox
@@ -693,7 +697,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 										))}
 										<label
 											className="flex shrink-0 cursor-pointer items-center gap-1.5 font-medium text-muted-foreground/70"
-											style={{ width: SHARED_WIDTH }}
+											style={{ width: LANE_WIDTH }}
 											title="Bilateral provisions: the contract binds both sides at once («each Party», «either Party», «the other»). Untick to keep them out of the document — what stays painted is what is asymmetric. Dashed marks are the exception: there the contract names nobody."
 										>
 											<Checkbox
@@ -706,12 +710,12 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 										</label>
 									</div>
 
-									{grid.rows.map((row, index) => {
+									{visibleRows.map((row, index) => {
 										const unfiled = row.clauseId === null;
 										return (
 											<div
 												key={row.clauseId ?? 'unfiled'}
-												className={`flex items-center gap-2 px-3 ${
+												className={`flex items-start gap-2 px-3 py-1.5 ${
 													activeClause?.clauseId === row.clauseId
 														? 'bg-primary/10 ring-1 ring-inset ring-primary/30'
 														: unfiled
@@ -720,7 +724,6 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 																? 'bg-muted/30'
 																: ''
 												}`}
-												style={{ height: ROW_HEIGHT }}
 											>
 												<button
 													type="button"
@@ -732,7 +735,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 														openInDocument(row.clauseId);
 													}}
 													disabled={unfiled}
-													className={`shrink-0 truncate text-left text-2xs disabled:cursor-default ${
+													className={`mt-0.5 shrink-0 truncate text-left text-2xs disabled:cursor-default ${
 														unfiled
 															? 'font-medium text-destructive/80'
 															: 'text-foreground/80 hover:underline'
@@ -742,21 +745,26 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 												>
 													{row.heading}
 												</button>
-												{/* Lane A grows leftward from the axis, lane B rightward: the
-												    silhouette is the finding. */}
-												<div className="flex flex-1 justify-end gap-1">
-													{row.marks.a.map(renderMark)}
-												</div>
-												<span className="h-full w-px shrink-0 bg-border" />
-												<div className="flex flex-1 justify-start gap-1">
-													{row.marks.b.map(renderMark)}
-												</div>
-												<div
-													className="flex shrink-0 gap-1 overflow-hidden"
-													style={{ width: SHARED_WIDTH }}
-												>
-													{row.marks.shared.map(renderMark)}
-												</div>
+												{/* Lane A fills right-to-left so it still grows outward from the
+												    axis once the marks wrap; lane B fills the ordinary way. */}
+												{GRID_LANES.map((lane) => (
+													<Fragment key={lane}>
+														{lane === 'b' && (
+															<span className="w-px shrink-0 self-stretch bg-border" />
+														)}
+														<div
+															dir={lane === 'a' ? 'rtl' : 'ltr'}
+															className="grid shrink-0 content-start"
+															style={{
+																width: LANE_WIDTH,
+																gap: MARK_GAP,
+																gridTemplateColumns: `repeat(${LANE_COLUMNS}, ${MARK_SIZE}px)`,
+															}}
+														>
+															{row.marks[lane].map(renderMark)}
+														</div>
+													</Fragment>
+												))}
 											</div>
 										);
 									})}
@@ -807,8 +815,8 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 						<div>
 							<div className="mb-1 font-medium text-foreground/50">Entities</div>
 							<div className="grid grid-cols-1 gap-y-1">
-								{DEONTIC_KINDS.map((kind) => {
-									const count = kindCounts[kind] ?? 0;
+								{MARK_KINDS.map((kind) => {
+									const count = grid.countByKind[kind] ?? 0;
 									const color = KIND_COLORS[kind];
 									return (
 										<label

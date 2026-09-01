@@ -8,6 +8,7 @@ import { useKnowledgeGraphStore } from '@/stores/knowledgeGraph';
 import {
 	buildKnowledgeGraphBridge,
 	buildNodeDocumentTarget,
+	buildPairBridge,
 } from '@/features/docx/utils/knowledge/kg-bridge';
 import { applyPartyView } from '@/features/docx/utils/knowledge/party-view';
 import {
@@ -700,9 +701,13 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	useEffect(() => {
 		if (!viewKg || !focusNodeId) return;
 		setBridgePayload(
-			buildKnowledgeGraphBridge(viewKg, focusNodeId, hops, topK, nodesById, severity, usePageRank)
+			// With a pair on the canvas the document has to answer for both parties, or the
+			// ring shows two and the page reflects one.
+			pair
+				? buildPairBridge(viewKg, pair, nodesById, [NODE_COLORS.party, PAIR_SECOND_COLOR])
+				: buildKnowledgeGraphBridge(viewKg, focusNodeId, hops, topK, nodesById, severity, usePageRank)
 		);
-	}, [viewKg, focusNodeId, hops, topK, nodesById, severity, usePageRank, setBridgePayload]);
+	}, [viewKg, pair, focusNodeId, hops, topK, nodesById, severity, usePageRank, setBridgePayload]);
 
 	// Deterministic radial render: every position comes from the layout module, so
 	// there is no simulation, no settling and no reshuffle when the filter changes.

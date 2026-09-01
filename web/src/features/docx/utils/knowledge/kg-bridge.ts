@@ -3,6 +3,7 @@ import { deonticNodes } from '@/types/knowledge';
 import type { Node as ParagraphNode, RelatedParagraph } from '@/types/document';
 import type { DocumentEntityHighlight } from '@/features/docx/utils/assistant/entity-marks';
 import type { KnowledgeGraphBridgePayload } from '@/stores/knowledgeGraph';
+import type { PairAttention } from '@/features/docx/utils/knowledge/pair';
 import {
 	computePartyAttention,
 	type DeonticSeverity,
@@ -85,6 +86,20 @@ function makeEntityCollector() {
 		entities.push({ label, key, color: palette.color, softColor: palette.soft });
 	};
 	return { entities, add };
+}
+
+/** Same de-duplication as the collector, with an explicit colour instead of a kind. */
+function addColored(
+	entities: DocumentEntityHighlight[],
+	rawLabel: string,
+	key: string,
+	color: string,
+	softColor: string
+) {
+	const label = rawLabel.trim();
+	if (label.length < 2) return;
+	if (entities.some((entity) => entity.label.toLowerCase() === label.toLowerCase())) return;
+	entities.push({ label, key, color, softColor });
 }
 
 function paragraphEnum(pid: string, nodesById: Map<string, ParagraphNode>): number {
@@ -194,6 +209,77 @@ export function buildNodeDocumentTarget(
 		// Every paragraph of the node matters equally — there is no ranking within one node.
 		scoreByParagraphId: Object.fromEntries(ordered.map((pid) => [pid, 1] as const)),
 		toneByParagraphId: {},
+	};
+}
+
+/**
+ * Document bridge for the *pair* view: the union of both parties' top-K.
+ *
+ * Building it from the anchor alone left the ring showing two parties while the document
+ * reflected one — half the reading was invisible on the page. Each party's mentions are
+ * underlined in its own colour, so the document speaks the same language as the ring.
+ */
+export function buildPairBridge(
+	kg: KnowledgeGraph,
+	pair: PairAttention,
+	nodesById: Map<string, ParagraphNode>,
+	partyColors: readonly [string, string]
+): KnowledgeGraphBridgePayload {
+	const byId = new Map(deonticNodes(kg).map((v) => [v.id, v] as const));
+	const clauseById = new Map(kg.clauses.map((c) => [c.id, c]));
+	const partyById = new Map(kg.parties.map((p) => [p.id, p]));
+	const spanOwners = countSpanOwners(kg);
+	const { entities, add } = makeEntityCollector();
+
+	// Parties first: their colour is the one the ring gives them, not the kind palette.
+	for (const [index, partyId] of [pair.partyAId, pair.partyBId].entries()) {
+		const party = partyById.get(partyId);
+		if (!party) continue;
+		const color = partyColors[index];
+		const soft = `${color}29`;
+		for (const label of [party.name, ...party.aliases]) {
+			addColored(entities, label, `kg-${party.id}`, color, soft);
+		}
+	}
+
+	const statements = [...new Set([...pair.topA, ...pair.topB])]
+		.map((id) => byId.get(id))
+		.filter((v): v is KgDeonticNode => Boolean(v))
+		.sort((a, b) => (pair.nodeScores[b.id] ?? 0) - (pair.nodeScores[a.id] ?? 0));
+
+	const paragraphSet = new Set<string>();
+	const scoreByParagraphId: Record<string, number> = {};
+	for (const v of statements) {
+		const score = pair.nodeScores[v.id] ?? 0;
+		for (const span of evidenceLabels(v, spanOwners)) add(span, `kg-${v.id}`, v.kind);
+		const clause = v.clauseId ? clauseById.get(v.clauseId) : undefined;
+		if (clause?.ref) add(clause.ref, `kg-${clause.id}`, 'clause');
+		for (const pid of v.paragraphIds) {
+			if (!nodesById.has(pid)) continue;
+			paragraphSet.add(pid);
+			scoreByParagraphId[pid] = Math.max(scoreByParagraphId[pid] ?? 0, score);
+		}
+	}
+
+	const present = [...paragraphSet].sort(
+		(a, b) => paragraphEnum(a, nodesById) - paragraphEnum(b, nodesById)
+	);
+	const anchorParagraphId =
+		(statements[0]?.paragraphIds ?? []).find((pid) => nodesById.has(pid)) ?? present[0] ?? null;
+
+	return {
+		anchorParagraphId,
+		relatedParagraphs: present
+			.filter((pid) => pid !== anchorParagraphId)
+			.map((pid) => ({ node: nodesById.get(pid) as ParagraphNode, relationTypes: [], references: [] })),
+		entities,
+		paragraphIds: present,
+		focusNodeIds: pair.focusNodeIds,
+		nodeScores: pair.nodeScores,
+		scoreByParagraphId,
+		toneByParagraphId: {},
+		toneSplit: {},
+		ledger: null,
 	};
 }
 

@@ -87,6 +87,83 @@ function makeEntityCollector() {
 	return { entities, add };
 }
 
+function paragraphEnum(pid: string, nodesById: Map<string, ParagraphNode>): number {
+	return nodesById.get(pid)?.paragraph_enum ?? Number(pid.match(/-p-(\d+)$/)?.[1] ?? '0');
+}
+
+/** The document-side half of the payload: where to scroll and what to underline. */
+export type KnowledgeGraphDocumentTarget = Pick<
+	KnowledgeGraphBridgePayload,
+	| 'anchorParagraphId'
+	| 'relatedParagraphs'
+	| 'entities'
+	| 'paragraphIds'
+	| 'scoreByParagraphId'
+	| 'toneByParagraphId'
+>;
+
+/**
+ * "Take me to where this node lives" — one node, its own paragraphs, nothing else.
+ *
+ * Deliberately narrower than `buildKnowledgeGraphBridge`: it carries no `focusNodeIds`
+ * and no `nodeScores`, so writing it moves the document without touching what the ring
+ * draws. That separation is the whole point — navigating and re-focusing used to be the
+ * same act because they travelled in the same payload.
+ */
+export function buildNodeDocumentTarget(
+	kg: KnowledgeGraph,
+	nodeId: string,
+	nodesById: Map<string, ParagraphNode>
+): KnowledgeGraphDocumentTarget {
+	const { entities, add } = makeEntityCollector();
+	let paragraphIds: string[] = [];
+
+	const party = kg.parties.find((p) => p.id === nodeId);
+	const clause = kg.clauses.find((c) => c.id === nodeId);
+	const statement = deonticNodes(kg).find((v) => v.id === nodeId);
+	const term = kg.definedTerms.find((t) => t.id === nodeId);
+
+	if (party) {
+		paragraphIds = party.paragraphIds;
+		add(party.name, `kg-${party.id}`, 'party');
+		for (const alias of party.aliases) add(alias, `kg-${party.id}`, 'party');
+	} else if (clause) {
+		paragraphIds = clause.paragraphIds;
+		if (clause.ref) add(clause.ref, `kg-${clause.id}`, 'clause');
+	} else if (statement) {
+		paragraphIds = statement.paragraphIds;
+		if (statement.text) add(statement.text, `kg-${statement.id}`, statement.kind);
+		const home = kg.clauses.find((c) => c.id === statement.clauseId);
+		if (home?.ref) add(home.ref, `kg-${home.id}`, 'clause');
+	} else if (term) {
+		paragraphIds = term.paragraphIds;
+		add(term.term, `kg-${term.id}`, 'definedTerm');
+	} else {
+		paragraphIds =
+			kg.conditions.find((c) => c.id === nodeId)?.paragraphIds ??
+			kg.references.find((r) => r.id === nodeId)?.paragraphIds ??
+			kg.values.find((v) => v.id === nodeId)?.paragraphIds ??
+			[];
+	}
+
+	const ordered = [...new Set(paragraphIds)]
+		.filter((pid) => nodesById.has(pid))
+		.sort((a, b) => paragraphEnum(a, nodesById) - paragraphEnum(b, nodesById));
+	const anchorParagraphId = ordered[0] ?? null;
+
+	return {
+		anchorParagraphId,
+		relatedParagraphs: ordered
+			.filter((pid) => pid !== anchorParagraphId)
+			.map((pid) => ({ node: nodesById.get(pid) as ParagraphNode, relationTypes: [], references: [] })),
+		entities,
+		paragraphIds: ordered,
+		// Every paragraph of the node matters equally — there is no ranking within one node.
+		scoreByParagraphId: Object.fromEntries(ordered.map((pid) => [pid, 1] as const)),
+		toneByParagraphId: {},
+	};
+}
+
 export function buildKnowledgeGraphBridge(
 	kg: KnowledgeGraph,
 	focusNodeId: string | null,
@@ -103,8 +180,7 @@ export function buildKnowledgeGraphBridge(
 	const deonticById = new Map(deonticNodes(kg).map((v) => [v.id, v] as const));
 	const termById = new Map(kg.definedTerms.map((t) => [t.id, t]));
 
-	const enumOf = (pid: string): number =>
-		nodesById.get(pid)?.paragraph_enum ?? Number(pid.match(/-p-(\d+)$/)?.[1] ?? '0');
+	const enumOf = (pid: string) => paragraphEnum(pid, nodesById);
 	const toRelated = (ids: string[], anchorId: string | null): RelatedParagraph[] =>
 		ids
 			.filter((pid) => pid !== anchorId)

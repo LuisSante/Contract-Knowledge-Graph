@@ -98,9 +98,6 @@ export function PartySelection({
 		<div className="flex h-full flex-col items-center justify-center gap-5 overflow-y-auto px-6 py-6">
 			<div className="w-full max-w-xl text-center">
 				<div className="text-sm font-medium text-foreground">Pick the two parties of the contract</div>
-				<div className="mt-1 text-2xs text-muted-foreground">
-					The reading is between two. Until both seats are taken there is nothing to compare.
-				</div>
 			</div>
 
 			<div className="flex w-full max-w-xl items-stretch gap-3">

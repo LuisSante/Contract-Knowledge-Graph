@@ -5,7 +5,10 @@ import * as d3 from 'd3';
 import { fetchKnowledgeGraph, fetchPartyMergeHints } from '@/services/knowledge';
 import { useDocumentStore } from '@/stores/document';
 import { useKnowledgeGraphStore } from '@/stores/knowledgeGraph';
-import { buildKnowledgeGraphBridge } from '@/features/docx/utils/knowledge/kg-bridge';
+import {
+	buildKnowledgeGraphBridge,
+	buildNodeDocumentTarget,
+} from '@/features/docx/utils/knowledge/kg-bridge';
 import { applyPartyView } from '@/features/docx/utils/knowledge/party-view';
 import {
 	computeRadialLayout,
@@ -155,7 +158,7 @@ function buildGraph(kg: KnowledgeGraph): { nodes: SimNode[]; links: SimLink[] } 
 			id: party.id,
 			kind: 'party',
 			label: party.name,
-			detail: `${party.name}${party.role ? ` \u2014 ${party.role}` : ''}`,
+			detail: party.role,
 			radius: 13,
 		});
 	}
@@ -165,7 +168,7 @@ function buildGraph(kg: KnowledgeGraph): { nodes: SimNode[]; links: SimLink[] } 
 			id: clause.id,
 			kind: 'clause',
 			label,
-			detail: `${label}${clause.heading ? ` \u2014 ${clause.heading}` : ''}`,
+			detail: clause.heading && clause.heading !== label ? clause.heading : '',
 			radius: 8,
 		});
 	}
@@ -396,6 +399,10 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		y: number;
 		kind: KgNodeKind;
 		detail: string;
+		/** Which party the node belongs to — the second half of the tooltip title. */
+		owner?: string;
+		/** A number worth showing but too long for the title, e.g. a clause's split. */
+		note?: string;
 		/** Overrides the kind colour — the pair view needs one colour per party. */
 		color?: string;
 	} | null>(null);
@@ -432,6 +439,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const clearFocus = useKnowledgeGraphStore((s) => s.clearFocus);
 	const setFocusMeta = useKnowledgeGraphStore((s) => s.setFocusMeta);
 	const setBridgePayload = useKnowledgeGraphStore((s) => s.setBridgePayload);
+	const setDocumentTarget = useKnowledgeGraphStore((s) => s.setDocumentTarget);
 	const mergeGroups = useKnowledgeGraphStore((s) => s.mergeGroups);
 	const hiddenParties = useKnowledgeGraphStore((s) => s.hiddenParties);
 	const unhideParty = useKnowledgeGraphStore((s) => s.unhideParty);
@@ -743,6 +751,28 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		const { x: cx, y: cy } = layout.center;
 		const pointAt = (angle: number, distance: number) =>
 			[cx + Math.cos(angle) * distance, cy + Math.sin(angle) * distance] as const;
+		const partyNameById = new Map(
+			graph.nodes.filter((n) => n.kind === 'party').map((n) => [n.id, n.label] as const)
+		);
+		/**
+		 * A clause belongs to no one, so it reports who pulls on it. The title names the
+		 * dominant party — two names and two percentages there is a line nobody reads —
+		 * and the exact split goes to the note underneath.
+		 */
+		const sectorOwner = (clauseId: string): { owner?: string; note?: string } => {
+			if (!pair) {
+				return { owner: focusNodeId ? partyNameById.get(focusNodeId) : undefined };
+			}
+			const a = partyNameById.get(pair.partyAId) ?? '';
+			const b = partyNameById.get(pair.partyBId) ?? '';
+			const split = pair.clauseSplit[clauseId];
+			if (!split || split.a + split.b <= 0) return { owner: 'neither party' };
+			const share = Math.round((split.a / (split.a + split.b)) * 100);
+			return {
+				owner: share >= 60 ? a : share <= 40 ? b : 'both parties',
+				note: `${a} ${share}% · ${b} ${100 - share}%`,
+			};
+		};
 		const arcPath = (radius: number, from: number, to: number) => {
 			const [x0, y0] = pointAt(from, radius);
 			const [x1, y1] = pointAt(to, radius);
@@ -858,6 +888,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 					y: event.clientY - (rect?.top ?? 0),
 					kind: 'clause',
 					detail: d.weight > 0 ? `${d.label} — weight ${d.weight.toFixed(2)}` : d.label,
+					...sectorOwner(d.clauseId),
 				});
 			})
 			.on('mouseleave', () => {
@@ -866,6 +897,10 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				setHover(null);
 			})
 			.on('click', (event: MouseEvent, d) => {
+				event.stopPropagation();
+				if (viewKg) setDocumentTarget(buildNodeDocumentTarget(viewKg, d.clauseId, nodesById));
+			})
+			.on('dblclick', (event: MouseEvent, d) => {
 				event.stopPropagation();
 				clearSelectedParties();
 				focusNode(d.clauseId);
@@ -961,7 +996,8 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 							x: event.clientX - (rect?.left ?? 0),
 							y: event.clientY - (rect?.top ?? 0),
 							kind: 'party',
-							detail: partyB?.detail ?? pair.partyBId,
+							detail: partyB?.detail ?? '',
+							owner: partyB?.label ?? pair.partyBId,
 							color: PAIR_SECOND_COLOR,
 						});
 					})
@@ -1019,6 +1055,23 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 
 		// The tooltip is anchored to an invisible element at the cursor, so it only
 		// needs container-relative coordinates; Radix handles offset and flipping.
+		/**
+		 * Whose node this is. In the pair view that is the top-K it earned its place in —
+		 * often both, since over half the statements name the two parties. A clause belongs
+		 * to no one, so it reports the split instead.
+		 */
+		const ownerOf = (d: SimNode): string | undefined => {
+			if (d.kind === 'party') return partyNameById.get(d.id);
+			if (!pair) return focusNodeId ? partyNameById.get(focusNodeId) : undefined;
+			const a = partyNameById.get(pair.partyAId) ?? '';
+			const b = partyNameById.get(pair.partyBId) ?? '';
+			const owner = pair.ownerByNode[d.id];
+			if (owner === 'a') return a;
+			if (owner === 'b') return b;
+			if (owner === 'both') return `${a} & ${b}`;
+			return d.kind === 'clause' ? sectorOwner(d.id).owner : undefined;
+		};
+
 		const track = (event: MouseEvent, d: SimNode) => {
 			const rect = containerRef.current?.getBoundingClientRect();
 			setHover({
@@ -1026,6 +1079,8 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				y: event.clientY - (rect?.top ?? 0),
 				kind: d.kind,
 				detail: d.detail,
+				owner: ownerOf(d),
+				note: d.kind === 'clause' ? sectorOwner(d.id).note : undefined,
 				color: pair && d.id === pair.partyAId ? NODE_COLORS.party : undefined,
 			});
 		};
@@ -1034,6 +1089,9 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			.on('mouseenter', track)
 			.on('mousemove', track)
 			.on('mouseleave', () => setHover(null))
+			// One click takes the document to the node and leaves the ring alone; two
+			// clicks re-focus the ring on it. Reading and re-framing used to be the same
+			// gesture, so you could not look something up without losing your view.
 			.on('click', (event: MouseEvent, d) => {
 				event.stopPropagation();
 				if ((event.ctrlKey || event.metaKey) && d.kind === 'party') {
@@ -1046,6 +1104,11 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 					toggleEmphasis('a');
 					return;
 				}
+				if (viewKg) setDocumentTarget(buildNodeDocumentTarget(viewKg, d.id, nodesById));
+			})
+			.on('dblclick', (event: MouseEvent, d) => {
+				event.stopPropagation();
+				if (pair && d.id === pair.partyAId) return;
 				clearSelectedParties();
 				focusNode(d.id);
 			});
@@ -1078,7 +1141,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			decorSelRef.current = [];
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [graph, layout, size, pair]);
+	}, [graph, layout, size, pair, viewKg, nodesById, setDocumentTarget]);
 
 	// Restyle (highlight / dim / size-by-attention) without rebuilding the sim.
 	useEffect(() => {
@@ -1396,20 +1459,30 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 									{hover && (
 										<TooltipContent
 											side="top"
-											sideOffset={10}
-											className="max-w-[280px] border-2 px-2.5 py-1.5"
-											style={{ borderColor: hover.color ?? NODE_COLORS[hover.kind] }}
+											sideOffset={12}
+											className="max-w-[360px] border-l-4 px-3.5 py-2.5 shadow-lg"
+											style={{ borderLeftColor: hover.color ?? NODE_COLORS[hover.kind] }}
 										>
-											<span className="flex items-center gap-1.5">
+											<span className="flex items-baseline gap-1.5 text-sm leading-snug">
 												<span
-													className="size-2 shrink-0 rounded-full"
+													className="relative top-[-1px] inline-block size-2.5 shrink-0 self-center rounded-full"
 													style={{ backgroundColor: hover.color ?? NODE_COLORS[hover.kind] }}
 												/>
-												<span className="text-2xs font-medium uppercase tracking-wide opacity-70">
-													{KIND_LABEL[hover.kind]}
-												</span>
+												<span className="font-semibold">{KIND_LABEL[hover.kind]}</span>
+												{hover.owner && (
+													<span className="min-w-0 opacity-80">— {hover.owner}</span>
+												)}
 											</span>
-											<span className="mt-1 block text-2xs leading-snug">{hover.detail}</span>
+											{hover.detail && (
+												<span className="mt-1.5 block text-xs leading-relaxed opacity-90">
+													{hover.detail}
+												</span>
+											)}
+											{hover.note && (
+												<span className="mt-1 block text-xs tabular-nums opacity-70">
+													{hover.note}
+												</span>
+											)}
 										</TooltipContent>
 									)}
 								</Tooltip>

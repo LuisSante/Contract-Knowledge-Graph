@@ -28,70 +28,96 @@ export function clearEntityMarks(element: HTMLElement) {
 	}
 }
 
-/** Wraps the entities found in the element's text. */
+/**
+ * Wraps the entities found in the element's text.
+ *
+ * Matching runs over the element's *concatenated* text, not node by node. A rendered
+ * DOCX paragraph is split into one text node per formatting run — 28 of them in a single
+ * paragraph of the reference contract — so any quote crossing a bold or italic span had
+ * no node containing it whole, and simply never matched. A run of whitespace in a label
+ * matches any run in the document for the same reason: the renderer decides where the
+ * line breaks and the non-breaking spaces go, the extraction does not.
+ */
 export function highlightEntitiesInElement(
 	element: HTMLElement,
 	entities: DocumentEntityHighlight[]
 ) {
-	const normalizedEntities = entities
+	const labels = entities
 		.map((entity) => entity.label.trim())
 		.filter((entity) => entity.length >= 2)
+		// Longest first: a label that contains another must win the overlap.
 		.sort((left, right) => right.length - left.length);
-	if (normalizedEntities.length === 0) return;
+	if (labels.length === 0) return;
 
 	const entityByNormalizedLabel = new Map(
 		entities.map((entity) => [normalizeParagraphExplanationEntityKey(entity.label), entity])
 	);
 	const entityPattern = new RegExp(
-		normalizedEntities.map((entity) => escapeRegex(entity)).join('|'),
+		labels.map((label) => escapeRegex(label).replace(/\s+/g, '\\s+')).join('|'),
 		'gi'
 	);
 
+	// Whitespace-only nodes are kept: they carry the space between two runs, and dropping
+	// them would glue the words either side together and break the match.
 	const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
-	const nodes: Text[] = [];
+	const nodes: Array<{ node: Text; start: number }> = [];
+	let text = '';
 	let current = walker.nextNode();
 	while (current) {
 		const textNode = current as Text;
 		const parentElement = textNode.parentElement;
-		const rawText = textNode.nodeValue ?? '';
 		if (
 			parentElement &&
 			!parentElement.closest('.docx-paragraph-explanation-entity-link') &&
-			!parentElement.closest('mark.docx-contradiction-snippet') &&
-			rawText.trim()
+			!parentElement.closest('mark.docx-contradiction-snippet')
 		) {
-			nodes.push(textNode);
+			nodes.push({ node: textNode, start: text.length });
+			text += textNode.nodeValue ?? '';
 		}
 		current = walker.nextNode();
 	}
+	if (nodes.length === 0) return;
 
-	for (const textNode of nodes) {
+	// Cut every match into the slices falling inside each node *before* touching the DOM:
+	// wrapping one node invalidates the offsets the rest were computed from.
+	type Slice = { start: number; end: number; meta?: DocumentEntityHighlight };
+	const slicesByNode = new Map<Text, Slice[]>();
+	for (const match of text.matchAll(entityPattern)) {
+		const value = match[0] ?? '';
+		if (!value) continue;
+		const from = match.index ?? 0;
+		const to = from + value.length;
+		const meta = entityByNormalizedLabel.get(normalizeParagraphExplanationEntityKey(value));
+		for (const { node, start } of nodes) {
+			const length = node.nodeValue?.length ?? 0;
+			const sliceStart = Math.max(from, start);
+			const sliceEnd = Math.min(to, start + length);
+			if (sliceEnd <= sliceStart) continue;
+			const slices = slicesByNode.get(node) ?? [];
+			slices.push({ start: sliceStart - start, end: sliceEnd - start, meta });
+			slicesByNode.set(node, slices);
+		}
+	}
+
+	for (const [textNode, slices] of slicesByNode) {
 		const originalText = textNode.nodeValue ?? '';
-		entityPattern.lastIndex = 0;
-		if (!entityPattern.test(originalText)) continue;
-
-		entityPattern.lastIndex = 0;
 		const fragment = document.createDocumentFragment();
 		let cursor = 0;
-		for (const match of originalText.matchAll(entityPattern)) {
-			const value = match[0] ?? '';
-			if (!value) continue;
-			const start = match.index ?? 0;
-			if (start > cursor) {
-				fragment.appendChild(document.createTextNode(originalText.slice(cursor, start)));
+		for (const slice of slices.sort((left, right) => left.start - right.start)) {
+			if (slice.start < cursor) continue; // an overlap the longer label already took
+			if (slice.start > cursor) {
+				fragment.appendChild(document.createTextNode(originalText.slice(cursor, slice.start)));
 			}
 			const marker = document.createElement('span');
 			marker.className = 'docx-paragraph-explanation-entity-link';
-			const matchKey = normalizeParagraphExplanationEntityKey(value);
-			const entityMeta = entityByNormalizedLabel.get(matchKey);
-			if (entityMeta) {
-				marker.dataset.entityKey = entityMeta.key;
-				marker.style.setProperty('--entity-color', entityMeta.color);
-				marker.style.setProperty('--entity-color-soft', entityMeta.softColor);
+			if (slice.meta) {
+				marker.dataset.entityKey = slice.meta.key;
+				marker.style.setProperty('--entity-color', slice.meta.color);
+				marker.style.setProperty('--entity-color-soft', slice.meta.softColor);
 			}
-			marker.textContent = value;
+			marker.textContent = originalText.slice(slice.start, slice.end);
 			fragment.appendChild(marker);
-			cursor = start + value.length;
+			cursor = slice.end;
 		}
 		if (cursor < originalText.length) {
 			fragment.appendChild(document.createTextNode(originalText.slice(cursor)));

@@ -9,6 +9,7 @@ import type {
 } from '@/features/docx/utils/knowledge/attention';
 import { DEFAULT_SEVERITY } from '@/features/docx/utils/knowledge/attention';
 import type { MergeGroup } from '@/features/docx/utils/knowledge/party-view';
+import type { KnowledgeGraphDocumentTarget } from '@/features/docx/utils/knowledge/kg-bridge';
 
 export const MAX_KG_HOPS = 5;
 export const DEFAULT_KG_TOP_K = 10;
@@ -101,6 +102,8 @@ interface KnowledgeGraphState extends KnowledgeGraphBridgePayload {
 	clearSelectedParties: () => void;
 	clearFocus: () => void;
 	setBridgePayload: (payload: KnowledgeGraphBridgePayload) => void;
+	/** Move the document without touching the focus, so the ring stays where it is. */
+	setDocumentTarget: (target: KnowledgeGraphDocumentTarget) => void;
 	setSecondParty: (id: string | null) => void;
 	/** Enter the pair view in one step — `focusNode` alone would clear the second party. */
 	focusPair: (anchorId: string, secondId: string) => void;
@@ -208,6 +211,7 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 		}),
 	clearFocus: () => set({ ...CLEARED_FOCUS, hops: 1, secondPartyId: null }),
 	setBridgePayload: (payload) => set(payload),
+	setDocumentTarget: (target) => set(target),
 	setSecondParty: (secondPartyId) => set({ secondPartyId }),
 	focusPair: (focusNodeId, secondPartyId) =>
 		set({ focusNodeId, secondPartyId, hops: 1 }),

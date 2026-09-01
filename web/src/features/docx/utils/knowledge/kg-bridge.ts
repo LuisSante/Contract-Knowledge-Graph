@@ -223,7 +223,13 @@ export function buildPairBridge(
 	kg: KnowledgeGraph,
 	pair: PairAttention,
 	nodesById: Map<string, ParagraphNode>,
-	partyColors: readonly [string, string]
+	partyColors: readonly [string, string],
+	/**
+	 * Narrows the bridge to these statements instead of the pair's two top-K sets — how
+	 * picking one clause in the grid makes the document answer for that clause alone.
+	 * The party colouring stays either way: the reader still needs to see who is who.
+	 */
+	statementIds?: readonly string[]
 ): KnowledgeGraphBridgePayload {
 	const byId = new Map(deonticNodes(kg).map((v) => [v.id, v] as const));
 	const clauseById = new Map(kg.clauses.map((c) => [c.id, c]));
@@ -242,7 +248,7 @@ export function buildPairBridge(
 		}
 	}
 
-	const statements = [...new Set([...pair.topA, ...pair.topB])]
+	const statements = [...new Set(statementIds ?? [...pair.topA, ...pair.topB])]
 		.map((id) => byId.get(id))
 		.filter((v): v is KgDeonticNode => Boolean(v))
 		.sort((a, b) => (pair.nodeScores[b.id] ?? 0) - (pair.nodeScores[a.id] ?? 0));
@@ -274,7 +280,14 @@ export function buildPairBridge(
 			.map((pid) => ({ node: nodesById.get(pid) as ParagraphNode, relationTypes: [], references: [] })),
 		entities,
 		paragraphIds: present,
-		focusNodeIds: pair.focusNodeIds,
+		focusNodeIds: statementIds
+			? [
+					pair.partyAId,
+					pair.partyBId,
+					...statements.map((v) => v.id),
+					...statements.flatMap((v) => (v.clauseId ? [v.clauseId] : [])),
+				]
+			: pair.focusNodeIds,
 		nodeScores: pair.nodeScores,
 		scoreByParagraphId,
 		toneByParagraphId: {},

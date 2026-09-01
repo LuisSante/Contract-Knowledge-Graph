@@ -261,13 +261,7 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 			} ${relatedFocusOn ? 'related-focus-on' : ''}`}
 		>
 			<div className="relative flex min-w-0 flex-col border-r border-gray-300" style={{ width: leftWidth }}>
-				<DocxPageHeader
-					documentName={viewer.documentName}
-					costLabel={costLabel}
-					model={model}
-					onModelChange={setModel}
-					modelDisabled={false}
-				/>
+				<DocxPageHeader documentName={viewer.documentName} />
 				<DocumentViewer
 					containerRef={viewer.containerRef}
 					status={viewer.status}
@@ -291,6 +285,9 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 						graphBlocking ? null : (
 							<RightPanelHeaderActions
 								activeTab={drawer.activeTab}
+								costLabel={costLabel}
+								model={model}
+								onModelChange={setModel}
 							/>
 						)
 					}

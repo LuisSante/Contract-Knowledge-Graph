@@ -30,7 +30,7 @@ from services.llm.base import LLMProvider
 
 logger = logging.getLogger(__name__)
 
-CHUNK_CHAR_BUDGET = 9000
+CHUNK_CHAR_BUDGET = 5000
 
 _DEONTIC_MODEL_BY_KIND: dict[str, type[_KgDeontic]] = {
     "obligation": KgObligation,

@@ -1,1861 +1,3164 @@
 {
- "parties": [
-  {
-   "id": "party-1",
-   "name": "Miltenyi Biotec GmbH",
-   "role": "Supplier",
-   "address": "",
-   "aliases": [
-    "Miltenyi"
-   ],
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16",
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18",
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-20",
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-21",
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-24",
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-25",
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-4"
-   ]
-  },
-  {
-   "id": "party-2",
-   "name": "Bellicum Pharmaceuticals, Inc.",
-   "role": "Buyer",
-   "address": "",
-   "aliases": [
-    "Bellicum"
-   ],
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16",
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18",
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-20",
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-21",
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-24",
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-25",
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-4"
-   ]
-  }
- ],
- "clauses": [
-  {
-   "id": "clause-1",
-   "ref": null,
-   "heading": "Parties, Purpose, Structure",
-   "level": 1,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-3",
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-4"
-   ]
-  },
-  {
-   "id": "clause-2",
-   "ref": null,
-   "heading": "Term and Termination",
-   "level": 1,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-5",
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
-   ]
-  },
-  {
-   "id": "clause-3",
-   "ref": null,
-   "heading": "Rights Granted and Restrictions on Bellicum",
-   "level": 1,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-7",
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
-   ]
-  },
-  {
-   "id": "clause-4",
-   "ref": null,
-   "heading": "Quality, Change Control, Regulatory",
-   "level": 1,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10",
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-9"
-   ]
-  },
-  {
-   "id": "clause-5",
-   "ref": null,
-   "heading": "Forecasts, Orders, Minimum Purchase",
-   "level": 1,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-11",
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-12"
-   ]
-  },
-  {
-   "id": "clause-6",
-   "ref": null,
-   "heading": "Delivery, Continuity of Supply, Second Sourcing",
-   "level": 1,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-13",
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-14"
-   ]
-  },
-  {
-   "id": "clause-7",
-   "ref": "§7.2",
-   "heading": "",
-   "level": 2,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16",
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-25"
-   ]
-  },
-  {
-   "id": "clause-8",
-   "ref": null,
-   "heading": "Financial Terms",
-   "level": 1,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
-   ]
-  },
-  {
-   "id": "clause-9",
-   "ref": null,
-   "heading": "Audit, IP, Confidentiality",
-   "level": 1,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-20"
-   ]
-  },
-  {
-   "id": "clause-10",
-   "ref": null,
-   "heading": "Liability, Indemnity, Insurance, Dispute Resolution",
-   "level": 1,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-21"
-   ]
-  },
-  {
-   "id": "clause-11",
-   "ref": null,
-   "heading": "High-Risk Provisions, Dependencies and Drafting Inconsistencies",
-   "level": 1,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-23",
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-24",
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-25"
-   ]
-  }
- ],
- "definedTerms": [
-  {
-   "id": "term-1",
-   "term": "Miltenyi Products",
-   "definition": "Miltenyi non-exclusively sells the cell-processing \"Miltenyi Products\" of Exhibit B (Clinical and Research Grade)",
-   "definedInClauseId": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-4"
-   ]
-  },
-  {
-   "id": "term-2",
-   "term": "Bellicum Products",
-   "definition": "so Bellicum, its Subcontractors and Licensees can manufacture cell-based therapies (\"Bellicum Products\") for preclinical, clinical and commercial use",
-   "definedInClauseId": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-4"
-   ]
-  },
-  {
-   "id": "term-3",
-   "term": "Module",
-   "definition": "product-specific commercial terms sit in Modules",
-   "definedInClauseId": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-4"
-   ]
-  },
-  {
-   "id": "term-4",
-   "term": "Permitted Use",
-   "definition": "Permitted Use: a limited, non-exclusive, non-transferable right and licence under Miltenyi Technology to use the Products solely for Ex Vivo Cell Processing in manufacturing Bellicum Products, only in the Designated Countries named in the Module.",
-   "definedInClauseId": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
-   ]
-  },
-  {
-   "id": "term-5",
-   "term": "Designated Countries",
-   "definition": "only in the Designated Countries named in the Module",
-   "definedInClauseId": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
-   ]
-  },
-  {
-   "id": "term-6",
-   "term": "Miltenyi Competitor",
-   "definition": "never to a Miltenyi Competitor (Exhibit G)",
-   "definedInClauseId": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
-   ]
-  },
-  {
-   "id": "term-7",
-   "term": "Additional Country",
-   "definition": "An Additional Country requires good-faith negotiation of \"Additional Work\" and ≥12 months' written notice before any regulatory filing there.",
-   "definedInClauseId": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
-   ]
-  },
-  {
-   "id": "term-8",
-   "term": "Product Specifications",
-   "definition": "Miltenyi manufactures to Product Specifications and Agreed Standards and tests each batch.",
-   "definedInClauseId": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
-   ]
-  },
-  {
-   "id": "term-9",
-   "term": "Agreed Standards",
-   "definition": "Miltenyi manufactures to Product Specifications and Agreed Standards and tests each batch.",
-   "definedInClauseId": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
-   ]
-  },
-  {
-   "id": "term-10",
-   "term": "Quality Agreement",
-   "definition": "A Quality Agreement must be signed within [red.] days and before the first Clinical Grade delivery",
-   "definedInClauseId": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
-   ]
-  },
-  {
-   "id": "term-11",
-   "term": "Material Changes",
-   "definition": "Material Changes need advance notification ([red.] months in §3.2(b); §3.2(e) states ≥6 months for a Miltenyi-Requested Change; 1 month for Research Grade, which is exempt from the Material Change and continued-supply rules).",
-   "definedInClauseId": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
-   ]
-  },
-  {
-   "id": "term-12",
-   "term": "Required (regulatory/safety) Changes",
-   "definition": "Required (regulatory/safety) Changes are at Miltenyi's cost unless Bellicum-specific, where Bellicum reimburses documented costs and price must be agreed first.",
-   "definedInClauseId": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
-   ]
-  },
-  {
-   "id": "term-13",
-   "term": "Firm Zone",
-   "definition": "A rolling 12-month Monthly Forecast applies, whose first 3 months form the \"Firm Zone\": [red.]% is binding and must be covered by Purchase Orders.",
-   "definedInClauseId": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-12"
-   ]
-  },
-  {
-   "id": "term-14",
-   "term": "Supply Failure",
-   "definition": "\"Supply Failure\" = failing to deliver ≥[red.]% of an accepted order within a reasonable time after the agreed date — including by Force Majeure — more than twice in a Calendar Year, excluding causes attributable to Bellicum, its designated suppliers, Required Changes or Applicable Laws.",
-   "definedInClauseId": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-14"
-   ]
-  },
-  {
-   "id": "term-15",
-   "term": "Rejection Notice",
-   "definition": "a shipment is deemed accepted absent a reasoned Rejection Notice within [red.] days of receipt",
-   "definedInClauseId": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
-   ]
-  },
-  {
-   "id": "term-16",
-   "term": "Specifications",
-   "definition": "Miltenyi warrants that Product at Delivery conforms to Specifications",
-   "definedInClauseId": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
-   ]
-  },
-  {
-   "id": "term-17",
-   "term": "Applicable Laws",
-   "definition": "is made and tested to Agreed Standards and Applicable Laws",
-   "definedInClauseId": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
-   ]
-  },
-  {
-   "id": "term-18",
-   "term": "Miltenyi Technology",
-   "definition": "it holds the necessary rights in Miltenyi Technology with no infringement allegations received",
-   "definedInClauseId": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
-   ]
-  },
-  {
-   "id": "term-19",
-   "term": "Third-Party",
-   "definition": "no payment-imposing Third-Party agreements beyond Exhibit D",
-   "definedInClauseId": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
-   ]
-  },
-  {
-   "id": "term-20",
-   "term": "Bellicum Product",
-   "definition": "any warranty of suitability for Bellicum Product manufacture or of regulatory approval",
-   "definedInClauseId": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
-   ]
-  },
-  {
-   "id": "term-21",
-   "term": "Contract Year",
-   "definition": "that Product's price in the same Contract Year",
-   "definedInClauseId": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
-   ]
-  },
-  {
-   "id": "term-22",
-   "term": "Affiliate",
-   "definition": "except to an acquirer of all or substantially all the relevant business or assets, or to an Affiliate on notice",
-   "definedInClauseId": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
-   ]
-  },
-  {
-   "id": "term-23",
-   "term": "Force Majeure",
-   "definition": "Force Majeure excludes inability to meet financial obligations",
-   "definedInClauseId": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
-   ]
-  }
- ],
- "obligations": [
-  {
-   "id": "obligation-1",
-   "action": "Supply Miltenyi Products",
-   "summary": "Miltenyi must supply Miltenyi Products to Bellicum non-exclusively.",
-   "text": "Miltenyi non-exclusively sells the cell-processing \"Miltenyi Products\" of Exhibit B (Clinical and Research Grade) so Bellicum, its Subcontractors and Licensees can manufacture cell-based therapies (\"Bellicum Products\") for preclinical, clinical and commercial use.",
-   "burdenPartyId": "party-1",
-   "benefitPartyId": "party-2",
-   "clauseId": "clause-1",
-   "deadline": "",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-4"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Miltenyi non-exclusively sells the cell-processing \"Miltenyi Products\" of Exhibit B (Clinical and Research Grade) so Bellicum, its Subcontractors and Licensees can manufacture cell-based therapies (\"Bellicum Products\") for preclinical, clinical and commercial use."
-   ]
-  },
-  {
-   "id": "obligation-2",
-   "action": "Pay for delivered Product, accepted Purchase Orders, Firm Zone quantities, Upfront Fee and earned Milestones",
-   "summary": "Bellicum must pay for delivered Product, accepted Purchase Orders, Firm Zone quantities, the Upfront Fee and earned Milestones.",
-   "text": "Termination does not release Bellicum from paying for delivered Product, accepted Purchase Orders, Firm Zone quantities, the Upfront Fee and earned Milestones",
-   "burdenPartyId": "party-2",
-   "benefitPartyId": "party-1",
-   "clauseId": "clause-2",
-   "deadline": "",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Termination does not release Bellicum from paying for delivered Product, accepted Purchase Orders, Firm Zone quantities, the Upfront Fee and earned Milestones"
-   ]
-  },
-  {
-   "id": "obligation-3",
-   "action": "Sign Quality Agreement",
-   "summary": "A Quality Agreement must be signed before the first Clinical Grade delivery.",
-   "text": "A Quality Agreement must be signed within [red.] days and before the first Clinical Grade delivery",
-   "burdenPartyId": null,
-   "benefitPartyId": null,
-   "clauseId": "clause-4",
-   "deadline": "before the first Clinical Grade delivery",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "A Quality Agreement must be signed within [red.] days and before the first Clinical Grade delivery"
-   ]
-  },
-  {
-   "id": "obligation-4",
-   "action": "Advance notification of Material Changes",
-   "summary": "Material Changes need advance notification.",
-   "text": "Material Changes need advance notification ([red.] months in §3.2(b); §3.2(e) states ≥6 months for a Miltenyi-Requested Change; 1 month for Research Grade, which is exempt from the Material Change and continued-supply rules).",
-   "burdenPartyId": null,
-   "benefitPartyId": null,
-   "clauseId": "clause-4",
-   "deadline": "",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Material Changes need advance notification ([red.] months in §3.2(b); §3.2(e) states ≥6 months for a Miltenyi-Requested Change; 1 month for Research Grade, which is exempt from the Material Change and continued-supply rules)."
-   ]
-  },
-  {
-   "id": "obligation-5",
-   "action": "Reimburse documented costs for Bellicum-specific Required Changes",
-   "summary": "Bellicum must reimburse documented costs for Bellicum-specific Required Changes and price must be agreed first.",
-   "text": "Required (regulatory/safety) Changes are at Miltenyi's cost unless Bellicum-specific, where Bellicum reimburses documented costs and price must be agreed first.",
-   "burdenPartyId": "party-2",
-   "benefitPartyId": "party-1",
-   "clauseId": "clause-4",
-   "deadline": "",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Required (regulatory/safety) Changes are at Miltenyi's cost unless Bellicum-specific, where Bellicum reimburses documented costs and price must be agreed first."
-   ]
-  },
-  {
-   "id": "obligation-6",
-   "action": "Indemnify Miltenyi for regulatory non-compliance",
-   "summary": "Bellicum indemnifies Miltenyi for regulatory non-compliance.",
-   "text": "Bellicum indemnifies it for regulatory non-compliance.",
-   "burdenPartyId": "party-2",
-   "benefitPartyId": "party-1",
-   "clauseId": "clause-4",
-   "deadline": "",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Bellicum indemnifies it for regulatory non-compliance."
-   ]
-  },
-  {
-   "id": "obligation-7",
-   "action": "Inspect and test Product on Delivery",
-   "summary": "Bellicum must visually inspect and perform QA testing on Delivery.",
-   "text": "Visual inspection on Delivery, then [red.] days for incoming QA testing",
-   "burdenPartyId": "party-2",
-   "benefitPartyId": "party-1",
-   "clauseId": "clause-7",
-   "deadline": "on Delivery, then [red.] days",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Visual inspection on Delivery, then [red.] days for incoming QA testing"
-   ]
-  },
-  {
-   "id": "obligation-8",
-   "action": "Issue Rejection Notice for non-conforming shipment",
-   "summary": "Bellicum must issue a reasoned Rejection Notice within [red.] days if rejecting a shipment.",
-   "text": "a shipment is deemed accepted absent a reasoned Rejection Notice within [red.] days of receipt",
-   "burdenPartyId": "party-2",
-   "benefitPartyId": "party-1",
-   "clauseId": "clause-7",
-   "deadline": "within [red.] days of receipt",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "a shipment is deemed accepted absent a reasoned Rejection Notice within [red.] days of receipt"
-   ]
-  },
-  {
-   "id": "obligation-9",
-   "action": "Pay Upfront Fee",
-   "summary": "Bellicum must pay a non-refundable upfront fee of €2,000,000 in two installments.",
-   "text": "Upfront Fee: €2,000,000, non-refundable, in two installments (amounts redacted) — invoiced after execution and after the first anniversary of the Effective Date.",
-   "burdenPartyId": "party-2",
-   "benefitPartyId": "party-1",
-   "clauseId": "clause-8",
-   "deadline": "after execution and after the first anniversary of the Effective Date",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Upfront Fee: €2,000,000, non-refundable, in two installments (amounts redacted) — invoiced after execution and after the first anniversary of the Effective Date."
-   ]
-  },
-  {
-   "id": "obligation-10",
-   "action": "Pay Milestones",
-   "summary": "Bellicum must pay one-time milestone payments per Bellicum Product on specified events.",
-   "text": "Milestones: per Bellicum Product, one-time payments of €[red.] each on redacted events, set in the relevant Module.",
-   "burdenPartyId": "party-2",
-   "benefitPartyId": "party-1",
-   "clauseId": "clause-8",
-   "deadline": "on redacted events",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Milestones: per Bellicum Product, one-time payments of €[red.] each on redacted events, set in the relevant Module."
-   ]
-  },
-  {
-   "id": "obligation-11",
-   "action": "Reimburse Third-Party royalties",
-   "summary": "Bellicum must reimburse Third-Party royalties under Exhibit D to the extent required for the Permitted Use and actually paid by Miltenyi.",
-   "text": "Third-Party royalties under Exhibit D are reimbursed by Bellicum only to the extent required for the Permitted Use, not otherwise passed through, and actually paid by Miltenyi.",
-   "burdenPartyId": "party-2",
-   "benefitPartyId": "party-1",
-   "clauseId": "clause-8",
-   "deadline": "",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Third-Party royalties under Exhibit D are reimbursed by Bellicum only to the extent required for the Permitted Use, not otherwise passed through, and actually paid by Miltenyi."
-   ]
-  },
-  {
-   "id": "obligation-12",
-   "action": "Pay invoices",
-   "summary": "Bellicum must pay invoices within [red.] days of invoice.",
-   "text": "Payment is due within [red.] days of invoice, by wire, in the invoicing Miltenyi entity's local currency, exclusive of sales tax and VAT",
-   "burdenPartyId": "party-2",
-   "benefitPartyId": "party-1",
-   "clauseId": "clause-8",
-   "deadline": "within [red.] days of invoice",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Payment is due within [red.] days of invoice, by wire, in the invoicing Miltenyi entity's local currency, exclusive of sales tax and VAT"
-   ]
-  },
-  {
-   "id": "obligation-13",
-   "action": "Pay late fee",
-   "summary": "Bellicum must pay a late fee of [red.]% per month (or the legal maximum) if payment is late.",
-   "text": "a late fee of [red.]% per month (or the legal maximum) applies",
-   "burdenPartyId": "party-2",
-   "benefitPartyId": "party-1",
-   "clauseId": "clause-8",
-   "deadline": "per month",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "a late fee of [red.]% per month (or the legal maximum) applies"
-   ]
-  },
-  {
-   "id": "obligation-14",
-   "action": "Indemnify the other Party",
-   "summary": "Each Party must indemnify the other against Third-Party claims from its material breach or gross negligence/wilful misconduct.",
-   "text": "Each Party indemnifies the other against Third-Party claims from its material breach or gross negligence/wilful misconduct",
-   "burdenPartyId": null,
-   "benefitPartyId": null,
-   "clauseId": "clause-10",
-   "deadline": "",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Each Party indemnifies the other against Third-Party claims from its material breach or gross negligence/wilful misconduct"
-   ]
-  },
-  {
-   "id": "obligation-15",
-   "action": "Carry insurance",
-   "summary": "Both Parties must carry general and product liability insurance for the Term plus 5 years.",
-   "text": "both Parties carry general and product liability insurance for the Term plus 5 years",
-   "burdenPartyId": null,
-   "benefitPartyId": null,
-   "clauseId": "clause-10",
-   "deadline": "for the Term plus 5 years",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "both Parties carry general and product liability insurance for the Term plus 5 years"
-   ]
-  }
- ],
- "rights": [
-  {
-   "id": "right-1",
-   "action": "Renew contract for 5-year terms",
-   "summary": "Bellicum alone holds options for successive 5-year renewals.",
-   "text": "Bellicum alone holds options for successive 5-year renewals, on written notice ≥6 months before expiry and only if not then in default.",
-   "burdenPartyId": null,
-   "benefitPartyId": "party-2",
-   "clauseId": "clause-2",
-   "deadline": "on written notice ≥6 months before expiry",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Bellicum alone holds options for successive 5-year renewals, on written notice ≥6 months before expiry and only if not then in default."
-   ]
-  },
-  {
-   "id": "right-2",
-   "action": "Terminate for material breach",
-   "summary": "Either Party may terminate for material breach uncured in 30 days.",
-   "text": "Either Party may terminate for material breach uncured in 30 days (or, if not curable then, absent a satisfactory remedial plan submitted and implemented within those 30 days)",
-   "burdenPartyId": null,
-   "benefitPartyId": null,
-   "clauseId": "clause-2",
-   "deadline": "30 days",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Either Party may terminate for material breach uncured in 30 days (or, if not curable then, absent a satisfactory remedial plan submitted and implemented within those 30 days)"
-   ]
-  },
-  {
-   "id": "right-3",
-   "action": "Terminate for insolvency",
-   "summary": "Either Party may terminate for insolvency on 30 days' notice.",
-   "text": "Either Party may terminate for ... insolvency on 30 days' notice",
-   "burdenPartyId": null,
-   "benefitPartyId": null,
-   "clauseId": "clause-2",
-   "deadline": "30 days' notice",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Either Party may terminate for",
-    "insolvency on 30 days' notice"
-   ]
-  },
-  {
-   "id": "right-4",
-   "action": "Terminate for Force Majeure not abated within 3 months",
-   "summary": "Either Party may terminate for Force Majeure not abated within 3 continuous months.",
-   "text": "Either Party may terminate ... for Force Majeure not abated within 3 continuous months.",
-   "burdenPartyId": null,
-   "benefitPartyId": null,
-   "clauseId": "clause-2",
-   "deadline": "3 continuous months",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Either Party may terminate",
-    "for Force Majeure not abated within 3 continuous months."
-   ]
-  },
-  {
-   "id": "right-5",
-   "action": "Terminate for convenience",
-   "summary": "Bellicum may terminate for convenience on 90 days' notice, with or without cause.",
-   "text": "Bellicum may also terminate for convenience on 90 days' notice, with or without cause.",
-   "burdenPartyId": null,
-   "benefitPartyId": "party-2",
-   "clauseId": "clause-2",
-   "deadline": "90 days' notice",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Bellicum may also terminate for convenience on 90 days' notice, with or without cause."
-   ]
-  },
-  {
-   "id": "right-6",
-   "action": "Use Products for Ex Vivo Cell Processing",
-   "summary": "Bellicum has a limited, non-exclusive, non-transferable right and licence to use the Products solely for Ex Vivo Cell Processing in manufacturing Bellicum Products, only in the Designated Countries.",
-   "text": "Permitted Use: a limited, non-exclusive, non-transferable right and licence under Miltenyi Technology to use the Products solely for Ex Vivo Cell Processing in manufacturing Bellicum Products, only in the Designated Countries named in the Module.",
-   "burdenPartyId": "party-1",
-   "benefitPartyId": "party-2",
-   "clauseId": "clause-3",
-   "deadline": "",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Permitted Use: a limited, non-exclusive, non-transferable right and licence under Miltenyi Technology to use the Products solely for Ex Vivo Cell Processing in manufacturing Bellicum Products, only in the Designated Countries named in the Module."
-   ]
-  },
-  {
-   "id": "right-7",
-   "action": "Sublicense through multiple tiers to Licensees and Subcontractors",
-   "summary": "Bellicum may sublicense through multiple tiers to Licensees and Subcontractors but never to a Miltenyi Competitor.",
-   "text": "Sublicensable through multiple tiers to Licensees and Subcontractors but never to a Miltenyi Competitor (Exhibit G).",
-   "burdenPartyId": "party-1",
-   "benefitPartyId": "party-2",
-   "clauseId": "clause-3",
-   "deadline": "",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Sublicensable through multiple tiers to Licensees and Subcontractors but never to a Miltenyi Competitor (Exhibit G)."
-   ]
-  },
-  {
-   "id": "right-8",
-   "action": "Audit Facility",
-   "summary": "Bellicum or its Licensees may audit the relevant Facility parts on notice.",
-   "text": "Bellicum or its Licensees may audit the relevant Facility parts on ≥[red.] days' notice, at most once every [red.] months except for cause, extra audits at Bellicum's expense",
-   "burdenPartyId": "party-1",
-   "benefitPartyId": "party-2",
-   "clauseId": "clause-9",
-   "deadline": "",
-   "frequency": "at most once every [red.] months except for cause",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-20"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Bellicum or its Licensees may audit the relevant Facility parts on ≥[red.] days' notice, at most once every [red.] months except for cause, extra audits at Bellicum's expense"
-   ]
-  },
-  {
-   "id": "right-9",
-   "action": "Exempt documentation to protect trade secrets",
-   "summary": "Miltenyi may exempt documentation from audit to protect trade secrets.",
-   "text": "Miltenyi may exempt documentation to protect trade secrets.",
-   "burdenPartyId": "party-2",
-   "benefitPartyId": "party-1",
-   "clauseId": "clause-9",
-   "deadline": "",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-20"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Miltenyi may exempt documentation to protect trade secrets."
-   ]
-  },
-  {
-   "id": "right-10",
-   "action": "Disclose existence of Agreement",
-   "summary": "Each Party may disclose the existence of the Agreement.",
-   "text": "the existence of the Agreement may be disclosed but its terms are confidential",
-   "burdenPartyId": null,
-   "benefitPartyId": null,
-   "clauseId": "clause-9",
-   "deadline": "",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-20"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "the existence of the Agreement may be disclosed but its terms are confidential"
-   ]
-  },
-  {
-   "id": "right-11",
-   "action": "Seek injunctive relief",
-   "summary": "Either Party may seek injunctive relief at any time without proving actual damages and without posting a bond.",
-   "text": "injunctive relief may be sought at any time without proving actual damages and without posting a bond.",
-   "burdenPartyId": null,
-   "benefitPartyId": null,
-   "clauseId": "clause-10",
-   "deadline": "",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "injunctive relief may be sought at any time without proving actual damages and without posting a bond."
-   ]
-  }
- ],
- "prohibitions": [
-  {
-   "id": "prohibition-1",
-   "action": "Administer Products in vivo in humans",
-   "summary": "Bellicum and its Subcontractors and Licensees may not administer the Products in vivo in humans.",
-   "text": "Bellicum — and, by imposition, its Subcontractors and Licensees — may not: administer the Products in vivo in humans",
-   "burdenPartyId": "party-2",
-   "benefitPartyId": "party-1",
-   "clauseId": "clause-3",
-   "deadline": "",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Bellicum — and, by imposition, its Subcontractors and Licensees — may not: administer the Products in vivo in humans"
-   ]
-  },
-  {
-   "id": "prohibition-2",
-   "action": "Use Products as ingredient of a Bellicum Product",
-   "summary": "Bellicum and its Subcontractors and Licensees may not use Products as an ingredient of a Bellicum Product.",
-   "text": "Bellicum — and, by imposition, its Subcontractors and Licensees — may not: ... use them as an ingredient of a Bellicum Product",
-   "burdenPartyId": "party-2",
-   "benefitPartyId": "party-1",
-   "clauseId": "clause-3",
-   "deadline": "",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Bellicum — and, by imposition, its Subcontractors and Licensees — may not:",
-    "use them as an ingredient of a Bellicum Product"
-   ]
-  },
-  {
-   "id": "prohibition-3",
-   "action": "Modify or reverse engineer Products",
-   "summary": "Bellicum and its Subcontractors and Licensees may not modify or reverse engineer Products, except for defect identification, troubleshooting and testing.",
-   "text": "Bellicum — and, by imposition, its Subcontractors and Licensees — may not: ... modify or reverse engineer them (provided that defect identification, troubleshooting and testing remain allowed)",
-   "burdenPartyId": "party-2",
-   "benefitPartyId": "party-1",
-   "clauseId": "clause-3",
-   "deadline": "",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Bellicum — and, by imposition, its Subcontractors and Licensees — may not:",
-    "modify or reverse engineer them (provided that defect identification, troubleshooting and testing remain allowed)"
-   ]
-  },
-  {
-   "id": "prohibition-4",
-   "action": "Transfer Products to Third Parties other than Subcontractors/Licensees for Permitted Use or for training and validation",
-   "summary": "Bellicum and its Subcontractors and Licensees may not transfer Products to Third Parties other than Subcontractors/Licensees for the Permitted Use or for training and validation.",
-   "text": "Bellicum — and, by imposition, its Subcontractors and Licensees — may not: ... transfer them to Third Parties other than Subcontractors/Licensees for the Permitted Use or for training and validation",
-   "burdenPartyId": "party-2",
-   "benefitPartyId": "party-1",
-   "clauseId": "clause-3",
-   "deadline": "",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Bellicum — and, by imposition, its Subcontractors and Licensees — may not:",
-    "transfer them to Third Parties other than Subcontractors/Licensees for the Permitted Use or for training and validation"
-   ]
-  },
-  {
-   "id": "prohibition-5",
-   "action": "Resell Products without Miltenyi's prior express written permission",
-   "summary": "Bellicum and its Subcontractors and Licensees may not resell Products without Miltenyi's prior express written permission.",
-   "text": "Bellicum — and, by imposition, its Subcontractors and Licensees — may not: ... resell without Miltenyi's prior express written permission",
-   "burdenPartyId": "party-2",
-   "benefitPartyId": "party-1",
-   "clauseId": "clause-3",
-   "deadline": "",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Bellicum — and, by imposition, its Subcontractors and Licensees — may not:",
-    "resell without Miltenyi's prior express written permission"
-   ]
-  },
-  {
-   "id": "prohibition-6",
-   "action": "Use, import or export Products outside the Designated Countries",
-   "summary": "Bellicum and its Subcontractors and Licensees may not use, import or export Products outside the Designated Countries.",
-   "text": "Bellicum — and, by imposition, its Subcontractors and Licensees — may not: ... use, import or export them outside the Designated Countries.",
-   "burdenPartyId": "party-2",
-   "benefitPartyId": "party-1",
-   "clauseId": "clause-3",
-   "deadline": "",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Bellicum — and, by imposition, its Subcontractors and Licensees — may not:",
-    "use, import or export them outside the Designated Countries."
-   ]
-  },
-  {
-   "id": "prohibition-7",
-   "action": "Set off payments",
-   "summary": "Bellicum may not set off unless agreed or after a final non-appealable judgment.",
-   "text": "Bellicum may not set off unless agreed or after a final non-appealable judgment.",
-   "burdenPartyId": "party-2",
-   "benefitPartyId": "party-1",
-   "clauseId": "clause-8",
-   "deadline": "",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Bellicum may not set off unless agreed or after a final non-appealable judgment."
-   ]
-  },
-  {
-   "id": "prohibition-8",
-   "action": "Assign without consent",
-   "summary": "Assignment needs prior written consent except to an acquirer or Affiliate on notice.",
-   "text": "Assignment needs prior written consent (not unreasonably withheld for a financing transaction), except to an acquirer of all or substantially all the relevant business or assets, or to an Affiliate on notice, with the assignor remaining liable and the acquirer's own IP excluded from the licensed technology; contravening assignment is null and void.",
-   "burdenPartyId": null,
-   "benefitPartyId": null,
-   "clauseId": "clause-10",
-   "deadline": "",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "Assignment needs prior written consent (not unreasonably withheld for a financing transaction), except to an acquirer of all or substantially all the relevant business or assets, or to an Affiliate on notice, with the assignor remaining liable and the acquirer's own IP excluded from the licensed technology; contravening assignment is null and void."
-   ]
-  },
-  {
-   "id": "prohibition-9",
-   "action": "Disclose terms of Agreement",
-   "summary": "The terms of the Agreement are confidential except for carve-outs.",
-   "text": "the existence of the Agreement may be disclosed but its terms are confidential, subject to carve-outs for securities filings, advisors, enforcement and M&A.",
-   "burdenPartyId": null,
-   "benefitPartyId": null,
-   "clauseId": "clause-9",
-   "deadline": "",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-20"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "the existence of the Agreement may be disclosed but its terms are confidential, subject to carve-outs for securities filings, advisors, enforcement and M&A."
-   ]
-  },
-  {
-   "id": "prohibition-10",
-   "action": "Use other's name or marks without consent",
-   "summary": "No press release or use of the other's name or marks without prior written consent unless legally required.",
-   "text": "No press release or use of the other's name or marks without prior written consent unless legally required.",
-   "burdenPartyId": null,
-   "benefitPartyId": null,
-   "clauseId": "clause-9",
-   "deadline": "",
-   "frequency": "",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-20"
-   ],
-   "evidenceVerified": true,
-   "evidenceSpans": [
-    "No press release or use of the other's name or marks without prior written consent unless legally required."
-   ]
-  }
- ],
- "conditions": [
-  {
-   "id": "condition-1",
-   "trigger": "unless that Module expressly says otherwise for the matter concerned",
-   "operator": "UNLESS",
-   "gatesId": "clause-1",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-4"
-   ]
-  },
-  {
-   "id": "condition-2",
-   "trigger": "only if not then in default",
-   "operator": "IF",
-   "gatesId": "right-1",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
-   ]
-  },
-  {
-   "id": "condition-3",
-   "trigger": "if Bellicum terminates for cause it owes nothing for Forecast periods after termination",
-   "operator": "IF",
-   "gatesId": "obligation-2",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
-   ]
-  },
-  {
-   "id": "condition-4",
-   "trigger": "provided shelf life has not expired and the defect is unrelated to post-Delivery handling",
-   "operator": "IF",
-   "gatesId": "obligation-8",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
-   ]
-  },
-  {
-   "id": "condition-5",
-   "trigger": "except to the extent caused by the indemnitee's own breach or misconduct",
-   "operator": "UNLESS",
-   "gatesId": "obligation-14",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
-   ]
-  }
- ],
- "references": [
-  {
-   "id": "reference-1",
-   "name": "Incoterms 2010",
-   "citation": "",
-   "citedById": "clause-6",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-14"
-   ]
-  },
-  {
-   "id": "reference-2",
-   "name": "Exhibit B",
-   "citation": "",
-   "citedById": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-4"
-   ]
-  },
-  {
-   "id": "reference-3",
-   "name": "Exhibit G",
-   "citation": "",
-   "citedById": null,
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
-   ]
-  },
-  {
-   "id": "reference-4",
-   "name": "Exhibit F",
-   "citation": "",
-   "citedById": "clause-6",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-14"
-   ]
-  },
-  {
-   "id": "reference-5",
-   "name": "Exhibit D",
-   "citation": "",
-   "citedById": "obligation-11",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16",
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
-   ]
-  },
-  {
-   "id": "reference-6",
-   "name": "Exhibit E",
-   "citation": "",
-   "citedById": "clause-8",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
-   ]
-  },
-  {
-   "id": "reference-7",
-   "name": "Exhibit F",
-   "citation": "",
-   "citedById": "clause-8",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
-   ]
-  },
-  {
-   "id": "reference-8",
-   "name": "Quality Agreement",
-   "citation": "",
-   "citedById": "clause-11",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-25"
-   ]
-  },
-  {
-   "id": "reference-9",
-   "name": "U.S. District Court for the Southern District of New York",
-   "citation": "",
-   "citedById": "clause-10",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-21"
-   ]
-  },
-  {
-   "id": "reference-10",
-   "name": "State of New York",
-   "citation": "",
-   "citedById": "clause-10",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-21"
-   ]
-  },
-  {
-   "id": "reference-11",
-   "name": "CISG",
-   "citation": "",
-   "citedById": "clause-10",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-21"
-   ]
-  }
- ],
- "values": [
-  {
-   "id": "value-1",
-   "valueType": "Duration",
-   "amount": "10",
-   "unit": "years",
-   "quantifiesId": "clause-2",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
-   ]
-  },
-  {
-   "id": "value-2",
-   "valueType": "Duration",
-   "amount": "5",
-   "unit": "years",
-   "quantifiesId": "right-1",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
-   ]
-  },
-  {
-   "id": "value-3",
-   "valueType": "Duration",
-   "amount": "6",
-   "unit": "months",
-   "quantifiesId": "right-1",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
-   ]
-  },
-  {
-   "id": "value-4",
-   "valueType": "Duration",
-   "amount": "30",
-   "unit": "days",
-   "quantifiesId": "right-2",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
-   ]
-  },
-  {
-   "id": "value-5",
-   "valueType": "Duration",
-   "amount": "30",
-   "unit": "days",
-   "quantifiesId": "right-3",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
-   ]
-  },
-  {
-   "id": "value-6",
-   "valueType": "Duration",
-   "amount": "3",
-   "unit": "months",
-   "quantifiesId": "right-4",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
-   ]
-  },
-  {
-   "id": "value-7",
-   "valueType": "Duration",
-   "amount": "90",
-   "unit": "days",
-   "quantifiesId": "right-5",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
-   ]
-  },
-  {
-   "id": "value-8",
-   "valueType": "Currency",
-   "amount": "2,000,000",
-   "unit": "EUR",
-   "quantifiesId": "obligation-9",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
-   ]
-  },
-  {
-   "id": "value-9",
-   "valueType": "Duration",
-   "amount": "[red.]",
-   "unit": "days",
-   "quantifiesId": "obligation-8",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
-   ]
-  },
-  {
-   "id": "value-10",
-   "valueType": "Percentage",
-   "amount": "[red.]",
-   "unit": "%",
-   "quantifiesId": "obligation-13",
-   "paragraphIds": [
-    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
-   ]
-  }
- ],
- "edges": [
-  {
-   "source": "right-1",
-   "target": "clause-2",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "right-1",
-   "target": "party-2",
-   "type": "grants_right_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "right-2",
-   "target": "clause-2",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "right-3",
-   "target": "clause-2",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "right-4",
-   "target": "clause-2",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "right-5",
-   "target": "clause-2",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "right-5",
-   "target": "party-2",
-   "type": "grants_right_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "right-6",
-   "target": "clause-3",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "right-6",
-   "target": "party-2",
-   "type": "grants_right_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "right-7",
-   "target": "clause-3",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "right-7",
-   "target": "party-2",
-   "type": "grants_right_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "right-8",
-   "target": "clause-9",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "right-8",
-   "target": "party-2",
-   "type": "grants_right_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "right-9",
-   "target": "clause-9",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "right-9",
-   "target": "party-1",
-   "type": "grants_right_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "right-10",
-   "target": "clause-9",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "right-11",
-   "target": "clause-10",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-1",
-   "target": "clause-1",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-1",
-   "target": "party-1",
-   "type": "assigns_obligation_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-2",
-   "target": "clause-2",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-2",
-   "target": "party-2",
-   "type": "assigns_obligation_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-3",
-   "target": "clause-4",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-4",
-   "target": "clause-4",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-5",
-   "target": "clause-4",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-5",
-   "target": "party-2",
-   "type": "assigns_obligation_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-6",
-   "target": "clause-4",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-6",
-   "target": "party-2",
-   "type": "assigns_obligation_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-7",
-   "target": "clause-7",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-7",
-   "target": "party-2",
-   "type": "assigns_obligation_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-8",
-   "target": "clause-7",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-8",
-   "target": "party-2",
-   "type": "assigns_obligation_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-9",
-   "target": "clause-8",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-9",
-   "target": "party-2",
-   "type": "assigns_obligation_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-10",
-   "target": "clause-8",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-10",
-   "target": "party-2",
-   "type": "assigns_obligation_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-11",
-   "target": "clause-8",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-11",
-   "target": "party-2",
-   "type": "assigns_obligation_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-12",
-   "target": "clause-8",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-12",
-   "target": "party-2",
-   "type": "assigns_obligation_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-13",
-   "target": "clause-8",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-13",
-   "target": "party-2",
-   "type": "assigns_obligation_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-14",
-   "target": "clause-10",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "obligation-15",
-   "target": "clause-10",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "prohibition-1",
-   "target": "clause-3",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "prohibition-1",
-   "target": "party-2",
-   "type": "assigns_obligation_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "prohibition-2",
-   "target": "clause-3",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "prohibition-2",
-   "target": "party-2",
-   "type": "assigns_obligation_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "prohibition-3",
-   "target": "clause-3",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "prohibition-3",
-   "target": "party-2",
-   "type": "assigns_obligation_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "prohibition-4",
-   "target": "clause-3",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "prohibition-4",
-   "target": "party-2",
-   "type": "assigns_obligation_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "prohibition-5",
-   "target": "clause-3",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "prohibition-5",
-   "target": "party-2",
-   "type": "assigns_obligation_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "prohibition-6",
-   "target": "clause-3",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "prohibition-6",
-   "target": "party-2",
-   "type": "assigns_obligation_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "prohibition-7",
-   "target": "clause-8",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "prohibition-7",
-   "target": "party-2",
-   "type": "assigns_obligation_to",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "prohibition-8",
-   "target": "clause-10",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "prohibition-9",
-   "target": "clause-9",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "prohibition-10",
-   "target": "clause-9",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "condition-1",
-   "target": "clause-1",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "condition-2",
-   "target": "right-1",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "condition-3",
-   "target": "obligation-2",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "condition-4",
-   "target": "obligation-8",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "condition-5",
-   "target": "obligation-14",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "reference-1",
-   "target": "clause-6",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "reference-4",
-   "target": "clause-6",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "reference-5",
-   "target": "obligation-11",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "reference-6",
-   "target": "clause-8",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "reference-7",
-   "target": "clause-8",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "reference-8",
-   "target": "clause-11",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "reference-9",
-   "target": "clause-10",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "reference-10",
-   "target": "clause-10",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "reference-11",
-   "target": "clause-10",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "value-1",
-   "target": "clause-2",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "value-2",
-   "target": "right-1",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "value-3",
-   "target": "right-1",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "value-4",
-   "target": "right-2",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "value-5",
-   "target": "right-3",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "value-6",
-   "target": "right-4",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "value-7",
-   "target": "right-5",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "value-8",
-   "target": "obligation-9",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "value-9",
-   "target": "obligation-8",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  },
-  {
-   "source": "value-10",
-   "target": "obligation-13",
-   "type": "is_part_of",
-   "evidence": "",
-   "paragraphIds": []
-  }
- ]
+  "parties": [
+    {
+      "id": "party-1",
+      "name": "Miltenyi Biotec GmbH",
+      "role": "Supplier",
+      "address": "",
+      "aliases": [
+        "Miltenyi"
+      ],
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10",
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-12",
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-14",
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16",
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18",
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-20",
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-24",
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-4"
+      ]
+    },
+    {
+      "id": "party-2",
+      "name": "Bellicum Pharmaceuticals, Inc.",
+      "role": "Buyer",
+      "address": "",
+      "aliases": [
+        "Bellicum"
+      ],
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10",
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-12",
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-14",
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16",
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18",
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-20",
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22",
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-4"
+      ]
+    },
+    {
+      "id": "party-3",
+      "name": "each Party",
+      "role": "Contracting Party",
+      "address": "",
+      "aliases": [
+        "Party"
+      ],
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
+      ]
+    }
+  ],
+  "clauses": [
+    {
+      "id": "clause-1",
+      "ref": null,
+      "heading": "Parties, Purpose, Structure",
+      "level": 1,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-3",
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-4"
+      ]
+    },
+    {
+      "id": "clause-2",
+      "ref": null,
+      "heading": "Term and Termination",
+      "level": 1,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-5",
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
+      ]
+    },
+    {
+      "id": "clause-3",
+      "ref": null,
+      "heading": "Rights Granted and Restrictions on Bellicum",
+      "level": 1,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-7",
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
+      ]
+    },
+    {
+      "id": "clause-4",
+      "ref": "Section 3.2",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
+      ]
+    },
+    {
+      "id": "clause-5",
+      "ref": null,
+      "heading": "Forecasts, Orders, Minimum Purchase",
+      "level": 1,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-11",
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-12"
+      ]
+    },
+    {
+      "id": "clause-6",
+      "ref": null,
+      "heading": "Delivery, Continuity of Supply, Second Sourcing",
+      "level": 1,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-13",
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-14"
+      ]
+    },
+    {
+      "id": "clause-7",
+      "ref": null,
+      "heading": "Visual inspection on Delivery",
+      "level": 1,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
+      ]
+    },
+    {
+      "id": "clause-8",
+      "ref": null,
+      "heading": "Financial Terms",
+      "level": 1,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
+      ]
+    },
+    {
+      "id": "clause-9",
+      "ref": null,
+      "heading": "Audit, IP, Confidentiality",
+      "level": 1,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-20"
+      ]
+    },
+    {
+      "id": "clause-10",
+      "ref": null,
+      "heading": "Limitation of Liability and Indemnification",
+      "level": 1,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
+      ]
+    },
+    {
+      "id": "clause-11",
+      "ref": null,
+      "heading": "Assignment",
+      "level": 1,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
+      ]
+    },
+    {
+      "id": "clause-12",
+      "ref": null,
+      "heading": "Force Majeure",
+      "level": 1,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
+      ]
+    },
+    {
+      "id": "clause-13",
+      "ref": null,
+      "heading": "Governing Law",
+      "level": 1,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
+      ]
+    },
+    {
+      "id": "clause-14",
+      "ref": null,
+      "heading": "Dispute Resolution and Escalation",
+      "level": 1,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
+      ]
+    }
+  ],
+  "definedTerms": [
+    {
+      "id": "term-1",
+      "term": "Miltenyi Products",
+      "definition": "the cell-processing \"Miltenyi Products\" of Exhibit B (Clinical and Research Grade)",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-4"
+      ]
+    },
+    {
+      "id": "term-2",
+      "term": "Bellicum Products",
+      "definition": "cell-based therapies (\"Bellicum Products\") for preclinical, clinical and commercial use",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-4"
+      ]
+    },
+    {
+      "id": "term-3",
+      "term": "Module",
+      "definition": "product-specific commercial terms sit in Modules",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-4"
+      ]
+    },
+    {
+      "id": "term-4",
+      "term": "Permitted Use",
+      "definition": "a limited, non-exclusive, non-transferable right and licence under Miltenyi Technology to use the Products solely for Ex Vivo Cell Processing in manufacturing Bellicum Products, only in the Designated Countries named in the Module",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18",
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
+      ]
+    },
+    {
+      "id": "term-5",
+      "term": "Designated Countries",
+      "definition": "Designated Countries named in the Module",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
+      ]
+    },
+    {
+      "id": "term-6",
+      "term": "Additional Country",
+      "definition": "An Additional Country requires good-faith negotiation of \"Additional Work\" and ≥12 months' written notice before any regulatory filing there",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
+      ]
+    },
+    {
+      "id": "term-7",
+      "term": "Miltenyi Competitor",
+      "definition": "never to a Miltenyi Competitor (Exhibit G)",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
+      ]
+    },
+    {
+      "id": "term-8",
+      "term": "Firm Zone",
+      "definition": "the first 3 months form the \"Firm Zone\": [red.]% is binding and must be covered by Purchase Orders",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-12"
+      ]
+    },
+    {
+      "id": "term-9",
+      "term": "Supply Failure",
+      "definition": "\"Supply Failure\" = failing to deliver ≥[red.]% of an accepted order within a reasonable time after the agreed date — including by Force Majeure — more than twice in a Calendar Year, excluding causes attributable to Bellicum, its designated suppliers, Required Changes or Applicable Laws.",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-14"
+      ]
+    },
+    {
+      "id": "term-10",
+      "term": "Rejection Notice",
+      "definition": "a shipment is deemed accepted absent a reasoned Rejection Notice within [red.] days of receipt",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
+      ]
+    },
+    {
+      "id": "term-11",
+      "term": "Agreed Standards",
+      "definition": "Miltenyi warrants that Product at Delivery conforms to Specifications, is made and tested to Agreed Standards and Applicable Laws",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
+      ]
+    },
+    {
+      "id": "term-12",
+      "term": "Applicable Laws",
+      "definition": "Miltenyi warrants that Product at Delivery conforms to Specifications, is made and tested to Agreed Standards and Applicable Laws",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
+      ]
+    },
+    {
+      "id": "term-13",
+      "term": "Miltenyi Technology",
+      "definition": "it holds the necessary rights in Miltenyi Technology with no infringement allegations received and no payment-imposing Third-Party agreements beyond Exhibit D",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
+      ]
+    },
+    {
+      "id": "term-14",
+      "term": "Third-Party",
+      "definition": "no payment-imposing Third-Party agreements beyond Exhibit D",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
+      ]
+    },
+    {
+      "id": "term-15",
+      "term": "Subcontractors",
+      "definition": "consolidated volumes of Bellicum, its Subcontractors and Licensees",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
+      ]
+    },
+    {
+      "id": "term-16",
+      "term": "Licensees",
+      "definition": "consolidated volumes of Bellicum, its Subcontractors and Licensees",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
+      ]
+    },
+    {
+      "id": "term-17",
+      "term": "Required or Bellicum-Requested Changes",
+      "definition": "These caps do not apply to increases from Required or Bellicum-Requested Changes",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
+      ]
+    },
+    {
+      "id": "term-18",
+      "term": "Bellicum Product",
+      "definition": "Bellicum bears sole risk and liability for Bellicum Product safety, clinical trials and commercialisation, including product liability.",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
+      ]
+    },
+    {
+      "id": "term-19",
+      "term": "Affiliate",
+      "definition": "except to an acquirer of all or substantially all the relevant business or assets, or to an Affiliate on notice",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
+      ]
+    },
+    {
+      "id": "term-20",
+      "term": "Force Majeure",
+      "definition": "Force Majeure excludes inability to meet financial obligations.",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
+      ]
+    },
+    {
+      "id": "term-21",
+      "term": "Product Prices",
+      "definition": "Product Prices paid by Bellicum in the preceding 12 months",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
+      ]
+    },
+    {
+      "id": "term-22",
+      "term": "Term",
+      "definition": "for the Term plus 5 years",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-20"
+      ]
+    }
+  ],
+  "obligations": [
+    {
+      "id": "obligation-1",
+      "action": "Pay for delivered Product, accepted Purchase Orders, Firm Zone quantities, the Upfront Fee and earned Milestones",
+      "summary": "Bellicum must pay for delivered Product, accepted Purchase Orders, Firm Zone quantities, the Upfront Fee and earned Milestones.",
+      "text": "Termination does not release Bellicum from paying for delivered Product, accepted Purchase Orders, Firm Zone quantities, the Upfront Fee and earned Milestones",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Termination does not release Bellicum from paying for delivered Product, accepted Purchase Orders, Firm Zone quantities, the Upfront Fee and earned Milestones"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-2",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
+      ]
+    },
+    {
+      "id": "obligation-2",
+      "action": "Submit and implement satisfactory remedial plan within 30 days",
+      "summary": "The breaching party must submit and implement a satisfactory remedial plan within 30 days if the breach is not curable.",
+      "text": "absent a satisfactory remedial plan submitted and implemented within those 30 days",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "absent a satisfactory remedial plan submitted and implemented within those 30 days"
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": null,
+      "clauseId": "clause-2",
+      "deadline": "within those 30 days",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
+      ]
+    },
+    {
+      "id": "obligation-3",
+      "action": "Manufacture to Product Specifications and Agreed Standards",
+      "summary": "Miltenyi must manufacture to Product Specifications and Agreed Standards and test each batch.",
+      "text": "Miltenyi manufactures to Product Specifications and Agreed Standards and tests each batch.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Miltenyi manufactures to Product Specifications and Agreed Standards and tests each batch."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": null,
+      "deadline": "",
+      "frequency": "each batch",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
+      ]
+    },
+    {
+      "id": "obligation-4",
+      "action": "Sign Quality Agreement",
+      "summary": "A Quality Agreement must be signed within [red.] days and before the first Clinical Grade delivery.",
+      "text": "A Quality Agreement must be signed within [red.] days and before the first Clinical Grade delivery;",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "A Quality Agreement must be signed within [red.] days and before the first Clinical Grade delivery;"
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": null,
+      "clauseId": null,
+      "deadline": "within [red.] days and before the first Clinical Grade delivery",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
+      ]
+    },
+    {
+      "id": "obligation-5",
+      "action": "Advance notification of Material Changes",
+      "summary": "Advance notification is required for Material Changes.",
+      "text": "Material Changes need advance notification ([red.] months in §3.2(b); §3.2(e) states ≥6 months for a Miltenyi-Requested Change; 1 month for Research Grade, which is exempt from the Material Change and continued-supply rules).",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Material Changes need advance notification ([red.] months in §3.2(b); §3.2(e) states ≥6 months for a Miltenyi-Requested Change; 1 month for Research Grade, which is exempt from the Material Change and continued-supply rules)."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": null,
+      "clauseId": "clause-4",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
+      ]
+    },
+    {
+      "id": "obligation-6",
+      "action": "Pay for Required Changes",
+      "summary": "Miltenyi bears the cost of Required (regulatory/safety) Changes unless Bellicum-specific, in which case Bellicum reimburses documented costs and price must be agreed first.",
+      "text": "Required (regulatory/safety) Changes are at Miltenyi's cost unless Bellicum-specific, where Bellicum reimburses documented costs and price must be agreed first.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Required (regulatory/safety) Changes are at Miltenyi's cost unless Bellicum-specific, where Bellicum reimburses documented costs and price must be agreed first."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": null,
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
+      ]
+    },
+    {
+      "id": "obligation-7",
+      "action": "Consent to Bellicum-Requested Changes",
+      "summary": "Bellicum-Requested Changes need Miltenyi's consent, which may be refused for non-compliance or adverse impact.",
+      "text": "Bellicum-Requested Changes need Miltenyi's consent — refusable for non-compliance or adverse impact on its manufacturing or other customers — plus a cost review at Bellicum's expense.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Bellicum-Requested Changes need Miltenyi's consent — refusable for non-compliance or adverse impact on its manufacturing or other customers — plus a cost review at Bellicum's expense."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": null,
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
+      ]
+    },
+    {
+      "id": "obligation-8",
+      "action": "Continue supplying unchanged Product while Bellicum files",
+      "summary": "Miltenyi must keep supplying the unchanged Product while Bellicum files, capped at 6 months.",
+      "text": "Miltenyi keeps supplying the unchanged Product while Bellicum files, capped at 6 months;",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Miltenyi keeps supplying the unchanged Product while Bellicum files, capped at 6 months;"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": null,
+      "deadline": "capped at 6 months",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
+      ]
+    },
+    {
+      "id": "obligation-9",
+      "action": "Own regulatory activities",
+      "summary": "Each Party owns its own regulatory activities.",
+      "text": "Each Party owns its own regulatory activities;",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Each Party owns its own regulatory activities;"
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": null,
+      "clauseId": null,
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
+      ]
+    },
+    {
+      "id": "obligation-10",
+      "action": "Indemnify for regulatory non-compliance",
+      "summary": "Bellicum indemnifies Miltenyi for regulatory non-compliance.",
+      "text": "Bellicum indemnifies it for regulatory non-compliance.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Bellicum indemnifies it for regulatory non-compliance."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": null,
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
+      ]
+    },
+    {
+      "id": "obligation-11",
+      "action": "File cross-reference letters in Designated Countries",
+      "summary": "Miltenyi files cross-reference letters in Designated Countries.",
+      "text": "it files cross-reference letters in Designated Countries but is not obliged to file in new jurisdictions absent a separate written agreement including compensation",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "it files cross-reference letters in Designated Countries but is not obliged to file in new jurisdictions absent a separate written agreement including compensation"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": null,
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
+      ]
+    },
+    {
+      "id": "obligation-12",
+      "action": "Provide rolling 12-month Monthly Forecast",
+      "summary": "Bellicum must provide a rolling 12-month Monthly Forecast.",
+      "text": "A rolling 12-month Monthly Forecast applies, whose first 3 months form the \"Firm Zone\": [red.]% is binding and must be covered by Purchase Orders.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "A rolling 12-month Monthly Forecast applies, whose first 3 months form the \"Firm Zone\": [red.]% is binding and must be covered by Purchase Orders."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "monthly",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-12"
+      ]
+    },
+    {
+      "id": "obligation-13",
+      "action": "Cover Firm Zone by Purchase Orders",
+      "summary": "Bellicum must cover the Firm Zone by Purchase Orders.",
+      "text": "the first 3 months form the \"Firm Zone\": [red.]% is binding and must be covered by Purchase Orders.",
+      "evidenceVerified": false,
+      "evidenceSpans": [],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-12"
+      ]
+    },
+    {
+      "id": "obligation-14",
+      "action": "Accept orders within Firm Zone amounts",
+      "summary": "Miltenyi must accept orders within Firm Zone amounts.",
+      "text": "but must accept orders within Firm Zone amounts (acceptance due within [red.] Business Days).",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "but must accept orders within Firm Zone amounts (acceptance due within [red.] Business Days)."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-5",
+      "deadline": "within [red.] Business Days",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-12"
+      ]
+    },
+    {
+      "id": "obligation-15",
+      "action": "Invoice Firm Zone Shortfall",
+      "summary": "Miltenyi invoices the gap between the Firm Zone Requirement and quantities actually ordered, payable within [red.] days.",
+      "text": "quarterly, Miltenyi invoices the gap between the Firm Zone Requirement and quantities actually ordered, payable within [red.] days, after which Bellicum may claim remaining stock of equal value.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "quarterly, Miltenyi invoices the gap between the Firm Zone Requirement and quantities actually ordered, payable within [red.] days, after which Bellicum may claim remaining stock of equal value."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-5",
+      "deadline": "payable within [red.] days",
+      "frequency": "quarterly",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-12"
+      ]
+    },
+    {
+      "id": "obligation-16",
+      "action": "Place firm covering order on Minimum Purchase shortfall",
+      "summary": "Bellicum must place a firm covering order within [red.] days if there is a Minimum Purchase shortfall.",
+      "text": "on shortfall Bellicum has [red.] days to place a firm covering order, and if it does not, Miltenyi may — at sole discretion, effective immediately on notice — cease to be bound (i) not to discontinue any Product, (ii) to ensure continuous supply per Forecasts, and (iii) to provide Regulatory Work, until the level is met again and the Parties agree to resume.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "on shortfall Bellicum has [red.] days to place a firm covering order, and if it does not, Miltenyi may — at sole discretion, effective immediately on notice — cease to be bound (i) not to discontinue any Product, (ii) to ensure continuous supply per Forecasts, and (iii) to provide Regulatory Work, until the level is met again and the Parties agree to resume."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-5",
+      "deadline": "within [red.] days",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-12"
+      ]
+    },
+    {
+      "id": "obligation-17",
+      "action": "Pay freight, insurance and import clearance",
+      "summary": "Bellicum pays freight, insurance and import clearance.",
+      "text": "Bellicum pays freight, insurance and import clearance.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Bellicum pays freight, insurance and import clearance."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-6",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-14"
+      ]
+    },
+    {
+      "id": "obligation-18",
+      "action": "Give priority access on shortage",
+      "summary": "On shortage Miltenyi must give Bellicum priority access by purchase volume and critical medical need.",
+      "text": "On shortage Miltenyi must give Bellicum priority access by purchase volume and critical medical need.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "On shortage Miltenyi must give Bellicum priority access by purchase volume and critical medical need."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-6",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-14"
+      ]
+    },
+    {
+      "id": "obligation-19",
+      "action": "Amend Minimum shelf life by written notice",
+      "summary": "Miltenyi may amend Minimum shelf life in Exhibit B by written notice.",
+      "text": "Minimum shelf life sits in Exhibit B, which Miltenyi may amend by written notice.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Minimum shelf life sits in Exhibit B, which Miltenyi may amend by written notice."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-6",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-14"
+      ]
+    },
+    {
+      "id": "obligation-20",
+      "action": "Grant limited one-site production licence and know-how transfer",
+      "summary": "Miltenyi must grant a limited one-site production licence for the affected Product only, with know-how transfer, if Bellicum qualifies a Third-Party Second-Source Supplier.",
+      "text": "Miltenyi must then grant a limited one-site production licence for the affected Product only, with know-how transfer, and Bellicum reimburses Miltenyi's costs unless Miltenyi is in material breach.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Miltenyi must then grant a limited one-site production licence for the affected Product only, with know-how transfer, and Bellicum reimburses Miltenyi's costs unless Miltenyi is in material breach."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-6",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-14"
+      ]
+    },
+    {
+      "id": "obligation-21",
+      "action": "Perform visual inspection on Delivery",
+      "summary": "Bellicum must perform a visual inspection on Delivery.",
+      "text": "Visual inspection on Delivery",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Visual inspection on Delivery"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-7",
+      "deadline": "on Delivery",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
+      ]
+    },
+    {
+      "id": "obligation-22",
+      "action": "Conduct incoming QA testing",
+      "summary": "Bellicum must conduct incoming QA testing within [red.] days.",
+      "text": "then [red.] days for incoming QA testing",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "then [red.] days for incoming QA testing"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-7",
+      "deadline": "within [red.] days",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
+      ]
+    },
+    {
+      "id": "obligation-23",
+      "action": "Issue Rejection Notice for non-conforming shipment",
+      "summary": "Bellicum must issue a reasoned Rejection Notice within [red.] days if shipment is non-conforming.",
+      "text": "a shipment is deemed accepted absent a reasoned Rejection Notice within [red.] days of receipt",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "a shipment is deemed accepted absent a reasoned Rejection Notice within [red.] days of receipt"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-7",
+      "deadline": "within [red.] days of receipt",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
+      ]
+    },
+    {
+      "id": "obligation-24",
+      "action": "Pay Upfront Fee",
+      "summary": "Bellicum must pay a non-refundable upfront fee of €2,000,000 in two installments.",
+      "text": "Upfront Fee: €2,000,000, non-refundable, in two installments (amounts redacted) — invoiced after execution and after the first anniversary of the Effective Date.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Upfront Fee: €2,000,000, non-refundable, in two installments (amounts redacted) — invoiced after execution and after the first anniversary of the Effective Date."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-8",
+      "deadline": "after execution and after the first anniversary of the Effective Date",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
+      ]
+    },
+    {
+      "id": "obligation-25",
+      "action": "Pay Milestones",
+      "summary": "Bellicum must pay one-time milestone payments per Bellicum Product on specified events.",
+      "text": "Milestones: per Bellicum Product, one-time payments of €[red.] each on redacted events, set in the relevant Module.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Milestones: per Bellicum Product, one-time payments of €[red.] each on redacted events, set in the relevant Module."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-8",
+      "deadline": "on redacted events",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
+      ]
+    },
+    {
+      "id": "obligation-26",
+      "action": "Reimburse Third-Party royalties",
+      "summary": "Bellicum must reimburse Third-Party royalties under Exhibit D only to the extent required for the Permitted Use and actually paid by Miltenyi.",
+      "text": "Third-Party royalties under Exhibit D are reimbursed by Bellicum only to the extent required for the Permitted Use, not otherwise passed through, and actually paid by Miltenyi.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Third-Party royalties under Exhibit D are reimbursed by Bellicum only to the extent required for the Permitted Use, not otherwise passed through, and actually paid by Miltenyi."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-8",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
+      ]
+    },
+    {
+      "id": "obligation-27",
+      "action": "Pay invoices",
+      "summary": "Bellicum must pay invoices within [red.] days of invoice.",
+      "text": "Payment is due within [red.] days of invoice, by wire, in the invoicing Miltenyi entity's local currency, exclusive of sales tax and VAT",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Payment is due within [red.] days of invoice, by wire, in the invoicing Miltenyi entity's local currency, exclusive of sales tax and VAT"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-8",
+      "deadline": "within [red.] days of invoice",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
+      ]
+    },
+    {
+      "id": "obligation-28",
+      "action": "Pay late fee",
+      "summary": "Bellicum must pay a late fee of [red.]% per month (or the legal maximum) if payment is late.",
+      "text": "a late fee of [red.]% per month (or the legal maximum) applies",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "a late fee of [red.]% per month (or the legal maximum) applies"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-8",
+      "deadline": "if payment is late",
+      "frequency": "per month",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
+      ]
+    },
+    {
+      "id": "obligation-29",
+      "action": "Warrant Product conformity",
+      "summary": "Miltenyi warrants that Product at Delivery conforms to Specifications, Agreed Standards, Applicable Laws, stated quality and purity, is not adulterated or mislabelled, and carries full title free of liens.",
+      "text": "Miltenyi warrants that Product at Delivery conforms to Specifications, is made and tested to Agreed Standards and Applicable Laws, holds stated quality and purity through expiry, is not adulterated or mislabelled, and carries full title free of liens",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Miltenyi warrants that Product at Delivery conforms to Specifications, is made and tested to Agreed Standards and Applicable Laws, holds stated quality and purity through expiry, is not adulterated or mislabelled, and carries full title free of liens"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-7",
+      "deadline": "at Delivery",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
+      ]
+    },
+    {
+      "id": "obligation-30",
+      "action": "License or design around Third-Party IP",
+      "summary": "Miltenyi must license or design around Third-Party IP infringement at its own expense.",
+      "text": "On Third-Party IP infringement Miltenyi must license or design around at its own expense",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "On Third-Party IP infringement Miltenyi must license or design around at its own expense"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-7",
+      "deadline": "on Third-Party IP infringement",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
+      ]
+    },
+    {
+      "id": "obligation-31",
+      "action": "Indemnify other party",
+      "summary": "Each Party must indemnify the other against certain third-party claims.",
+      "text": "Each Party indemnifies the other against Third-Party claims from its material breach or gross negligence/wilful misconduct, Bellicum additionally for the development, manufacture, use or sale of Bellicum Products, except to the extent caused by the indemnitee's own breach or misconduct; no settlement or admission of liability without the indemnitee's prior express written permission.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Each Party indemnifies the other against Third-Party claims from its material breach or gross negligence/wilful misconduct, Bellicum additionally for the development, manufacture, use or sale of Bellicum Products, except to the extent caused by the indemnitee's own breach or misconduct; no settlement or admission of liability without the indemnitee's prior express written permission."
+      ],
+      "burdenPartyId": "party-3",
+      "benefitPartyId": "party-3",
+      "clauseId": "clause-10",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
+      ]
+    },
+    {
+      "id": "obligation-32",
+      "action": "Carry insurance",
+      "summary": "Both Parties must carry general and product liability insurance for the Term plus 5 years.",
+      "text": "both Parties carry general and product liability insurance for the Term plus 5 years.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "both Parties carry general and product liability insurance for the Term plus 5 years."
+      ],
+      "burdenPartyId": "party-3",
+      "benefitPartyId": null,
+      "clauseId": "clause-10",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
+      ]
+    }
+  ],
+  "rights": [
+    {
+      "id": "right-1",
+      "action": "Renew for successive 5-year periods",
+      "summary": "Bellicum has the right to renew for successive 5-year periods.",
+      "text": "Bellicum alone holds options for successive 5-year renewals, on written notice ≥6 months before expiry and only if not then in default.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Bellicum alone holds options for successive 5-year renewals, on written notice ≥6 months before expiry and only if not then in default."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-2",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
+      ]
+    },
+    {
+      "id": "right-2",
+      "action": "Terminate for material breach",
+      "summary": "Either Party may terminate for material breach uncured in 30 days.",
+      "text": "Either Party may terminate for material breach uncured in 30 days",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Either Party may terminate for material breach uncured in 30 days"
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": null,
+      "clauseId": "clause-2",
+      "deadline": "30 days",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
+      ]
+    },
+    {
+      "id": "right-3",
+      "action": "Terminate for insolvency",
+      "summary": "Either Party may terminate for insolvency on 30 days' notice.",
+      "text": "for insolvency on 30 days' notice",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "for insolvency on 30 days' notice"
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": null,
+      "clauseId": "clause-2",
+      "deadline": "30 days' notice",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
+      ]
+    },
+    {
+      "id": "right-4",
+      "action": "Terminate for Force Majeure not abated within 3 months",
+      "summary": "Either Party may terminate for Force Majeure not abated within 3 continuous months.",
+      "text": "for Force Majeure not abated within 3 continuous months",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "for Force Majeure not abated within 3 continuous months"
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": null,
+      "clauseId": "clause-2",
+      "deadline": "3 continuous months",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
+      ]
+    },
+    {
+      "id": "right-5",
+      "action": "Terminate for convenience",
+      "summary": "Bellicum may terminate for convenience on 90 days' notice, with or without cause.",
+      "text": "Bellicum may also terminate for convenience on 90 days' notice, with or without cause.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Bellicum may also terminate for convenience on 90 days' notice, with or without cause."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-2",
+      "deadline": "90 days' notice",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
+      ]
+    },
+    {
+      "id": "right-6",
+      "action": "Use Products for Ex Vivo Cell Processing in Designated Countries",
+      "summary": "Bellicum has a limited, non-exclusive, non-transferable right to use the Products solely for Ex Vivo Cell Processing in manufacturing Bellicum Products, only in the Designated Countries.",
+      "text": "Permitted Use: a limited, non-exclusive, non-transferable right and licence under Miltenyi Technology to use the Products solely for Ex Vivo Cell Processing in manufacturing Bellicum Products, only in the Designated Countries named in the Module.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Permitted Use: a limited, non-exclusive, non-transferable right and licence under Miltenyi Technology to use the Products solely for Ex Vivo Cell Processing in manufacturing Bellicum Products, only in the Designated Countries named in the Module."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-3",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
+      ]
+    },
+    {
+      "id": "right-7",
+      "action": "Sublicense to Licensees and Subcontractors (not Miltenyi Competitors)",
+      "summary": "Bellicum may sublicense through multiple tiers to Licensees and Subcontractors but never to a Miltenyi Competitor.",
+      "text": "Sublicensable through multiple tiers to Licensees and Subcontractors but never to a Miltenyi Competitor (Exhibit G).",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Sublicensable through multiple tiers to Licensees and Subcontractors but never to a Miltenyi Competitor (Exhibit G)."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-3",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
+      ]
+    },
+    {
+      "id": "right-8",
+      "action": "Negotiate Additional Country",
+      "summary": "Bellicum may add an Additional Country after good-faith negotiation and ≥12 months' written notice before any regulatory filing there.",
+      "text": "An Additional Country requires good-faith negotiation of \"Additional Work\" and ≥12 months' written notice before any regulatory filing there.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "An Additional Country requires good-faith negotiation of \"Additional Work\" and ≥12 months' written notice before any regulatory filing there."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-3",
+      "deadline": "≥12 months' written notice",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
+      ]
+    },
+    {
+      "id": "right-9",
+      "action": "Miltenyi reserves right to supply anyone",
+      "summary": "Miltenyi expressly reserves the right to supply anyone, including Bellicum's competitors.",
+      "text": "Miltenyi expressly reserves the right to supply anyone, including Bellicum's competitors;",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Miltenyi expressly reserves the right to supply anyone, including Bellicum's competitors;"
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-3",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
+      ]
+    },
+    {
+      "id": "right-10",
+      "action": "Refuse Bellicum-Requested Changes",
+      "summary": "Miltenyi may refuse Bellicum-Requested Changes for non-compliance or adverse impact.",
+      "text": "refusable for non-compliance or adverse impact on its manufacturing or other customers",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "refusable for non-compliance or adverse impact on its manufacturing or other customers"
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-1",
+      "clauseId": null,
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
+      ]
+    },
+    {
+      "id": "right-11",
+      "action": "Claim remaining stock of equal value",
+      "summary": "Bellicum may claim remaining stock of equal value after paying the Firm Zone Shortfall invoice.",
+      "text": "after which Bellicum may claim remaining stock of equal value.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "after which Bellicum may claim remaining stock of equal value."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-12"
+      ]
+    },
+    {
+      "id": "right-12",
+      "action": "Cease to be bound by certain obligations",
+      "summary": "Miltenyi may, at its sole discretion and effective immediately on notice, cease to be bound by certain obligations if Bellicum fails to place a covering order after Minimum Purchase shortfall.",
+      "text": "Miltenyi may — at sole discretion, effective immediately on notice — cease to be bound (i) not to discontinue any Product, (ii) to ensure continuous supply per Forecasts, and (iii) to provide Regulatory Work, until the level is met again and the Parties agree to resume.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Miltenyi may — at sole discretion, effective immediately on notice — cease to be bound (i) not to discontinue any Product, (ii) to ensure continuous supply per Forecasts, and (iii) to provide Regulatory Work, until the level is met again and the Parties agree to resume."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-12"
+      ]
+    },
+    {
+      "id": "right-13",
+      "action": "Cancel orders without penalty",
+      "summary": "Bellicum may cancel orders without penalty if delay exceeds 30 days past the confirmed date or no acceptable delivery plan is offered.",
+      "text": "if no acceptable delivery plan is offered, or delay exceeds 30 days past the confirmed date, Bellicum may cancel orders without penalty.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "if no acceptable delivery plan is offered, or delay exceeds 30 days past the confirmed date, Bellicum may cancel orders without penalty."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-6",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-14"
+      ]
+    },
+    {
+      "id": "right-14",
+      "action": "Demand a Secondary Location at Miltenyi's cost",
+      "summary": "Bellicum may demand a Secondary Location at Miltenyi's cost after a Supply Failure.",
+      "text": "Bellicum may then demand a Secondary Location at Miltenyi's cost;",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Bellicum may then demand a Secondary Location at Miltenyi's cost;"
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-6",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-14"
+      ]
+    },
+    {
+      "id": "right-15",
+      "action": "Qualify a Third-Party Second-Source Supplier",
+      "summary": "If Miltenyi declines or fails to provide a Secondary Location, Bellicum may qualify a Third-Party Second-Source Supplier at its own cost, subject to Miltenyi's consent.",
+      "text": "if Miltenyi declines or fails within a reasonable time, Bellicum may qualify a Third-Party Second-Source Supplier at its own cost, subject to Miltenyi's consent (not unreasonably withheld except to protect its IP from a competitor); absent agreement within 30 days, Bellicum may choose its own, never a Miltenyi Competitor.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "if Miltenyi declines or fails within a reasonable time, Bellicum may qualify a Third-Party Second-Source Supplier at its own cost, subject to Miltenyi's consent (not unreasonably withheld except to protect its IP from a competitor); absent agreement within 30 days, Bellicum may choose its own, never a Miltenyi Competitor."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-6",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-14"
+      ]
+    },
+    {
+      "id": "right-16",
+      "action": "Amend Minimum shelf life by written notice",
+      "summary": "Miltenyi may amend Minimum shelf life in Exhibit B by written notice.",
+      "text": "Minimum shelf life sits in Exhibit B, which Miltenyi may amend by written notice.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Minimum shelf life sits in Exhibit B, which Miltenyi may amend by written notice."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-6",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-14"
+      ]
+    },
+    {
+      "id": "right-17",
+      "action": "Reject latent defects",
+      "summary": "Bellicum may reject latent defects within [red.] days of awareness, provided shelf life has not expired and the defect is unrelated to post-Delivery handling.",
+      "text": "Latent defects may be rejected within [red.] days of awareness, provided shelf life has not expired and the defect is unrelated to post-Delivery handling",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Latent defects may be rejected within [red.] days of awareness, provided shelf life has not expired and the defect is unrelated to post-Delivery handling"
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-7",
+      "deadline": "within [red.] days of awareness",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
+      ]
+    },
+    {
+      "id": "right-18",
+      "action": "Dispute resolution by independent laboratory",
+      "summary": "Either party may refer disputes to an agreed independent laboratory whose findings are binding.",
+      "text": "disputes go to an agreed independent laboratory whose findings bind, at the cost of the Party shown wrong",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "disputes go to an agreed independent laboratory whose findings bind, at the cost of the Party shown wrong"
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": null,
+      "clauseId": "clause-7",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
+      ]
+    },
+    {
+      "id": "right-19",
+      "action": "Refund/credit or replacement for non-conforming Product",
+      "summary": "Bellicum may elect refund/credit or replacement as the sole and exclusive remedy for non-conforming Product.",
+      "text": "Refund/credit or replacement, at Bellicum's option, is the sole and exclusive remedy for non-conforming Product",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Refund/credit or replacement, at Bellicum's option, is the sole and exclusive remedy for non-conforming Product"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-7",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
+      ]
+    },
+    {
+      "id": "right-20",
+      "action": "Offset royalties against Product price",
+      "summary": "Bellicum may offset royalties actually paid against that Product's price in the same Contract Year, capped at [red.]%, with carry-forward, if Miltenyi fails to license or design around Third-Party IP.",
+      "text": "Bellicum may offset royalties actually paid against that Product's price in the same Contract Year, capped at [red.]%, with carry-forward",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Bellicum may offset royalties actually paid against that Product's price in the same Contract Year, capped at [red.]%, with carry-forward"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-7",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
+      ]
+    },
+    {
+      "id": "right-21",
+      "action": "Audit Facility",
+      "summary": "Bellicum or its Licensees may audit the relevant Facility parts on ≥[red.] days' notice, at most once every [red.] months except for cause, extra audits at Bellicum's expense.",
+      "text": "Bellicum or its Licensees may audit the relevant Facility parts on ≥[red.] days' notice, at most once every [red.] months except for cause, extra audits at Bellicum's expense",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Bellicum or its Licensees may audit the relevant Facility parts on ≥[red.] days' notice, at most once every [red.] months except for cause, extra audits at Bellicum's expense"
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-9",
+      "deadline": "",
+      "frequency": "at most once every [red.] months except for cause",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-20"
+      ]
+    },
+    {
+      "id": "right-22",
+      "action": "Exempt documentation to protect trade secrets",
+      "summary": "Miltenyi may exempt documentation from audit to protect trade secrets.",
+      "text": "Miltenyi may exempt documentation to protect trade secrets",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Miltenyi may exempt documentation to protect trade secrets"
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-9",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-20"
+      ]
+    },
+    {
+      "id": "right-23",
+      "action": "Keep own Technology",
+      "summary": "Each Party keeps its own Technology, with no implied licences.",
+      "text": "Each Party keeps its own Technology, with no implied licences",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Each Party keeps its own Technology, with no implied licences"
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": null,
+      "clauseId": "clause-9",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-20"
+      ]
+    },
+    {
+      "id": "right-24",
+      "action": "Disclose existence of Agreement",
+      "summary": "Each Party may disclose the existence of the Agreement.",
+      "text": "the existence of the Agreement may be disclosed",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "the existence of the Agreement may be disclosed"
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": null,
+      "clauseId": "clause-9",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-20"
+      ]
+    },
+    {
+      "id": "right-25",
+      "action": "Suspend performance for non-payment",
+      "summary": "Miltenyi may suspend performance if Bellicum fails to pay and does not cure within 5 Business Days of notice.",
+      "text": "Miltenyi may suspend performance if Bellicum fails to pay and does not cure within 5 Business Days of notice",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Miltenyi may suspend performance if Bellicum fails to pay and does not cure within 5 Business Days of notice"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-8",
+      "deadline": "if Bellicum fails to pay and does not cure within 5 Business Days of notice",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
+      ]
+    },
+    {
+      "id": "right-26",
+      "action": "Suspend payment for material non-performance",
+      "summary": "Bellicum may suspend payment if Miltenyi materially fails to perform.",
+      "text": "Bellicum may suspend payment if Miltenyi materially fails to perform",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Bellicum may suspend payment if Miltenyi materially fails to perform"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-8",
+      "deadline": "if Miltenyi materially fails to perform",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
+      ]
+    },
+    {
+      "id": "right-27",
+      "action": "Assign contract to acquirer or Affiliate",
+      "summary": "A Party may assign the contract to an acquirer of all or substantially all relevant business or assets, or to an Affiliate on notice.",
+      "text": "except to an acquirer of all or substantially all the relevant business or assets, or to an Affiliate on notice, with the assignor remaining liable and the acquirer's own IP excluded from the licensed technology",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "except to an acquirer of all or substantially all the relevant business or assets, or to an Affiliate on notice, with the assignor remaining liable and the acquirer's own IP excluded from the licensed technology"
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-3",
+      "clauseId": "clause-11",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
+      ]
+    },
+    {
+      "id": "right-28",
+      "action": "Seek injunctive relief at any time",
+      "summary": "Either Party may seek injunctive relief at any time without proving actual damages and without posting a bond.",
+      "text": "injunctive relief may be sought at any time without proving actual damages and without posting a bond.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "injunctive relief may be sought at any time without proving actual damages and without posting a bond."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-3",
+      "clauseId": "clause-14",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
+      ]
+    }
+  ],
+  "prohibitions": [
+    {
+      "id": "prohibition-1",
+      "action": "Administer Products in vivo in humans",
+      "summary": "Bellicum and its Subcontractors and Licensees may not administer the Products in vivo in humans.",
+      "text": "Bellicum — and, by imposition, its Subcontractors and Licensees — may not: administer the Products in vivo in humans;",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Bellicum — and, by imposition, its Subcontractors and Licensees — may not: administer the Products in vivo in humans;"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-3",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
+      ]
+    },
+    {
+      "id": "prohibition-2",
+      "action": "Use Products as ingredient of Bellicum Product",
+      "summary": "Bellicum and its Subcontractors and Licensees may not use Products as an ingredient of a Bellicum Product.",
+      "text": "use them as an ingredient of a Bellicum Product;",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "use them as an ingredient of a Bellicum Product;"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-3",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
+      ]
+    },
+    {
+      "id": "prohibition-3",
+      "action": "Modify or reverse engineer Products",
+      "summary": "Bellicum and its Subcontractors and Licensees may not modify or reverse engineer the Products, except for defect identification, troubleshooting and testing.",
+      "text": "modify or reverse engineer them (provided that defect identification, troubleshooting and testing remain allowed);",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "modify or reverse engineer them (provided that defect identification, troubleshooting and testing remain allowed);"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-3",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
+      ]
+    },
+    {
+      "id": "prohibition-4",
+      "action": "Transfer Products to Third Parties (except Subcontractors/Licensees for Permitted Use or for training and validation)",
+      "summary": "Bellicum and its Subcontractors and Licensees may not transfer Products to Third Parties other than Subcontractors/Licensees for the Permitted Use or for training and validation.",
+      "text": "transfer them to Third Parties other than Subcontractors/Licensees for the Permitted Use or for training and validation;",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "transfer them to Third Parties other than Subcontractors/Licensees for the Permitted Use or for training and validation;"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-3",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
+      ]
+    },
+    {
+      "id": "prohibition-5",
+      "action": "Resell Products without Miltenyi's prior express written permission",
+      "summary": "Bellicum and its Subcontractors and Licensees may not resell Products without Miltenyi's prior express written permission.",
+      "text": "resell without Miltenyi's prior express written permission;",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "resell without Miltenyi's prior express written permission;"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-3",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
+      ]
+    },
+    {
+      "id": "prohibition-6",
+      "action": "Use, import or export Products outside Designated Countries",
+      "summary": "Bellicum and its Subcontractors and Licensees may not use, import or export Products outside the Designated Countries.",
+      "text": "use, import or export them outside the Designated Countries.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "use, import or export them outside the Designated Countries."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-3",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
+      ]
+    },
+    {
+      "id": "prohibition-7",
+      "action": "Make, import or sell Miltenyi Products",
+      "summary": "Bellicum has no right to make, import or sell Miltenyi Products.",
+      "text": "No right to make, import or sell Miltenyi Products.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "No right to make, import or sell Miltenyi Products."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-3",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
+      ]
+    },
+    {
+      "id": "prohibition-8",
+      "action": "Supply Product to which a Required Change must be applied",
+      "summary": "Miltenyi is never obliged to supply a Product to which a Required Change must be applied.",
+      "text": "Miltenyi is never obliged to supply a Product to which a Required Change must be applied.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Miltenyi is never obliged to supply a Product to which a Required Change must be applied."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": null,
+      "clauseId": null,
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
+      ]
+    },
+    {
+      "id": "prohibition-9",
+      "action": "Access Master Files",
+      "summary": "Bellicum has no access to the Master Files.",
+      "text": "Miltenyi solely owns the Master Files and Bellicum has no access;",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Miltenyi solely owns the Master Files and Bellicum has no access;"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": null,
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
+      ]
+    },
+    {
+      "id": "prohibition-10",
+      "action": "File in new jurisdictions absent separate written agreement",
+      "summary": "Miltenyi is not obliged to file in new jurisdictions absent a separate written agreement including compensation.",
+      "text": "but is not obliged to file in new jurisdictions absent a separate written agreement including compensation",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "but is not obliged to file in new jurisdictions absent a separate written agreement including compensation"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": null,
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
+      ]
+    },
+    {
+      "id": "prohibition-11",
+      "action": "Set off unless agreed or after final non-appealable judgment",
+      "summary": "Bellicum may not set off unless agreed or after a final non-appealable judgment.",
+      "text": "Bellicum may not set off unless agreed or after a final non-appealable judgment",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Bellicum may not set off unless agreed or after a final non-appealable judgment"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-8",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
+      ]
+    },
+    {
+      "id": "prohibition-12",
+      "action": "Issue press release or use other's name or marks without prior written consent unless legally required",
+      "summary": "No party may issue a press release or use the other's name or marks without prior written consent unless legally required.",
+      "text": "No press release or use of the other's name or marks without prior written consent unless legally required",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "No press release or use of the other's name or marks without prior written consent unless legally required"
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": null,
+      "clauseId": "clause-9",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-20"
+      ]
+    },
+    {
+      "id": "prohibition-13",
+      "action": "Assign without consent",
+      "summary": "Assignment needs prior written consent except as otherwise permitted; contravening assignment is null and void.",
+      "text": "Assignment needs prior written consent (not unreasonably withheld for a financing transaction), except to an acquirer of all or substantially all the relevant business or assets, or to an Affiliate on notice, with the assignor remaining liable and the acquirer's own IP excluded from the licensed technology; contravening assignment is null and void.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Assignment needs prior written consent (not unreasonably withheld for a financing transaction), except to an acquirer of all or substantially all the relevant business or assets, or to an Affiliate on notice, with the assignor remaining liable and the acquirer's own IP excluded from the licensed technology; contravening assignment is null and void."
+      ],
+      "burdenPartyId": "party-3",
+      "benefitPartyId": null,
+      "clauseId": "clause-11",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
+      ]
+    },
+    {
+      "id": "prohibition-14",
+      "action": "Settle or admit liability without permission",
+      "summary": "No Party may settle or admit liability without the indemnitee's prior express written permission.",
+      "text": "no settlement or admission of liability without the indemnitee's prior express written permission.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "no settlement or admission of liability without the indemnitee's prior express written permission."
+      ],
+      "burdenPartyId": "party-3",
+      "benefitPartyId": "party-3",
+      "clauseId": "clause-10",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
+      ]
+    }
+  ],
+  "conditions": [
+    {
+      "id": "condition-1",
+      "trigger": "only if not then in default",
+      "operator": "IF",
+      "gatesId": "right-1",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
+      ]
+    },
+    {
+      "id": "condition-2",
+      "trigger": "if Bellicum terminates for cause",
+      "operator": "IF",
+      "gatesId": "obligation-1",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
+      ]
+    },
+    {
+      "id": "condition-3",
+      "trigger": "until costs are agreed, Bellicum's Firm Zone and variance duties for that Product lapse",
+      "operator": "UNTIL",
+      "gatesId": "obligation-13",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
+      ]
+    },
+    {
+      "id": "condition-4",
+      "trigger": "if it does not, Miltenyi may — at sole discretion, effective immediately on notice — cease to be bound ... until the level is met again and the Parties agree to resume",
+      "operator": "IF",
+      "gatesId": "right-12",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-12"
+      ]
+    },
+    {
+      "id": "condition-5",
+      "trigger": "if no acceptable delivery plan is offered, or delay exceeds 30 days past the confirmed date",
+      "operator": "IF",
+      "gatesId": "right-13",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-14"
+      ]
+    },
+    {
+      "id": "condition-6",
+      "trigger": "failing to deliver ≥[red.]% of an accepted order within a reasonable time after the agreed date — including by Force Majeure — more than twice in a Calendar Year, excluding causes attributable to Bellicum, its designated suppliers, Required Changes or Applicable Laws",
+      "operator": "IF",
+      "gatesId": "right-14",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-14"
+      ]
+    },
+    {
+      "id": "condition-7",
+      "trigger": "provided shelf life has not expired and the defect is unrelated to post-Delivery handling",
+      "operator": "IF",
+      "gatesId": "right-17",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-16"
+      ]
+    },
+    {
+      "id": "condition-8",
+      "trigger": "if Bellicum fails to pay and does not cure within 5 Business Days of notice",
+      "operator": "IF",
+      "gatesId": "right-25",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
+      ]
+    },
+    {
+      "id": "condition-9",
+      "trigger": "if Miltenyi materially fails to perform",
+      "operator": "IF",
+      "gatesId": "right-26",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
+      ]
+    },
+    {
+      "id": "condition-10",
+      "trigger": "except for confidentiality breach, IP infringement or misappropriation, and gross negligence or wilful misconduct",
+      "operator": "UNLESS",
+      "gatesId": "clause-10",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
+      ]
+    },
+    {
+      "id": "condition-11",
+      "trigger": "except to the extent caused by the indemnitee's own breach or misconduct",
+      "operator": "UNLESS",
+      "gatesId": "obligation-31",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "id": "reference-1",
+      "name": "Exhibit B",
+      "citation": "",
+      "citedById": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-4"
+      ]
+    },
+    {
+      "id": "reference-2",
+      "name": "Exhibit G",
+      "citation": "",
+      "citedById": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
+      ]
+    },
+    {
+      "id": "reference-3",
+      "name": "Incoterms 2010",
+      "citation": "",
+      "citedById": "clause-6",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-14"
+      ]
+    },
+    {
+      "id": "reference-4",
+      "name": "Exhibit D",
+      "citation": "",
+      "citedById": "obligation-26",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
+      ]
+    },
+    {
+      "id": "reference-5",
+      "name": "Exhibit E",
+      "citation": "",
+      "citedById": "clause-8",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
+      ]
+    },
+    {
+      "id": "reference-6",
+      "name": "Exhibit F",
+      "citation": "",
+      "citedById": "clause-8",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
+      ]
+    },
+    {
+      "id": "reference-7",
+      "name": "State of New York law",
+      "citation": "",
+      "citedById": "clause-13",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
+      ]
+    },
+    {
+      "id": "reference-8",
+      "name": "CISG",
+      "citation": "",
+      "citedById": "clause-13",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
+      ]
+    },
+    {
+      "id": "reference-9",
+      "name": "U.S. District Court for the Southern District of New York",
+      "citation": "",
+      "citedById": "clause-14",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
+      ]
+    }
+  ],
+  "values": [
+    {
+      "id": "value-1",
+      "valueType": "Duration",
+      "amount": "10",
+      "unit": "years",
+      "quantifiesId": "clause-2",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
+      ]
+    },
+    {
+      "id": "value-2",
+      "valueType": "Duration",
+      "amount": "5",
+      "unit": "years",
+      "quantifiesId": "right-1",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
+      ]
+    },
+    {
+      "id": "value-3",
+      "valueType": "Duration",
+      "amount": "6",
+      "unit": "months",
+      "quantifiesId": "right-1",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
+      ]
+    },
+    {
+      "id": "value-4",
+      "valueType": "Duration",
+      "amount": "30",
+      "unit": "days",
+      "quantifiesId": "right-2",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
+      ]
+    },
+    {
+      "id": "value-5",
+      "valueType": "Duration",
+      "amount": "30",
+      "unit": "days",
+      "quantifiesId": "right-3",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
+      ]
+    },
+    {
+      "id": "value-6",
+      "valueType": "Duration",
+      "amount": "3",
+      "unit": "months",
+      "quantifiesId": "right-4",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
+      ]
+    },
+    {
+      "id": "value-7",
+      "valueType": "Duration",
+      "amount": "90",
+      "unit": "days",
+      "quantifiesId": "right-5",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-6"
+      ]
+    },
+    {
+      "id": "value-8",
+      "valueType": "Duration",
+      "amount": "12",
+      "unit": "months",
+      "quantifiesId": "right-8",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-8"
+      ]
+    },
+    {
+      "id": "value-9",
+      "valueType": "Duration",
+      "amount": "6",
+      "unit": "months",
+      "quantifiesId": "obligation-8",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
+      ]
+    },
+    {
+      "id": "value-10",
+      "valueType": "Duration",
+      "amount": "12",
+      "unit": "months",
+      "quantifiesId": "obligation-12",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-12"
+      ]
+    },
+    {
+      "id": "value-11",
+      "valueType": "Duration",
+      "amount": "3",
+      "unit": "months",
+      "quantifiesId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-12"
+      ]
+    },
+    {
+      "id": "value-12",
+      "valueType": "Currency",
+      "amount": "2,000,000",
+      "unit": "EUR",
+      "quantifiesId": "obligation-24",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-18"
+      ]
+    },
+    {
+      "id": "value-13",
+      "valueType": "Duration",
+      "amount": "12",
+      "unit": "months",
+      "quantifiesId": null,
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
+      ]
+    },
+    {
+      "id": "value-14",
+      "valueType": "Duration",
+      "amount": "5",
+      "unit": "years",
+      "quantifiesId": "obligation-32",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-22"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "right-1",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-1",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-2",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-3",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-4",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-5",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-5",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-6",
+      "target": "clause-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-6",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-7",
+      "target": "clause-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-7",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-8",
+      "target": "clause-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-8",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-9",
+      "target": "clause-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-9",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-10",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-11",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-11",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-12",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-12",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-13",
+      "target": "clause-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-13",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-14",
+      "target": "clause-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-14",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-15",
+      "target": "clause-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-15",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-16",
+      "target": "clause-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-16",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-17",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-17",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-18",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-19",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-19",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-20",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-20",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-21",
+      "target": "clause-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-21",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-22",
+      "target": "clause-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-22",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-23",
+      "target": "clause-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-24",
+      "target": "clause-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-25",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-25",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-26",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-26",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-27",
+      "target": "clause-11",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-27",
+      "target": "party-3",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-28",
+      "target": "clause-14",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-28",
+      "target": "party-3",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-1",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-1",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-2",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-3",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-5",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-6",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-7",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-8",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-10",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-11",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-12",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-12",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-13",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-13",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-14",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-14",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-15",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-15",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-16",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-16",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-17",
+      "target": "clause-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-17",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-18",
+      "target": "clause-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-18",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-19",
+      "target": "clause-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-19",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-20",
+      "target": "clause-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-20",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-21",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-21",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-22",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-22",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-23",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-23",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-24",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-24",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-25",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-25",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-26",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-26",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-27",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-27",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-28",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-28",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-29",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-29",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-30",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-30",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-31",
+      "target": "clause-10",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-31",
+      "target": "party-3",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-32",
+      "target": "clause-10",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-32",
+      "target": "party-3",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-1",
+      "target": "clause-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-1",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-2",
+      "target": "clause-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-2",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-3",
+      "target": "clause-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-3",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-4",
+      "target": "clause-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-4",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-5",
+      "target": "clause-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-5",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-6",
+      "target": "clause-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-6",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-7",
+      "target": "clause-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-7",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-8",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-9",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-10",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-11",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-11",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-12",
+      "target": "clause-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-13",
+      "target": "clause-11",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-13",
+      "target": "party-3",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-14",
+      "target": "clause-10",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-14",
+      "target": "party-3",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-1",
+      "target": "right-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-2",
+      "target": "obligation-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-3",
+      "target": "obligation-13",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-4",
+      "target": "right-12",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-5",
+      "target": "right-13",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-6",
+      "target": "right-14",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-7",
+      "target": "right-17",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-8",
+      "target": "right-25",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-9",
+      "target": "right-26",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-10",
+      "target": "clause-10",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-11",
+      "target": "obligation-31",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-3",
+      "target": "clause-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-4",
+      "target": "obligation-26",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-5",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-6",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-7",
+      "target": "clause-13",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-8",
+      "target": "clause-13",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-9",
+      "target": "clause-14",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-1",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-2",
+      "target": "right-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-3",
+      "target": "right-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-4",
+      "target": "right-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-5",
+      "target": "right-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-6",
+      "target": "right-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-7",
+      "target": "right-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-8",
+      "target": "right-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-9",
+      "target": "obligation-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-10",
+      "target": "obligation-12",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-12",
+      "target": "obligation-24",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-14",
+      "target": "obligation-32",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-5",
+      "target": "clause-4",
+      "type": "depends_on",
+      "evidence": "Material Changes need advance notification ([red.] months in §3.2(b)",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-10"
+      ]
+    },
+    {
+      "source": "obligation-13",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "the first 3 months form the \"Firm Zone\": [red.]% is binding and must be covered by Purchase Orders.",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-12"
+      ]
+    },
+    {
+      "source": "right-14",
+      "target": "term-9",
+      "type": "uses",
+      "evidence": "Bellicum may then demand a Secondary Location at Miltenyi's cost;",
+      "paragraphIds": [
+        "root::BELLICUM_MILTENYI_Supply_Agreement_Summary-p-14"
+      ]
+    }
+  ]
 }

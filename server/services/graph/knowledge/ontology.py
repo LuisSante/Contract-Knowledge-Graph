@@ -16,7 +16,16 @@ DEONTIC_ID_PREFIX: dict[str, str] = {
 
 DEONTIC_KIND_GUIDE: dict[str, str] = {
     "obligation": "a duty the obligor party MUST perform ('shall', 'must', 'agrees to').",
-    "right": "an entitlement/permission the beneficiary party HOLDS ('may', 'is entitled to').",
+    "right": (
+        "an entitlement the holder party HAS. Three forms, all of them rights:\n"
+        "      * a plain permission — 'may', 'is entitled to';\n"
+        "      * a DISCRETIONARY POWER, where one party can act unilaterally and the other "
+        "is simply subject to it — 'reserves the right to', 'at its sole discretion', "
+        "'may amend by written notice', 'effective immediately on notice', 'may elect to'. "
+        "Capture these even when no counterparty duty is named;\n"
+        "      * a FREEDOM stated as the absence of a duty — 'is not obliged to', 'shall "
+        "have no obligation to', 'is under no duty'. The holder is the party thereby freed."
+    ),
     "prohibition": "a restriction the obligor party MUST NOT breach ('shall not', 'may not').",
 }
 
@@ -43,8 +52,18 @@ LLM_RELATION_GUIDE: dict[str, str] = {
         "string. Cues: \"shall prevail\", \"order of precedence\", \"takes precedence over\"."
     ),
     "modifies": (
-        "this clause amends or replaces another. target = the amended clause string. "
-        "Cues: \"is hereby amended\", \"is replaced by\", \"notwithstanding Section\"."
+        "one provision CHANGES WHAT ANOTHER ONE MEANS OR WHETHER IT APPLIES. Two cases, "
+        "and the second is the one usually missed:\n"
+        "      * an amendment — \"is hereby amended\", \"is replaced by\", "
+        "\"notwithstanding Section\";\n"
+        "      * a provision whose exercise would REMOVE, SUSPEND, CAP or NARROW a duty or "
+        "remedy stated elsewhere — a party that \"may cease to be bound\" by obligations, "
+        "that may unilaterally amend an exhibit the other relies on, a liability \"capped "
+        "at\" or \"not exceeding\" some amount, or a remedy declared \"sole and "
+        "exclusive\". source = the empowering or limiting statement; target = the clause "
+        "holding what it curtails.\n"
+        "      This is what tells a discretionary power apart from an ordinary permission, "
+        "so emit it whenever the curtailed duty is identifiable."
     ),
 }
 

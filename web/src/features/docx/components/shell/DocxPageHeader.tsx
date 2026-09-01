@@ -1,36 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { FileText, ChevronLeft, Coins } from 'lucide-react';
-
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/ui/select';
-import { GLOBAL_ANALYSIS_MODEL_OPTIONS } from '@/constants/docx-viewer';
+import { FileText, ChevronLeft } from 'lucide-react';
 
 interface DocxPageHeaderProps {
 	documentName: string | null;
-	costLabel: string | null;
-	model: string;
-	onModelChange: (value: string) => void;
-	modelDisabled?: boolean;
 }
 
-/**
- * Top header of the viewer: "Document" label + name, accumulated LLM cost, and
- * global model selector (Contradiction Analysis + Paragraph Explanation).
- */
-export function DocxPageHeader({
-	documentName,
-	costLabel,
-	model,
-	onModelChange,
-	modelDisabled,
-}: DocxPageHeaderProps) {
+/** Top header of the viewer: back link and the document name. */
+export function DocxPageHeader({ documentName }: DocxPageHeaderProps) {
 	return (
 		<header className="flex flex-none items-center gap-3 border-b border-border bg-header px-4 py-2.5">
 			<Link
@@ -49,38 +27,6 @@ export function DocxPageHeader({
 				<div className="min-w-0 truncate text-sm font-medium text-header-foreground">
 					{documentName || 'No document selected'}
 				</div>
-			</div>
-
-			<div className="flex shrink-0 items-center gap-2.5">
-				{costLabel && (
-					<div
-						className="flex items-center gap-1 rounded-full bg-card px-2.5 py-1 text-2xs font-medium text-primary shadow-sm"
-						title="Total accumulated real LLM usage cost"
-					>
-						<Coins className="size-3 text-primary" />
-						{costLabel}
-					</div>
-				)}
-				<Select value={model} onValueChange={onModelChange} disabled={modelDisabled}>
-					<SelectTrigger
-						size="sm"
-						className="h-7 w-[88px] shrink-0 border-transparent bg-card px-2 text-2xs text-primary shadow-sm hover:bg-card/90 focus-visible:ring-header-foreground/40 [&_svg]:text-primary"
-						title="Global model for the assistant and knowledge-graph extraction"
-					>
-						<SelectValue />
-					</SelectTrigger>
-					<SelectContent className="min-w-0">
-						{GLOBAL_ANALYSIS_MODEL_OPTIONS.map((option) => (
-							<SelectItem
-								key={option.value}
-								value={option.value}
-								className="text-2xs whitespace-nowrap"
-							>
-								{option.label}
-							</SelectItem>
-						))}
-					</SelectContent>
-				</Select>
 			</div>
 		</header>
 	);

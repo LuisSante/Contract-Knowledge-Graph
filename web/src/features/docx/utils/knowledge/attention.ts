@@ -50,7 +50,7 @@ export interface PartyAttention {
 	ledger: KgLedger;
 }
 
-/** User-tunable importance weight per deontic kind (the severity sliders). */
+/** Importance weight per deontic kind. */
 export type DeonticSeverity = Record<DeonticKind, number>;
 
 export const DEFAULT_SEVERITY: DeonticSeverity = {

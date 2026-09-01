@@ -1,6 +1,6 @@
 'use client';
 
-import { Minus, Plus } from 'lucide-react';
+import { Coins, Minus, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import {
@@ -10,6 +10,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
+import { GLOBAL_ANALYSIS_MODEL_OPTIONS } from '@/constants/docx-viewer';
 import {
 	KG_TOP_K_STEP_SIZE,
 	MAX_KG_HOPS,
@@ -22,17 +23,22 @@ import type { RightPanelTab } from '@/types/document';
 
 interface RightPanelHeaderActionsProps {
 	activeTab: RightPanelTab;
-	// analysis
-	// paragraph_explanation
+	/** Accumulated LLM spend, null until the first call. */
+	costLabel: string | null;
+	model: string;
+	onModelChange: (value: string) => void;
 }
 
 /**
- * Right-panel header actions, specific per tab: Saved/Search in analysis,
- * Explain/Simplify in explanation, and the focused-party chip in the chat.
- * Extracted from `DocxViewer` to slim it down.
+ * Right-panel header actions, specific per tab: the focus chip and party actions in
+ * the knowledge graph, and the focused party plus the LLM cost and model in the chat.
+ * Cost and model are global, but the chat is where they are read and changed.
  */
 export function RightPanelHeaderActions({
 	activeTab,
+	costLabel,
+	model,
+	onModelChange,
 }: RightPanelHeaderActionsProps) {
 	const focusedPartyName = useKnowledgeGraphStore((state) => state.ledger?.partyName ?? null);
 	const selectedPartyIds = useKnowledgeGraphStore((state) => state.selectedPartyIds);
@@ -143,14 +149,49 @@ export function RightPanelHeaderActions({
 
 	if (activeTab === 'assistant') {
 		return (
-			<div
-				className="flex h-7 min-w-0 shrink-0 items-center gap-1.5 rounded-md border border-header-foreground/15 bg-header-foreground/5 px-2"
-				title={focusedPartyName ? `Chatting about ${focusedPartyName}` : 'Focus a party in the Knowledge Graph'}
-			>
-				<span className="text-2xs font-medium text-header-foreground/50">Party</span>
-				<span className="truncate text-2xs font-medium text-header-foreground/80">
-					{focusedPartyName ?? 'none focused'}
-				</span>
+			<div className="flex min-w-0 shrink-0 items-center gap-1.5">
+				<div
+					className="flex h-7 min-w-0 items-center gap-1.5 rounded-md border border-header-foreground/15 bg-header-foreground/5 px-2"
+					title={
+						focusedPartyName
+							? `Chatting about ${focusedPartyName}`
+							: 'Focus a party in the Knowledge Graph'
+					}
+				>
+					<span className="text-2xs font-medium text-header-foreground/50">Party</span>
+					<span className="truncate text-2xs font-medium text-header-foreground/80">
+						{focusedPartyName ?? 'none focused'}
+					</span>
+				</div>
+				{costLabel && (
+					<div
+						className="flex h-7 shrink-0 items-center gap-1 rounded-md bg-card px-2 text-2xs font-medium text-primary shadow-sm"
+						title="Total accumulated real LLM usage cost"
+					>
+						<Coins className="size-3 text-primary" />
+						{costLabel}
+					</div>
+				)}
+				<Select value={model} onValueChange={onModelChange}>
+					<SelectTrigger
+						size="sm"
+						className="h-7 w-[88px] shrink-0 border-transparent bg-card px-2 text-2xs text-primary shadow-sm hover:bg-card/90 focus-visible:ring-header-foreground/40 [&_svg]:text-primary"
+						title="Global model for the assistant and knowledge-graph extraction"
+					>
+						<SelectValue />
+					</SelectTrigger>
+					<SelectContent className="min-w-0">
+						{GLOBAL_ANALYSIS_MODEL_OPTIONS.map((option) => (
+							<SelectItem
+								key={option.value}
+								value={option.value}
+								className="text-2xs whitespace-nowrap"
+							>
+								{option.label}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
 			</div>
 		);
 	}

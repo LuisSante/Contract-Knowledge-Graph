@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { RelatedParagraph } from '@/types/document';
-import type { DeonticKind, KgNodeKind } from '@/types/knowledge';
+import type { KgNodeKind } from '@/types/knowledge';
 import type { DocumentEntityHighlight } from '@/features/docx/utils/assistant/entity-marks';
 import type {
 	DeonticSeverity,
@@ -72,9 +72,9 @@ interface KnowledgeGraphState extends KnowledgeGraphBridgePayload {
 	hops: number;
 	/** Number of top-attention statements shown for a party focus. */
 	topK: number;
-	/** User-tunable importance weight per deontic kind (persists across focus). */
+	/** Importance weight per deontic kind, fixed at the calibrated defaults. */
 	severity: DeonticSeverity;
-	/** Weight the impact by Personalized PageRank (structural) vs raw severity. */
+	/** Always on: the impact is weighted by Personalized PageRank, not raw severity. */
 	usePageRank: boolean;
 	/** User-driven party canonicalization (persists across focus). */
 	mergeGroups: MergeGroup[];
@@ -91,8 +91,6 @@ interface KnowledgeGraphState extends KnowledgeGraphBridgePayload {
 	setFocusMeta: (meta: KgFocusMeta | null) => void;
 	setHops: (updater: number | ((prev: number) => number)) => void;
 	setTopK: (updater: number | ((prev: number) => number)) => void;
-	setSeverity: (kind: DeonticKind, value: number) => void;
-	setUsePageRank: (value: boolean) => void;
 	mergeParties: (ids: string[]) => void;
 	splitGroup: (groupId: string) => void;
 	hideParty: (id: string) => void;
@@ -124,11 +122,6 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 
 	focusNode: (focusNodeId) => set({ focusNodeId, hops: 1, secondPartyId: null }),
 	setFocusMeta: (focusMeta) => set({ focusMeta }),
-	setSeverity: (kind, value) =>
-		set((state) => ({
-			severity: { ...state.severity, [kind]: Math.min(1, Math.max(0, value)) },
-		})),
-	setUsePageRank: (usePageRank) => set({ usePageRank }),
 	mergeParties: (ids) =>
 		set((state) => {
 			const groupById = new Map(state.mergeGroups.map((g) => [g.id, g]));

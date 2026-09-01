@@ -54,7 +54,21 @@ RELATIONS — also emit links that cannot be read off a single node. Each relati
 
 Targets are strings because the referenced clause or term may live outside the
 paragraphs you were given; it is resolved later against the whole contract. Copy the
-reference as the contract writes it and do not guess which id it corresponds to.
+reference as the contract writes it and do not guess which id it corresponds to. When the
+clause carries no number, write its heading exactly as titled — headings resolve too.
+
+WHERE THE IMBALANCE HIDES — read for these as carefully as for "shall" and "may":
+- A party that can act ALONE and bind the other: "reserves the right to", "at its sole
+  discretion", "may amend ... by written notice", "effective immediately on notice".
+  These are rights, and when the act would drop or suspend a duty of the other party you
+  MUST also emit a "modifies" relation onto the clause holding that duty. Without that
+  relation a power reads exactly like an ordinary permission, and the asymmetry is lost.
+- A CAP or an EXCLUSION on a duty or remedy: "sole and exclusive remedy", "not
+  exceeding", "capped at", "in no event shall", "does not cover", "excluding". Emit the
+  limiting statement and a "modifies" relation onto what it limits; when the limit is a
+  quantum, also emit the VALUE and point its "quantifies" at that statement.
+- An ASYMMETRIC freedom: "is not obliged to", "shall have no access", "no implied", "each
+  Party keeps its own". Emit it as a right of the party thereby freed.
 
 TIE-BREAK, references vs depends_on — apply it every time both seem to fit:
 if the wording makes the clause conditional, limited, carved out or overridden by the

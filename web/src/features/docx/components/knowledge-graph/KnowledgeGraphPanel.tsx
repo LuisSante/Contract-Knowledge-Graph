@@ -28,7 +28,10 @@ import {
 	type GridRow,
 	type MarkKind,
 } from '@/features/docx/utils/knowledge/statement-grid';
-import { computePartyAttention } from '@/features/docx/utils/knowledge/attention';
+import {
+	computePartyAttention,
+	DEFAULT_SEVERITY,
+} from '@/features/docx/utils/knowledge/attention';
 import {
 	buildClauseDetail,
 	type ClauseFragment,
@@ -48,7 +51,7 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from '@/components/ui/tooltip';
-import type { KnowledgeGraph } from '@/types/knowledge';
+import type { DeonticKind, KnowledgeGraph } from '@/types/knowledge';
 import { deonticNodes } from '@/types/knowledge';
 
 interface KnowledgeGraphPanelProps {
@@ -229,6 +232,46 @@ const FRAGMENT_STYLE: Record<GridLane, CSSProperties> = {
 // 		</div>
 // 	);
 
+/**
+ * The blue weight box beside each severity slider — blue so it reads as a control,
+ * not another legend count. It keeps a local draft while focused: a controlled
+ * number input would echo the store back after the first keystroke and eat the
+ * decimal point ("0.7" never got past "0"). The draft commits on every valid
+ * parse (comma accepted as decimal separator), and blur snaps the text to
+ * whatever value survived the store's clamp.
+ */
+function WeightField({
+	value,
+	label,
+	onCommit,
+}: {
+	value: number;
+	label: string;
+	onCommit: (value: number) => void;
+}) {
+	const [draft, setDraft] = useState<string | null>(null);
+	return (
+		<input
+			type="text"
+			inputMode="decimal"
+			value={draft ?? String(value)}
+			onChange={(event) => {
+				const raw = event.target.value;
+				setDraft(raw);
+				const parsed = Number(raw.replace(',', '.'));
+				if (raw.trim() !== '' && !Number.isNaN(parsed)) onCommit(parsed);
+			}}
+			onBlur={() => setDraft(null)}
+			onKeyDown={(event) => {
+				if (event.key === 'Enter') event.currentTarget.blur();
+			}}
+			className="w-9 shrink-0 rounded border border-border/60 bg-background px-1 py-px text-center font-medium text-blue-600 tabular-nums outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-300/60"
+			aria-label={label}
+			title="Type a weight between 0 and 1"
+		/>
+	);
+}
+
 export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	// The grid is plain layout, so the container only exists to anchor the tooltip.
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -275,6 +318,8 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const hops = useKnowledgeGraphStore((s) => s.hops);
 	const topK = useKnowledgeGraphStore((s) => s.topK);
 	const severity = useKnowledgeGraphStore((s) => s.severity);
+	const setSeverity = useKnowledgeGraphStore((s) => s.setSeverity);
+	const resetSeverity = useKnowledgeGraphStore((s) => s.resetSeverity);
 	const usePageRank = useKnowledgeGraphStore((s) => s.usePageRank);
 	const focusNode = useKnowledgeGraphStore((s) => s.focusNode);
 	const clearFocus = useKnowledgeGraphStore((s) => s.clearFocus);
@@ -550,6 +595,10 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 
 	const allKindsOn = MARK_KINDS.every(
 		(kind) => (grid?.countByKind[kind] ?? 0) === 0 || visibleKinds.has(kind)
+	);
+
+	const severityDirty = DEONTIC_MARK_KINDS.some(
+		(kind) => severity[kind as DeonticKind] !== DEFAULT_SEVERITY[kind as DeonticKind]
 	);
 
 	const toggleKind = (kind: MarkKind, on: boolean) => {
@@ -1060,37 +1109,76 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 				{/* Legend / kind filter — right sidebar. Only the three kinds the grid draws:
 				    clauses are bands and parties are lanes, so neither is a mark. */}
 				{status === 'ready' && grid && (
-					<aside className="w-32 shrink-0 space-y-2 overflow-y-auto border-l border-border/60 px-2 py-2 text-2xs text-muted-foreground">
+					<aside className="w-36 shrink-0 space-y-2 overflow-y-auto border-l border-border/60 px-2 py-2 text-2xs text-muted-foreground">
 						<div>
-							<div className="mb-1 font-medium text-foreground/50">Entities</div>
+							<div className="mb-1 flex items-baseline justify-between">
+								<span className="font-medium text-foreground/50">Entities</span>
+								{severityDirty && (
+									<button
+										type="button"
+										onClick={resetSeverity}
+										className="text-muted-foreground underline hover:text-foreground"
+										title="Back to the calibrated defaults (prohibition 1.0 · obligation 0.7 · right 0.3)"
+									>
+										reset
+									</button>
+								)}
+							</div>
 							<div className="grid grid-cols-1 gap-y-1">
 								{MARK_KINDS.map((kind) => {
 									const count = grid.countByKind[kind] ?? 0;
 									const color = KIND_COLORS[kind];
+									const deontic = (DEONTIC_MARK_KINDS as readonly MarkKind[]).includes(kind);
 									return (
-										<label
-											key={kind}
-											className={`inline-flex min-w-0 items-center gap-1.5 ${
-												count === 0 ? 'opacity-40' : 'cursor-pointer'
-											}`}
-										>
-											<Checkbox
-												checked={visibleKinds.has(kind)}
-												disabled={count === 0}
-												onCheckedChange={(value) => toggleKind(kind, value === true)}
-												className="size-3.5 shrink-0 border-current data-[state=checked]:text-white"
-												style={{
-													color,
-													backgroundColor: visibleKinds.has(kind) ? color : undefined,
-													borderColor: color,
-												}}
-												aria-label={`${KIND_LABEL[kind]} (${count})`}
-											/>
-											<span className="truncate" title={KIND_LABEL[kind]}>
-												{KIND_LABEL[kind]}
-											</span>
-											<span className="ml-auto shrink-0 tabular-nums opacity-60">{count}</span>
-										</label>
+										<div key={kind}>
+											<label
+												className={`inline-flex w-full min-w-0 items-center gap-1.5 ${
+													count === 0 ? 'opacity-40' : 'cursor-pointer'
+												}`}
+											>
+												<Checkbox
+													checked={visibleKinds.has(kind)}
+													disabled={count === 0}
+													onCheckedChange={(value) => toggleKind(kind, value === true)}
+													className="size-3.5 shrink-0 border-current data-[state=checked]:text-white"
+													style={{
+														color,
+														backgroundColor: visibleKinds.has(kind) ? color : undefined,
+														borderColor: color,
+													}}
+													aria-label={`${KIND_LABEL[kind]} (${count})`}
+												/>
+												<span className="truncate" title={KIND_LABEL[kind]}>
+													{KIND_LABEL[kind]}
+												</span>
+												<span className="ml-auto shrink-0 tabular-nums opacity-60">{count}</span>
+											</label>
+											{/* Severity is the analyst's call, so the legend row that names the kind
+											    also holds the dial: attention = PageRank × this weight. */}
+											{deontic && (
+												<div className="mt-0.5 flex items-center gap-1 pl-5">
+													<input
+														type="range"
+														min={0}
+														max={1}
+														step={0.05}
+														value={severity[kind as DeonticKind]}
+														onChange={(event) =>
+															setSeverity(kind as DeonticKind, Number(event.target.value))
+														}
+														className="min-w-0 flex-1 cursor-pointer"
+														style={{ accentColor: color }}
+														aria-label={`Weight of ${KIND_LABEL[kind]} in the attention score`}
+														title={`How much one ${KIND_LABEL[kind].toLowerCase()} weighs: attention = PageRank × severity`}
+													/>
+													<WeightField
+														value={severity[kind as DeonticKind]}
+														label={`Type the weight of ${KIND_LABEL[kind]}`}
+														onCommit={(value) => setSeverity(kind as DeonticKind, value)}
+													/>
+												</div>
+											)}
+										</div>
 									);
 								})}
 							</div>

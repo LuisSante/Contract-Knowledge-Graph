@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { RelatedParagraph } from '@/types/document';
-import type { KgNodeKind } from '@/types/knowledge';
+import type { DeonticKind, KgNodeKind } from '@/types/knowledge';
 import type { DocumentEntityHighlight } from '@/features/docx/utils/assistant/entity-marks';
 import type {
 	DeonticSeverity,
@@ -72,7 +72,11 @@ interface KnowledgeGraphState extends KnowledgeGraphBridgePayload {
 	hops: number;
 	/** Number of top-attention statements shown for a party focus. */
 	topK: number;
-	/** Importance weight per deontic kind, fixed at the calibrated defaults. */
+	/**
+	 * Importance weight per deontic kind. The defaults are the calibrated reading
+	 * (prohibition > obligation > right), but the weights are the analyst's own
+	 * judgement call, so the legend exposes them as sliders.
+	 */
 	severity: DeonticSeverity;
 	/** Always on: the impact is weighted by Personalized PageRank, not raw severity. */
 	usePageRank: boolean;
@@ -91,6 +95,8 @@ interface KnowledgeGraphState extends KnowledgeGraphBridgePayload {
 	setFocusMeta: (meta: KgFocusMeta | null) => void;
 	setHops: (updater: number | ((prev: number) => number)) => void;
 	setTopK: (updater: number | ((prev: number) => number)) => void;
+	setSeverity: (kind: DeonticKind, value: number) => void;
+	resetSeverity: () => void;
 	mergeParties: (ids: string[]) => void;
 	splitGroup: (groupId: string) => void;
 	hideParty: (id: string) => void;
@@ -202,6 +208,11 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 			const snapped = Math.round(raw / KG_TOP_K_STEP) * KG_TOP_K_STEP;
 			return { topK: Math.min(MAX_KG_TOP_K, Math.max(MIN_KG_TOP_K, snapped)) };
 		}),
+	setSeverity: (kind, value) =>
+		set((state) => ({
+			severity: { ...state.severity, [kind]: Math.min(1, Math.max(0, value)) },
+		})),
+	resetSeverity: () => set({ severity: DEFAULT_SEVERITY }),
 	clearFocus: () => set({ ...CLEARED_FOCUS, hops: 1, secondPartyId: null }),
 	setBridgePayload: (payload) => set(payload),
 	setDocumentTarget: (target) => set(target),

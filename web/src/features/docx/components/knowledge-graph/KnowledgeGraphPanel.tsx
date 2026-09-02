@@ -24,8 +24,10 @@ import {
 	MARK_KINDS,
 	type GridLane,
 	type GridMark,
+	type GridRow,
 	type MarkKind,
 } from '@/features/docx/utils/knowledge/statement-grid';
+import { computePartyAttention } from '@/features/docx/utils/knowledge/attention';
 import { PartyManager } from '@/features/docx/components/knowledge-graph/PartyManager';
 import { computePairAttention, defaultDyad } from '@/features/docx/utils/knowledge/pair';
 import {
@@ -222,6 +224,12 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	 */
 	const [selectedClauseId, setSelectedClauseId] = useState<string | null>(null);
 	/**
+	 * Rows ranked by how much of the selection's PageRank pull lands on each clause, so
+	 * the heaviest clauses surface first — the question users actually bring to the
+	 * grid. Off restores the contract's own order.
+	 */
+	const [sortByAttention, setSortByAttention] = useState(true);
+	/**
 	 * Which lanes reach the document. Untick a party and the page stops answering for it;
 	 * untick the bilateral column and what stays painted is only what is asymmetric.
 	 * One mechanism for all three columns — the lane is the only thing being chosen.
@@ -371,16 +379,48 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	);
 
 	/**
+	 * Combined pull per clause — what "important" means when the rows are ranked. With a
+	 * pair seated it is both parties' summed clause pull (the same quantity the pair
+	 * bridge sizes nodes with); alone it is the focused party's own clause score. Null
+	 * for a statement anchor, where attention has no party to seed on.
+	 */
+	const clauseAttention = useMemo(() => {
+		if (!viewKg || !focusNodeId || !isPartyFocus) return null;
+		if (pair) {
+			const combined = new Map<string, number>();
+			for (const [id, { a, b }] of Object.entries(pair.clauseSplit)) combined.set(id, a + b);
+			return combined;
+		}
+		return computePartyAttention(viewKg, focusNodeId, severity, usePageRank).clauseScore;
+	}, [viewKg, focusNodeId, isPartyFocus, pair, severity, usePageRank]);
+
+	/**
 	 * A band only exists while it holds something you can see. Filtering the kinds can
 	 * empty a clause just as surely as the extraction can, and a row of nothing reads as
 	 * a finding either way — so rows follow the filter, and reappear when it changes.
 	 */
-	const visibleRows = useMemo(
+	const visibleRows = useMemo(() => {
+		const rows = (grid?.rows ?? []).filter((row) =>
+			GRID_LANES.some((lane) => row.marks[lane].some((mark) => visibleKinds.has(mark.kind)))
+		);
+		if (!sortByAttention || !clauseAttention) return rows;
+		// Stable, so equal pull keeps document order; -1 keeps the residue row last.
+		const pull = (row: GridRow) => (row.clauseId ? (clauseAttention.get(row.clauseId) ?? 0) : -1);
+		return rows.slice().sort((x, y) => pull(y) - pull(x));
+	}, [grid, visibleKinds, sortByAttention, clauseAttention]);
+
+	/** The widest bar belongs to the heaviest visible clause; the rest are relative to it. */
+	const peakPull = useMemo(
 		() =>
-			(grid?.rows ?? []).filter((row) =>
-				GRID_LANES.some((lane) => row.marks[lane].some((mark) => visibleKinds.has(mark.kind)))
-			),
-		[grid, visibleKinds]
+			clauseAttention
+				? Math.max(
+						0,
+						...visibleRows.map((row) =>
+							row.clauseId ? (clauseAttention.get(row.clauseId) ?? 0) : 0
+						)
+					)
+				: 0,
+		[clauseAttention, visibleRows]
 	);
 
 	const laneByStatement = useMemo(() => {
@@ -655,12 +695,23 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 								<div className="min-w-[620px]">
 									{/* Lane header. Each checkbox decides whether that lane reaches the document. */}
 									<div className="sticky top-0 z-10 flex items-center gap-2 border-b border-border/60 bg-background/95 px-3 py-1.5 text-2xs backdrop-blur">
-										<span
-											className="mr-2 shrink-0 font-medium text-muted-foreground/70"
+										{/* The header doubles as the sort switch: pull order answers "what
+										    matters most", document order answers "where am I". */}
+										<button
+											type="button"
+											onClick={() => setSortByAttention((on) => !on)}
+											disabled={!clauseAttention}
+											className="mr-2 shrink-0 truncate text-left font-medium text-muted-foreground/70 enabled:hover:text-foreground disabled:cursor-default"
 											style={{ width: LABEL_WIDTH }}
+											title="Order the rows by how much attention the selected parties put on each clause, or by the clause's position in the contract"
 										>
 											CLAUSE
-										</span>
+											{clauseAttention && (
+												<span className="font-normal opacity-70">
+													{sortByAttention ? ' · most pull first ↓' : ' · document order'}
+												</span>
+											)}
+										</button>
 										{(['a', 'b'] as const).map((lane) => (
 											<label
 												key={lane}
@@ -712,6 +763,14 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 
 									{visibleRows.map((row, index) => {
 										const unfiled = row.clauseId === null;
+										const pull =
+											clauseAttention && row.clauseId
+												? (clauseAttention.get(row.clauseId) ?? 0)
+												: 0;
+										const split = pair && row.clauseId ? pair.clauseSplit[row.clauseId] : null;
+										const shareA =
+											split && split.a + split.b > 0 ? split.a / (split.a + split.b) : 1;
+										const pctA = Math.round(shareA * 100);
 										return (
 											<div
 												key={row.clauseId ?? 'unfiled'}
@@ -735,15 +794,55 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 														openInDocument(row.clauseId);
 													}}
 													disabled={unfiled}
-													className={`mt-0.5 shrink-0 truncate text-left text-2xs disabled:cursor-default ${
+													className={`mt-0.5 shrink-0 text-left text-2xs disabled:cursor-default ${
 														unfiled
 															? 'font-medium text-destructive/80'
 															: 'text-foreground/80 hover:underline'
 													}`}
 													style={{ width: LABEL_WIDTH }}
-													title={row.heading}
+													title={
+														split
+															? `${row.heading} — ${laneName('a')} ${pctA}% · ${laneName('b')} ${100 - pctA}%`
+															: row.heading
+													}
 												>
-													{row.heading}
+													<span className="block truncate">{row.heading}</span>
+													{/* The quantity the ranking sorts by, made visible — so "first"
+													    also says "by how much", and a pair says whose pull it is,
+													    with the split spelled out as a percentage per side. */}
+													{clauseAttention && !unfiled && peakPull > 0 && (
+														<span className="mt-0.5 flex items-center gap-1">
+															<span className="flex h-[3px] min-w-0 flex-1 overflow-hidden rounded-full bg-muted">
+																<span
+																	style={{
+																		width: `${(pull / peakPull) * shareA * 100}%`,
+																		backgroundColor: PARTY_COLOR,
+																	}}
+																/>
+																{split && (
+																	<span
+																		style={{
+																			width: `${(pull / peakPull) * (1 - shareA) * 100}%`,
+																			backgroundColor: PAIR_SECOND_COLOR,
+																		}}
+																	/>
+																)}
+															</span>
+															{/* Fixed width whether or not a number lands in it, so every
+															    track spans the same room and stays comparable row to row. */}
+															{pair && (
+																<span className="w-8 shrink-0 text-right text-[9px] leading-none tabular-nums">
+																	{split && (
+																		<>
+																			<span style={{ color: PARTY_COLOR }}>{pctA}</span>
+																			<span className="opacity-50">/</span>
+																			<span style={{ color: PAIR_SECOND_COLOR }}>{100 - pctA}</span>
+																		</>
+																	)}
+																</span>
+															)}
+														</span>
+													)}
 												</button>
 												{/* Lane A fills right-to-left so it still grows outward from the
 												    axis once the marks wrap; lane B fills the ordinary way. */}

@@ -6,6 +6,7 @@ import {
 	useMemo,
 	useRef,
 	useState,
+	type CSSProperties,
 	type MouseEvent as ReactMouseEvent,
 } from 'react';
 import { fetchKnowledgeGraph, fetchPartyMergeHints } from '@/services/knowledge';
@@ -28,6 +29,10 @@ import {
 	type MarkKind,
 } from '@/features/docx/utils/knowledge/statement-grid';
 import { computePartyAttention } from '@/features/docx/utils/knowledge/attention';
+import {
+	buildClauseDetail,
+	type ClauseFragment,
+} from '@/features/docx/utils/knowledge/clause-detail';
 import { PartyManager } from '@/features/docx/components/knowledge-graph/PartyManager';
 import { computePairAttention, defaultDyad } from '@/features/docx/utils/knowledge/pair';
 import {
@@ -95,6 +100,30 @@ const LABEL_WIDTH = 176;
 const MUTED_LANE_OPACITY = 0.22;
 /** The contract names nobody at all — visible, but never mistaken for an allocated duty. */
 const UNATTRIBUTED_OPACITY = 0.45;
+
+/**
+ * How the clause zoom paints a located fragment. Text, not chips, so the lane colours
+ * arrive as washes — a soft background under a solid underline in the party's colour.
+ * The bilateral middle stays grey: at this range naming a side would be wrong, and the
+ * seven-kind palette stays out entirely — the question here is "whose", not "what kind".
+ */
+const FRAGMENT_STYLE: Record<GridLane, CSSProperties> = {
+	a: {
+		backgroundColor: `${PARTY_COLOR}1f`,
+		textDecorationLine: 'underline',
+		textDecorationColor: PARTY_COLOR,
+		textDecorationThickness: '1.5px',
+		textUnderlineOffset: '2px',
+	},
+	b: {
+		backgroundColor: `${PAIR_SECOND_COLOR}1f`,
+		textDecorationLine: 'underline',
+		textDecorationColor: PAIR_SECOND_COLOR,
+		textDecorationThickness: '1.5px',
+		textUnderlineOffset: '2px',
+	},
+	shared: { backgroundColor: 'rgba(100, 116, 139, 0.16)' },
+};
 // --- PARKED (burden/benefit: the diverging Total / Intensity bar) ---
 // function DivergingBar({ label, burdenPct }: { label: string; burdenPct: number }) {
 // 	return (
@@ -439,6 +468,29 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		[visibleRows, selectedClauseId]
 	);
 
+	// The zoomed copy of the picked clause: its own text with each located evidence
+	// fragment carrying its statement's lane.
+	const clauseDetail = useMemo(
+		() =>
+			viewKg && focusNodeId && activeClause?.clauseId
+				? buildClauseDetail(viewKg, activeClause.clauseId, focusNodeId, secondPartyId, nodesById)
+				: null,
+		[viewKg, focusNodeId, activeClause, secondPartyId, nodesById]
+	);
+	const detailSplit =
+		pair && activeClause?.clauseId ? (pair.clauseSplit[activeClause.clauseId] ?? null) : null;
+	const detailPctA =
+		detailSplit && detailSplit.a + detailSplit.b > 0
+			? Math.round((detailSplit.a / (detailSplit.a + detailSplit.b)) * 100)
+			: null;
+
+	const detailRef = useRef<HTMLDivElement>(null);
+	const activeClauseId = activeClause?.clauseId ?? null;
+	// The zoom lives below the last row, which a pick from far up the grid can't see.
+	useEffect(() => {
+		if (activeClauseId) detailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+	}, [activeClauseId]);
+
 	// The focus chip lives in the panel header, which has no access to the graph.
 	const focusedPartyName = focusNodeId ? (partyNameById.get(focusNodeId) ?? null) : null;
 	useEffect(() => {
@@ -542,6 +594,20 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			: lane === 'b'
 				? (secondPartyId ? (partyNameById.get(secondPartyId) ?? 'Party B') : 'Party B')
 				: 'Both parties';
+
+	/** The clause zoom reuses the mark tooltip: same title line, same kind colour. */
+	const showFragmentTooltip = (event: ReactMouseEvent, fragment: ClauseFragment) => {
+		if (!fragment.statementId || !fragment.kind || !fragment.lane) return;
+		showTooltip(event, {
+			id: fragment.statementId,
+			kind: fragment.kind,
+			lane: fragment.lane,
+			ownerName: fragment.ownerName ?? null,
+			attributed: true,
+			label: '',
+			detail: fragment.detail ?? '',
+		});
+	};
 
 	const renderMark = (mark: GridMark) => {
 		if (!visibleKinds.has(mark.kind)) return null;
@@ -867,6 +933,90 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 											</div>
 										);
 									})}
+
+									{/* Clause zoom — the picked clause's own text below the residue row,
+									    painted by side so the words doing the pulling are the answer. */}
+									{activeClause && clauseDetail && (
+										<div ref={detailRef} className="border-t-2 border-border px-3 py-2">
+											<div className="mb-1.5 flex items-center justify-between gap-2 text-2xs">
+												<div className="flex min-w-0 items-baseline gap-2">
+													<span
+														className="truncate font-semibold text-foreground/80"
+														title={activeClause.heading}
+													>
+														{activeClause.heading}
+													</span>
+													{detailPctA !== null && (
+														<span className="shrink-0 tabular-nums">
+															<span style={{ color: PARTY_COLOR }}>
+																{laneName('a')} {detailPctA}%
+															</span>
+															<span className="text-muted-foreground"> · </span>
+															<span style={{ color: PAIR_SECOND_COLOR }}>
+																{laneName('b')} {100 - detailPctA}%
+															</span>
+														</span>
+													)}
+												</div>
+												<Button
+													variant="ghost"
+													size="xs"
+													className="h-5 shrink-0 px-1.5 text-2xs"
+													onClick={() => setSelectedClauseId(null)}
+													aria-label="Close the clause detail"
+												>
+													✕
+												</Button>
+											</div>
+											<div className="space-y-1.5 text-2xs leading-relaxed text-foreground/75">
+												{clauseDetail.paragraphs.map((paragraph) => (
+													<p key={paragraph.id}>
+														{paragraph.fragments.map((fragment, index) =>
+															fragment.lane ? (
+																<span
+																	key={index}
+																	className="cursor-pointer rounded-[2px]"
+																	style={FRAGMENT_STYLE[fragment.lane]}
+																	onMouseEnter={(event) => showFragmentTooltip(event, fragment)}
+																	onMouseMove={(event) => showFragmentTooltip(event, fragment)}
+																	onMouseLeave={() => setHover(null)}
+																	onClick={() => fragment.statementId && openInDocument(fragment.statementId)}
+																>
+																	{fragment.text}
+																</span>
+															) : (
+																<Fragment key={index}>{fragment.text}</Fragment>
+															)
+														)}
+													</p>
+												))}
+											</div>
+											{clauseDetail.unlocated.length > 0 && (
+												<div className="mt-2 flex flex-wrap items-center gap-1.5 text-2xs text-muted-foreground">
+													<span>Not located in this text:</span>
+													{clauseDetail.unlocated.map((statement) => (
+														<button
+															key={statement.id}
+															type="button"
+															className="rounded border border-border/70 px-1 py-0.5 hover:bg-muted"
+															style={{
+																color:
+																	statement.lane === 'a'
+																		? PARTY_COLOR
+																		: statement.lane === 'b'
+																			? PAIR_SECOND_COLOR
+																			: undefined,
+															}}
+															title={`${statement.detail}${statement.ownerName ? ` — ${statement.ownerName}` : ''}`}
+															onClick={() => openInDocument(statement.id)}
+														>
+															{statement.label}
+														</button>
+													))}
+												</div>
+											)}
+										</div>
+									)}
 								</div>
 							</div>
 

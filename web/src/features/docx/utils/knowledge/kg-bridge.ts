@@ -116,7 +116,7 @@ function paragraphEnum(pid: string, nodesById: Map<string, ParagraphNode>): numb
  * would hand one arbitrary statement a span six of them claim. Only the fragments that
  * tell them apart are kept; if every fragment is shared, the longest stands in.
  */
-function evidenceLabels(
+export function evidenceLabels(
 	statement: KgDeonticNode,
 	spanOwners: Map<string, number>
 ): string[] {
@@ -127,7 +127,7 @@ function evidenceLabels(
 }
 
 /** How many statements claim each fragment, so a shared preamble can be told apart. */
-function countSpanOwners(kg: KnowledgeGraph): Map<string, number> {
+export function countSpanOwners(kg: KnowledgeGraph): Map<string, number> {
 	const counts = new Map<string, number>();
 	for (const statement of deonticNodes(kg)) {
 		for (const span of new Set(statement.evidenceSpans ?? [])) {

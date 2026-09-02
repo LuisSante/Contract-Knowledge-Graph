@@ -30,9 +30,10 @@ interface RightPanelHeaderActionsProps {
 }
 
 /**
- * Right-panel header actions, specific per tab: the focus chip and party actions in
- * the knowledge graph, and the focused party plus the LLM cost and model in the chat.
- * Cost and model are global, but the chat is where they are read and changed.
+ * Right-panel header actions, specific per tab: the focus chip in the knowledge
+ * graph (merge/split/delete moved onto the party cards themselves, as drag & drop),
+ * and the focused party plus the LLM cost and model in the chat. Cost and model are
+ * global, but the chat is where they are read and changed.
  */
 export function RightPanelHeaderActions({
 	activeTab,
@@ -41,11 +42,6 @@ export function RightPanelHeaderActions({
 	onModelChange,
 }: RightPanelHeaderActionsProps) {
 	const focusedPartyName = useKnowledgeGraphStore((state) => state.ledger?.partyName ?? null);
-	const selectedPartyIds = useKnowledgeGraphStore((state) => state.selectedPartyIds);
-	const mergeGroups = useKnowledgeGraphStore((state) => state.mergeGroups);
-	const mergeParties = useKnowledgeGraphStore((state) => state.mergeParties);
-	const splitGroup = useKnowledgeGraphStore((state) => state.splitGroup);
-	const hideParty = useKnowledgeGraphStore((state) => state.hideParty);
 	const focusMeta = useKnowledgeGraphStore((state) => state.focusMeta);
 	const hops = useKnowledgeGraphStore((state) => state.hops);
 	const topK = useKnowledgeGraphStore((state) => state.topK);
@@ -54,17 +50,6 @@ export function RightPanelHeaderActions({
 	const clearFocus = useKnowledgeGraphStore((state) => state.clearFocus);
 
 	if (activeTab === 'knowledge_graph') {
-		const n = selectedPartyIds.length;
-		const singleGroup = n === 1 && mergeGroups.some((g) => g.id === selectedPartyIds[0]);
-		const canMerge = n >= 2;
-		const canSplit = singleGroup;
-		const canDelete = n >= 1;
-		const run = (action: string) => {
-			const ids = [...selectedPartyIds];
-			if (action === 'merge') mergeParties(ids);
-			else if (action === 'split') splitGroup(ids[0]);
-			else if (action === 'delete') ids.forEach((id) => hideParty(id));
-		};
 		// A party focus tunes how many statements are shown; anything else tunes the
 		// neighbourhood radius. Same two buttons, different quantity.
 		const partyFocus = focusMeta?.kind === 'party';
@@ -119,30 +104,6 @@ export function RightPanelHeaderActions({
 						</Button>
 					</div>
 				)}
-				<span className="text-2xs text-header-foreground/60">
-					{n === 0 ? 'no selection' : `${n} selected`}
-				</span>
-				<Select value="" onValueChange={run}>
-					<SelectTrigger
-						size="sm"
-						disabled={n === 0}
-						className="h-7 w-[104px] shrink-0 border-transparent bg-card px-2 text-2xs text-primary shadow-sm hover:bg-card/90 focus-visible:ring-header-foreground/40 disabled:opacity-50 [&_svg]:text-primary"
-						title="Merge, split or delete the selected parties"
-					>
-						<SelectValue placeholder="Actions" />
-					</SelectTrigger>
-					<SelectContent className="min-w-0">
-						<SelectItem value="merge" disabled={!canMerge} className="text-2xs">
-							Merge
-						</SelectItem>
-						<SelectItem value="split" disabled={!canSplit} className="text-2xs">
-							Split
-						</SelectItem>
-						<SelectItem value="delete" disabled={!canDelete} className="text-2xs">
-							Delete
-						</SelectItem>
-					</SelectContent>
-				</Select>
 			</div>
 		);
 	}

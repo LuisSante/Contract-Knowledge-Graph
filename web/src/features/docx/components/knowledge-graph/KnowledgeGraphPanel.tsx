@@ -11,7 +11,7 @@ import {
 } from 'react';
 import { fetchKnowledgeGraph, fetchPartyMergeHints } from '@/services/knowledge';
 import { useDocumentStore } from '@/stores/document';
-import { useKnowledgeGraphStore } from '@/stores/knowledgeGraph';
+import { mergeGroupId, useKnowledgeGraphStore } from '@/stores/knowledgeGraph';
 import {
 	buildKnowledgeGraphBridge,
 	buildNodeDocumentTarget,
@@ -327,12 +327,12 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const setBridgePayload = useKnowledgeGraphStore((s) => s.setBridgePayload);
 	const setDocumentTarget = useKnowledgeGraphStore((s) => s.setDocumentTarget);
 	const mergeGroups = useKnowledgeGraphStore((s) => s.mergeGroups);
+	const mergeParties = useKnowledgeGraphStore((s) => s.mergeParties);
+	const splitGroup = useKnowledgeGraphStore((s) => s.splitGroup);
+	const hideParty = useKnowledgeGraphStore((s) => s.hideParty);
 	const hiddenParties = useKnowledgeGraphStore((s) => s.hiddenParties);
 	const unhideParty = useKnowledgeGraphStore((s) => s.unhideParty);
 	const clearPartyView = useKnowledgeGraphStore((s) => s.clearPartyView);
-	const selectedPartyIds = useKnowledgeGraphStore((s) => s.selectedPartyIds);
-	const toggleSelectedParty = useKnowledgeGraphStore((s) => s.toggleSelectedParty);
-	const clearSelectedParties = useKnowledgeGraphStore((s) => s.clearSelectedParties);
 	// PARKED (burden/benefit): const ledger = useKnowledgeGraphStore((s) => s.ledger);
 	const secondPartyId = useKnowledgeGraphStore((s) => s.secondPartyId);
 	const setSecondParty = useKnowledgeGraphStore((s) => s.setSecondParty);
@@ -783,24 +783,54 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 							parties={partyCards}
 							slots={slots}
 							slotColors={[PARTY_COLOR, PAIR_SECOND_COLOR]}
-							onAssign={(id) =>
-								setSlotOverride(
-									slots[0] === null ? [id, slots[1]] : slots[1] === null ? [slots[0], id] : slots
-								)
+							onAssign={(id, side) =>
+								setSlotOverride(() => {
+									const next: [string | null, string | null] = [slots[0], slots[1]];
+									if (side === undefined) {
+										if (next[0] === null) next[0] = id;
+										else if (next[1] === null) next[1] = id;
+										return next;
+									}
+									// Seating one card on the other's chair exchanges them
+									// instead of duplicating the id across both seats.
+									const other = side === 0 ? 1 : 0;
+									if (next[other] === id) next[other] = next[side];
+									next[side] = id;
+									return next;
+								})
 							}
 							onRelease={(side) => {
 								const next: [string | null, string | null] = [...slots];
 								next[side] = null;
 								setSlotOverride(next);
 							}}
-							selectedPartyIds={selectedPartyIds}
-							onToggleSelect={toggleSelectedParty}
 							mergeHints={mergeHints}
-							onContinue={() => {
-								if (slots[0] && slots[1]) {
-									clearSelectedParties();
-									focusPair(slots[0], slots[1]);
+							groupIds={mergeGroups.map((group) => group.id)}
+							onMerge={(ids) => {
+								// Predict the group id so a seated party keeps its seat as
+								// the merged entity, instead of being pruned to an empty chair.
+								const groupById = new Map(mergeGroups.map((g) => [g.id, g]));
+								const members = new Set<string>();
+								for (const id of ids) {
+									const group = groupById.get(id);
+									if (group) group.members.forEach((m) => members.add(m));
+									else members.add(id);
 								}
+								if (members.size < 2) return;
+								const newId = mergeGroupId(members);
+								mergeParties(ids);
+								setSlotOverride(() => {
+									const remap = (seat: string | null) =>
+										seat && (ids.includes(seat) || members.has(seat)) ? newId : seat;
+									const a = remap(slots[0]);
+									const b = remap(slots[1]);
+									return a !== null && a === b ? [a, null] : [a, b];
+								});
+							}}
+							onSplit={splitGroup}
+							onDelete={hideParty}
+							onContinue={() => {
+								if (slots[0] && slots[1]) focusPair(slots[0], slots[1]);
 							}}
 						/>
 					)}

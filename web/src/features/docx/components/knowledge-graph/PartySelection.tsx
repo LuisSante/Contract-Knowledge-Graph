@@ -1,5 +1,7 @@
 'use client';
 
+import { useState, type DragEvent } from 'react';
+import { Split as SplitIcon, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 /** A party as the entry view needs it: identity plus the load it actually carries. */
@@ -18,13 +20,16 @@ interface PartySelectionProps {
 	/** The chosen pair, by side. Null means the slot is open. */
 	slots: [string | null, string | null];
 	slotColors: [string, string];
-	onAssign: (partyId: string) => void;
+	/** With a side, the drop was aimed; without one, the first open seat takes it. */
+	onAssign: (partyId: string, side?: 0 | 1) => void;
 	onRelease: (side: 0 | 1) => void;
-	/** Ctrl/Cmd-click keeps feeding the header's merge/split/delete actions. */
-	selectedPartyIds: string[];
-	onToggleSelect: (partyId: string) => void;
 	/** Parties the resolver thinks may be the same entity, keyed by party id. */
 	mergeHints: Record<string, string[]>;
+	/** Ids that are merge groups, so their cards can offer Split. */
+	groupIds: string[];
+	onMerge: (ids: string[]) => void;
+	onSplit: (groupId: string) => void;
+	onDelete: (partyId: string) => void;
 	onContinue: () => void;
 }
 
@@ -46,51 +51,156 @@ export function PartySelection({
 	slotColors,
 	onAssign,
 	onRelease,
-	selectedPartyIds,
-	onToggleSelect,
 	mergeHints,
+	groupIds,
+	onMerge,
+	onSplit,
+	onDelete,
 	onContinue,
 }: PartySelectionProps) {
 	const byId = new Map(parties.map((p) => [p.id, p] as const));
 	const seated = new Set(slots.filter((id): id is string => Boolean(id)));
 	const pool = parties.filter((p) => !seated.has(p.id));
 	const full = slots[0] !== null && slots[1] !== null;
+	const groups = new Set(groupIds);
+
+	/**
+	 * Everything is draggable and most things are drop targets, so the id travels in
+	 * component state rather than only in dataTransfer — dragover can't read the data,
+	 * and the overlays need to know who is flying to light the right zones.
+	 */
+	const [draggingId, setDraggingId] = useState<string | null>(null);
+	const [dropZone, setDropZone] = useState<string | null>(null);
+
+	const dragProps = (id: string) => ({
+		draggable: true,
+		onDragStart: (event: DragEvent) => {
+			event.dataTransfer.setData('text/plain', id);
+			event.dataTransfer.effectAllowed = 'move';
+			setDraggingId(id);
+		},
+		onDragEnd: () => {
+			setDraggingId(null);
+			setDropZone(null);
+		},
+	});
+
+	const acceptOver = (zone: string) => (event: DragEvent) => {
+		if (!draggingId) return;
+		event.preventDefault();
+		event.dataTransfer.dropEffect = 'move';
+		if (dropZone !== zone) setDropZone(zone);
+	};
+
+	/** dragleave fires after the next dragover, so only clear a zone we still own. */
+	const leaveZone = (zone: string) => () =>
+		setDropZone((current) => (current === zone ? null : current));
+
+	const finishDrop = (event: DragEvent, run: (dragged: string) => void) => {
+		event.preventDefault();
+		const dragged = draggingId ?? event.dataTransfer.getData('text/plain');
+		setDraggingId(null);
+		setDropZone(null);
+		if (dragged) run(dragged);
+	};
+
+	/** Amber, deliberately outside every other palette in the view: split is the one
+	    action that undoes instead of composing, so its handle should never blend in. */
+	const splitBadge = (partyId: string) => (
+		<span
+			role="button"
+			tabIndex={0}
+			title="Split this merged entity back into its members"
+			onClick={(event) => {
+				event.stopPropagation();
+				onSplit(partyId);
+			}}
+			className="shrink-0 cursor-pointer rounded p-0.5 text-amber-600 hover:bg-amber-500/15 hover:text-amber-700"
+		>
+			<SplitIcon className="size-3" />
+		</span>
+	);
 
 	const card = (side: 0 | 1) => {
 		const id = slots[side];
 		const party = id ? byId.get(id) : null;
 		const color = slotColors[side];
+
 		if (!party) {
+			const zone = `seat-${side}`;
 			return (
-				<div className="flex min-h-[92px] min-w-0 flex-1 flex-col items-center justify-center rounded-lg border-2 border-dashed border-border px-3 text-center text-2xs text-muted-foreground">
-					Pick a party
+				<div
+					className={`flex min-h-[92px] min-w-0 flex-1 flex-col items-center justify-center rounded-lg border-2 border-dashed px-3 text-center text-2xs transition ${
+						dropZone === zone
+							? 'border-primary bg-primary/5 text-primary'
+							: 'border-border text-muted-foreground'
+					}`}
+					onDragOver={acceptOver(zone)}
+					onDragLeave={leaveZone(zone)}
+					onDrop={(event) => finishDrop(event, (dragged) => onAssign(dragged, side))}
+				>
+					{draggingId ? 'Drop to seat it' : 'Pick a party'}
 				</div>
 			);
 		}
+
+		const targeted = draggingId !== null && draggingId !== party.id;
 		return (
-			<button
-				type="button"
-				onClick={(event) => {
-					if (event.metaKey || event.ctrlKey) onToggleSelect(party.id);
-					else onRelease(side);
-				}}
-				title="Click to release it · Ctrl-click to select it for Actions"
-				className="flex min-h-[92px] min-w-0 flex-1 flex-col justify-between rounded-lg border-2 bg-card px-3 py-2 text-left transition hover:bg-muted/50"
-				style={{
-					borderColor: color,
-					boxShadow: selectedPartyIds.includes(party.id) ? `0 0 0 2px ${color}40` : undefined,
-				}}
-			>
-				<span className="flex items-center gap-1.5">
-					<span
-						className="inline-block size-2.5 shrink-0 rounded-full"
-						style={{ backgroundColor: color }}
-					/>
-					<span className="truncate text-xs font-medium text-foreground">{party.name}</span>
-				</span>
-				{party.role && <span className="truncate text-2xs opacity-60">{party.role}</span>}
-				<Load party={party} />
-			</button>
+			<div className="relative flex min-h-[92px] min-w-0 flex-1">
+				<div
+					role="button"
+					tabIndex={0}
+					{...dragProps(party.id)}
+					onClick={() => onRelease(side)}
+					title="Click to release it · Drag onto the other card to merge"
+					className="flex w-full min-w-0 cursor-grab flex-col justify-between rounded-lg border-2 bg-card px-3 py-2 text-left transition hover:bg-muted/50 active:cursor-grabbing"
+					style={{
+						borderColor: color,
+						opacity: draggingId === party.id ? 0.4 : undefined,
+					}}
+				>
+					<span className="flex items-center gap-1.5">
+						<span
+							className="inline-block size-2.5 shrink-0 rounded-full"
+							style={{ backgroundColor: color }}
+						/>
+						<span className="truncate text-xs font-medium text-foreground">{party.name}</span>
+						{groups.has(party.id) && splitBadge(party.id)}
+					</span>
+					{party.role && <span className="truncate text-2xs opacity-60">{party.role}</span>}
+					<Load party={party} />
+				</div>
+				{/* Two intents land on one card, so the drop is asked to choose: the top
+				    half swaps the seat, the bottom half fuses the two into one entity. */}
+				{targeted && (
+					<div className="absolute inset-0 z-10 flex flex-col overflow-hidden rounded-lg border-2 border-transparent">
+						<div
+							className={`flex flex-1 items-center justify-center text-2xs font-medium transition ${
+								dropZone === `swap-${side}`
+									? 'bg-primary/20 text-primary'
+									: 'bg-background/75 text-muted-foreground'
+							}`}
+							onDragOver={acceptOver(`swap-${side}`)}
+							onDragLeave={leaveZone(`swap-${side}`)}
+							onDrop={(event) => finishDrop(event, (dragged) => onAssign(dragged, side))}
+						>
+							Swap in
+						</div>
+						<div
+							className={`flex flex-1 items-center justify-center gap-1 text-2xs font-medium transition ${
+								dropZone === `merge-${side}`
+									? 'bg-emerald-500/20 text-emerald-700'
+									: 'bg-background/75 text-muted-foreground'
+							}`}
+							onDragOver={acceptOver(`merge-${side}`)}
+							onDragLeave={leaveZone(`merge-${side}`)}
+							onDrop={(event) => finishDrop(event, (dragged) => onMerge([dragged, party.id]))}
+						>
+							Merge into one entity
+						</div>
+					</div>
+				)}
+			</div>
 		);
 	};
 
@@ -113,35 +223,45 @@ export function PartySelection({
 			{pool.length > 0 && (
 				<div className="w-full max-w-xl">
 					<div className="mb-1.5 text-2xs text-muted-foreground">
-						Other parties in the document
-						{full && ' — release a card to swap it'}
+						Other parties in the document — drag one onto a seat to swap it, onto another card
+						to merge them
 					</div>
 					<div className="flex flex-wrap gap-1.5">
 						{pool.map((party) => {
 							const suggested = (mergeHints[party.id] ?? []).some((other) => seated.has(other));
+							const zone = `pool-${party.id}`;
+							const targeted = dropZone === zone;
 							return (
-								<button
+								<div
 									key={party.id}
-									type="button"
-									disabled={full}
-									onClick={(event) => {
-										if (event.metaKey || event.ctrlKey) onToggleSelect(party.id);
-										else onAssign(party.id);
+									role="button"
+									tabIndex={0}
+									{...dragProps(party.id)}
+									onClick={() => {
+										if (!full) onAssign(party.id);
 									}}
+									onDragOver={
+										draggingId && draggingId !== party.id ? acceptOver(zone) : undefined
+									}
+									onDragLeave={leaveZone(zone)}
+									onDrop={(event) =>
+										finishDrop(event, (dragged) => {
+											if (dragged !== party.id) onMerge([dragged, party.id]);
+										})
+									}
 									title={
 										suggested
-											? 'The resolver thinks this may be the same entity as one of the seated parties — Ctrl-click it and use Actions to merge'
-											: 'Click to seat it · Ctrl-click to select it for Actions'
+											? 'The resolver thinks this may be the same entity as one of the seated parties — drop it on that card to merge'
+											: full
+												? 'Drag onto a seat to swap it in · drop another card here to merge'
+												: 'Click to seat it · drag onto a card to merge'
 									}
-									className={`flex max-w-full items-center gap-1.5 rounded-full border px-2.5 py-1 text-2xs transition ${
-										full
-											? 'cursor-not-allowed opacity-40'
-											: 'cursor-pointer hover:bg-muted/60'
-									} ${
-										selectedPartyIds.includes(party.id)
-											? 'border-primary text-foreground'
-											: 'border-border text-muted-foreground'
+									className={`group flex max-w-full cursor-grab items-center gap-1.5 rounded-full border px-2.5 py-1 text-2xs transition active:cursor-grabbing ${
+										targeted
+											? 'border-emerald-500 bg-emerald-500/10 text-foreground ring-1 ring-emerald-400'
+											: 'border-border text-muted-foreground hover:bg-muted/60'
 									}`}
+									style={{ opacity: draggingId === party.id ? 0.4 : undefined }}
 								>
 									{suggested && (
 										<span
@@ -151,7 +271,20 @@ export function PartySelection({
 									)}
 									<span className="truncate">{party.name}</span>
 									<span className="shrink-0 tabular-nums opacity-60">{party.total}</span>
-								</button>
+									{groups.has(party.id) && splitBadge(party.id)}
+									<span
+										role="button"
+										tabIndex={0}
+										title="Remove this party from the view (restorable below)"
+										onClick={(event) => {
+											event.stopPropagation();
+											onDelete(party.id);
+										}}
+										className="shrink-0 cursor-pointer rounded p-0.5 opacity-0 transition-opacity hover:bg-muted hover:text-destructive group-hover:opacity-100"
+									>
+										<X className="size-3" />
+									</span>
+								</div>
 							);
 						})}
 					</div>

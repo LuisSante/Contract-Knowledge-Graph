@@ -11,6 +11,14 @@ import { DEFAULT_SEVERITY } from '@/features/docx/utils/knowledge/attention';
 import type { MergeGroup } from '@/features/docx/utils/knowledge/party-view';
 import type { KnowledgeGraphDocumentTarget } from '@/features/docx/utils/knowledge/kg-bridge';
 
+/**
+ * The deterministic id a merge of these members gets. Exported so the entry view
+ * can predict where a seated party lands when it is merged, and keep its seat.
+ */
+export function mergeGroupId(members: Iterable<string>): string {
+	return `merge:${[...members].sort().join('+')}`;
+}
+
 export const MAX_KG_HOPS = 5;
 export const DEFAULT_KG_TOP_K = 10;
 export const MIN_KG_TOP_K = 5;
@@ -139,7 +147,7 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 			}
 			if (members.size < 2) return {};
 			const sorted = [...members].sort();
-			const newGroup: MergeGroup = { id: `merge:${sorted.join('+')}`, members: sorted };
+			const newGroup: MergeGroup = { id: mergeGroupId(sorted), members: sorted };
 			const kept = state.mergeGroups.filter((g) => !g.members.some((m) => members.has(m)));
 			const focusNodeId =
 				state.focusNodeId && members.has(state.focusNodeId) ? newGroup.id : state.focusNodeId;

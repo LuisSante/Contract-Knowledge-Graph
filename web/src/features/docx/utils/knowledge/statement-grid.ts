@@ -48,12 +48,6 @@ export interface GridMark {
 	lane: GridLane;
 	/** Whoever the statement is really about: the obligor of a duty, the holder of a right. */
 	ownerName: string | null;
-	/**
-	 * False only for a statement in the middle lane that the contract attributes to
-	 * nobody at all — a passive "must be signed", or a duty whose obligor depends on a
-	 * future fact ("the breaching party"). Reciprocal provisions stay true.
-	 */
-	attributed: boolean;
 	label: string;
 	detail: string;
 }
@@ -72,7 +66,12 @@ export interface StatementGrid {
 	countByKind: Record<MarkKind, number>;
 	/** Entities with no clause of their own — an extraction gap, shown rather than dropped. */
 	unfiled: number;
-	/** Of the shared lane, how many statements name nobody — the only real gap there. */
+	/**
+	 * Statements the contract attributes to nobody at all — a passive "must be signed",
+	 * or a duty whose obligor depends on a future fact ("the breaching party"). They are
+	 * counted but never placed: a mark for them would be a mark nobody can act on.
+	 * Reciprocal provisions are not these — they name both sides on purpose.
+	 */
 	unattributed: number;
 	/**
 	 * Clauses that hold nothing at all. Dropped from `rows` — an empty band is a row of
@@ -146,8 +145,10 @@ export function buildStatementGrid(
 		const lane: GridLane = ownerId === partyAId ? 'a' : ownerId === partyBId ? 'b' : 'shared';
 		const ownerName = ownerId ? (partyName.get(ownerId) ?? null) : null;
 		const wording = `${ownerName ?? ''} ${statement.text ?? ''} ${statement.summary ?? ''}`;
-		const attributed = lane !== 'shared' || RECIPROCAL.test(wording);
-		if (!attributed) unattributed += 1;
+		if (lane === 'shared' && !RECIPROCAL.test(wording)) {
+			unattributed += 1;
+			continue;
+		}
 		const clauseId =
 			statement.clauseId && byClause.has(statement.clauseId) ? statement.clauseId : null;
 		anchorOf.set(statement.id, { clauseId, lane });
@@ -157,7 +158,6 @@ export function buildStatementGrid(
 				kind: statement.kind,
 				lane,
 				ownerName,
-				attributed,
 				label: statement.action || statement.kind,
 				detail: statement.summary || statement.action || statement.text,
 			},
@@ -190,7 +190,7 @@ export function buildStatementGrid(
 	) => {
 		const anchor = anchorFor(targetId, paragraphIds);
 		place(
-			{ id, kind, lane: anchor.lane, ownerName: null, attributed: true, label, detail },
+			{ id, kind, lane: anchor.lane, ownerName: null, label, detail },
 			anchor.clauseId
 		);
 	};

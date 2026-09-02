@@ -101,8 +101,6 @@ const LABEL_WIDTH = 176;
 
 /** The other party's lane when one is singled out: present, not the subject. */
 const MUTED_LANE_OPACITY = 0.22;
-/** The contract names nobody at all — visible, but never mistaken for an allocated duty. */
-const UNATTRIBUTED_OPACITY = 0.45;
 
 /**
  * How the clause zoom paints a located fragment. Text, not chips, so the lane colours
@@ -668,9 +666,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			owner:
 				mark.ownerName ??
 				(mark.lane === 'shared'
-					? mark.attributed
-						? 'both parties'
-						: 'no party named'
+					? 'both parties'
 					: undefined),
 		});
 	};
@@ -690,7 +686,6 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			kind: fragment.kind,
 			lane: fragment.lane,
 			ownerName: fragment.ownerName ?? null,
-			attributed: true,
 			label: '',
 			detail: fragment.detail ?? '',
 		});
@@ -710,11 +705,9 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 					width: MARK_SIZE,
 					height: MARK_SIZE,
 					backgroundColor: KIND_COLORS[mark.kind],
-					opacity: muted ? MUTED_LANE_OPACITY : mark.attributed ? 1 : UNATTRIBUTED_OPACITY,
-					// Dashed now means one thing only: the contract names nobody.
-					...(mark.attributed ? {} : { outline: '1px dashed #cbd5e1', outlineOffset: '1px' }),
+					opacity: muted ? MUTED_LANE_OPACITY : 1,
 				}}
-				title={`${KIND_LABEL[mark.kind]} — ${mark.ownerName ?? (shared ? (mark.attributed ? 'both parties' : 'no party named') : '')}`}
+				title={`${KIND_LABEL[mark.kind]} — ${mark.ownerName ?? (shared ? 'both parties' : '')}`}
 				onMouseEnter={(event) => showTooltip(event, mark)}
 				onMouseMove={(event) => showTooltip(event, mark)}
 				onMouseLeave={() => setHover(null)}

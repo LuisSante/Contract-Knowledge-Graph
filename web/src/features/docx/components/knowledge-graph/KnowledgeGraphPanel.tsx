@@ -29,8 +29,8 @@ import {
 	type MarkKind,
 } from '@/features/docx/utils/knowledge/statement-grid';
 import {
-	computePartyAttention,
 	DEFAULT_SEVERITY,
+	computePartyAttention,
 } from '@/features/docx/utils/knowledge/attention';
 import {
 	buildClauseDetail,
@@ -302,6 +302,13 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	 */
 	const [sortByAttention, setSortByAttention] = useState(true);
 	/**
+	 * Swaps the clause weight back to the Personalized PageRank it used to be — kept as a
+	 * comparison, not as an option: it is how you see, on this contract, that the walk
+	 * hands a party weight from the other side's statements and that the "each Party"
+	 * component scores nothing at all.
+	 */
+	const [usePprPull, setUsePprPull] = useState(false);
+	/**
 	 * Which lanes reach the document. Untick a party and the page stops answering for it;
 	 * untick the bilateral column and what stays painted is only what is asymmetric.
 	 * One mechanism for all three columns — the lane is the only thing being chosen.
@@ -453,20 +460,64 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	);
 
 	/**
-	 * Combined pull per clause — what "important" means when the rows are ranked. With a
-	 * pair seated it is both parties' summed clause pull (the same quantity the pair
-	 * bridge sizes nodes with); alone it is the focused party's own clause score. Null
-	 * for a statement anchor, where attention has no party to seed on.
+	 * How much a clause weighs, per lane: its own statements summed by kind severity.
+	 * Nothing is walked — the weight is read off the marks the row already shows, so a
+	 * reader can verify it by counting squares.
+	 *
+	 * This replaces a Personalized PageRank seeded on each party, which failed twice on
+	 * the reference contract. It reached statements through the shared clause node, so
+	 * 78.9% of Miltenyi's weight in "Rights Granted and Restrictions on Bellicum" came
+	 * from Bellicum's own prohibitions and its share read 29% off a single right. And it
+	 * normalized each party against its own peak clause, so the two halves of a split
+	 * had different denominators. It also scored four clauses at exactly zero — the
+	 * "each Party" node sits in a disconnected component, which put Limitation of
+	 * Liability last. Reading the fields instead of walking the edges fixes all three.
 	 */
-	const clauseAttention = useMemo(() => {
-		if (!viewKg || !focusNodeId || !isPartyFocus) return null;
-		if (pair) {
-			const combined = new Map<string, number>();
-			for (const [id, { a, b }] of Object.entries(pair.clauseSplit)) combined.set(id, a + b);
-			return combined;
+	const clausePull = useMemo(() => {
+		if (!grid || !isPartyFocus) return null;
+		const byClause = new Map<string, Record<GridLane, number>>();
+		if (usePprPull) {
+			// Raw magnitudes on both sides, so the two halves share the clause as their
+			// denominator. The ego normalization the ring used is not reproduced: it was a
+			// defect, and keeping it would hide what the walk itself does.
+			if (!viewKg || !focusNodeId) return null;
+			const attentionA = computePartyAttention(viewKg, focusNodeId, severity, usePageRank);
+			const attentionB = secondPartyId
+				? computePartyAttention(viewKg, secondPartyId, severity, usePageRank)
+				: null;
+			for (const row of grid.rows) {
+				if (!row.clauseId) continue;
+				byClause.set(row.clauseId, {
+					a: attentionA.clauseMagnitude.get(row.clauseId) ?? 0,
+					b: attentionB?.clauseMagnitude.get(row.clauseId) ?? 0,
+					shared: 0,
+				});
+			}
+			return byClause;
 		}
-		return computePartyAttention(viewKg, focusNodeId, severity, usePageRank).clauseScore;
-	}, [viewKg, focusNodeId, isPartyFocus, pair, severity, usePageRank]);
+		for (const row of grid.rows) {
+			if (!row.clauseId) continue;
+			const weight: Record<GridLane, number> = { a: 0, b: 0, shared: 0 };
+			for (const lane of GRID_LANES) {
+				for (const mark of row.marks[lane]) {
+					// Only the deontic three carry a severity; a qualifier describes a
+					// statement that is already counted.
+					if (mark.kind in severity) weight[lane] += severity[mark.kind as DeonticKind];
+				}
+			}
+			byClause.set(row.clauseId, weight);
+		}
+		return byClause;
+	}, [grid, isPartyFocus, severity, usePprPull, viewKg, focusNodeId, secondPartyId, usePageRank]);
+
+	/** Total weight of a clause, and each lane's share of it — one denominator, sums to 1. */
+	const pullOf = (clauseId: string | null) => {
+		const weight = clauseId ? clausePull?.get(clauseId) : null;
+		if (!weight) return null;
+		const total = weight.a + weight.b + weight.shared;
+		if (total <= 0) return null;
+		return { total, a: weight.a / total, b: weight.b / total, shared: weight.shared / total };
+	};
 
 	/**
 	 * A band only exists while it holds something you can see. Filtering the kinds can
@@ -477,25 +528,12 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		const rows = (grid?.rows ?? []).filter((row) =>
 			GRID_LANES.some((lane) => row.marks[lane].some((mark) => visibleKinds.has(mark.kind)))
 		);
-		if (!sortByAttention || !clauseAttention) return rows;
+		if (!sortByAttention || !clausePull) return rows;
 		// Stable, so equal pull keeps document order; -1 keeps the residue row last.
-		const pull = (row: GridRow) => (row.clauseId ? (clauseAttention.get(row.clauseId) ?? 0) : -1);
+		const pull = (row: GridRow) => (row.clauseId ? (pullOf(row.clauseId)?.total ?? 0) : -1);
 		return rows.slice().sort((x, y) => pull(y) - pull(x));
-	}, [grid, visibleKinds, sortByAttention, clauseAttention]);
-
-	/** The widest bar belongs to the heaviest visible clause; the rest are relative to it. */
-	const peakPull = useMemo(
-		() =>
-			clauseAttention
-				? Math.max(
-						0,
-						...visibleRows.map((row) =>
-							row.clauseId ? (clauseAttention.get(row.clauseId) ?? 0) : 0
-						)
-					)
-				: 0,
-		[clauseAttention, visibleRows]
-	);
+		// eslint-disable-next-line react-hooks/exhaustive-deps -- pullOf is derived from clausePull
+	}, [grid, visibleKinds, sortByAttention, clausePull]);
 
 	const laneByStatement = useMemo(() => {
 		const byId = new Map<string, GridLane>();
@@ -845,13 +883,13 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 										<button
 											type="button"
 											onClick={() => setSortByAttention((on) => !on)}
-											disabled={!clauseAttention}
+											disabled={!clausePull}
 											className="mr-2 shrink-0 truncate text-left font-medium text-muted-foreground/70 enabled:hover:text-foreground disabled:cursor-default"
 											style={{ width: LABEL_WIDTH }}
 											title="Order the rows by how much attention the selected parties put on each clause, or by the clause's position in the contract"
 										>
 											CLAUSE
-											{clauseAttention && (
+											{clausePull && (
 												<span className="font-normal opacity-70">
 													{sortByAttention ? ' · most pull first ↓' : ' · document order'}
 												</span>
@@ -908,14 +946,9 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 
 									{visibleRows.map((row, index) => {
 										const unfiled = row.clauseId === null;
-										const pull =
-											clauseAttention && row.clauseId
-												? (clauseAttention.get(row.clauseId) ?? 0)
-												: 0;
-										const split = pair && row.clauseId ? pair.clauseSplit[row.clauseId] : null;
-										const shareA =
-											split && split.a + split.b > 0 ? split.a / (split.a + split.b) : 1;
-										const pctA = Math.round(shareA * 100);
+										const share = pullOf(row.clauseId);
+										const pctA = share ? Math.round(share.a * 100) : 0;
+										const pctB = share ? Math.round(share.b * 100) : 0;
 										return (
 											<div
 												key={row.clauseId ?? 'unfiled'}
@@ -946,8 +979,8 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 													}`}
 													style={{ width: LABEL_WIDTH }}
 													title={
-														split
-															? `${row.heading} — ${laneName('a')} ${pctA}% · ${laneName('b')} ${100 - pctA}%`
+														share
+															? `${row.heading} — ${laneName('a')} ${pctA}% · both ${100 - pctA - pctB}% · ${laneName('b')} ${pctB}%  (weight ${share.total.toFixed(1)})`
 															: row.heading
 													}
 												>
@@ -955,37 +988,43 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 													{/* The quantity the ranking sorts by, made visible — so "first"
 													    also says "by how much", and a pair says whose pull it is,
 													    with the split spelled out as a percentage per side. */}
-													{clauseAttention && !unfiled && peakPull > 0 && (
+													{share && !unfiled && (
 														<span className="mt-0.5 flex items-center gap-1">
+															{/* The track is this clause, not the contract: the reading is
+															    "of everything this clause orders, x% falls on each side", so
+															    the three segments always fill it. How much the clause weighs
+															    against the others is already in the row order and in how many
+															    marks the row carries — encoding it again in the length made
+															    one mark answer two questions at once. */}
 															<span className="flex h-[3px] min-w-0 flex-1 overflow-hidden rounded-full bg-muted">
-																<span
-																	style={{
-																		width: `${(pull / peakPull) * shareA * 100}%`,
-																		backgroundColor: PARTY_COLOR,
-																	}}
-																/>
-																{split && (
+																{(
+																	[
+																		[share.a, PARTY_COLOR],
+																		[share.shared, '#94a3b8'],
+																		[share.b, PAIR_SECOND_COLOR],
+																	] as const
+																).map(([part, color], segment) => (
 																	<span
-																		style={{
-																			width: `${(pull / peakPull) * (1 - shareA) * 100}%`,
-																			backgroundColor: PAIR_SECOND_COLOR,
-																		}}
+																		key={segment}
+																		style={{ width: `${part * 100}%`, backgroundColor: color }}
 																	/>
-																)}
+																))}
 															</span>
 															{/* Fixed width whether or not a number lands in it, so every
 															    track spans the same room and stays comparable row to row. */}
-															{pair && (
-																<span className="w-8 shrink-0 text-right text-[9px] leading-none tabular-nums">
-																	{split && (
-																		<>
-																			<span style={{ color: PARTY_COLOR }}>{pctA}</span>
-																			<span className="opacity-50">/</span>
-																			<span style={{ color: PAIR_SECOND_COLOR }}>{100 - pctA}</span>
-																		</>
-																	)}
-																</span>
-															)}
+															<span className="w-8 shrink-0 text-right text-[9px] leading-none tabular-nums">
+																{pctA + pctB > 0 ? (
+																	<>
+																		<span style={{ color: PARTY_COLOR }}>{pctA}</span>
+																		<span className="opacity-50">/</span>
+																		<span style={{ color: PAIR_SECOND_COLOR }}>{pctB}</span>
+																	</>
+																) : (
+																	<span className="opacity-50" title="Entirely reciprocal">
+																		↔
+																	</span>
+																)}
+															</span>
 														</span>
 													)}
 												</button>
@@ -1184,7 +1223,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 												<span className="ml-auto shrink-0 tabular-nums opacity-60">{count}</span>
 											</label>
 											{/* Severity is the analyst's call, so the legend row that names the kind
-											    also holds the dial: attention = PageRank × this weight. */}
+											    also holds the dial: a clause weighs the sum of these. */}
 											{deontic && (
 												<div className="mt-0.5 flex items-center gap-1 pl-5">
 													<input
@@ -1198,8 +1237,8 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 														}
 														className="min-w-0 flex-1 cursor-pointer"
 														style={{ accentColor: color }}
-														aria-label={`Weight of ${KIND_LABEL[kind]} in the attention score`}
-														title={`How much one ${KIND_LABEL[kind].toLowerCase()} weighs: attention = PageRank × severity`}
+														aria-label={`Weight of ${KIND_LABEL[kind]} in the clause weight`}
+														title={`How much one ${KIND_LABEL[kind].toLowerCase()} counts toward its clause's weight`}
 													/>
 													<WeightField
 														value={severity[kind as DeonticKind]}
@@ -1213,6 +1252,21 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 								})}
 							</div>
 						</div>
+
+						<label
+							className="flex cursor-pointer items-start gap-1.5 border-t border-border/60 pt-2"
+							title="Off: a clause weighs the sum of its own statements, one severity each — countable from the marks in the row. On: it weighs a Personalized PageRank seeded on each party, the metric the ring used. On this contract the walk reaches a party through the shared clause node, so 79% of Miltenyi's weight in «Rights Granted» comes from Bellicum's prohibitions; and the «each Party» node sits in its own component, so every reciprocal clause drops to zero and loses its bar."
+						>
+							<Checkbox
+								checked={usePprPull}
+								onCheckedChange={(value) => setUsePprPull(value === true)}
+								className="mt-px size-3.5 shrink-0"
+								aria-label="Weigh clauses with Personalized PageRank instead of counting statements"
+							/>
+							<span className="min-w-0">
+								Weigh with PageRank
+							</span>
+						</label>
 					</aside>
 				)}
 			</div>

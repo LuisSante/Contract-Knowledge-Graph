@@ -40,6 +40,12 @@ export interface PartyAttention {
 	deonticScore: Map<string, number>;
 	/** Normalized 0..1 magnitude per clause. */
 	clauseScore: Map<string, number>;
+	/**
+	 * The same quantity before normalization. `clauseScore` divides by this party's own
+	 * heaviest clause, which makes two parties' scores incomparable; the raw sum is what
+	 * a side-by-side split has to be built on.
+	 */
+	clauseMagnitude: Map<string, number>;
 	/** Normalized 0..1 per node (statements + clauses; party = 1), for node sizing. */
 	nodeScore: Map<string, number>;
 	/** Whether each statement burdens or benefits the focused party. */
@@ -237,6 +243,7 @@ export function computePartyAttention(
 	return {
 		deonticScore,
 		clauseScore,
+		clauseMagnitude,
 		nodeScore,
 		toneByDeontic,
 		clauseBurden,

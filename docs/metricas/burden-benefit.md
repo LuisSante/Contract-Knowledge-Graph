@@ -1,4 +1,4 @@
-# KG Metrics — burden / benefit / attention
+# Carga y beneficio — métricas del grafo
 
 > **Status: no longer drives the view.** These formulas are still what
 > `attention.ts` computes, and `computePartyAttention` still runs — it ranks the
@@ -107,7 +107,6 @@ Displayed split: $\ \dfrac{\text{BurdenIntensity}}{\text{BurdenIntensity}+\text{
 - **Total > Intensity** (big gap) → count inflated it (B: many weak burdens).
 - **Intensity > Total** → few but heavy (C: Total looks calm, each burden still hits hard).
 
-See [`kg-metrics-example.md`](./kg-metrics-example.md) for both bars computed by hand.
 
 ---
 

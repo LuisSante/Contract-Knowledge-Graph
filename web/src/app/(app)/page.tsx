@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, FileText, Scale, Search } from 'lucide-react';
+import { ArrowRight, BookOpen, FileText, Scale, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -113,10 +113,17 @@ export default function Home() {
 				<span className="flex size-10 flex-none items-center justify-center rounded-xl bg-primary text-primary-foreground">
 					<Scale className="size-5" />
 				</span>
-				<div>
+				<div className="min-w-0 flex-1">
 					<h1 className="text-xl leading-tight font-medium">Clause Impact Explorer</h1>
 					<p className="text-sm text-muted-foreground">Clause impact per party in legal contracts</p>
 				</div>
+				<Link
+					href="/docs"
+					className="inline-flex flex-none items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+				>
+					<BookOpen className="size-4" />
+					Docs
+				</Link>
 			</header>
 
 			<div className="relative mb-4">

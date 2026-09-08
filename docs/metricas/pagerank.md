@@ -1,10 +1,10 @@
-# Party-Centric Deontic Impact via Personalized PageRank
+# PageRank personalizado — impacto deóntico por parte
 
 *Formalization draft — a starting point to refine, not final wording.*
 
 > **Status: kept as the write-up of a method the system moved away from.** The clause
 > weight is now a plain severity sum over each party's own statements; see the status
-> note in [`kg-metrics.md`](./kg-metrics.md) for what was measured and why. PPR still
+> note in [`burden-benefit.md`](./burden-benefit.md) for what was measured and why. PPR still
 > runs to rank the paragraphs the document highlights. Keep this file for the paper's
 > method section and for the negative result — do not read it as a description of what
 > the grid shows.
@@ -136,6 +136,6 @@ untouched (all view-time, reversible).
 
 ---
 
-*Related: `docs/kg-metrics.md` (formulas as implemented), `docs/kg-metrics-example.md`
-(worked example). Positioning vs GraphQAG (PPR + evidence-grounded verification) and the
+*Related: [`burden-benefit.md`](./burden-benefit.md) (formulas as implemented),
+[`../ontologia/esquema.md`](../ontologia/esquema.md) (what the graph is made of).*
 polygon/hypergraph line (why a dyadic, directed deontic graph doesn't fit that metaphor).*

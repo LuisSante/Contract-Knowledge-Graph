@@ -206,9 +206,9 @@ El experimento inicial usa el mismo resumen. Varias ejecuciones sobre él miden 
 ## Referencias de trabajo
 
 - [Descripción del proyecto](../README.md).
-- [Mediciones del corpus](./kg-corpus-measurements.md).
-- [Métricas y estado de los métodos anteriores](./kg-metrics.md).
-- [Formalización anterior basada en PPR](./kg-ppr-method.md). Consultarla como antecedente; su propia nota de estado distingue el método anterior de la vista actual.
+- [Mediciones del corpus](./medidas/corpus.md).
+- [Métricas y estado de los métodos anteriores](./metricas/burden-benefit.md).
+- [Formalización anterior basada en PPR](./metricas/pagerank.md). Consultarla como antecedente; su propia nota de estado distingue el método anterior de la vista actual.
 - [Cálculo actual de atención](../web/src/features/docx/utils/knowledge/attention.ts).
 - [Construcción de la cuadrícula](../web/src/features/docx/utils/knowledge/statement-grid.ts).
 - [Notebook de extracción de KG](../notebooks/KG/build_kg.ipynb).

@@ -1,4 +1,4 @@
-# Corpus measurements
+# Mediciones del corpus
 
 What the paper's results section is built on. Three tables, measured over every
 knowledge graph in `infra/json/kg/`.
@@ -138,6 +138,7 @@ the distribution asks for it.
 
 ## Related
 
-- [`kg-ppr-method.md`](kg-ppr-method.md) — the Personalized PageRank the clause weight
+- [`pagerank.md`](../metricas/pagerank.md) — the Personalized PageRank the clause weight
   used to be built on, before it was replaced by the plain severity sum.
 - `scripts/measure_kg_corpus.py` — the script that produces these tables.
+- [`esquema.md`](../ontologia/esquema.md) — what the graph these tables measure is made of.

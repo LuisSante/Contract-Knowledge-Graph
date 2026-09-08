@@ -133,6 +133,7 @@ rendered document.
 ## Documentation
 
 - **Setup & run:** [INSTALL.md](INSTALL.md)
-- Corpus measurements: [docs/kg-corpus-measurements.md](docs/kg-corpus-measurements.md)
+- Corpus measurements: [docs/medidas/corpus.md](docs/medidas/corpus.md)
+- Graph schema: [docs/ontologia/esquema.md](docs/ontologia/esquema.md)
 - Backend: [server/README.md](server/README.md)
 - Frontend: [web/README.md](web/README.md)

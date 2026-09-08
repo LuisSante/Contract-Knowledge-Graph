@@ -1,4 +1,9 @@
 @import 'tailwindcss';
+/* Sin esto, Tailwind v4 detecta las fuentes solo: sube hasta el `.git` — la raíz del
+   repositorio — y escanea todo lo que no esté en .gitignore, incluidos los 143 MB de
+   `infra/` (PDFs de CUAD, docx y los JSON del grafo). Acotarlo a `src/` es la
+   diferencia entre compilar el CSS en milisegundos y hacerlo en minutos. */
+@source '../';
 @import 'tw-animate-css';
 @import '@fontsource-variable/inter';
 

@@ -6,7 +6,7 @@ WEB_PORT = 3000
 .PHONY: install finstall run frun \
 	build fbuild \
 	sinstall srun \
-	preprocess help
+	preprocess docs help
 
 help:
 	@echo "Commands available:"
@@ -18,6 +18,7 @@ help:
 	@echo "  make sinstall     - Install legacy Svelte dependencies"
 	@echo "  make srun         - Run legacy Svelte app"
 	@echo "  make preprocess   - Preprocess data"
+	@echo "  make docs         - Regenerate the measurement tables in docs/"
 
 install:
 	@echo "Installing backend dependencies (uv sync)..."
@@ -44,3 +45,9 @@ fbuild:
 preprocess:
 	@echo "Preprocessing data..."
 	cd notebooks/KG && $(PYTHON) create_kg.py
+
+# Reads infra/json/kg/ and rewrites only what sits between the <!-- tabla:N --> markers.
+# The prose that interprets the numbers is never touched.
+docs:
+	@echo "Regenerating measurement tables..."
+	$(PYTHON) scripts/measure_kg_corpus.py --write

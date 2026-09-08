@@ -42,11 +42,13 @@ edge families redundant by construction:
 Everything else — `uses`, `defines`, `references`, `depends_on` — is *informative*: a
 link would have to draw it, because no position encodes it.
 
+<!-- tabla:1 -->
 | contract | edges | `is_part_of` | party | informative | % redundant |
 |---|---|---|---|---|---|
-| BELLICUM–MILTENYI (summary) | 158 | 92 | 63 | **3** | 98.1% |
-| BELLICUM (full) | 1083 | 556 | 284 | **243** | **77.6%** |
-| SteelVault Affiliate | 154 | 72 | 82 | **0** | 100.0% |
+| root_BELLICUM_MILTENYI_Supply_Agreemen | 158 | 92 | 63 | **3** | 98.1% |
+| target_BELLICUMPHARMACEUTICALS_INC_05_ | 1083 | 556 | 284 | **243** | 77.6% |
+| target_SteelVaultCorp_20081224_10-K_EX | 154 | 72 | 82 | **0** | 100.0% |
+<!-- /tabla:1 -->
 
 **What it already says.** The redundancy is large in all three — between 78% and 100%
 of edges repeat the position. That is the argument for the grid, and it survives.
@@ -69,11 +71,13 @@ survives that test.
 **What it measures.** How big the thing being drawn actually is: how many clause bands,
 how many are empty, and how many marks land in the fullest one.
 
+<!-- tabla:2 -->
 | contract | clauses | empty | statements | max/clause |
 |---|---|---|---|---|
-| BELLICUM–MILTENYI (summary) | 14 | 3 | 74 | 11 |
-| BELLICUM (full) | **142** | 34 | 372 | **15** |
-| SteelVault Affiliate | 26 | 1 | 76 | 16 |
+| root_BELLICUM_MILTENYI_Supply_Agreemen | 14 | 3 | 74 | 11 |
+| target_BELLICUMPHARMACEUTICALS_INC_05_ | 142 | 34 | 372 | 15 |
+| target_SteelVaultCorp_20081224_10-K_EX | 26 | 1 | 76 | 16 |
+<!-- /tabla:2 -->
 
 **What it already says.** Two view decisions that were taken by eye are justified by
 the numbers:
@@ -101,11 +105,13 @@ on the other. The grid currently reads one of the two and discards the other.
 *Gaps* — statements the extraction could not place: no clause, no party named, or
 attached to an "each Party" node that sits in its own disconnected component.
 
+<!-- tabla:3 -->
 | contract | both parties | % | no clause | no party | island | island stmts |
 |---|---|---|---|---|---|---|
-| BELLICUM–MILTENYI (summary) | 40 | 54% | 12 | 6 | 1 | 6 |
-| BELLICUM (full) | 200 | 54% | 50 | 54 | 0 | 0 |
-| SteelVault Affiliate | 33 | 43% | 4 | 16 | 0 | 0 |
+| root_BELLICUM_MILTENYI_Supply_Agreemen | 40 | 54% | 12 | 6 | 1 | 6 |
+| target_BELLICUMPHARMACEUTICALS_INC_05_ | 200 | 54% | 50 | 54 | 0 | 0 |
+| target_SteelVaultCorp_20081224_10-K_EX | 33 | 43% | 4 | 16 | 0 | 0 |
+<!-- /tabla:3 -->
 
 **What it already says.**
 

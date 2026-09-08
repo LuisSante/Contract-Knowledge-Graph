@@ -99,9 +99,42 @@ def table(title: str, headers: list[str], widths: list[int], rows: list[list[str
         print("".join(c.ljust(w) if i == 0 else c.rjust(w) for i, (c, w) in enumerate(zip(row, widths))))
 
 
+def gfm(headers: list[str], rows: list[list[str]]) -> str:
+    """A Markdown table, for injecting back into the documentation."""
+    lines = ["| " + " | ".join(headers) + " |", "|" + "---|" * len(headers)]
+    lines += ["| " + " | ".join(row) + " |" for row in rows]
+    return "\n".join(lines)
+
+
+def inject(doc: Path, tables: dict[str, str]) -> None:
+    """
+    Replace what sits between `<!-- tabla:N -->` and `<!-- /tabla:N -->`, leaving the
+    prose around it alone. The numbers in the documentation are generated; the
+    sentences that interpret them are not.
+    """
+    text = doc.read_text(encoding="utf-8")
+    for key, table in tables.items():
+        start, end = f"<!-- tabla:{key} -->", f"<!-- /tabla:{key} -->"
+        if start not in text or end not in text:
+            print(f"  aviso: {doc.name} no tiene los marcadores de la tabla {key}")
+            continue
+        head, rest = text.split(start, 1)
+        _, tail = rest.split(end, 1)
+        text = f"{head}{start}\n{table}\n{end}{tail}"
+    doc.write_text(text, encoding="utf-8")
+    print(f"  tablas escritas en {doc}")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--kg-dir", type=Path, default=ROOT / "infra/json/kg")
+    parser.add_argument(
+        "--write",
+        type=Path,
+        nargs="?",
+        const=ROOT / "docs/medidas/corpus.md",
+        help="inyecta las tablas en el documento, entre sus marcadores",
+    )
     args = parser.parse_args()
 
     results = [measure(p) for p in sorted(args.kg_dir.glob("*.json"))]
@@ -110,6 +143,29 @@ def main() -> int:
         return 1
 
     name = lambda r: r["doc"][:38]
+
+    columns = {
+        "1": (
+            ["contract", "edges", "`is_part_of`", "party", "informative", "% redundant"],
+            [[name(r), str(r["edges"]), str(r["positional"]), str(r["party"]),
+              f"**{r['informative']}**", f"{r['redundant_pct']:.1f}%"] for r in results],
+        ),
+        "2": (
+            ["contract", "clauses", "empty", "statements", "max/clause"],
+            [[name(r), str(r["clauses"]), str(r["empty_clauses"]),
+              str(r["statements"]), str(r["max_per_clause"])] for r in results],
+        ),
+        "3": (
+            ["contract", "both parties", "%", "no clause", "no party", "island", "island stmts"],
+            [[name(r), str(r["both"]), f"{r['both_pct']:.0f}%", str(r["unfiled"]),
+              str(r["unattributed"]), str(r["island_parties"]), str(r["island_statements"])]
+             for r in results],
+        ),
+    }
+
+    if args.write:
+        inject(args.write, {key: gfm(headers, rows) for key, (headers, rows) in columns.items()})
+
     table(
         "TABLE 1 — Edge budget",
         ["contract", "edges", "is_part_of", "party", "informative", "% redundant"],

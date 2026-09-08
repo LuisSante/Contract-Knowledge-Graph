@@ -1,12 +1,11 @@
 'use client';
 
 import type { MouseEvent } from 'react';
-import type { RelatedBridge } from '@/features/docx/utils/related/related-bridge';
+import type { EvidenceBridge } from '@/features/docx/utils/evidence/evidence-bridge';
 
 interface RelatedBridgeOverlayProps {
-	bridge: RelatedBridge;
+	bridge: EvidenceBridge;
 	onJumpToParagraph: (paragraphId: string) => void;
-	/** Dragging the rail scrolls the document (scrub). */
 	onRailMouseDown?: (event: MouseEvent) => void;
 	/**
 	 * Knowledge Graph deontic rail: when provided, scroll markers are colored by
@@ -16,13 +15,7 @@ interface RelatedBridgeOverlayProps {
 	scoreByParagraphId?: Record<string, number>;
 }
 
-/**
- * Visual layer of the related-paragraphs bridge: the line/connector to the
- * selected paragraph, the reference/similarity caps and labels, the folds, the
- * collapsed cards (when zoomed in with Shift+Scroll), and the scroll marker
- * rail. Port of the template block from the Svelte `RightPanelAnalysis`/page.
- */
-export function RelatedBridgeOverlay({
+export function EvidenceBridgeOverlay({
 	bridge,
 	onJumpToParagraph,
 	onRailMouseDown,
@@ -78,7 +71,7 @@ export function RelatedBridgeOverlay({
 							}}
 							role="button"
 							tabIndex={0}
-							aria-label={`Go to related paragraph (${connector.relationLabel})`}
+							aria-label={`Go to evidence paragraph ${connector.paragraphId}`}
 							onClick={() => onJumpToParagraph(connector.paragraphId)}
 							onKeyDown={(event) => {
 								if (event.key === 'Enter' || event.key === ' ') {
@@ -88,22 +81,6 @@ export function RelatedBridgeOverlay({
 							}}
 						/>
 					))}
-
-					{connectors.map((connector, index) =>
-						connector.relationLabel ? (
-							<span
-								key={`connector-label-${connector.paragraphId}-${index}`}
-								className={`docx-paragraph-explanation-cap-label ${
-									connector.relationKind === 'similarity'
-										? 'docx-paragraph-explanation-cap-label--similarity'
-										: 'docx-paragraph-explanation-cap-label--reference'
-								}`}
-								style={{ left: connector.labelLeftPx, top: connector.relatedCapTopPx }}
-							>
-								{connector.relationLabel}
-							</span>
-						) : null
-					)}
 
 					{folds.map((fold, index) => (
 						<svg
@@ -155,12 +132,12 @@ export function RelatedBridgeOverlay({
 						}
 						return (
 							<span
-								key={`related-marker-${marker.paragraphId}`}
-								className={`docx-related-scroll-marker docx-related-scroll-marker--${marker.kind}`}
+								key={`evidence-marker-${marker.paragraphId}`}
+								className="docx-evidence-scroll-marker"
 								style={{ top: `${marker.topPercent}%` }}
 								role="button"
 								tabIndex={0}
-								aria-label={`Go to ${marker.kind} paragraph ${marker.paragraphId}`}
+								aria-label={`Go to evidence paragraph ${marker.paragraphId}`}
 								onClick={() => onJumpToParagraph(marker.paragraphId)}
 								onKeyDown={(event) => {
 									if (event.key === 'Enter' || event.key === ' ') {

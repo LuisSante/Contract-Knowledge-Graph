@@ -9,11 +9,11 @@ import {
 /** Scrub multiplier when dragging the rail (1px of mouse → N px of scroll). */
 const MANUAL_SCROLL_DRAG_SPEED = 100;
 import type { DocumentViewerStatus } from '@/features/docx/hooks/useDocumentViewer';
-import { useRelatedBridge } from '@/features/docx/hooks/useRelatedBridge';
-import { RelatedBridgeOverlay } from '@/features/docx/components/related/RelatedBridgeOverlay';
+import { useEvidenceBridge } from '@/features/docx/hooks/useEvidenceBridge';
+import { EvidenceBridgeOverlay } from '@/features/docx/components/evidence/EvidenceBridgeOverlay';
 import type {
 	Node as ParagraphNode,
-	RelatedParagraph,
+	EvidenceParagraph,
 } from '@/types/document';
 
 interface DocumentViewerProps {
@@ -24,9 +24,9 @@ interface DocumentViewerProps {
 	renderEpoch: number;
 	paragraphElementById: Map<string, HTMLElement>;
 	/** Related-paragraphs bridge (connector + Shift+Scroll + labels). */
-	relatedBridgeActive: boolean;
+	evidenceBridgeActive: boolean;
 	selectedParagraph: ParagraphNode | null;
-	relatedBridgeParagraphs: RelatedParagraph[];
+	evidenceParagraphs: EvidenceParagraph[];
 	/** Knowledge Graph deontic rail: color by burden/benefit, opacity by attention. */
 	deonticToneByParagraphId?: Record<string, 'burden' | 'benefit'>;
 	deonticScoreByParagraphId?: Record<string, number>;
@@ -43,22 +43,22 @@ export function DocumentViewer({
 	dimmed,
 	renderEpoch,
 	paragraphElementById,
-	relatedBridgeActive,
+	evidenceBridgeActive,
 	selectedParagraph,
-	relatedBridgeParagraphs,
+	evidenceParagraphs,
 	deonticToneByParagraphId,
 	deonticScoreByParagraphId,
 }: DocumentViewerProps) {
 	const scrollHostRef = useRef<HTMLElement>(null);
 
 
-	const relatedBridge = useRelatedBridge({
-		active: relatedBridgeActive,
+	const evidenceBridge = useEvidenceBridge({
+		active: evidenceBridgeActive,
 		renderEpoch,
 		scrollHostRef,
 		paragraphElementById,
 		selectedParagraph,
-		related: relatedBridgeParagraphs,
+		evidence: evidenceParagraphs,
 	});
 
 	// After dragging the rail, the click-jump is suppressed for a moment so the
@@ -126,9 +126,9 @@ export function DocumentViewer({
 				<div ref={containerRef} className="docx-viewer-root min-h-full w-full" />
 			</section>
 
-			{relatedBridgeActive && (
-				<RelatedBridgeOverlay
-						bridge={relatedBridge}
+			{evidenceBridgeActive && (
+				<EvidenceBridgeOverlay
+						bridge={evidenceBridge}
 						onJumpToParagraph={jumpToParagraph}
 						onRailMouseDown={startRailScrub}
 						toneByParagraphId={deonticToneByParagraphId}

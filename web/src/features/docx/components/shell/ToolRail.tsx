@@ -7,13 +7,11 @@ import type { RightPanelTab } from '@/types/document';
 import {
 	ChatIcon,
 	KnowledgeGraphIcon,
-	RelatedParagraphsIcon,
 } from '@/components/common/icons';
 
 const TOOL_BRAND_SHORT_NAME = 'ContraVis';
 
 const TOOL_ICONS: Record<RightPanelTab, React.ComponentType<{ className?: string }>> = {
-	related: RelatedParagraphsIcon,
 	knowledge_graph: KnowledgeGraphIcon,
 	assistant: ChatIcon,
 };

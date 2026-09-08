@@ -1,1 +1,1 @@
-export type RightPanelTab = 'related' | 'knowledge_graph' | 'assistant';
+export type RightPanelTab = 'knowledge_graph' | 'assistant';

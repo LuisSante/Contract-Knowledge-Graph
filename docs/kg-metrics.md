@@ -1,8 +1,25 @@
 # KG Metrics — burden / benefit / attention
 
-Living reference for the party-centric metrics computed in
-`web/src/features/docx/utils/knowledge/attention.ts`. Update this file whenever a
-formula changes.
+> **Status: no longer drives the view.** These formulas are still what
+> `attention.ts` computes, and `computePartyAttention` still runs — it ranks the
+> paragraphs the document highlights, and backs the "Weigh with PageRank" comparison
+> checkbox. But the number the grid shows is no longer this one: a clause now weighs
+> the plain sum of its own statements' severities (see `statement-grid.ts` and the
+> `clausePull` memo in `KnowledgeGraphPanel.tsx`).
+>
+> Why it was replaced, measured on the reference contract: the walk reaches a party
+> through the shared clause node, so 79% of Miltenyi's weight in *Rights Granted and
+> Restrictions on Bellicum* came from Bellicum's own prohibitions; each party was
+> normalized against its own peak clause, so the two halves of a split had different
+> denominators; and the "each Party" node sits in a disconnected component, so every
+> reciprocal clause scored exactly zero. Against a plain severity sum the ranking
+> agreed at ρ = 0.882 — most of what the PageRank added was the first artifact.
+>
+> **The burden/benefit ledger this file documents is parked**, not shipped: the code
+> is commented out in `KnowledgeGraphPanel.tsx` under `PARKED` markers.
+
+Reference for the party-centric metrics computed in
+`web/src/features/docx/utils/knowledge/attention.ts`.
 
 **Objective:** for a focused party, identify which clauses burden vs benefit it,
 and how heavily — using the contract's structure (Personalized PageRank).

@@ -12,16 +12,13 @@ interface UseDocumentEntityHighlightsParams {
 	active: boolean;
 	renderEpoch: number;
 	paragraphElementById: Map<string, HTMLElement>;
-	/** Paragraphs where the entities are highlighted (selected + related). */
+	/** Paragraphs where the entities are highlighted. */
 	targetIds: string[];
 	entities: DocumentEntityHighlight[];
 }
 
 /**
- * Highlights the active entities (from Paragraph Explanation or the contradiction
- * why/risk) inside the document body, not just in the chat. Re-applies on
- * selection/entities/render change and syncs the hover between document and chat.
- * Port of `applyParagraphExplanationHighlights` (the entities part) from the Svelte.
+ * Highlights the active knowledge-graph entities inside the target paragraphs.
  */
 export function useDocumentEntityHighlights({
 	active,

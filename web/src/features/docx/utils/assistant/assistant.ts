@@ -1,20 +1,11 @@
 import type {
 	AssistantChatMessage,
 	AssistantContextNode,
-	AssistantContextRelation,
 	AssistantHistoryMessage,
-	AssistantMode,
-	AssistantScope,
 	Node as ParagraphNode,
 	ParagraphEditState,
-	RelatedParagraph,
 } from '@/types/document';
 import { getNodeCurrentText } from '@/features/docx/utils/edit/edit';
-
-type ResolveSuggestedQuestionsOptions = {
-	mode?: AssistantMode;
-	scope?: AssistantScope;
-};
 
 export function buildAssistantNodeSnapshot(
 	paragraphNodes: ParagraphNode[],
@@ -25,17 +16,6 @@ export function buildAssistantNodeSnapshot(
 		text: getNodeCurrentText(nodeEditStateById, node),
 		paragraph_enum: node.paragraph_enum,
 		page: node.page
-	}));
-}
-
-export function buildAssistantRelatedContext(
-	selectedRelatedParagraphs: RelatedParagraph[]
-): AssistantContextRelation[] {
-	return selectedRelatedParagraphs.map((related) => ({
-		id: related.node.id,
-		relationTypes: related.relationTypes,
-		semanticScore: related.semanticScore,
-		references: related.references.map((reference) => `${reference.label} ${reference.value}`)
 	}));
 }
 
@@ -57,27 +37,14 @@ function sanitizeSuggestedQuestions(value: unknown): string[] {
 	return Array.from(new Set(cleaned)).slice(0, 4);
 }
 
-function getFallbackSuggestedQuestions(options?: ResolveSuggestedQuestionsOptions): string[] {
-	if (options?.scope === 'full_contract') {
-		return [
-			'What are the most important risks in this contract?',
-			'Which clauses should we renegotiate first?',
-			'Where do obligations conflict across sections?'
-		];
-	}
-	return [
-		'Can you simplify this paragraph in plain English?',
-		'What happens if this clause is breached?',
-		'Which related clause should I read next?'
-	];
-}
+/** Shown when the model returns none; the chat is always about the focused party. */
+const FALLBACK_QUESTIONS = [
+	'Which clauses put the most weight on this party?',
+	'What does this party get in return?',
+	'Which obligations are conditional?',
+];
 
-export function resolveAssistantSuggestedQuestions(
-	value: unknown,
-	options?: ResolveSuggestedQuestionsOptions
-): string[] | undefined {
+export function resolveAssistantSuggestedQuestions(value: unknown): string[] {
 	const normalized = sanitizeSuggestedQuestions(value);
-	if (normalized.length > 0) return normalized;
-	const fallback = getFallbackSuggestedQuestions(options);
-	return fallback.length > 0 ? fallback : undefined;
+	return normalized.length > 0 ? normalized : FALLBACK_QUESTIONS;
 }

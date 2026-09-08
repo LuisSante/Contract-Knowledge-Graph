@@ -1,6 +1,6 @@
 import type { DeonticKind, KgDeonticNode, KnowledgeGraph } from '@/types/knowledge';
 import { deonticNodes } from '@/types/knowledge';
-import type { Node as ParagraphNode, RelatedParagraph } from '@/types/document';
+import type { Node as ParagraphNode, EvidenceParagraph } from '@/types/document';
 import type { DocumentEntityHighlight } from '@/features/docx/utils/assistant/entity-marks';
 import type { KnowledgeGraphBridgePayload } from '@/stores/knowledgeGraph';
 import type { PairAttention } from '@/features/docx/utils/knowledge/pair';
@@ -116,7 +116,7 @@ function paragraphEnum(pid: string, nodesById: Map<string, ParagraphNode>): numb
  * would hand one arbitrary statement a span six of them claim. Only the fragments that
  * tell them apart are kept; if every fragment is shared, the longest stands in.
  */
-export function evidenceLabels(
+function evidenceLabels(
 	statement: KgDeonticNode,
 	spanOwners: Map<string, number>
 ): string[] {
@@ -127,7 +127,7 @@ export function evidenceLabels(
 }
 
 /** How many statements claim each fragment, so a shared preamble can be told apart. */
-export function countSpanOwners(kg: KnowledgeGraph): Map<string, number> {
+function countSpanOwners(kg: KnowledgeGraph): Map<string, number> {
 	const counts = new Map<string, number>();
 	for (const statement of deonticNodes(kg)) {
 		for (const span of new Set(statement.evidenceSpans ?? [])) {
@@ -313,7 +313,7 @@ export function buildKnowledgeGraphBridge(
 	const termById = new Map(kg.definedTerms.map((t) => [t.id, t]));
 
 	const enumOf = (pid: string) => paragraphEnum(pid, nodesById);
-	const toRelated = (ids: string[], anchorId: string | null): RelatedParagraph[] =>
+	const toRelated = (ids: string[], anchorId: string | null): EvidenceParagraph[] =>
 		ids
 			.filter((pid) => pid !== anchorId)
 			.map((pid) => ({ node: nodesById.get(pid) as ParagraphNode, relationTypes: [], references: [] }))

@@ -18,8 +18,6 @@ function getEditableRootElement(element: HTMLElement): HTMLElement {
 }
 
 export function clearRelationBadgeHost(host: HTMLElement): void {
-	host.classList.remove('docx-relations-badge-host');
-	delete host.dataset.relationsCount;
 	delete host.dataset.relationsTone;
 }
 

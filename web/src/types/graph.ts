@@ -15,7 +15,6 @@ export interface Node {
 	text: string;
 	paragraph_enum: number;
 	page: number;
-	relationsCount: number;
 }
 
 export interface Edge {
@@ -25,17 +24,6 @@ export interface Edge {
 	score?: number;
 	ref_label?: string;
 	ref_value?: string;
-}
-
-export interface Graph {
-	nodes: Node[];
-	edges: Edge[];
-}
-
-export interface ProcessDocumentResponse {
-	status: 'success' | 'error';
-	documentId: string;
-	graph: Graph;
 }
 
 export type XmlNode = {

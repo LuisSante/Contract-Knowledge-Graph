@@ -49,7 +49,6 @@ export function useDocumentViewer(
 	const nodeEditStateById = useRef(new Map<string, ParagraphEditState>());
 	const paragraphElementById = useRef(new Map<string, HTMLElement>());
 	const paragraphRelationHostById = useRef(new Map<string, HTMLElement>());
-	const relationsCountByNodeId = useRef(new Map<string, number>());
 	const nodesById = useRef(new Map<string, ParagraphNode>());
 	const selectedNodeId = useRef<string | null>(null);
 
@@ -70,7 +69,6 @@ export function useDocumentViewer(
 			nodeEditStateById: nodeEditStateById.current,
 			paragraphElementById: paragraphElementById.current,
 			paragraphRelationHostById: paragraphRelationHostById.current,
-			relationsCountByNodeId: relationsCountByNodeId.current,
 			nodes: nodesById.current,
 		};
 
@@ -78,7 +76,6 @@ export function useDocumentViewer(
 			maps.nodeEditStateById.clear();
 			maps.paragraphElementById.clear();
 			maps.paragraphRelationHostById.clear();
-			maps.relationsCountByNodeId.clear();
 			maps.nodes.clear();
 			selectedNodeId.current = null;
 		};
@@ -106,7 +103,6 @@ export function useDocumentViewer(
 			maps.nodeEditStateById.delete(nodeId);
 			maps.paragraphElementById.delete(nodeId);
 			maps.paragraphRelationHostById.delete(nodeId);
-			maps.relationsCountByNodeId.delete(nodeId);
 
 			const removed = maps.nodes.delete(nodeId);
 			if (selectedNodeId.current === nodeId) {
@@ -245,7 +241,6 @@ export function useDocumentViewer(
 						nodeEditStateById: maps.nodeEditStateById,
 						paragraphElementById: maps.paragraphElementById,
 						paragraphRelationHostById: maps.paragraphRelationHostById,
-						relationsCountByNodeId: maps.relationsCountByNodeId,
 						getSelectedNodeId: () => selectedNodeId.current,
 					},
 					{ renderExternalPart }
@@ -308,7 +303,6 @@ export function useDocumentViewer(
 			nodeEditStateById,
 			paragraphElementById,
 			paragraphRelationHostById,
-			relationsCountByNodeId,
 			nodesById,
 			selectedNodeId,
 		},

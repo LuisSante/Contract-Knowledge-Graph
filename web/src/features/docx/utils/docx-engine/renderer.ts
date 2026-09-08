@@ -5,7 +5,6 @@ import type {
 	XmlNode
 } from './types';
 import { ensureNodeEditState } from './edit-state';
-import { getRelationsCount, updateRelationBadge } from './docx-page';
 import { appendChildren, normalizeEditableText, setStyles, toNodeList } from './dom';
 import { getAttr, findChild, localName, toTwipsPx, toNumber } from './xml';
 import {
@@ -29,7 +28,6 @@ export type DocxRendererDeps = {
 	nodeEditStateById: Map<string, ParagraphEditState>;
 	paragraphElementById: Map<string, HTMLElement>;
 	paragraphRelationHostById: Map<string, HTMLElement>;
-	relationsCountByNodeId: Map<string, number>;
 	getSelectedNodeId: () => string | null;
 };
 
@@ -48,7 +46,6 @@ export function createRenderer(
 		nodeEditStateById,
 		paragraphElementById,
 		paragraphRelationHostById,
-		relationsCountByNodeId,
 		getSelectedNodeId
 	} = deps;
 
@@ -612,8 +609,6 @@ export function createRenderer(
 	};
 
 	const clearRelationBadge = (host: HTMLElement) => {
-		host.classList.remove('docx-relations-badge-host');
-		delete host.dataset.relationsCount;
 		delete host.dataset.relationsTone;
 	};
 
@@ -652,7 +647,6 @@ export function createRenderer(
 			text: '',
 			paragraph_enum: paragraphEnum,
 			page: 1,
-			relationsCount: 0
 		};
 
 		visualElement.dataset.nodeId = nodeId;
@@ -682,11 +676,9 @@ export function createRenderer(
 				return null;
 			}
 
-			updateRelationBadge(paragraphRelationHostById, relationsCountByNodeId, nodeId, relationHost);
 			const node = {
 				...baseNode,
 				text,
-				relationsCount: getRelationsCount(relationsCountByNodeId, nodeId)
 			};
 			onNodeUpsert(node);
 			hasNodeInStore = true;

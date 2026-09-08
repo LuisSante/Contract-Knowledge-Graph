@@ -1,13 +1,6 @@
-from typing import Literal
-
 from pydantic import BaseModel, Field
 
-from schemas.common import (
-    AssistantMessageRole,
-    AssistantMode,
-    AssistantProvider,
-    AssistantScope,
-)
+from schemas.common import AssistantMessageRole, AssistantProvider
 
 
 class AssistantParagraphNode(BaseModel):
@@ -15,13 +8,6 @@ class AssistantParagraphNode(BaseModel):
     text: str
     paragraph_enum: int
     page: int
-
-
-class AssistantRelatedParagraph(BaseModel):
-    id: str
-    relationTypes: list[Literal["reference", "semantic_similarity"]] = Field(default_factory=list)
-    semanticScore: float | None = None
-    references: list[str] = Field(default_factory=list)
 
 
 class AssistantHistoryMessage(BaseModel):
@@ -54,12 +40,9 @@ class KgChatLedger(BaseModel):
 class AssistantChatRequest(BaseModel):
     documentId: str
     question: str
-    mode: AssistantMode = "explain"
-    scope: AssistantScope = "selected"
     provider: AssistantProvider = "openai"
     model: str | None = None
     selectedParagraphId: str | None = None
-    relatedParagraphs: list[AssistantRelatedParagraph] = Field(default_factory=list)
     paragraphNodes: list[AssistantParagraphNode]
     history: list[AssistantHistoryMessage] = Field(default_factory=list)
     focusNodeId: str | None = None
@@ -80,6 +63,4 @@ class AssistantChatResponse(BaseModel):
     answer: str
     citations: list[AssistantCitation]
     suggestedQuestions: list[str]
-    mode: AssistantMode
-    scope: AssistantScope
     provider: AssistantProvider

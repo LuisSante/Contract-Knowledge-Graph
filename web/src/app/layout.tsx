@@ -5,8 +5,8 @@ import { LoadingOverlay } from '@/components/common/LoadingOverlay';
 import '@/styles/globals.css';
 
 export const metadata: Metadata = {
-	title: 'Contradiction Explorer',
-	description: 'ContraVis — explorador de contradicciones en contratos legales.',
+	title: 'Clause Explorer',
+	description: 'Which clauses weigh on which party, and the words that prove it.',
 	icons: { icon: '/legal.svg' },
 };
 

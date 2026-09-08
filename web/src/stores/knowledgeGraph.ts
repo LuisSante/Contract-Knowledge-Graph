@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { RelatedParagraph } from '@/types/document';
+import type { EvidenceParagraph } from '@/types/document';
 import type { DeonticKind, KgNodeKind } from '@/types/knowledge';
 import type { DocumentEntityHighlight } from '@/features/docx/utils/assistant/entity-marks';
 import type {
@@ -29,10 +29,10 @@ export interface KnowledgeGraphBridgePayload {
 	/** First paragraph where the top match appears — we scroll here. */
 	anchorParagraphId: string | null;
 	/** Paragraphs of the focus set, brought closer to the anchor. */
-	relatedParagraphs: RelatedParagraph[];
+	relatedParagraphs: EvidenceParagraph[];
 	/** Entity fragments (party names, statement spans, clause refs) to underline. */
 	entities: DocumentEntityHighlight[];
-	/** Every paragraph touched by the focus (anchor + related), for entity marks. */
+	/** Every paragraph the focus touches, for entity marks. */
 	paragraphIds: string[];
 	/** KG node ids in focus (party + top statements + clauses, or the neighborhood). */
 	focusNodeIds: string[];

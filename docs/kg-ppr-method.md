@@ -2,6 +2,13 @@
 
 *Formalization draft — a starting point to refine, not final wording.*
 
+> **Status: kept as the write-up of a method the system moved away from.** The clause
+> weight is now a plain severity sum over each party's own statements; see the status
+> note in [`kg-metrics.md`](./kg-metrics.md) for what was measured and why. PPR still
+> runs to rank the paragraphs the document highlights. Keep this file for the paper's
+> method section and for the negative result — do not read it as a description of what
+> the grid shows.
+
 ## 1. The deontic knowledge graph
 
 We model a contract as a typed, directed graph **G = (V, E)** extracted per document.

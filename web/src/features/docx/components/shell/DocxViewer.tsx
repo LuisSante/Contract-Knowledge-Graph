@@ -12,10 +12,8 @@ import { useRightDrawer } from '@/features/docx/hooks/useRightDrawer';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useLlmEstimate } from '@/features/docx/hooks/useLlmEstimate';
 import { useDocumentEntityHighlights } from '@/features/docx/hooks/useDocumentEntityHighlights';
-import { useRelatedBadges } from '@/features/docx/hooks/useRelatedBadges';
 import { useDocumentViewer } from '@/features/docx/hooks/useDocumentViewer';
 import { useAssistantChat } from '@/features/docx/hooks/useAssistantChat';
-import { useRelatedGraph } from '@/features/docx/hooks/useRelatedGraph';
 import { useLlmTotalCost } from '@/features/docx/hooks/useLlmTotalCost';
 import { useDocumentStore } from '@/stores/document';
 import { useKnowledgeGraphStore } from '@/stores/knowledgeGraph';
@@ -58,17 +56,14 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	const viewer = useDocumentViewer(id, { onParagraphCommitRef });
 	const { paragraphElementById, nodeEditStateById } = viewer.maps;
 
-	const selectedParagraph = useDocumentStore((s) => s.selectedParagraph);
 	const setSelectedParagraph = useDocumentStore((s) => s.setSelectedParagraph);
 
 	const [model, setModel] = useState('gpt-4.1');
 	const { data: llmCost } = useLlmTotalCost();
 	const costLabel = llmCost ? `Cost: ${llmCost.totalCostUsdFormatted} $` : null;
 
-	const related = useRelatedGraph({ docId, maps: viewer.maps });
 
 
-	const relatedActive = drawer.isOpen && drawer.activeTab === 'related';
 	const knowledgeGraphActive = drawer.isOpen && drawer.activeTab === 'knowledge_graph';
 
 	// Knowledge Graph bridge payload (anchor + related paragraphs + entity spans),
@@ -90,42 +85,22 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	const assistant = useAssistantChat({
 		docId,
 		nodeEditStateById: nodeEditStateById.current,
-		getViewerElement: () => viewer.containerRef.current,
-		paragraphElementById: paragraphElementById.current,
-		selectedRelatedParagraphs: related.selectedRelatedParagraphs,
 		model,
 		confirmLlmEstimate: llmEstimate.confirm,
 	});
 
-	// Related bridge. The list
-	// differs by tab (all vs the tail after the top-5 the panel already shows).
-	const relatedBridgeActive = relatedActive;
-	const relatedBridgeParagraphs = useMemo(
-		() =>
-			relatedActive ? related.selectedRelatedParagraphs : [],
-		[relatedActive, related.selectedRelatedParagraphs]
-	);
-
-	// The bridge (bring-closer + scroll-rail) serves either Related
-	// tabs or the Knowledge Graph focus — whichever is active. Same overlay, same
-	// Shift+Scroll gesture; only the anchor + list differ.
-	const bridgeActive = relatedBridgeActive || knowledgeGraphActive;
-	const bridgeSelectedParagraph = knowledgeGraphActive ? kgAnchorParagraph : selectedParagraph;
-	const bridgeParagraphs = knowledgeGraphActive ? kgRelatedParagraphs : relatedBridgeParagraphs;
+	// The bring-closer overlay and the scroll rail now serve one master: the
+	// Knowledge Graph focus.
+	const bridgeActive = knowledgeGraphActive;
+	const bridgeSelectedParagraph = knowledgeGraphActive ? kgAnchorParagraph : null;
+	const bridgeParagraphs = knowledgeGraphActive ? kgRelatedParagraphs : [];
 
 	// Entity highlighting in the document body, from the knowledge graph. Applied to the selected
 	// paragraph and its related ones.
 	const documentEntities = kgEntities;
 	const entityTargetIds = useMemo(
-		() =>
-			knowledgeGraphActive
-				? kgParagraphIds
-				: selectedParagraph
-					? Array.from(
-							new Set([selectedParagraph.id, ...relatedBridgeParagraphs.map((item) => item.node.id)])
-						)
-					: [],
-		[knowledgeGraphActive, kgParagraphIds, selectedParagraph, relatedBridgeParagraphs]
+		() => (knowledgeGraphActive ? kgParagraphIds : []),
+		[knowledgeGraphActive, kgParagraphIds]
 	);
 	useDocumentEntityHighlights({
 		active:
@@ -148,22 +123,6 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 		flashElement(element);
 	}, [knowledgeGraphActive, kgAnchorParagraphId, viewer.renderEpoch, paragraphElementById]);
 
-	// Relation badges: emphasis + direction (reference/similarity) when selecting
-	// in the Related tab.
-	const relatedFocusOn = relatedActive && selectedParagraph != null;
-	useRelatedBadges({
-		active: relatedFocusOn,
-		paragraphRelationHostById: viewer.maps.paragraphRelationHostById.current,
-		selectedParagraphId: selectedParagraph?.id ?? null,
-		related: related.selectedRelatedParagraphs,
-	});
-
-
-	// ContraVis paragraph graph disabled for now: the KG has its own bridge and we
-	// don't want the /process embedding compute on load. Re-enable by uncommenting
-	// this effect and restoring graphBlocking below.
-	const { recompute: recomputeRelated } = related;
-
 	// The paragraph dump is independent of the graph, so it still runs on load via
 	// /extract_paragraphs (no embeddings). Gated server-side by EXTRACT_PARAGRAPHS.
 	const extractedDocIdRef = useRef<string | null>(null);
@@ -180,25 +139,6 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 			console.error('Failed to extract paragraphs:', error);
 		});
 	}, [docId, viewer.renderEpoch, nodeEditStateById]);
-	// useEffect(() => {
-	// 	if (id && viewer.renderEpoch > 0 && !relatedComputed && !relatedLoading) {
-	// 		void recomputeRelated();
-	// 	}
-	// }, [id, viewer.renderEpoch, relatedComputed, relatedLoading, recomputeRelated]);
-
-	// Confirming a paragraph edit (Ctrl/Cmd+Enter) recomputes the graph.
-	useEffect(() => {
-		onParagraphCommitRef.current = () => void recomputeRelated();
-		return () => {
-			onParagraphCommitRef.current = null;
-		};
-	}, [recomputeRelated]);
-
-	// Paragraph graph disabled → nothing to block on.
-	const graphBlocking = false;
-
-
-
 	// Resize of the right drawer by dragging the vertical separator.
 	const startDrawerResize = (event: React.MouseEvent) => {
 		if (window.innerWidth < 1024 || !drawer.isOpen) return;
@@ -256,21 +196,18 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 
 	return (
 		<main
-			className={`relative flex h-screen w-screen overflow-hidden bg-[var(--canvas)] font-sans ${
-				relatedActive ? 'related-badges-on' : 'related-badges-off'
-			} ${relatedFocusOn ? 'related-focus-on' : ''}`}
+			className="relative flex h-screen w-screen overflow-hidden bg-[var(--canvas)] font-sans"
 		>
 			<div className="relative flex min-w-0 flex-col border-r border-gray-300" style={{ width: leftWidth }}>
 				<DocxPageHeader documentName={viewer.documentName} />
 				<DocumentViewer
 					containerRef={viewer.containerRef}
 					status={viewer.status}
-					dimmed={graphBlocking}
 					renderEpoch={viewer.renderEpoch}
 					paragraphElementById={paragraphElementById.current}
-						relatedBridgeActive={bridgeActive}
+						evidenceBridgeActive={bridgeActive}
 						selectedParagraph={bridgeSelectedParagraph}
-						relatedBridgeParagraphs={bridgeParagraphs}
+						evidenceParagraphs={bridgeParagraphs}
 						deonticToneByParagraphId={knowledgeGraphActive ? kgToneByParagraphId : undefined}
 						deonticScoreByParagraphId={knowledgeGraphActive ? kgScoreByParagraphId : undefined}
 				/>
@@ -282,7 +219,7 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 				width={drawer.width}
 				sidebarWidth={drawer.sidebarWidth}
 				headerActions={
-						graphBlocking ? null : (
+						(
 							<RightPanelHeaderActions
 								activeTab={drawer.activeTab}
 								costLabel={costLabel}
@@ -292,21 +229,16 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 						)
 					}
 				onClose={drawer.close}
-				closeDisabled={graphBlocking}
 			>
 				<RightPanelContent
 					activeTab={drawer.activeTab}
 					docId={docId}
-					graphBlocking={graphBlocking}
-					selectedParagraph={selectedParagraph}
-					nodeEditStateById={nodeEditStateById.current}
 					assistant={assistant}
-					related={related}
 					onFocusNodeFromPanel={onFocusNodeFromPanel}
 				/>
 			</RightPanel>
 
-			{overlayPanel && drawer.isOpen && !graphBlocking && (
+			{overlayPanel && drawer.isOpen && (
 				<button
 					type="button"
 					aria-label="Close panel"
@@ -315,7 +247,7 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 				/>
 			)}
 
-			{isDesktop && drawer.isOpen && !graphBlocking && (
+			{isDesktop && drawer.isOpen && (
 				<div
 					role="separator"
 					aria-orientation="vertical"
@@ -335,7 +267,6 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 				labelsPinned={drawer.labelsPinned}
 				activeTab={drawer.activeTab}
 				isOpen={drawer.isOpen}
-				disabled={graphBlocking}
 				onSelectTool={drawer.selectTool}
 				onToggleLabels={drawer.toggleLabels}
 			/>

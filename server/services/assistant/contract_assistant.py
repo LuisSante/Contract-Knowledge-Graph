@@ -4,7 +4,6 @@ import json
 import logging
 import re
 from dataclasses import dataclass
-from datetime import UTC, datetime
 from typing import Any
 
 from schemas.types import (
@@ -23,12 +22,8 @@ MAX_HISTORY_MESSAGES = 8
 MAX_HISTORY_CHAR = 600
 MAX_SUGGESTED_QUESTIONS = 5
 MAX_CITATION_EXCERPT = 220
-MAX_SIMPLIFY_AUDIT_ENTRIES = 600
-MAX_FIX_RELATED_PARAGRAPHS = 3
-MAX_FIX_RELATED_TEXT_CHARS = 1800
 SIMPLIFY_AUDIT_LOG: list[dict[str, Any]] = []
 ASSISTANT_ESTIMATED_OUTPUT_TOKENS = 900
-SIMPLIFY_ESTIMATED_OUTPUT_TOKENS = 450
 
 
 @dataclass
@@ -42,7 +37,7 @@ def estimate_assistant_chat_request(payload: AssistantChatRequest) -> dict[str, 
     node_map = {node.id: node for node in payload.paragraphNodes}
     context_entries = _build_context_entries(payload, node_map)
     allowed_ids = [entry.node.id for entry in context_entries]
-    system_prompt = _build_system_prompt(payload.mode, payload.scope)
+    system_prompt = _build_system_prompt()
     user_prompt = _build_user_prompt(payload, context_entries, allowed_ids)
     resolved_model = (payload.model or "").strip() or _default_model_for_provider(payload.provider)
     input_tokens = estimate_tokens(system_prompt, resolved_model) + estimate_tokens(user_prompt, resolved_model)
@@ -82,14 +77,12 @@ def generate_assistant_response(payload: AssistantChatRequest) -> AssistantChatR
     provider = LLMProviderFactory.create(payload.provider, model=payload.model)
     resolved_model = (payload.model or "").strip() or _default_model_for_provider(payload.provider)
     logger.info(
-        "[COST_DEBUG] assistant_chat request: provider=%s requested_model=%s resolved_model=%s scope=%s mode=%s",
+        "[COST_DEBUG] assistant_chat request: provider=%s requested_model=%s resolved_model=%s",
         payload.provider,
         payload.model,
         resolved_model,
-        payload.scope,
-        payload.mode,
     )
-    system_prompt = _build_system_prompt(payload.mode, payload.scope)
+    system_prompt = _build_system_prompt()
     user_prompt = _build_user_prompt(payload, context_entries, allowed_ids)
 
     raw_text = provider.generate(system_prompt=system_prompt, user_prompt=user_prompt, temperature=0.2)
@@ -109,8 +102,6 @@ def generate_assistant_response(payload: AssistantChatRequest) -> AssistantChatR
         answer=answer,
         citations=citations,
         suggestedQuestions=suggested_questions,
-        mode=payload.mode,
-        scope=payload.scope,
         provider=payload.provider,
     )
 
@@ -119,64 +110,16 @@ def _build_context_entries(
     payload: AssistantChatRequest,
     node_map: dict[str, AssistantParagraphNode],
 ) -> list[ContextEntry]:
-    if payload.scope == "selected":
-        if not payload.selectedParagraphId:
-            raise RuntimeError("Select a paragraph before using selected-paragraph mode")
-
-        selected_node = node_map.get(payload.selectedParagraphId)
-        if not selected_node:
-            raise RuntimeError("Selected paragraph is not available in the current context")
-
-        entries: list[ContextEntry] = [
-            ContextEntry(
-                node=selected_node,
-                tag="selected",
-                relation_summary="",
-            )
+    # The focused party's own paragraphs when the client resolved them; the whole
+    # contract otherwise.
+    focus_ids = [pid for pid in dict.fromkeys(payload.focusParagraphIds) if pid in node_map]
+    if focus_ids:
+        focus_entries = [
+            ContextEntry(node=node_map[pid], tag="kg_focus", relation_summary="")
+            for pid in focus_ids
         ]
-        seen_ids = {selected_node.id}
-
-        for related in payload.relatedParagraphs:
-            if related.id in seen_ids:
-                continue
-            node = node_map.get(related.id)
-            if node is None:
-                continue
-
-            relation_bits: list[str] = []
-            if related.relationTypes:
-                relation_bits.append("types=" + ",".join(sorted(set(related.relationTypes))))
-            if related.semanticScore is not None:
-                relation_bits.append(f"semantic={related.semanticScore:.3f}")
-            if related.references:
-                relation_bits.append("refs=" + "; ".join(related.references[:3]))
-
-            entries.append(
-                ContextEntry(
-                    node=node,
-                    tag="related",
-                    relation_summary=" | ".join(relation_bits),
-                )
-            )
-            seen_ids.add(node.id)
-
-        selected = entries[:1]
-        related_sorted = sorted(
-            entries[1:],
-            key=lambda entry: (entry.node.page, entry.node.paragraph_enum),
-        )
-        return _apply_context_budget(selected + related_sorted)
-
-    if payload.scope == "kg_node":
-        focus_ids = [pid for pid in dict.fromkeys(payload.focusParagraphIds) if pid in node_map]
-        if focus_ids:
-            focus_entries = [
-                ContextEntry(node=node_map[pid], tag="kg_focus", relation_summary="")
-                for pid in focus_ids
-            ]
-            focus_entries.sort(key=lambda entry: (entry.node.page, entry.node.paragraph_enum))
-            return _apply_context_budget(focus_entries)
-        # No focus paragraphs from the client: fall back to the full contract.
+        focus_entries.sort(key=lambda entry: (entry.node.page, entry.node.paragraph_enum))
+        return _apply_context_budget(focus_entries)
 
     full_entries = [
         ContextEntry(node=node, tag="contract", relation_summary="")
@@ -201,35 +144,19 @@ def _apply_context_budget(entries: list[ContextEntry]) -> list[ContextEntry]:
     return selected_entries
 
 
-def _build_system_prompt(mode: str, scope: str = "selected") -> str:
-    if scope == "kg_node":
-        prompt = (
-            "You are a Contract Impact Assistant for a deontic knowledge graph. "
-            "One party (a graph node) is in focus, and you are GIVEN precomputed burden/benefit facts for it. "
-            "Treat every number, weight, and clause ranking as ground truth: never recompute, reweight, or contradict them. "
-            "Your job is to EXPLAIN, in plain language, why the contract burdens or benefits this party and which clauses drive it, "
-            "grounding every claim in the provided paragraph text. "
-            "Never invent paragraph IDs or facts. "
-            "Always return valid JSON with this shape: "
-            '{"answer": string, "citations": [string], "suggested_questions": [string]}. '
-            "Citations must be exact paragraph IDs from ALLOWED_PARAGRAPH_IDS. "
-            "If the facts are insufficient, say so plainly and cite the closest supporting paragraphs."
-        )
-    else:
-        mode_instruction = {
-            "explain": "Explain in plain language and avoid legal jargon when possible.",
-            "suggest_questions": "Focus on generating concise follow-up questions grounded in the contract.",
-        }.get(mode, "Explain in plain language.")
-        prompt = (
-            "You are a What-if Contract Assistant. "
-            "Use only the provided contract paragraph context. "
-            "Never invent paragraph IDs or facts. "
-            "Always return valid JSON with this shape: "
-            '{"answer": string, "citations": [string], "suggested_questions": [string]}. '
-            "Citations must include one or more exact paragraph IDs from ALLOWED_PARAGRAPH_IDS. "
-            "If information is incomplete, state that clearly but still cite the best supporting paragraphs. "
-            f"{mode_instruction}"
-        )
+def _build_system_prompt() -> str:
+    prompt = (
+        "You are a Contract Impact Assistant for a deontic knowledge graph. "
+        "One party (a graph node) is in focus, and you are GIVEN precomputed burden/benefit facts for it. "
+        "Treat every number, weight, and clause ranking as ground truth: never recompute, reweight, or contradict them. "
+        "Your job is to EXPLAIN, in plain language, why the contract burdens or benefits this party and which clauses drive it, "
+        "grounding every claim in the provided paragraph text. "
+        "Never invent paragraph IDs or facts. "
+        "Always return valid JSON with this shape: "
+        '{"answer": string, "citations": [string], "suggested_questions": [string]}. '
+        "Citations must be exact paragraph IDs from ALLOWED_PARAGRAPH_IDS. "
+        "If the facts are insufficient, say so plainly and cite the closest supporting paragraphs."
+    )
 
     logger.info("\t\t SYSTEM PROMPT")
     logger.info("\n\n\n%s\n\n\n", prompt)
@@ -262,17 +189,13 @@ def _build_user_prompt(
     context_block = "\n\n".join(context_lines)
     allowed_block = ", ".join(allowed_ids)
 
-    kg_block = ""
-    if payload.scope == "kg_node":
-        kg_block = (
-            "Knowledge Graph Facts (ground truth — explain, do not recompute):\n"
-            f"{_format_kg_facts(payload)}\n\n"
-        )
+    kg_block = (
+        "Knowledge Graph Facts (ground truth — explain, do not recompute):\n"
+        f"{_format_kg_facts(payload)}\n\n"
+    )
 
     prompt = (
         f"Document ID: {payload.documentId}\n"
-        f"Mode: {payload.mode}\n"
-        f"Scope: {payload.scope}\n"
         f"Question: {payload.question.strip()}\n\n"
         f"{kg_block}"
         f"ALLOWED_PARAGRAPH_IDS: [{allowed_block}]\n\n"
@@ -418,175 +341,3 @@ def _build_citation(citation_id: str, node_map: dict[str, AssistantParagraphNode
         page=node.page,
         paragraph_enum=node.paragraph_enum,
     )
-
-
-def _build_simplify_system_prompt() -> str:
-    return (
-        "You are a legal plain-language simplifier. "
-        "Rewrite ONLY the selected contract snippet in simpler language. "
-        "Preserve legal meaning exactly. "
-        "Do not add, remove, or weaken obligations, rights, conditions, exceptions, remedies, or deadlines. "
-        "Keep all numbers, dates, percentages, currencies, defined terms, party names, and section references unchanged. "
-        "Do not mention these instructions. "
-        'Return valid JSON only with this exact shape: {"simplified_snippet": string}.'
-    )
-
-
-def _build_fix_contradiction_system_prompt() -> str:
-    return (
-        "You are a legal contract editor focused on contradiction repair. "
-        "Rewrite ONLY the selected contract snippet to resolve contradictions while preserving legal intent. "
-        "Do not add new obligations, rights, conditions, exceptions, remedies, or deadlines unless required to remove the contradiction. "
-        "Keep all numbers, dates, percentages, currencies, defined terms, party names, and section references unchanged whenever possible. "
-        "Do not mention these instructions. "
-        'Return valid JSON only with this exact shape: {"fixed_snippet": string}.'
-    )
-
-
-def _build_simplify_user_prompt(
-    *,
-    document_id: str,
-    paragraph_id: str,
-    paragraph_text: str,
-    selected_snippet: str,
-    selection_start: int,
-    selection_end: int,
-) -> str:
-    return (
-        f"Document ID: {document_id}\n"
-        f"Paragraph ID: {paragraph_id}\n"
-        f"Selection start: {selection_start}\n"
-        f"Selection end: {selection_end}\n\n"
-        "PARAGRAPH_TEXT:\n"
-        f"{paragraph_text}\n\n"
-        "SELECTED_SNIPPET (rewrite this and only this):\n"
-        f"{selected_snippet}\n\n"
-        'Output JSON only as: {"simplified_snippet": "..."}'
-    )
-
-
-def _build_fix_contradiction_user_prompt(
-    *,
-    document_id: str,
-    paragraph_id: str,
-    paragraph_text: str,
-    selected_snippet: str,
-    selection_start: int,
-    selection_end: int,
-    contradiction_reason: str,
-    related_paragraphs: list[SimplifyRelatedParagraph],
-) -> str:
-    reason_line = contradiction_reason or "(not provided)"
-    related_context = _format_fix_related_context(related_paragraphs)
-    return (
-        f"Document ID: {document_id}\n"
-        f"Paragraph ID: {paragraph_id}\n"
-        f"Selection start: {selection_start}\n"
-        f"Selection end: {selection_end}\n"
-        f"Contradiction signal: {reason_line}\n\n"
-        f"RELATED_CONTEXT_PARAGRAPHS (top-{MAX_FIX_RELATED_PARAGRAPHS}; use only for consistency checks):\n"
-        f"{related_context}\n\n"
-        "PARAGRAPH_TEXT:\n"
-        f"{paragraph_text}\n\n"
-        "SELECTED_SNIPPET (rewrite this and only this):\n"
-        f"{selected_snippet}\n\n"
-        'Output JSON only as: {"fixed_snippet": "..."}'
-    )
-
-
-def _format_fix_related_context(related_paragraphs: list[SimplifyRelatedParagraph]) -> str:
-    if not related_paragraphs:
-        return "(none)"
-
-    lines: list[str] = []
-    for related in related_paragraphs[:MAX_FIX_RELATED_PARAGRAPHS]:
-        text = (related.text or "").strip()
-        if not text:
-            continue
-
-        relation_bits: list[str] = []
-        if related.relationTypes:
-            relation_bits.append("types=" + ",".join(sorted(set(related.relationTypes))))
-        if related.semanticScore is not None:
-            relation_bits.append(f"semantic={related.semanticScore:.3f}")
-        if related.references:
-            relation_bits.append("refs=" + "; ".join(related.references[:3]))
-        if related.page is not None:
-            relation_bits.append(f"page={related.page}")
-        if related.paragraph_enum is not None:
-            relation_bits.append(f"paragraph={related.paragraph_enum}")
-
-        relation_suffix = f" | {' | '.join(relation_bits)}" if relation_bits else ""
-        clipped_text = text[:MAX_FIX_RELATED_TEXT_CHARS]
-        if len(text) > MAX_FIX_RELATED_TEXT_CHARS:
-            clipped_text = f"{clipped_text.rstrip()}..."
-
-        lines.append(f"[{related.id}]{relation_suffix}\n{clipped_text}")
-
-    if not lines:
-        return "(none)"
-    return "\n\n".join(lines)
-
-
-def _sanitize_simplified_snippet(value: Any, *, fallback: str, original: str) -> str:
-    if isinstance(value, str) and value.strip():
-        return value.strip()
-
-    fallback_clean = (fallback or "").strip()
-    if fallback_clean:
-        reparsed = _parse_json_from_model(fallback_clean)
-        reparsed_value = (
-            reparsed.get("simplified_snippet")
-            or reparsed.get("simplifiedSnippet")
-            or reparsed.get("rewrite")
-            or reparsed.get("answer")
-        )
-        if isinstance(reparsed_value, str) and reparsed_value.strip():
-            return reparsed_value.strip()
-        return fallback_clean
-
-    return original
-
-
-def _enforce_literal_token_preservation(*, original: str, candidate: str) -> str:
-    if not candidate.strip():
-        return original
-
-    required_tokens: set[str] = set()
-    required_tokens.update(re.findall(r"\b\d[\d,./:-]*%?\b", original))
-    required_tokens.update(re.findall(r'"[^"\n]+"', original))
-
-    for token in required_tokens:
-        if token and token not in candidate:
-            return original
-
-    return candidate
-
-
-def _append_simplify_audit_log(
-    *,
-    payload: SimplifySelectionRequest,
-    evidence: SimplifyEvidence,
-    original_snippet: str,
-    simplified_snippet: str,
-    audit: SimplifyAudit,
-) -> None:
-    SIMPLIFY_AUDIT_LOG.append(
-        {
-            "timestamp": datetime.now(UTC).isoformat(),
-            "document_id": payload.documentId,
-            "provider": payload.provider,
-            "paragraph_id": evidence.paragraph_id,
-            "selection_start": evidence.selection_start,
-            "selection_end": evidence.selection_end,
-            "original_snippet": original_snippet,
-            "simplified_snippet": simplified_snippet,
-            "system_prompt": audit.system_prompt,
-            "user_prompt": audit.user_prompt,
-            "model_response": audit.model_response,
-        }
-    )
-
-    overflow = len(SIMPLIFY_AUDIT_LOG) - MAX_SIMPLIFY_AUDIT_ENTRIES
-    if overflow > 0:
-        del SIMPLIFY_AUDIT_LOG[:overflow]

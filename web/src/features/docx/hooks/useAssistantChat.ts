@@ -8,18 +8,13 @@ import { getAxiosErrorMessage } from '@/features/docx/utils/docx-engine/http-err
 import {
 	buildAssistantHistoryPayload,
 	buildAssistantNodeSnapshot,
-	buildAssistantRelatedContext,
 	resolveAssistantSuggestedQuestions,
 } from '@/features/docx/utils/assistant/assistant';
 import { buildUserMessage } from '@/features/docx/utils/assistant/message-builders';
 import type {
 	AssistantChatMessage,
 	AssistantChatRequest,
-	AssistantMode,
-	AssistantProvider,
-	AssistantScope,
 	ParagraphEditState,
-	RelatedParagraph,
 } from '@/types/document';
 
 /** Gate in front of a billable call: resolves false when the user declines the cost. */
@@ -28,15 +23,12 @@ export type ConfirmLlmEstimate = (
 	payload: AssistantChatRequest
 ) => Promise<boolean>;
 
+/** The panel has one entry point, so the provider is fixed rather than state. */
+const PROVIDER = 'openai' as const;
+
 interface UseAssistantChatParams {
 	docId: string;
 	nodeEditStateById: Map<string, ParagraphEditState>;
-	/** Returns the container of the rendered document (fix target). */
-	getViewerElement?: () => HTMLElement | null;
-	/** Map of paragraph id → DOM element (used to apply the rewrite). */
-	paragraphElementById?: Map<string, HTMLElement>;
-	/** Related paragraphs of the selected one (fix context). */
-	selectedRelatedParagraphs?: RelatedParagraph[];
 	/** Global analysis model (optional, forwarded to the backend). */
 	model?: string;
 	/** LLM cost confirmation before each call (if omitted, none is requested). */
@@ -44,17 +36,12 @@ interface UseAssistantChatParams {
 }
 
 /**
- * Assistant chat over the contract. A single `messages` array feeds both the
- * Contract Chat Assistant, so
- * whatever is typed in one appears in the other (parity with the Svelte version).
- *
- * This hook is the **core** (free-text question + thread state) and composes
- * exposing a single API. The message builders live in `utils/assistant`.
+ * Chat about the focused party. Holds the thread state and one submit path; the
+ * message builders live in `utils/assistant`.
  */
 export function useAssistantChat({
 	docId,
 	nodeEditStateById,
-	selectedRelatedParagraphs = [],
 	model,
 	confirmLlmEstimate,
 }: UseAssistantChatParams) {
@@ -62,9 +49,6 @@ export function useAssistantChat({
 	const [input, setInput] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
-	const [mode] = useState<AssistantMode>('explain');
-	const [scope, setScope] = useState<AssistantScope>('full_contract');
-	const [provider, setProvider] = useState<AssistantProvider>('openai');
 
 	// Mirror of `messages` to build the history without depending on the re-render.
 	const messagesRef = useRef<AssistantChatMessage[]>([]);
@@ -78,11 +62,8 @@ export function useAssistantChat({
 		return `assistant-msg-${messageCounter.current}`;
 	};
 
-	/** Core of a chat question (free text or text quick-action). */
-	const submitAssistantQuestion = async (
-		questionOverride?: string,
-		opts?: { scope?: AssistantScope }
-	) => {
+	/** Question about the focused party. */
+	const submitKgNodeQuestion = async (questionOverride?: string) => {
 		if (loading) return;
 		const question = (questionOverride ?? input).trim();
 		if (!question) return;
@@ -91,19 +72,17 @@ export function useAssistantChat({
 			return;
 		}
 
-		const effectiveScope = opts?.scope ?? scope;
 		const { paragraphs, selectedParagraph } = useDocumentStore.getState();
 		const paragraphNodes = buildAssistantNodeSnapshot(paragraphs, nodeEditStateById);
 		if (paragraphNodes.length === 0) {
 			setError('The contract is still loading.');
 			return;
 		}
-		if (effectiveScope === 'selected' && !selectedParagraph) {
-			setError('Select a paragraph before asking in selected-paragraph mode.');
-			return;
-		}
-		const kgState = effectiveScope === 'kg_node' ? useKnowledgeGraphStore.getState() : null;
-		if (effectiveScope === 'kg_node' && !kgState?.ledger) {
+		// Gated on the focus, not on the ledger: the ledger is only built by the
+		// single-party bridge, and the panel seats a pair, so requiring it turned every
+		// question into "focus a party" even with one focused.
+		const kgState = useKnowledgeGraphStore.getState();
+		if (!kgState.focusNodeId) {
 			setError('Focus a party in the Knowledge Graph before asking about it.');
 			return;
 		}
@@ -117,33 +96,32 @@ export function useAssistantChat({
 		if (!questionOverride) setInput('');
 		setLoading(true);
 
+		const ledger = kgState.ledger;
 		const payload: AssistantChatRequest = {
 			documentId: docId,
 			question,
-			mode,
-			scope: effectiveScope,
-			provider,
+			provider: PROVIDER,
 			model: model?.trim() || undefined,
 			selectedParagraphId: selectedParagraph?.id ?? null,
-			relatedParagraphs: buildAssistantRelatedContext(selectedRelatedParagraphs),
 			paragraphNodes,
 			history: buildAssistantHistoryPayload(historyBeforeAnswer),
-			...(kgState?.ledger
+			focusNodeId: kgState.focusNodeId,
+			focusNodeLabel: kgState.focusMeta?.label ?? null,
+			focusNodeKind: 'party',
+			focusParagraphIds: kgState.paragraphIds,
+			// Optional on the backend, which falls back to "no impact facts were provided".
+			...(ledger
 				? {
-						focusNodeId: kgState.ledger.partyId,
-						focusNodeLabel: kgState.ledger.partyName,
-						focusNodeKind: 'party',
-						focusParagraphIds: kgState.paragraphIds,
 						kgLedger: {
-							obligations: kgState.ledger.obligations,
-							rights: kgState.ledger.rights,
-							prohibitions: kgState.ledger.prohibitions,
-							burdenWeight: kgState.ledger.burdenWeight,
-							benefitWeight: kgState.ledger.benefitWeight,
-							burdenCount: kgState.ledger.burdenCount,
-							benefitCount: kgState.ledger.benefitCount,
+							obligations: ledger.obligations,
+							rights: ledger.rights,
+							prohibitions: ledger.prohibitions,
+							burdenWeight: ledger.burdenWeight,
+							benefitWeight: ledger.benefitWeight,
+							burdenCount: ledger.burdenCount,
+							benefitCount: ledger.benefitCount,
 							usePageRank: kgState.usePageRank,
-							topClauses: kgState.ledger.topClauses,
+							topClauses: ledger.topClauses,
 						},
 					}
 				: {}),
@@ -162,10 +140,7 @@ export function useAssistantChat({
 					role: 'assistant',
 					content: response.answer,
 					citations: response.citations,
-					suggestedQuestions: resolveAssistantSuggestedQuestions(response.suggestedQuestions, {
-						mode,
-						scope: effectiveScope,
-					}),
+					suggestedQuestions: resolveAssistantSuggestedQuestions(response.suggestedQuestions),
 				},
 			]);
 		} catch (err) {
@@ -180,20 +155,7 @@ export function useAssistantChat({
 		}
 	};
 
-	const submit = (questionOverride?: string) => submitAssistantQuestion(questionOverride);
-
-	/** Question about the focused KG party (burden/benefit of its clauses). */
-	const submitKgNodeQuestion = (questionOverride?: string) =>
-		submitAssistantQuestion(questionOverride, { scope: 'kg_node' });
-
-	const handleKeydown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-		if (event.key === 'Enter' && !event.shiftKey) {
-			event.preventDefault();
-			void submit();
-		}
-	};
-
-	/** Enter sends the question about the focused KG party. */
+	/** Enter sends the question about the focused party. */
 	const handleKgNodeKeydown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
 		if (event.key === 'Enter' && !event.shiftKey) {
 			event.preventDefault();
@@ -206,14 +168,7 @@ export function useAssistantChat({
 		input,
 		loading,
 		error,
-		scope,
-		provider,
-		setScope,
-		setProvider,
 		setInput,
-		submit,
-		handleKeydown,
-		// Knowledge Graph chat (focused party):
 		submitKgNodeQuestion,
 		handleKgNodeKeydown,
 	};

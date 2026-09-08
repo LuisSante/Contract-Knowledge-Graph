@@ -1,10 +1,5 @@
 import { api } from '@/lib/api';
-import type {
-	Edge as GraphEdge,
-	Node as ParagraphNode,
-	ParagraphEditState,
-	ProcessDocumentResponse,
-} from '@/types/document';
+import type { Node as ParagraphNode, ParagraphEditState } from '@/types/document';
 import { getNodeCurrentText } from '@/features/docx/utils/edit/edit';
 
 function buildProcessPages(
@@ -28,40 +23,7 @@ function buildProcessPages(
 		.map(([pageNumber, elements]) => ({ pageNumber, elements }));
 }
 
-function buildDirectionalRelationsByNodeId(
-	nodes: ParagraphNode[],
-	edges: GraphEdge[]
-): Map<string, number> {
-	const neighborsByNodeId = new Map<string, Set<string>>();
-
-	for (const node of nodes) {
-		neighborsByNodeId.set(node.id, new Set<string>());
-	}
-
-	for (const edge of edges) {
-		if (edge.type === 'reference') {
-			const sourceNeighbors = neighborsByNodeId.get(edge.source);
-			if (sourceNeighbors) sourceNeighbors.add(edge.target);
-			continue;
-		}
-
-		if (edge.type === 'semantic_similarity') {
-			const sourceNeighbors = neighborsByNodeId.get(edge.source);
-			if (sourceNeighbors) sourceNeighbors.add(edge.target);
-
-			const targetNeighbors = neighborsByNodeId.get(edge.target);
-			if (targetNeighbors) targetNeighbors.add(edge.source);
-		}
-	}
-
-	return new Map(
-		Array.from(neighborsByNodeId.entries()).map(
-			([nodeId, neighbors]) => [nodeId, neighbors.size] as const
-		)
-	);
-}
-
-/** Dump paragraphs server-side without building the relations graph. */
+/** Persist the rendered paragraphs server-side; the KG build reads this dump. */
 export async function extractParagraphs(
 	docId: string,
 	nodesSnapshot: ParagraphNode[],
@@ -71,20 +33,4 @@ export async function extractParagraphs(
 		documentId: docId,
 		pages: buildProcessPages(nodesSnapshot, nodeEditStateById),
 	});
-}
-
-export async function fetchBackendGraph(
-	docId: string,
-	nodesSnapshot: ParagraphNode[],
-	nodeEditStateById: Map<string, ParagraphEditState>
-): Promise<{ edges: GraphEdge[]; relationsByNodeId: Map<string, number> }> {
-	const response = await api.post<ProcessDocumentResponse>('/process', {
-		documentId: docId,
-		pages: buildProcessPages(nodesSnapshot, nodeEditStateById),
-	});
-
-	const edges = response.data.graph.edges ?? [];
-	const relationsByNodeId = buildDirectionalRelationsByNodeId(nodesSnapshot, edges);
-
-	return { edges, relationsByNodeId };
 }

@@ -1,22 +1,18 @@
-import type { Node as ParagraphNode, RelatedParagraph } from '@/types/document';
+import type { Node as ParagraphNode, EvidenceParagraph } from '@/types/document';
 import { cloneParagraphForCard } from '@/features/docx/utils/docx-engine/clone-paragraph';
 
 /**
- * Geometry of the related-paragraphs "bridge": the line/connector that joins the
- * selected paragraph with its related ones, the reference/similarity labels,
- * the folds, the collapsed cards (when moving them closer with Shift+Scroll) and
- * the scroll markers. Port of `refreshParagraphExplanationConnectorPaths` from
- * the Svelte `+page.svelte`, without React.
+ * Geometry of the evidence bridge: the connector joining the anchor paragraph with
+ * the paragraphs that evidence the focused party, the folds, the collapsed cards
+ * (when Shift+Scroll brings them closer) and the scroll markers.
  */
-
-export type RelatedVisualKind = 'reference' | 'similarity' | 'plain';
 
 const PARAGRAPH_GAP_PX = 10;
 const STACK_OFFSET_PX = 18;
 const STACK_CARD_GAP_PX = 12;
 const CONSECUTIVE_GAP_PX = 24;
 
-export interface RelatedConnector {
+export interface EvidenceConnector {
 	topPx: number;
 	bottomPx: number;
 	leftPx: number;
@@ -25,17 +21,14 @@ export interface RelatedConnector {
 	relatedCapTopPx: number;
 	relatedCapWidthPx: number;
 	paragraphId: string;
-	relationKind: RelatedVisualKind;
-	relationLabel: string;
-	labelLeftPx: number;
 }
 
-export interface RelatedFold {
+export interface EvidenceFold {
 	topPx: number;
 	leftPx: number;
 }
 
-export interface RelatedCollapsedCard {
+export interface EvidenceCollapsedCard {
 	paragraphId: string;
 	topPx: number;
 	leftPx: number;
@@ -43,22 +36,21 @@ export interface RelatedCollapsedCard {
 	html: string;
 }
 
-export interface RelatedScrollMarker {
+export interface EvidenceScrollMarker {
 	paragraphId: string;
 	topPercent: number;
-	kind: RelatedVisualKind;
 }
 
-export interface RelatedBridge {
-	connectors: RelatedConnector[];
-	primaryConnector: RelatedConnector | null;
-	folds: RelatedFold[];
-	collapsedCards: RelatedCollapsedCard[];
-	scrollMarkers: RelatedScrollMarker[];
+export interface EvidenceBridge {
+	connectors: EvidenceConnector[];
+	primaryConnector: EvidenceConnector | null;
+	folds: EvidenceFold[];
+	collapsedCards: EvidenceCollapsedCard[];
+	scrollMarkers: EvidenceScrollMarker[];
 	movedNodeIds: Set<string>;
 }
 
-export const EMPTY_RELATED_BRIDGE: RelatedBridge = {
+export const EMPTY_EVIDENCE_BRIDGE: EvidenceBridge = {
 	connectors: [],
 	primaryConnector: null,
 	folds: [],
@@ -67,61 +59,11 @@ export const EMPTY_RELATED_BRIDGE: RelatedBridge = {
 	movedNodeIds: new Set(),
 };
 
-/** Decides whether a related paragraph is shown as "similarity" or "reference". */
-export function resolveRelatedVisualKind(related: RelatedParagraph): RelatedVisualKind {
-	const hasSimilarityByType = related.relationTypes.some((relationType) =>
-		String(relationType).toLowerCase().includes('semantic')
-	);
-	const hasSimilarityByScore =
-		typeof related.semanticScore === 'number' && Number.isFinite(related.semanticScore);
-	if (hasSimilarityByType || hasSimilarityByScore) return 'similarity';
-
-	const isReference =
-		related.relationTypes.some((relationType) =>
-			String(relationType).toLowerCase().includes('reference')
-		) || related.references.length > 0;
-	// KG bridge sends no relationTypes: those connectors are plain (no label).
-	return isReference ? 'reference' : 'plain';
-}
-
-/** Sorts the related paragraphs prioritizing reference > semantic score > ref count > order. */
-export function sortRelatedParagraphs(related: RelatedParagraph[]): RelatedParagraph[] {
-	return [...related].sort((left, right) => {
-		const leftReference = left.relationTypes.includes('reference') ? 1 : 0;
-		const rightReference = right.relationTypes.includes('reference') ? 1 : 0;
-		if (rightReference !== leftReference) return rightReference - leftReference;
-
-		const leftSemantic = left.semanticScore ?? 0;
-		const rightSemantic = right.semanticScore ?? 0;
-		if (rightSemantic !== leftSemantic) return rightSemantic - leftSemantic;
-
-		const leftReferences = left.references.length;
-		const rightReferences = right.references.length;
-		if (rightReferences !== leftReferences) return rightReferences - leftReferences;
-
-		return left.node.paragraph_enum - right.node.paragraph_enum;
-	});
-}
-
-/**
- * List of related paragraphs that feeds the bridge depending on the active tab:
- * - `related`: all of the paragraph's related ones.
- * - `paragraph_explanation`: the tail (beyond the top 5), which is what is no
- *   longer shown in the explanation panel.
- */
-export function buildBridgeRelatedParagraphs(
-	related: RelatedParagraph[],
-	tab: 'related' | 'paragraph_explanation'
-): RelatedParagraph[] {
-	if (tab === 'related') return related;
-	return sortRelatedParagraphs(related).slice(5);
-}
-
 interface ComputeRelatedBridgeParams {
 	scrollHost: HTMLElement;
 	paragraphElementById: Map<string, HTMLElement>;
 	selectedParagraph: ParagraphNode;
-	related: RelatedParagraph[];
+	evidence: EvidenceParagraph[];
 	/** 0 = real positions, 1 = fully moved next to the selected one. */
 	compression: number;
 }
@@ -137,15 +79,15 @@ function paragraphEnumOf(node: ParagraphNode): number {
  * the real positions of the paragraphs relative to the scroll host and, based on
  * the compression, interpolates the "moved closer" positions.
  */
-export function computeRelatedBridge({
+export function computeEvidenceBridge({
 	scrollHost,
 	paragraphElementById,
 	selectedParagraph,
-	related,
+	evidence,
 	compression,
-}: ComputeRelatedBridgeParams): RelatedBridge {
+}: ComputeRelatedBridgeParams): EvidenceBridge {
 	const selectedElement = paragraphElementById.get(selectedParagraph.id);
-	if (!selectedElement) return EMPTY_RELATED_BRIDGE;
+	if (!selectedElement) return EMPTY_EVIDENCE_BRIDGE;
 
 	const hostRect = scrollHost.getBoundingClientRect();
 	const selectedRect = selectedElement.getBoundingClientRect();
@@ -158,34 +100,28 @@ export function computeRelatedBridge({
 		edgeX: number;
 		paragraphId: string;
 		paragraphEnum: number;
-		relationKind: RelatedVisualKind;
-		relationLabel: string;
 		top: number;
 		width: number;
 		html: string;
 	}> = [];
-	for (const item of related) {
+	for (const item of evidence) {
 		const relatedElement = paragraphElementById.get(item.node.id);
 		if (!relatedElement) continue;
 		const relatedRect = relatedElement.getBoundingClientRect();
 		const relatedY = relatedRect.top - hostRect.top + relatedRect.height / 2;
-		const relationKind = resolveRelatedVisualKind(item);
 		anchors.push({
 			y: relatedY,
 			height: relatedRect.height,
 			edgeX: relatedRect.left - hostRect.left,
 			paragraphId: item.node.id,
 			paragraphEnum: item.node.paragraph_enum,
-			relationKind,
-			relationLabel:
-				relationKind === 'similarity' ? 'Similarity' : relationKind === 'reference' ? 'Reference' : '',
 			top: relatedRect.top - hostRect.top,
 			width: relatedRect.width,
 			html: cloneParagraphForCard(relatedElement),
 		});
 	}
 
-	if (anchors.length === 0) return EMPTY_RELATED_BRIDGE;
+	if (anchors.length === 0) return EMPTY_EVIDENCE_BRIDGE;
 
 	const sortedAnchors = [...anchors].sort(
 		(left, right) => Math.abs(left.y - selectedY) - Math.abs(right.y - selectedY) || left.y - right.y
@@ -271,7 +207,7 @@ export function computeRelatedBridge({
 	);
 	const selectedCapWidthPx = Math.max(8, selectedEdgeX - baseLeft - PARAGRAPH_GAP_PX);
 
-	const connectors: RelatedConnector[] = sortedAnchors.map((anchor) => ({
+	const connectors: EvidenceConnector[] = sortedAnchors.map((anchor) => ({
 		topPx: trunkTop,
 		bottomPx: trunkBottom,
 		leftPx: baseLeft,
@@ -280,9 +216,6 @@ export function computeRelatedBridge({
 		relatedCapTopPx: compressedYByParagraphId.get(anchor.paragraphId) ?? anchor.y,
 		relatedCapWidthPx: Math.max(8, anchor.edgeX - baseLeft - PARAGRAPH_GAP_PX),
 		paragraphId: anchor.paragraphId,
-		relationKind: anchor.relationKind,
-		relationLabel: anchor.relationLabel,
-		labelLeftPx: baseLeft - 50,
 	}));
 
 	const movedNodeIds = new Set<string>();
@@ -291,7 +224,7 @@ export function computeRelatedBridge({
 		if (Math.abs(movedTop - anchor.top) > 1.5) movedNodeIds.add(anchor.paragraphId);
 	}
 
-	let folds: RelatedFold[] = [];
+	let folds: EvidenceFold[] = [];
 	if (compression > 0.03 && movedNodeIds.size > 0) {
 		const foldSourceY = [
 			selectedY,
@@ -299,7 +232,7 @@ export function computeRelatedBridge({
 		]
 			.sort((left, right) => left - right)
 			.filter((value, index, list) => index === 0 || Math.abs(value - list[index - 1]) > 2);
-		const nextFolds: RelatedFold[] = [];
+		const nextFolds: EvidenceFold[] = [];
 		for (let index = 0; index < foldSourceY.length - 1; index += 1) {
 			const upper = foldSourceY[index];
 			const lower = foldSourceY[index + 1];
@@ -310,7 +243,7 @@ export function computeRelatedBridge({
 	}
 
 	const cardsLeft = Math.max(14, selectedRect.left - hostRect.left);
-	const collapsedCards: RelatedCollapsedCard[] =
+	const collapsedCards: EvidenceCollapsedCard[] =
 		compression > 0.02 && movedNodeIds.size > 0
 			? anchors
 					.filter((anchor) => movedNodeIds.has(anchor.paragraphId))
@@ -324,10 +257,10 @@ export function computeRelatedBridge({
 					.sort((left, right) => left.topPx - right.topPx)
 			: [];
 
-	const scrollMarkers: RelatedScrollMarker[] = [];
+	const scrollMarkers: EvidenceScrollMarker[] = [];
 	const hostScrollHeight = scrollHost.scrollHeight;
 	if (Number.isFinite(hostScrollHeight) && hostScrollHeight > 0) {
-		for (const item of related) {
+		for (const item of evidence) {
 			const relatedElement = paragraphElementById.get(item.node.id);
 			if (!relatedElement) continue;
 			const relatedRect = relatedElement.getBoundingClientRect();
@@ -337,7 +270,6 @@ export function computeRelatedBridge({
 			scrollMarkers.push({
 				paragraphId: item.node.id,
 				topPercent: Math.min(99.6, Math.max(0.4, rawTopPercent)),
-				kind: resolveRelatedVisualKind(item),
 			});
 		}
 		scrollMarkers.sort((left, right) => left.topPercent - right.topPercent);

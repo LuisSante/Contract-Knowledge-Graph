@@ -1,5 +1,5 @@
 // Clones a paragraph container to static HTML for the collapsed cards
-// of the overlays (related bridge and contradiction evidence compression).
+// of the evidence-bridge overlay when it compresses the document.
 // Editing attributes and transient classes are stripped so the
 // clone renders at full opacity/color, and it is marked as a cloned node.
 
@@ -10,7 +10,6 @@ const TRANSIENT_CLASSES = [
 	'docx-related-context',
 	'docx-related-linked',
 	'docx-related-selected',
-	'docx-contradiction-source-hidden',
 ];
 
 export function cloneParagraphForCard(container: HTMLElement): string {

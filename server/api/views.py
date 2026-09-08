@@ -9,7 +9,6 @@ from api.serializers import (
     DatasetDocumentSerializer,
     ExtractParagraphsResponseSerializer,
     ProcessDocumentRequestSerializer,
-    ProcessDocumentResponseSerializer,
 )
 from core.config import settings
 from services.documents.processing import build_paragraphs, save_paragraphs_dump
@@ -50,41 +49,9 @@ class DocumentFileView(APIView):
         )
 
 
-class ProcessDocumentView(APIView):
-    def post(self, request):
-        serializer = ProcessDocumentRequestSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        payload = serializer.validated_data
-
-        raw_doc_id = payload["documentId"]
-        doc_id = document_store.get_canonical_id(raw_doc_id) or raw_doc_id
-        paragraphs = build_paragraphs(payload["pages"], doc_id)
-
-        if settings.EXTRACT_PARAGRAPHS:
-            try:
-                save_paragraphs_dump(doc_id, paragraphs, settings.PARAGRAPHS_OUTPUT_DIR)
-            except Exception:
-                logger.exception("Failed to dump paragraphs for %s", doc_id)
-
-        from services.graph.relations import generate_graph_data
-
-        graph = generate_graph_data(paragraphs)
-
-        response = ProcessDocumentResponseSerializer(
-            {
-                "status": "success",
-                "documentId": doc_id,
-                "graph": graph,
-                "cache": {"enabled": False, "hit": False, "key": None},
-            }
-        )
-        return Response(response.data)
-
-
 class ExtractParagraphsView(APIView):
-    """Dump the document's paragraphs to PARAGRAPHS_OUTPUT_DIR without building the
-    relations graph. Split out of /process so the dump does not require the
-    embedding compute, which is disabled on load."""
+    """Dump the document's paragraphs to PARAGRAPHS_OUTPUT_DIR — the evidence layer
+    the knowledge-graph build reads."""
 
     def post(self, request):
         serializer = ProcessDocumentRequestSerializer(data=request.data)

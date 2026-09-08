@@ -2,12 +2,12 @@
 
 import { useEffect, useState, type RefObject } from 'react';
 import {
-	computeRelatedBridge,
-	EMPTY_RELATED_BRIDGE,
-	type RelatedBridge,
-} from '@/features/docx/utils/related/related-bridge';
+	computeEvidenceBridge,
+	EMPTY_EVIDENCE_BRIDGE,
+	type EvidenceBridge,
+} from '@/features/docx/utils/evidence/evidence-bridge';
 import { attachShiftWheelCompression } from '@/features/docx/utils/docx-engine/shift-wheel-compression';
-import type { Node as ParagraphNode, RelatedParagraph } from '@/types/document';
+import type { Node as ParagraphNode, EvidenceParagraph } from '@/types/document';
 
 const COMPRESS_DURATION_MS = 560;
 
@@ -24,25 +24,25 @@ interface UseRelatedBridgeParams {
 	scrollHostRef: RefObject<HTMLElement | null>;
 	paragraphElementById: Map<string, HTMLElement>;
 	selectedParagraph: ParagraphNode | null;
-	related: RelatedParagraph[];
+	evidence: EvidenceParagraph[];
 }
 
 /**
- * Maintains the "bridge" of related paragraphs: the line/connector with the
+ * Maintains the evidence bridge: the connector between the anchor paragraph and the
  * selected paragraph, the reference/similarity labels and the **Shift + Scroll**
- * compression that brings the related ones closer (with their collapsed card).
+ * paragraphs that evidence the focus, and the compression that brings them closer.
  * Recomputes with RAF on scroll/resize and applies the state classes to the nodes.
  * Port of the `paragraphExplanationConnectors` system from the Svelte `+page.svelte`.
  */
-export function useRelatedBridge({
+export function useEvidenceBridge({
 	active,
 	renderEpoch,
 	scrollHostRef,
 	paragraphElementById,
 	selectedParagraph,
-	related,
+	evidence,
 }: UseRelatedBridgeParams) {
-	const [bridge, setBridge] = useState<RelatedBridge>(EMPTY_RELATED_BRIDGE);
+	const [bridge, setBridge] = useState<EvidenceBridge>(EMPTY_EVIDENCE_BRIDGE);
 
 	const clearNodeClasses = () => {
 		for (const element of paragraphElementById.values()) {
@@ -64,7 +64,7 @@ export function useRelatedBridge({
 		selectedElement?.classList.remove('docx-paragraph-explanation-muted');
 		selectedElement?.classList.add('docx-paragraph-explanation-selected');
 
-		for (const item of related) {
+		for (const item of evidence) {
 			const relatedElement = paragraphElementById.get(item.node.id);
 			relatedElement?.classList.remove('docx-paragraph-explanation-muted');
 			relatedElement?.classList.add('docx-paragraph-explanation-related');
@@ -77,7 +77,7 @@ export function useRelatedBridge({
 	useEffect(() => {
 		const host = scrollHostRef.current;
 		if (!active || !host || renderEpoch === 0 || !selectedParagraph) {
-			setBridge(EMPTY_RELATED_BRIDGE);
+			setBridge(EMPTY_EVIDENCE_BRIDGE);
 			clearNodeClasses();
 			return;
 		}
@@ -85,11 +85,11 @@ export function useRelatedBridge({
 		const refresh = (compression: number) => {
 			const currentHost = scrollHostRef.current;
 			if (!currentHost || !selectedParagraph) return;
-			const result = computeRelatedBridge({
+			const result = computeEvidenceBridge({
 				scrollHost: currentHost,
 				paragraphElementById,
 				selectedParagraph,
-				related,
+				evidence,
 				compression,
 			});
 			applyNodeClasses(result.movedNodeIds, compression);
@@ -107,7 +107,7 @@ export function useRelatedBridge({
 			clearNodeClasses();
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [active, renderEpoch, scrollHostRef, paragraphElementById, selectedParagraph, related]);
+	}, [active, renderEpoch, scrollHostRef, paragraphElementById, selectedParagraph, evidence]);
 
 	return bridge;
 }

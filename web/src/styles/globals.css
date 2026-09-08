@@ -135,10 +135,10 @@
 	}
 
 	.shimmer {
-		animation: contravis-text-pulse 1.6s ease-in-out infinite;
+		animation: text-pulse 1.6s ease-in-out infinite;
 	}
 
-	@keyframes contravis-text-pulse {
+	@keyframes text-pulse {
 		0%,
 		100% {
 			opacity: 0.55;

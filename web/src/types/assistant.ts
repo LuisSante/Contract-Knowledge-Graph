@@ -1,7 +1,3 @@
-import type { RelationKind } from './graph';
-
-export type AssistantMode = 'explain' | 'suggest_questions';
-export type AssistantScope = 'selected' | 'full_contract' | 'kg_node';
 export type AssistantProvider = 'openai' | 'gemini';
 
 export type KgChatClause = {
@@ -53,13 +49,6 @@ export type AssistantContextNode = {
 	page: number;
 };
 
-export type AssistantContextRelation = {
-	id: string;
-	relationTypes: RelationKind[];
-	semanticScore?: number;
-	references?: string[];
-};
-
 export type AssistantHistoryMessage = {
 	role: AssistantMessageRole;
 	content: string;
@@ -68,12 +57,9 @@ export type AssistantHistoryMessage = {
 export type AssistantChatRequest = {
 	documentId: string;
 	question: string;
-	mode: AssistantMode;
-	scope: AssistantScope;
 	provider: AssistantProvider;
 	model?: string;
 	selectedParagraphId?: string | null;
-	relatedParagraphs: AssistantContextRelation[];
 	paragraphNodes: AssistantContextNode[];
 	history: AssistantHistoryMessage[];
 	focusNodeId?: string | null;
@@ -87,7 +73,5 @@ export type AssistantChatResponse = {
 	answer: string;
 	citations: AssistantCitation[];
 	suggestedQuestions: string[];
-	mode: AssistantMode;
-	scope: AssistantScope;
 	provider: AssistantProvider;
 };

@@ -114,8 +114,8 @@ export default function Home() {
 					<Scale className="size-5" />
 				</span>
 				<div>
-					<h1 className="text-xl leading-tight font-medium">ContraVis</h1>
-					<p className="text-sm text-muted-foreground">Contradiction review in legal contracts</p>
+					<h1 className="text-xl leading-tight font-medium">Clause Impact Explorer</h1>
+					<p className="text-sm text-muted-foreground">Clause impact per party in legal contracts</p>
 				</div>
 			</header>
 

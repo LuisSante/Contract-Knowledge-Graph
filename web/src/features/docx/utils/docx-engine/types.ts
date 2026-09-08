@@ -39,7 +39,6 @@ export interface ParagraphNode {
 	text: string;
 	paragraph_enum: number;
 	page: number;
-	relationsCount: number;
 }
 
 export type ParagraphKind = 'paragraph' | 'heading' | 'list';

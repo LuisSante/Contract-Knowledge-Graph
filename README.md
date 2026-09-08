@@ -1,4 +1,4 @@
-# ContraVis
+# Clause Impact Explorer
 
 > **Installation and how to run the project:** see [INSTALL.md](INSTALL.md).
 
@@ -28,8 +28,8 @@ docx ─► engine ┤
   `{ id, text, page, element }`. **These paragraphs are the graph nodes.**
 
 That is the engine's *entire* job: **render the HTML and extract the
-paragraphs.** It knows nothing about the graph, contradictions, or the backend —
-those are ContraVis layers built on top of its output.
+paragraphs.** It knows nothing about the knowledge graph or the backend — those are
+layers built on top of its output.
 
 ### How each paragraph gets its `id`
 
@@ -59,28 +59,29 @@ fragments with uniform formatting) and carry no id:
 
 ---
 
-## From paragraphs to graph
+## From paragraphs to the knowledge graph
 
-The paragraphs emitted by the engine are the **nodes**. The **edges** are
-computed by the backend.
+The paragraphs emitted by the engine are the **evidence layer**: every statement the
+knowledge graph holds points back at the paragraph ids it was extracted from.
 
 ```
 NODES (paragraphs from the engine)
         │
-        ▼  POST /api/v1/process
-backend computes EDGES   (Eᵣ references + Eₛ semantic similarity)
+        ▼  POST /api/v1/extract_paragraphs      (dump, no compute)
+infra/json/paragraphs/<doc>.json
         │
-        ▼
-GRAPH = nodes + edges
+        ▼  notebooks/KG/build_kg.ipynb          (LLM extraction)
+infra/json/kg/<doc>.json
 ```
 
-- **`Eᵣ` — references:** explicit pointers such as *“see Section 5.2”* become an
-  edge to the paragraph of that clause.
-- **`Eₛ` — semantic:** sentence embeddings link paragraphs that talk about the
-  same thing.
+The knowledge graph is built offline per document, not on load. It holds parties,
+clauses, obligations, rights, prohibitions, conditions, values, defined terms and
+references — each carrying the paragraph ids and the verbatim spans that evidence it.
 
-The engine gives you the **nodes**; the backend gives you the **edges**.
-Together they form the typed paragraph graph `G = (V, Eᵣ, Eₛ)`.
+> An earlier version also computed a *paragraph graph* on the backend (reference and
+> semantic-similarity edges between paragraphs) and drew it over the document. That
+> layer was removed: the knowledge graph carries its own structure, and the embedding
+> compute it required is gone with it.
 
 ---
 
@@ -101,37 +102,37 @@ Graph (from backend)            HTML (from engine)
             and decorate that <p>
 ```
 
-"Decorating" means annotating the existing `<p>` with: a relation-count badge,
-highlights/connectors to related paragraphs, and contradiction evidence on
-click. The graph is a **layer on top** of the already-painted HTML — it annotates
-it, it does not replace it.
+"Decorating" means annotating the existing `<p>` with the entity underlines and the
+connectors of the evidence bridge. The graph is a **layer on top** of the
+already-painted HTML — it annotates it, it does not replace it.
 
 ### Full round trip
 
 ```
-docx ─► engine ─► HTML (with data-node-id)  +  nodes
-                          ▲                     │
-                          │                     ▼  /process
-                          │                   graph (edges by id)
-                          │                     │
-                          └──── decorate by id ─┘
+docx ─► engine ─► HTML (with data-node-id)  +  paragraphs
+                          ▲                        │
+                          │                        ▼  offline extraction
+                          │                   knowledge graph (paragraph ids)
+                          │                        │
+                          └──── decorate by id ────┘
 ```
 
 The paragraph **`id`** is the single bridge: it is identical in the HTML and in
-the graph, so the graph can always be drawn as an annotation over the rendered
-document.
+the knowledge graph, so the graph can always be drawn as an annotation over the
+rendered document.
 
 ---
 
 ## Repository structure
 
 - [`web/`](web): Next.js frontend (the rendering engine + visual analytics UI).
-- [`server/`](server): FastAPI backend (paragraph graph, contradiction analysis).
+- [`server/`](server): Django + DRF backend (paragraph dump, knowledge-graph store, chat).
 - [`infra/`](infra): datasets and support files (CUAD, ContractNLI, etc.).
 - [`notebooks/`](notebooks): exploration and experiment notebooks.
 
 ## Documentation
 
 - **Setup & run:** [INSTALL.md](INSTALL.md)
+- Corpus measurements: [docs/kg-corpus-measurements.md](docs/kg-corpus-measurements.md)
 - Backend: [server/README.md](server/README.md)
 - Frontend: [web/README.md](web/README.md)

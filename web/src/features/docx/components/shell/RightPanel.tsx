@@ -9,11 +9,9 @@ import {
 	ChatIcon,
 	CloseIcon,
 	KnowledgeGraphIcon,
-	RelatedParagraphsIcon,
 } from '@/components/common/icons';
 
 const HEADER_ICONS: Record<RightPanelTab, React.ComponentType<{ className?: string }>> = {
-	related: RelatedParagraphsIcon,
 	knowledge_graph: KnowledgeGraphIcon,
 	assistant: ChatIcon,
 };

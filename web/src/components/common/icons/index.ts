@@ -5,5 +5,4 @@ export { DocumentIcon } from './DocumentIcon';
 export { HammerShieldIcon } from './HammerShieldIcon';
 export { KnowledgeGraphIcon } from './KnowledgeGraphIcon';
 export { LightningBoltIcon } from './LightningBoltIcon';
-export { RelatedParagraphsIcon } from './RelatedParagraphsIcon';
 export { UserIcon } from './UserIcon';

@@ -2,106 +2,9 @@
 		background: rgba(37, 99, 235, 0.28);
 	}
 
-	.docx-relations-badge-host {
-		position: relative;
-		transition: background-color 140ms ease;
-	}
-
-	.docx-relations-badge-host::before {
-		content: '';
-		position: absolute;
-		right: var(--docx-relations-guide-right, -13px);
-		top: -2px;
-		bottom: -2px;
-		width: 2px;
-		border-radius: 9999px;
-		background: linear-gradient(
-			to bottom,
-			transparent 0%,
-			#e2e8f0 18%,
-			#e2e8f0 82%,
-			transparent 100%
-		);
-		pointer-events: none;
-		transition: background 140ms ease;
-	}
-
-	.docx-relations-badge-host[data-relations-tone='linked']::before {
-		background: linear-gradient(
-			to bottom,
-			transparent 0%,
-			#60a5fa 18%,
-			#60a5fa 82%,
-			transparent 100%
-		);
-	}
-
-	.docx-relations-badge-host::after {
-		content: attr(data-relations-count);
-		position: absolute;
-		right: var(--docx-relations-badge-right, -24px);
-		top: 50%;
-		display: inline-flex;
-		height: 20px;
-		width: 20px;
-		min-width: 20px;
-		transform: translateY(-50%);
-		align-items: center;
-		justify-content: center;
-		border-radius: 9999px;
-		border: 1px solid #e5e7eb;
-		background: #ffffff;
-		color: #2563eb;
-		font-size: 10px;
-		font-weight: 600;
-		line-height: 1;
-		box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
-		transition: transform 140ms ease, box-shadow 140ms ease, background-color 140ms ease;
-		pointer-events: none;
-	}
-
-	.docx-relations-badge-host[data-relations-tone='linked']::after {
-		border-color: transparent;
-		background: #2563eb;
-		color: #ffffff;
-		box-shadow: 0 2px 6px rgba(37, 99, 235, 0.32);
-	}
-
 	.related-badges-off .docx-relations-badge-host::before,
-	.related-badges-off .docx-relations-badge-host::after {
-		display: none;
-	}
-
 	.related-focus-on .docx-relations-badge-host::before,
-	.related-focus-on .docx-relations-badge-host::after {
-		opacity: 0.2;
-	}
-
 	.related-focus-on .docx-relations-badge-host.docx-related-badge-emphasis::before,
-	.related-focus-on .docx-relations-badge-host.docx-related-badge-emphasis::after {
-		opacity: 1;
-	}
-
-	.related-focus-on .docx-relations-badge-host.docx-related-badge--similarity::before {
-		background: #16a34a;
-	}
-
-	.related-focus-on .docx-relations-badge-host.docx-related-badge--similarity::after {
-		border-color: #86efac;
-		background: #dcfce7;
-		color: #15803d;
-	}
-
-	.related-focus-on .docx-relations-badge-host.docx-related-badge--reference::before {
-		background: #2563eb;
-	}
-
-	.related-focus-on .docx-relations-badge-host.docx-related-badge--reference::after {
-		border-color: #93c5fd;
-		background: #dbeafe;
-		color: #1d4ed8;
-	}
-
 	.docx-citation-flash {
 		animation: citation-flash 1.2s ease-out;
 	}
@@ -173,11 +76,6 @@
 
 	.docx-paragraph-explanation-source-hidden {
 		opacity: 0.12 !important;
-		filter: saturate(0.7);
-	}
-
-	.docx-contradiction-source-hidden {
-		opacity: 0.18 !important;
 		filter: saturate(0.7);
 	}
 
@@ -296,41 +194,6 @@
 		box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.95), 0 0 0 2px rgba(147, 197, 253, 0.36);
 	}
 
-	.docx-paragraph-explanation-cap-label {
-		position: absolute;
-		transform: translateY(-50%);
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		height: 16px;
-		min-width: 34px;
-		padding: 0 6px;
-		border: 1px solid #93c5fd;
-		border-radius: 9999px;
-		background: rgba(219, 234, 254, 0.98);
-		color: #1d4ed8;
-		font-size: 10px;
-		font-weight: 500;
-		line-height: 1;
-		pointer-events: none;
-	}
-
-	.docx-paragraph-explanation-cap-label--reference {
-		border-color: #93c5fd;
-		background: rgba(219, 234, 254, 0.98);
-		color: #1d4ed8;
-		font-size: 9px;
-		font-style: normal;
-	}
-
-	.docx-paragraph-explanation-cap-label--similarity {
-		border-color: #86efac;
-		background: rgba(220, 252, 231, 0.98);
-		color: #15803d;
-		font-size: 9px;
-		font-style: normal;
-	}
-
 	.docx-paragraph-explanation-line-fold {
 		position: absolute;
 		width: 12px;
@@ -371,7 +234,7 @@
 		line-height: inherit;
 	}
 
-	.docx-related-scroll-marker {
+	.docx-evidence-scroll-marker {
 		position: absolute;
 		left: 0;
 		right: 0;
@@ -388,16 +251,8 @@
 			box-shadow 120ms ease;
 	}
 
-	.docx-related-scroll-marker--reference {
-		background: #2563eb;
-	}
-
-	.docx-related-scroll-marker--similarity {
-		background: #16a34a;
-	}
-
-	.docx-related-scroll-marker:hover,
-	.docx-related-scroll-marker:focus-visible {
+	.docx-evidence-scroll-marker:hover,
+	.docx-evidence-scroll-marker:focus-visible {
 		outline: none;
 		opacity: 1;
 		transform: translateY(-50%) scaleY(1.4);

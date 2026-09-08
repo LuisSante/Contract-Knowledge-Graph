@@ -10,7 +10,7 @@ const WHEEL_DIRECTION_DEADZONE = 2;
 
 interface AttachShiftWheelCompressionOptions {
 	host: HTMLElement;
-	/** Tween duration in ms (related: 560, contradiction: 420). */
+	/** Tween duration in ms. */
 	durationMs: number;
 	/** Recomputes with the current compression value (compute + setState + classes). */
 	refresh: (compression: number) => void;

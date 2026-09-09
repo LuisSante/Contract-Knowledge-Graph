@@ -48,6 +48,12 @@ export interface GridMark {
 	lane: GridLane;
 	/** Whoever the statement is really about: the obligor of a duty, the holder of a right. */
 	ownerName: string | null;
+	/**
+	 * The lane at the other end of the same provision — a prohibition on one party
+	 * protects the other, a duty owed to it benefits it. Null when the contract names
+	 * only one side, and then the provision credits nobody.
+	 */
+	counterpartLane: GridLane | null;
 	label: string;
 	detail: string;
 }
@@ -87,6 +93,11 @@ export interface StatementGrid {
  */
 function ownerIdOf(statement: KgDeonticNode): string | null {
 	return statement.kind === 'right' ? statement.benefitPartyId : statement.burdenPartyId;
+}
+
+/** The party at the other end: the beneficiary of a duty, the one bound by a right. */
+function counterpartIdOf(statement: KgDeonticNode): string | null {
+	return statement.kind === 'right' ? statement.burdenPartyId : statement.benefitPartyId;
 }
 
 /** Where a mark sits, so a qualifier can inherit it from whatever it qualifies. */
@@ -152,12 +163,16 @@ export function buildStatementGrid(
 		const clauseId =
 			statement.clauseId && byClause.has(statement.clauseId) ? statement.clauseId : null;
 		anchorOf.set(statement.id, { clauseId, lane });
+		const counterpartId = counterpartIdOf(statement);
+		const counterpart: GridLane | null =
+			counterpartId === partyAId ? 'a' : counterpartId === partyBId ? 'b' : null;
 		place(
 			{
 				id: statement.id,
 				kind: statement.kind,
 				lane,
 				ownerName,
+				counterpartLane: counterpart === lane ? null : counterpart,
 				label: statement.action || statement.kind,
 				detail: statement.summary || statement.action || statement.text,
 			},
@@ -190,7 +205,7 @@ export function buildStatementGrid(
 	) => {
 		const anchor = anchorFor(targetId, paragraphIds);
 		place(
-			{ id, kind, lane: anchor.lane, ownerName: null, label, detail },
+			{ id, kind, lane: anchor.lane, ownerName: null, counterpartLane: null, label, detail },
 			anchor.clauseId
 		);
 	};

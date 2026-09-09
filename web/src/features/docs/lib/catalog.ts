@@ -25,8 +25,10 @@ const SHELVES: Array<{ folder: string; group: string; order: number }> = [
 
 const WITHIN: Record<string, number> = {
 	'ontologia/esquema': 1,
-	'metricas/burden-benefit': 1,
-	'metricas/pagerank': 2,
+	'metricas/importancia-clausula': 1,
+	'metricas/reparto-beneficio': 2,
+	'metricas/burden-benefit': 3,
+	'metricas/pagerank': 4,
 	'medidas/corpus': 1,
 	'marco-conceptual': 1,
 	tasks: 2,

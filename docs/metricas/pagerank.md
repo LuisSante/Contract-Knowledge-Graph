@@ -2,7 +2,12 @@
 
 *Formalization draft — a starting point to refine, not final wording.*
 
-> **Status: kept as the write-up of a method the system moved away from.** The clause
+> **Status: kept as the write-up of a method the system moved away from.** El orden de
+> las cláusulas lo decide ahora [`importancia-clausula.md`](./importancia-clausula.md),
+> que adapta el prior por párrafo de GraphQAG; los defectos medidos que lo motivaron
+> están ahí.
+>
+> **Status original:** The clause
 > weight is now a plain severity sum over each party's own statements; see the status
 > note in [`burden-benefit.md`](./burden-benefit.md) for what was measured and why. PPR still
 > runs to rank the paragraphs the document highlights. Keep this file for the paper's

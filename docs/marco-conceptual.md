@@ -1,6 +1,6 @@
 # Marco conceptual — usuario, carga y beneficio contractual
 
-**Versión de trabajo:** 1, 2026-09-08. **Tareas resueltas:** 1.1, 1.2 y 1.3 de [tasks.md](./tasks.md).
+**Versión de trabajo:** 2, 2026-09-09. **Tareas resueltas:** 1.1, 1.2, 1.3, 1.6 y 1.9 de [tasks.md](./tasks.md).
 
 Este documento recoge el usuario y el propósito indicados para la plataforma y establece definiciones operacionales a partir de la Legal Graph Ontology proporcionada. Las definiciones orientan la representación, el análisis y la explicación al usuario. Su validación con contratos reales y revisión experta corresponde a las etapas posteriores de la lista de tareas.
 
@@ -138,6 +138,68 @@ Para evitar confundir ausencia de datos con ausencia de beneficio, debe poder di
 
 El beneficio y la protección quedan definidos a partir de derechos, prestaciones y restricciones sustentadas. Se establecen la atribución al beneficiario, el tratamiento de condiciones y los límites frente a la valoración global. La representación formal de múltiples efectos y su visualización se desarrollarán en la etapa 3.
 
+## 1.6 Relevancia estructural
+
+### Definición operacional
+
+La **relevancia estructural de una cláusula** es cuánto manda dentro de su contrato, medida sobre la estructura del grafo y no sobre el texto de una parte. Es independiente de quién lea: ordena las cláusulas, no las atribuye.
+
+Se distingue de la carga y del beneficio, que sí son atribuidos. Una cláusula puede ser muy relevante y afectar por igual a las dos partes, o poco relevante y estar completamente desequilibrada.
+
+| Origen en la ontología | Papel en la medida |
+|---|---|
+| `Clause` | La unidad que recibe la masa inicial; todas reciben la misma |
+| `Obligation`, `Right`, `Prohibition` | Reparten esa masa dentro de su cláusula, a partes iguales |
+| Todas las relaciones del grafo | Redistribuyen la masa durante el recorrido |
+
+### Cómo se obtiene
+
+Un PageRank cuyo vector de personalización reparte el reinicio entre las cláusulas y, dentro de cada una, entre sus disposiciones. La fórmula y su procedencia están en [`metricas/importancia-clausula.md`](./metricas/importancia-clausula.md).
+
+El reparto uniforme por cláusula es la decisión que define la medida: **una cláusula con quince disposiciones no empieza pesando cinco veces una con tres**. Sin ese ajuste, la medida reproduce el número de disposiciones y no aporta nada sobre uno más simple: en el contrato de referencia, la versión anterior coincidía con contar disposiciones en ρ = 0.882.
+
+### Qué tarea resuelve
+
+Ordenar las filas de la retícula. Esa es la única función que se le atribuye hoy, y el criterio para conservarla es que el orden ayude a decidir qué leer primero.
+
+### Límites de la interpretación
+
+**No es relativa a una parte.** La tarea 1.6 pedía definir relevancia «respecto de una parte» y la respuesta encontrada es que esta medida no lo es: su vector de personalización es uniforme sobre el documento. Responde *qué cláusula importa en este contrato*, nunca *para quién*.
+
+Existe una variante que sí sería relativa a una parte —sembrar en sus propias disposiciones y propagar solo por las relaciones que no repiten la posición— pero está descrita y medida sin haberse probado. El nodo de parte tiene grado cero en ese subgrafo, de modo que la semilla tendrían que ser sus disposiciones.
+
+**Depende de que el documento tenga estructura.** En el resumen de referencia el rango es apenas un factor 2 y una cláusula con una sola disposición puede quedar tercera; en el contrato completo el rango es 5.1 y el orden resulta interpretable. La medida solo distingue cuando existen relaciones que redistribuyan la masa.
+
+### Criterio cubierto por la tarea 1.6
+
+La relevancia estructural queda definida, separada de la atribución de efectos, asociada a una tarea concreta y acotada por dos límites verificados: no distingue partes y necesita un contrato con referencias cruzadas. La comparación sistemática con alternativas corresponde a la etapa 4.
+
+## 1.9 Límites de los pesos actuales
+
+### Qué representan
+
+Los pesos por tipo —prohibición 1.0, obligación 0.7, derecho 0.3— expresan un supuesto: **prohibir ata más que obligar, y obligar más que permitir**. Es una decisión de modelado, no un hecho del contrato, y por eso son ajustables por el usuario.
+
+Se aplican únicamente al reparto del beneficio por cláusula, descrito en [`metricas/reparto-beneficio.md`](./metricas/reparto-beneficio.md). No intervienen en la relevancia estructural, que es independiente de ellos.
+
+### Qué mueve realmente cada peso
+
+Una disposición acredita a la parte a la que sirve, y su peso viaja completo a ese extremo. Una prohibición sobre una parte resta oportunidades a quien la soporta y acredita por el mismo peso a quien protege.
+
+De ahí una consecuencia que conviene enunciar: **el peso de las prohibiciones no solo penaliza, también reparte beneficio**. Aumentarlo no endurece el análisis de forma neutra; traslada más cuota de una parte a la otra. En el contrato de referencia, de la cuota positiva total el peso de obligación explica el 39%, el de derecho el 34% y el de prohibición el 26%.
+
+### Límites de la interpretación
+
+**No están validados.** Ninguna evidencia sostiene que 1.0, 0.7 y 0.3 sean las proporciones correctas. Deben tratarse como parámetros de exploración: sirven para ver si una conclusión resiste al moverlos, no para afirmar magnitudes.
+
+**Su influencia es menor de lo que parece.** Sustituir el peso por un simple recuento de disposiciones produce casi la misma clasificación: ρ = 0.964 en el contrato de referencia. Un recuento tendría la ventaja de ser verificable contando las marcas de la fila, y la desventaja de perder la distinción entre prohibir y permitir. La decisión sigue abierta.
+
+**Una conclusión que cambia al mover un peso no es una conclusión.** El uso previsto de los deslizadores es comprobar esa estabilidad, y ese uso debe explicarse al usuario.
+
+### Criterio cubierto por la tarea 1.9
+
+Los pesos quedan documentados como supuesto explícito, con su efecto real sobre el reparto, una medida de cuánto aportan frente a una alternativa sin pesos y la instrucción de tratarlos como exploración hasta que exista una validación.
+
 ## Papel de la ontología en estas definiciones
 
 Las tres tareas utilizan la Legal Graph Ontology como base para describir el contrato. Carga, beneficio y protección son lecturas de sus entidades y relaciones desde la perspectiva de una parte; estas definiciones no requieren añadir nuevos tipos de nodo.
@@ -168,4 +230,4 @@ La [guía de extracción actual](../server/services/graph/knowledge/ontology.py)
 | Utilizar ejemplos hipotéticos variados | Mantener definiciones generales y reservar los contratos reales para su evaluación |
 | Separar efecto identificado y valoración | Mantener pendientes la medición de favorabilidad, la exposición al riesgo y el papel de los pesos |
 
-El siguiente paso en la lista es **1.4, definir capacidad de decisión**. La formalización del riesgo, la evaluación de PPR, la validación experta, la generación de nuevos KG y la implementación visual conservan sus tareas pendientes.
+El siguiente paso en la lista es **1.4, definir capacidad de decisión**, para la que ya existe un método medido pero no redactado. La formalización del riesgo, las preguntas analíticas, la definición de asimetría, la validación experta, la generación de nuevos KG y la implementación visual conservan sus tareas pendientes.

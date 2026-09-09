@@ -40,10 +40,10 @@ Esta interpretación orienta la evaluación de PPR. El sentido contractual de un
 
 - [ ] **1.4 Definir capacidad de decisión.** Explicar cómo reconocer quién puede autorizar, modificar, suspender o terminar algo. Distinguir una facultad unilateral de una autorización ordinaria cuando esa diferencia sea relevante para el análisis.
 - [ ] **1.5 Definir exposición al riesgo.** Identificar las consecuencias adversas posibles, sus desencadenantes y las protecciones que las limitan. Indicar qué dimensiones pueden observarse en el contrato y cuáles necesitan información externa o juicio experto.
-- [ ] **1.6 Definir relevancia estructural.** Especificar qué significa que una entidad sea relevante respecto de una parte y qué tarea podría ayudar a resolver su ranking mediante PPR.
+- [x] **1.6 Definir relevancia estructural.** Especificar qué significa que una entidad sea relevante respecto de una parte y qué tarea podría ayudar a resolver su ranking mediante PPR. Resuelta en [marco conceptual §1.6](./marco-conceptual.md) y [`metricas/importancia-clausula.md`](./metricas/importancia-clausula.md); la respuesta encontrada es que la medida **no** resulta relativa a una parte.
 - [ ] **1.7 Redactar cinco preguntas analíticas concretas.** Cubrir localizar, explicar y verificar. Una pregunta inicial es: «¿Qué restricciones de Bellicum conceden capacidad de autorización a Miltenyi?». Para cada pregunta, indicar qué evidencia permitiría responderla y cómo evaluaríamos la respuesta.
 - [ ] **1.8 Establecer qué contará como asimetría.** Definir diferencias observables entre partes en cargas, protecciones o facultades. Aclarar que una diferencia no demuestra por sí sola injusticia, favorabilidad global o mayor riesgo.
-- [ ] **1.9 Acordar los límites de los pesos actuales.** Documentar qué representa ponderar obligaciones, derechos y prohibiciones. Tratar esos pesos como parámetros de exploración hasta contar con una validación de su interpretación.
+- [x] **1.9 Acordar los límites de los pesos actuales.** Documentar qué representa ponderar obligaciones, derechos y prohibiciones. Tratar esos pesos como parámetros de exploración hasta contar con una validación de su interpretación. Resuelta en [marco conceptual §1.9](./marco-conceptual.md) y [`metricas/reparto-beneficio.md`](./metricas/reparto-beneficio.md).
 
 **Entregable:** una especificación conceptual breve con definiciones, usuario objetivo, ejemplos y cinco preguntas evaluables.
 
@@ -108,11 +108,11 @@ Estos componentes son, inicialmente, colecciones de efectos identificados y sust
 La revisión preliminar de `attention.ts` encontró una actualización compatible con la forma habitual de PPR y conservación de masa al reproducirla sobre el resumen. También observó que la magnitud por cláusula agrega enunciados sin efecto atribuido a la parte seleccionada. Estas observaciones motivan la auditoría; no constituyen su cierre.
 
 - [ ] **Documentar todos los usos actuales de PPR.** Identificar dónde interviene en rankings, selección de evidencia, pesos por cláusula y comparaciones. Diferenciar las funciones activas de las vistas o métodos que quedaron desactivados.
-- [ ] **Especificar el recorrido.** Documentar nodos fuente, vector de personalización, probabilidad de reinicio, dirección de las relaciones, pesos, tratamiento de relaciones repetidas y nodos sin salida. Explicar qué significa cada decisión para una lectura centrada en una parte.
+- [x] **Especificar el recorrido.** Documentar nodos fuente, vector de personalización, probabilidad de reinicio, dirección de las relaciones, pesos, tratamiento de relaciones repetidas y nodos sin salida. Explicar qué significa cada decisión para una lectura centrada en una parte. Documentado en [`metricas/importancia-clausula.md`](./metricas/importancia-clausula.md) para el método vigente.
 - [ ] **Verificar la implementación numérica.** Comparar con una implementación de referencia usando exactamente el mismo grafo y parámetros. Comprobar valores no negativos, masa total, residuo y convergencia; incluir casos pequeños con resultado conocido y entradas inválidas.
-- [ ] **Analizar componentes desconectados y reciprocidad.** Determinar cuándo un cero refleja falta de conexión con la fuente y cuándo revela una representación incompleta, como un nodo separado de «cada parte». Corregir la representación cuando corresponda y conservar el significado de los ceros restantes.
-- [ ] **Separar relevancia estructural y efecto atribuido.** Mantener distinguibles la relevancia de una entidad respecto de una parte y las cargas o beneficios sustentados para esa parte. Revisar las agregaciones por cláusula para que su etiqueta describa lo que realmente suman.
-- [ ] **Revisar la comparabilidad entre partes.** Examinar valores originales, normalizaciones y denominadores. Una normalización consistente facilita comparar, pero no demuestra que la relevancia estructural sea una medida comparable de utilidad o riesgo.
+- [x] **Analizar componentes desconectados y reciprocidad.** Determinar cuándo un cero refleja falta de conexión con la fuente y cuándo revela una representación incompleta, como un nodo separado de «cada parte». Corregir la representación cuando corresponda y conservar el significado de los ceros restantes. El nodo «each Party» dejaba cuatro cláusulas en cero exacto; el prior por cláusula lo corrige y ninguna puede valer cero.
+- [x] **Separar relevancia estructural y efecto atribuido.** Mantener distinguibles la relevancia de una entidad respecto de una parte y las cargas o beneficios sustentados para esa parte. Revisar las agregaciones por cláusula para que su etiqueta describa lo que realmente suman. El orden usa la relevancia estructural y la barra el efecto atribuido; cada etiqueta describe lo que suma.
+- [x] **Revisar la comparabilidad entre partes.** Examinar valores originales, normalizaciones y denominadores. Una normalización consistente facilita comparar, pero no demuestra que la relevancia estructural sea una medida comparable de utilidad o riesgo. La normalización por ego daba a cada parte un denominador distinto; anotado en [`metricas/burden-benefit.md`](./metricas/burden-benefit.md).
 - [ ] **Comparar tres alternativas.** Evaluar una base de efectos directos, el PPR actual y una variante que considere tipos de relación, dirección y atribución de efectos. Justificar las transiciones de la variante antes de evaluar sus resultados.
 - [ ] **Evaluar sensibilidad y utilidad.** Variar parámetros y revisar cambios en los rankings y en la evidencia recuperada. Usar los casos de referencia para comprobar si PPR ayuda a localizar o explicar algo relevante y qué errores introduce.
 - [ ] **Decidir el papel de PPR.** Registrar en qué tareas aporta valor frente a la base. Puede conservarse para priorizar lectura o recuperar evidencia si los resultados apoyan ese uso. Documentar también los usos que no queden respaldados.
@@ -207,10 +207,14 @@ El experimento inicial usa el mismo resumen. Varias ejecuciones sobre él miden 
 
 - [Descripción del proyecto](../README.md).
 - [Mediciones del corpus](./medidas/corpus.md).
+- [Importancia de la cláusula — el orden de las filas](./metricas/importancia-clausula.md).
+- [Reparto del beneficio — el porcentaje de cada cláusula](./metricas/reparto-beneficio.md).
+- [Esquema del grafo de conocimiento](./ontologia/esquema.md).
 - [Métricas y estado de los métodos anteriores](./metricas/burden-benefit.md).
 - [Formalización anterior basada en PPR](./metricas/pagerank.md). Consultarla como antecedente; su propia nota de estado distingue el método anterior de la vista actual.
 - [Cálculo actual de atención](../web/src/features/docx/utils/knowledge/attention.ts).
 - [Construcción de la cuadrícula](../web/src/features/docx/utils/knowledge/statement-grid.ts).
+- [Cálculo de la importancia de cláusula](../web/src/features/docx/utils/knowledge/clause-importance.ts).
 - [Notebook de extracción de KG](../notebooks/KG/build_kg.ipynb).
 - [Referencia de PageRank en NetworkX](https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.link_analysis.pagerank_alg.pagerank.html).
 - Documentación oficial de los candidatos mencionados: [GPT-5](https://developers.openai.com/api/docs/models/gpt-5) y [GPT-6 Astra](https://developers.openai.com/api/docs/models/gpt-6-astra). Comprobar disponibilidad y parámetros al preparar el experimento.

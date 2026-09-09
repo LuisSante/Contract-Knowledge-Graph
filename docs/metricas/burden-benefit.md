@@ -1,6 +1,9 @@
 # Carga y beneficio — métricas del grafo
 
-> **Status: no longer drives the view.** These formulas are still what
+> **Status: no longer drives the view.** La métrica vigente de la barra es el reparto del
+> beneficio, en [`reparto-beneficio.md`](./reparto-beneficio.md).
+>
+> **Status original:** These formulas are still what
 > `attention.ts` computes, and `computePartyAttention` still runs — it ranks the
 > paragraphs the document highlights, and backs the "Weigh with PageRank" comparison
 > checkbox. But the number the grid shows is no longer this one: a clause now weighs

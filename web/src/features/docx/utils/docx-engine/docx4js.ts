@@ -1,12 +1,22 @@
 import type { Docx4jsBrowserModule } from './types';
-import { resolveDocx4jsFromRequire } from './loader';
 
-/**
- * DOM helpers for the docx viewer (loading the browser docx4js bundle and
- * managing the relations badge). REST queries were moved to
- * `@/services/*`; the graph builders to `@/services/graph`.
- */
+export function resolveDocx4jsFromRequire(): Docx4jsBrowserModule | null {
+	const maybeRequire = (
+		globalThis as typeof globalThis & { require?: (moduleName: string) => unknown }
+	).require;
+	if (typeof maybeRequire !== 'function') return null;
 
+	try {
+		const mod = maybeRequire('docx4js') as Partial<Docx4jsBrowserModule> | undefined;
+		if (mod?.docx?.load) return mod as Docx4jsBrowserModule;
+	} catch {
+		return null;
+	}
+
+	return null;
+}
+
+/** The bundle is fetched once and shared; a failed load clears the promise so it retries. */
 let browserDocxModulePromise: Promise<Docx4jsBrowserModule> | null = null;
 
 export async function loadBrowserDocx4js(): Promise<Docx4jsBrowserModule> {

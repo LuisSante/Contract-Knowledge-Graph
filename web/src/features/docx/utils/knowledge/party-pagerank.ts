@@ -2,7 +2,7 @@ import type { DeonticKind, KnowledgeGraph } from '@/types/knowledge';
 import { deonticNodes } from '@/types/knowledge';
 
 /**
- * Party-centric attention over the deontic KG.
+ * Party-centric scores over the deontic KG.
  *
  *   magnitude(v|P) = PPR_P(v) · severity(kind)     unsigned, every statement — visual weight
  *   impact(v|P)    = magnitude · sign(tone(v,P))   signed, P's statements only — the ledger
@@ -35,7 +35,7 @@ export interface KgLedger {
 	topClauses: KgLedgerClause[];
 }
 
-export interface PartyAttention {
+export interface PartyScores {
 	/** Normalized 0..1 magnitude per deontic statement. */
 	deonticScore: Map<string, number>;
 	/** Normalized 0..1 magnitude per clause. */
@@ -127,12 +127,12 @@ function normalize(values: Map<string, number>): Map<string, number> {
 	return new Map([...values].map(([id, value]) => [id, value / peak] as const));
 }
 
-export function computePartyAttention(
+export function computePartyScores(
 	kg: KnowledgeGraph,
 	partyId: string,
 	severity: DeonticSeverity = DEFAULT_SEVERITY,
 	usePageRank = true
-): PartyAttention {
+): PartyScores {
 	const deontic = deonticNodes(kg);
 
 	// With PPR off, every node weighs 1, so magnitude = severity — the raw baseline.

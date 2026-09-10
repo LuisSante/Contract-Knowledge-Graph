@@ -5,28 +5,28 @@ import {
 	clearEntityMarks,
 	highlightEntitiesInElement,
 	syncHoveredEntityKey,
-	type DocumentEntityHighlight,
+	type EntityHighlight,
 } from '@/features/docx/utils/assistant/entity-marks';
 
-interface UseDocumentEntityHighlightsParams {
+interface EntityHighlightsParams {
 	active: boolean;
 	renderEpoch: number;
 	paragraphElementById: Map<string, HTMLElement>;
 	/** Paragraphs where the entities are highlighted. */
 	targetIds: string[];
-	entities: DocumentEntityHighlight[];
+	entities: EntityHighlight[];
 }
 
 /**
  * Highlights the active knowledge-graph entities inside the target paragraphs.
  */
-export function useDocumentEntityHighlights({
+export function useEntityHighlights({
 	active,
 	renderEpoch,
 	paragraphElementById,
 	targetIds,
 	entities,
-}: UseDocumentEntityHighlightsParams) {
+}: EntityHighlightsParams) {
 	const targetKey = targetIds.join('|');
 	const entityKey = entities.map((entity) => entity.key).join('|');
 

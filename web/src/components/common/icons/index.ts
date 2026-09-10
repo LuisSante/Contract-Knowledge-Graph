@@ -1,6 +1,6 @@
 export { ChatIcon } from './ChatIcon';
 export { CloseIcon } from './CloseIcon';
-export { ContractChatAssistantIcon } from './ContractChatAssistantIcon';
+export { AssistantIcon } from './AssistantIcon';
 export { DocumentIcon } from './DocumentIcon';
 export { HammerShieldIcon } from './HammerShieldIcon';
 export { KnowledgeGraphIcon } from './KnowledgeGraphIcon';

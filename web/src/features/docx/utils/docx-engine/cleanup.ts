@@ -17,10 +17,6 @@ function getEditableRootElement(element: HTMLElement): HTMLElement {
 	return element.querySelector<HTMLElement>('[data-docx-editable-root="true"]') ?? element;
 }
 
-export function clearRelationBadgeHost(host: HTMLElement): void {
-	delete host.dataset.relationsTone;
-}
-
 export function freezeIgnoredParagraphElement(element: HTMLElement): void {
 	const editableRoot = getEditableRootElement(element);
 	element.dataset.ignoredParagraph = 'true';

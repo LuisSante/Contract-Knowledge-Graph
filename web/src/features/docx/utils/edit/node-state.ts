@@ -1,9 +1,5 @@
 import type { Node as ParagraphNode, ParagraphEditState } from '@/types/document';
 
-// `ensureNodeEditState` now lives in the engine (model helper). It is re-exported
-// here to avoid breaking the app's consumers.
-export { ensureNodeEditState } from '@/features/docx/utils/docx-engine/edit-state';
-
 export function getNodeCurrentText(
 	nodeEditStateById: Map<string, ParagraphEditState>,
 	node: ParagraphNode

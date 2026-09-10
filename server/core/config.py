@@ -15,10 +15,6 @@ class Settings(BaseSettings):
     # this extract paragraphs from a document
     EXTRACT_PARAGRAPHS: bool = True
 
-    SEMANTIC_RELATED_MODE: str = "top_k"
-    SEMANTIC_TOP_K: int = 5
-    SEMANTIC_SIMILARITY_THRESHOLD: float = 0.80
-
     CORS_ORIGINS: list[str] = [
         "http://localhost:3000",
         "http://127.0.0.1:3000",
@@ -40,22 +36,6 @@ class Settings(BaseSettings):
         if normalized in {"1", "true", "yes", "on", "debug", "dev", "development"}:
             return True
         return False
-
-    @field_validator("SEMANTIC_RELATED_MODE")
-    @classmethod
-    def _normalize_mode(cls, value: str) -> str:
-        normalized = value.strip().lower()
-        return normalized if normalized in {"top_k", "all"} else "top_k"
-
-    @field_validator("SEMANTIC_TOP_K")
-    @classmethod
-    def _min_top_k(cls, value: int) -> int:
-        return max(1, value)
-
-    @field_validator("SEMANTIC_SIMILARITY_THRESHOLD")
-    @classmethod
-    def _clamp_threshold(cls, value: float) -> float:
-        return max(0.0, min(1.0, value))
 
     @field_validator("CORS_ORIGINS", "ALLOWED_HOSTS", mode="before")
     @classmethod

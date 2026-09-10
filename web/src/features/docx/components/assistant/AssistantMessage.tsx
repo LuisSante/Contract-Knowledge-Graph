@@ -5,7 +5,7 @@ import { Fragment } from 'react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Bubble, BubbleContent } from '@/components/ui/bubble';
 import { Message, MessageAvatar, MessageContent } from '@/components/ui/message';
-import { ContractChatAssistantIcon, UserIcon } from '@/components/common/icons';
+import { AssistantIcon, UserIcon } from '@/components/common/icons';
 import {
 	shortReferenceLabel,
 	splitReferenceAndEntityText,
@@ -19,7 +19,7 @@ import { SuggestedQuestions } from '@/features/docx/components/assistant/Suggest
 
 interface AssistantMessageProps {
 	message: AssistantChatMessage;
-	onSuggestedQuestionClick: (question: string) => void;
+	onSuggestionClick: (question: string) => void;
 	onFocusNodeFromPanel: (nodeId: string, emphasize?: boolean) => void;
 	entityHighlightsEnabled?: boolean;
 	onToggleEntityHighlights?: () => void;
@@ -67,7 +67,7 @@ function renderSegments(
 
 export function AssistantMessage({
 	message,
-	onSuggestedQuestionClick,
+	onSuggestionClick,
 	onFocusNodeFromPanel,
 	entityHighlightsEnabled = true,
 	onToggleEntityHighlights = () => {},
@@ -84,7 +84,7 @@ export function AssistantMessage({
 					{isUser ? (
 						<UserIcon className="h-3.5 w-3.5" strokeWidth={1.9} />
 					) : (
-						<ContractChatAssistantIcon className="h-3.5 w-3.5" strokeWidth={1.9} />
+						<AssistantIcon className="h-3.5 w-3.5" strokeWidth={1.9} />
 					)}
 					<span className="sr-only">{isUser ? 'You' : 'Assistant'}</span>
 				</AvatarFallback>
@@ -132,7 +132,7 @@ export function AssistantMessage({
 						{message.suggestedQuestions?.length ? (
 							<SuggestedQuestions
 								questions={message.suggestedQuestions}
-								onSuggestedQuestionClick={onSuggestedQuestionClick}
+								onSuggestionClick={onSuggestionClick}
 							/>
 						) : null}
 

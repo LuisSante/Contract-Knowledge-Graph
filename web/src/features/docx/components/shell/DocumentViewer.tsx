@@ -28,8 +28,8 @@ interface DocumentViewerProps {
 	selectedParagraph: ParagraphNode | null;
 	evidenceParagraphs: EvidenceParagraph[];
 	/** Knowledge Graph deontic rail: color by burden/benefit, opacity by attention. */
-	deonticToneByParagraphId?: Record<string, 'burden' | 'benefit'>;
-	deonticScoreByParagraphId?: Record<string, number>;
+	toneByParagraph?: Record<string, 'burden' | 'benefit'>;
+	scoreByParagraph?: Record<string, number>;
 }
 
 /**
@@ -46,8 +46,8 @@ export function DocumentViewer({
 	evidenceBridgeActive,
 	selectedParagraph,
 	evidenceParagraphs,
-	deonticToneByParagraphId,
-	deonticScoreByParagraphId,
+	toneByParagraph,
+	scoreByParagraph,
 }: DocumentViewerProps) {
 	const scrollHostRef = useRef<HTMLElement>(null);
 
@@ -131,8 +131,8 @@ export function DocumentViewer({
 						bridge={evidenceBridge}
 						onJumpToParagraph={jumpToParagraph}
 						onRailMouseDown={startRailScrub}
-						toneByParagraphId={deonticToneByParagraphId}
-						scoreByParagraphId={deonticScoreByParagraphId}
+						toneByParagraph={toneByParagraph}
+						scoreByParagraph={scoreByParagraph}
 					/>
 			)}
 

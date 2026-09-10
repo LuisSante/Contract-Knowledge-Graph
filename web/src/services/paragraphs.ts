@@ -1,6 +1,6 @@
 import { api } from '@/lib/api';
 import type { Node as ParagraphNode, ParagraphEditState } from '@/types/document';
-import { getNodeCurrentText } from '@/features/docx/utils/edit/edit';
+import { getNodeCurrentText } from '@/features/docx/utils/edit';
 
 function buildProcessPages(
 	nodes: ParagraphNode[],

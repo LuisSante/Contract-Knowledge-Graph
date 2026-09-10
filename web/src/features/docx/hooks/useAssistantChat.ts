@@ -2,14 +2,14 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useDocumentStore } from '@/stores/document';
-import { useKnowledgeGraphStore } from '@/stores/knowledgeGraph';
+import { useGraphStore } from '@/stores/knowledge-graph';
 import { fetchAssistantResponse } from '@/services/assistant';
 import { getAxiosErrorMessage } from '@/features/docx/utils/docx-engine/http-error';
 import {
-	buildAssistantHistoryPayload,
-	buildAssistantNodeSnapshot,
-	resolveAssistantSuggestedQuestions,
-} from '@/features/docx/utils/assistant/assistant';
+	buildHistory,
+	buildNodeSnapshot,
+	resolveSuggestions,
+} from '@/features/docx/utils/assistant/payloads';
 import { buildUserMessage } from '@/features/docx/utils/assistant/message-builders';
 import type {
 	AssistantChatMessage,
@@ -73,7 +73,7 @@ export function useAssistantChat({
 		}
 
 		const { paragraphs, selectedParagraph } = useDocumentStore.getState();
-		const paragraphNodes = buildAssistantNodeSnapshot(paragraphs, nodeEditStateById);
+		const paragraphNodes = buildNodeSnapshot(paragraphs, nodeEditStateById);
 		if (paragraphNodes.length === 0) {
 			setError('The contract is still loading.');
 			return;
@@ -81,7 +81,7 @@ export function useAssistantChat({
 		// Gated on the focus, not on the ledger: the ledger is only built by the
 		// single-party bridge, and the panel seats a pair, so requiring it turned every
 		// question into "focus a party" even with one focused.
-		const kgState = useKnowledgeGraphStore.getState();
+		const kgState = useGraphStore.getState();
 		if (!kgState.focusNodeId) {
 			setError('Focus a party in the Knowledge Graph before asking about it.');
 			return;
@@ -104,7 +104,7 @@ export function useAssistantChat({
 			model: model?.trim() || undefined,
 			selectedParagraphId: selectedParagraph?.id ?? null,
 			paragraphNodes,
-			history: buildAssistantHistoryPayload(historyBeforeAnswer),
+			history: buildHistory(historyBeforeAnswer),
 			focusNodeId: kgState.focusNodeId,
 			focusNodeLabel: kgState.focusMeta?.label ?? null,
 			focusNodeKind: 'party',
@@ -140,7 +140,7 @@ export function useAssistantChat({
 					role: 'assistant',
 					content: response.answer,
 					citations: response.citations,
-					suggestedQuestions: resolveAssistantSuggestedQuestions(response.suggestedQuestions),
+					suggestedQuestions: resolveSuggestions(response.suggestedQuestions),
 				},
 			]);
 		} catch (err) {

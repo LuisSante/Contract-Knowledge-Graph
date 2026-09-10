@@ -5,9 +5,9 @@ import type {
 	Node as ParagraphNode,
 	ParagraphEditState,
 } from '@/types/document';
-import { getNodeCurrentText } from '@/features/docx/utils/edit/edit';
+import { getNodeCurrentText } from '@/features/docx/utils/edit';
 
-export function buildAssistantNodeSnapshot(
+export function buildNodeSnapshot(
 	paragraphNodes: ParagraphNode[],
 	nodeEditStateById: Map<string, ParagraphEditState>
 ): AssistantContextNode[] {
@@ -19,7 +19,7 @@ export function buildAssistantNodeSnapshot(
 	}));
 }
 
-export function buildAssistantHistoryPayload(
+export function buildHistory(
 	assistantMessages: AssistantChatMessage[],
 	limit = 8
 ): AssistantHistoryMessage[] {
@@ -29,7 +29,7 @@ export function buildAssistantHistoryPayload(
 	}));
 }
 
-function sanitizeSuggestedQuestions(value: unknown): string[] {
+function sanitizeSuggestions(value: unknown): string[] {
 	if (!Array.isArray(value)) return [];
 	const cleaned = value
 		.map((entry) => (typeof entry === 'string' ? entry.trim() : ''))
@@ -44,7 +44,7 @@ const FALLBACK_QUESTIONS = [
 	'Which obligations are conditional?',
 ];
 
-export function resolveAssistantSuggestedQuestions(value: unknown): string[] {
-	const normalized = sanitizeSuggestedQuestions(value);
+export function resolveSuggestions(value: unknown): string[] {
+	const normalized = sanitizeSuggestions(value);
 	return normalized.length > 0 ? normalized : FALLBACK_QUESTIONS;
 }

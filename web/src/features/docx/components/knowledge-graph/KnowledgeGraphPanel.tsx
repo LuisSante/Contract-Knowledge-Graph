@@ -15,12 +15,12 @@ import {
 	type ClauseImportance,
 } from '@/services/knowledge';
 import { useDocumentStore } from '@/stores/document';
-import { mergeGroupId, useKnowledgeGraphStore } from '@/stores/knowledgeGraph';
+import { mergeGroupId, useGraphStore } from '@/stores/knowledge-graph';
 import {
-	buildKnowledgeGraphBridge,
-	buildNodeDocumentTarget,
-	buildPairBridge,
-} from '@/features/docx/utils/knowledge/kg-bridge';
+	buildFocusPayload,
+	buildDocumentTarget,
+	buildPairPayload,
+} from '@/features/docx/utils/knowledge/graph-payload';
 import { applyPartyView } from '@/features/docx/utils/knowledge/party-view';
 import {
 	buildStatementGrid,
@@ -32,9 +32,9 @@ import {
 	type GridRow,
 	type MarkKind,
 } from '@/features/docx/utils/knowledge/statement-grid';
-import { DEFAULT_SEVERITY } from '@/features/docx/utils/knowledge/attention';
+import { DEFAULT_SEVERITY } from '@/features/docx/utils/knowledge/party-pagerank';
 import { PartyManager } from '@/features/docx/components/knowledge-graph/PartyManager';
-import { computePairAttention, defaultDyad } from '@/features/docx/utils/knowledge/pair';
+import { computePairScores, defaultPair } from '@/features/docx/utils/knowledge/pair';
 import {
 	PartySelection,
 	type PartyCardData,
@@ -137,7 +137,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 
 	const [selectedClauseId, setSelectedClauseId] = useState<string | null>(null);
 
-	const [sortByAttention, setSortByAttention] = useState(true);
+	const [sortByImportance, setSortByImportance] = useState(true);
 	const [rowLimit, setRowLimit] = useState(ROW_PAGE);
 
 	const [showUnfiled, setShowUnfiled] = useState(false);
@@ -151,28 +151,28 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const [mergeHints, setMergeHints] = useState<Record<string, string[]>>({});
 	const [hintsLoading, setHintsLoading] = useState(false);
 
-	const focusNodeId = useKnowledgeGraphStore((s) => s.focusNodeId);
-	const hops = useKnowledgeGraphStore((s) => s.hops);
-	const topK = useKnowledgeGraphStore((s) => s.topK);
-	const severity = useKnowledgeGraphStore((s) => s.severity);
-	const setSeverity = useKnowledgeGraphStore((s) => s.setSeverity);
-	const resetSeverity = useKnowledgeGraphStore((s) => s.resetSeverity);
-	const usePageRank = useKnowledgeGraphStore((s) => s.usePageRank);
-	const focusNode = useKnowledgeGraphStore((s) => s.focusNode);
-	const clearFocus = useKnowledgeGraphStore((s) => s.clearFocus);
-	const setFocusMeta = useKnowledgeGraphStore((s) => s.setFocusMeta);
-	const setBridgePayload = useKnowledgeGraphStore((s) => s.setBridgePayload);
-	const setDocumentTarget = useKnowledgeGraphStore((s) => s.setDocumentTarget);
-	const mergeGroups = useKnowledgeGraphStore((s) => s.mergeGroups);
-	const mergeParties = useKnowledgeGraphStore((s) => s.mergeParties);
-	const splitGroup = useKnowledgeGraphStore((s) => s.splitGroup);
-	const hideParty = useKnowledgeGraphStore((s) => s.hideParty);
-	const hiddenParties = useKnowledgeGraphStore((s) => s.hiddenParties);
-	const unhideParty = useKnowledgeGraphStore((s) => s.unhideParty);
-	const clearPartyView = useKnowledgeGraphStore((s) => s.clearPartyView);
-	const secondPartyId = useKnowledgeGraphStore((s) => s.secondPartyId);
-	const setSecondParty = useKnowledgeGraphStore((s) => s.setSecondParty);
-	const focusPair = useKnowledgeGraphStore((s) => s.focusPair);
+	const focusNodeId = useGraphStore((s) => s.focusNodeId);
+	const hops = useGraphStore((s) => s.hops);
+	const topK = useGraphStore((s) => s.topK);
+	const severity = useGraphStore((s) => s.severity);
+	const setSeverity = useGraphStore((s) => s.setSeverity);
+	const resetSeverity = useGraphStore((s) => s.resetSeverity);
+	const usePageRank = useGraphStore((s) => s.usePageRank);
+	const focusNode = useGraphStore((s) => s.focusNode);
+	const clearFocus = useGraphStore((s) => s.clearFocus);
+	const setFocusMeta = useGraphStore((s) => s.setFocusMeta);
+	const setPayload = useGraphStore((s) => s.setPayload);
+	const setDocumentTarget = useGraphStore((s) => s.setDocumentTarget);
+	const mergeGroups = useGraphStore((s) => s.mergeGroups);
+	const mergeParties = useGraphStore((s) => s.mergeParties);
+	const splitGroup = useGraphStore((s) => s.splitGroup);
+	const hideParty = useGraphStore((s) => s.hideParty);
+	const hiddenParties = useGraphStore((s) => s.hiddenParties);
+	const unhideParty = useGraphStore((s) => s.unhideParty);
+	const clearPartyView = useGraphStore((s) => s.clearPartyView);
+	const secondPartyId = useGraphStore((s) => s.secondPartyId);
+	const setSecondParty = useGraphStore((s) => s.setSecondParty);
+	const focusPair = useGraphStore((s) => s.focusPair);
 	const [slotOverride, setSlotOverride] = useState<[string | null, string | null] | null>(null);
 	const [partyPickerOpen, setPartyPickerOpen] = useState(false);
 	const paragraphs = useDocumentStore((s) => s.paragraphs);
@@ -228,7 +228,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	const pair = useMemo(
 		() =>
 			viewKg && isPartyFocus && focusNodeId && secondPartyId && secondPartyId !== focusNodeId
-				? computePairAttention(viewKg, focusNodeId, secondPartyId, topK, severity, usePageRank)
+				? computePairScores(viewKg, focusNodeId, secondPartyId, topK, severity, usePageRank)
 				: null,
 		[viewKg, isPartyFocus, focusNodeId, secondPartyId, topK, severity, usePageRank]
 	);
@@ -259,7 +259,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		const known = new Set(viewKg.parties.map((p) => p.id));
 		const prune = (seat: string | null) => (seat && known.has(seat) ? seat : null);
 		if (slotOverride) return [prune(slotOverride[0]), prune(slotOverride[1])];
-		const suggested = defaultDyad(viewKg);
+		const suggested = defaultPair(viewKg);
 		return suggested ? [suggested[0], suggested[1]] : [null, null];
 	}, [viewKg, slotOverride]);
 
@@ -342,11 +342,11 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		const rows = (grid?.rows ?? []).filter((row) =>
 			shownLanes.some((lane) => row.marks[lane].some((mark) => visibleKinds.has(mark.kind)))
 		);
-		if (!sortByAttention || !clauseImportance) return rows;
+		if (!sortByImportance || !clauseImportance) return rows;
 		const weight = (row: GridRow) =>
 			row.clauseId ? (clauseImportance.byClause[row.clauseId] ?? 0) : -1;
 		return rows.slice().sort((x, y) => weight(y) - weight(x));
-	}, [grid, visibleKinds, shownLanes, sortByAttention, clauseImportance]);
+	}, [grid, visibleKinds, shownLanes, sortByImportance, clauseImportance]);
 
 	const laneByStatement = useMemo(() => {
 		const byId = new Map<string, GridLane>();
@@ -394,10 +394,10 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 						const lane = laneByStatement.get(id);
 						return lane ? shownLanes.includes(lane) && paintLanes[lane] : true;
 					});
-		setBridgePayload(
+		setPayload(
 			pair
-				? buildPairBridge(viewKg, pair, nodesById, [PARTY_COLOR, PAIR_SECOND_COLOR], statementIds)
-				: buildKnowledgeGraphBridge(
+				? buildPairPayload(viewKg, pair, nodesById, [PARTY_COLOR, PAIR_SECOND_COLOR], statementIds)
+				: buildFocusPayload(
 						viewKg,
 						activeClause?.clauseId ?? focusNodeId,
 						activeClause ? 1 : hops,
@@ -421,7 +421,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		nodesById,
 		severity,
 		usePageRank,
-		setBridgePayload,
+		setPayload,
 	]);
 
 	const partyCount = viewKg?.parties.length ?? null;
@@ -448,7 +448,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 
 	const openInDocument = (nodeId: string) => {
 		if (!viewKg) return;
-		setDocumentTarget(buildNodeDocumentTarget(viewKg, nodeId, nodesById));
+		setDocumentTarget(buildDocumentTarget(viewKg, nodeId, nodesById));
 	};
 
 	const showTooltip = (event: ReactMouseEvent, mark: GridMark) => {
@@ -655,7 +655,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 									<div className="sticky top-0 z-10 flex items-center gap-2 border-b border-border/60 bg-background/95 px-3 py-1.5 text-2xs backdrop-blur">
 										<button
 											type="button"
-											onClick={() => setSortByAttention((on) => !on)}
+											onClick={() => setSortByImportance((on) => !on)}
 											disabled={!clauseImportance}
 											className="mr-2 shrink-0 truncate text-left font-medium text-muted-foreground/70 enabled:hover:text-foreground disabled:cursor-default"
 											style={{ width: LABEL_WIDTH }}
@@ -664,7 +664,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 											CLAUSE
 											{clauseImportance && (
 												<span className="font-normal opacity-70">
-													{sortByAttention ? ' · most important first ↓' : ' · document order'}
+													{sortByImportance ? ' · most important first ↓' : ' · document order'}
 												</span>
 											)}
 										</button>

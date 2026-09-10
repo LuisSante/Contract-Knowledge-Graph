@@ -17,15 +17,6 @@ export interface Node {
 	page: number;
 }
 
-export interface Edge {
-	source: string;
-	target: string;
-	type: 'reference' | 'semantic_similarity';
-	score?: number;
-	ref_label?: string;
-	ref_value?: string;
-}
-
 export type XmlNode = {
 	name?: string;
 	attribs?: Record<string, string>;
@@ -54,4 +45,3 @@ export type Docx4jsBrowserModule = {
 };
 
 export type ParagraphKind = 'paragraph' | 'heading' | 'list';
-export type RelationKind = 'semantic_similarity' | 'reference';

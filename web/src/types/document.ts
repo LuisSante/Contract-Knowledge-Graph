@@ -1,4 +1,4 @@
-export * from './graph';
+export * from './paragraph';
 export * from './edit';
 export * from './evidence';
 export * from './assistant';

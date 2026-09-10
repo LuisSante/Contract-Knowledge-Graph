@@ -13,7 +13,7 @@ import {
 	MessageScrollerViewport,
 } from '@/components/ui/message-scroller';
 import { Spinner } from '@/components/ui/spinner';
-import { ContractChatAssistantIcon } from '@/components/common/icons';
+import { AssistantIcon } from '@/components/common/icons';
 import { PanelEmptyState } from '@/features/docx/components/shell/PanelEmptyState';
 import type { AssistantChatMessage } from '@/types/document';
 
@@ -22,7 +22,7 @@ import { AssistantMessage } from '@/features/docx/components/assistant/Assistant
 interface AssistantMessageListProps {
 	messages: AssistantChatMessage[];
 	loading: boolean;
-	onSuggestedQuestionClick: (question: string) => void;
+	onSuggestionClick: (question: string) => void;
 	onFocusNodeFromPanel: (nodeId: string, emphasize?: boolean) => void;
 	entityHighlightsEnabled?: boolean;
 	onToggleEntityHighlights?: () => void;
@@ -34,7 +34,7 @@ function LoadingBubble() {
 			<MessageAvatar>
 				<Avatar size="sm">
 					<AvatarFallback className="text-muted-foreground">
-						<ContractChatAssistantIcon className="h-3.5 w-3.5" strokeWidth={1.9} />
+						<AssistantIcon className="h-3.5 w-3.5" strokeWidth={1.9} />
 						<span className="sr-only">Assistant</span>
 					</AvatarFallback>
 				</Avatar>
@@ -58,7 +58,7 @@ function LoadingBubble() {
 export function AssistantMessageList({
 	messages,
 	loading,
-	onSuggestedQuestionClick,
+	onSuggestionClick,
 	onFocusNodeFromPanel,
 	entityHighlightsEnabled = true,
 	onToggleEntityHighlights,
@@ -84,7 +84,7 @@ export function AssistantMessageList({
 
 						{messages.length === 0 && !loading ? (
 							<PanelEmptyState
-								icon={<ContractChatAssistantIcon />}
+								icon={<AssistantIcon />}
 								title="Ask about this contract"
 								description="Type a question below, or pick a suggested one, to chat about the whole contract or the selected paragraph."
 							/>
@@ -98,7 +98,7 @@ export function AssistantMessageList({
 							>
 								<AssistantMessage
 									message={message}
-									onSuggestedQuestionClick={onSuggestedQuestionClick}
+									onSuggestionClick={onSuggestionClick}
 									onFocusNodeFromPanel={onFocusNodeFromPanel}
 									entityHighlightsEnabled={entityHighlightsEnabled}
 									onToggleEntityHighlights={onToggleEntityHighlights}

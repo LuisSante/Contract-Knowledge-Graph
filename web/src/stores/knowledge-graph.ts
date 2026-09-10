@@ -1,15 +1,15 @@
 import { create } from 'zustand';
 import type { EvidenceParagraph } from '@/types/document';
 import type { DeonticKind, KgNodeKind } from '@/types/knowledge';
-import type { DocumentEntityHighlight } from '@/features/docx/utils/assistant/entity-marks';
+import type { EntityHighlight } from '@/features/docx/utils/assistant/entity-marks';
 import type {
 	DeonticSeverity,
 	DeonticTone,
 	KgLedger,
-} from '@/features/docx/utils/knowledge/attention';
-import { DEFAULT_SEVERITY } from '@/features/docx/utils/knowledge/attention';
+} from '@/features/docx/utils/knowledge/party-pagerank';
+import { DEFAULT_SEVERITY } from '@/features/docx/utils/knowledge/party-pagerank';
 import type { MergeGroup } from '@/features/docx/utils/knowledge/party-view';
-import type { KnowledgeGraphDocumentTarget } from '@/features/docx/utils/knowledge/kg-bridge';
+import type { DocumentTarget } from '@/features/docx/utils/knowledge/graph-payload';
 
 /**
  * The deterministic id a merge of these members gets. Exported so the entry view
@@ -19,47 +19,47 @@ export function mergeGroupId(members: Iterable<string>): string {
 	return `merge:${[...members].sort().join('+')}`;
 }
 
-export const MAX_KG_HOPS = 5;
-export const DEFAULT_KG_TOP_K = 10;
-export const MIN_KG_TOP_K = 5;
-export const MAX_KG_TOP_K = 50;
-const KG_TOP_K_STEP = 5;
+export const MAX_HOPS = 5;
+export const DEFAULT_TOP_K = 10;
+export const MIN_TOP_K = 5;
+export const MAX_TOP_K = 50;
+const TOP_K_STEP = 5;
 
-export interface KnowledgeGraphBridgePayload {
+export interface GraphPayload {
 	/** First paragraph where the top match appears — we scroll here. */
 	anchorParagraphId: string | null;
 	/** Paragraphs of the focus set, brought closer to the anchor. */
 	relatedParagraphs: EvidenceParagraph[];
 	/** Entity fragments (party names, statement spans, clause refs) to underline. */
-	entities: DocumentEntityHighlight[];
+	entities: EntityHighlight[];
 	/** Every paragraph the focus touches, for entity marks. */
 	paragraphIds: string[];
 	/** KG node ids in focus (party + top statements + clauses, or the neighborhood). */
 	focusNodeIds: string[];
-	/** Per-node normalized attention (0..1) for node sizing (party focus only). */
+	/** Per-node normalized score (0..1) for node sizing (party focus only). */
 	nodeScores: Record<string, number>;
-	/** Per-paragraph normalized attention (0..1) for the deontic rail opacity. */
-	scoreByParagraphId: Record<string, number>;
+	/** Per-paragraph normalized score (0..1) for the deontic rail opacity. */
+	scoreByParagraph: Record<string, number>;
 	/** Per-paragraph burden/benefit tone for the deontic rail color. */
-	toneByParagraphId: Record<string, DeonticTone>;
+	toneByParagraph: Record<string, DeonticTone>;
 	/** Impact ledger for the focused party (null for clause/statement focus). */
 	ledger: KgLedger | null;
 }
 
-const EMPTY_PAYLOAD: KnowledgeGraphBridgePayload = {
+const EMPTY_PAYLOAD: GraphPayload = {
 	anchorParagraphId: null,
 	relatedParagraphs: [],
 	entities: [],
 	paragraphIds: [],
 	focusNodeIds: [],
 	nodeScores: {},
-	scoreByParagraphId: {},
-	toneByParagraphId: {},
+	scoreByParagraph: {},
+	toneByParagraph: {},
 	ledger: null,
 };
 
 /** Label + kind of the focused node, so the header can render its chip without the graph. */
-export interface KgFocusMeta {
+export interface FocusMeta {
 	label: string;
 	kind: KgNodeKind;
 }
@@ -67,12 +67,12 @@ export interface KgFocusMeta {
 /** Everything that must reset when the focused node goes away. */
 const CLEARED_FOCUS = { focusNodeId: null, focusMeta: null, ...EMPTY_PAYLOAD };
 
-interface KnowledgeGraphState extends KnowledgeGraphBridgePayload {
+interface GraphState extends GraphPayload {
 	focusNodeId: string | null;
-	focusMeta: KgFocusMeta | null;
+	focusMeta: FocusMeta | null;
 	/** Neighborhood radius for clause/statement focus. */
 	hops: number;
-	/** Number of top-attention statements shown for a party focus. */
+	/** Number of top-scoring statements shown for a party focus. */
 	topK: number;
 	/**
 	 * Importance weight per deontic kind. The defaults are the calibrated reading
@@ -94,7 +94,7 @@ interface KnowledgeGraphState extends KnowledgeGraphBridgePayload {
 	secondPartyId: string | null;
 
 	focusNode: (nodeId: string) => void;
-	setFocusMeta: (meta: KgFocusMeta | null) => void;
+	setFocusMeta: (meta: FocusMeta | null) => void;
 	setHops: (updater: number | ((prev: number) => number)) => void;
 	setTopK: (updater: number | ((prev: number) => number)) => void;
 	setSeverity: (kind: DeonticKind, value: number) => void;
@@ -107,19 +107,19 @@ interface KnowledgeGraphState extends KnowledgeGraphBridgePayload {
 	toggleSelectedParty: (id: string) => void;
 	clearSelectedParties: () => void;
 	clearFocus: () => void;
-	setBridgePayload: (payload: KnowledgeGraphBridgePayload) => void;
+	setPayload: (payload: GraphPayload) => void;
 	/** Move the document without touching the focus, so the ring stays where it is. */
-	setDocumentTarget: (target: KnowledgeGraphDocumentTarget) => void;
+	setDocumentTarget: (target: DocumentTarget) => void;
 	setSecondParty: (id: string | null) => void;
 	/** Enter the pair view in one step — `focusNode` alone would clear the second party. */
 	focusPair: (anchorId: string, secondId: string) => void;
 }
 
-export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
+export const useGraphStore = create<GraphState>((set) => ({
 	focusNodeId: null,
 	focusMeta: null,
 	hops: 1,
-	topK: DEFAULT_KG_TOP_K,
+	topK: DEFAULT_TOP_K,
 	severity: DEFAULT_SEVERITY,
 	usePageRank: true,
 	mergeGroups: [],
@@ -202,13 +202,13 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 	setHops: (updater) =>
 		set((state) => {
 			const next = typeof updater === 'function' ? updater(state.hops) : updater;
-			return { hops: Math.min(MAX_KG_HOPS, Math.max(0, next)) };
+			return { hops: Math.min(MAX_HOPS, Math.max(0, next)) };
 		}),
 	setTopK: (updater) =>
 		set((state) => {
 			const raw = typeof updater === 'function' ? updater(state.topK) : updater;
-			const snapped = Math.round(raw / KG_TOP_K_STEP) * KG_TOP_K_STEP;
-			return { topK: Math.min(MAX_KG_TOP_K, Math.max(MIN_KG_TOP_K, snapped)) };
+			const snapped = Math.round(raw / TOP_K_STEP) * TOP_K_STEP;
+			return { topK: Math.min(MAX_TOP_K, Math.max(MIN_TOP_K, snapped)) };
 		}),
 	setSeverity: (kind, value) =>
 		set((state) => ({
@@ -216,11 +216,11 @@ export const useKnowledgeGraphStore = create<KnowledgeGraphState>((set) => ({
 		})),
 	resetSeverity: () => set({ severity: DEFAULT_SEVERITY }),
 	clearFocus: () => set({ ...CLEARED_FOCUS, hops: 1, secondPartyId: null }),
-	setBridgePayload: (payload) => set(payload),
+	setPayload: (payload) => set(payload),
 	setDocumentTarget: (target) => set(target),
 	setSecondParty: (secondPartyId) => set({ secondPartyId }),
 	focusPair: (focusNodeId, secondPartyId) =>
 		set({ focusNodeId, secondPartyId, hops: 1 }),
 }));
 
-export const KG_TOP_K_STEP_SIZE = KG_TOP_K_STEP;
+export const KG_TOP_K_STEP_SIZE = TOP_K_STEP;

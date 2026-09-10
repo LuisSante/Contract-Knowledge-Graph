@@ -35,7 +35,7 @@ export function RightPanelContent({
 				onInputChange={assistant.setInput}
 				onSubmit={() => void assistant.submitKgNodeQuestion()}
 				onKeydown={assistant.handleKgNodeKeydown}
-				onSuggestedQuestionClick={(question) => void assistant.submitKgNodeQuestion(question)}
+				onSuggestionClick={(question) => void assistant.submitKgNodeQuestion(question)}
 				onFocusNodeFromPanel={onFocusNodeFromPanel}
 				initialSuggestions={ASSISTANT_KG_SUGGESTIONS}
 				onInitialSuggestionClick={(question) => void assistant.submitKgNodeQuestion(question)}

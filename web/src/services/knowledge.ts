@@ -42,13 +42,13 @@ export interface ClauseImportance {
 
 export async function fetchClauseImportance(
 	docId: string,
-	countedStatementIds: string[] | null,
+	countedIds: string[] | null,
 	signal?: AbortSignal
 ): Promise<ClauseImportance | null> {
 	try {
 		const response = await api.post<Partial<ClauseImportance>>(
 			`/knowledge_graph/${encodeURIComponent(docId)}/clause_importance`,
-			{ countedStatementIds },
+			{ countedStatementIds: countedIds },
 			{ signal }
 		);
 		return { byClause: response.data.byClause ?? {} };

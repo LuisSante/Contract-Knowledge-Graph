@@ -27,7 +27,6 @@ export type DocxRendererCallbacks = {
 export type DocxRendererDeps = {
 	nodeEditStateById: Map<string, ParagraphEditState>;
 	paragraphElementById: Map<string, HTMLElement>;
-	paragraphRelationHostById: Map<string, HTMLElement>;
 	getSelectedNodeId: () => string | null;
 };
 
@@ -45,7 +44,6 @@ export function createRenderer(
 	const {
 		nodeEditStateById,
 		paragraphElementById,
-		paragraphRelationHostById,
 		getSelectedNodeId
 	} = deps;
 
@@ -608,10 +606,6 @@ export function createRenderer(
 		return { numId, level };
 	};
 
-	const clearRelationBadge = (host: HTMLElement) => {
-		delete host.dataset.relationsTone;
-	};
-
 	const isReadOnlyRender = () => readOnlyDepth > 0;
 
 	const isHeaderOrFooterStyle = (pr?: XmlNode | null): boolean => {
@@ -623,7 +617,6 @@ export function createRenderer(
 	const attachParagraphEditor = (
 		element: HTMLElement,
 		kind: ParagraphKind,
-		relationHost: HTMLElement = element,
 		options: { disabled?: boolean; visualElement?: HTMLElement; textPrefix?: string } = {}
 	) => {
 		const visualElement = options.visualElement ?? element;
@@ -655,7 +648,6 @@ export function createRenderer(
 		element.setAttribute('contenteditable', 'true');
 		element.setAttribute('spellcheck', 'false');
 		paragraphElementById.set(nodeId, visualElement);
-		paragraphRelationHostById.set(nodeId, relationHost);
 		visualElement.classList.add(...INTERACTIVE_PARAGRAPH_CLASSES);
 
 		let hasNodeInStore = false;
@@ -672,7 +664,6 @@ export function createRenderer(
 					onNodeRemove(nodeId);
 					hasNodeInStore = false;
 				}
-				clearRelationBadge(relationHost);
 				return null;
 			}
 
@@ -910,7 +901,7 @@ export function createRenderer(
 					if (shouldShrinkParagraphBox(heading, pr)) {
 						applyShrinkToTextBox(heading);
 					}
-					attachParagraphEditor(content, 'heading', heading, {
+					attachParagraphEditor(content, 'heading', {
 						visualElement: heading,
 						disabled: isHeaderOrFooterStyle(pr),
 						textPrefix: headingTextPrefix
@@ -979,7 +970,7 @@ export function createRenderer(
 					if (shouldShrinkParagraphBox(item, pr)) {
 						applyShrinkToTextBox(item);
 					}
-					attachParagraphEditor(content, 'list', item, {
+					attachParagraphEditor(content, 'list', {
 						visualElement: item,
 						disabled: isHeaderOrFooterStyle(pr),
 						textPrefix: markerText
@@ -1022,14 +1013,14 @@ export function createRenderer(
 							if (shouldShrinkParagraphBox(splitParagraph, pr)) {
 								applyShrinkToTextBox(splitParagraph);
 							}
-							attachParagraphEditor(splitParagraph, 'paragraph', splitParagraph, {
+							attachParagraphEditor(splitParagraph, 'paragraph', {
 								disabled: isHeaderOrFooterStyle(pr)
 							});
 							fragment.appendChild(splitParagraph);
 						}
 						return fragment;
 					}
-					attachParagraphEditor(paragraph, 'paragraph', paragraph, {
+					attachParagraphEditor(paragraph, 'paragraph', {
 						disabled: isHeaderOrFooterStyle(pr)
 					});
 					return paragraph;

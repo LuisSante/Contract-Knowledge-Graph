@@ -11,14 +11,14 @@ import { RightPanelContent } from '@/features/docx/components/shell/RightPanelCo
 import { useRightDrawer } from '@/features/docx/hooks/useRightDrawer';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useLlmEstimate } from '@/features/docx/hooks/useLlmEstimate';
-import { useDocumentEntityHighlights } from '@/features/docx/hooks/useDocumentEntityHighlights';
+import { useEntityHighlights } from '@/features/docx/hooks/useEntityHighlights';
 import { useDocumentViewer } from '@/features/docx/hooks/useDocumentViewer';
 import { useAssistantChat } from '@/features/docx/hooks/useAssistantChat';
 import { useLlmTotalCost } from '@/features/docx/hooks/useLlmTotalCost';
 import { useDocumentStore } from '@/stores/document';
-import { useKnowledgeGraphStore } from '@/stores/knowledgeGraph';
+import { useGraphStore } from '@/stores/knowledge-graph';
 import { RIGHT_DRAWER_KEYBOARD_STEP } from '@/constants/docx-viewer';
-import { extractParagraphs } from '@/services/graph';
+import { extractParagraphs } from '@/services/paragraphs';
 
 interface DocxViewerProps {
 	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -69,12 +69,12 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	// Knowledge Graph bridge payload (anchor + related paragraphs + entity spans),
 	// derived in the panel from the focused node. It feeds the SAME Related bridge
 	// (bring-closer + scroll-rail markers) and the entity underlines below.
-	const kgAnchorParagraphId = useKnowledgeGraphStore((s) => s.anchorParagraphId);
-	const kgRelatedParagraphs = useKnowledgeGraphStore((s) => s.relatedParagraphs);
-	const kgEntities = useKnowledgeGraphStore((s) => s.entities);
-	const kgParagraphIds = useKnowledgeGraphStore((s) => s.paragraphIds);
-	const kgToneByParagraphId = useKnowledgeGraphStore((s) => s.toneByParagraphId);
-	const kgScoreByParagraphId = useKnowledgeGraphStore((s) => s.scoreByParagraphId);
+	const kgAnchorParagraphId = useGraphStore((s) => s.anchorParagraphId);
+	const kgRelatedParagraphs = useGraphStore((s) => s.relatedParagraphs);
+	const kgEntities = useGraphStore((s) => s.entities);
+	const kgParagraphIds = useGraphStore((s) => s.paragraphIds);
+	const kgToneByParagraphId = useGraphStore((s) => s.toneByParagraph);
+	const kgScoreByParagraphId = useGraphStore((s) => s.scoreByParagraph);
 	const paragraphs = useDocumentStore((s) => s.paragraphs);
 	const kgAnchorParagraph = useMemo(
 		() => (kgAnchorParagraphId ? paragraphs.find((n) => n.id === kgAnchorParagraphId) ?? null : null),
@@ -102,7 +102,7 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 		() => (knowledgeGraphActive ? kgParagraphIds : []),
 		[knowledgeGraphActive, kgParagraphIds]
 	);
-	useDocumentEntityHighlights({
+	useEntityHighlights({
 		active:
 			documentEntities.length > 0 &&
 			knowledgeGraphActive,
@@ -208,8 +208,8 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 						evidenceBridgeActive={bridgeActive}
 						selectedParagraph={bridgeSelectedParagraph}
 						evidenceParagraphs={bridgeParagraphs}
-						deonticToneByParagraphId={knowledgeGraphActive ? kgToneByParagraphId : undefined}
-						deonticScoreByParagraphId={knowledgeGraphActive ? kgScoreByParagraphId : undefined}
+						toneByParagraph={knowledgeGraphActive ? kgToneByParagraphId : undefined}
+						scoreByParagraph={knowledgeGraphActive ? kgScoreByParagraphId : undefined}
 				/>
 			</div>
 

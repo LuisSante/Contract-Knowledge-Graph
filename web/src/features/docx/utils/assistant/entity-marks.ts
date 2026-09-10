@@ -4,12 +4,10 @@ import { escapeRegex, normalizeEntityKey } from '@/features/docx/utils/text';
  * Entity highlighting within the document body (not only in the chat).
  * Wraps each entity occurrence in a `<span.docx-entity-mark>`
  * with its `data-entity-key` and color, so they match the entities in the
- * panel/chat and sync on hover. Port of
- * `highlightParagraphExplanationEntitiesInElement` / `clearParagraphExplanationEntityMarks`
- * / `setHoveredParagraphExplanationEntityKey` from the Svelte `+page.svelte`.
+ * panel/chat and sync on hover.
  */
 
-export type DocumentEntityHighlight = {
+export type EntityHighlight = {
 	label: string;
 	key: string;
 	color: string;
@@ -39,7 +37,7 @@ export function clearEntityMarks(element: HTMLElement) {
  */
 export function highlightEntitiesInElement(
 	element: HTMLElement,
-	entities: DocumentEntityHighlight[]
+	entities: EntityHighlight[]
 ) {
 	const labels = entities
 		.map((entity) => entity.label.trim())
@@ -78,7 +76,7 @@ export function highlightEntitiesInElement(
 
 	// Cut every match into the slices falling inside each node *before* touching the DOM:
 	// wrapping one node invalidates the offsets the rest were computed from.
-	type Slice = { start: number; end: number; meta?: DocumentEntityHighlight };
+	type Slice = { start: number; end: number; meta?: EntityHighlight };
 	const slicesByNode = new Map<Text, Slice[]>();
 	for (const match of text.matchAll(entityPattern)) {
 		const value = match[0] ?? '';

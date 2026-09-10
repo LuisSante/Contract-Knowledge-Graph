@@ -10,14 +10,14 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { GLOBAL_ANALYSIS_MODEL_OPTIONS } from '@/constants/docx-viewer';
+import { MODEL_OPTIONS } from '@/constants/docx-viewer';
 import {
 	KG_TOP_K_STEP_SIZE,
-	MAX_KG_HOPS,
-	MAX_KG_TOP_K,
-	MIN_KG_TOP_K,
-	useKnowledgeGraphStore,
-} from '@/stores/knowledgeGraph';
+	MAX_HOPS,
+	MAX_TOP_K,
+	MIN_TOP_K,
+	useGraphStore,
+} from '@/stores/knowledge-graph';
 import type { RightPanelTab } from '@/types/document';
 
 
@@ -41,12 +41,12 @@ export function RightPanelHeaderActions({
 	model,
 	onModelChange,
 }: RightPanelHeaderActionsProps) {
-	const focusMeta = useKnowledgeGraphStore((state) => state.focusMeta);
-	const hops = useKnowledgeGraphStore((state) => state.hops);
-	const topK = useKnowledgeGraphStore((state) => state.topK);
-	const setHops = useKnowledgeGraphStore((state) => state.setHops);
-	const setTopK = useKnowledgeGraphStore((state) => state.setTopK);
-	const clearFocus = useKnowledgeGraphStore((state) => state.clearFocus);
+	const focusMeta = useGraphStore((state) => state.focusMeta);
+	const hops = useGraphStore((state) => state.hops);
+	const topK = useGraphStore((state) => state.topK);
+	const setHops = useGraphStore((state) => state.setHops);
+	const setTopK = useGraphStore((state) => state.setTopK);
+	const clearFocus = useGraphStore((state) => state.clearFocus);
 	// From `focusMeta`, not from the ledger: the pair bridge leaves the ledger null.
 	const focusedPartyName = focusMeta?.kind === 'party' ? focusMeta.label : null;
 
@@ -56,8 +56,8 @@ export function RightPanelHeaderActions({
 		const partyFocus = focusMeta?.kind === 'party';
 		const step = (delta: number) =>
 			partyFocus ? setTopK((k) => k + delta * KG_TOP_K_STEP_SIZE) : setHops((h) => h + delta);
-		const atMin = partyFocus ? topK <= MIN_KG_TOP_K : hops <= 0;
-		const atMax = partyFocus ? topK >= MAX_KG_TOP_K : hops >= MAX_KG_HOPS;
+		const atMin = partyFocus ? topK <= MIN_TOP_K : hops <= 0;
+		const atMax = partyFocus ? topK >= MAX_TOP_K : hops >= MAX_HOPS;
 		const stepUnit = partyFocus ? 'statements' : 'hops';
 
 		return (
@@ -143,7 +143,7 @@ export function RightPanelHeaderActions({
 						<SelectValue />
 					</SelectTrigger>
 					<SelectContent className="min-w-0">
-						{GLOBAL_ANALYSIS_MODEL_OPTIONS.map((option) => (
+						{MODEL_OPTIONS.map((option) => (
 							<SelectItem
 								key={option.value}
 								value={option.value}

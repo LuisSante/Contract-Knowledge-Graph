@@ -1,14 +1,14 @@
 import type { DeonticKind, KgDeonticNode, KnowledgeGraph } from '@/types/knowledge';
 import { deonticNodes } from '@/types/knowledge';
 import type { Node as ParagraphNode, EvidenceParagraph } from '@/types/document';
-import type { DocumentEntityHighlight } from '@/features/docx/utils/assistant/entity-marks';
-import type { KnowledgeGraphBridgePayload } from '@/stores/knowledgeGraph';
-import type { PairAttention } from '@/features/docx/utils/knowledge/pair';
+import type { EntityHighlight } from '@/features/docx/utils/assistant/entity-marks';
+import type { GraphPayload } from '@/stores/knowledge-graph';
+import type { PairScores } from '@/features/docx/utils/knowledge/pair';
 import {
-	computePartyAttention,
+	computePartyScores,
 	type DeonticSeverity,
 	type DeonticTone,
-} from '@/features/docx/utils/knowledge/attention';
+} from '@/features/docx/utils/knowledge/party-pagerank';
 
 
 type EntityKind = 'party' | 'clause' | 'definedTerm' | DeonticKind;
@@ -22,15 +22,15 @@ const KIND_COLORS: Record<EntityKind, { color: string; soft: string }> = {
 	prohibition: { color: '#f59e0b', soft: 'rgba(245, 158, 11, 0.16)' },
 };
 
-const EMPTY: KnowledgeGraphBridgePayload = {
+const EMPTY: GraphPayload = {
 	anchorParagraphId: null,
 	relatedParagraphs: [],
 	entities: [],
 	paragraphIds: [],
 	focusNodeIds: [],
 	nodeScores: {},
-	scoreByParagraphId: {},
-	toneByParagraphId: {},
+	scoreByParagraph: {},
+	toneByParagraph: {},
 	ledger: null,
 };
 
@@ -73,7 +73,7 @@ function neighborhood(start: string, hops: number, adjacency: Map<string, Set<st
 }
 
 function makeEntityCollector() {
-	const entities: DocumentEntityHighlight[] = [];
+	const entities: EntityHighlight[] = [];
 	const seen = new Set<string>();
 	const add = (rawLabel: string, key: string, kind: EntityKind) => {
 		const label = rawLabel.trim();
@@ -89,7 +89,7 @@ function makeEntityCollector() {
 
 /** Same de-duplication as the collector, with an explicit colour instead of a kind. */
 function addColored(
-	entities: DocumentEntityHighlight[],
+	entities: EntityHighlight[],
 	rawLabel: string,
 	key: string,
 	color: string,
@@ -137,29 +137,29 @@ function countSpanOwners(kg: KnowledgeGraph): Map<string, number> {
 }
 
 /** The document-side half of the payload: where to scroll and what to underline. */
-export type KnowledgeGraphDocumentTarget = Pick<
-	KnowledgeGraphBridgePayload,
+export type DocumentTarget = Pick<
+	GraphPayload,
 	| 'anchorParagraphId'
 	| 'relatedParagraphs'
 	| 'entities'
 	| 'paragraphIds'
-	| 'scoreByParagraphId'
-	| 'toneByParagraphId'
+	| 'scoreByParagraph'
+	| 'toneByParagraph'
 >;
 
 /**
  * "Take me to where this node lives" — one node, its own paragraphs, nothing else.
  *
- * Deliberately narrower than `buildKnowledgeGraphBridge`: it carries no `focusNodeIds`
+ * Deliberately narrower than `buildFocusPayload`: it carries no `focusNodeIds`
  * and no `nodeScores`, so writing it moves the document without touching what the ring
  * draws. That separation is the whole point — navigating and re-focusing used to be the
  * same act because they travelled in the same payload.
  */
-export function buildNodeDocumentTarget(
+export function buildDocumentTarget(
 	kg: KnowledgeGraph,
 	nodeId: string,
 	nodesById: Map<string, ParagraphNode>
-): KnowledgeGraphDocumentTarget {
+): DocumentTarget {
 	const { entities, add } = makeEntityCollector();
 	let paragraphIds: string[] = [];
 
@@ -206,30 +206,30 @@ export function buildNodeDocumentTarget(
 		entities,
 		paragraphIds: ordered,
 		// Every paragraph of the node matters equally — there is no ranking within one node.
-		scoreByParagraphId: Object.fromEntries(ordered.map((pid) => [pid, 1] as const)),
-		toneByParagraphId: {},
+		scoreByParagraph: Object.fromEntries(ordered.map((pid) => [pid, 1] as const)),
+		toneByParagraph: {},
 	};
 }
 
 /**
- * Document bridge for the *pair* view: the union of both parties' top-K.
+ * Payload for the *pair* view: the union of both parties' top-K.
  *
  * Building it from the anchor alone left the ring showing two parties while the document
  * reflected one — half the reading was invisible on the page. Each party's mentions are
  * underlined in its own colour, so the document speaks the same language as the ring.
  */
-export function buildPairBridge(
+export function buildPairPayload(
 	kg: KnowledgeGraph,
-	pair: PairAttention,
+	pair: PairScores,
 	nodesById: Map<string, ParagraphNode>,
 	partyColors: readonly [string, string],
 	/**
-	 * Narrows the bridge to these statements instead of the pair's two top-K sets — how
+	 * Narrows the payload to these statements instead of the pair's two top-K sets — how
 	 * picking one clause in the grid makes the document answer for that clause alone.
 	 * The party colouring stays either way: the reader still needs to see who is who.
 	 */
 	statementIds?: readonly string[]
-): KnowledgeGraphBridgePayload {
+): GraphPayload {
 	const byId = new Map(deonticNodes(kg).map((v) => [v.id, v] as const));
 	const clauseById = new Map(kg.clauses.map((c) => [c.id, c]));
 	const partyById = new Map(kg.parties.map((p) => [p.id, p]));
@@ -253,7 +253,7 @@ export function buildPairBridge(
 		.sort((a, b) => (pair.nodeScores[b.id] ?? 0) - (pair.nodeScores[a.id] ?? 0));
 
 	const paragraphSet = new Set<string>();
-	const scoreByParagraphId: Record<string, number> = {};
+	const scoreByParagraph: Record<string, number> = {};
 	for (const v of statements) {
 		const score = pair.nodeScores[v.id] ?? 0;
 		for (const span of evidenceLabels(v, spanOwners)) add(span, `kg-${v.id}`, v.kind);
@@ -262,7 +262,7 @@ export function buildPairBridge(
 		for (const pid of v.paragraphIds) {
 			if (!nodesById.has(pid)) continue;
 			paragraphSet.add(pid);
-			scoreByParagraphId[pid] = Math.max(scoreByParagraphId[pid] ?? 0, score);
+			scoreByParagraph[pid] = Math.max(scoreByParagraph[pid] ?? 0, score);
 		}
 	}
 
@@ -288,13 +288,13 @@ export function buildPairBridge(
 				]
 			: pair.focusNodeIds,
 		nodeScores: pair.nodeScores,
-		scoreByParagraphId,
-		toneByParagraphId: {},
+		scoreByParagraph,
+		toneByParagraph: {},
 			ledger: null,
 	};
 }
 
-export function buildKnowledgeGraphBridge(
+export function buildFocusPayload(
 	kg: KnowledgeGraph,
 	focusNodeId: string | null,
 	hops: number,
@@ -302,7 +302,7 @@ export function buildKnowledgeGraphBridge(
 	nodesById: Map<string, ParagraphNode>,
 	severity: DeonticSeverity,
 	usePageRank: boolean
-): KnowledgeGraphBridgePayload {
+): GraphPayload {
 	if (!focusNodeId) return EMPTY;
 
 	const partyById = new Map(kg.parties.map((p) => [p.id, p]));
@@ -317,16 +317,16 @@ export function buildKnowledgeGraphBridge(
 			.map((pid) => ({ node: nodesById.get(pid) as ParagraphNode, relationTypes: [], references: [] }))
 			.sort((a, b) => a.node.paragraph_enum - b.node.paragraph_enum);
 
-	// ---- Party focus: attention-ranked top-K statements ----------------------
+	// ---- Party focus: score-ranked top-K statements -------------------------
 	if (partyById.has(focusNodeId)) {
 		const party = partyById.get(focusNodeId)!;
-		const attention = computePartyAttention(kg, focusNodeId, severity, usePageRank);
+		const scores = computePartyScores(kg, focusNodeId, severity, usePageRank);
 
-		const rankedStatements = [...attention.toneByDeontic.keys()]
+		const rankedStatements = [...scores.toneByDeontic.keys()]
 			.map((id) => deonticById.get(id))
 			.filter((v): v is KgDeonticNode => Boolean(v))
 			.sort(
-				(a, b) => (attention.deonticScore.get(b.id) ?? 0) - (attention.deonticScore.get(a.id) ?? 0)
+				(a, b) => (scores.deonticScore.get(b.id) ?? 0) - (scores.deonticScore.get(a.id) ?? 0)
 			);
 		const topStatements = rankedStatements.slice(0, topK);
 
@@ -336,20 +336,20 @@ export function buildKnowledgeGraphBridge(
 
 		const spanOwners = countSpanOwners(kg);
 		const paragraphSet = new Set<string>();
-		const scoreByParagraphId: Record<string, number> = {};
-		const toneByParagraphId: Record<string, DeonticTone> = {};
+		const scoreByParagraph: Record<string, number> = {};
+		const toneByParagraph: Record<string, DeonticTone> = {};
 		for (const v of topStatements) {
-			const score = attention.deonticScore.get(v.id) ?? 0;
-			const tone = attention.toneByDeontic.get(v.id) ?? 'burden';
+			const score = scores.deonticScore.get(v.id) ?? 0;
+			const tone = scores.toneByDeontic.get(v.id) ?? 'burden';
 			for (const span of evidenceLabels(v, spanOwners)) add(span, `kg-${v.id}`, v.kind);
 			const clause = v.clauseId ? clauseById.get(v.clauseId) : undefined;
 			if (clause?.ref) add(clause.ref, `kg-${clause.id}`, 'clause');
 			for (const pid of v.paragraphIds) {
 				if (!nodesById.has(pid)) continue;
 				paragraphSet.add(pid);
-				scoreByParagraphId[pid] = Math.max(scoreByParagraphId[pid] ?? 0, score);
+				scoreByParagraph[pid] = Math.max(scoreByParagraph[pid] ?? 0, score);
 				// Burden takes precedence when a paragraph mixes both.
-				if (toneByParagraphId[pid] !== 'burden') toneByParagraphId[pid] = tone;
+				if (toneByParagraph[pid] !== 'burden') toneByParagraph[pid] = tone;
 			}
 		}
 
@@ -374,10 +374,10 @@ export function buildKnowledgeGraphBridge(
 			entities,
 			paragraphIds: presentParagraphIds,
 			focusNodeIds,
-			nodeScores: Object.fromEntries(attention.nodeScore),
-			scoreByParagraphId,
-			toneByParagraphId,
-			ledger: attention.ledger,
+			nodeScores: Object.fromEntries(scores.nodeScore),
+			scoreByParagraph,
+			toneByParagraph,
+			ledger: scores.ledger,
 		};
 	}
 

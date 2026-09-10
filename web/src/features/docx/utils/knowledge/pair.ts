@@ -1,9 +1,9 @@
 import type { KnowledgeGraph } from '@/types/knowledge';
 import { deonticNodes } from '@/types/knowledge';
-import { DEFAULT_SEVERITY, computePartyAttention, type DeonticSeverity } from './attention';
+import { DEFAULT_SEVERITY, computePartyScores, type DeonticSeverity } from './party-pagerank';
 
 /**
- * Attention over a *pair* of parties, as the union of two ego views.
+ * Scores over a *pair* of parties, as the union of two ego views.
  *
  * Each party is ranked on its own — one Personalized PageRank per party, each seeded
  * on itself — and the two results are then overlaid rather than merged into a single
@@ -20,7 +20,7 @@ export interface PairClauseSplit {
 	b: number;
 }
 
-export interface PairAttention {
+export interface PairScores {
 	partyAId: string;
 	partyBId: string;
 	/**
@@ -44,7 +44,7 @@ export interface PairAttention {
  * or beneficiary. Placeholders ("Receiving Party") and third parties carry far fewer
  * provisions, so they lose without needing a heuristic on the name.
  */
-export function defaultDyad(kg: KnowledgeGraph): [string, string] | null {
+export function defaultPair(kg: KnowledgeGraph): [string, string] | null {
 	const involvement = new Map<string, number>();
 	const bump = (id: string | null) => {
 		if (id) involvement.set(id, (involvement.get(id) ?? 0) + 1);
@@ -60,24 +60,24 @@ export function defaultDyad(kg: KnowledgeGraph): [string, string] | null {
 	return [ranked[0].id, ranked[1].id];
 }
 
-export function computePairAttention(
+export function computePairScores(
 	kg: KnowledgeGraph,
 	partyAId: string,
 	partyBId: string,
 	topK: number,
 	severity: DeonticSeverity = DEFAULT_SEVERITY,
 	usePageRank = true
-): PairAttention {
-	const attentionA = computePartyAttention(kg, partyAId, severity, usePageRank);
-	const attentionB = computePartyAttention(kg, partyBId, severity, usePageRank);
+): PairScores {
+	const scoresA = computePartyScores(kg, partyAId, severity, usePageRank);
+	const scoresB = computePartyScores(kg, partyBId, severity, usePageRank);
 	const clauseOfStatement = new Map(deonticNodes(kg).map((v) => [v.id, v.clauseId] as const));
 
-	const topOf = (attention: typeof attentionA) =>
-		[...attention.toneByDeontic.keys()]
-			.sort((x, y) => (attention.deonticScore.get(y) ?? 0) - (attention.deonticScore.get(x) ?? 0))
+	const topOf = (scores: typeof scoresA) =>
+		[...scores.toneByDeontic.keys()]
+			.sort((x, y) => (scores.deonticScore.get(y) ?? 0) - (scores.deonticScore.get(x) ?? 0))
 			.slice(0, topK);
-	const topA = topOf(attentionA);
-	const topB = topOf(attentionB);
+	const topA = topOf(scoresA);
+	const topB = topOf(scoresB);
 	const setA = new Set(topA);
 	const setB = new Set(topB);
 
@@ -88,14 +88,14 @@ export function computePairAttention(
 	// Every clause, not just the union: a sector still needs a width to exist at all.
 	const clauseSplit: Record<string, PairClauseSplit> = {};
 	for (const clause of kg.clauses) {
-		const a = attentionA.clauseScore.get(clause.id) ?? 0;
-		const b = attentionB.clauseScore.get(clause.id) ?? 0;
+		const a = scoresA.clauseScore.get(clause.id) ?? 0;
+		const b = scoresB.clauseScore.get(clause.id) ?? 0;
 		if (a > 0 || b > 0) clauseSplit[clause.id] = { a, b };
 	}
 
 	const nodeScores: Record<string, number> = {};
 	for (const id of clauseOfStatement.keys()) {
-		const score = Math.max(attentionA.deonticScore.get(id) ?? 0, attentionB.deonticScore.get(id) ?? 0);
+		const score = Math.max(scoresA.deonticScore.get(id) ?? 0, scoresB.deonticScore.get(id) ?? 0);
 		if (score > 0) nodeScores[id] = score;
 	}
 	// Clause sectors are re-normalized against the widest clause of the pair, so the

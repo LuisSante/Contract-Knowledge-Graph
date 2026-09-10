@@ -1,4 +1,4 @@
-import type { Node } from './graph';
+import type { Node } from './paragraph';
 
 /**
  * A paragraph that evidences the current knowledge-graph focus. It carries nothing but

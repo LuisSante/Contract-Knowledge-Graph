@@ -15,8 +15,8 @@ export const GRID_LANES: GridLane[] = ['a', 'b', 'shared'];
 export type MarkKind = DeonticKind | 'condition' | 'value' | 'definedTerm' | 'reference';
 
 export const DEONTIC_MARK_KINDS: MarkKind[] = ['obligation', 'right', 'prohibition'];
-const QUALIFIER_MARK_KINDS: MarkKind[] = ['condition', 'value', 'definedTerm', 'reference'];
-export const MARK_KINDS: MarkKind[] = [...DEONTIC_MARK_KINDS, ...QUALIFIER_MARK_KINDS];
+const QUALIFIER_KINDS: MarkKind[] = ['condition', 'value', 'definedTerm', 'reference'];
+export const MARK_KINDS: MarkKind[] = [...DEONTIC_MARK_KINDS, ...QUALIFIER_KINDS];
 
 /**
  * A bilateral provision leaves `burdenPartyId` null, which reads like a failed

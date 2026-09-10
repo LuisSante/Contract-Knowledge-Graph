@@ -5,16 +5,13 @@ import { useDocumentStore } from '@/stores/document';
 import { fetchDocumentFile, resolveDocumentMeta } from '@/services/documents';
 import { getAxiosErrorMessage } from '@/features/docx/utils/docx-engine/http-error';
 import { createRenderer } from '@/features/docx/utils/docx-engine/renderer';
-import { loadBrowserDocx4js } from '@/features/docx/utils/docx-engine/docx-page';
-import { ensureNodeEditState } from '@/features/docx/utils/edit/edit';
+import { loadBrowserDocx4js } from '@/features/docx/utils/docx-engine/docx4js';
+import { ensureNodeEditState } from '@/features/docx/utils/edit';
 import { appendChildren, normalizeEditableText } from '@/features/docx/utils/docx-engine/dom';
 import { detectDocxNoiseNodeIds } from '@/features/docx/utils/docx-engine/noise';
 import { applyDocxTabStops } from '@/features/docx/utils/docx-engine/tab-stops';
 import { paginateRenderedSections } from '@/features/docx/utils/docx-engine/pagination';
-import {
-	clearRelationBadgeHost,
-	freezeIgnoredParagraphElement,
-} from '@/features/docx/utils/docx-engine/cleanup';
+import { freezeIgnoredParagraphElement } from '@/features/docx/utils/docx-engine/cleanup';
 import type {
 	Node as ParagraphNode,
 	ParagraphEditState,
@@ -48,7 +45,6 @@ export function useDocumentViewer(
 	// Mutable document maps (refs: they must not trigger a re-render).
 	const nodeEditStateById = useRef(new Map<string, ParagraphEditState>());
 	const paragraphElementById = useRef(new Map<string, HTMLElement>());
-	const paragraphRelationHostById = useRef(new Map<string, HTMLElement>());
 	const nodesById = useRef(new Map<string, ParagraphNode>());
 	const selectedNodeId = useRef<string | null>(null);
 
@@ -68,14 +64,12 @@ export function useDocumentViewer(
 		const maps = {
 			nodeEditStateById: nodeEditStateById.current,
 			paragraphElementById: paragraphElementById.current,
-			paragraphRelationHostById: paragraphRelationHostById.current,
 			nodes: nodesById.current,
 		};
 
 		const resetMaps = () => {
 			maps.nodeEditStateById.clear();
 			maps.paragraphElementById.clear();
-			maps.paragraphRelationHostById.clear();
 			maps.nodes.clear();
 			selectedNodeId.current = null;
 		};
@@ -97,12 +91,8 @@ export function useDocumentViewer(
 				freezeIgnoredParagraphElement(paragraphElement);
 			}
 
-			const relationHost = maps.paragraphRelationHostById.get(nodeId);
-			if (relationHost) clearRelationBadgeHost(relationHost);
-
 			maps.nodeEditStateById.delete(nodeId);
 			maps.paragraphElementById.delete(nodeId);
-			maps.paragraphRelationHostById.delete(nodeId);
 
 			const removed = maps.nodes.delete(nodeId);
 			if (selectedNodeId.current === nodeId) {
@@ -240,7 +230,6 @@ export function useDocumentViewer(
 					{
 						nodeEditStateById: maps.nodeEditStateById,
 						paragraphElementById: maps.paragraphElementById,
-						paragraphRelationHostById: maps.paragraphRelationHostById,
 						getSelectedNodeId: () => selectedNodeId.current,
 					},
 					{ renderExternalPart }
@@ -302,7 +291,6 @@ export function useDocumentViewer(
 		maps: {
 			nodeEditStateById,
 			paragraphElementById,
-			paragraphRelationHostById,
 			nodesById,
 			selectedNodeId,
 		},

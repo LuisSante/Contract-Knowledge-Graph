@@ -5,7 +5,7 @@ type IconProps = SVGProps<SVGSVGElement> & {
 	strokeWidth?: number | string;
 };
 
-export function ContractChatAssistantIcon({
+export function AssistantIcon({
 	className = 'h-4 w-4',
 	strokeWidth = 1.8,
 	color = 'currentColor',

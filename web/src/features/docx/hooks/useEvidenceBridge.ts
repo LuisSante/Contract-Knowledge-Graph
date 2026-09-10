@@ -32,7 +32,6 @@ interface UseRelatedBridgeParams {
  * selected paragraph, the reference/similarity labels and the **Shift + Scroll**
  * paragraphs that evidence the focus, and the compression that brings them closer.
  * Recomputes with RAF on scroll/resize and applies the state classes to the nodes.
- * Port of the `paragraphExplanationConnectors` system from the Svelte `+page.svelte`.
  */
 export function useEvidenceBridge({
 	active,

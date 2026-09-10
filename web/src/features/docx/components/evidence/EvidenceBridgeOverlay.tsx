@@ -3,7 +3,7 @@
 import type { MouseEvent } from 'react';
 import type { EvidenceBridge } from '@/features/docx/utils/evidence/evidence-bridge';
 
-interface RelatedBridgeOverlayProps {
+interface EvidenceBridgeOverlayProps {
 	bridge: EvidenceBridge;
 	onJumpToParagraph: (paragraphId: string) => void;
 	onRailMouseDown?: (event: MouseEvent) => void;
@@ -11,19 +11,19 @@ interface RelatedBridgeOverlayProps {
 	 * Knowledge Graph deontic rail: when provided, scroll markers are colored by
 	 * burden/benefit and faded by attention score instead of reference/similarity.
 	 */
-	toneByParagraphId?: Record<string, 'burden' | 'benefit'>;
-	scoreByParagraphId?: Record<string, number>;
+	toneByParagraph?: Record<string, 'burden' | 'benefit'>;
+	scoreByParagraph?: Record<string, number>;
 }
 
 export function EvidenceBridgeOverlay({
 	bridge,
 	onJumpToParagraph,
 	onRailMouseDown,
-	toneByParagraphId,
-	scoreByParagraphId,
-}: RelatedBridgeOverlayProps) {
+	toneByParagraph,
+	scoreByParagraph,
+}: EvidenceBridgeOverlayProps) {
 	const { connectors, primaryConnector, folds, collapsedCards, scrollMarkers } = bridge;
-	const deonticRail = toneByParagraphId != null;
+	const deonticRail = toneByParagraph != null;
 
 	return (
 		<>
@@ -110,8 +110,8 @@ export function EvidenceBridgeOverlay({
 				<div className="absolute top-2 right-1 bottom-2 z-20 w-2" onMouseDown={onRailMouseDown}>
 					{scrollMarkers.map((marker) => {
 						if (deonticRail) {
-							const tone = toneByParagraphId?.[marker.paragraphId] ?? 'burden';
-							const score = scoreByParagraphId?.[marker.paragraphId] ?? 0;
+							const tone = toneByParagraph?.[marker.paragraphId] ?? 'burden';
+							const score = scoreByParagraph?.[marker.paragraphId] ?? 0;
 							return (
 								<span
 									key={`kg-marker-${marker.paragraphId}`}

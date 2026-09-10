@@ -14,7 +14,7 @@ interface RightPanelAssistantProps {
 	onInputChange: (value: string) => void;
 	onSubmit: () => void;
 	onKeydown: (event: KeyboardEvent<HTMLTextAreaElement>) => void;
-	onSuggestedQuestionClick: (question: string) => void;
+	onSuggestionClick: (question: string) => void;
 	onFocusNodeFromPanel: (nodeId: string, emphasize?: boolean) => void;
 	onToggleEntityHighlights?: () => void;
 	initialSuggestions?: string[];
@@ -30,7 +30,7 @@ export function RightPanelAssistant({
 	onInputChange,
 	onSubmit,
 	onKeydown,
-	onSuggestedQuestionClick,
+	onSuggestionClick,
 	onFocusNodeFromPanel,
 	onToggleEntityHighlights,
 	initialSuggestions,
@@ -42,7 +42,7 @@ export function RightPanelAssistant({
 				messages={messages}
 				loading={loading}
 				entityHighlightsEnabled={entityHighlightsEnabled}
-				onSuggestedQuestionClick={onSuggestedQuestionClick}
+				onSuggestionClick={onSuggestionClick}
 				onFocusNodeFromPanel={onFocusNodeFromPanel}
 				onToggleEntityHighlights={onToggleEntityHighlights}
 			/>

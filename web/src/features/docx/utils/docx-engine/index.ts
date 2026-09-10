@@ -35,7 +35,7 @@ export {
 } from './renderer';
 
 // Binary parsing.
-export { loadBrowserDocx4js } from './docx-page';
+export { loadBrowserDocx4js } from './docx4js';
 
 // Pagination (faithful page splitting + merging of continuous sections).
 export { paginateRenderedSections } from './pagination';

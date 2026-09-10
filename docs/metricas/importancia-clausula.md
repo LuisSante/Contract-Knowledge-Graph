@@ -86,6 +86,47 @@ cambia los porcentajes de la barra y no toca el orden.
 
 ---
 
+## Verificación numérica
+
+Contrastada contra `networkx.pagerank` con el mismo grafo, el mismo vector de
+personalización y los mismos parámetros (`alpha = 0.85`, masa colgante redistribuida por
+el prior). Reproducible con el script de `scripts/`.
+
+| | resumen | contrato completo |
+|---|---|---|
+| nodos | 147 | 783 |
+| iteraciones hasta `1e-9` | 132 | 116 |
+| masa total | 1.000000000000 | 1.000000000000 |
+| valores negativos | 0 | 0 |
+| residuo del punto fijo | 8.2e-10 | 7.9e-10 |
+| desde un vector inicial uniforme | 1.2e-10 | 2.0e-10 |
+| **diferencia con `networkx.pagerank`** | **4.3e-11** | **1.3e-10** |
+
+Converge al mismo vector partiendo del prior o de un vector uniforme, de modo que el punto
+fijo es único y no depende del arranque.
+
+### Empates
+
+El orden no siempre es estricto. En el contrato completo hay **9 pares de cláusulas con
+puntuación idéntica** —diferencia exactamente cero, no aproximada— sobre 107 pares
+consecutivos.
+
+Ocurre cuando el grafo no tiene con qué separarlas: el prior reparte la misma masa por
+cláusula, y si dos tienen el mismo número de disposiciones y una vecindad equivalente, la
+propagación no rompe el empate. Cuantas menos relaciones informativas contenga el
+documento, más empates aparecen.
+
+En la práctica no afecta a la lectura: los nueve caen del puesto 18 hacia abajo, siete de
+ellos del 71 en adelante, y todos son cláusulas de formulario —*Counterparts*,
+*Severability and Headings*, *Independent Contractors*, *Waiver of Jury Trial*— donde el
+orden no significa nada. El top 10 se distingue con holgura: 100%, 89%, 83%, 70%…
+
+Conviene tenerlo presente por lo que implica: **la interfaz muestra un orden estricto que
+en la cola no existe**. Si en algún momento se ordenan contratos con pocas relaciones
+extraídas, el orden de la cola será arbitrario aunque parezca deliberado.
+
+---
+
 ## Límites
 
 **En un resumen dice poco.** El rango del contrato de referencia es apenas un factor 2, y

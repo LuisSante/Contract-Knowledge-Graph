@@ -11,6 +11,10 @@ urlpatterns = [
     path("extract_paragraphs", views.ExtractParagraphsView.as_view()),
     path("knowledge_graph/<str:doc_id>", views.KnowledgeGraphView.as_view()),
     path("knowledge_graph/<str:doc_id>/party_hints", views.KnowledgePartyHintsView.as_view()),
+    path(
+        "knowledge_graph/<str:doc_id>/clause_importance",
+        views.ClauseImportanceView.as_view(),
+    ),
     # Phase 2 — assistant.
     path("assistant/chat", views_assistant.AssistantChatView.as_view()),
     # Phase 2 — llm.

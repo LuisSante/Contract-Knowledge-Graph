@@ -31,7 +31,6 @@ const EMPTY: KnowledgeGraphBridgePayload = {
 	nodeScores: {},
 	scoreByParagraphId: {},
 	toneByParagraphId: {},
-	toneSplit: {},
 	ledger: null,
 };
 
@@ -291,8 +290,7 @@ export function buildPairBridge(
 		nodeScores: pair.nodeScores,
 		scoreByParagraphId,
 		toneByParagraphId: {},
-		toneSplit: {},
-		ledger: null,
+			ledger: null,
 	};
 }
 
@@ -370,20 +368,6 @@ export function buildKnowledgeGraphBridge(
 			])
 		);
 
-		// Arc glyph input. A statement sits wholly on one side, so its arc is a full
-		// ring; a clause carries whatever mix its statements add up to.
-		const toneSplit: Record<string, { burden: number; benefit: number }> = {};
-		for (const [statementId, tone] of attention.toneByDeontic) {
-			const magnitude = attention.deonticScore.get(statementId) ?? 0;
-			toneSplit[statementId] =
-				tone === 'burden' ? { burden: magnitude, benefit: 0 } : { burden: 0, benefit: magnitude };
-		}
-		for (const clause of kg.clauses) {
-			const burden = attention.clauseBurden.get(clause.id) ?? 0;
-			const benefit = attention.clauseBenefit.get(clause.id) ?? 0;
-			if (burden > 0 || benefit > 0) toneSplit[clause.id] = { burden, benefit };
-		}
-
 		return {
 			anchorParagraphId,
 			relatedParagraphs: toRelated(presentParagraphIds, anchorParagraphId),
@@ -393,7 +377,6 @@ export function buildKnowledgeGraphBridge(
 			nodeScores: Object.fromEntries(attention.nodeScore),
 			scoreByParagraphId,
 			toneByParagraphId,
-			toneSplit,
 			ledger: attention.ledger,
 		};
 	}

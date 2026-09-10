@@ -10,6 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 RECIPROCAL = re.compile(r"\b(?:each|either|both)\s+part(?:y|ies)\b|\bthe other(?:'s)?\b", re.I)
 
+# El único documento en estudio. Los demás grafos de `infra/json/kg/` se midieron con
+# versiones distintas del extractor, así que sus números no son comparables con estos.
+STUDY_DOC = "root_BELLICUM_MILTENYI_Supply_Agreement_Summary"
+
+SHORT_NAMES = {STUDY_DOC: "Bellicum–Miltenyi (resumen)"}
+
 POSITIONAL_EDGES = ("is_part_of",)
 PARTY_EDGES = ("assigns_obligation_to", "grants_right_to")
 
@@ -100,7 +106,14 @@ def table(title: str, headers: list[str], widths: list[int], rows: list[list[str
 
 
 def gfm(headers: list[str], rows: list[list[str]]) -> str:
-    """A Markdown table, for injecting back into the documentation."""
+    """
+    A Markdown table. With a single document the table is transposed — one column of
+    numbers under a name is a list, not a table.
+    """
+    if len(rows) == 1:
+        headers, rows = ["medida", rows[0][0]], [
+            [h, v] for h, v in zip(headers[1:], rows[0][1:])
+        ]
     lines = ["| " + " | ".join(headers) + " |", "|" + "---|" * len(headers)]
     lines += ["| " + " | ".join(row) + " |" for row in rows]
     return "\n".join(lines)
@@ -135,28 +148,35 @@ def main() -> int:
         const=ROOT / "docs/medidas/corpus.md",
         help="inyecta las tablas en el documento, entre sus marcadores",
     )
+    parser.add_argument(
+        "--all", action="store_true", help=f"mide todos los grafos, no solo {STUDY_DOC}"
+    )
     args = parser.parse_args()
 
-    results = [measure(p) for p in sorted(args.kg_dir.glob("*.json"))]
+    paths = sorted(args.kg_dir.glob("*.json"))
+    if not args.all:
+        paths = [p for p in paths if p.stem == STUDY_DOC]
+    results = [measure(p) for p in paths]
     if not results:
         print(f"No knowledge graphs in {args.kg_dir}")
         return 1
 
-    name = lambda r: r["doc"][:38]
+    def name(r: dict) -> str:
+        return SHORT_NAMES.get(r["doc"], r["doc"][:38])
 
     columns = {
         "1": (
-            ["contract", "edges", "`is_part_of`", "party", "informative", "% redundant"],
+            ["contrato", "aristas", "`is_part_of`", "parte", "informativas", "% redundante"],
             [[name(r), str(r["edges"]), str(r["positional"]), str(r["party"]),
               f"**{r['informative']}**", f"{r['redundant_pct']:.1f}%"] for r in results],
         ),
         "2": (
-            ["contract", "clauses", "empty", "statements", "max/clause"],
+            ["contrato", "cláusulas", "vacías", "enunciados", "máx/cláusula"],
             [[name(r), str(r["clauses"]), str(r["empty_clauses"]),
               str(r["statements"]), str(r["max_per_clause"])] for r in results],
         ),
         "3": (
-            ["contract", "both parties", "%", "no clause", "no party", "island", "island stmts"],
+            ["contrato", "ambas partes", "%", "sin cláusula", "sin parte", "isla", "enunc. en isla"],
             [[name(r), str(r["both"]), f"{r['both_pct']:.0f}%", str(r["unfiled"]),
               str(r["unattributed"]), str(r["island_parties"]), str(r["island_statements"])]
              for r in results],

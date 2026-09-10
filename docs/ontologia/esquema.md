@@ -1,14 +1,9 @@
-# Esquema del grafo de conocimiento
+# Esquema del grafo — qué se extrae de un contrato
 
-Qué se extrae de un contrato y con qué forma. Es la base sobre la que se apoyan las
-métricas y la vista, así que cualquier cambio aquí se propaga a todo lo demás.
-
-Fuente de verdad en el código:
-
-- `server/schemas/knowledge.py` — los tipos y sus campos.
-- `server/services/graph/knowledge/ontology.py` — las definiciones que se le dan al
-  modelo durante la extracción.
-- `web/src/types/knowledge.ts` — el espejo en el frontend.
+La base sobre la que se apoyan las métricas y la vista: cualquier cambio aquí se propaga
+a todo lo demás. En el código: `server/schemas/knowledge.py` (tipos y campos),
+`server/services/graph/knowledge/ontology.py` (lo que se le da al modelo al extraer) y
+`web/src/types/knowledge.ts` (el espejo del frontend).
 
 ---
 
@@ -31,13 +26,10 @@ deónticos**: lo que el contrato afirma. El resto los describe.
 
 ### Todo nodo lleva su procedencia
 
-Cada uno guarda `paragraphIds`, y los enunciados además `text` con el fragmento
-literal del que salieron. Sobre eso se apoya el resaltado en el documento: sin
-procedencia no hay evidencia que enseñar.
-
-Los enunciados llevan también `evidenceVerified` y `evidenceSpans`, que escribe la
-pasada de verificación posterior a la extracción — el modelo elide fragmentos aunque
-se le pida literalidad, así que se comprueba en vez de confiar.
+Cada uno guarda `paragraphIds`, y los enunciados además `text` con el fragmento literal
+del que salieron: sin procedencia no hay evidencia que enseñar. Llevan también
+`evidenceVerified` y `evidenceSpans`, que escribe una pasada posterior — el modelo elide
+fragmentos aunque se le pida literalidad, así que se comprueba en vez de confiar.
 
 ---
 
@@ -48,9 +40,9 @@ se le pida literalidad, así que se comprueba en vez de confiar.
 - **quién carga** — el obligado de un deber, el restringido de una prohibición;
 - **quién se beneficia** — el titular de un derecho, o el destinatario del deber ajeno.
 
-Son dos caras de un mismo hecho: un deber de A es una pretensión de B. En los tres
-contratos medidos, **entre el 43% y el 54% de los enunciados nombran las dos**
-(ver [medidas del corpus](../medidas/corpus.md)).
+Son dos caras del mismo hecho: un deber de A es una pretensión de B. En el documento de
+estudio, **el 54% de los enunciados nombran las dos**
+([medidas](../medidas/corpus.md)).
 
 ### Qué no sabe expresar
 
@@ -69,7 +61,7 @@ queda nulo y se lee igual que un fallo de extracción.
 
 ## Los tipos de arista
 
-Se separan por **cómo se obtienen**, que es lo que determina cuánto fiarse de ellas.
+Se separan por **cómo se obtienen**, que determina cuánto fiarse de ellas.
 
 ### Derivadas — de campos, no del modelo
 
@@ -93,37 +85,35 @@ cláusula y el carril ya dice la parte, así que trazarlas sería repetir la pos
 | `supersedes` | prevalece sobre otra en caso de conflicto |
 | `modifies` | cambia lo que otra significa, o si se aplica |
 
-Estas sí son las informativas, y su rendimiento es desigual. En el contrato completo
-suman 243; en el resumen, 3. **`modifies` y `supersedes` salieron 0 en tres corridas
-independientes**: describir una relación en la guía no basta para que el modelo la
+Estas son las informativas, y son las que el modelo apenas produce: en el documento de
+estudio suman **3**, y **`modifies` y `supersedes` salieron 0 en tres corridas
+independientes** — describir una relación en la guía no basta para que el modelo la
 emita.
 
 ---
 
-## Un detalle que importa: campos que no son aristas
+## Campos que no son aristas
 
 `Condition.gatesId`, `Value.quantifiesId`, `Reference.citedById` y
 `DefinedTerm.definedInClauseId` son **punteros en campos**, no entradas en `edges`.
 
-Cualquier cosa que recorra `kg.edges` es ciega a ellos. Y es donde vive parte de la
-estructura interesante: en el contrato de referencia, 10 de las 11 condiciones apuntan
-a un enunciado concreto, y **7 de esas 10 cierran un derecho, no una obligación** — en
-ese contrato lo que se condiciona son los permisos.
+Cualquier cosa que recorra `kg.edges` es ciega a ellos, y ahí vive parte de la estructura
+interesante: 10 de las 11 condiciones apuntan a un enunciado concreto, y **7 de esas 10
+cierran un derecho, no una obligación** — lo que se condiciona son los permisos.
 
-En cambio `DefinedTerm.definedInClauseId` viene nulo en los 22 términos del resumen:
-la extracción no lo rellena nunca.
+`DefinedTerm.definedInClauseId`, en cambio, viene nulo en los 22 términos: la extracción
+no lo rellena nunca.
 
 ---
 
 ## Volumen observado
 
-| Contrato | Partes | Cláusulas | Enunciados | Condiciones | Valores | Términos |
-|---|---|---|---|---|---|---|
-| BELLICUM–MILTENYI (resumen) | 3 | 14 | 74 | 11 | 14 | 22 |
-| BELLICUM (completo) | 5 | 142 | 372 | 71 | 51 | 111 |
-| SteelVault Affiliate | 2 | 26 | 76 | 0 | 0 | 0 |
+Documento de estudio, el resumen del contrato Bellicum–Miltenyi:
 
-SteelVault sale con cero condiciones, cero valores y cero términos definidos. O el
-contrato no los tiene, o la extracción falló con él — hoy no sabemos distinguirlo, y
-eso es exactamente lo que las [medidas del corpus](../medidas/corpus.md) tienen que
-resolver con más documentos.
+| Partes | Cláusulas | Enunciados | Condiciones | Valores | Términos |
+|---|---|---|---|---|---|
+| 3 | 14 | 74 | 11 | 14 | 22 |
+
+Tres partes para un contrato bilateral: la tercera es el nodo «each Party» de las
+cláusulas recíprocas. El desglose completo está en las
+[medidas del documento](../medidas/corpus.md).

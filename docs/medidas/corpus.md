@@ -1,150 +1,137 @@
-# Mediciones del corpus
+# Medidas del documento de estudio — sobre qué se apoyan los resultados
 
-What the paper's results section is built on. Three tables, measured over every
-knowledge graph in `infra/json/kg/`.
-
-Regenerate with:
+Todo lo que sigue está medido sobre **un** documento: el resumen del contrato
+Bellicum–Miltenyi, 74 enunciados. Las tablas las genera `scripts/measure_kg_corpus.py`
+leyendo el JSON almacenado —sin llamadas al modelo y sin tocar el código de la
+aplicación—, así que puede correr mientras se cambia la app.
 
 ```bash
-python3 scripts/measure_kg_corpus.py
+make docs
 ```
 
-Structural only — it reads the stored JSON. No LLM calls, no application code, so it
-can run while the app is being changed.
-
-**Status: 3 contracts. That is not yet a result.** Every claim below is provisional
-until the sample is larger; see [What is missing](#what-is-missing).
-
----
-
-## Why these tables exist
-
-Almost everything the design rests on was measured on **one document**, and that
-document is the *summary* of the Bellicum–Miltenyi contract — 74 statements, not the
-372 of the full one. These tables exist to find out which of those observations are
-properties of contract knowledge graphs and which are properties of that one file.
+> **Un documento no es un corpus.** Ninguna cifra de aquí distingue todavía lo que es
+> propio de los grafos de contratos de lo que es propio de este fichero, y además es un
+> **resumen**: más corto y sin las referencias cruzadas que un contrato repite. Léase
+> como el punto de partida, no como resultado. Ver [qué falta](#qué-falta).
 
 ---
 
-## Table 1 — Edge budget
+## Tabla 1 — Presupuesto de aristas
 
-**What it measures.** For each contract, how many of its edges say something the
-grid's *position* does not already say.
+Cuántas aristas dicen algo que la **posición** en la retícula no diga ya. La retícula
+coloca cada enunciado en una fila (su cláusula) y un carril (su parte), de modo que dos
+familias son redundantes por construcción:
 
-The grid puts a statement in a row (its clause) and a lane (its party). That makes two
-edge families redundant by construction:
-
-| family | edge types | what position already says |
+| familia | tipos | lo que la posición ya dice |
 |---|---|---|
-| containment | `is_part_of` | which clause it belongs to → **the row** |
-| party | `assigns_obligation_to`, `grants_right_to` | which party it concerns → **the lane** |
+| contención | `is_part_of` | a qué cláusula pertenece → **la fila** |
+| parte | `assigns_obligation_to`, `grants_right_to` | a qué parte concierne → **el carril** |
 
-Everything else — `uses`, `defines`, `references`, `depends_on` — is *informative*: a
-link would have to draw it, because no position encodes it.
+El resto — `uses`, `defines`, `references`, `depends_on` — es **informativo**: nada de
+la posición lo codifica, así que habría que dibujarlo.
 
 <!-- tabla:1 -->
-| contract | edges | `is_part_of` | party | informative | % redundant |
-|---|---|---|---|---|---|
-| root_BELLICUM_MILTENYI_Supply_Agreemen | 158 | 92 | 63 | **3** | 98.1% |
-| target_BELLICUMPHARMACEUTICALS_INC_05_ | 1083 | 556 | 284 | **243** | 77.6% |
-| target_SteelVaultCorp_20081224_10-K_EX | 154 | 72 | 82 | **0** | 100.0% |
+| medida | Bellicum–Miltenyi (resumen) |
+|---|---|
+| aristas | 158 |
+| `is_part_of` | 92 |
+| parte | 63 |
+| informativas | **3** |
+| % redundante | 98.1% |
 <!-- /tabla:1 -->
 
-**What it already says.** The redundancy is large in all three — between 78% and 100%
-of edges repeat the position. That is the argument for the grid, and it survives.
+**155 de 158 aristas repiten la posición.** Ese es el argumento de la retícula: quedan
+tres que un enlace tendría que dibujar, y tres enlaces no son un grafo.
 
-**What it corrects.** The claim "155 of 158 edges are redundant, only 3 survive" is a
-property of the **summary**, not of contract knowledge graphs. The full contract keeps
-**243** informative edges — the `uses` (111), `defines` (68), `references` (50) and
-`depends_on` (14) that a summary simply does not contain, because a summary does not
-repeat cross-references.
-
-So the paper cannot say *"the graph had nothing left to draw"*. It can say the
-position absorbs the large majority of edges. A reviewer who runs the pipeline on a
-full contract will get 78%, not 98%; the abstract has to hold the number that
-survives that test.
+El número es tan alto en parte **porque es un resumen**: un resumen no repite las
+referencias cruzadas del original, así que `uses` y `references` casi no aparecen. El
+98.1% es el techo, no la cifra que puede ir a un abstract; para eso hay que medir
+documentos completos.
 
 ---
 
-## Table 2 — Contract shape
+## Tabla 2 — Forma del contrato
 
-**What it measures.** How big the thing being drawn actually is: how many clause bands,
-how many are empty, and how many marks land in the fullest one.
+Cuán grande es lo que se dibuja: bandas de cláusula, cuántas vacías y cuántas marcas
+caen en la más llena.
 
 <!-- tabla:2 -->
-| contract | clauses | empty | statements | max/clause |
-|---|---|---|---|---|
-| root_BELLICUM_MILTENYI_Supply_Agreemen | 14 | 3 | 74 | 11 |
-| target_BELLICUMPHARMACEUTICALS_INC_05_ | 142 | 34 | 372 | 15 |
-| target_SteelVaultCorp_20081224_10-K_EX | 26 | 1 | 76 | 16 |
+| medida | Bellicum–Miltenyi (resumen) |
+|---|---|
+| cláusulas | 14 |
+| vacías | 3 |
+| enunciados | 74 |
+| máx/cláusula | 11 |
 <!-- /tabla:2 -->
 
-**What it already says.** Two view decisions that were taken by eye are justified by
-the numbers:
+**Envolver el carril está justificado por poco.** La cláusula más llena tiene 11
+enunciados, uno más que las diez columnas de un carril: o las marcas se envuelven en
+matriz o los carriles se desalinean. Con un margen de uno, cualquier documento algo más
+denso lo confirma.
 
-- **Pagination.** 142 clauses is not a list anyone scrolls. The grid opening on ten
-  rows, with a step of ten, is not a nicety.
-- **Wrapping the lane.** The fullest clause holds 15–16 statements, above the ten
-  columns of a lane, so marks must wrap into a matrix or the lanes drift out of
-  alignment.
+**Paginar no está justificado por este documento.** Con 14 cláusulas la lista entra
+entera; abrir con diez filas y avanzar de diez en diez es una decisión tomada pensando
+en documentos que aquí no se han medido.
 
-"Empty" means the clause holds no statement at all. The reason varies — *Governing
-Law* carries no duty by nature, while an empty operative clause is an extraction miss —
-so the count is reported, not interpreted.
+*Vacía* significa sin ningún enunciado. La razón varía —*Governing Law* no impone
+deberes por naturaleza, pero una cláusula operativa vacía es un fallo de extracción—,
+así que el número se reporta, no se interpreta.
 
 ---
 
-## Table 3 — Correlativity and gaps
+## Tabla 3 — Correlatividad y huecos
 
-**What it measures.** Two different things that both live in the party fields.
+Dos cosas distintas que viven en los mismos campos de parte.
 
-*Correlativity* — how often a statement names **both** a burden party and a different
-benefit party. That is the Hohfeldian pair: a prohibition on one side is a protection
-on the other. The grid currently reads one of the two and discards the other.
+**Correlatividad**: cuántos enunciados nombran a la vez la parte que carga y otra
+distinta que se beneficia. Es el par hohfeldiano —una prohibición sobre uno protege al
+otro—, y la retícula lee una de las dos y descarta la otra.
 
-*Gaps* — statements the extraction could not place: no clause, no party named, or
-attached to an "each Party" node that sits in its own disconnected component.
+**Huecos**: enunciados que la extracción no supo colocar — sin cláusula, sin parte, o
+colgados del nodo «each Party» que queda en su propio componente desconectado.
 
 <!-- tabla:3 -->
-| contract | both parties | % | no clause | no party | island | island stmts |
-|---|---|---|---|---|---|---|
-| root_BELLICUM_MILTENYI_Supply_Agreemen | 40 | 54% | 12 | 6 | 1 | 6 |
-| target_BELLICUMPHARMACEUTICALS_INC_05_ | 200 | 54% | 50 | 54 | 0 | 0 |
-| target_SteelVaultCorp_20081224_10-K_EX | 33 | 43% | 4 | 16 | 0 | 0 |
+| medida | Bellicum–Miltenyi (resumen) |
+|---|---|
+| ambas partes | 40 |
+| % | 54% |
+| sin cláusula | 12 |
+| sin parte | 6 |
+| isla | 1 |
+| enunc. en isla | 6 |
 <!-- /tabla:3 -->
 
-**What it already says.**
-
-- **Correlativity is stable: 54%, 54%, 43%.** Roughly half of all statements carry the
-  second party already. This is not a peculiarity of one contract, so the signed
-  reading has data behind it in every document measured.
-- **The "each Party" island appears in 1 of 3.** It is a failure mode, not a constant —
-  worth fixing, but it does not by itself justify changing the ontology.
-- **The gaps are not negligible**: the full contract leaves 50 statements without a
-  clause and 54 without a party. Those are extraction quality, and they belong in the
-  paper as a limitation with a number, not as a footnote.
+- **El 54% ya trae las dos partes.** Aproximadamente la mitad de los enunciados llevan
+  la correlatividad escrita en los campos, sin necesidad de inferirla.
+- **La isla «each Party» existe aquí**: una parte ficticia con 6 enunciados en un
+  componente desconectado. Es un modo de fallo de la extracción, y es la razón de que
+  el prior por cláusula tuviera que sustituir a una semilla en el nodo de parte
+  ([`descartados.md`](../metricas/descartados.md)).
+- **Los huecos no son despreciables**: 12 enunciados sin cláusula y 6 sin parte, sobre
+  74. Eso es calidad de extracción y va en el paper como limitación con número.
 
 ---
 
-## What is missing
+## Qué falta
 
-**More contracts.** Three cannot separate a property of contracts from a property of a
-file. Ten is enough to see whether the edge budget clusters or spreads; the number that
-goes in the abstract is the one that holds across them.
+**Más documentos.** Con uno no se separa una propiedad de los contratos de una
+propiedad de un fichero. Y hacen falta **contratos completos**, no solo resúmenes: el
+presupuesto de aristas es justamente lo que un resumen distorsiona.
 
-**Extraction variance.** The probe battery has been run three times and gave 7/12,
-7/12 **over different subsets**, and 11/12 after changing the chunk size. Three isolated
-readings are not a measurement. It needs K runs over M contracts, reported as mean ±
-standard deviation.
+**Regenerar antes de comparar.** Los otros grafos de `infra/json/kg/` se extrajeron con
+versiones distintas del extractor, así que compararlos con este mezclaría efectos del
+contrato con efectos del pipeline. Hay que regenerarlos con el extractor actual antes de
+que sus números signifiquen algo. Mientras tanto el script mide solo el documento de
+estudio; `--all` lo abre a todos.
 
-**Cost.** Every new knowledge graph is a set of LLM calls. Ten first, then scale only if
-the distribution asks for it.
+**Varianza de extracción.** La batería de sondas se ha corrido tres veces: 7/12, 7/12
+**sobre subconjuntos distintos**, y 11/12 tras cambiar el tamaño de chunk. Tres lecturas
+sueltas no son una medición; hacen falta K corridas sobre M documentos, con media y
+desviación.
+
+**Coste.** Cada grafo nuevo son llamadas al modelo.
 
 ---
 
-## Related
-
-- [`pagerank.md`](../metricas/pagerank.md) — the Personalized PageRank the clause weight
-  used to be built on, before it was replaced by the plain severity sum.
-- `scripts/measure_kg_corpus.py` — the script that produces these tables.
-- [`esquema.md`](../ontologia/esquema.md) — what the graph these tables measure is made of.
+*Relacionado:* [esquema del grafo](../ontologia/esquema.md) — de qué está hecho lo que
+estas tablas miden.

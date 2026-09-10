@@ -6,6 +6,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.serializers import (
+    ClauseImportanceRequestSerializer,
+    ClauseImportanceResponseSerializer,
     DatasetDocumentSerializer,
     ExtractParagraphsResponseSerializer,
     ProcessDocumentRequestSerializer,
@@ -14,6 +16,7 @@ from core.config import settings
 from services.documents.processing import build_paragraphs, save_paragraphs_dump
 from services.documents.store import DocumentStore
 from services.graph.knowledge.party_hints import suggest_party_merges
+from services.graph.knowledge import personalized_pagerank
 from services.graph.knowledge.store import load_knowledge_graph
 
 logger = logging.getLogger(__name__)
@@ -104,6 +107,40 @@ class KnowledgeGraphView(APIView):
                 "knowledgeGraph": payload,
             }
         )
+
+
+class ClauseImportanceView(APIView):
+    """Rank the clauses of a document by Personalized PageRank.
+
+    Structural and party-independent: it says how much a clause weighs inside its
+    contract, never for whom. See docs/metricas/importancia-clausula.md.
+    """
+
+    def post(self, request, doc_id: str):
+        serializer = ClauseImportanceRequestSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        document_store.ensure_initialized()
+        canonical_id = document_store.get_canonical_id(doc_id) or doc_id
+
+        kg = load_knowledge_graph(canonical_id, settings.KNOWLEDGE_GRAPH_DIR)
+        if kg is None:
+            raise NotFound("Knowledge graph not generated for this document")
+
+        result = personalized_pagerank.compute(
+            kg, serializer.validated_data["countedStatementIds"]
+        )
+        response = ClauseImportanceResponseSerializer(
+            {
+                "status": "success",
+                "documentId": canonical_id,
+                "byClause": result.by_clause,
+                "byStatement": result.by_statement,
+                "peak": result.peak,
+                "iterations": result.iterations,
+            }
+        )
+        return Response(response.data)
 
 
 class KnowledgePartyHintsView(APIView):

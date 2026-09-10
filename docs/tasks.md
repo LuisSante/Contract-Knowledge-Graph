@@ -16,11 +16,11 @@ El recorrido del usuario será **localizar asimetrías → explicar sus efectos 
 
 ## Acuerdo sobre Personalized PageRank
 
-Personalized PageRank (PPR) permite medir la **relevancia estructural de una entidad respecto de uno o varios nodos fuente**. En este proyecto, el caso principal será una parte del contrato como fuente: ¿qué relevancia tienen las demás entidades desde la perspectiva estructural de esa parte?
+Personalized PageRank (PPR) mide la **relevancia estructural de una entidad respecto del vector de reinicio que se le dé**. Ese vector es la decisión del método, y la que está desplegada reparte el reinicio **entre las cláusulas** y, dentro de cada una, entre sus disposiciones: ordena el documento, no lo lee desde una parte. Está en [`metricas/importancia-clausula.md`](./metricas/importancia-clausula.md).
 
-Para una parte `P`, la personalización concentra el reinicio en su nodo. La distribución resultante depende de las relaciones que se pueden recorrer, de su dirección, de sus pesos y de la probabilidad de reinicio. También podemos estudiar fuentes múltiples, pero su selección y ponderación deben quedar explícitas.
+Sembrar el reinicio en el nodo de una parte —la hipótesis inicial de este acuerdo— se probó y se descartó con medidas: ordenaba por tamaño (ρ = 0.882 contra contar disposiciones) y dejaba cuatro cláusulas en cero exacto. Ver [`metricas/descartados.md`](./metricas/descartados.md).
 
-Esta interpretación orienta la evaluación de PPR. El sentido contractual de una disposición —a quién restringe, beneficia o concede una facultad— se atribuye mediante evidencia. La relación entre relevancia estructural, favorabilidad y riesgo es una hipótesis que debemos comprobar.
+Queda pendiente una variante que sí sería relativa a una parte: sembrar en sus disposiciones y propagar solo por las relaciones que no repiten la posición. El sentido contractual de una disposición —a quién restringe o beneficia— se atribuye por evidencia, no por centralidad; que la relevancia estructural se relacione con favorabilidad o riesgo sigue siendo una hipótesis por comprobar.
 
 ## 1. Definir favorabilidad, carga y riesgo
 
@@ -109,14 +109,14 @@ La revisión preliminar de `attention.ts` encontró una actualización compatibl
 
 - [ ] **Documentar todos los usos actuales de PPR.** Identificar dónde interviene en rankings, selección de evidencia, pesos por cláusula y comparaciones. Diferenciar las funciones activas de las vistas o métodos que quedaron desactivados.
 - [x] **Especificar el recorrido.** Documentar nodos fuente, vector de personalización, probabilidad de reinicio, dirección de las relaciones, pesos, tratamiento de relaciones repetidas y nodos sin salida. Explicar qué significa cada decisión para una lectura centrada en una parte. Documentado en [`metricas/importancia-clausula.md`](./metricas/importancia-clausula.md) para el método vigente.
-- [x] **Verificar la implementación numérica.** Comparar con una implementación de referencia usando exactamente el mismo grafo y parámetros. Comprobar valores no negativos, masa total, residuo y convergencia; incluir casos pequeños con resultado conocido y entradas inválidas. Contrastada contra `networkx.pagerank`: coincide dentro de 1.3e-10, masa 1, sin negativos, punto fijo único. Detalle en [`metricas/importancia-clausula.md`](./metricas/importancia-clausula.md).
+- [x] **Verificar la implementación numérica.** Comparar con una implementación de referencia usando exactamente el mismo grafo y parámetros. Comprobar valores no negativos, masa total, residuo y convergencia; incluir casos pequeños con resultado conocido y entradas inválidas. Contrastada contra `networkx.pagerank`: coincide dentro de 4.3e-11, masa 1, sin negativos, punto fijo único. Detalle en [`metricas/importancia-clausula.md`](./metricas/importancia-clausula.md).
 - [x] **Analizar componentes desconectados y reciprocidad.** Determinar cuándo un cero refleja falta de conexión con la fuente y cuándo revela una representación incompleta, como un nodo separado de «cada parte». Corregir la representación cuando corresponda y conservar el significado de los ceros restantes. El nodo «each Party» dejaba cuatro cláusulas en cero exacto; el prior por cláusula lo corrige y ninguna puede valer cero.
 - [x] **Separar relevancia estructural y efecto atribuido.** Mantener distinguibles la relevancia de una entidad respecto de una parte y las cargas o beneficios sustentados para esa parte. Revisar las agregaciones por cláusula para que su etiqueta describa lo que realmente suman. El orden usa la relevancia estructural y la barra el efecto atribuido; cada etiqueta describe lo que suma.
-- [x] **Revisar la comparabilidad entre partes.** Examinar valores originales, normalizaciones y denominadores. Una normalización consistente facilita comparar, pero no demuestra que la relevancia estructural sea una medida comparable de utilidad o riesgo. La normalización por ego daba a cada parte un denominador distinto; anotado en [`metricas/burden-benefit.md`](./metricas/burden-benefit.md).
+- [x] **Revisar la comparabilidad entre partes.** Examinar valores originales, normalizaciones y denominadores. Una normalización consistente facilita comparar, pero no demuestra que la relevancia estructural sea una medida comparable de utilidad o riesgo. La normalización por ego daba a cada parte un denominador distinto; anotado en [`metricas/descartados.md`](./metricas/descartados.md).
 - [ ] **Comparar tres alternativas.** Evaluar una base de efectos directos, el PPR actual y una variante que considere tipos de relación, dirección y atribución de efectos. Justificar las transiciones de la variante antes de evaluar sus resultados.
 - [ ] **Evaluar sensibilidad y utilidad.** Variar parámetros y revisar cambios en los rankings y en la evidencia recuperada. Usar los casos de referencia para comprobar si PPR ayuda a localizar o explicar algo relevante y qué errores introduce.
 - [ ] **Decidir el papel de PPR.** Registrar en qué tareas aporta valor frente a la base. Puede conservarse para priorizar lectura o recuperar evidencia si los resultados apoyan ese uso. Documentar también los usos que no queden respaldados.
-- [ ] **Implementar el cálculo validado en el backend.** Centralizar el método y devolver resultados con versión del KG, parámetros, versión del método y contribuciones por disposición. Verificar equivalencia con los resultados de referencia.
+- [x] **Implementar el cálculo validado en el backend.** Centralizar el método y devolver resultados con versión del KG, parámetros, versión del método y contribuciones por disposición. Verificar equivalencia con los resultados de referencia. En `services/graph/knowledge/personalized_pagerank.py`, servido por `POST /knowledge_graph/<doc>/clause_importance` con contribuciones por disposición. Equivalencia con el frontend que sustituye verificada a 6.9e-18.
 - [ ] **Incorporar las correcciones del usuario al estado analizado.** Las fusiones de partes y las correcciones de atribución deben reflejarse en el cálculo. Definir cuándo recomputar resultados y cómo identificar la versión corregida que los produjo.
 
 **Entregable:** auditoría reproducible, comparación de alternativas, decisión sobre el uso de PPR y servicio de análisis validado.
@@ -210,11 +210,10 @@ El experimento inicial usa el mismo resumen. Varias ejecuciones sobre él miden 
 - [Importancia de la cláusula — el orden de las filas](./metricas/importancia-clausula.md).
 - [Reparto del beneficio — el porcentaje de cada cláusula](./metricas/reparto-beneficio.md).
 - [Esquema del grafo de conocimiento](./ontologia/esquema.md).
-- [Métricas y estado de los métodos anteriores](./metricas/burden-benefit.md).
-- [Formalización anterior basada en PPR](./metricas/pagerank.md). Consultarla como antecedente; su propia nota de estado distingue el método anterior de la vista actual.
+- [Métodos descartados](./metricas/descartados.md) — qué se probó, qué se midió y qué lo reemplazó.
 - [Cálculo actual de atención](../web/src/features/docx/utils/knowledge/attention.ts).
 - [Construcción de la cuadrícula](../web/src/features/docx/utils/knowledge/statement-grid.ts).
-- [Cálculo de la importancia de cláusula](../web/src/features/docx/utils/knowledge/clause-importance.ts).
+- [Cálculo de la importancia de cláusula](../server/services/graph/knowledge/personalized_pagerank.py).
 - [Notebook de extracción de KG](../notebooks/KG/build_kg.ipynb).
 - [Referencia de PageRank en NetworkX](https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.link_analysis.pagerank_alg.pagerank.html).
 - Documentación oficial de los candidatos mencionados: [GPT-5](https://developers.openai.com/api/docs/models/gpt-5) y [GPT-6 Astra](https://developers.openai.com/api/docs/models/gpt-6-astra). Comprobar disponibilidad y parámetros al preparar el experimento.

@@ -1,75 +1,62 @@
 # Importancia de la cláusula — el orden de las filas
 
-Cuánto manda una cláusula **dentro de su contrato**. Es lo único que decide el orden de la
-retícula; no dice a quién favorece, eso lo dice
+Cuánto manda una cláusula **dentro de su contrato**. Decide el orden de la retícula y
+nada más: no dice a quién favorece, eso lo dice
 [`reparto-beneficio.md`](./reparto-beneficio.md).
 
-Implementada en `web/src/features/docx/utils/knowledge/clause-importance.ts`.
+En `server/services/graph/knowledge/personalized_pagerank.py`, servida por
+`POST /api/v1/knowledge_graph/<doc>/clause_importance`.
 
 ---
 
 ## De dónde sale
 
-Es la adaptación de la identificación de entidades clave de **GraphQAG** (Li et al., IEEE
-TVCG, 2026), §IV-A. Allí el prior de reinicio se reparte entre los **párrafos** del
-documento y, dentro de cada uno, entre sus entidades:
+De la identificación de entidades clave de **GraphQAG** (Li et al., IEEE TVCG, 2026,
+§IV-A). Allí el prior de reinicio se reparte entre los **párrafos** y, dentro de cada
+uno, entre sus entidades:
 
 $$\pi(v_i) = \sum_{\substack{p\in\mathcal{P}\\ v_i\in V_p}} \frac{1}{|\mathcal{P}|\cdot|V_p|}$$
 
 $$PR_i^{(t+1)} = \bigl(1 - d + dD^{(t)}\bigr)\pi_i + d\sum_{j\in\mathcal{N}_i}\frac{PR_j^{(t)}}{\deg(v_j)}$$
 
-Aquí la unidad es la **cláusula** y `V_c` sus **enunciados**:
+Aquí la unidad es la **cláusula** y `V_c` son sus **enunciados**. Como un enunciado
+pertenece a una sola cláusula, el sumatorio se reduce a un término:
 
-| GraphQAG | Aquí |
-|---|---|
-| 𝒫 — párrafos del documento | cláusulas con enunciados visibles |
-| `V_p` — entidades del párrafo | enunciados de la cláusula |
+$$\pi(v) = \frac{1}{|C|\cdot|V_c|}$$
 
-Como un enunciado pertenece a una sola cláusula, el sumatorio de π se reduce a un término:
-`π(v) = 1/(|C|·|V_c|)`.
-
-`d = 0.85`, grafo no dirigido, y la masa colgante `D` se reinyecta **por el prior**, no
-sobre una semilla. Itera hasta que dos rondas difieren menos de `1e-9`.
-
-La importancia de una cláusula es la masa que retienen sus enunciados.
+`d = 0.85`, grafo no dirigido, masa colgante reinyectada **por el prior**, y para hasta
+que dos rondas difieren menos de `1e-9`. La importancia de una cláusula es la masa que
+retienen sus enunciados.
 
 ---
 
 ## Qué arregla
 
-Sustituye a un PageRank personalizado sembrado en el nodo de la parte, documentado en
-[`pagerank.md`](./pagerank.md). Aquel tenía dos defectos medidos sobre el contrato de
-referencia:
+Sustituye a un PPR sembrado en el nodo de la parte, cuyos defectos medidos están en
+[`descartados.md`](./descartados.md). Dos cosas cambian:
 
-**Ordenaba por tamaño.** ρ = 0.882 contra simplemente contar los enunciados de cada
-cláusula. No medía centralidad; medía cuántos `is_part_of` colgaban de ella. El
-`1/|V_c|` es exactamente el desesgo que faltaba: **una cláusula de quince enunciados no
-empieza pesando cinco veces una de tres.** Con el prior nuevo, ρ baja a **0.400** en el
-resumen y **0.743** en el contrato completo.
+**Ya no ordena por tamaño.** El `1/|V_c|` es el desesgo que faltaba: **una cláusula de
+once enunciados no empieza pesando once veces una de uno.** La correlación con
+simplemente contar enunciados baja de ρ = 0.882 a **0.400**.
 
-**Dejaba cuatro cláusulas en cero exacto.** El nodo «each Party» está en un componente
-desconectado, así que un paseo sembrado en una parte real nunca lo alcanzaba y
-*Limitation of Liability* se hundía al fondo. Ahora **ninguna cláusula puede valer cero**:
-todas reciben masa del prior, las alcance el grafo o no. Esa cláusula pasa a encabezar la
-lista cuando la columna bilateral está abierta.
+**Ninguna cláusula puede valer cero.** Todas reciben masa del prior, las alcance el
+grafo o no. *Limitation of Liability*, que antes se hundía por estar en la isla «each
+Party», encabeza la lista cuando la columna bilateral está abierta.
 
 ---
 
 ## Qué cuenta
 
-El prior se construye **solo con los enunciados que están en pantalla** — sin los que el
-contrato no atribuye a nadie, sin los tipos filtrados, y sin la columna bilateral cuando
-está cerrada. Un orden apoyado en marcas que el lector no puede contar es un orden que no
-puede comprobar.
+El prior se construye **solo con los enunciados que están en pantalla**: sin los que el
+contrato no atribuye a nadie, sin los tipos filtrados y sin la columna bilateral cuando
+está cerrada. Un orden apoyado en marcas que el lector no puede contar es un orden que
+no puede comprobar.
 
 El **paseo sí recorre el grafo entero**: lo que una cláusula tiene conectado no deja de
 existir porque se cierre una columna.
 
----
-
-## Lo que da
-
-Con los pesos por defecto y la columna bilateral cerrada:
+La severidad **no interviene**, así que mover un slider cambia los porcentajes de la
+barra y no toca el orden.
 
 | # | cláusula | importancia |
 |---|---|---|
@@ -81,67 +68,47 @@ Con los pesos por defecto y la columna bilateral cerrada:
 | 6 | Term and Termination | 63% |
 | 7 | Audit, IP, Confidentiality | 42% |
 
-La severidad **no interviene**: la importancia es estructural, así que mover un slider
-cambia los porcentajes de la barra y no toca el orden.
-
 ---
 
-## Verificación numérica
+## Verificación
 
 Contrastada contra `networkx.pagerank` con el mismo grafo, el mismo vector de
-personalización y los mismos parámetros (`alpha = 0.85`, masa colgante redistribuida por
-el prior). Reproducible con el script de `scripts/`.
+personalización y los mismos parámetros. El script de `scripts/` llama a
+`personalized_pagerank.compute` —el módulo que se ejecuta, no una réplica.
 
-| | resumen | contrato completo |
-|---|---|---|
-| nodos | 147 | 783 |
-| iteraciones hasta `1e-9` | 132 | 116 |
-| masa total | 1.000000000000 | 1.000000000000 |
-| valores negativos | 0 | 0 |
-| residuo del punto fijo | 8.2e-10 | 7.9e-10 |
-| desde un vector inicial uniforme | 1.2e-10 | 2.0e-10 |
-| **diferencia con `networkx.pagerank`** | **4.3e-11** | **1.3e-10** |
+| documento de estudio | |
+|---|---|
+| nodos · iteraciones hasta `1e-9` | 147 · 132 |
+| masa total · valores negativos | 1.000000000000 · 0 |
+| residuo del punto fijo | 8.2e-10 |
+| **diferencia con `networkx.pagerank`** | **4.3e-11** |
+| diferencia con el TypeScript que sustituyó | 6.9e-18 |
 
-Converge al mismo vector partiendo del prior o de un vector uniforme, de modo que el punto
-fijo es único y no depende del arranque.
+Converge al mismo vector partiendo del prior o de un vector uniforme, de modo que el
+punto fijo es único. Al pasarlo al backend se comprobó que el orden y el ρ = 0.400 se
+mantenían cláusula por cláusula.
 
-### Empates
-
-El orden no siempre es estricto. En el contrato completo hay **9 pares de cláusulas con
-puntuación idéntica** —diferencia exactamente cero, no aproximada— sobre 107 pares
-consecutivos.
-
-Ocurre cuando el grafo no tiene con qué separarlas: el prior reparte la misma masa por
-cláusula, y si dos tienen el mismo número de disposiciones y una vecindad equivalente, la
-propagación no rompe el empate. Cuantas menos relaciones informativas contenga el
-documento, más empates aparecen.
-
-En la práctica no afecta a la lectura: los nueve caen del puesto 18 hacia abajo, siete de
-ellos del 71 en adelante, y todos son cláusulas de formulario —*Counterparts*,
-*Severability and Headings*, *Independent Contractors*, *Waiver of Jury Trial*— donde el
-orden no significa nada. El top 10 se distingue con holgura: 100%, 89%, 83%, 70%…
-
-Conviene tenerlo presente por lo que implica: **la interfaz muestra un orden estricto que
-en la cola no existe**. Si en algún momento se ordenan contratos con pocas relaciones
-extraídas, el orden de la cola será arbitrario aunque parezca deliberado.
+**Empates.** El grafo puede no tener con qué separar dos cláusulas: mismo número de
+disposiciones y vecindad equivalente, y la propagación no rompe el empate. Cuantas menos
+relaciones informativas tenga el documento, más empates. En el documento de estudio no
+hay ninguno, pero conviene tenerlo presente: **la interfaz muestra un orden estricto que
+en la cola puede no existir**.
 
 ---
 
 ## Límites
 
-**En un resumen dice poco.** El rango del contrato de referencia es apenas un factor 2, y
-una cláusula de un solo enunciado puede quedar tercera — su enunciado recibe el prior
-máximo, `1/(|C|·1)`, y no hay estructura que lo corrija. En el contrato completo el rango
-es **×5.1** y el orden es sensato: *Change Control*, *Compliance*, *Forecasts and Orders*.
-El resumen tiene 3 aristas informativas; el completo, 243.
+**Aquí dice poco, y es culpa del documento.** El rango entre la primera y la última
+cláusula es apenas un factor 2, y una cláusula de un solo enunciado puede quedar tercera
+—recibe el prior máximo, `1/(|C|·1)`, y no hay estructura que lo corrija—. La medida
+solo separa cuando hay relaciones que redistribuyan la masa, y el documento de estudio
+tiene **3 aristas informativas**. Es un resumen: no repite referencias cruzadas.
 
-**Es del documento, no de la parte.** El π del paper es un prior uniforme, sin semilla de
-parte: responde *«qué cláusula importa en este contrato»*, nunca *«para quién»*. Hacerlo
-relativo a una parte sería restringir π a sus enunciados, y eso ya sería una variante
-nuestra.
+**Es del documento, no de la parte.** El prior es uniforme: responde *«qué cláusula
+importa en este contrato»*, nunca *«para quién»*.
 
-**Un candidato no probado.** Sembrar en los enunciados de una parte y propagar **solo por
-las aristas informativas** — `uses`, `defines`, `references`, `depends_on` — mediría el
-enredo: cuánto más hay que leer para entender la cláusula. En el contrato completo alcanza
-298 nodos y 58 de las 142 cláusulas; en el resumen no existe. El nodo de parte tiene grado
-0 en ese subgrafo, así que la semilla tiene que ser sus enunciados, no ella.
+**Un candidato sin probar.** Sembrar en los enunciados de una parte y propagar **solo
+por las aristas informativas** —`uses`, `defines`, `references`, `depends_on`— mediría
+el enredo: cuánto más hay que leer para entender la cláusula. Con tres aristas
+informativas ese subgrafo aquí no existe, así que no puede probarse sobre este
+documento.

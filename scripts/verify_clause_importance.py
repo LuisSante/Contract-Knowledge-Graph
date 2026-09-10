@@ -1,5 +1,13 @@
-import json, collections, sys, glob
+import collections
+import glob
+import json
+import sys
+from pathlib import Path
+
 import networkx as nx
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "server"))
+from services.graph.knowledge import personalized_pagerank  # noqa: E402
 
 D, TOL, MAXIT = 0.85, 1e-9, 200
 
@@ -44,6 +52,10 @@ for path in sorted(glob.glob('infra/json/kg/*.json')):
     kg, ids, idx, adj, V, pi = build(path)
     r, iters = ours(ids, adj, pi)
 
+    # The module under test, run through its public entry point.
+    shipped = personalized_pagerank.compute(kg)
+    drift = max(abs(shipped.by_clause[c] - sum(r[idx[x]] for x in V[c])) for c in V)
+
     # 1 · propiedades
     mass = sum(r); neg = sum(1 for x in r if x < 0)
 
@@ -76,3 +88,4 @@ for path in sorted(glob.glob('infra/json/kg/*.json')):
     print(f"   desde vector uniforme    {same:.3e}   (unicidad)")
     print(f"   vs networkx.pagerank     {diff:.3e}   ({'IGUAL' if diff < 1e-9 else 'DIFIERE'})")
     print(f"   mismo orden de cláusulas: {mine == theirs}")
+    print(f"   vs personalized_pagerank.compute {drift:.3e}")

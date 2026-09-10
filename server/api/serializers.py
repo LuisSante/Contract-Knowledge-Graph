@@ -29,6 +29,22 @@ class ProcessPageSerializer(serializers.Serializer):
     elements = ProcessElementSerializer(many=True, required=False, default=list)
 
 
+class ClauseImportanceRequestSerializer(serializers.Serializer):
+    # Absent means every statement; present restricts the prior to those on screen.
+    countedStatementIds = serializers.ListField(
+        child=serializers.CharField(), required=False, allow_null=True, default=None
+    )
+
+
+class ClauseImportanceResponseSerializer(serializers.Serializer):
+    status = serializers.CharField(default="success")
+    documentId = serializers.CharField()
+    byClause = serializers.DictField(child=serializers.FloatField())
+    byStatement = serializers.DictField(child=serializers.FloatField())
+    peak = serializers.FloatField()
+    iterations = serializers.IntegerField()
+
+
 class ProcessDocumentRequestSerializer(serializers.Serializer):
     documentId = serializers.CharField()
     pages = ProcessPageSerializer(many=True, required=False, default=list)

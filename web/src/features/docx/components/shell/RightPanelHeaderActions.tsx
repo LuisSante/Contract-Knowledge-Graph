@@ -41,13 +41,14 @@ export function RightPanelHeaderActions({
 	model,
 	onModelChange,
 }: RightPanelHeaderActionsProps) {
-	const focusedPartyName = useKnowledgeGraphStore((state) => state.ledger?.partyName ?? null);
 	const focusMeta = useKnowledgeGraphStore((state) => state.focusMeta);
 	const hops = useKnowledgeGraphStore((state) => state.hops);
 	const topK = useKnowledgeGraphStore((state) => state.topK);
 	const setHops = useKnowledgeGraphStore((state) => state.setHops);
 	const setTopK = useKnowledgeGraphStore((state) => state.setTopK);
 	const clearFocus = useKnowledgeGraphStore((state) => state.clearFocus);
+	// From `focusMeta`, not from the ledger: the pair bridge leaves the ledger null.
+	const focusedPartyName = focusMeta?.kind === 'party' ? focusMeta.label : null;
 
 	if (activeTab === 'knowledge_graph') {
 		// A party focus tunes how many statements are shown; anything else tunes the

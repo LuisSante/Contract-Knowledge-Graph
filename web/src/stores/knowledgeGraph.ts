@@ -42,11 +42,6 @@ export interface KnowledgeGraphBridgePayload {
 	scoreByParagraphId: Record<string, number>;
 	/** Per-paragraph burden/benefit tone for the deontic rail color. */
 	toneByParagraphId: Record<string, DeonticTone>;
-	/**
-	 * Burden/benefit magnitude per KG node, for the arc glyph drawn around it. A
-	 * statement is wholly one or the other; a clause carries the mix of its statements.
-	 */
-	toneSplit: Record<string, { burden: number; benefit: number }>;
 	/** Impact ledger for the focused party (null for clause/statement focus). */
 	ledger: KgLedger | null;
 }
@@ -60,7 +55,6 @@ const EMPTY_PAYLOAD: KnowledgeGraphBridgePayload = {
 	nodeScores: {},
 	scoreByParagraphId: {},
 	toneByParagraphId: {},
-	toneSplit: {},
 	ledger: null,
 };
 

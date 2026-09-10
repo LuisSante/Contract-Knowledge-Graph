@@ -35,3 +35,24 @@ export async function fetchPartyMergeHints(docId: string): Promise<PartyMergeHin
 		return { candidates: {}, entities: [] };
 	}
 }
+
+export interface ClauseImportance {
+	byClause: Record<string, number>;
+}
+
+export async function fetchClauseImportance(
+	docId: string,
+	countedStatementIds: string[] | null,
+	signal?: AbortSignal
+): Promise<ClauseImportance | null> {
+	try {
+		const response = await api.post<Partial<ClauseImportance>>(
+			`/knowledge_graph/${encodeURIComponent(docId)}/clause_importance`,
+			{ countedStatementIds },
+			{ signal }
+		);
+		return { byClause: response.data.byClause ?? {} };
+	} catch {
+		return null;
+	}
+}

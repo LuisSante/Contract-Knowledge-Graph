@@ -4,9 +4,8 @@ Es lo que dibuja la barra: **de todo lo que una cláusula reparte, qué porción
 parte**. El lector puede decir *«esta cláusula es mía en un 11%»* y tratar el número bajo
 como el aviso.
 
-En el memo `clauseBenefit` de
-`web/src/features/docx/components/knowledge-graph/KnowledgeGraphPanel.tsx`, sobre el
-modelo de `utils/knowledge/statement-grid.ts`.
+En `web/src/features/docx/utils/knowledge/benefit-share.ts`, sobre el modelo de
+`statement-grid.ts`; la dibuja `components/knowledge-graph/grid/ShareBar.tsx`.
 
 El **orden** de las filas no sale de aquí: viene de
 [`importancia-clausula.md`](./importancia-clausula.md). Esta métrica dice **a quién le

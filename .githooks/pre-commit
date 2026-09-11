@@ -15,7 +15,15 @@ bad_lint=0
 
 web="$(printf '%s\n' "$staged" | grep '^web/' | sed 's|^web/||' || true)"
 if [ -n "$web" ]; then
-	printf '%s\n' "$web" | (cd "$root/web" && xargs -d '\n' -r pnpm exec prettier --check --ignore-unknown) || bad_format=1
+	cd "$root/web"
+	printf '%s\n' "$web" | xargs -d '\n' -r pnpm exec prettier --check --ignore-unknown || bad_format=1
+	# Only what ESLint can parse; prettier already covered the css/json/md.
+	# --max-warnings 0: unused variables are warnings in Next's config, and that is
+	# most of what ESLint catches here. The project sits at zero, so it stays at zero.
+	js="$(printf '%s\n' "$web" | grep -E '\.(ts|tsx|js|jsx|mjs|cjs)$' || true)"
+	if [ -n "$js" ]; then
+		printf '%s\n' "$js" | xargs -d '\n' -r pnpm exec eslint --no-warn-ignored --max-warnings 0 || bad_lint=1
+	fi
 fi
 
 py="$(printf '%s\n' "$staged" | grep -E '^server/.*\.py$' || true)"

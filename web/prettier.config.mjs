@@ -3,10 +3,12 @@
  * written with tabs and single quotes, and `es5` keeps trailing commas out of the
  * parameter lists where this codebase never put them.
  */
-export default {
+const config = {
 	useTabs: true,
 	singleQuote: true,
 	semi: true,
 	printWidth: 100,
 	trailingComma: 'es5',
 };
+
+export default config;

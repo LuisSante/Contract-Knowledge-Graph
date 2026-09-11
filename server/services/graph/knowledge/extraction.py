@@ -19,12 +19,12 @@ from schemas.knowledge import (
     KnowledgeGraph,
     _KgDeontic,
 )
+from services.graph.knowledge.evidence import anchor_to_evidence
 from services.graph.knowledge.ontology import (
     DEONTIC_COLLECTION_BY_KIND,
     DEONTIC_ID_PREFIX,
     RELATION_TYPES,
 )
-from services.graph.knowledge.evidence import anchor_to_evidence
 from services.graph.knowledge.prompts import SYSTEM_PROMPT, build_user_prompt
 from services.llm.base import LLMProvider
 
@@ -190,7 +190,7 @@ class _GraphAccumulator:
         elif heading:
             key = f"head:{_normalize(heading)}"
         elif paragraph_ids:
-            key = f"pid:{sorted(paragraph_ids)[0]}"
+            key = f"pid:{min(paragraph_ids)}"
         else:
             return None
 

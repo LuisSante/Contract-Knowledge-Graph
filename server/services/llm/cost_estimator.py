@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+from logging import getLogger
 from typing import Any
+
+logger = getLogger(__name__)
 
 MODEL_PRICING_USD_PER_1M: dict[str, dict[str, float]] = {
     "gpt-4.1-nano": {"input": 0.10, "output": 0.40},
@@ -23,8 +26,10 @@ def estimate_tokens(text: str, model_name: str) -> int:
     if encoder is not None:
         try:
             return len(encoder.encode(text))
-        except Exception:
-            pass
+        except ValueError:
+            # Special tokens in the text; the four-chars-per-token estimate is enough
+            # for a cost preview.
+            logger.debug("tiktoken could not encode the text", exc_info=True)
 
     return max(1, len(text) // 4)
 
@@ -77,13 +82,15 @@ def _get_tiktoken_encoder(model_name: str) -> Any | None:
 
     try:
         import tiktoken  # type: ignore
-    except Exception:
+    except ImportError:
+        logger.debug("tiktoken is not installed; estimating tokens by length")
         _TIKTOKEN_ENCODER = None
         return None
 
     try:
         _TIKTOKEN_ENCODER = tiktoken.encoding_for_model(model_name)
-    except Exception:
+    except KeyError:
+        # A model tiktoken does not know yet: its own default encoding still counts.
         _TIKTOKEN_ENCODER = tiktoken.get_encoding("cl100k_base")
 
     return _TIKTOKEN_ENCODER

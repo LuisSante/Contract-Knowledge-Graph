@@ -8,7 +8,7 @@ WEB_PORT = 3000
 .PHONY: install finstall run frun \
 	build fbuild \
 	sinstall srun \
-	preprocess docs format format-check hooks help
+	preprocess docs format format-check lint lint-fix hooks help
 
 help:
 	@echo "Commands available:"
@@ -22,7 +22,9 @@ help:
 	@echo "  make preprocess   - Preprocess data"
 	@echo "  make docs         - Regenerate the measurement tables in docs/"
 	@echo "  make format       - Format everything (Prettier for web, Ruff for Python)"
-	@echo "  make format-check - Check formatting without writing (what the hook runs)"
+	@echo "  make format-check - Check formatting without writing (every file)"
+	@echo "  make lint         - Report suspicious code (ESLint for web, Ruff for server)"
+	@echo "  make lint-fix     - Apply only the fixes the linters consider safe"
 	@echo "  make hooks        - Enable the versioned git hooks (.githooks/)"
 
 install:
@@ -60,8 +62,17 @@ format-check:
 	@echo "Checking Python formatting..."
 	$(RUFF) format --check $(PY_PATHS)
 
-# Versioned hooks: .git/hooks is not committed, so the repo points git at .githooks.
-# One-off per clone; `make finstall` runs it too.
+lint:
+	@echo "Linting the frontend..."
+	$(PNPM) run lint
+	@echo "Linting the Python..."
+	$(RUFF) check $(PY_PATHS)
+
+lint-fix:
+	@echo "Fixing what is safe to fix..."
+	$(PNPM) run lint:fix
+	$(RUFF) check --fix $(PY_PATHS)
+
 hooks:
 	@echo "Enabling .githooks/..."
 	git config core.hooksPath .githooks
@@ -70,8 +81,6 @@ preprocess:
 	@echo "Preprocessing data..."
 	cd notebooks/KG && $(PYTHON) create_kg.py
 
-# Reads infra/json/kg/ and rewrites only what sits between the <!-- tabla:N --> markers.
-# The prose that interprets the numbers is never touched.
 docs:
 	@echo "Regenerating measurement tables..."
 	$(PYTHON) scripts/measure_kg_corpus.py --write

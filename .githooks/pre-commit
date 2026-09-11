@@ -1,22 +1,33 @@
 #!/usr/bin/env bash
+# Checks what is about to be committed, and only that: a file modified in the
+# working tree but not staged is none of this hook's business.
+#
+# It never rewrites anything. Reformatting behind your back would stage changes
+# you never read; `make format` is one command away.
+#
+# Bypass with `git commit --no-verify`.
 set -euo pipefail
 
 root="$(git rev-parse --show-toplevel)"
 staged="$(git diff --cached --name-only --diff-filter=ACMR -z | tr '\0' '\n')"
-failed=0
+bad_format=0
+bad_lint=0
 
 web="$(printf '%s\n' "$staged" | grep '^web/' | sed 's|^web/||' || true)"
 if [ -n "$web" ]; then
-	printf '%s\n' "$web" | (cd "$root/web" && xargs -d '\n' -r pnpm exec prettier --check --ignore-unknown) || failed=1
+	printf '%s\n' "$web" | (cd "$root/web" && xargs -d '\n' -r pnpm exec prettier --check --ignore-unknown) || bad_format=1
 fi
 
 py="$(printf '%s\n' "$staged" | grep -E '^server/.*\.py$' || true)"
 if [ -n "$py" ]; then
-	printf '%s\n' "$py" | (cd "$root" && xargs -d '\n' -r uv run --project server ruff format --check) || failed=1
+	cd "$root"
+	printf '%s\n' "$py" | xargs -d '\n' -r uv run --project server ruff format --check || bad_format=1
+	printf '%s\n' "$py" | xargs -d '\n' -r uv run --project server ruff check || bad_lint=1
 fi
 
-if [ "$failed" -ne 0 ]; then
-	echo
-	echo "  Formato: ejecuta 'make format' y vuelve a añadir los ficheros."
-	exit 1
-fi
+[ "$bad_format" -eq 0 ] && [ "$bad_lint" -eq 0 ] && exit 0
+
+echo
+[ "$bad_format" -ne 0 ] && echo "  Formato: ejecuta 'make format' y vuelve a añadir los ficheros."
+[ "$bad_lint" -ne 0 ] && echo "  Linter: 'make lint-fix' arregla lo mecánico; el resto pide una decisión."
+exit 1

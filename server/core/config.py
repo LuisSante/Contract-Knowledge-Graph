@@ -33,9 +33,7 @@ class Settings(BaseSettings):
         if isinstance(value, bool):
             return value
         normalized = str(value).strip().lower()
-        if normalized in {"1", "true", "yes", "on", "debug", "dev", "development"}:
-            return True
-        return False
+        return normalized in {"1", "true", "yes", "on", "debug", "dev", "development"}
 
     @field_validator("CORS_ORIGINS", "ALLOWED_HOSTS", mode="before")
     @classmethod

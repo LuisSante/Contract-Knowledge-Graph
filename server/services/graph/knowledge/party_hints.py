@@ -40,7 +40,7 @@ def _build_user_prompt(parties: list[dict[str, Any]]) -> str:
 
 
 def _parse_json(text: str) -> dict[str, Any]:
-    cleaned = re.sub(r"^```(?:json)?\s*|\s*```$", "", (text or "").strip(), flags=re.I | re.S)
+    cleaned = re.sub(r"^```(?:json)?\s*|\s*```$", "", (text or "").strip(), flags=re.IGNORECASE | re.DOTALL)
     match = re.search(r"\{[\s\S]*\}", cleaned)
     try:
         return json.loads(match.group(0) if match else cleaned)

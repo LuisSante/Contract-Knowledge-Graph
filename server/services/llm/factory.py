@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 from logging import getLogger
+from typing import ClassVar
 
 from dotenv import load_dotenv
 
@@ -15,7 +16,8 @@ logger = getLogger(__name__)
 
 
 class LLMProviderFactory:
-    _cache: dict[str, LLMProvider] = {}
+    # Process-wide on purpose: a provider holds its client, so it is built once.
+    _cache: ClassVar[dict[str, LLMProvider]] = {}
 
     @classmethod
     def create(cls, provider_name: str, *, model: str | None = None) -> LLMProvider:

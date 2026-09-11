@@ -1,4 +1,5 @@
 import logging
+from typing import ClassVar
 
 from django.http import FileResponse
 from rest_framework.exceptions import NotFound, ValidationError
@@ -15,8 +16,8 @@ from api.serializers import (
 from core.config import settings
 from services.documents.processing import build_paragraphs, save_paragraphs_dump
 from services.documents.store import DocumentStore
-from services.graph.knowledge.party_hints import suggest_party_merges
 from services.graph.knowledge import personalized_pagerank
+from services.graph.knowledge.party_hints import suggest_party_merges
 from services.graph.knowledge.store import load_knowledge_graph
 
 logger = logging.getLogger(__name__)
@@ -132,7 +133,8 @@ class ClauseImportanceView(APIView):
 
 
 class KnowledgePartyHintsView(APIView):
-    _cache: dict[str, dict] = {}
+    # DRF builds a view per request, so the cache has to outlive the instance.
+    _cache: ClassVar[dict[str, dict]] = {}
 
     def get(self, request, doc_id: str):
         document_store.ensure_initialized()

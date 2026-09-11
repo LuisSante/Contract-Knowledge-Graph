@@ -29,15 +29,11 @@ def estimate_tokens(text: str, model_name: str) -> int:
     return max(1, len(text) // 4)
 
 
-def estimate_model_cost_usd(
-    *, model_name: str, input_tokens: int, output_tokens: int
-) -> float | None:
+def estimate_model_cost_usd(*, model_name: str, input_tokens: int, output_tokens: int) -> float | None:
     rates = resolve_model_rates(model_name)
     if rates is None:
         return None
-    return (input_tokens / 1_000_000.0) * rates["input"] + (output_tokens / 1_000_000.0) * rates[
-        "output"
-    ]
+    return (input_tokens / 1_000_000.0) * rates["input"] + (output_tokens / 1_000_000.0) * rates["output"]
 
 
 def resolve_model_rates(model_name: str) -> dict[str, float] | None:

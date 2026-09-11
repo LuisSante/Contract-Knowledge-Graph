@@ -24,9 +24,7 @@ class OpenAIProvider(LLMProvider):
         try:
             from openai import OpenAI
         except ImportError as exc:
-            raise RuntimeError(
-                "OpenAI provider requires the `openai` package. Install dependencies and retry."
-            ) from exc
+            raise RuntimeError("OpenAI provider requires the `openai` package. Install dependencies and retry.") from exc
 
         client_kwargs: dict[str, Any] = {"api_key": api_key}
         if timeout is not None:
@@ -107,10 +105,7 @@ class OpenAIProvider(LLMProvider):
         add_usage_cost(estimated_cost)
 
         logger.info(
-            (
-                "OpenAI usage model=%s prompt_tokens=%d completion_tokens=%d "
-                "total_tokens=%d est_cost_usd=%s"
-            ),
+            ("OpenAI usage model=%s prompt_tokens=%d completion_tokens=%d total_tokens=%d est_cost_usd=%s"),
             effective_model,
             prompt_tokens,
             completion_tokens,

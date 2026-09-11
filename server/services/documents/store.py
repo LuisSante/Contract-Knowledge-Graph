@@ -73,11 +73,7 @@ class DocumentStore:
             for alias in aliases:
                 alias_candidates[alias].add(document_id)
 
-        canonical_id_by_alias = {
-            alias: next(iter(doc_ids))
-            for alias, doc_ids in alias_candidates.items()
-            if len(doc_ids) == 1
-        }
+        canonical_id_by_alias = {alias: next(iter(doc_ids)) for alias, doc_ids in alias_candidates.items() if len(doc_ids) == 1}
 
         self._documents = sorted(documents, key=self._document_sort_key)
         self._path_map = path_map

@@ -45,11 +45,7 @@ def verify_evidence(span: str, paragraphs: Sequence[tuple[str, str]]) -> Evidenc
     if found:
         return EvidenceMatch(spans=[whole], paragraph_ids=[found], verified=True)
 
-    fragments = [
-        fragment
-        for fragment in (part.strip() for part in _ELLIPSIS.split(whole))
-        if len(fragment) >= MIN_FRAGMENT_CHARS
-    ]
+    fragments = [fragment for fragment in (part.strip() for part in _ELLIPSIS.split(whole)) if len(fragment) >= MIN_FRAGMENT_CHARS]
     if len(fragments) < 2:
         return _UNVERIFIED
 

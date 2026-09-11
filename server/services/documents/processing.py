@@ -7,9 +7,7 @@ from pathlib import Path
 logger = logging.getLogger(__name__)
 
 PAGE_NUMBER_ONLY_RE = re.compile(r"^(?:\d+|[ivxlcdm]{1,8})$", re.IGNORECASE)
-PAGE_LABEL_RE = re.compile(
-    r"^(?:page|pagina|p[aá]g\.?)\s*\d+(?:\s*(?:\/|of|de)\s*\d+)?$", re.IGNORECASE
-)
+PAGE_LABEL_RE = re.compile(r"^(?:page|pagina|p[aá]g\.?)\s*\d+(?:\s*(?:\/|of|de)\s*\d+)?$", re.IGNORECASE)
 BOUNDARY_SCAN_LINES = 3
 
 
@@ -60,24 +58,14 @@ def detect_repeated_boundary_texts(pages: list[dict]):
         for _, text_key in bottom_entries_keyed:
             bottom_counts[text_key] += 1
 
-    repeated_top = {
-        text
-        for text, count in top_counts.items()
-        if count >= 2 and is_repeated_boundary_candidate(text)
-    }
-    repeated_bottom = {
-        text
-        for text, count in bottom_counts.items()
-        if count >= 2 and is_repeated_boundary_candidate(text)
-    }
+    repeated_top = {text for text, count in top_counts.items() if count >= 2 and is_repeated_boundary_candidate(text)}
+    repeated_bottom = {text for text, count in bottom_counts.items() if count >= 2 and is_repeated_boundary_candidate(text)}
 
     return boundaries_by_page, repeated_top, repeated_bottom
 
 
 def build_paragraphs(pages: list[dict], doc_id: str) -> list[dict]:
-    boundaries_by_page, repeated_top_texts, repeated_bottom_texts = detect_repeated_boundary_texts(
-        pages
-    )
+    boundaries_by_page, repeated_top_texts, repeated_bottom_texts = detect_repeated_boundary_texts(pages)
 
     all_paragraphs_input: list[dict] = []
 
@@ -95,13 +83,11 @@ def build_paragraphs(pages: list[dict], doc_id: str) -> list[dict]:
 
             text_key = text_content.lower()
             if text_key in repeated_top_texts and any(
-                idx == boundary_idx and text_key == boundary_text
-                for boundary_idx, boundary_text in top_boundary
+                idx == boundary_idx and text_key == boundary_text for boundary_idx, boundary_text in top_boundary
             ):
                 continue
             if text_key in repeated_bottom_texts and any(
-                idx == boundary_idx and text_key == boundary_text
-                for boundary_idx, boundary_text in bottom_boundary
+                idx == boundary_idx and text_key == boundary_text for boundary_idx, boundary_text in bottom_boundary
             ):
                 continue
 

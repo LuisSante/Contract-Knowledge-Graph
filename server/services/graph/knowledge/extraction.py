@@ -154,9 +154,7 @@ class _GraphAccumulator:
         if not keys:
             return None
 
-        existing_id = next(
-            (self._party_key_to_id[k] for k in keys if k in self._party_key_to_id), None
-        )
+        existing_id = next((self._party_key_to_id[k] for k in keys if k in self._party_key_to_id), None)
         if existing_id is None:
             self._party_seq += 1
             existing_id = f"party-{self._party_seq}"
@@ -200,9 +198,7 @@ class _GraphAccumulator:
         if existing_id is None:
             self._clause_seq += 1
             existing_id = f"clause-{self._clause_seq}"
-            self.clauses[existing_id] = KgClause(
-                id=existing_id, ref=ref, heading=heading, paragraphIds=[]
-            )
+            self.clauses[existing_id] = KgClause(id=existing_id, ref=ref, heading=heading, paragraphIds=[])
             self._clause_key_to_id[key] = existing_id
 
         clause = self.clauses[existing_id]
@@ -234,9 +230,7 @@ class _GraphAccumulator:
         return None
 
     # -- defined terms ---------------------------------------------------- #
-    def add_defined_term(
-        self, raw: dict[str, Any], clause_id: str | None, paragraph_ids: list[str]
-    ) -> str | None:
+    def add_defined_term(self, raw: dict[str, Any], clause_id: str | None, paragraph_ids: list[str]) -> str | None:
         term = str(raw.get("term") or "").strip()
         key = _normalize(term)
         if not key:
@@ -246,9 +240,7 @@ class _GraphAccumulator:
         if existing_id is None:
             self._term_seq += 1
             existing_id = f"term-{self._term_seq}"
-            self.definedTerms[existing_id] = KgDefinedTerm(
-                id=existing_id, term=term, paragraphIds=[]
-            )
+            self.definedTerms[existing_id] = KgDefinedTerm(id=existing_id, term=term, paragraphIds=[])
             self._term_key_to_id[key] = existing_id
 
         entry = self.definedTerms[existing_id]
@@ -309,9 +301,7 @@ class _GraphAccumulator:
         return global_id
 
     # -- conditions / references / values --------------------------------- #
-    def add_condition(
-        self, raw: dict[str, Any], gates_id: str | None, paragraph_ids: list[str]
-    ) -> None:
+    def add_condition(self, raw: dict[str, Any], gates_id: str | None, paragraph_ids: list[str]) -> None:
         trigger = str(raw.get("trigger") or "").strip()
         if not trigger:
             return
@@ -331,9 +321,7 @@ class _GraphAccumulator:
             )
         )
 
-    def add_reference(
-        self, raw: dict[str, Any], cited_by_id: str | None, paragraph_ids: list[str]
-    ) -> None:
+    def add_reference(self, raw: dict[str, Any], cited_by_id: str | None, paragraph_ids: list[str]) -> None:
         name = str(raw.get("name") or "").strip()
         if not name:
             return
@@ -354,9 +342,7 @@ class _GraphAccumulator:
             )
         )
 
-    def add_value(
-        self, raw: dict[str, Any], quantifies_id: str | None, paragraph_ids: list[str]
-    ) -> None:
+    def add_value(self, raw: dict[str, Any], quantifies_id: str | None, paragraph_ids: list[str]) -> None:
         amount = str(raw.get("amount") or "").strip()
         if not amount:
             return
@@ -389,9 +375,7 @@ class _GraphAccumulator:
         paragraph_ids: list[str],
     ) -> None:
         """Queue an LLM-extracted relation; the target is resolved in build()."""
-        self._pending_relations.append(
-            (rtype, source_id, target.strip(), evidence.strip(), paragraph_ids)
-        )
+        self._pending_relations.append((rtype, source_id, target.strip(), evidence.strip(), paragraph_ids))
 
     def _resolve_relations(self) -> tuple[list[KgEdge], int]:
         edges: list[KgEdge] = []
@@ -611,9 +595,7 @@ def _ingest_chunk(
             _paragraph_ids_from(raw_term.get("paragraphs"), index_to_id),
             paragraph_texts,
         )
-        global_id = accumulator.add_defined_term(
-            raw_term, _resolve(raw_term.get("definedIn"), local_clause_to_global), pids
-        )
+        global_id = accumulator.add_defined_term(raw_term, _resolve(raw_term.get("definedIn"), local_clause_to_global), pids)
         if local_id and global_id:
             local_term_to_global[local_id] = global_id
 
@@ -647,9 +629,7 @@ def _ingest_chunk(
                 local_deontic_to_global[local_id] = global_id
 
     def _resolve_attachment(local_ref: Any) -> str | None:
-        return _resolve(local_ref, local_deontic_to_global) or _resolve(
-            local_ref, local_clause_to_global
-        )
+        return _resolve(local_ref, local_deontic_to_global) or _resolve(local_ref, local_clause_to_global)
 
     for raw_condition in payload.get("conditions") or []:
         condition_pids, _, _ = anchor_to_evidence(

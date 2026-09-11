@@ -30,10 +30,7 @@ DEONTIC_KIND_GUIDE: dict[str, str] = {
 }
 
 LLM_RELATION_GUIDE: dict[str, str] = {
-    "uses": (
-        "a clause or statement invokes a defined term. target = the exact term string "
-        '(e.g. "Confidential Information").'
-    ),
+    "uses": ('a clause or statement invokes a defined term. target = the exact term string (e.g. "Confidential Information").'),
     "references": (
         "a NEUTRAL mention of another clause — it points at it without making anything "
         'conditional. target = the reference as written (e.g. "Section 3.1"). '

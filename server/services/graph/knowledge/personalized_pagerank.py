@@ -93,16 +93,8 @@ def compute(kg: dict, counted: Iterable[str] | None = None) -> PersonalizedPageR
         if delta < TOLERANCE:
             break
 
-    by_statement = {
-        node_id: rank[index[node_id]]
-        for group in members.values()
-        for node_id in group
-        if node_id in index
-    }
-    by_clause = {
-        clause_id: sum(by_statement.get(node_id, 0.0) for node_id in group)
-        for clause_id, group in members.items()
-    }
+    by_statement = {node_id: rank[index[node_id]] for group in members.values() for node_id in group if node_id in index}
+    by_clause = {clause_id: sum(by_statement.get(node_id, 0.0) for node_id in group) for clause_id, group in members.items()}
     return PersonalizedPageRank(
         by_clause=by_clause,
         by_statement=by_statement,

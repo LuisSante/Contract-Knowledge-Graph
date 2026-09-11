@@ -40,9 +40,7 @@ def estimate_assistant_chat_request(payload: AssistantChatRequest) -> dict[str, 
     system_prompt = _build_system_prompt()
     user_prompt = _build_user_prompt(payload, context_entries, allowed_ids)
     resolved_model = (payload.model or "").strip() or _default_model_for_provider(payload.provider)
-    input_tokens = estimate_tokens(system_prompt, resolved_model) + estimate_tokens(
-        user_prompt, resolved_model
-    )
+    input_tokens = estimate_tokens(system_prompt, resolved_model) + estimate_tokens(user_prompt, resolved_model)
     output_tokens = ASSISTANT_ESTIMATED_OUTPUT_TOKENS
     cost = estimate_model_cost_usd(
         model_name=resolved_model,
@@ -87,9 +85,7 @@ def generate_assistant_response(payload: AssistantChatRequest) -> AssistantChatR
     system_prompt = _build_system_prompt()
     user_prompt = _build_user_prompt(payload, context_entries, allowed_ids)
 
-    raw_text = provider.generate(
-        system_prompt=system_prompt, user_prompt=user_prompt, temperature=0.2
-    )
+    raw_text = provider.generate(system_prompt=system_prompt, user_prompt=user_prompt, temperature=0.2)
     parsed = _parse_json_from_model(raw_text)
 
     answer = _sanitize_answer(parsed.get("answer"), fallback=raw_text)
@@ -118,18 +114,13 @@ def _build_context_entries(
     # contract otherwise.
     focus_ids = [pid for pid in dict.fromkeys(payload.focusParagraphIds) if pid in node_map]
     if focus_ids:
-        focus_entries = [
-            ContextEntry(node=node_map[pid], tag="kg_focus", relation_summary="")
-            for pid in focus_ids
-        ]
+        focus_entries = [ContextEntry(node=node_map[pid], tag="kg_focus", relation_summary="") for pid in focus_ids]
         focus_entries.sort(key=lambda entry: (entry.node.page, entry.node.paragraph_enum))
         return _apply_context_budget(focus_entries)
 
     full_entries = [
         ContextEntry(node=node, tag="contract", relation_summary="")
-        for node in sorted(
-            payload.paragraphNodes, key=lambda item: (item.page, item.paragraph_enum)
-        )
+        for node in sorted(payload.paragraphNodes, key=lambda item: (item.page, item.paragraph_enum))
     ]
 
     return _apply_context_budget(full_entries)
@@ -187,18 +178,14 @@ def _build_user_prompt(
     for entry in context_entries:
         relation = f" | {entry.relation_summary}" if entry.relation_summary else ""
         context_lines.append(
-            f"[{entry.node.id}] tag={entry.tag} page={entry.node.page} "
-            f"paragraph={entry.node.paragraph_enum}{relation}\n{entry.node.text.strip()}"
+            f"[{entry.node.id}] tag={entry.tag} page={entry.node.page} paragraph={entry.node.paragraph_enum}{relation}\n{entry.node.text.strip()}"
         )
 
     history_block = "\n".join(history_lines) if history_lines else "(none)"
     context_block = "\n\n".join(context_lines)
     allowed_block = ", ".join(allowed_ids)
 
-    kg_block = (
-        "Knowledge Graph Facts (ground truth — explain, do not recompute):\n"
-        f"{_format_kg_facts(payload)}\n\n"
-    )
+    kg_block = f"Knowledge Graph Facts (ground truth — explain, do not recompute):\n{_format_kg_facts(payload)}\n\n"
 
     prompt = (
         f"Document ID: {payload.documentId}\n"
@@ -233,10 +220,7 @@ def _format_kg_facts(payload: AssistantChatRequest) -> str:
     ]
     if ledger.topClauses:
         lines.append("Heaviest clauses (already ranked):")
-        lines.extend(
-            f"  - {clause.label} [{clause.id}]: burden={clause.burden:.3f}, benefit={clause.benefit:.3f}"
-            for clause in ledger.topClauses
-        )
+        lines.extend(f"  - {clause.label} [{clause.id}]: burden={clause.burden:.3f}, benefit={clause.benefit:.3f}" for clause in ledger.topClauses)
     return "\n".join(lines)
 
 
@@ -331,9 +315,7 @@ def _normalize_suggested_questions(raw: Any) -> list[str]:
     return suggestions
 
 
-def _build_citation(
-    citation_id: str, node_map: dict[str, AssistantParagraphNode]
-) -> AssistantCitation:
+def _build_citation(citation_id: str, node_map: dict[str, AssistantParagraphNode]) -> AssistantCitation:
     node = node_map.get(citation_id)
     if node is None:
         return AssistantCitation(id=citation_id, excerpt="(Paragraph not available)")

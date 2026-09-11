@@ -19,7 +19,6 @@ export default async function DocsPage({ params }: { params: Promise<{ slug?: st
 	const { slug } = await params;
 	const docs = await getDocs();
 
-	// The index: the shelf itself, grouped the same way the sidebar is.
 	if (!slug?.length) {
 		const groups = [...new Set(docs.map((doc) => doc.group))];
 		return (
@@ -52,7 +51,10 @@ export default async function DocsPage({ params }: { params: Promise<{ slug?: st
 
 	return (
 		<div className="flex min-w-0 gap-8">
-			<article className="docs-markdown min-w-0 flex-1" dangerouslySetInnerHTML={{ __html: html }} />
+			<article
+				className="docs-markdown min-w-0 flex-1"
+				dangerouslySetInnerHTML={{ __html: html }}
+			/>
 			{headings.length > 2 && (
 				<nav className="sticky top-8 hidden h-fit w-52 shrink-0 self-start text-sm xl:block">
 					<p className="mb-2 font-medium text-muted-foreground">En esta página</p>

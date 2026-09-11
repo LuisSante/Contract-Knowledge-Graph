@@ -1,9 +1,5 @@
 import { parsePxValue } from './dom';
-import {
-	getLastMeaningfulElement,
-	getLastMeaningfulNode,
-	isIgnorablePageNode
-} from './tab-stops';
+import { getLastMeaningfulElement, getLastMeaningfulNode, isIgnorablePageNode } from './tab-stops';
 
 const PAGE_OVERFLOW_TOLERANCE_PX = 10;
 const PAGE_SPLIT_GUARD_LIMIT = 180;
@@ -241,11 +237,6 @@ export function paginateRenderedSections(targetViewer: HTMLElement): void {
 				node instanceof HTMLElement && node.tagName.toLowerCase() === 'section'
 		);
 
-	// Pre-pass: a `continuous` section break does NOT start a new page (change of
-	// columns/format on the same sheet). We dump its content (without the page
-	// chrome) at the end of the previous section and remove it, so that
-	// height-based pagination decides the real breaks. Without this, each
-	// continuous section turned into a nearly empty page (e.g. the signature block).
 	for (const section of collectSections()) {
 		if (section.dataset.docxSectionType !== 'continuous') continue;
 		const previous = section.previousElementSibling;

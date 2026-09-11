@@ -1,12 +1,6 @@
 import type { Node as ParagraphNode, EvidenceParagraph } from '@/types/document';
 import { cloneParagraphForCard } from '@/features/docx/utils/docx-engine/clone-paragraph';
 
-/**
- * Geometry of the evidence bridge: the connector joining the anchor paragraph with
- * the paragraphs that evidence the focused party, the folds, the collapsed cards
- * (when Shift+Scroll brings them closer) and the scroll markers.
- */
-
 const PARAGRAPH_GAP_PX = 10;
 const STACK_OFFSET_PX = 18;
 const STACK_CARD_GAP_PX = 12;
@@ -124,7 +118,8 @@ export function computeEvidenceBridge({
 	if (anchors.length === 0) return EMPTY_EVIDENCE_BRIDGE;
 
 	const sortedAnchors = [...anchors].sort(
-		(left, right) => Math.abs(left.y - selectedY) - Math.abs(right.y - selectedY) || left.y - right.y
+		(left, right) =>
+			Math.abs(left.y - selectedY) - Math.abs(right.y - selectedY) || left.y - right.y
 	);
 	const selectedParagraphEnum = paragraphEnumOf(selectedParagraph);
 	const selectedTop = selectedRect.top - hostRect.top;
@@ -141,7 +136,9 @@ export function computeEvidenceBridge({
 		stationaryByParagraphId.set(anchor.paragraphId, isConsecutive && isSideBySide);
 	}
 
-	const stationaryAnchors = anchors.filter((a) => stationaryByParagraphId.get(a.paragraphId) === true);
+	const stationaryAnchors = anchors.filter(
+		(a) => stationaryByParagraphId.get(a.paragraphId) === true
+	);
 	const movableAnchors = anchors.filter((a) => stationaryByParagraphId.get(a.paragraphId) !== true);
 	const beforeAnchors = movableAnchors
 		.filter((a) => a.paragraphEnum < selectedParagraphEnum)
@@ -168,10 +165,15 @@ export function computeEvidenceBridge({
 		const nearestStationaryAboveTop = Math.max(...stationaryAbove.map((a) => a.top));
 		beforeCursor = Math.min(beforeCursor, nearestStationaryAboveTop - STACK_CARD_GAP_PX);
 	}
-	for (const anchor of [...beforeAnchors].sort((left, right) => right.paragraphEnum - left.paragraphEnum)) {
+	for (const anchor of [...beforeAnchors].sort(
+		(left, right) => right.paragraphEnum - left.paragraphEnum
+	)) {
 		const stackedTop = beforeCursor - anchor.height;
 		const stackedY = stackedTop + anchor.height / 2;
-		compressedYByParagraphId.set(anchor.paragraphId, anchor.y * (1 - compression) + stackedY * compression);
+		compressedYByParagraphId.set(
+			anchor.paragraphId,
+			anchor.y * (1 - compression) + stackedY * compression
+		);
 		compressedTopByParagraphId.set(
 			anchor.paragraphId,
 			anchor.top * (1 - compression) + stackedTop * compression
@@ -187,7 +189,10 @@ export function computeEvidenceBridge({
 	for (const anchor of [...equalAnchors, ...afterAnchors]) {
 		const stackedTop = afterCursor;
 		const stackedY = stackedTop + anchor.height / 2;
-		compressedYByParagraphId.set(anchor.paragraphId, anchor.y * (1 - compression) + stackedY * compression);
+		compressedYByParagraphId.set(
+			anchor.paragraphId,
+			anchor.y * (1 - compression) + stackedY * compression
+		);
 		compressedTopByParagraphId.set(
 			anchor.paragraphId,
 			anchor.top * (1 - compression) + stackedTop * compression

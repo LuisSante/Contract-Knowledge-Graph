@@ -2,7 +2,6 @@ export function normalizeEditableText(raw: string): string {
 	return raw.replace(/\u00a0/g, ' ').replace(/\r/g, '');
 }
 
-/** Parsea un valor en px (de `style`/`dataset`) a n\u00famero, o `null` si no es finito. */
 export function parsePxValue(rawValue?: string | null): number | null {
 	if (!rawValue) return null;
 	const parsed = Number.parseFloat(rawValue);

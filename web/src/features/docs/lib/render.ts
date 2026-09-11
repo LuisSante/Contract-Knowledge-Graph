@@ -62,7 +62,9 @@ function rewriteLink(node: Element, sourcePath: string, docs: DocEntry[]): void 
 	node.tagName = 'span';
 	node.properties = {
 		className: ['docs-ref'],
-		title: target.endsWith('.md') ? `Documento no catalogado: ${target}` : `Archivo del proyecto: ${target}`,
+		title: target.endsWith('.md')
+			? `Documento no catalogado: ${target}`
+			: `Archivo del proyecto: ${target}`,
 	};
 }
 
@@ -88,7 +90,11 @@ function normalizeDisplayMath(source: string): string {
 			const marker = line.match(/^\s{0,3}(`{3,}|~{3,})(.*)$/);
 			if (marker) {
 				if (!fence) fence = { char: marker[1][0], length: marker[1].length };
-				else if (marker[1][0] === fence.char && marker[1].length >= fence.length && !marker[2].trim())
+				else if (
+					marker[1][0] === fence.char &&
+					marker[1].length >= fence.length &&
+					!marker[2].trim()
+				)
 					fence = null;
 				return line;
 			}

@@ -18,12 +18,6 @@ function buildEstimateRequest(
 	return { callType, assistantChat: payload };
 }
 
-/**
- * LLM cost confirmation: on each call an estimate is requested from the backend
- * (`/llm/estimate`), a toast is shown and the user's decision is awaited.
- * `confirm` returns a promise that resolves to `true`/`false`. Port of the
- * `confirmLlmEstimate` + toast from the Svelte `+page.svelte`.
- */
 export function useLlmEstimate() {
 	const [estimate, setEstimate] = useState<LlmEstimateResponse | null>(null);
 	const [isOpen, setIsOpen] = useState(false);

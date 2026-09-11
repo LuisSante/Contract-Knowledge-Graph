@@ -115,7 +115,9 @@ export default function Home() {
 				</span>
 				<div className="min-w-0 flex-1">
 					<h1 className="text-xl leading-tight font-medium">Clause Impact Explorer</h1>
-					<p className="text-sm text-muted-foreground">Clause impact per party in legal contracts</p>
+					<p className="text-sm text-muted-foreground">
+						Clause impact per party in legal contracts
+					</p>
 				</div>
 				<Link
 					href="/docs"

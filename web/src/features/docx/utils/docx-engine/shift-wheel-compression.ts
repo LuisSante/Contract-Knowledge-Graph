@@ -1,28 +1,13 @@
-// Shared engine for "zoom with Shift + Scroll": keeps a compression value
-// (0→1), animates it with a RAF tween (cubic easing) on
-// Shift+Scroll and reschedules a recompute on the host's scroll/resize/ResizeObserver.
-// Used by the related bridge and the contradiction evidence compression; each
-// one only provides its `refresh` (what to recompute), its `durationMs` and, optionally,
-// `canCompress` (when to allow the gesture).
-
 const COMPRESS_SNAP_EPSILON = 0.001;
 const WHEEL_DIRECTION_DEADZONE = 2;
 
 interface AttachShiftWheelCompressionOptions {
 	host: HTMLElement;
-	/** Tween duration in ms. */
 	durationMs: number;
-	/** Recomputes with the current compression value (compute + setState + classes). */
 	refresh: (compression: number) => void;
-	/** If it returns false, Shift+Scroll does not compress (leaves normal scrolling). */
 	canCompress?: () => boolean;
 }
 
-/**
- * Attaches the compression engine to the host and returns the cleanup function.
- * Call inside a `useEffect` (lifecycle/deps are governed by the hook that
- * uses it). A `cleanup()` cancels the tween, the RAFs and removes the listeners.
- */
 export function attachShiftWheelCompression({
 	host,
 	durationMs,

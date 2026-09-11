@@ -15,7 +15,7 @@ export function buildNodeSnapshot(
 		id: node.id,
 		text: getNodeCurrentText(nodeEditStateById, node),
 		paragraph_enum: node.paragraph_enum,
-		page: node.page
+		page: node.page,
 	}));
 }
 
@@ -25,7 +25,7 @@ export function buildHistory(
 ): AssistantHistoryMessage[] {
 	return assistantMessages.slice(-limit).map((message) => ({
 		role: message.role,
-		content: message.content
+		content: message.content,
 	}));
 }
 
@@ -37,7 +37,6 @@ function sanitizeSuggestions(value: unknown): string[] {
 	return Array.from(new Set(cleaned)).slice(0, 4);
 }
 
-/** Shown when the model returns none; the chat is always about the focused party. */
 const FALLBACK_QUESTIONS = [
 	'Which clauses put the most weight on this party?',
 	'What does this party get in return?',

@@ -17,28 +17,20 @@ import type {
 	ParagraphEditState,
 } from '@/types/document';
 
-/** Gate in front of a billable call: resolves false when the user declines the cost. */
 export type ConfirmLlmEstimate = (
 	callType: 'assistant_chat',
 	payload: AssistantChatRequest
 ) => Promise<boolean>;
 
-/** The panel has one entry point, so the provider is fixed rather than state. */
 const PROVIDER = 'openai' as const;
 
 interface UseAssistantChatParams {
 	docId: string;
 	nodeEditStateById: Map<string, ParagraphEditState>;
-	/** Global analysis model (optional, forwarded to the backend). */
 	model?: string;
-	/** LLM cost confirmation before each call (if omitted, none is requested). */
 	confirmLlmEstimate?: ConfirmLlmEstimate;
 }
 
-/**
- * Chat about the focused party. Holds the thread state and one submit path; the
- * message builders live in `utils/assistant`.
- */
 export function useAssistantChat({
 	docId,
 	nodeEditStateById,
@@ -50,7 +42,6 @@ export function useAssistantChat({
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
-	// Mirror of `messages` to build the history without depending on the re-render.
 	const messagesRef = useRef<AssistantChatMessage[]>([]);
 	useEffect(() => {
 		messagesRef.current = messages;
@@ -62,7 +53,6 @@ export function useAssistantChat({
 		return `assistant-msg-${messageCounter.current}`;
 	};
 
-	/** Question about the focused party. */
 	const submitKgNodeQuestion = async (questionOverride?: string) => {
 		if (loading) return;
 		const question = (questionOverride ?? input).trim();
@@ -78,9 +68,7 @@ export function useAssistantChat({
 			setError('The contract is still loading.');
 			return;
 		}
-		// Gated on the focus, not on the ledger: the ledger is only built by the
-		// single-party bridge, and the panel seats a pair, so requiring it turned every
-		// question into "focus a party" even with one focused.
+
 		const kgState = useGraphStore.getState();
 		if (!kgState.focusNodeId) {
 			setError('Focus a party in the Knowledge Graph before asking about it.');
@@ -109,7 +97,6 @@ export function useAssistantChat({
 			focusNodeLabel: kgState.focusMeta?.label ?? null,
 			focusNodeKind: 'party',
 			focusParagraphIds: kgState.paragraphIds,
-			// Optional on the backend, which falls back to "no impact facts were provided".
 			...(ledger
 				? {
 						kgLedger: {
@@ -155,7 +142,6 @@ export function useAssistantChat({
 		}
 	};
 
-	/** Enter sends the question about the focused party. */
 	const handleKgNodeKeydown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
 		if (event.key === 'Enter' && !event.shiftKey) {
 			event.preventDefault();

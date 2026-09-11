@@ -1,10 +1,6 @@
 import { normalizeEditableText } from './dom';
 import type { ParagraphEditState } from './types';
 
-/**
- * Ensures an edit-state entry for a paragraph (idempotent).
- * Engine model helper: operates on the map injected by the consumer.
- */
 export function ensureNodeEditState(
 	nodeEditStateById: Map<string, ParagraphEditState>,
 	nodeId: string,
@@ -17,7 +13,7 @@ export function ensureNodeEditState(
 	const state: ParagraphEditState = {
 		committed: normalizedFallback,
 		current: normalizedFallback,
-		editedSinceCommit: false
+		editedSinceCommit: false,
 	};
 	nodeEditStateById.set(nodeId, state);
 	return state;

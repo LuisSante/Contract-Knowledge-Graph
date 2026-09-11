@@ -1,44 +1,29 @@
 import type { DeonticKind, KgDeonticNode, KnowledgeGraph } from '@/types/knowledge';
 import { deonticNodes } from '@/types/knowledge';
 
-/**
- * One mark per entity, placed by clause (the row) and party (the lane). No edges are
- * drawn: the position already says what they would. See docs/ontologia/esquema.md.
- */
-
-/** Left lane, right lane, or the middle: entities that belong to neither side alone. */
 export type GridLane = 'a' | 'b' | 'shared';
 
 export const GRID_LANES: GridLane[] = ['a', 'b', 'shared'];
 
-/** Party and clause are absent on purpose: they are the lane and the row. */
 export type MarkKind = DeonticKind | 'condition' | 'value' | 'definedTerm' | 'reference';
 
 export const DEONTIC_MARK_KINDS: MarkKind[] = ['obligation', 'right', 'prohibition'];
 const QUALIFIER_KINDS: MarkKind[] = ['condition', 'value', 'definedTerm', 'reference'];
 export const MARK_KINDS: MarkKind[] = [...DEONTIC_MARK_KINDS, ...QUALIFIER_KINDS];
 
-/**
- * A bilateral provision leaves `burdenPartyId` null, which reads like a failed
- * extraction. Recovering it from the wording is a display-time repair: the extraction
- * should be pointing these at the "each Party" node.
- */
 const RECIPROCAL = /\b(?:each|either|both)\s+part(?:y|ies)\b|\bthe other(?:'s)?\b/i;
 
 export interface GridMark {
 	id: string;
 	kind: MarkKind;
 	lane: GridLane;
-	/** Whoever the statement is really about: the obligor of a duty, the holder of a right. */
 	ownerName: string | null;
-	/** The other end of the provision; null when the contract names only one side. */
 	counterpartLane: GridLane | null;
 	label: string;
 	detail: string;
 }
 
 export interface GridRow {
-	/** Null for the residue row that collects entities the extraction left unfiled. */
 	clauseId: string | null;
 	heading: string;
 	marks: Record<GridLane, GridMark[]>;
@@ -48,21 +33,17 @@ export interface GridRow {
 export interface StatementGrid {
 	rows: GridRow[];
 	countByKind: Record<MarkKind, number>;
-	/** Entities with no clause of their own — an extraction gap, shown rather than dropped. */
 	unfiled: number;
 }
 
-/** Reading both off `burdenPartyId` would file every right under the party it constrains. */
 function ownerIdOf(statement: KgDeonticNode): string | null {
 	return statement.kind === 'right' ? statement.benefitPartyId : statement.burdenPartyId;
 }
 
-/** The party at the other end: the beneficiary of a duty, the one bound by a right. */
 function counterpartIdOf(statement: KgDeonticNode): string | null {
 	return statement.kind === 'right' ? statement.burdenPartyId : statement.benefitPartyId;
 }
 
-/** Where a mark sits, so a qualifier can inherit it from whatever it qualifies. */
 interface Anchor {
 	clauseId: string | null;
 	lane: GridLane;
@@ -108,7 +89,6 @@ export function buildStatementGrid(
 		countByKind[mark.kind] += 1;
 	};
 
-	// Pass 1 — the statements. Everything else hangs off one of these.
 	const anchorOf = new Map<string, Anchor>();
 	for (const statement of deonticNodes(kg)) {
 		const ownerId = ownerIdOf(statement);
@@ -137,8 +117,6 @@ export function buildStatementGrid(
 		);
 	}
 
-	// Pass 2 — the qualifiers, each inheriting the position of whatever it qualifies. The
-	// paragraph fallback rescues the defined terms, whose `definedInClauseId` is never set.
 	const anchorFor = (targetId: string | null, paragraphIds: string[]): Anchor => {
 		const viaTarget = targetId ? anchorOf.get(targetId) : undefined;
 		if (viaTarget) return viaTarget;

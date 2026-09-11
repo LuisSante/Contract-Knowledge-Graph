@@ -11,10 +11,6 @@ import { DEFAULT_SEVERITY } from '@/features/docx/utils/knowledge/party-pagerank
 import type { MergeGroup } from '@/features/docx/utils/knowledge/party-view';
 import type { DocumentTarget } from '@/features/docx/utils/knowledge/graph-payload';
 
-/**
- * The deterministic id a merge of these members gets. Exported so the entry view
- * can predict where a seated party lands when it is merged, and keep its seat.
- */
 export function mergeGroupId(members: Iterable<string>): string {
 	return `merge:${[...members].sort().join('+')}`;
 }
@@ -26,23 +22,14 @@ export const MAX_TOP_K = 50;
 const TOP_K_STEP = 5;
 
 export interface GraphPayload {
-	/** First paragraph where the top match appears — we scroll here. */
 	anchorParagraphId: string | null;
-	/** Paragraphs of the focus set, brought closer to the anchor. */
 	relatedParagraphs: EvidenceParagraph[];
-	/** Entity fragments (party names, statement spans, clause refs) to underline. */
 	entities: EntityHighlight[];
-	/** Every paragraph the focus touches, for entity marks. */
 	paragraphIds: string[];
-	/** KG node ids in focus (party + top statements + clauses, or the neighborhood). */
 	focusNodeIds: string[];
-	/** Per-node normalized score (0..1) for node sizing (party focus only). */
 	nodeScores: Record<string, number>;
-	/** Per-paragraph normalized score (0..1) for the deontic rail opacity. */
 	scoreByParagraph: Record<string, number>;
-	/** Per-paragraph burden/benefit tone for the deontic rail color. */
 	toneByParagraph: Record<string, DeonticTone>;
-	/** Impact ledger for the focused party (null for clause/statement focus). */
 	ledger: KgLedger | null;
 }
 
@@ -58,39 +45,23 @@ const EMPTY_PAYLOAD: GraphPayload = {
 	ledger: null,
 };
 
-/** Label + kind of the focused node, so the header can render its chip without the graph. */
 export interface FocusMeta {
 	label: string;
 	kind: KgNodeKind;
 }
 
-/** Everything that must reset when the focused node goes away. */
 const CLEARED_FOCUS = { focusNodeId: null, focusMeta: null, ...EMPTY_PAYLOAD };
 
 interface GraphState extends GraphPayload {
 	focusNodeId: string | null;
 	focusMeta: FocusMeta | null;
-	/** Neighborhood radius for clause/statement focus. */
 	hops: number;
-	/** Number of top-scoring statements shown for a party focus. */
 	topK: number;
-	/**
-	 * Importance weight per deontic kind. The defaults are the calibrated reading
-	 * (prohibition > obligation > right), but the weights are the analyst's own
-	 * judgement call, so the legend exposes them as sliders.
-	 */
 	severity: DeonticSeverity;
-	/** Always on: the impact is weighted by Personalized PageRank, not raw severity. */
 	usePageRank: boolean;
-	/** User-driven party canonicalization (persists across focus). */
 	mergeGroups: MergeGroup[];
 	hiddenParties: string[];
-	/** Parties Ctrl/Cmd-clicked in the graph, the target of the header actions. */
 	selectedPartyIds: string[];
-	/**
-	 * Second party of the pair view, added from the header picker. The first is the
-	 * focused party, so this alone flips the ring from one ego view to the union.
-	 */
 	secondPartyId: string | null;
 
 	focusNode: (nodeId: string) => void;
@@ -108,10 +79,8 @@ interface GraphState extends GraphPayload {
 	clearSelectedParties: () => void;
 	clearFocus: () => void;
 	setPayload: (payload: GraphPayload) => void;
-	/** Move the document without touching the focus, so the ring stays where it is. */
 	setDocumentTarget: (target: DocumentTarget) => void;
 	setSecondParty: (id: string | null) => void;
-	/** Enter the pair view in one step — `focusNode` alone would clear the second party. */
 	focusPair: (anchorId: string, secondId: string) => void;
 }
 
@@ -146,9 +115,7 @@ export const useGraphStore = create<GraphState>((set) => ({
 			const focusNodeId =
 				state.focusNodeId && members.has(state.focusNodeId) ? newGroup.id : state.focusNodeId;
 			const secondPartyId =
-				state.secondPartyId && members.has(state.secondPartyId)
-					? newGroup.id
-					: state.secondPartyId;
+				state.secondPartyId && members.has(state.secondPartyId) ? newGroup.id : state.secondPartyId;
 			return {
 				mergeGroups: [...kept, newGroup],
 				focusNodeId,
@@ -219,8 +186,7 @@ export const useGraphStore = create<GraphState>((set) => ({
 	setPayload: (payload) => set(payload),
 	setDocumentTarget: (target) => set(target),
 	setSecondParty: (secondPartyId) => set({ secondPartyId }),
-	focusPair: (focusNodeId, secondPartyId) =>
-		set({ focusNodeId, secondPartyId, hops: 1 }),
+	focusPair: (focusNodeId, secondPartyId) => set({ focusNodeId, secondPartyId, hops: 1 }),
 }));
 
 export const KG_TOP_K_STEP_SIZE = TOP_K_STEP;

@@ -12,14 +12,10 @@ interface EntityHighlightsParams {
 	active: boolean;
 	renderEpoch: number;
 	paragraphElementById: Map<string, HTMLElement>;
-	/** Paragraphs where the entities are highlighted. */
 	targetIds: string[];
 	entities: EntityHighlight[];
 }
 
-/**
- * Highlights the active knowledge-graph entities inside the target paragraphs.
- */
 export function useEntityHighlights({
 	active,
 	renderEpoch,

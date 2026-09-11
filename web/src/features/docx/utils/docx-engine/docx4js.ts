@@ -16,7 +16,6 @@ export function resolveDocx4jsFromRequire(): Docx4jsBrowserModule | null {
 	return null;
 }
 
-/** The bundle is fetched once and shared; a failed load clears the promise so it retries. */
 let browserDocxModulePromise: Promise<Docx4jsBrowserModule> | null = null;
 
 export async function loadBrowserDocx4js(): Promise<Docx4jsBrowserModule> {
@@ -65,4 +64,3 @@ export async function loadBrowserDocx4js(): Promise<Docx4jsBrowserModule> {
 
 	return browserDocxModulePromise;
 }
-

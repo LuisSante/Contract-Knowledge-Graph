@@ -1,8 +1,5 @@
 import { api } from '@/lib/api';
-import type {
-	AssistantChatRequest,
-	AssistantChatResponse,
-} from '@/types/document';
+import type { AssistantChatRequest, AssistantChatResponse } from '@/types/document';
 
 export async function fetchAssistantResponse(
 	payload: AssistantChatRequest
@@ -10,5 +7,3 @@ export async function fetchAssistantResponse(
 	const response = await api.post<AssistantChatResponse>('/assistant/chat', payload);
 	return response.data;
 }
-
-

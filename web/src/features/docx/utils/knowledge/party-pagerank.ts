@@ -25,35 +25,22 @@ export interface KgLedger {
 	obligations: number;
 	rights: number;
 	prohibitions: number;
-	/** Summed magnitude per side — the volume bar. */
 	burdenWeight: number;
 	benefitWeight: number;
-	/** Count of statements per side — divides the sums into the intensity bar. */
 	burdenCount: number;
 	benefitCount: number;
-	/** Ranked by total involvement (burden + benefit). */
 	topClauses: KgLedgerClause[];
 }
 
 export interface PartyScores {
-	/** Normalized 0..1 magnitude per deontic statement. */
 	deonticScore: Map<string, number>;
-	/** Normalized 0..1 magnitude per clause. */
 	clauseScore: Map<string, number>;
-	/**
-	 * The same quantity before normalization. `clauseScore` divides by this party's own
-	 * heaviest clause, which makes two parties' scores incomparable; the raw sum is what
-	 * a side-by-side split has to be built on.
-	 */
 	clauseMagnitude: Map<string, number>;
-	/** Normalized 0..1 per node (statements + clauses; party = 1), for node sizing. */
 	nodeScore: Map<string, number>;
-	/** Whether each statement burdens or benefits the focused party. */
 	toneByDeontic: Map<string, DeonticTone>;
 	ledger: KgLedger;
 }
 
-/** Importance weight per deontic kind. */
 export type DeonticSeverity = Record<DeonticKind, number>;
 
 export const DEFAULT_SEVERITY: DeonticSeverity = {
@@ -66,7 +53,6 @@ const RESTART = 0.15;
 const ITERATIONS = 80;
 const TOP_CLAUSES = 5;
 
-/** Every node id in the graph, in a stable order. */
 function graphNodeIds(kg: KnowledgeGraph): string[] {
 	return [
 		...kg.parties.map((p) => p.id),
@@ -79,7 +65,6 @@ function graphNodeIds(kg: KnowledgeGraph): string[] {
 	];
 }
 
-/** Undirected adjacency list over every edge whose endpoints are known. */
 function buildAdjacency(kg: KnowledgeGraph, index: Map<string, number>): number[][] {
 	const adjacency: number[][] = Array.from({ length: index.size }, () => []);
 	for (const edge of kg.edges) {
@@ -92,7 +77,6 @@ function buildAdjacency(kg: KnowledgeGraph, index: Map<string, number>): number[
 	return adjacency;
 }
 
-/** Personalized PageRank restarted on `seedIndex` over an undirected graph. */
 function personalizedPageRank(adjacency: number[][], seedIndex: number): number[] {
 	const n = adjacency.length;
 	const restart = new Array<number>(n).fill(0);
@@ -119,7 +103,6 @@ function personalizedPageRank(adjacency: number[][], seedIndex: number): number[
 	return rank;
 }
 
-/** Scale a map so its largest absolute value becomes 1, preserving sign. */
 function normalize(values: Map<string, number>): Map<string, number> {
 	let peak = 0;
 	for (const value of values.values()) peak = Math.max(peak, Math.abs(value));
@@ -169,7 +152,8 @@ export function computePartyScores(
 		const magnitude = deonticMagnitude.get(v.id) ?? 0;
 		clauseMagnitude.set(v.clauseId, (clauseMagnitude.get(v.clauseId) ?? 0) + magnitude);
 		const tone = toneByDeontic.get(v.id);
-		if (tone === 'burden') clauseBurden.set(v.clauseId, (clauseBurden.get(v.clauseId) ?? 0) + magnitude);
+		if (tone === 'burden')
+			clauseBurden.set(v.clauseId, (clauseBurden.get(v.clauseId) ?? 0) + magnitude);
 		else if (tone === 'benefit')
 			clauseBenefit.set(v.clauseId, (clauseBenefit.get(v.clauseId) ?? 0) + magnitude);
 	}
@@ -213,7 +197,9 @@ export function computePartyScores(
 		const clause = kg.clauses.find((c) => c.id === id);
 		return clause?.ref || clause?.heading || id;
 	};
-	const topClauses: KgLedgerClause[] = [...new Set([...clauseBurden.keys(), ...clauseBenefit.keys()])]
+	const topClauses: KgLedgerClause[] = [
+		...new Set([...clauseBurden.keys(), ...clauseBenefit.keys()]),
+	]
 		.map((id) => ({
 			id,
 			label: clauseLabel(id),

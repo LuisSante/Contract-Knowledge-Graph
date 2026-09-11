@@ -10,14 +10,6 @@ import {
 } from '@/constants/docx-viewer';
 import type { RightPanelTab } from '@/types/document';
 
-/**
- * State of the docx viewer's right drawer: visibility, width (clamped) and active
- * tab. Encapsulates the cluster of UI-state that in Svelte lived loose in
- * `docx/+page.svelte` (`isRightDrawerOpen`, `rightDrawerWidth`, `activeRightPanelTab`).
- *
- * The drag-resize logic (pointer events) will be added on iteration — see the
- * decomposition map of the plan.
- */
 export function useRightDrawer(initialTab: RightPanelTab = 'knowledge_graph') {
 	const [isOpen, setIsOpen] = useState(true);
 	const [width, setWidthState] = useState(RIGHT_DRAWER_DEFAULT_WIDTH);

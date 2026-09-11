@@ -3,10 +3,6 @@
 import { useEffect, useState } from 'react';
 import { fetchClauseImportance, type ClauseImportance } from '@/services/knowledge';
 
-/**
- * Structural weight per clause, from the backend. The prior is built only from the
- * statements on screen, so it refetches whenever the grid's filters change.
- */
 export function useClauseImportance(docId: string, countedIds: Set<string>) {
 	const [importance, setImportance] = useState<ClauseImportance | null>(null);
 

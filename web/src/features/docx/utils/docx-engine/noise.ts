@@ -118,7 +118,9 @@ export function detectDocxNoiseNodeIds(root: ParentNode): string[] {
 		const sectionNodes = collectSectionParagraphNodes(section);
 		if (sectionNodes.length === 0) continue;
 		topEntries.push(...sectionNodes.slice(0, BOUNDARY_SCAN_LINES));
-		bottomEntries.push(...sectionNodes.slice(Math.max(sectionNodes.length - BOUNDARY_SCAN_LINES, 0)));
+		bottomEntries.push(
+			...sectionNodes.slice(Math.max(sectionNodes.length - BOUNDARY_SCAN_LINES, 0))
+		);
 	}
 
 	const repeatedTopTexts = findRepeatedBoundaryTexts(topEntries);

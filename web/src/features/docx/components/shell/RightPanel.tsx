@@ -5,11 +5,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { RIGHT_PANEL_TOOLS } from '@/constants/docx-viewer';
 import type { RightPanelTab } from '@/types/document';
-import {
-	ChatIcon,
-	CloseIcon,
-	KnowledgeGraphIcon,
-} from '@/components/common/icons';
+import { ChatIcon, CloseIcon, KnowledgeGraphIcon } from '@/components/common/icons';
 
 const HEADER_ICONS: Record<RightPanelTab, React.ComponentType<{ className?: string }>> = {
 	knowledge_graph: KnowledgeGraphIcon,
@@ -27,11 +23,6 @@ interface RightPanelProps {
 	closeDisabled?: boolean;
 }
 
-/**
- * Sliding right panel: header with icon + tool name + specific actions + close,
- * and the content of the active panel. Positioned to the left of the icon rail
- * (`right: sidebarWidth`).
- */
 export function RightPanel({
 	activeTab,
 	isOpen,

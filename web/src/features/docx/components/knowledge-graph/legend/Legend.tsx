@@ -9,10 +9,7 @@ import type { DeonticKind } from '@/types/knowledge';
 import type { DeonticSeverity } from '@/features/docx/utils/knowledge/party-pagerank';
 import { Checkbox } from '@/components/ui/checkbox';
 import { WeightField } from '@/features/docx/components/knowledge-graph/legend/WeightField';
-import {
-	KIND_COLORS,
-	KIND_LABEL,
-} from '@/features/docx/components/knowledge-graph/constants';
+import { KIND_COLORS, KIND_LABEL } from '@/features/docx/components/knowledge-graph/constants';
 
 interface LegendProps {
 	countByKind: Record<MarkKind, number>;

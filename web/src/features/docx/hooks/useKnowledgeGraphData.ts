@@ -6,10 +6,6 @@ import type { KnowledgeGraph } from '@/types/knowledge';
 
 export type KnowledgeGraphStatus = 'loading' | 'ready' | 'missing' | 'error';
 
-/**
- * Loads the stored graph and, behind it, the party merge hints. The hints never gate
- * the view: the graph is usable while the resolver is still thinking.
- */
 export function useKnowledgeGraphData(docId: string, onReload: () => void) {
 	const [kg, setKg] = useState<KnowledgeGraph | null>(null);
 	const [status, setStatus] = useState<KnowledgeGraphStatus>('loading');

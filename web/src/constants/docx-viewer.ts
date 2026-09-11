@@ -1,15 +1,11 @@
-import type {
-	RightPanelTab
-} from '@/types/document';
+import type { RightPanelTab } from '@/types/document';
 
-// Quick questions for the KG chat about the focused party (burden/benefit of its clauses).
 export const ASSISTANT_KG_SUGGESTIONS = [
 	'Why does the contract burden this party?',
 	'Which clause is riskiest for this party?',
 	'Which clauses benefit this party the most?',
 ];
 
-// Models for the global header selector (chat + knowledge-graph extraction).
 export const MODEL_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
 	{ value: 'gpt-4.1', label: 'gpt-4.1' },
 	{ value: 'gpt-5', label: 'gpt-5' },
@@ -20,7 +16,7 @@ export const RIGHT_PANEL_TOOLS: Array<{ id: RightPanelTab; label: string }> = [
 	{ id: 'knowledge_graph', label: 'Knowledge Graph' },
 	{ id: 'assistant', label: 'Chat' },
 ];
- 
+
 export const RIGHT_TOOLBAR_WIDTH = 42;
 export const RIGHT_TOOLBAR_EXPANDED_WIDTH = 162;
 export const RIGHT_DRAWER_MIN_WIDTH = 360;

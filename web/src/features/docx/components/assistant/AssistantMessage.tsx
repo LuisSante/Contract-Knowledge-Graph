@@ -31,10 +31,7 @@ function splitLeadLabel(content: string): { label: string | null; rest: string }
 	return { label: match[1], rest: content.slice(match[0].length) };
 }
 
-function renderSegments(
-	segments: ReferenceTextSegment[],
-	keyPrefix: string,
-): React.ReactNode {
+function renderSegments(segments: ReferenceTextSegment[], keyPrefix: string): React.ReactNode {
 	return segments.map((segment, index) => {
 		const key = `${keyPrefix}-${index}`;
 		if (segment.isReference) {
@@ -109,24 +106,22 @@ export function AssistantMessage({
 						onClick={canToggleEntities ? () => onToggleEntityHighlights() : undefined}
 					>
 						{(() => {
-								const { label, rest } = isAssistant
-									? splitLeadLabel(message.content)
-									: { label: null, rest: message.content };
-								return (
-									<>
-										{label ? (
-											<p className="mb-1 text-xs font-bold text-foreground">{label}</p>
-										) : null}
-										<p className="leading-5 whitespace-pre-wrap">
-											{renderSegments(
-												entityHighlightsEnabled && entities.length
-													? splitReferenceAndEntityText(rest, entities)
-													: splitReferenceText(rest),
-												`${message.id}-content`,
-											)}
-										</p>
-									</>
-								);
+							const { label, rest } = isAssistant
+								? splitLeadLabel(message.content)
+								: { label: null, rest: message.content };
+							return (
+								<>
+									{label ? <p className="mb-1 text-xs font-bold text-foreground">{label}</p> : null}
+									<p className="leading-5 whitespace-pre-wrap">
+										{renderSegments(
+											entityHighlightsEnabled && entities.length
+												? splitReferenceAndEntityText(rest, entities)
+												: splitReferenceText(rest),
+											`${message.id}-content`
+										)}
+									</p>
+								</>
+							);
 						})()}
 
 						{message.suggestedQuestions?.length ? (

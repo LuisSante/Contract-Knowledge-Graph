@@ -1,37 +1,17 @@
-/**
- * docx-engine — render engine for `.docx` documents faithful to Word.
- *
- * Self-contained and app-agnostic: parses (docx4js), applies OOXML styles
- * (metric fonts, line spacing, indents), paginates (incl. `continuous`
- * sections) and mounts editable DOM. Only external dependency: `docx4js`.
- *
- * Typical consumption flow:
- *   1. `loadBrowserDocx4js()` → parse the `.docx` ArrayBuffer.
- *   2. `createRenderer(docId, callbacks, deps, options)` → DOM node factory.
- *   3. mount the DOM in a container and `paginateRenderedSections(viewer)`.
- *   4. optional: `detectDocxNoiseNodeIds(viewer)` to exclude repeated
- *      headers/footers and page numbers from any later analysis.
- *
- * The app features (editing, badges, entity marks) plug in via the
- * `callbacks`/`deps` injected into `createRenderer` — the engine does not know them.
- */
-
-// Engine types (paragraph model, XML, docx4js).
 export type {
 	XmlNode,
 	Docx4jsDocument,
 	Docx4jsBrowserModule,
 	ParagraphNode,
 	ParagraphKind,
-	ParagraphEditState
+	ParagraphEditState,
 } from './types';
 
-// Rendering.
 export {
 	createRenderer,
 	type DocxRendererCallbacks,
 	type DocxRendererDeps,
-	type DocxRendererOptions
+	type DocxRendererOptions,
 } from './renderer';
 
 // Binary parsing.

@@ -1,0 +1,14 @@
+.next
+out
+build
+node_modules
+pnpm-lock.yaml
+public/vendor
+
+# Ficheros que otra herramienta reescribe: formatearlos provoca un ida y vuelta
+# cada vez que se ejecuta. tsconfig.json lo reescribe `next dev`, components.json
+# el CLI de shadcn, y AGENTS.md lleva un bloque generado entre marcadores.
+tsconfig.json
+components.json
+next-env.d.ts
+*.md

@@ -8,10 +8,9 @@ export async function listDocuments(): Promise<DocumentMeta[]> {
 }
 
 export async function fetchDocumentFile(docId: string): Promise<ArrayBuffer> {
-	const response = await api.get<ArrayBuffer>(
-		`/document_file/${encodeURIComponent(docId)}`,
-		{ responseType: 'arraybuffer' }
-	);
+	const response = await api.get<ArrayBuffer>(`/document_file/${encodeURIComponent(docId)}`, {
+		responseType: 'arraybuffer',
+	});
 	return response.data;
 }
 

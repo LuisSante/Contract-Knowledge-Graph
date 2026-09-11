@@ -6,7 +6,7 @@ WEB_PORT = 3000
 .PHONY: install finstall run frun \
 	build fbuild \
 	sinstall srun \
-	preprocess docs help
+	preprocess docs format help
 
 help:
 	@echo "Commands available:"
@@ -19,6 +19,7 @@ help:
 	@echo "  make srun         - Run legacy Svelte app"
 	@echo "  make preprocess   - Preprocess data"
 	@echo "  make docs         - Regenerate the measurement tables in docs/"
+	@echo "  make format       - Format the frontend with Prettier"
 
 install:
 	@echo "Installing backend dependencies (uv sync)..."
@@ -41,6 +42,10 @@ frun:
 fbuild:
 	@echo "Building Next.js..."
 	$(PNPM) build
+
+format:
+	@echo "Formatting the frontend..."
+	$(PNPM) run format
 
 preprocess:
 	@echo "Preprocessing data..."

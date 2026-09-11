@@ -60,7 +60,7 @@ function parseDocxTabStops(rawStops: string | undefined): DocxTabStop[] {
 			return {
 				positionPx,
 				style: normalizeDocxTabStyle(rawStyle),
-				leader: (rawLeader ?? 'none').toLowerCase()
+				leader: (rawLeader ?? 'none').toLowerCase(),
 			} as DocxTabStop;
 		})
 		.filter((stop): stop is DocxTabStop => stop !== null)
@@ -119,11 +119,7 @@ function shouldUseDocxTabGridLayout(
 	return true;
 }
 
-function applyDocxTabGridLayout(
-	container: HTMLElement,
-	stops: DocxTabStop[],
-	segments: Node[][]
-) {
+function applyDocxTabGridLayout(container: HTMLElement, stops: DocxTabStop[], segments: Node[][]) {
 	const totalColumns = Math.max(segments.length, 2);
 	const fragment = document.createDocumentFragment();
 	for (let index = 0; index < totalColumns; index += 1) {
@@ -170,9 +166,7 @@ function collectDocxTabContainers(targetViewer: HTMLElement): HTMLElement[] {
 	const containers = new Set<HTMLElement>();
 	const tabs = targetViewer.querySelectorAll<HTMLElement>('span[data-docx-tab="1"]');
 	for (const tab of tabs) {
-		const container = tab.closest<HTMLElement>(
-			'[data-docx-editable-root="true"], [data-node-id]'
-		);
+		const container = tab.closest<HTMLElement>('[data-docx-editable-root="true"], [data-node-id]');
 		if (container) containers.add(container);
 	}
 	return Array.from(containers);

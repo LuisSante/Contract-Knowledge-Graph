@@ -7,11 +7,9 @@ import {
 	normalizeColor,
 	toBorderPx,
 	toNumber,
-	toTwipsPx
+	toTwipsPx,
 } from './xml';
 
-// `w:highlight` colors (OOXML text highlighting). Pure docx knowledge,
-// internal to the render engine.
 const highlightMap: Record<string, string> = {
 	yellow: '#fff59d',
 	green: '#a5d6a7',
@@ -29,26 +27,20 @@ const highlightMap: Record<string, string> = {
 	darkgray: '#757575',
 	black: '#000000',
 	white: '#ffffff',
-	none: 'transparent'
+	none: 'transparent',
 };
 
 const MIN_RUN_FONT_SIZE_PT = 6;
 const MIN_SUP_SUB_RUN_FONT_SIZE_PT = 5;
 const MAX_RUN_FONT_SIZE_PT = 72;
-// OOXML's "auto" line spacing is relative to the font's NATURAL line height
-// (not the em). Word uses the font metrics; for Times/Liberation
-// Serif that natural height ≈ 1.15× em, so `line=240` (single) lands at ~normal.
+/** Word's «auto» spacing is relative to the font's natural line height, not the em. */
 const FONT_NATURAL_LINE_RATIO = 1.15;
 const GENERIC_SERIF = 'serif';
 const GENERIC_SANS = 'sans-serif';
 const GENERIC_MONO = 'monospace';
-
-// Default stack when a run does not specify a font (contracts are serif).
 const WORD_DEFAULT_FONT_FAMILY = `'Times New Roman', 'Liberation Serif', 'Tinos', ${GENERIC_SERIF}`;
 
-// METRICALLY compatible equivalents: same glyph widths as the Microsoft
-// font, so the browser can substitute without changing where each line breaks.
-// Liberation = system clones (Linux); Tinos/Arimo/Carlito/Caladea/Cousine = Google clones.
+/** Metric clones: same glyph widths, so substituting does not move the line breaks. */
 const METRIC_FALLBACKS: Record<string, string[]> = {
 	'times new roman': ["'Liberation Serif'", "'Tinos'", GENERIC_SERIF],
 	timesnewroman: ["'Liberation Serif'", "'Tinos'", GENERIC_SERIF],
@@ -61,19 +53,17 @@ const METRIC_FALLBACKS: Record<string, string[]> = {
 	tahoma: ["'DejaVu Sans'", "'Liberation Sans'", GENERIC_SANS],
 	verdana: ["'DejaVu Sans'", "'Liberation Sans'", GENERIC_SANS],
 	'courier new': ["'Liberation Mono'", "'Cousine'", GENERIC_MONO],
-	consolas: ["'Liberation Mono'", "'Cousine'", GENERIC_MONO]
+	consolas: ["'Liberation Mono'", "'Cousine'", GENERIC_MONO],
 };
 
-// Office theme fonts (theme1.xml). The renderer does not parse the theme, so
-// we assume Office's default theme (majorFont=Cambria, minorFont=Calibri),
-// the one in the vast majority of documents, and map them to metric stacks.
+/** The renderer does not read theme1.xml, so it assumes Office's default theme. */
 const THEME_FONT_STACK_BY_KEY: Record<string, string> = {
 	majorhansi: `'Cambria', 'Caladea', 'Liberation Serif', ${GENERIC_SERIF}`,
 	minorhansi: `'Calibri', 'Carlito', 'Liberation Sans', ${GENERIC_SANS}`,
 	majoreastasia: `'Liberation Serif', ${GENERIC_SERIF}`,
 	minoreastasia: `'Liberation Sans', ${GENERIC_SANS}`,
 	majorbidi: WORD_DEFAULT_FONT_FAMILY,
-	minorbidi: WORD_DEFAULT_FONT_FAMILY
+	minorbidi: WORD_DEFAULT_FONT_FAMILY,
 };
 
 export type ParagraphTabStop = {
@@ -97,7 +87,10 @@ function sanitizeFontFamilyName(raw: unknown): string | null {
 }
 
 function metricFallbacksFor(name: string): string[] {
-	const key = name.trim().toLowerCase().replace(/^['"]|['"]$/g, '');
+	const key = name
+		.trim()
+		.toLowerCase()
+		.replace(/^['"]|['"]$/g, '');
 	return METRIC_FALLBACKS[key] ?? [];
 }
 
@@ -120,8 +113,7 @@ function buildRunFontFamily(fontsNode?: XmlNode | null): string | null {
 		seen.add(normalized);
 		entries.push(token);
 	};
-	// An explicit font drags its metric clone right after it, so the
-	// browser substitutes with the same widths if it lacks the original.
+
 	const appendNamed = (raw: string | null | undefined) => {
 		const name = sanitizeFontFamilyName(raw);
 		if (!name) return;
@@ -142,7 +134,6 @@ function buildRunFontFamily(fontsNode?: XmlNode | null): string | null {
 
 	if (entries.length === 0) return null;
 
-	// Ensure a trailing generic in case the last entry is not one.
 	const joined = entries.join(', ');
 	return /(?:serif|sans-serif|monospace)$/.test(joined)
 		? joined
@@ -165,7 +156,7 @@ export function getParagraphStyles(pr?: XmlNode | null): Record<string, string> 
 		'margin-bottom': '0',
 		'line-height': '1',
 		'white-space': 'pre-wrap',
-		'word-break': 'break-word'
+		'word-break': 'break-word',
 	};
 
 	if (!pr) return style;
@@ -199,7 +190,6 @@ export function getParagraphStyles(pr?: XmlNode | null): Record<string, string> 
 	const line = toNumber(getAttr(spacing, 'line'));
 	const lineRule = getAttr(spacing, 'lineRule')?.toLowerCase();
 
-	// Real Word values, unscaled (previously multiplied by a 0.62 fudge).
 	if (before != null) style['margin-top'] = `${Math.max(before, 0)}px`;
 	if (after != null) style['margin-bottom'] = `${Math.max(after, 0)}px`;
 	if (line != null) {
@@ -285,7 +275,7 @@ export function getSectionLayout(sectPr?: XmlNode | null) {
 		marginTop: 96,
 		marginRight: 96,
 		marginBottom: 96,
-		marginLeft: 96
+		marginLeft: 96,
 	};
 
 	if (!sectPr) return defaultLayout;
@@ -306,7 +296,7 @@ export function getSectionLayout(sectPr?: XmlNode | null) {
 		marginTop: toTwipsPx(getAttr(pgMar, 'top')) ?? defaultLayout.marginTop,
 		marginRight: toTwipsPx(getAttr(pgMar, 'right')) ?? defaultLayout.marginRight,
 		marginBottom: toTwipsPx(getAttr(pgMar, 'bottom')) ?? defaultLayout.marginBottom,
-		marginLeft: toTwipsPx(getAttr(pgMar, 'left')) ?? defaultLayout.marginLeft
+		marginLeft: toTwipsPx(getAttr(pgMar, 'left')) ?? defaultLayout.marginLeft,
 	};
 }
 
@@ -322,7 +312,7 @@ export function getParagraphTabStops(pr?: XmlNode | null): ParagraphTabStop[] {
 		stops.push({
 			positionPx,
 			style: (getAttr(tabNode, 'val') ?? 'left').toLowerCase(),
-			leader: (getAttr(tabNode, 'leader') ?? 'none').toLowerCase()
+			leader: (getAttr(tabNode, 'leader') ?? 'none').toLowerCase(),
 		});
 	}
 

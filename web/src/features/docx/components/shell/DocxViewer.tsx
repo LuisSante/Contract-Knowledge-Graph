@@ -24,34 +24,24 @@ interface DocxViewerProps {
 	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-/**
- * Docx viewer orchestrator (client): document render, the knowledge graph bridge
- * and the assistant chat.
- * Layout faithful to the original: content + sliding panel + icon rail.
- */
 export function DocxViewer({ searchParams }: DocxViewerProps) {
 	const params = use(searchParams);
 	const id = typeof params.id === 'string' ? params.id : null;
 	const docId = id ?? '';
 
 	const drawer = useRightDrawer();
-	// Below the `lg` breakpoint the three-zone layout collapses: the panel becomes
-	// an overlay sheet over the full-width document instead of shrinking it.
 	const isDesktop = useIsDesktop();
 	const { open: openDrawer, close: closeDrawer } = drawer;
 	const wasDesktopRef = useRef(isDesktop);
 	useEffect(() => {
 		if (wasDesktopRef.current && !isDesktop) {
-			// Desktop → narrow: hide the overlay so the document leads on small screens.
 			closeDrawer();
 		} else if (!wasDesktopRef.current && isDesktop) {
-			// Narrow → desktop: restore the side-by-side panel.
 			openDrawer();
 		}
 		wasDesktopRef.current = isDesktop;
 	}, [isDesktop, openDrawer, closeDrawer]);
 	const llmEstimate = useLlmEstimate();
-	// Confirming (Ctrl/Cmd+Enter) a paragraph edit recomputes the graph.
 	const onParagraphCommitRef = useRef<(() => void) | null>(null);
 	const viewer = useDocumentViewer(id, { onParagraphCommitRef });
 	const { paragraphElementById, nodeEditStateById } = viewer.maps;
@@ -62,13 +52,8 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	const { data: llmCost } = useLlmTotalCost();
 	const costLabel = llmCost ? `Cost: ${llmCost.totalCostUsdFormatted} $` : null;
 
-
-
 	const knowledgeGraphActive = drawer.isOpen && drawer.activeTab === 'knowledge_graph';
 
-	// Knowledge Graph bridge payload (anchor + related paragraphs + entity spans),
-	// derived in the panel from the focused node. It feeds the SAME Related bridge
-	// (bring-closer + scroll-rail markers) and the entity underlines below.
 	const kgAnchorParagraphId = useGraphStore((s) => s.anchorParagraphId);
 	const kgRelatedParagraphs = useGraphStore((s) => s.relatedParagraphs);
 	const kgEntities = useGraphStore((s) => s.entities);
@@ -77,11 +62,11 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	const kgScoreByParagraphId = useGraphStore((s) => s.scoreByParagraph);
 	const paragraphs = useDocumentStore((s) => s.paragraphs);
 	const kgAnchorParagraph = useMemo(
-		() => (kgAnchorParagraphId ? paragraphs.find((n) => n.id === kgAnchorParagraphId) ?? null : null),
+		() =>
+			kgAnchorParagraphId ? (paragraphs.find((n) => n.id === kgAnchorParagraphId) ?? null) : null,
 		[paragraphs, kgAnchorParagraphId]
 	);
 
-	// Shared chat: a single thread feeds the Contract Chat Assistant and the chat
 	const assistant = useAssistantChat({
 		docId,
 		nodeEditStateById: nodeEditStateById.current,
@@ -89,32 +74,23 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 		confirmLlmEstimate: llmEstimate.confirm,
 	});
 
-	// The bring-closer overlay and the scroll rail now serve one master: the
-	// Knowledge Graph focus.
 	const bridgeActive = knowledgeGraphActive;
 	const bridgeSelectedParagraph = knowledgeGraphActive ? kgAnchorParagraph : null;
 	const bridgeParagraphs = knowledgeGraphActive ? kgRelatedParagraphs : [];
 
-	// Entity highlighting in the document body, from the knowledge graph. Applied to the selected
-	// paragraph and its related ones.
 	const documentEntities = kgEntities;
 	const entityTargetIds = useMemo(
 		() => (knowledgeGraphActive ? kgParagraphIds : []),
 		[knowledgeGraphActive, kgParagraphIds]
 	);
 	useEntityHighlights({
-		active:
-			documentEntities.length > 0 &&
-			knowledgeGraphActive,
+		active: documentEntities.length > 0 && knowledgeGraphActive,
 		renderEpoch: viewer.renderEpoch,
 		paragraphElementById: paragraphElementById.current,
 		targetIds: entityTargetIds,
 		entities: documentEntities,
 	});
 
-	// Knowledge Graph → document: scroll to the first paragraph of the match when
-	// the focus changes (the "take me there" part). The bring-closer bridge and
-	// scroll-rail markers are handled by the shared Related machinery below.
 	useEffect(() => {
 		if (!knowledgeGraphActive || !kgAnchorParagraphId || viewer.renderEpoch === 0) return;
 		const element = paragraphElementById.current.get(kgAnchorParagraphId);
@@ -123,8 +99,6 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 		flashElement(element);
 	}, [knowledgeGraphActive, kgAnchorParagraphId, viewer.renderEpoch, paragraphElementById]);
 
-	// The paragraph dump is independent of the graph, so it still runs on load via
-	// /extract_paragraphs (no embeddings). Gated server-side by EXTRACT_PARAGRAPHS.
 	const extractedDocIdRef = useRef<string | null>(null);
 	useEffect(() => {
 		if (!docId || viewer.renderEpoch === 0) return;
@@ -139,7 +113,7 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 			console.error('Failed to extract paragraphs:', error);
 		});
 	}, [docId, viewer.renderEpoch, nodeEditStateById]);
-	// Resize of the right drawer by dragging the vertical separator.
+
 	const startDrawerResize = (event: React.MouseEvent) => {
 		if (window.innerWidth < 1024 || !drawer.isOpen) return;
 		event.preventDefault();
@@ -176,7 +150,6 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 		if (emphasize && element) flashElement(element);
 	};
 
-
 	if (!id) {
 		return (
 			<div className="flex min-h-screen items-center justify-center">
@@ -187,29 +160,28 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 		);
 	}
 
-	// Desktop: the document shares the row with the open panel. Narrow: the panel
-	// overlays, so the document keeps the full width (minus only the tool rail).
 	const leftWidth = isDesktop
 		? `calc(100% - ${drawer.sidebarWidth + (drawer.isOpen ? drawer.width : 0)}px)`
 		: `calc(100% - ${drawer.sidebarWidth}px)`;
 	const overlayPanel = !isDesktop;
 
 	return (
-		<main
-			className="relative flex h-screen w-screen overflow-hidden bg-[var(--canvas)] font-sans"
-		>
-			<div className="relative flex min-w-0 flex-col border-r border-gray-300" style={{ width: leftWidth }}>
+		<main className="relative flex h-screen w-screen overflow-hidden bg-[var(--canvas)] font-sans">
+			<div
+				className="relative flex min-w-0 flex-col border-r border-gray-300"
+				style={{ width: leftWidth }}
+			>
 				<DocxPageHeader documentName={viewer.documentName} />
 				<DocumentViewer
 					containerRef={viewer.containerRef}
 					status={viewer.status}
 					renderEpoch={viewer.renderEpoch}
 					paragraphElementById={paragraphElementById.current}
-						evidenceBridgeActive={bridgeActive}
-						selectedParagraph={bridgeSelectedParagraph}
-						evidenceParagraphs={bridgeParagraphs}
-						toneByParagraph={knowledgeGraphActive ? kgToneByParagraphId : undefined}
-						scoreByParagraph={knowledgeGraphActive ? kgScoreByParagraphId : undefined}
+					evidenceBridgeActive={bridgeActive}
+					selectedParagraph={bridgeSelectedParagraph}
+					evidenceParagraphs={bridgeParagraphs}
+					toneByParagraph={knowledgeGraphActive ? kgToneByParagraphId : undefined}
+					scoreByParagraph={knowledgeGraphActive ? kgScoreByParagraphId : undefined}
 				/>
 			</div>
 
@@ -219,15 +191,13 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 				width={drawer.width}
 				sidebarWidth={drawer.sidebarWidth}
 				headerActions={
-						(
-							<RightPanelHeaderActions
-								activeTab={drawer.activeTab}
-								costLabel={costLabel}
-								model={model}
-								onModelChange={setModel}
-							/>
-						)
-					}
+					<RightPanelHeaderActions
+						activeTab={drawer.activeTab}
+						costLabel={costLabel}
+						model={model}
+						onModelChange={setModel}
+					/>
+				}
 				onClose={drawer.close}
 			>
 				<RightPanelContent
@@ -280,10 +250,8 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	);
 }
 
-/** Brief flash to draw attention to an element when navigating. */
 function flashElement(element: HTMLElement) {
 	element.classList.remove('docx-citation-flash');
-	// Force reflow to restart the animation.
 	void element.offsetWidth;
 	element.classList.add('docx-citation-flash');
 	window.setTimeout(() => element.classList.remove('docx-citation-flash'), 1300);

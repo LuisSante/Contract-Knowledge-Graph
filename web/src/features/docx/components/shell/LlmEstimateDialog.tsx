@@ -9,11 +9,6 @@ interface LlmEstimateDialogProps {
 	onResolve: (approved: boolean) => void;
 }
 
-/**
- * LLM cost confirmation toast (bottom-right corner). Shows the estimated cost
- * and tokens before firing the call. Port of the `llmEstimateToast` block from
- * the Svelte `+page.svelte`.
- */
 export function LlmEstimateDialog({ estimate, isOpen, onResolve }: LlmEstimateDialogProps) {
 	if (!isOpen || !estimate) return null;
 
@@ -23,9 +18,7 @@ export function LlmEstimateDialog({ estimate, isOpen, onResolve }: LlmEstimateDi
 				<p className="text-sm font-semibold text-slate-900">Confirm LLM request</p>
 				<p className="mt-1 text-xs text-slate-600">
 					Estimated cost:{' '}
-					<span className="font-semibold text-blue-700">
-						{estimate.estimatedCostUsdFormatted}
-					</span>{' '}
+					<span className="font-semibold text-blue-700">{estimate.estimatedCostUsdFormatted}</span>{' '}
 					({estimate.estimatedTotalTokens} tokens)
 				</p>
 				<p className="mt-1 text-2xs text-slate-500">

@@ -1,15 +1,7 @@
 import type { DeonticKind } from '@/types/knowledge';
 import type { DeonticSeverity } from '@/features/docx/utils/knowledge/party-pagerank';
-import type {
-	GridLane,
-	StatementGrid,
-} from '@/features/docx/utils/knowledge/statement-grid';
+import type { GridLane, StatementGrid } from '@/features/docx/utils/knowledge/statement-grid';
 
-/**
- * Of everything a clause hands out, how much goes to each party. Only additions: each
- * statement credits whoever it serves — a right its holder, a duty or a prohibition the
- * party at the other end, a reciprocal one both. See docs/metricas/reparto-beneficio.md.
- */
 export function computeBenefitShare(
 	grid: StatementGrid,
 	severity: DeonticSeverity,

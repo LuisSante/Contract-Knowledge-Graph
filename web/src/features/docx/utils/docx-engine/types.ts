@@ -1,10 +1,3 @@
-/**
- * The docx render engine's own types. Standalone (no app dependencies)
- * so the engine is portable to another project. They are structurally identical
- * to those in `@/types`, so TS accepts them at the boundary (render callbacks).
- */
-
-/** Node of the OOXML XML tree, as exposed by docx4js. */
 export type XmlNode = {
 	name?: string;
 	attribs?: Record<string, string>;
@@ -32,7 +25,6 @@ export type Docx4jsBrowserModule = {
 	};
 };
 
-/** Paragraph model the engine exposes to its consumer. */
 export interface ParagraphNode {
 	id: string;
 	documentId: string;
@@ -43,7 +35,6 @@ export interface ParagraphNode {
 
 export type ParagraphKind = 'paragraph' | 'heading' | 'list';
 
-/** Per-paragraph edit state (used by the app's editing plugin). */
 export type ParagraphEditState = {
 	committed: string;
 	current: string;

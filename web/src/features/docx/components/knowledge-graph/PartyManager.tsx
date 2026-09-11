@@ -2,19 +2,19 @@
 
 interface PartyManagerProps {
 	hidden: Array<{ id: string; name: string }>;
-	/** A merge group or a hidden party exists — show Reset. */
 	hasView: boolean;
 	hintsLoading: boolean;
 	onUnhide: (id: string) => void;
 	onReset: () => void;
 }
 
-/**
- * Slim footer for the parties view: how to select, plus the list of hidden
- * parties (which aren't in the graph to click, so they get restore chips here).
- * Merge/split/delete live in the header menu, driven by the graph selection.
- */
-export function PartyManager({ hidden, hasView, hintsLoading, onUnhide, onReset }: PartyManagerProps) {
+export function PartyManager({
+	hidden,
+	hasView,
+	hintsLoading,
+	onUnhide,
+	onReset,
+}: PartyManagerProps) {
 	return (
 		<div className="flex items-center gap-2 border-t border-border/60 px-3 py-1.5 text-2xs text-muted-foreground">
 			{hintsLoading && <span className="text-foreground/40">loading hints…</span>}

@@ -7,10 +7,7 @@ interface SuggestedQuestionsProps {
 	onSuggestionClick: (question: string) => void;
 }
 
-export function SuggestedQuestions({
-	questions,
-	onSuggestionClick,
-}: SuggestedQuestionsProps) {
+export function SuggestedQuestions({ questions, onSuggestionClick }: SuggestedQuestionsProps) {
 	if (!questions.length) return null;
 
 	return (

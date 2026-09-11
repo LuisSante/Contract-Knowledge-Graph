@@ -10,7 +10,6 @@ import {
 	type DeonticTone,
 } from '@/features/docx/utils/knowledge/party-pagerank';
 
-
 type EntityKind = 'party' | 'clause' | 'definedTerm' | DeonticKind;
 
 const KIND_COLORS: Record<EntityKind, { color: string; soft: string }> = {
@@ -34,7 +33,6 @@ const EMPTY: GraphPayload = {
 	ledger: null,
 };
 
-/** Undirected adjacency over the deontic edges, for n-hop expansion. */
 function buildAdjacency(kg: KnowledgeGraph): Map<string, Set<string>> {
 	const adjacency = new Map<string, Set<string>>();
 	const add = (a: string, b: string) => {
@@ -52,8 +50,11 @@ function buildAdjacency(kg: KnowledgeGraph): Map<string, Set<string>> {
 	return adjacency;
 }
 
-/** Node ids reachable from `start` within `hops` edges (inclusive). */
-function neighborhood(start: string, hops: number, adjacency: Map<string, Set<string>>): Set<string> {
+function neighborhood(
+	start: string,
+	hops: number,
+	adjacency: Map<string, Set<string>>
+): Set<string> {
 	const seen = new Set<string>([start]);
 	let frontier: string[] = [start];
 	for (let depth = 0; depth < hops; depth += 1) {
@@ -87,7 +88,6 @@ function makeEntityCollector() {
 	return { entities, add };
 }
 
-/** Same de-duplication as the collector, with an explicit colour instead of a kind. */
 function addColored(
 	entities: EntityHighlight[],
 	rawLabel: string,
@@ -105,27 +105,16 @@ function paragraphEnum(pid: string, nodesById: Map<string, ParagraphNode>): numb
 	return nodesById.get(pid)?.paragraph_enum ?? Number(pid.match(/-p-(\d+)$/)?.[1] ?? '0');
 }
 
-/**
- * Which fragments of a statement to underline.
- *
- * `evidenceSpans` holds every fragment the evidence pass located. When the model
- * stitched a shared preamble onto each item of a list — one sentence of the reference
- * contract carries six prohibitions, and all six repeat
- * "Bellicum ... may not:" — that preamble is identical across them, so underlining it
- * would hand one arbitrary statement a span six of them claim. Only the fragments that
- * tell them apart are kept; if every fragment is shared, the longest stands in.
- */
-function evidenceLabels(
-	statement: KgDeonticNode,
-	spanOwners: Map<string, number>
-): string[] {
+function evidenceLabels(statement: KgDeonticNode, spanOwners: Map<string, number>): string[] {
 	const spans = statement.evidenceSpans?.length ? statement.evidenceSpans : [statement.text];
 	const distinctive = spans.filter((span) => span && (spanOwners.get(span) ?? 0) <= 1);
 	if (distinctive.length > 0) return distinctive;
-	return spans.filter(Boolean).sort((left, right) => right.length - left.length).slice(0, 1);
+	return spans
+		.filter(Boolean)
+		.sort((left, right) => right.length - left.length)
+		.slice(0, 1);
 }
 
-/** How many statements claim each fragment, so a shared preamble can be told apart. */
 function countSpanOwners(kg: KnowledgeGraph): Map<string, number> {
 	const counts = new Map<string, number>();
 	for (const statement of deonticNodes(kg)) {
@@ -136,7 +125,6 @@ function countSpanOwners(kg: KnowledgeGraph): Map<string, number> {
 	return counts;
 }
 
-/** The document-side half of the payload: where to scroll and what to underline. */
 export type DocumentTarget = Pick<
 	GraphPayload,
 	| 'anchorParagraphId'
@@ -147,14 +135,6 @@ export type DocumentTarget = Pick<
 	| 'toneByParagraph'
 >;
 
-/**
- * "Take me to where this node lives" — one node, its own paragraphs, nothing else.
- *
- * Deliberately narrower than `buildFocusPayload`: it carries no `focusNodeIds`
- * and no `nodeScores`, so writing it moves the document without touching what the ring
- * draws. That separation is the whole point — navigating and re-focusing used to be the
- * same act because they travelled in the same payload.
- */
 export function buildDocumentTarget(
 	kg: KnowledgeGraph,
 	nodeId: string,
@@ -202,32 +182,23 @@ export function buildDocumentTarget(
 		anchorParagraphId,
 		relatedParagraphs: ordered
 			.filter((pid) => pid !== anchorParagraphId)
-			.map((pid) => ({ node: nodesById.get(pid) as ParagraphNode, relationTypes: [], references: [] })),
+			.map((pid) => ({
+				node: nodesById.get(pid) as ParagraphNode,
+				relationTypes: [],
+				references: [],
+			})),
 		entities,
 		paragraphIds: ordered,
-		// Every paragraph of the node matters equally — there is no ranking within one node.
 		scoreByParagraph: Object.fromEntries(ordered.map((pid) => [pid, 1] as const)),
 		toneByParagraph: {},
 	};
 }
 
-/**
- * Payload for the *pair* view: the union of both parties' top-K.
- *
- * Building it from the anchor alone left the ring showing two parties while the document
- * reflected one — half the reading was invisible on the page. Each party's mentions are
- * underlined in its own colour, so the document speaks the same language as the ring.
- */
 export function buildPairPayload(
 	kg: KnowledgeGraph,
 	pair: PairScores,
 	nodesById: Map<string, ParagraphNode>,
 	partyColors: readonly [string, string],
-	/**
-	 * Narrows the payload to these statements instead of the pair's two top-K sets — how
-	 * picking one clause in the grid makes the document answer for that clause alone.
-	 * The party colouring stays either way: the reader still needs to see who is who.
-	 */
 	statementIds?: readonly string[]
 ): GraphPayload {
 	const byId = new Map(deonticNodes(kg).map((v) => [v.id, v] as const));
@@ -236,7 +207,6 @@ export function buildPairPayload(
 	const spanOwners = countSpanOwners(kg);
 	const { entities, add } = makeEntityCollector();
 
-	// Parties first: their colour is the one the ring gives them, not the kind palette.
 	for (const [index, partyId] of [pair.partyAId, pair.partyBId].entries()) {
 		const party = partyById.get(partyId);
 		if (!party) continue;
@@ -276,7 +246,11 @@ export function buildPairPayload(
 		anchorParagraphId,
 		relatedParagraphs: present
 			.filter((pid) => pid !== anchorParagraphId)
-			.map((pid) => ({ node: nodesById.get(pid) as ParagraphNode, relationTypes: [], references: [] })),
+			.map((pid) => ({
+				node: nodesById.get(pid) as ParagraphNode,
+				relationTypes: [],
+				references: [],
+			})),
 		entities,
 		paragraphIds: present,
 		focusNodeIds: statementIds
@@ -290,7 +264,7 @@ export function buildPairPayload(
 		nodeScores: pair.nodeScores,
 		scoreByParagraph,
 		toneByParagraph: {},
-			ledger: null,
+		ledger: null,
 	};
 }
 
@@ -314,7 +288,11 @@ export function buildFocusPayload(
 	const toRelated = (ids: string[], anchorId: string | null): EvidenceParagraph[] =>
 		ids
 			.filter((pid) => pid !== anchorId)
-			.map((pid) => ({ node: nodesById.get(pid) as ParagraphNode, relationTypes: [], references: [] }))
+			.map((pid) => ({
+				node: nodesById.get(pid) as ParagraphNode,
+				relationTypes: [],
+				references: [],
+			}))
 			.sort((a, b) => a.node.paragraph_enum - b.node.paragraph_enum);
 
 	// ---- Party focus: score-ranked top-K statements -------------------------
@@ -325,9 +303,7 @@ export function buildFocusPayload(
 		const rankedStatements = [...scores.toneByDeontic.keys()]
 			.map((id) => deonticById.get(id))
 			.filter((v): v is KgDeonticNode => Boolean(v))
-			.sort(
-				(a, b) => (scores.deonticScore.get(b.id) ?? 0) - (scores.deonticScore.get(a.id) ?? 0)
-			);
+			.sort((a, b) => (scores.deonticScore.get(b.id) ?? 0) - (scores.deonticScore.get(a.id) ?? 0));
 		const topStatements = rankedStatements.slice(0, topK);
 
 		const { entities, add } = makeEntityCollector();

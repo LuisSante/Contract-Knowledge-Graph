@@ -20,21 +20,13 @@ import {
 } from '@/stores/knowledge-graph';
 import type { RightPanelTab } from '@/types/document';
 
-
 interface RightPanelHeaderActionsProps {
 	activeTab: RightPanelTab;
-	/** Accumulated LLM spend, null until the first call. */
 	costLabel: string | null;
 	model: string;
 	onModelChange: (value: string) => void;
 }
 
-/**
- * Right-panel header actions, specific per tab: the focus chip in the knowledge
- * graph (merge/split/delete moved onto the party cards themselves, as drag & drop),
- * and the focused party plus the LLM cost and model in the chat. Cost and model are
- * global, but the chat is where they are read and changed.
- */
 export function RightPanelHeaderActions({
 	activeTab,
 	costLabel,
@@ -47,12 +39,9 @@ export function RightPanelHeaderActions({
 	const setHops = useGraphStore((state) => state.setHops);
 	const setTopK = useGraphStore((state) => state.setTopK);
 	const clearFocus = useGraphStore((state) => state.clearFocus);
-	// From `focusMeta`, not from the ledger: the pair bridge leaves the ledger null.
 	const focusedPartyName = focusMeta?.kind === 'party' ? focusMeta.label : null;
 
 	if (activeTab === 'knowledge_graph') {
-		// A party focus tunes how many statements are shown; anything else tunes the
-		// neighbourhood radius. Same two buttons, different quantity.
 		const partyFocus = focusMeta?.kind === 'party';
 		const step = (delta: number) =>
 			partyFocus ? setTopK((k) => k + delta * KG_TOP_K_STEP_SIZE) : setHops((h) => h + delta);

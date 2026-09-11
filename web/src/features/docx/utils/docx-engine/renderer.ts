@@ -1,9 +1,4 @@
-import type {
-	ParagraphNode,
-	ParagraphEditState,
-	ParagraphKind,
-	XmlNode
-} from './types';
+import type { ParagraphNode, ParagraphEditState, ParagraphKind, XmlNode } from './types';
 import { ensureNodeEditState } from './edit-state';
 import { appendChildren, normalizeEditableText, setStyles, toNodeList } from './dom';
 import { getAttr, findChild, localName, toTwipsPx, toNumber } from './xml';
@@ -14,7 +9,7 @@ import {
 	getRunStyles,
 	getSectionLayout,
 	hasOnlySectionBreak,
-	parseBorder
+	parseBorder,
 } from './styles';
 
 export type DocxRendererCallbacks = {
@@ -41,11 +36,7 @@ export function createRenderer(
 	options: DocxRendererOptions = {}
 ) {
 	const { onNodeUpsert, onNodeFocus, onNodeCommit, onNodeRemove } = callbacks;
-	const {
-		nodeEditStateById,
-		paragraphElementById,
-		getSelectedNodeId
-	} = deps;
+	const { nodeEditStateById, paragraphElementById, getSelectedNodeId } = deps;
 
 	type ListLevelDefinition = {
 		numFmt: string;
@@ -102,7 +93,7 @@ export function createRenderer(
 		'hover:ring-1',
 		'hover:ring-blue-300',
 		'focus:ring-2',
-		'focus:ring-blue-700'
+		'focus:ring-blue-700',
 	] as const;
 	const ENTITY_RE = /&(?:#\d+|#x[\da-f]+|[a-z][\w-]+);/i;
 	const DEFINITION_BOUNDARY_RE =
@@ -249,7 +240,7 @@ export function createRenderer(
 			[9, 'IX'],
 			[5, 'V'],
 			[4, 'IV'],
-			[1, 'I']
+			[1, 'I'],
 		];
 		let remaining = Math.trunc(value);
 		let output = '';
@@ -376,7 +367,7 @@ export function createRenderer(
 				const existingLevel = resolvedLevels.get(level) ?? {
 					numFmt: 'decimal',
 					lvlText: `%${level + 1}`,
-					start: 1
+					start: 1,
 				};
 				const mergedLevel = { ...existingLevel };
 
@@ -501,7 +492,7 @@ export function createRenderer(
 			left: toTwipsPx(getAttr(indent, 'left') ?? getAttr(indent, 'start')),
 			right: toTwipsPx(getAttr(indent, 'right') ?? getAttr(indent, 'end')),
 			firstLine: toTwipsPx(getAttr(indent, 'firstLine')),
-			hanging: toTwipsPx(getAttr(indent, 'hanging'))
+			hanging: toTwipsPx(getAttr(indent, 'hanging')),
 		};
 	};
 
@@ -538,8 +529,7 @@ export function createRenderer(
 		// stacks vertically like a Word paragraph. With inline-block, two
 		// consecutive short paragraphs flowed on the SAME line (e.g. "products."
 		// next to "NOW, THEREFORE…"), breaking the 1:1 layout.
-		element.style.display =
-			element.dataset.docxListLayout === 'hanging-grid' ? 'grid' : 'block';
+		element.style.display = element.dataset.docxListLayout === 'hanging-grid' ? 'grid' : 'block';
 		element.style.width = 'fit-content';
 		element.style.maxWidth = '100%';
 		element.style.verticalAlign = 'top';
@@ -711,9 +701,9 @@ export function createRenderer(
 				const node = syncText();
 				if (!node) return;
 				onNodeFocus(node);
-				if (
-					!(target instanceof HTMLElement && target.closest('[data-docx-editable-root="true"]'))
-				) {
+				if (!(
+					target instanceof HTMLElement && target.closest('[data-docx-editable-root="true"]')
+				)) {
 					element.focus();
 				}
 			});
@@ -823,9 +813,7 @@ export function createRenderer(
 					section.style.position = 'relative';
 					section.dataset.docxPageWidthPx = String(layout.width);
 					section.dataset.docxPageHeightPx = String(layout.height);
-					// Section break type: `continuous` does NOT start a new page
-					// (change of columns/format on the same sheet); pagination
-					// merges these sections with the previous one.
+
 					const sectionType = getAttr(
 						findChild((safeProps.node as XmlNode) ?? null, 'type'),
 						'val'
@@ -904,7 +892,7 @@ export function createRenderer(
 					attachParagraphEditor(content, 'heading', {
 						visualElement: heading,
 						disabled: isHeaderOrFooterStyle(pr),
-						textPrefix: headingTextPrefix
+						textPrefix: headingTextPrefix,
 					});
 					return heading;
 				}
@@ -973,7 +961,7 @@ export function createRenderer(
 					attachParagraphEditor(content, 'list', {
 						visualElement: item,
 						disabled: isHeaderOrFooterStyle(pr),
-						textPrefix: markerText
+						textPrefix: markerText,
 					});
 					return item;
 				}
@@ -990,16 +978,11 @@ export function createRenderer(
 						paragraph.classList.add('min-h-[1px]');
 					}
 					appendChildren(paragraph, children);
-					// Word: an empty paragraph takes up a line (its paragraph mark). In HTML
-					// an empty <p> collapses to height 0, which sticks neighboring paragraphs
-					// together (e.g. definitions separated by blank paragraphs). We give it
-					// the height of a line to reproduce the document's spacing.
+
 					if (
 						!hasOnlySectionBreak(pr) &&
 						(paragraph.textContent ?? '').trim() === '' &&
-						!paragraph.querySelector(
-							'img,table,svg,canvas,video,audio,object,iframe,br'
-						)
+						!paragraph.querySelector('img,table,svg,canvas,video,audio,object,iframe,br')
 					) {
 						paragraph.style.minHeight = '1lh';
 					}
@@ -1014,14 +997,14 @@ export function createRenderer(
 								applyShrinkToTextBox(splitParagraph);
 							}
 							attachParagraphEditor(splitParagraph, 'paragraph', {
-								disabled: isHeaderOrFooterStyle(pr)
+								disabled: isHeaderOrFooterStyle(pr),
 							});
 							fragment.appendChild(splitParagraph);
 						}
 						return fragment;
 					}
 					attachParagraphEditor(paragraph, 'paragraph', {
-						disabled: isHeaderOrFooterStyle(pr)
+						disabled: isHeaderOrFooterStyle(pr),
 					});
 					return paragraph;
 				}

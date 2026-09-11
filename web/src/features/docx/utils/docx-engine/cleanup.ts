@@ -1,5 +1,3 @@
-// Classes the editing plugin adds to an editable paragraph; they are removed when
-// "freezing" an ignored paragraph. Internal to the engine so it stays self-contained.
 const EDITABLE_PARAGRAPH_CLASSES = [
 	'rounded-[2px]',
 	'-mx-[2px]',
@@ -9,7 +7,7 @@ const EDITABLE_PARAGRAPH_CLASSES = [
 	'hover:ring-1',
 	'hover:ring-blue-300',
 	'focus:ring-2',
-	'focus:ring-blue-700'
+	'focus:ring-blue-700',
 ] as const;
 
 function getEditableRootElement(element: HTMLElement): HTMLElement {

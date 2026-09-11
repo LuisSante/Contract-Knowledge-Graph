@@ -12,24 +12,10 @@ import { detectDocxNoiseNodeIds } from '@/features/docx/utils/docx-engine/noise'
 import { applyDocxTabStops } from '@/features/docx/utils/docx-engine/tab-stops';
 import { paginateRenderedSections } from '@/features/docx/utils/docx-engine/pagination';
 import { freezeIgnoredParagraphElement } from '@/features/docx/utils/docx-engine/cleanup';
-import type {
-	Node as ParagraphNode,
-	ParagraphEditState,
-	XmlNode,
-} from '@/types/document';
+import type { Node as ParagraphNode, ParagraphEditState, XmlNode } from '@/types/document';
 
 export type DocumentViewerStatus = 'idle' | 'loading' | 'ready' | 'error';
 
-/**
- * Lifecycle of the docx viewer: downloads the `.docx`, parses it with docx4js,
- * renders it with `createRenderer` and mounts the resulting DOM in a ref-managed
- * container (React does not control those children). Keeps the node maps as refs
- * and syncs the paragraphs to the Zustand store.
- *
- * Scope of this feature: render + paragraph store + basic selection. Deferred:
- * related connectors and the graph recompute
- * on commit of edits.
- */
 export function useDocumentViewer(
 	docId: string | null,
 	options?: { onParagraphCommitRef?: RefObject<(() => void) | null> }
@@ -38,11 +24,8 @@ export function useDocumentViewer(
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [status, setStatus] = useState<DocumentViewerStatus>('idle');
 	const [documentName, setDocumentName] = useState<string | null>(null);
-	// Incremented every time a render finishes: the features that decorate the
-	// DOM (related, knowledge-graph marks…) depend on it to re-apply themselves.
 	const [renderEpoch, setRenderEpoch] = useState(0);
 
-	// Mutable document maps (refs: they must not trigger a re-render).
 	const nodeEditStateById = useRef(new Map<string, ParagraphEditState>());
 	const paragraphElementById = useRef(new Map<string, HTMLElement>());
 	const nodesById = useRef(new Map<string, ParagraphNode>());
@@ -182,8 +165,7 @@ export function useDocumentViewer(
 					parsedDoc.release?.();
 					return;
 				}
-				releaseDoc =
-					typeof parsedDoc.release === 'function' ? () => parsedDoc.release?.() : null;
+				releaseDoc = typeof parsedDoc.release === 'function' ? () => parsedDoc.release?.() : null;
 
 				const identify = (
 					node: XmlNode,
@@ -206,8 +188,8 @@ export function useDocumentViewer(
 					parsedDoc as typeof parsedDoc & { officeDocument?: DocxOfficeDocument }
 				).officeDocument;
 
-				// Intentional `let`: `renderExternalPart` references `renderer` before
-				// it is assigned (it runs during render(), with renderer already defined).
+				// `renderExternalPart` cites `renderer` before it is assigned; it only runs
+				// during render(), when it already exists.
 				// eslint-disable-next-line prefer-const
 				let renderer: ReturnType<typeof createRenderer>;
 				const renderExternalPart = (part: unknown, rootLocalName: 'hdr' | 'ftr') => {
@@ -287,7 +269,6 @@ export function useDocumentViewer(
 		status,
 		documentName,
 		renderEpoch,
-		// Live document maps (refs); the decoration features read them.
 		maps: {
 			nodeEditStateById,
 			paragraphElementById,

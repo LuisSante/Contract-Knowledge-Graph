@@ -1,17 +1,9 @@
 export type DeonticKind = 'obligation' | 'right' | 'prohibition';
 
 export type DerivedEdgeType =
-	| 'is_part_of'
-	| 'assigns_obligation_to'
-	| 'grants_right_to'
-	| 'defines';
+	'is_part_of' | 'assigns_obligation_to' | 'grants_right_to' | 'defines';
 
-export type ExtractedEdgeType =
-	| 'uses'
-	| 'references'
-	| 'depends_on'
-	| 'supersedes'
-	| 'modifies';
+export type ExtractedEdgeType = 'uses' | 'references' | 'depends_on' | 'supersedes' | 'modifies';
 
 export type AnalysisEdgeType = 'contradicts';
 
@@ -53,9 +45,7 @@ export interface KgDeontic {
 	deadline: string;
 	frequency: string;
 	paragraphIds: string[];
-	/** Written by the evidence pass: null on graphs built before it ran. */
 	evidenceVerified?: boolean | null;
-	/** The verbatim fragments actually located. More than one when the model elided. */
 	evidenceSpans?: string[];
 }
 

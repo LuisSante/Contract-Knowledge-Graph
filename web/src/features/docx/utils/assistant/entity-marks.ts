@@ -1,12 +1,5 @@
 import { escapeRegex, normalizeEntityKey } from '@/features/docx/utils/text';
 
-/**
- * Entity highlighting within the document body (not only in the chat).
- * Wraps each entity occurrence in a `<span.docx-entity-mark>`
- * with its `data-entity-key` and color, so they match the entities in the
- * panel/chat and sync on hover.
- */
-
 export type EntityHighlight = {
 	label: string;
 	key: string;
@@ -14,7 +7,6 @@ export type EntityHighlight = {
 	softColor: string;
 };
 
-/** Removes entity markers from an element, restoring the text. */
 export function clearEntityMarks(element: HTMLElement) {
 	const marks = element.querySelectorAll<HTMLElement>('span.docx-entity-mark');
 	for (const mark of marks) {
@@ -25,24 +17,10 @@ export function clearEntityMarks(element: HTMLElement) {
 	}
 }
 
-/**
- * Wraps the entities found in the element's text.
- *
- * Matching runs over the element's *concatenated* text, not node by node. A rendered
- * DOCX paragraph is split into one text node per formatting run — 28 of them in a single
- * paragraph of the reference contract — so any quote crossing a bold or italic span had
- * no node containing it whole, and simply never matched. A run of whitespace in a label
- * matches any run in the document for the same reason: the renderer decides where the
- * line breaks and the non-breaking spaces go, the extraction does not.
- */
-export function highlightEntitiesInElement(
-	element: HTMLElement,
-	entities: EntityHighlight[]
-) {
+export function highlightEntitiesInElement(element: HTMLElement, entities: EntityHighlight[]) {
 	const labels = entities
 		.map((entity) => entity.label.trim())
 		.filter((entity) => entity.length >= 2)
-		// Longest first: a label that contains another must win the overlap.
 		.sort((left, right) => right.length - left.length);
 	if (labels.length === 0) return;
 
@@ -54,8 +32,6 @@ export function highlightEntitiesInElement(
 		'gi'
 	);
 
-	// Whitespace-only nodes are kept: they carry the space between two runs, and dropping
-	// them would glue the words either side together and break the match.
 	const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
 	const nodes: Array<{ node: Text; start: number }> = [];
 	let text = '';
@@ -63,10 +39,7 @@ export function highlightEntitiesInElement(
 	while (current) {
 		const textNode = current as Text;
 		const parentElement = textNode.parentElement;
-		if (
-			parentElement &&
-			!parentElement.closest('.docx-entity-mark')
-		) {
+		if (parentElement && !parentElement.closest('.docx-entity-mark')) {
 			nodes.push({ node: textNode, start: text.length });
 			text += textNode.nodeValue ?? '';
 		}
@@ -74,8 +47,6 @@ export function highlightEntitiesInElement(
 	}
 	if (nodes.length === 0) return;
 
-	// Cut every match into the slices falling inside each node *before* touching the DOM:
-	// wrapping one node invalidates the offsets the rest were computed from.
 	type Slice = { start: number; end: number; meta?: EntityHighlight };
 	const slicesByNode = new Map<Text, Slice[]>();
 	for (const match of text.matchAll(entityPattern)) {

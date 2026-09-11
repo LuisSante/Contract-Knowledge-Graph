@@ -12,16 +12,11 @@ interface AssistantInputBoxProps {
 	onInputChange: (value: string) => void;
 	onSubmit: () => void;
 	onKeydown: (event: KeyboardEvent<HTMLTextAreaElement>) => void;
-	/** Initial quick questions (only when chat is empty and no text typed). */
 	suggestions?: string[];
 	messagesEmpty?: boolean;
 	onSuggestionClick?: (question: string) => void;
 }
 
-/**
- * Chat input area: controlled textarea + send button + initial quick-action
- * suggestions. Port of the `form` block from the Svelte `RightPanelAssistant`.
- */
 export function AssistantInputBox({
 	input,
 	loading,
@@ -32,8 +27,7 @@ export function AssistantInputBox({
 	messagesEmpty = false,
 	onSuggestionClick,
 }: AssistantInputBoxProps) {
-	const showSuggestions =
-		suggestions.length > 0 && messagesEmpty && input.trim().length === 0;
+	const showSuggestions = suggestions.length > 0 && messagesEmpty && input.trim().length === 0;
 
 	return (
 		<form

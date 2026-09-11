@@ -7,7 +7,6 @@ interface DocxPageHeaderProps {
 	documentName: string | null;
 }
 
-/** Top header of the viewer: back link and the document name. */
 export function DocxPageHeader({ documentName }: DocxPageHeaderProps) {
 	return (
 		<header className="flex flex-none items-center gap-3 border-b border-border bg-header px-4 py-2.5">

@@ -1,8 +1,3 @@
-// Clones a paragraph container to static HTML for the collapsed cards
-// of the evidence-bridge overlay when it compresses the document.
-// Editing attributes and transient classes are stripped so the
-// clone renders at full opacity/color, and it is marked as a cloned node.
-
 const TRANSIENT_CLASSES = [
 	'docx-paragraph-explanation-related',
 	'docx-paragraph-explanation-source-hidden',

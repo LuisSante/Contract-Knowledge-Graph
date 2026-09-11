@@ -4,7 +4,6 @@ import { useState, type DragEvent } from 'react';
 import { Split as SplitIcon, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-/** A party as the entry view needs it: identity plus the load it actually carries. */
 export interface PartyCardData {
 	id: string;
 	name: string;
@@ -207,7 +206,9 @@ export function PartySelection({
 	return (
 		<div className="flex h-full flex-col items-center justify-center gap-5 overflow-y-auto px-6 py-6">
 			<div className="w-full max-w-xl text-center">
-				<div className="text-sm font-medium text-foreground">Pick the two parties of the contract</div>
+				<div className="text-sm font-medium text-foreground">
+					Pick the two parties of the contract
+				</div>
 			</div>
 
 			<div className="flex w-full max-w-xl items-stretch gap-3">
@@ -223,8 +224,8 @@ export function PartySelection({
 			{pool.length > 0 && (
 				<div className="w-full max-w-xl">
 					<div className="mb-1.5 text-2xs text-muted-foreground">
-						Other parties in the document — drag one onto a seat to swap it, onto another card
-						to merge them
+						Other parties in the document — drag one onto a seat to swap it, onto another card to
+						merge them
 					</div>
 					<div className="flex flex-wrap gap-1.5">
 						{pool.map((party) => {
@@ -240,9 +241,7 @@ export function PartySelection({
 									onClick={() => {
 										if (!full) onAssign(party.id);
 									}}
-									onDragOver={
-										draggingId && draggingId !== party.id ? acceptOver(zone) : undefined
-									}
+									onDragOver={draggingId && draggingId !== party.id ? acceptOver(zone) : undefined}
 									onDragLeave={leaveZone(zone)}
 									onDrop={(event) =>
 										finishDrop(event, (dragged) => {

@@ -4,10 +4,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { RIGHT_PANEL_TOOLS } from '@/constants/docx-viewer';
 import type { RightPanelTab } from '@/types/document';
-import {
-	ChatIcon,
-	KnowledgeGraphIcon,
-} from '@/components/common/icons';
+import { ChatIcon, KnowledgeGraphIcon } from '@/components/common/icons';
 
 const TOOL_BRAND_SHORT_NAME = 'ContraVis';
 
@@ -26,7 +23,6 @@ interface ToolRailProps {
 	onToggleLabels: () => void;
 }
 
-/** Rail vertical de herramientas (marca + toggle de labels + iconos de panel). */
 export function ToolRail({
 	width,
 	labelsPinned,
@@ -76,7 +72,11 @@ export function ToolRail({
 							aria-hidden="true"
 						>
 							<path
-								d={labelsPinned ? 'M5 6v12M8 12h10m0 0-3-3m3 3-3 3' : 'M19 6v12M16 12H6m0 0 3-3m-3 3 3 3'}
+								d={
+									labelsPinned
+										? 'M5 6v12M8 12h10m0 0-3-3m3 3-3 3'
+										: 'M19 6v12M16 12H6m0 0 3-3m-3 3 3 3'
+								}
 								strokeLinecap="round"
 								strokeLinejoin="round"
 							/>

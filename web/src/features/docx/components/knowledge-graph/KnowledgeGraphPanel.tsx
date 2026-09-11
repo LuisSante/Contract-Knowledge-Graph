@@ -17,10 +17,7 @@ import {
 } from '@/features/docx/utils/knowledge/statement-grid';
 import { DEFAULT_SEVERITY } from '@/features/docx/utils/knowledge/party-pagerank';
 import { computePairScores } from '@/features/docx/utils/knowledge/pair';
-import {
-	computeBenefitShare,
-	shareOfClause,
-} from '@/features/docx/utils/knowledge/benefit-share';
+import { computeBenefitShare, shareOfClause } from '@/features/docx/utils/knowledge/benefit-share';
 import { useClauseImportance } from '@/features/docx/hooks/useClauseImportance';
 import { useFocusPayload } from '@/features/docx/hooks/useFocusPayload';
 import { useKnowledgeGraphData } from '@/features/docx/hooks/useKnowledgeGraphData';
@@ -167,7 +164,10 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		return byId;
 	}, [grid]);
 
-	const clauseRows = useMemo(() => visibleRows.filter((row) => row.clauseId !== null), [visibleRows]);
+	const clauseRows = useMemo(
+		() => visibleRows.filter((row) => row.clauseId !== null),
+		[visibleRows]
+	);
 	const unfiledRow = visibleRows.find((row) => row.clauseId === null) ?? null;
 
 	const activeClause = useMemo(
@@ -230,11 +230,7 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 			y: event.clientY - rect.top,
 			kind: mark.kind,
 			detail: mark.detail,
-			owner:
-				mark.ownerName ??
-				(mark.lane === 'shared'
-					? 'both parties'
-					: undefined),
+			owner: mark.ownerName ?? (mark.lane === 'shared' ? 'both parties' : undefined),
 		});
 	};
 
@@ -242,9 +238,10 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 		lane === 'a'
 			? (focusedPartyName ?? 'Party A')
 			: lane === 'b'
-				? (secondPartyId ? (partyNameById.get(secondPartyId) ?? 'Party B') : 'Party B')
+				? secondPartyId
+					? (partyNameById.get(secondPartyId) ?? 'Party B')
+					: 'Party B'
 				: 'Both parties';
-
 
 	return (
 		<div className="flex h-full flex-col">

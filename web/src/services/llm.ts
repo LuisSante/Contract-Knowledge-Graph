@@ -5,9 +5,7 @@ import type {
 	LlmUsageTotalResponse,
 } from '@/types/document';
 
-export async function fetchLlmEstimate(
-	payload: LlmEstimateRequest
-): Promise<LlmEstimateResponse> {
+export async function fetchLlmEstimate(payload: LlmEstimateRequest): Promise<LlmEstimateResponse> {
 	const response = await api.post<LlmEstimateResponse>('/llm/estimate', payload);
 	return response.data;
 }

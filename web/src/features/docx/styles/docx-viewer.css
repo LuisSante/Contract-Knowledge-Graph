@@ -1,520 +1,520 @@
-	[contenteditable='true']::selection {
-		background: rgba(37, 99, 235, 0.28);
-	}
+[contenteditable='true']::selection {
+	background: rgba(37, 99, 235, 0.28);
+}
 
-	.related-badges-off .docx-relations-badge-host::before,
-	.related-focus-on .docx-relations-badge-host::before,
-	.related-focus-on .docx-relations-badge-host.docx-related-badge-emphasis::before,
-	.docx-citation-flash {
-		animation: citation-flash 1.2s ease-out;
-	}
+.related-badges-off .docx-relations-badge-host::before,
+.related-focus-on .docx-relations-badge-host::before,
+.related-focus-on .docx-relations-badge-host.docx-related-badge-emphasis::before,
+.docx-citation-flash {
+	animation: citation-flash 1.2s ease-out;
+}
 
-	.docx-related-selected {
-		outline: none !important;
-		background: rgba(37, 99, 235, 0.08) !important;
-		box-shadow: 0 0 0 1px rgba(147, 197, 253, 0.95) !important;
-	}
+.docx-related-selected {
+	outline: none !important;
+	background: rgba(37, 99, 235, 0.08) !important;
+	box-shadow: 0 0 0 1px rgba(147, 197, 253, 0.95) !important;
+}
 
-	.docx-related-selected:hover {
-		outline: none !important;
-		box-shadow: 0 0 0 1px rgba(147, 197, 253, 0.95) !important;
-	}
+.docx-related-selected:hover {
+	outline: none !important;
+	box-shadow: 0 0 0 1px rgba(147, 197, 253, 0.95) !important;
+}
 
-	.docx-related-selected:focus,
-	.docx-related-selected:focus-visible {
-		outline: none !important;
-		box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.85) !important;
-	}
+.docx-related-selected:focus,
+.docx-related-selected:focus-visible {
+	outline: none !important;
+	box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.85) !important;
+}
 
-	.docx-related-linked {
-		box-shadow: none;
-	}
+.docx-related-linked {
+	box-shadow: none;
+}
 
-	.docx-related-context {
-		position: relative;
-	}
+.docx-related-context {
+	position: relative;
+}
 
-	.docx-related-context::before {
-		position: absolute;
-		content: '';
-		left: -7px;
-		top: 2px;
-		bottom: 2px;
-		width: 2px;
-		border-radius: 9999px;
-		opacity: 0.9;
-		pointer-events: none;
-	}
+.docx-related-context::before {
+	position: absolute;
+	content: '';
+	left: -7px;
+	top: 2px;
+	bottom: 2px;
+	width: 2px;
+	border-radius: 9999px;
+	opacity: 0.9;
+	pointer-events: none;
+}
 
-	.docx-related-context--reference::before {
-		background: #0c41d4;
-	}
+.docx-related-context--reference::before {
+	background: #0c41d4;
+}
 
-	.docx-related-context--similarity::before {
-		background: #09993e;
-	}
+.docx-related-context--similarity::before {
+	background: #09993e;
+}
 
-	.docx-paragraph-explanation-selected {
-		outline: 2.5px solid rgba(37, 99, 235, 0.82) !important;
-		box-shadow: inset 0 0 0 1px rgba(147, 197, 253, 0.48) !important;
-	}
+.docx-paragraph-explanation-selected {
+	outline: 2.5px solid rgba(37, 99, 235, 0.82) !important;
+	box-shadow: inset 0 0 0 1px rgba(147, 197, 253, 0.48) !important;
+}
 
-	.docx-paragraph-explanation-selected:focus,
-	.docx-paragraph-explanation-selected:focus-visible {
-		outline: 2px solid rgba(48, 84, 229, 0.76) !important;
-		outline-offset: 1px !important;
-		box-shadow: 0 0 0 2px rgba(147, 197, 253, 0.3) !important;
-	}
+.docx-paragraph-explanation-selected:focus,
+.docx-paragraph-explanation-selected:focus-visible {
+	outline: 2px solid rgba(48, 84, 229, 0.76) !important;
+	outline-offset: 1px !important;
+	box-shadow: 0 0 0 2px rgba(147, 197, 253, 0.3) !important;
+}
 
-	.docx-paragraph-explanation-related {
-		outline: 2px solid rgba(96, 165, 250, 0.6) !important;
-		outline-offset: 1px !important;
-		border-left: 1px solid rgba(96, 165, 250, 0.5) !important;
-		background: transparent !important;
-		box-shadow: inset 0 0 0 1px rgba(147, 197, 253, 0.3) !important;
-	}
+.docx-paragraph-explanation-related {
+	outline: 2px solid rgba(96, 165, 250, 0.6) !important;
+	outline-offset: 1px !important;
+	border-left: 1px solid rgba(96, 165, 250, 0.5) !important;
+	background: transparent !important;
+	box-shadow: inset 0 0 0 1px rgba(147, 197, 253, 0.3) !important;
+}
 
-	.docx-paragraph-explanation-source-hidden {
-		opacity: 0.12 !important;
-		filter: saturate(0.7);
-	}
+.docx-paragraph-explanation-source-hidden {
+	opacity: 0.12 !important;
+	filter: saturate(0.7);
+}
 
-	.docx-paragraph-explanation-muted {
-		opacity: 0.34;
-		transition: opacity 160ms ease;
-	}
+.docx-paragraph-explanation-muted {
+	opacity: 0.34;
+	transition: opacity 160ms ease;
+}
 
-	.docx-entity-mark {
-		color: var(--entity-color, #2563eb);
-		text-decoration: underline;
-		text-decoration-thickness: 1.5px;
-		text-underline-offset: 2px;
-		text-decoration-color: var(--entity-color, #2563eb);
-		font-weight: 600;
-		cursor: pointer;
-		padding: 0 1px;
-		border-radius: 3px;
-		transition:
-			background-color 140ms ease,
-			color 140ms ease,
-			text-decoration-color 140ms ease;
-	}
+.docx-entity-mark {
+	color: var(--entity-color, #2563eb);
+	text-decoration: underline;
+	text-decoration-thickness: 1.5px;
+	text-underline-offset: 2px;
+	text-decoration-color: var(--entity-color, #2563eb);
+	font-weight: 600;
+	cursor: pointer;
+	padding: 0 1px;
+	border-radius: 3px;
+	transition:
+		background-color 140ms ease,
+		color 140ms ease,
+		text-decoration-color 140ms ease;
+}
 
-	.docx-paragraph-explanation-entity-token {
-		color: var(--entity-color, #2563eb);
-		text-decoration: underline;
-		text-decoration-thickness: 1.5px;
-		text-underline-offset: 2px;
-		text-decoration-color: var(--entity-color, #2563eb);
-		font-weight: 600;
-		padding: 0 1px;
-		border-radius: 3px;
-		cursor: pointer;
-		transition:
-			background-color 140ms ease,
-			color 140ms ease,
-			text-decoration-color 140ms ease;
-	}
+.docx-paragraph-explanation-entity-token {
+	color: var(--entity-color, #2563eb);
+	text-decoration: underline;
+	text-decoration-thickness: 1.5px;
+	text-underline-offset: 2px;
+	text-decoration-color: var(--entity-color, #2563eb);
+	font-weight: 600;
+	padding: 0 1px;
+	border-radius: 3px;
+	cursor: pointer;
+	transition:
+		background-color 140ms ease,
+		color 140ms ease,
+		text-decoration-color 140ms ease;
+}
 
-	.docx-entity-mark.is-entity-hovered,
-	.docx-paragraph-explanation-entity-token.is-entity-hovered {
-		background: var(--entity-color-soft, rgba(37, 99, 235, 0.16));
-		text-decoration-thickness: 2px;
-	}
+.docx-entity-mark.is-entity-hovered,
+.docx-paragraph-explanation-entity-token.is-entity-hovered {
+	background: var(--entity-color-soft, rgba(37, 99, 235, 0.16));
+	text-decoration-thickness: 2px;
+}
 
-	.docx-paragraph-explanation-bracket {
-		position: absolute;
-		width: 2px;
-		border-radius: 0;
-		background: rgba(96, 165, 250, 0.72);
-		transform: translateX(-50%);
-		opacity: 0.92;
-		pointer-events: none;
-		transition:
-			opacity 120ms ease,
-			box-shadow 120ms ease,
-			width 120ms ease;
-	}
+.docx-paragraph-explanation-bracket {
+	position: absolute;
+	width: 2px;
+	border-radius: 0;
+	background: rgba(96, 165, 250, 0.72);
+	transform: translateX(-50%);
+	opacity: 0.92;
+	pointer-events: none;
+	transition:
+		opacity 120ms ease,
+		box-shadow 120ms ease,
+		width 120ms ease;
+}
 
-	.docx-paragraph-explanation-bracket--interactive {
-		pointer-events: auto;
-		cursor: pointer;
-	}
+.docx-paragraph-explanation-bracket--interactive {
+	pointer-events: auto;
+	cursor: pointer;
+}
 
-	.docx-paragraph-explanation-bracket--interactive:hover,
-	.docx-paragraph-explanation-bracket--interactive:focus-visible {
-		outline: none;
-		width: 3px;
-		box-shadow: 0 0 0 2px rgba(147, 197, 253, 0.34);
-	}
+.docx-paragraph-explanation-bracket--interactive:hover,
+.docx-paragraph-explanation-bracket--interactive:focus-visible {
+	outline: none;
+	width: 3px;
+	box-shadow: 0 0 0 2px rgba(147, 197, 253, 0.34);
+}
 
-	.docx-paragraph-explanation-cap {
-		position: absolute;
-		width: 12px;
-		height: 2px;
-		border-radius: 0;
-		background: rgba(96, 165, 250, 0.72);
-		transform: translate(0, -50%);
-		opacity: 0.92;
-		transition:
-			opacity 120ms ease,
-			background-color 120ms ease,
-			box-shadow 120ms ease;
-	}
+.docx-paragraph-explanation-cap {
+	position: absolute;
+	width: 12px;
+	height: 2px;
+	border-radius: 0;
+	background: rgba(96, 165, 250, 0.72);
+	transform: translate(0, -50%);
+	opacity: 0.92;
+	transition:
+		opacity 120ms ease,
+		background-color 120ms ease,
+		box-shadow 120ms ease;
+}
 
-	.docx-paragraph-explanation-cap--interactive {
-		pointer-events: auto;
-		cursor: pointer;
-	}
+.docx-paragraph-explanation-cap--interactive {
+	pointer-events: auto;
+	cursor: pointer;
+}
 
-	.docx-paragraph-explanation-cap--interactive::after {
-		content: '';
-		position: absolute;
-		right: 0;
-		top: 50%;
-		width: 6px;
-		height: 6px;
-		border-radius: 9999px;
-		transform: translate(50%, -50%);
-		background: rgba(96, 165, 250, 0.82);
-		box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.85);
-	}
+.docx-paragraph-explanation-cap--interactive::after {
+	content: '';
+	position: absolute;
+	right: 0;
+	top: 50%;
+	width: 6px;
+	height: 6px;
+	border-radius: 9999px;
+	transform: translate(50%, -50%);
+	background: rgba(96, 165, 250, 0.82);
+	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.85);
+}
 
-	.docx-paragraph-explanation-cap--interactive:hover,
-	.docx-paragraph-explanation-cap--interactive:focus-visible {
-		outline: none;
-		background: rgba(96, 165, 250, 0.88);
-		opacity: 1;
-		box-shadow: 0 0 0 2px rgba(147, 197, 253, 0.32);
-	}
+.docx-paragraph-explanation-cap--interactive:hover,
+.docx-paragraph-explanation-cap--interactive:focus-visible {
+	outline: none;
+	background: rgba(96, 165, 250, 0.88);
+	opacity: 1;
+	box-shadow: 0 0 0 2px rgba(147, 197, 253, 0.32);
+}
 
-	.docx-paragraph-explanation-cap--interactive:hover::after,
-	.docx-paragraph-explanation-cap--interactive:focus-visible::after {
-		background: rgba(59, 130, 246, 0.9);
-		box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.95), 0 0 0 2px rgba(147, 197, 253, 0.36);
-	}
+.docx-paragraph-explanation-cap--interactive:hover::after,
+.docx-paragraph-explanation-cap--interactive:focus-visible::after {
+	background: rgba(59, 130, 246, 0.9);
+	box-shadow:
+		0 0 0 1px rgba(255, 255, 255, 0.95),
+		0 0 0 2px rgba(147, 197, 253, 0.36);
+}
 
-	.docx-paragraph-explanation-line-fold {
-		position: absolute;
-		width: 12px;
-		height: 20px;
-		transform: translate(-50%, -50%);
-		pointer-events: none;
-	}
+.docx-paragraph-explanation-line-fold {
+	position: absolute;
+	width: 12px;
+	height: 20px;
+	transform: translate(-50%, -50%);
+	pointer-events: none;
+}
 
-	.docx-paragraph-explanation-line-fold path {
-		fill: none;
-		stroke: #75a1ee;
-		stroke-width: 2.2;
-		stroke-linecap: round;
-		stroke-linejoin: round;
-		background-color: white;
-		vector-effect: non-scaling-stroke;
-		filter: drop-shadow(0 0 1px rgba(117, 161, 238, 0.35));
-	}
+.docx-paragraph-explanation-line-fold path {
+	fill: none;
+	stroke: #75a1ee;
+	stroke-width: 2.2;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	background-color: white;
+	vector-effect: non-scaling-stroke;
+	filter: drop-shadow(0 0 1px rgba(117, 161, 238, 0.35));
+}
 
-	.docx-paragraph-explanation-collapsed-card {
-		position: absolute;
-		z-index: 24;
-		padding: 0;
-		border: 2px solid rgba(96, 165, 250, 0.6);
-		border-radius: 2px;
-		background: #fff;
-		box-shadow:
-			0 0 0 1px rgba(219, 234, 254, 0.92),
-			0 8px 20px rgba(30, 64, 175, 0.28),
-			0 2px 5px rgba(15, 23, 42, 0.16);
-		overflow: hidden;
-	}
+.docx-paragraph-explanation-collapsed-card {
+	position: absolute;
+	z-index: 24;
+	padding: 0;
+	border: 2px solid rgba(96, 165, 250, 0.6);
+	border-radius: 2px;
+	background: #fff;
+	box-shadow:
+		0 0 0 1px rgba(219, 234, 254, 0.92),
+		0 8px 20px rgba(30, 64, 175, 0.28),
+		0 2px 5px rgba(15, 23, 42, 0.16);
+	overflow: hidden;
+}
 
-	.docx-paragraph-explanation-cloned-node {
-		margin: 0 !important;
-		font: inherit;
-		color: inherit;
-		line-height: inherit;
-	}
+.docx-paragraph-explanation-cloned-node {
+	margin: 0 !important;
+	font: inherit;
+	color: inherit;
+	line-height: inherit;
+}
 
-	.docx-evidence-scroll-marker {
-		position: absolute;
-		left: 0;
-		right: 0;
-		height: 2px;
-		transform: translateY(-50%);
-		border-radius: 9999px;
-		background: #2563eb;
-		box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.88);
-		opacity: 0.9;
-		cursor: pointer;
-		transition:
-			transform 120ms ease,
-			opacity 120ms ease,
-			box-shadow 120ms ease;
-	}
+.docx-evidence-scroll-marker {
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 2px;
+	transform: translateY(-50%);
+	border-radius: 9999px;
+	background: #2563eb;
+	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.88);
+	opacity: 0.9;
+	cursor: pointer;
+	transition:
+		transform 120ms ease,
+		opacity 120ms ease,
+		box-shadow 120ms ease;
+}
 
-	.docx-evidence-scroll-marker:hover,
-	.docx-evidence-scroll-marker:focus-visible {
-		outline: none;
-		opacity: 1;
-		transform: translateY(-50%) scaleY(1.4);
-		box-shadow:
-			0 0 0 1px rgba(255, 255, 255, 0.95),
-			0 0 0 2px rgba(37, 99, 235, 0.35);
-	}
+.docx-evidence-scroll-marker:hover,
+.docx-evidence-scroll-marker:focus-visible {
+	outline: none;
+	opacity: 1;
+	transform: translateY(-50%) scaleY(1.4);
+	box-shadow:
+		0 0 0 1px rgba(255, 255, 255, 0.95),
+		0 0 0 2px rgba(37, 99, 235, 0.35);
+}
 
-	/* Knowledge Graph deontic rail: burden = red, benefit = green; the inline
+/* Knowledge Graph deontic rail: burden = red, benefit = green; the inline
 	   opacity encodes the attention score of that paragraph. */
-	.docx-kg-scroll-marker {
-		position: absolute;
-		left: 0;
-		right: 0;
-		height: 3px;
-		transform: translateY(-50%);
-		border-radius: 9999px;
-		box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.88);
-		cursor: pointer;
-		transition:
-			transform 120ms ease,
-			opacity 120ms ease,
-			box-shadow 120ms ease;
-	}
+.docx-kg-scroll-marker {
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 3px;
+	transform: translateY(-50%);
+	border-radius: 9999px;
+	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.88);
+	cursor: pointer;
+	transition:
+		transform 120ms ease,
+		opacity 120ms ease,
+		box-shadow 120ms ease;
+}
 
-	.docx-kg-scroll-marker--burden {
-		background: #ef4444;
-	}
+.docx-kg-scroll-marker--burden {
+	background: #ef4444;
+}
 
-	.docx-kg-scroll-marker--benefit {
-		background: #22c55e;
-	}
+.docx-kg-scroll-marker--benefit {
+	background: #22c55e;
+}
 
-	.docx-kg-scroll-marker:hover,
-	.docx-kg-scroll-marker:focus-visible {
-		outline: none;
-		opacity: 1 !important;
-		transform: translateY(-50%) scaleY(1.5);
-		box-shadow:
-			0 0 0 1px rgba(255, 255, 255, 0.95),
-			0 0 0 2px rgba(124, 58, 237, 0.35);
-	}
+.docx-kg-scroll-marker:hover,
+.docx-kg-scroll-marker:focus-visible {
+	outline: none;
+	opacity: 1 !important;
+	transform: translateY(-50%) scaleY(1.5);
+	box-shadow:
+		0 0 0 1px rgba(255, 255, 255, 0.95),
+		0 0 0 2px rgba(124, 58, 237, 0.35);
+}
 
-	/* .docx-contradiction-highlight {
+/* .docx-contradiction-highlight {
 		background: transparent;
 		box-shadow: inset 3px 0 0 #dc2626;
 	} */
-	
-	.docx-contradiction-highlight {
-		background: transparent;
-		border-left: 3px solid #dc2626 !important;
-		padding-left: 10px !important;
-	}
 
-	.docx-contradiction-highlight[data-contradiction-confidence-band='medium'] {
-		background: transparent;
-		box-shadow: inset 3px 0 0 #ef4444;
-	}
+.docx-contradiction-highlight {
+	background: transparent;
+	border-left: 3px solid #dc2626 !important;
+	padding-left: 10px !important;
+}
 
-	.docx-contradiction-highlight[data-contradiction-confidence-band='low'] {
-		background: transparent;
-		box-shadow: inset 3px 0 0 #f97316;
-	}
+.docx-contradiction-highlight[data-contradiction-confidence-band='medium'] {
+	background: transparent;
+	box-shadow: inset 3px 0 0 #ef4444;
+}
 
-	.docx-contradiction-selected {
-		outline: none;
-	}
+.docx-contradiction-highlight[data-contradiction-confidence-band='low'] {
+	background: transparent;
+	box-shadow: inset 3px 0 0 #f97316;
+}
 
-	mark.docx-contradiction-snippet {
-		background: transparent;
-		color:  #7f1d1d;
-		padding: 0 1px;
-		border-radius: 1px;
-		text-decoration: none;
-	}
+.docx-contradiction-selected {
+	outline: none;
+}
 
-	mark.docx-contradiction-snippet[data-contradiction-role='a'] {
-		color: inherit; /* color: #991b1b; */
-		background: var(--contradiction-bg, rgba(232, 0, 0, 0.18));
-	}
+mark.docx-contradiction-snippet {
+	background: transparent;
+	color: #7f1d1d;
+	padding: 0 1px;
+	border-radius: 1px;
+	text-decoration: none;
+}
 
-	mark.docx-contradiction-snippet[data-contradiction-role='b'] {
-		color: inherit;
-		background: var(--contradiction-bg, rgba(132, 204, 22, 0.22));
-	}
-	mark.docx-contradiction-snippet.docx-contradiction-snippet--active {
-		box-shadow: 0 0 0 1px rgba(30, 41, 59, 0.28);
-	}
+mark.docx-contradiction-snippet[data-contradiction-role='a'] {
+	color: inherit; /* color: #991b1b; */
+	background: var(--contradiction-bg, rgba(232, 0, 0, 0.18));
+}
 
-	
-		mark.docx-contradiction-snippet.docx-contradiction-snippet--active[data-contradiction-role='a']
-	 {
-		background: var(--contradiction-bg-active, rgba(251, 44, 44, 0.45));
-		box-shadow: 0 0 0 1px var(--contradiction-ring, rgba(191, 0, 0, 0.85));
-	}
+mark.docx-contradiction-snippet[data-contradiction-role='b'] {
+	color: inherit;
+	background: var(--contradiction-bg, rgba(132, 204, 22, 0.22));
+}
+mark.docx-contradiction-snippet.docx-contradiction-snippet--active {
+	box-shadow: 0 0 0 1px rgba(30, 41, 59, 0.28);
+}
 
-	mark.docx-contradiction-snippet.docx-contradiction-snippet--active[data-contradiction-role='b'] {
-		color: inherit;
-		background: var(--contradiction-bg-active, rgba(132, 204, 22, 0.34));
-		box-shadow: 0 0 0 1px var(--contradiction-ring, #84cc16);
-	}
+mark.docx-contradiction-snippet.docx-contradiction-snippet--active[data-contradiction-role='a'] {
+	background: var(--contradiction-bg-active, rgba(251, 44, 44, 0.45));
+	box-shadow: 0 0 0 1px var(--contradiction-ring, rgba(191, 0, 0, 0.85));
+}
 
-	.docx-contradiction-scroll-marker {
-		position: absolute;
-		left: 0;
-		right: 0;
-		height: 2px;
-		transform: translateY(-50%);
-		border-radius: 9999px;
-		background: #dc2626;
-		box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.85);
-		opacity: 0.92;
-		cursor: pointer;
-		transition:
-			transform 120ms ease,
-			opacity 120ms ease,
-			box-shadow 120ms ease;
-	}
+mark.docx-contradiction-snippet.docx-contradiction-snippet--active[data-contradiction-role='b'] {
+	color: inherit;
+	background: var(--contradiction-bg-active, rgba(132, 204, 22, 0.34));
+	box-shadow: 0 0 0 1px var(--contradiction-ring, #84cc16);
+}
 
-	.docx-contradiction-scroll-marker:hover {
+.docx-contradiction-scroll-marker {
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 2px;
+	transform: translateY(-50%);
+	border-radius: 9999px;
+	background: #dc2626;
+	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.85);
+	opacity: 0.92;
+	cursor: pointer;
+	transition:
+		transform 120ms ease,
+		opacity 120ms ease,
+		box-shadow 120ms ease;
+}
+
+.docx-contradiction-scroll-marker:hover {
+	opacity: 1;
+	transform: translateY(-50%) scaleY(1.4);
+	box-shadow:
+		0 0 0 1px rgba(255, 255, 255, 0.95),
+		0 0 0 2px rgba(239, 68, 68, 0.35);
+}
+
+.docx-contradiction-scroll-marker:focus-visible {
+	outline: none;
+	opacity: 1;
+	transform: translateY(-50%) scaleY(1.4);
+	box-shadow:
+		0 0 0 1px rgba(255, 255, 255, 0.95),
+		0 0 0 2px rgba(239, 68, 68, 0.45);
+}
+
+.docx-contradiction-scroll-marker--medium {
+	background: #ef4444;
+}
+
+.docx-contradiction-scroll-marker--low {
+	background: #f87171;
+}
+
+.docx-contradiction-evidence-bracket {
+	position: absolute;
+	width: 2px;
+	border-radius: 0;
+	background: linear-gradient(
+		to bottom,
+		var(--contradiction-a-color, #dc2626) 0%,
+		var(--contradiction-b-color, #84cc16) 100%
+	);
+	transform: translateX(-50%);
+	opacity: 0.92;
+}
+
+.docx-contradiction-evidence-cap {
+	position: absolute;
+	width: 12px;
+	height: 2px;
+	border-radius: 0;
+	background: linear-gradient(
+		to right,
+		var(--contradiction-a-color, #dc2626) 0%,
+		var(--contradiction-b-color, #84cc16) 100%
+	);
+	transform: translate(-100%, -50%);
+	opacity: 0.92;
+}
+
+.docx-contradiction-evidence-dot {
+	position: absolute;
+	height: 8px;
+	width: 8px;
+	transform: translate(-50%, -50%);
+	border-radius: 9999px;
+	border: 1px solid rgba(255, 255, 255, 0.9);
+	box-shadow: 0 0 0 1px rgba(100, 116, 139, 0.28);
+}
+
+.docx-contradiction-evidence-dot--a {
+	background: var(--contradiction-a-color, #dc2626);
+}
+
+.docx-contradiction-evidence-dot--b {
+	background: var(--contradiction-b-color, #84cc16);
+}
+
+.docx-contradiction-evidence-label {
+	position: absolute;
+	transform: translate(9px, -50%);
+	font-size: 10px;
+	font-weight: 700;
+	line-height: 1;
+}
+
+.docx-contradiction-evidence-label--a {
+	color: var(--contradiction-a-color, #b91c1c);
+}
+
+.docx-contradiction-evidence-label--b {
+	color: var(--contradiction-b-color, #84cc16);
+}
+
+@keyframes bounce {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-3px);
+	}
+}
+
+.animate-bounce {
+	animation: bounce 2s infinite;
+}
+
+@keyframes citation-flash {
+	0% {
+		background-color: rgba(254, 243, 199, 0.8);
+		box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.55);
+	}
+	70% {
+		background-color: rgba(254, 252, 232, 0.65);
+		box-shadow: 0 0 0 10px rgba(245, 158, 11, 0);
+	}
+	100% {
+		background-color: transparent;
+		box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+	}
+}
+
+@keyframes processing-dot-pulse {
+	0%,
+	100% {
+		opacity: 0.2;
+		transform: scale(0.85);
+	}
+	45% {
+		opacity: 0.95;
+		transform: scale(1.06);
+	}
+}
+
+@keyframes processing-step-fade {
+	0%,
+	100% {
+		opacity: 0.42;
+	}
+	50% {
+		opacity: 0.95;
+	}
+}
+
+@keyframes processing-ellipsis-dot {
+	0%,
+	100% {
+		opacity: 0.15;
+	}
+	50% {
 		opacity: 1;
-		transform: translateY(-50%) scaleY(1.4);
-		box-shadow:
-			0 0 0 1px rgba(255, 255, 255, 0.95),
-			0 0 0 2px rgba(239, 68, 68, 0.35);
 	}
-
-	.docx-contradiction-scroll-marker:focus-visible {
-		outline: none;
-		opacity: 1;
-		transform: translateY(-50%) scaleY(1.4);
-		box-shadow:
-			0 0 0 1px rgba(255, 255, 255, 0.95),
-			0 0 0 2px rgba(239, 68, 68, 0.45);
-	}
-
-	.docx-contradiction-scroll-marker--medium {
-		background: #ef4444;
-	}
-
-	.docx-contradiction-scroll-marker--low {
-		background: #f87171;
-	}
-
-	.docx-contradiction-evidence-bracket {
-		position: absolute;
-		width: 2px;
-		border-radius: 0;
-		background: linear-gradient(
-			to bottom,
-			var(--contradiction-a-color, #dc2626) 0%,
-			var(--contradiction-b-color, #84cc16) 100%
-		);
-		transform: translateX(-50%);
-		opacity: 0.92;
-	}
-
-	.docx-contradiction-evidence-cap {
-		position: absolute;
-		width: 12px;
-		height: 2px;
-		border-radius: 0;
-		background: linear-gradient(
-			to right,
-			var(--contradiction-a-color, #dc2626) 0%,
-			var(--contradiction-b-color, #84cc16) 100%
-		);
-		transform: translate(-100%, -50%);
-		opacity: 0.92;
-	}
-
-	.docx-contradiction-evidence-dot {
-		position: absolute;
-		height: 8px;
-		width: 8px;
-		transform: translate(-50%, -50%);
-		border-radius: 9999px;
-		border: 1px solid rgba(255, 255, 255, 0.9);
-		box-shadow: 0 0 0 1px rgba(100, 116, 139, 0.28);
-	}
-
-	.docx-contradiction-evidence-dot--a {
-		background: var(--contradiction-a-color, #dc2626);
-	}
-
-	.docx-contradiction-evidence-dot--b {
-		background: var(--contradiction-b-color, #84cc16);
-	}
-
-	.docx-contradiction-evidence-label {
-		position: absolute;
-		transform: translate(9px, -50%);
-		font-size: 10px;
-		font-weight: 700;
-		line-height: 1;
-	}
-
-	.docx-contradiction-evidence-label--a {
-		color: var(--contradiction-a-color, #b91c1c);
-	}
-
-	.docx-contradiction-evidence-label--b {
-		color: var(--contradiction-b-color, #84cc16);
-	}
-
-	@keyframes bounce {
-		0%,
-		100% {
-			transform: translateY(0);
-		}
-		50% {
-			transform: translateY(-3px);
-		}
-	}
-
-	.animate-bounce {
-		animation: bounce 2s infinite;
-	}
-
-	@keyframes citation-flash {
-		0% {
-			background-color: rgba(254, 243, 199, 0.8);
-			box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.55);
-		}
-		70% {
-			background-color: rgba(254, 252, 232, 0.65);
-			box-shadow: 0 0 0 10px rgba(245, 158, 11, 0);
-		}
-		100% {
-			background-color: transparent;
-			box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
-		}
-	}
-
-	@keyframes processing-dot-pulse {
-		0%,
-		100% {
-			opacity: 0.2;
-			transform: scale(0.85);
-		}
-		45% {
-			opacity: 0.95;
-			transform: scale(1.06);
-		}
-	}
-
-	@keyframes processing-step-fade {
-		0%,
-		100% {
-			opacity: 0.42;
-		}
-		50% {
-			opacity: 0.95;
-		}
-	}
-
-	@keyframes processing-ellipsis-dot {
-		0%,
-		100% {
-			opacity: 0.15;
-		}
-		50% {
-			opacity: 1;
-		}
-	}
+}

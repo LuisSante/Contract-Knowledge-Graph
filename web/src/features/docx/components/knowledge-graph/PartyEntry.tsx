@@ -25,10 +25,6 @@ interface PartyEntryProps {
 	onContinue: (partyAId: string, partyBId: string) => void;
 }
 
-/**
- * The entry view: both parties are chosen before anything is drawn. It owns the two
- * seats, because nothing downstream cares who sat where until the pair is confirmed.
- */
 export function PartyEntry({
 	kg,
 	mergeHints,
@@ -44,7 +40,15 @@ export function PartyEntry({
 		const tally = new Map<string, PartyCardData>(
 			kg.parties.map((p) => [
 				p.id,
-				{ id: p.id, name: p.name, role: p.role, obligations: 0, rights: 0, prohibitions: 0, total: 0 },
+				{
+					id: p.id,
+					name: p.name,
+					role: p.role,
+					obligations: 0,
+					rights: 0,
+					prohibitions: 0,
+					total: 0,
+				},
 			])
 		);
 		for (const v of deonticNodes(kg)) {

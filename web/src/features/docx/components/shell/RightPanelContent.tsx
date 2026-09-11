@@ -14,7 +14,6 @@ interface RightPanelContentProps {
 	onFocusNodeFromPanel: (nodeId: string, emphasize?: boolean) => void;
 }
 
-/** Right-panel content for the active tab. Extracted from `DocxViewer` to slim it down. */
 export function RightPanelContent({
 	activeTab,
 	docId,

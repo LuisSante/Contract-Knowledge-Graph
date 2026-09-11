@@ -23,9 +23,6 @@ class KgChatClause(BaseModel):
 
 
 class KgChatLedger(BaseModel):
-    """Deterministic burden/benefit facts for the focused party (already computed
-    on the client). The chat explains these; it never recomputes them."""
-
     obligations: int
     rights: int
     prohibitions: int

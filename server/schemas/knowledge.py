@@ -4,9 +4,9 @@ from pydantic import BaseModel, Field
 
 DerivedEdgeType = Literal[
     "is_part_of",
-    "assigns_obligation_to",  # obligation | prohibition -> obligor party
-    "grants_right_to",  # right                    -> holder party
-    "defines",  # clause -> defined term
+    "assigns_obligation_to",
+    "grants_right_to",
+    "defines",
 ]
 
 ExtractedEdgeType = Literal[
@@ -25,7 +25,7 @@ EdgeType = DerivedEdgeType | ExtractedEdgeType | AnalysisEdgeType
 class KgParty(BaseModel):
     id: str
     name: str
-    role: str = ""  # e.g. "Company", "Distributor", "Supplier"
+    role: str = ""
     address: str = ""
     aliases: list[str] = Field(default_factory=list)
     paragraphIds: list[str] = Field(default_factory=list)
@@ -33,34 +33,32 @@ class KgParty(BaseModel):
 
 class KgClause(BaseModel):
     id: str
-    ref: str | None = None  # "Section 3.2", "Article 5", or None if unnumbered
+    ref: str | None = None
     heading: str = ""
-    level: int | None = None  # nesting depth implied by the numbering
+    level: int | None = None
     paragraphIds: list[str] = Field(default_factory=list)
 
 
 class KgDefinedTerm(BaseModel):
     id: str
-    term: str  # "Confidential Information"
-    definition: str = ""  # verbatim span (provenance)
+    term: str
+    definition: str = ""
     definedInClauseId: str | None = None
     paragraphIds: list[str] = Field(default_factory=list)
 
 
 class _KgDeontic(BaseModel):
     id: str
-    action: str = ""  # short verb phrase, e.g. "Pay Invoices"
-    summary: str  # short paraphrase of the duty/right/restriction
-    text: str = ""  # verbatim span copied from the source paragraph (provenance)
-    # Set by the evidence pass: True/False once checked, None on graphs built before it.
+    action: str = ""
+    summary: str
+    text: str = ""
     evidenceVerified: bool | None = None
-    # The fragments actually located. More than one when the model elided the middle.
     evidenceSpans: list[str] = Field(default_factory=list)
-    burdenPartyId: str | None = None  # party that must comply / is prohibited
-    benefitPartyId: str | None = None  # party that benefits / holds the right
+    burdenPartyId: str | None = None
+    benefitPartyId: str | None = None
     clauseId: str | None = None
-    deadline: str = ""  # "within 30 days of receipt"
-    frequency: str = ""  # "once per calendar year"
+    deadline: str = ""
+    frequency: str = ""
     paragraphIds: list[str] = Field(default_factory=list)
 
 
@@ -78,7 +76,7 @@ class KgProhibition(_KgDeontic):
 
 class KgCondition(BaseModel):
     id: str
-    trigger: str  # verbatim span stating the prerequisite
+    trigger: str
     operator: str = ""  # IF | UNLESS | UNTIL | UPON
     gatesId: str | None = None  # statement or clause the condition gates
     paragraphIds: list[str] = Field(default_factory=list)
@@ -86,9 +84,9 @@ class KgCondition(BaseModel):
 
 class KgReference(BaseModel):
     id: str
-    name: str  # "ISO 27001", "GDPR"
-    citation: str = ""  # "Article 30"
-    citedById: str | None = None  # clause or statement doing the citing
+    name: str
+    citation: str = ""
+    citedById: str | None = None
     paragraphIds: list[str] = Field(default_factory=list)
 
 
@@ -97,7 +95,7 @@ class KgValue(BaseModel):
     valueType: str = ""  # Currency | Percentage | Duration | Quantity
     amount: str = ""
     unit: str = ""
-    quantifiesId: str | None = None  # statement or clause the value belongs to
+    quantifiesId: str | None = None
     paragraphIds: list[str] = Field(default_factory=list)
 
 
@@ -105,7 +103,7 @@ class KgEdge(BaseModel):
     source: str
     target: str
     type: EdgeType
-    evidence: str = ""  # verbatim wording that states the link, when extracted
+    evidence: str = ""
     paragraphIds: list[str] = Field(default_factory=list)
 
 

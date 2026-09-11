@@ -5,9 +5,7 @@ from pydantic import BaseModel
 from schemas.assistant import AssistantChatRequest
 from schemas.common import AssistantProvider
 
-LlmEstimateCallType = Literal[
-    "assistant_chat",
-]
+LlmEstimateCallType = Literal["assistant_chat",]
 
 
 class LlmEstimateRequest(BaseModel):

@@ -1,0 +1,21 @@
+set -euo pipefail
+
+root="$(git rev-parse --show-toplevel)"
+staged="$(git diff --cached --name-only --diff-filter=ACMR -z | tr '\0' '\n')"
+failed=0
+
+web="$(printf '%s\n' "$staged" | grep '^web/' | sed 's|^web/||' || true)"
+if [ -n "$web" ]; then
+	printf '%s\n' "$web" | (cd "$root/web" && xargs -d '\n' -r pnpm exec prettier --check --ignore-unknown) || failed=1
+fi
+
+py="$(printf '%s\n' "$staged" | grep -E '^server/.*\.py$' || true)"
+if [ -n "$py" ]; then
+	printf '%s\n' "$py" | (cd "$root" && xargs -d '\n' -r uv run --project server ruff format --check) || failed=1
+fi
+
+if [ "$failed" -ne 0 ]; then
+	echo
+	echo "  Formato: ejecuta 'make format' y vuelve a añadir los ficheros."
+	exit 1
+fi

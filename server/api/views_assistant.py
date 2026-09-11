@@ -1,8 +1,3 @@
-"""DRF views mirroring the FastAPI assistant endpoints (Phase 2).
-
-Faithful 1:1 port of server_old/api/routes/assistant.py.
-"""
-
 from rest_framework.response import Response
 from rest_framework.views import APIView
 

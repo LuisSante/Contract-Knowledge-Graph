@@ -21,7 +21,6 @@ from services.graph.knowledge.store import load_knowledge_graph
 
 logger = logging.getLogger(__name__)
 
-# DocumentStore is a singleton (see its __new__); this just grabs the instance.
 document_store = DocumentStore()
 
 DOCX_MEDIA_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
@@ -53,9 +52,6 @@ class DocumentFileView(APIView):
 
 
 class ExtractParagraphsView(APIView):
-    """Dump the document's paragraphs to PARAGRAPHS_OUTPUT_DIR — the evidence layer
-    the knowledge-graph build reads."""
-
     def post(self, request):
         serializer = ProcessDocumentRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -66,7 +62,13 @@ class ExtractParagraphsView(APIView):
 
         if not settings.EXTRACT_PARAGRAPHS:
             response = ExtractParagraphsResponseSerializer(
-                {"status": "skipped", "documentId": doc_id, "enabled": False, "saved": 0, "path": None}
+                {
+                    "status": "skipped",
+                    "documentId": doc_id,
+                    "enabled": False,
+                    "saved": 0,
+                    "path": None,
+                }
             )
             return Response(response.data)
 
@@ -86,12 +88,6 @@ class ExtractParagraphsView(APIView):
 
 
 class KnowledgeGraphView(APIView):
-    """Serve the pre-generated deontic knowledge graph for a document.
-
-    The KG is built offline (notebooks/KG) and saved under KNOWLEDGE_GRAPH_DIR;
-    this endpoint only reads it. Returns 404 if it has not been generated yet.
-    """
-
     def get(self, request, doc_id: str):
         document_store.ensure_initialized()
         canonical_id = document_store.get_canonical_id(doc_id) or doc_id
@@ -110,12 +106,6 @@ class KnowledgeGraphView(APIView):
 
 
 class ClauseImportanceView(APIView):
-    """Rank the clauses of a document by Personalized PageRank.
-
-    Structural and party-independent: it says how much a clause weighs inside its
-    contract, never for whom. See docs/metricas/importancia-clausula.md.
-    """
-
     def post(self, request, doc_id: str):
         serializer = ClauseImportanceRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -127,9 +117,7 @@ class ClauseImportanceView(APIView):
         if kg is None:
             raise NotFound("Knowledge graph not generated for this document")
 
-        result = personalized_pagerank.compute(
-            kg, serializer.validated_data["countedStatementIds"]
-        )
+        result = personalized_pagerank.compute(kg, serializer.validated_data["countedStatementIds"])
         response = ClauseImportanceResponseSerializer(
             {
                 "status": "success",
@@ -144,9 +132,6 @@ class ClauseImportanceView(APIView):
 
 
 class KnowledgePartyHintsView(APIView):
-    """Suggest which party nodes MAY be merged (resolver-as-hint). Never mutates the
-    KG; the user decides in the UI. Cached per document to avoid repeat LLM calls."""
-
     _cache: dict[str, dict] = {}
 
     def get(self, request, doc_id: str):

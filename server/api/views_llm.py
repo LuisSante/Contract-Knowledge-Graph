@@ -1,8 +1,3 @@
-"""DRF views mirroring the FastAPI LLM endpoints (Phase 2).
-
-Faithful 1:1 port of server_old/api/routes/llm.py.
-"""
-
 import logging
 
 from rest_framework.response import Response

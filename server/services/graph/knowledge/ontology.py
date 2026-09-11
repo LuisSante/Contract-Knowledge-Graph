@@ -32,35 +32,35 @@ DEONTIC_KIND_GUIDE: dict[str, str] = {
 LLM_RELATION_GUIDE: dict[str, str] = {
     "uses": (
         "a clause or statement invokes a defined term. target = the exact term string "
-        "(e.g. \"Confidential Information\")."
+        '(e.g. "Confidential Information").'
     ),
     "references": (
         "a NEUTRAL mention of another clause — it points at it without making anything "
-        "conditional. target = the reference as written (e.g. \"Section 3.1\"). "
-        "Cues: \"as set out in\", \"as described in\", \"pursuant to\", \"under Section\". "
-        "Example: \"A breach of Section 3.1 shall be considered a material breach.\""
+        'conditional. target = the reference as written (e.g. "Section 3.1"). '
+        'Cues: "as set out in", "as described in", "pursuant to", "under Section". '
+        'Example: "A breach of Section 3.1 shall be considered a material breach."'
     ),
     "depends_on": (
         "applicability is GATED by another clause — it only takes effect, or is limited, "
         "depending on that clause. target = the referenced clause string. "
-        "Cues: \"subject to\", \"provided that\", \"unless\", \"except as\", "
-        "\"in the event that\", \"upon\", \"notwithstanding\", \"conditioned on\". "
-        "Example: \"Subject to Section 8, the Supplier shall deliver ...\""
+        'Cues: "subject to", "provided that", "unless", "except as", '
+        '"in the event that", "upon", "notwithstanding", "conditioned on". '
+        'Example: "Subject to Section 8, the Supplier shall deliver ..."'
     ),
     "supersedes": (
         "this clause overrides another in case of conflict. target = the overridden clause "
-        "string. Cues: \"shall prevail\", \"order of precedence\", \"takes precedence over\"."
+        'string. Cues: "shall prevail", "order of precedence", "takes precedence over".'
     ),
     "modifies": (
         "one provision CHANGES WHAT ANOTHER ONE MEANS OR WHETHER IT APPLIES. Two cases, "
         "and the second is the one usually missed:\n"
-        "      * an amendment — \"is hereby amended\", \"is replaced by\", "
-        "\"notwithstanding Section\";\n"
+        '      * an amendment — "is hereby amended", "is replaced by", '
+        '"notwithstanding Section";\n'
         "      * a provision whose exercise would REMOVE, SUSPEND, CAP or NARROW a duty or "
-        "remedy stated elsewhere — a party that \"may cease to be bound\" by obligations, "
-        "that may unilaterally amend an exhibit the other relies on, a liability \"capped "
-        "at\" or \"not exceeding\" some amount, or a remedy declared \"sole and "
-        "exclusive\". source = the empowering or limiting statement; target = the clause "
+        'remedy stated elsewhere — a party that "may cease to be bound" by obligations, '
+        'that may unilaterally amend an exhibit the other relies on, a liability "capped '
+        'at" or "not exceeding" some amount, or a remedy declared "sole and '
+        'exclusive". source = the empowering or limiting statement; target = the clause '
         "holding what it curtails.\n"
         "      This is what tells a discretionary power apart from an ordinary permission, "
         "so emit it whenever the curtailed duty is identifiable."

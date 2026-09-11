@@ -1,12 +1,14 @@
 PYTHON = python
 PNPM = pnpm -C web
+RUFF = uv run --project server ruff
+PY_PATHS = server
 NPM = npm --prefix client
 WEB_PORT = 3000
 
 .PHONY: install finstall run frun \
 	build fbuild \
 	sinstall srun \
-	preprocess docs format help
+	preprocess docs format format-check hooks help
 
 help:
 	@echo "Commands available:"
@@ -19,7 +21,9 @@ help:
 	@echo "  make srun         - Run legacy Svelte app"
 	@echo "  make preprocess   - Preprocess data"
 	@echo "  make docs         - Regenerate the measurement tables in docs/"
-	@echo "  make format       - Format the frontend with Prettier"
+	@echo "  make format       - Format everything (Prettier for web, Ruff for Python)"
+	@echo "  make format-check - Check formatting without writing (what the hook runs)"
+	@echo "  make hooks        - Enable the versioned git hooks (.githooks/)"
 
 install:
 	@echo "Installing backend dependencies (uv sync)..."
@@ -30,6 +34,7 @@ install:
 finstall:
 	@echo "Installing frontend dependencies..."
 	$(PNPM) install
+	@$(MAKE) --no-print-directory hooks
 
 run:
 	@echo "Starting Django (uv)..."
@@ -46,6 +51,20 @@ fbuild:
 format:
 	@echo "Formatting the frontend..."
 	$(PNPM) run format
+	@echo "Formatting the Python..."
+	$(RUFF) format $(PY_PATHS)
+
+format-check:
+	@echo "Checking frontend formatting..."
+	$(PNPM) run format:check
+	@echo "Checking Python formatting..."
+	$(RUFF) format --check $(PY_PATHS)
+
+# Versioned hooks: .git/hooks is not committed, so the repo points git at .githooks.
+# One-off per clone; `make finstall` runs it too.
+hooks:
+	@echo "Enabling .githooks/..."
+	git config core.hooksPath .githooks
 
 preprocess:
 	@echo "Preprocessing data..."

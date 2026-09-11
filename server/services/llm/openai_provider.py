@@ -88,9 +88,7 @@ class OpenAIProvider(LLMProvider):
 
         prompt_tokens = int(getattr(usage, "prompt_tokens", 0) or 0)
         completion_tokens = int(getattr(usage, "completion_tokens", 0) or 0)
-        total_tokens = int(
-            getattr(usage, "total_tokens", prompt_tokens + completion_tokens) or 0
-        )
+        total_tokens = int(getattr(usage, "total_tokens", prompt_tokens + completion_tokens) or 0)
 
         effective_model = str(getattr(response, "model", self._model) or self._model)
         estimated_cost = estimate_model_cost_usd(

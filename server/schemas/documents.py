@@ -10,7 +10,7 @@ class DatasetDocument(BaseModel):
     relative_path: str = ""
     group_label: str = "root"
     display_name: str = ""
-    origin: Literal['dataset', 'upload']
+    origin: Literal["dataset", "upload"]
     processed: bool
 
 

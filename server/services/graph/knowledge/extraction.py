@@ -154,7 +154,9 @@ class _GraphAccumulator:
         if not keys:
             return None
 
-        existing_id = next((self._party_key_to_id[k] for k in keys if k in self._party_key_to_id), None)
+        existing_id = next(
+            (self._party_key_to_id[k] for k in keys if k in self._party_key_to_id), None
+        )
         if existing_id is None:
             self._party_seq += 1
             existing_id = f"party-{self._party_seq}"
@@ -278,9 +280,7 @@ class _GraphAccumulator:
         evidence_spans: list[str],
         evidence_verified: bool | None,
     ) -> str:
-        dedup_key = "|".join(
-            [kind, _normalize(summary)[:120], obligor or "", beneficiary or ""]
-        )
+        dedup_key = "|".join([kind, _normalize(summary)[:120], obligor or "", beneficiary or ""])
         existing_id = self._deontic_keys.get(dedup_key)
         if existing_id:
             return existing_id
@@ -486,7 +486,7 @@ def _derive_edges(
     references: list[KgReference],
     values: list[KgValue],
 ) -> list[KgEdge]:
-    """Edges readable off node fields — never asked of the LLM."""
+
     seen: set[tuple[str, str, str]] = set()
     edges: list[KgEdge] = []
 
@@ -499,11 +499,9 @@ def _derive_edges(
         seen.add(key)
         edges.append(KgEdge(source=source, target=target, type=etype))  # type: ignore[arg-type]
 
-    # Rights attach to their holder (the beneficiary).
     for right in rights:
         _add(right.id, right.clauseId, "is_part_of")
         _add(right.id, right.benefitPartyId, "grants_right_to")
-    # A prohibition is an obligation not to act: both attach to the obligor party.
     for statement in (*obligations, *prohibitions):
         _add(statement.id, statement.clauseId, "is_part_of")
         _add(statement.id, statement.burdenPartyId, "assigns_obligation_to")
@@ -524,8 +522,7 @@ def build_knowledge_graph(
     *,
     temperature: float = 0.1,
 ) -> KnowledgeGraph:
-    """Extract a party-centric deontic knowledge graph from parsed paragraphs."""
-    # Assign a stable sequential index per paragraph and remember its real id.
+
     indexed: list[dict[str, Any]] = []
     index_to_id: dict[int, str] = {}
     paragraph_texts: list[tuple[str, str]] = []
@@ -585,7 +582,7 @@ def _ingest_chunk(
     paragraph_texts: list[tuple[str, str]],
     accumulator: _GraphAccumulator,
 ) -> None:
-    # Map this chunk's local ids to resolved global ids.
+
     local_party_to_global: dict[str, str] = {}
     for raw_party in payload.get("parties") or []:
         local_id = str(raw_party.get("id") or "").strip()
@@ -620,7 +617,6 @@ def _ingest_chunk(
         if local_id and global_id:
             local_term_to_global[local_id] = global_id
 
-    # Three separate deontic lists; the list a statement is in IS its kind.
     local_deontic_to_global: dict[str, str] = {}
     for kind, collection_key in DEONTIC_COLLECTION_BY_KIND.items():
         for raw in payload.get(collection_key) or []:
@@ -650,7 +646,6 @@ def _ingest_chunk(
             if local_id:
                 local_deontic_to_global[local_id] = global_id
 
-    # Conditions, references and values attach to a clause or a deontic statement.
     def _resolve_attachment(local_ref: Any) -> str | None:
         return _resolve(local_ref, local_deontic_to_global) or _resolve(
             local_ref, local_clause_to_global
@@ -682,7 +677,6 @@ def _ingest_chunk(
             _paragraph_ids_from(raw_value.get("paragraphs"), index_to_id),
         )
 
-    # Relations carry a string target, resolved against the whole contract later.
     for raw_relation in payload.get("relations") or []:
         rtype = _normalize(str(raw_relation.get("type"))).replace(" ", "_")
         if rtype not in VALID_RELATION_TYPES:

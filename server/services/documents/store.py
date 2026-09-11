@@ -25,12 +25,9 @@ class DocumentStore:
         return cls._instance
 
     def iter_docxs(self, base_dir: Path):
-        return (
-            p for p in base_dir.rglob("*") if p.is_file() and p.suffix.lower() == ".docx"
-        )
+        return (p for p in base_dir.rglob("*") if p.is_file() and p.suffix.lower() == ".docx")
 
     def ensure_initialized(self):
-        """Initialize the store if it isn't already (idempotent)."""
         if not self._initialized:
             self.initialize()
 

@@ -2,8 +2,6 @@ from abc import ABC, abstractmethod
 
 
 class LLMProvider(ABC):
-    """Simple provider strategy interface for chat-completion style models."""
-
     name: str
 
     @abstractmethod

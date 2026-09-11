@@ -48,7 +48,7 @@ def detect_repeated_boundary_texts(pages: list[dict]):
             continue
 
         top_entries = non_empty_entries[:BOUNDARY_SCAN_LINES]
-        bottom_entries = non_empty_entries[max(len(non_empty_entries) - BOUNDARY_SCAN_LINES, 0):]
+        bottom_entries = non_empty_entries[max(len(non_empty_entries) - BOUNDARY_SCAN_LINES, 0) :]
         top_entries_keyed = [(idx, text.lower()) for idx, text in top_entries]
         bottom_entries_keyed = [(idx, text.lower()) for idx, text in bottom_entries]
         boundaries_by_page[page_idx] = {
@@ -61,17 +61,23 @@ def detect_repeated_boundary_texts(pages: list[dict]):
             bottom_counts[text_key] += 1
 
     repeated_top = {
-        text for text, count in top_counts.items() if count >= 2 and is_repeated_boundary_candidate(text)
+        text
+        for text, count in top_counts.items()
+        if count >= 2 and is_repeated_boundary_candidate(text)
     }
     repeated_bottom = {
-        text for text, count in bottom_counts.items() if count >= 2 and is_repeated_boundary_candidate(text)
+        text
+        for text, count in bottom_counts.items()
+        if count >= 2 and is_repeated_boundary_candidate(text)
     }
 
     return boundaries_by_page, repeated_top, repeated_bottom
 
 
 def build_paragraphs(pages: list[dict], doc_id: str) -> list[dict]:
-    boundaries_by_page, repeated_top_texts, repeated_bottom_texts = detect_repeated_boundary_texts(pages)
+    boundaries_by_page, repeated_top_texts, repeated_bottom_texts = detect_repeated_boundary_texts(
+        pages
+    )
 
     all_paragraphs_input: list[dict] = []
 

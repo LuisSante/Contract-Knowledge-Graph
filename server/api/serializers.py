@@ -1,10 +1,3 @@
-"""DRF serializers for the document + graph API.
-
-These are plain `Serializer`s (not `ModelSerializer`) because the data is
-computed/validated, never persisted. Output serialization reads attributes off
-the Pydantic domain objects returned by the service layer.
-"""
-
 from rest_framework import serializers
 
 
@@ -100,6 +93,8 @@ class AssistantChatResponseSerializer(serializers.Serializer):
     citations = AssistantCitationSerializer(many=True)
     suggestedQuestions = serializers.ListField(child=serializers.CharField())
     provider = serializers.ChoiceField(choices=_ASSISTANT_PROVIDER_CHOICES)
+
+
 # ---------------------------------------------------------------------------
 # Phase 2 — LLM serializers (mirror schemas/llm.py)
 # ---------------------------------------------------------------------------

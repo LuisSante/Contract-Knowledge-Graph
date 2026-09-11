@@ -21,3 +21,6 @@ dev = [
     "jupyterlab>=4.6.3",
     "ruff>=0.6",
 ]
+
+[tool.ruff]
+line-length = 100

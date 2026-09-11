@@ -40,7 +40,9 @@ def estimate_assistant_chat_request(payload: AssistantChatRequest) -> dict[str, 
     system_prompt = _build_system_prompt()
     user_prompt = _build_user_prompt(payload, context_entries, allowed_ids)
     resolved_model = (payload.model or "").strip() or _default_model_for_provider(payload.provider)
-    input_tokens = estimate_tokens(system_prompt, resolved_model) + estimate_tokens(user_prompt, resolved_model)
+    input_tokens = estimate_tokens(system_prompt, resolved_model) + estimate_tokens(
+        user_prompt, resolved_model
+    )
     output_tokens = ASSISTANT_ESTIMATED_OUTPUT_TOKENS
     cost = estimate_model_cost_usd(
         model_name=resolved_model,
@@ -85,7 +87,9 @@ def generate_assistant_response(payload: AssistantChatRequest) -> AssistantChatR
     system_prompt = _build_system_prompt()
     user_prompt = _build_user_prompt(payload, context_entries, allowed_ids)
 
-    raw_text = provider.generate(system_prompt=system_prompt, user_prompt=user_prompt, temperature=0.2)
+    raw_text = provider.generate(
+        system_prompt=system_prompt, user_prompt=user_prompt, temperature=0.2
+    )
     parsed = _parse_json_from_model(raw_text)
 
     answer = _sanitize_answer(parsed.get("answer"), fallback=raw_text)
@@ -123,7 +127,9 @@ def _build_context_entries(
 
     full_entries = [
         ContextEntry(node=node, tag="contract", relation_summary="")
-        for node in sorted(payload.paragraphNodes, key=lambda item: (item.page, item.paragraph_enum))
+        for node in sorted(
+            payload.paragraphNodes, key=lambda item: (item.page, item.paragraph_enum)
+        )
     ]
 
     return _apply_context_budget(full_entries)
@@ -325,7 +331,9 @@ def _normalize_suggested_questions(raw: Any) -> list[str]:
     return suggestions
 
 
-def _build_citation(citation_id: str, node_map: dict[str, AssistantParagraphNode]) -> AssistantCitation:
+def _build_citation(
+    citation_id: str, node_map: dict[str, AssistantParagraphNode]
+) -> AssistantCitation:
     node = node_map.get(citation_id)
     if node is None:
         return AssistantCitation(id=citation_id, excerpt="(Paragraph not available)")

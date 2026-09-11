@@ -9,8 +9,6 @@ MODEL_PRICING_USD_PER_1M: dict[str, dict[str, float]] = {
     "gpt-4_1-2025-04-14": {"input": 2.0, "output": 8.0},
     "gpt-5": {"input": 1.25, "output": 10.0},
     "gpt-5.1": {"input": 1.25, "output": 10.0},
-    # "gpt-5-mini": {"input": 0.25, "output": 2.0},
-    # "gpt-5-nano": {"input": 0.05, "output": 0.4},
 }
 
 _TIKTOKEN_ENCODER: Any | None = None
@@ -31,14 +29,15 @@ def estimate_tokens(text: str, model_name: str) -> int:
     return max(1, len(text) // 4)
 
 
-def estimate_model_cost_usd(*, model_name: str, input_tokens: int, output_tokens: int) -> float | None:
+def estimate_model_cost_usd(
+    *, model_name: str, input_tokens: int, output_tokens: int
+) -> float | None:
     rates = resolve_model_rates(model_name)
     if rates is None:
         return None
-    return (
-        (input_tokens / 1_000_000.0) * rates["input"]
-        + (output_tokens / 1_000_000.0) * rates["output"]
-    )
+    return (input_tokens / 1_000_000.0) * rates["input"] + (output_tokens / 1_000_000.0) * rates[
+        "output"
+    ]
 
 
 def resolve_model_rates(model_name: str) -> dict[str, float] | None:
@@ -57,11 +56,6 @@ def resolve_model_rates(model_name: str) -> dict[str, float] | None:
         return MODEL_PRICING_USD_PER_1M["gpt-4.1"]
     if normalized.startswith("gpt-4_1-"):
         return MODEL_PRICING_USD_PER_1M["gpt-4.1"]
-    # # Handle OpenAI variant model IDs (e.g., gpt-5.1-2026-..., gpt-5-mini-..., gpt-5-nano-...)
-    # if normalized.startswith("gpt-5-mini"):
-    #     return MODEL_PRICING_USD_PER_1M["gpt-5-mini"]
-    # if normalized.startswith("gpt-5-nano"):
-    #     return MODEL_PRICING_USD_PER_1M["gpt-5-nano"]
     if normalized.startswith("gpt-5"):
         return MODEL_PRICING_USD_PER_1M["gpt-5"]
     if normalized.startswith("gpt-5.1"):

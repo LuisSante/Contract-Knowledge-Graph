@@ -10,13 +10,9 @@ from services.graph.knowledge.ontology import (
     RELATION_TYPES,
 )
 
-_TYPE_GUIDE_TEXT = "\n".join(
-    f"- {name}: {DEONTIC_KIND_GUIDE[name]}" for name in DEONTIC_KINDS
-)
+_TYPE_GUIDE_TEXT = "\n".join(f"- {name}: {DEONTIC_KIND_GUIDE[name]}" for name in DEONTIC_KINDS)
 
-_RELATION_GUIDE_TEXT = "\n".join(
-    f"- {name}: {LLM_RELATION_GUIDE[name]}" for name in RELATION_TYPES
-)
+_RELATION_GUIDE_TEXT = "\n".join(f"- {name}: {LLM_RELATION_GUIDE[name]}" for name in RELATION_TYPES)
 
 SYSTEM_PROMPT = f"""You are a legal expert building a party-centric knowledge graph of a contract.
 

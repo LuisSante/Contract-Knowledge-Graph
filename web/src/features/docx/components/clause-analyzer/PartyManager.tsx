@@ -15,6 +15,10 @@ export function PartyManager({
 	onUnhide,
 	onReset,
 }: PartyManagerProps) {
+	// Nothing to undo is the usual case: rendering anyway leaves a bordered,
+	// padded strip under the panel that says nothing.
+	if (!hasView && !hintsLoading) return null;
+
 	return (
 		<div className="flex items-center gap-2 border-t border-border/60 px-3 py-1.5 text-2xs text-muted-foreground">
 			{hintsLoading && <span className="text-foreground/40">loading hints…</span>}

@@ -125,6 +125,8 @@ class ClauseImportanceView(APIView):
                 "documentId": canonical_id,
                 "byClause": result.by_clause,
                 "byStatement": result.by_statement,
+                "byNode": result.by_node,
+                "priorByNode": result.prior_by_node,
                 "peak": result.peak,
                 "iterations": result.iterations,
             }

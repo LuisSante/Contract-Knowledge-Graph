@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 DAMPING = 0.85
 TOLERANCE = 1e-9
@@ -25,6 +25,8 @@ class PersonalizedPageRank:
     by_statement: dict[str, float]
     peak: float
     iterations: int
+    by_node: dict[str, float] = field(default_factory=dict)
+    prior_by_node: dict[str, float] = field(default_factory=dict)
 
 
 def _node_ids(kg: dict) -> list[str]:
@@ -100,4 +102,6 @@ def compute(kg: dict, counted: Iterable[str] | None = None) -> PersonalizedPageR
         by_statement=by_statement,
         peak=max(by_clause.values(), default=0.0),
         iterations=iterations,
+        by_node={node_id: rank[position] for node_id, position in index.items()},
+        prior_by_node={node_id: prior[position] for node_id, position in index.items() if prior[position] > 0},
     )

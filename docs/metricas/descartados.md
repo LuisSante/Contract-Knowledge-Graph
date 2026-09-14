@@ -36,9 +36,19 @@ resumen que se manda al chat, y `pair.ts`, para las puntuaciones del par cuando 
 partes abiertas. **No ordena nada de lo que se ve en la retícula**: eso es
 [`importancia-clausula.md`](./importancia-clausula.md), que se calcula en el servidor.
 
-La pestaña *Visualization KG* dibuja **este** vector, el sembrado en la parte, no el del
-servidor: es el único de los dos que tiene semilla. Sirve para ver a dónde va la masa
-del paseo —incluidos los defectos medidos aquí arriba—, no para ordenar nada.
+**Tampoco se dibuja.** La pestaña *Visualization KG* llegó a construirse sobre este
+vector y se rehízo antes de usarla: lo que se dibuja ahí es el PPR del servidor,
+descrito en [`importancia-clausula.md`](./importancia-clausula.md). Este vector no
+dibuja nada.
+
+De paso se cayó una vista intermedia —maestro-detalle, la cláusula abierta en tres
+columnas cláusula → disposiciones → entidades— construida sobre el argumento de que el
+grafo es una jerarquía y no una red: 148 de sus 157 aristas son `is_part_of` o
+`assigns_obligation_to`/`grants_right_to`, y solo 3 son transversales. El argumento
+sigue siendo cierto, pero **resultó innecesario dibujar la jerarquía aparte**: basta con
+encender esa misma vecindad dentro del grafo y apagar el resto. La cláusula seleccionada
+se ancla por encima del corte top-N, porque sin eso quedaban 3 de sus 15 nodos en
+pantalla.
 
 ---
 

@@ -4,21 +4,23 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { KgVizGraph, KgVizNode } from '@/features/docx/utils/knowledge/kg-graph';
 import { useForceLayout } from '@/features/docx/components/kg-visualization/useForceLayout';
 import {
-	formatPpr,
-	formatShare,
-	formatShareCompact,
+	formatGain,
+	formatMass,
 	NODE_COLORS,
 	NODE_LABEL,
 	radiusOf,
 } from '@/features/docx/components/kg-visualization/constants';
 
-export type ScoreMode = 'share' | 'raw';
+export type ScoreMode = 'ppr' | 'prior' | 'gain';
 
 interface GraphCanvasProps {
 	graph: KgVizGraph;
 	scoreMode: ScoreMode;
 	showLabels: boolean;
-	onSeed: (nodeId: string) => void;
+	selectedClauseId: string | null;
+	/** The selected clause plus its provisions and everything they reach; null = no selection. */
+	highlightIds: Set<string> | null;
+	onSelectClause: (clauseId: string) => void;
 }
 
 interface View {
@@ -32,7 +34,20 @@ const MAX_ZOOM = 4;
 const FIT_PADDING = 48;
 const LABEL_CHARS = 18;
 
-export function GraphCanvas({ graph, scoreMode, showLabels, onSeed }: GraphCanvasProps) {
+function valueOf(node: KgVizNode, mode: ScoreMode): number {
+	if (mode === 'prior') return node.prior;
+	if (mode === 'gain') return node.gain;
+	return node.score;
+}
+
+export function GraphCanvas({
+	graph,
+	scoreMode,
+	showLabels,
+	selectedClauseId,
+	highlightIds,
+	onSelectClause,
+}: GraphCanvasProps) {
 	const wrapperRef = useRef<HTMLDivElement>(null);
 	const [size, setSize] = useState({ width: 0, height: 0 });
 	const [view, setView] = useState<View>({ x: 0, y: 0, k: 1 });
@@ -133,7 +148,14 @@ export function GraphCanvas({ graph, scoreMode, showLabels, onSeed }: GraphCanva
 	};
 
 	const scoreText = (node: KgVizNode) =>
-		scoreMode === 'share' ? formatShareCompact(node.share) : formatPpr(node.score);
+		scoreMode === 'gain' ? formatGain(node.gain) : formatMass(valueOf(node, scoreMode));
+
+	// Text is counter-scaled so it keeps a constant size on screen. Fitting 40 nodes
+	// puts the frame around k≈0.55, which would render a 9px number at 5px — unreadable,
+	// and the number is the whole reason this view exists.
+	const textScale = 1 / Math.max(view.k * frame.k, 0.05);
+
+	const lit = (id: string) => highlightIds === null || highlightIds.has(id);
 
 	return (
 		<div ref={wrapperRef} className="relative min-h-0 flex-1 overflow-hidden">
@@ -150,11 +172,12 @@ export function GraphCanvas({ graph, scoreMode, showLabels, onSeed }: GraphCanva
 						`translate(${frame.x},${frame.y}) scale(${frame.k})`
 					}
 				>
-					<g stroke="currentColor" strokeOpacity={0.18} strokeWidth={1}>
+					<g stroke="currentColor" strokeWidth={1}>
 						{graph.edges.map((edge, index) => {
 							const a = positions.get(edge.source);
 							const b = positions.get(edge.target);
 							if (!a || !b) return null;
+							const inside = lit(edge.source) && lit(edge.target);
 							return (
 								<line
 									key={`${edge.source}-${edge.target}-${edge.type}-${index}`}
@@ -162,6 +185,8 @@ export function GraphCanvas({ graph, scoreMode, showLabels, onSeed }: GraphCanva
 									y1={a.y}
 									x2={b.x}
 									y2={b.y}
+									strokeOpacity={inside ? 0.42 : 0.07}
+									strokeWidth={inside ? 1.4 : 1}
 								/>
 							);
 						})}
@@ -172,40 +197,55 @@ export function GraphCanvas({ graph, scoreMode, showLabels, onSeed }: GraphCanva
 						if (!point) return null;
 						const radius = radiusOf(node.weight);
 						const color = NODE_COLORS[node.kind];
+						const inSelection = lit(node.id);
 						const dimmed = hovered !== null && hovered.node.id !== node.id;
+						const selected = node.id === selectedClauseId;
+						const negative = scoreMode === 'gain' && node.gain < 0;
 						return (
 							<g
 								key={node.id}
 								transform={`translate(${point.x},${point.y})`}
-								opacity={dimmed ? 0.45 : 1}
-								className={node.kind === 'party' ? 'cursor-pointer' : 'cursor-default'}
+								opacity={dimmed ? 0.35 : inSelection ? 1 : 0.2}
+								className={node.kind === 'clause' ? 'cursor-pointer' : 'cursor-default'}
 								onPointerEnter={(event) => setHovered({ node, x: event.clientX, y: event.clientY })}
 								onPointerLeave={() => setHovered(null)}
 								onClick={() => {
-									if (node.kind === 'party') onSeed(node.id);
+									if (node.kind === 'clause') onSelectClause(node.id);
 								}}
 							>
-								{node.isSeed && (
+								{/* Where the restart vector injects mass — the 62 statements that
+								    carry the prior. Everything else only ever receives. */}
+								{node.prior > 0 && (
 									<circle
-										r={radius + 6}
+										r={radius + 5}
 										fill="none"
 										stroke={color}
-										strokeWidth={1.5}
+										strokeWidth={1.4}
 										strokeDasharray="4 3"
-										opacity={0.7}
+										opacity={0.65}
+									/>
+								)}
+								{selected && (
+									<circle
+										r={radius + 9}
+										fill="none"
+										stroke="currentColor"
+										strokeWidth={2}
+										opacity={0.75}
 									/>
 								)}
 								<circle
 									r={radius}
 									fill={color}
-									fillOpacity={0.12 + 0.34 * node.weight}
+									fillOpacity={negative ? 0.06 : (inSelection ? 0.2 : 0.12) + 0.34 * node.weight}
 									stroke={color}
-									strokeWidth={node.isSeed ? 3 : 1.8}
+									strokeWidth={selected ? 3 : inSelection ? 2.2 : 1.4}
+									strokeDasharray={negative ? '3 2' : undefined}
 								/>
 								<text
 									textAnchor="middle"
 									dy="0.34em"
-									fontSize={9}
+									fontSize={9 * textScale}
 									fontWeight={600}
 									fill="currentColor"
 									className="pointer-events-none tabular-nums"
@@ -215,10 +255,10 @@ export function GraphCanvas({ graph, scoreMode, showLabels, onSeed }: GraphCanva
 								{showLabels && (
 									<text
 										textAnchor="middle"
-										y={radius + 11}
-										fontSize={8.5}
+										y={radius + 11 * textScale}
+										fontSize={8.5 * textScale}
 										fill="currentColor"
-										fillOpacity={0.65}
+										fillOpacity={inSelection ? 0.8 : 0.5}
 										className="pointer-events-none"
 									>
 										{node.label.length > LABEL_CHARS
@@ -252,15 +292,17 @@ export function GraphCanvas({ graph, scoreMode, showLabels, onSeed }: GraphCanva
 							style={{ backgroundColor: NODE_COLORS[hovered.node.kind] }}
 						/>
 						<span className="font-medium text-foreground">{NODE_LABEL[hovered.node.kind]}</span>
-						{hovered.node.isSeed && <span className="text-muted-foreground">· seed</span>}
+						{hovered.node.prior > 0 && (
+							<span className="text-muted-foreground">· carries prior</span>
+						)}
 					</div>
 					<div className="mb-1 text-foreground/80">{hovered.node.label}</div>
 					<div className="text-muted-foreground tabular-nums">
-						PPR {hovered.node.score.toExponential(3)} · {formatShare(hovered.node.share)} of peak ·{' '}
-						{hovered.node.degree} edges here
+						PPR {formatMass(hovered.node.score)}% · prior {formatMass(hovered.node.prior)}% · gain{' '}
+						{formatGain(hovered.node.gain)} · {hovered.node.degree} edges here
 					</div>
-					{hovered.node.kind === 'party' && !hovered.node.isSeed && (
-						<div className="mt-1 text-muted-foreground">Click to re-seed the walk here.</div>
+					{hovered.node.kind === 'clause' && (
+						<div className="mt-1 text-muted-foreground">Click to open it on the left.</div>
 					)}
 				</div>
 			)}

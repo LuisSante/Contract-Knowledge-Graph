@@ -11,6 +11,24 @@ import {
 } from '@/features/docx/components/kg-visualization/constants';
 import type { ScoreMode } from '@/features/docx/components/kg-visualization/GraphCanvas';
 
+const MODES: ReadonlyArray<{ id: ScoreMode; label: string; hint: string }> = [
+	{
+		id: 'ppr',
+		label: 'PPR',
+		hint: 'Where the walk ends up. The vector sums to 100, so each number is that node’s share of the whole.',
+	},
+	{
+		id: 'prior',
+		label: 'prior',
+		hint: 'Where the walk starts: 1/(|C|·|V_c|) on each statement, nothing anywhere else. Also sums to 100.',
+	},
+	{
+		id: 'gain',
+		label: 'gain',
+		hint: 'PPR − prior, in the same points. Positive means the structure fed this node; negative means it leaked mass to its neighbours.',
+	},
+];
+
 interface GraphLegendProps {
 	countByKind: Record<KgNodeKind, number>;
 	shownByKind: Record<KgNodeKind, number>;
@@ -74,37 +92,32 @@ export function GraphLegend({
 			<div className="space-y-1 border-t border-border/60 pt-2">
 				<div className="font-medium text-foreground/50">Number in the node</div>
 				<div className="flex gap-1">
-					<button
-						type="button"
-						onClick={() => onScoreMode('share')}
-						className={`flex-1 rounded border px-1 py-0.5 ${
-							scoreMode === 'share'
-								? 'border-primary bg-primary/10 text-primary'
-								: 'border-border/70 hover:text-foreground'
-						}`}
-						title="PPR as a percentage of the seed's own mass"
-					>
-						% of peak
-					</button>
-					<button
-						type="button"
-						onClick={() => onScoreMode('raw')}
-						className={`flex-1 rounded border px-1 py-0.5 ${
-							scoreMode === 'raw'
-								? 'border-primary bg-primary/10 text-primary'
-								: 'border-border/70 hover:text-foreground'
-						}`}
-						title="Raw PPR mass; the whole vector sums to 1"
-					>
-						raw PPR
-					</button>
+					{MODES.map((mode) => (
+						<button
+							key={mode.id}
+							type="button"
+							onClick={() => onScoreMode(mode.id)}
+							className={`flex-1 rounded border px-1 py-0.5 ${
+								scoreMode === mode.id
+									? 'border-primary bg-primary/10 text-primary'
+									: 'border-border/70 hover:text-foreground'
+							}`}
+							title={mode.hint}
+						>
+							{mode.label}
+						</button>
+					))}
 				</div>
+				<div className="opacity-70">points of the total mass (· = under 0.01)</div>
+				{scoreMode === 'gain' && (
+					<div className="opacity-70">dashed outline = lost mass to its neighbours</div>
+				)}
 			</div>
 
 			<div className="space-y-1 border-t border-border/60 pt-2">
 				<div className="font-medium text-foreground/50">Size</div>
-				{/* Sizing runs against the runner-up, not the seed: the seed holds an order of
-				    magnitude more mass and would flatten everything else onto one radius. */}
+				{/* Logarithmic: the vector spans ~300:1, so a linear radius would pin every
+				    node below the top few onto the minimum. */}
 				<div className="flex items-center gap-2">
 					<svg width={MAX_RADIUS * 2 + 4} height={MAX_RADIUS + 6} aria-hidden="true">
 						<circle
@@ -126,7 +139,7 @@ export function GraphLegend({
 							strokeOpacity={0.5}
 						/>
 					</svg>
-					<span className="min-w-0">less → more PPR</span>
+					<span className="min-w-0">less → more PPR (log)</span>
 				</div>
 				<div className="flex items-center gap-1.5">
 					<svg width={18} height={18} aria-hidden="true">
@@ -140,7 +153,7 @@ export function GraphLegend({
 							strokeDasharray="3 2"
 						/>
 					</svg>
-					<span>dashed ring = seed</span>
+					<span>ring = carries prior</span>
 				</div>
 			</div>
 

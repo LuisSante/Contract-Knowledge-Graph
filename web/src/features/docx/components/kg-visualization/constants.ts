@@ -18,6 +18,13 @@ export const NODE_LABEL: Record<KgNodeKind, string> = {
 	clause: 'Clause',
 };
 
+export function formatShare(share: number): string {
+	const pct = share * 100;
+	if (pct >= 10) return `${Math.round(pct)}%`;
+	if (pct >= 1) return `${pct.toFixed(1)}%`;
+	return `${pct.toFixed(2)}%`;
+}
+
 export const MIN_RADIUS = 14;
 export const MAX_RADIUS = 30;
 
@@ -26,30 +33,26 @@ export const MIN_NODE_LIMIT = 10;
 export const MAX_NODE_LIMIT = 150;
 
 export function radiusOf(weight: number): number {
-	return MIN_RADIUS + (MAX_RADIUS - MIN_RADIUS) * Math.sqrt(Math.max(0, Math.min(1, weight)));
+	return MIN_RADIUS + (MAX_RADIUS - MIN_RADIUS) * Math.max(0, Math.min(1, weight));
 }
 
 /**
- * Raw PPR runs from ~0.15 at the seed down past 1e-4, so a fixed precision either
- * clips the tail to "0.000" or pads the head with noise.
+ * The PPR vector sums to 1, so every score is already a share of the whole walk. The
+ * unit is stated once in the legend and the glyph carries digits only.
  */
-export function formatPpr(score: number): string {
-	if (score <= 0) return '0';
-	if (score >= 0.0005) return score.toFixed(3).replace(/^0/, '');
-	return score.toExponential(0).replace('e-', 'e−');
-}
-
-export function formatShare(share: number): string {
-	const pct = share * 100;
-	if (pct >= 10) return `${Math.round(pct)}%`;
-	if (pct >= 1) return `${pct.toFixed(1)}%`;
-	return `${pct.toFixed(2)}%`;
-}
-
-/** The unit is stated once in the legend, so the glyph carries digits only. */
-export function formatShareCompact(share: number): string {
-	const pct = share * 100;
-	if (pct >= 10) return String(Math.round(pct));
+export function formatMass(value: number): string {
+	const pct = value * 100;
 	if (pct >= 1) return pct.toFixed(1);
-	return pct.toFixed(2).replace(/^0/, '');
+	if (pct >= 0.01) return pct.toFixed(2);
+	return pct > 0 ? '·' : '0';
+}
+
+/** Signed, in the same points as `formatMass` — what propagation added or drained. */
+export function formatGain(value: number): string {
+	const pct = value * 100;
+	const sign = pct > 0 ? '+' : pct < 0 ? '−' : '';
+	const magnitude = Math.abs(pct);
+	if (magnitude >= 1) return `${sign}${magnitude.toFixed(1)}`;
+	if (magnitude >= 0.01) return `${sign}${magnitude.toFixed(2)}`;
+	return '0';
 }

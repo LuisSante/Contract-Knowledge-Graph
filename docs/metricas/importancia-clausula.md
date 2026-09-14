@@ -70,6 +70,85 @@ barra y no toca el orden.
 
 ---
 
+## Dos lecturas, dos órdenes
+
+La tabla de arriba es la de la **retícula**, donde el prior se restringe a las marcas en
+pantalla. La pestaña *Visualization KG* hace la otra lectura posible: pasa
+`countedStatementIds: null`, de modo que cuentan los 62 enunciados con cláusula —también
+los recíprocos de «each Party»—. El orden que sale **no es el mismo**, y la diferencia es
+exactamente la que anticipaba el apartado *Qué arregla*:
+
+| # | cláusula | importancia |
+|---|---|---|
+| 1 | Limitation of Liability and Indemnification | 100% |
+| 2 | Rights Granted and Restrictions on Bellicum | 85% |
+| 3 | Section 3.2 | 80% |
+| 4 | Term and Termination | 78% |
+| 5 | Financial Terms | 76% |
+| 6 | Visual inspection on Delivery | 75% |
+| 7 | Delivery, Continuity of Supply, Second Sourcing | 73% |
+| 8 | Forecasts, Orders, Minimum Purchase | 73% |
+| 9 | Assignment | 72% |
+| 10 | Audit, IP, Confidentiality | 63% |
+| 11 | Dispute Resolution and Escalation | 47% |
+
+*Limitation of Liability* encabeza porque sus tres disposiciones son recíprocas y aquí sí
+cuentan. Con el prior completo el paseo converge en **132 iteraciones** y el pico vale
+`0.061227`. Reproducible llamando `personalized_pagerank.compute(kg, None)` sobre
+`infra/json/kg/root_BELLICUM_MILTENYI_Supply_Agreement_Summary.json` —el módulo que se
+ejecuta, no una réplica—.
+
+**Que las dos pestañas no coincidan no es un fallo**: son dos preguntas distintas. La
+retícula responde *«de lo que estoy mirando, qué manda»*; la visualización, *«en este
+contrato, qué cláusula manda»*. Sale en la cabecera de la lista para que nadie tenga que
+adivinarlo.
+
+**`byStatement` no lo lee nadie, y no hace falta.** Llegó a alimentar una vista de
+cláusula que se retiró; el valor por enunciado está de todos modos dentro de `byNode`,
+que es el que dibuja el grafo. Se sigue devolviendo porque es la unidad en la que se
+define la métrica, y quien la verifique querrá verlo sin recalcularlo.
+
+---
+
+## El paseo visto por encima
+
+La pestaña *Visualization KG* dibuja el vector entero sobre el grafo.
+Para eso el endpoint devuelve ahora dos campos más —`byNode`, los 147 nodos, y
+`priorByNode`, los 62 que reciben prior—; `compute` ya los calculaba y los tiraba. El
+grafo ofrece tres lecturas del mismo nodo: **PPR** (dónde acaba la masa), **prior** (de
+dónde sale) y **gain** = PPR − prior.
+
+Poner las tres juntas deja ver lo que una tabla de cláusulas no puede:
+
+| tipo | PPR | prior | gain | nodo |
+|---|---|---|---|---|
+| party | 7.67 | 0.00 | **+7.67** | Bellicum Pharmaceuticals, Inc. |
+| party | 5.07 | 0.00 | +5.07 | each Party |
+| obligation | 4.91 | 9.09 | **−4.18** | Advance notification of Material Changes |
+| clause | 4.18 | 0.00 | +4.18 | Section 3.2 |
+| right | 2.90 | 9.09 | **−6.19** | Seek injunctive relief at any time |
+
+*(puntos sobre 100; el vector suma 1. Reproducible con
+`personalized_pagerank.compute(kg, None)`.)*
+
+**Las partes son los nodos más pesados del grafo y no reciben nada del prior.** Los tres
+nodos de parte se llevan el **16.4%** de la masa total, toda por propagación. No
+contamina el orden de cláusulas —`by_clause` solo suma sobre los enunciados de cada
+cláusula—, pero conviene tenerlo escrito: el nodo más pesado de este grafo no es una
+cláusula.
+
+**El prior alto es señal de cláusula pequeña, y esa masa se va.** Un enunciado único en
+su cláusula arranca con `1/(11·1)` = 9.09 y termina en 2.90: el `1/|V_c|` le da mucho de
+salida y la propagación se lo reparte a los vecinos. Es el desesgo funcionando, visible
+nodo a nodo en vez de deducido de un ρ.
+
+Reparto final de la masa por tipo de nodo: cláusula 24.1%, obligation 22.2%, right
+21.1%, party 16.4%, prohibition 8.8%, value 2.8%, condition 2.8%, reference 1.5%,
+definedTerm 0.4%. El último es tan bajo porque **20 de los 22 defined terms no tienen
+ninguna arista** y solo conservan lo que les da el prior, que es cero.
+
+---
+
 ## Verificación
 
 Contrastada contra `networkx.pagerank` con el mismo grafo, el mismo vector de

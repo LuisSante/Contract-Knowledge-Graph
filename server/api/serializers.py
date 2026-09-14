@@ -32,6 +32,9 @@ class ClauseImportanceResponseSerializer(serializers.Serializer):
     documentId = serializers.CharField()
     byClause = serializers.DictField(child=serializers.FloatField())
     byStatement = serializers.DictField(child=serializers.FloatField())
+    # The whole fixed point and its restart vector; the graph view draws both.
+    byNode = serializers.DictField(child=serializers.FloatField())
+    priorByNode = serializers.DictField(child=serializers.FloatField())
     peak = serializers.FloatField()
     iterations = serializers.IntegerField()
 

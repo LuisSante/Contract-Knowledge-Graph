@@ -38,6 +38,11 @@ export async function fetchPartyMergeHints(docId: string): Promise<PartyMergeHin
 
 export interface ClauseImportance {
 	byClause: Record<string, number>;
+	/** The whole fixed point, every node kind included. Sums to 1. */
+	byNode: Record<string, number>;
+	/** The restart vector it converged from — statements only, also summing to 1. */
+	priorByNode: Record<string, number>;
+	iterations: number;
 }
 
 export async function fetchClauseImportance(
@@ -51,7 +56,12 @@ export async function fetchClauseImportance(
 			{ countedStatementIds: countedIds },
 			{ signal }
 		);
-		return { byClause: response.data.byClause ?? {} };
+		return {
+			byClause: response.data.byClause ?? {},
+			byNode: response.data.byNode ?? {},
+			priorByNode: response.data.priorByNode ?? {},
+			iterations: response.data.iterations ?? 0,
+		};
 	} catch {
 		return null;
 	}

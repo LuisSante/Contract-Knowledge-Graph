@@ -1,0 +1,25 @@
+{
+  "contracts": {
+    "root::BELLICUM_MILTENYI_Supply_Agreement_Summary": {
+      "documentId": "root::BELLICUM_MILTENYI_Supply_Agreement_Summary",
+      "documentName": "BELLICUM_MILTENYI_Supply_Agreement_Summary.docx",
+      "title": "Miltenyi–Bellicum Master Supply Agreement",
+      "contractType": "Supply Agreement",
+      "summary": "{{party-1|Miltenyi}} supplies cell-processing products to {{party-2|Bellicum}} for use in manufacturing cell-based therapies, under a non-exclusive, multi-year master contract with product-specific modules. {{party-2|Bellicum}} pays upfront and milestone fees, commits to minimum purchases, and receives a limited license; terms cover delivery, change control, and second sourcing.",
+      "parties": [
+        {
+          "partyId": "party-1",
+          "name": "Miltenyi Biotec GmbH",
+          "role": "Supplier",
+          "does": "Supply cell-processing products, maintain quality, grant limited license, manage changes, and support second sourcing if needed."
+        },
+        {
+          "partyId": "party-2",
+          "name": "Bellicum Pharmaceuticals, Inc.",
+          "role": "Buyer",
+          "does": "Purchase products, pay fees and milestones, provide forecasts, meet minimum purchase, use products within license, and manage regulatory compliance."
+        }
+      ]
+    }
+  }
+}

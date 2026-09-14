@@ -5,7 +5,7 @@ type IconProps = SVGProps<SVGSVGElement> & {
 	strokeWidth?: number | string;
 };
 
-export function ClauseAnalyzerIcon({
+export function KgGraphIcon({
 	className = 'h-4 w-4',
 	strokeWidth = 1.8,
 	color = 'currentColor',
@@ -27,14 +27,15 @@ export function ClauseAnalyzerIcon({
 			aria-hidden="true"
 			{...rest}
 		>
-			<rect x="3" y="3" width="18" height="18" rx="2" />
-			<line x1="9" y1="3" x2="9" y2="21" />
-			<line x1="15" y1="3" x2="15" y2="21" />
-			<line x1="3" y1="9" x2="21" y2="9" />
-			<line x1="3" y1="15" x2="21" y2="15" />
-			{/* Two filled cells: a matrix that carries values, not an empty grid. */}
-			<rect x="3.9" y="9.9" width="4.2" height="4.2" rx="0.6" fill={color} stroke="none" />
-			<rect x="15.9" y="15.9" width="4.2" height="4.2" rx="0.6" fill={color} stroke="none" />
+			<line x1="12" y1="12" x2="5" y2="5" />
+			<line x1="12" y1="12" x2="19" y2="6" />
+			<line x1="12" y1="12" x2="6" y2="19" />
+			<line x1="12" y1="12" x2="18" y2="18" />
+			<circle cx="12" cy="12" r="2.6" />
+			<circle cx="5" cy="5" r="1.8" />
+			<circle cx="19" cy="6" r="1.8" />
+			<circle cx="6" cy="19" r="1.8" />
+			<circle cx="18" cy="18" r="1.8" />
 		</svg>
 	);
 }

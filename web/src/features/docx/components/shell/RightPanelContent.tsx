@@ -6,6 +6,7 @@ import type { RightPanelTab } from '@/types/document';
 
 import { RightPanelAssistant } from '@/features/docx/components/assistant/RightPanelAssistant';
 import { ClauseAnalyzerPanel } from '@/features/docx/components/clause-analyzer/ClauseAnalyzerPanel';
+import { KgVisualizationPanel } from '@/features/docx/components/kg-visualization/KgVisualizationPanel';
 
 interface RightPanelContentProps {
 	activeTab: RightPanelTab;
@@ -22,6 +23,10 @@ export function RightPanelContent({
 }: RightPanelContentProps) {
 	if (activeTab === 'clause_analyzer') {
 		return <ClauseAnalyzerPanel docId={docId} />;
+	}
+
+	if (activeTab === 'kg_visualization') {
+		return <KgVisualizationPanel docId={docId} />;
 	}
 
 	if (activeTab === 'assistant') {

@@ -5,10 +5,11 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { RIGHT_PANEL_TOOLS } from '@/constants/docx-viewer';
 import type { RightPanelTab } from '@/types/document';
-import { ChatIcon, CloseIcon, ClauseAnalyzerIcon } from '@/components/common/icons';
+import { ChatIcon, CloseIcon, ClauseAnalyzerIcon, KgGraphIcon } from '@/components/common/icons';
 
 const HEADER_ICONS: Record<RightPanelTab, React.ComponentType<{ className?: string }>> = {
 	clause_analyzer: ClauseAnalyzerIcon,
+	kg_visualization: KgGraphIcon,
 	assistant: ChatIcon,
 };
 

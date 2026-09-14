@@ -110,6 +110,32 @@ function normalize(values: Map<string, number>): Map<string, number> {
 	return new Map([...values].map(([id, value]) => [id, value / peak] as const));
 }
 
+export interface NodePpr {
+	/** Raw PPR mass per node; sums to ~1 across the whole graph. */
+	byId: Map<string, number>;
+	/** The largest value — in practice the seed itself. */
+	peak: number;
+}
+
+/**
+ * The PPR vector on its own, unweighted by severity and not rolled up to clauses.
+ * `computePartyScores` consumes the same numbers but only ever exposes them mixed
+ * with severity; the graph view needs them raw to show what the walk actually did.
+ */
+export function computeNodePpr(kg: KnowledgeGraph, seedId: string): NodePpr {
+	const ids = graphNodeIds(kg);
+	const index = new Map(ids.map((id, i) => [id, i]));
+	const rank = personalizedPageRank(buildAdjacency(kg, index), index.get(seedId) ?? -1);
+
+	const byId = new Map<string, number>();
+	let peak = 0;
+	for (const [id, i] of index) {
+		byId.set(id, rank[i]);
+		if (rank[i] > peak) peak = rank[i];
+	}
+	return { byId, peak };
+}
+
 export function computePartyScores(
 	kg: KnowledgeGraph,
 	partyId: string,

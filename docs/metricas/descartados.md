@@ -29,9 +29,16 @@ orden de las cláusulas y el tamaño de los nodos.
 [`importancia-clausula.md`](./importancia-clausula.md). El `1/|V_c|` es exactamente el
 desesgo que faltaba, y ninguna cláusula puede ya valer cero.
 
-**Sigue en el código**, en `web/src/features/docx/utils/knowledge/attention.ts`, pero
-solo para ordenar los párrafos que el documento resalta y para el resumen que se manda
-al chat. **No ordena nada de lo que se ve en la retícula.**
+**Sigue en el código**, en `web/src/features/docx/utils/knowledge/party-pagerank.ts`
+—`attention.ts`, donde vivía cuando se escribió esta nota, ya no existe—. De ahí lo
+consumen `graph-payload.ts`, para los párrafos que el documento resalta y para el
+resumen que se manda al chat, y `pair.ts`, para las puntuaciones del par cuando hay dos
+partes abiertas. **No ordena nada de lo que se ve en la retícula**: eso es
+[`importancia-clausula.md`](./importancia-clausula.md), que se calcula en el servidor.
+
+La pestaña *Visualization KG* dibuja **este** vector, el sembrado en la parte, no el del
+servidor: es el único de los dos que tiene semilla. Sirve para ver a dónde va la masa
+del paseo —incluidos los defectos medidos aquí arriba—, no para ordenar nada.
 
 ---
 

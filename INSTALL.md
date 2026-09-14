@@ -1,6 +1,6 @@
 # Installation & Running
 
-ContraVis is a monorepo with a **FastAPI backend** (`server/`) and a **Next.js
+ContraAnalyzer is a monorepo with a **FastAPI backend** (`server/`) and a **Next.js
 frontend** (`web/`). The backend serves the contracts and computes the paragraph
 graph; the frontend renders the documents and the visual analytics UI.
 

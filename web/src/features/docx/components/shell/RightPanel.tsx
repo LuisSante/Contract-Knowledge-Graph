@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { RIGHT_PANEL_TOOLS } from '@/constants/docx-viewer';
+import { TOP_HEADER_HEIGHT } from '@/constants/brand';
 import type { RightPanelTab } from '@/types/document';
 import { ChatIcon, CloseIcon, ClauseAnalyzerIcon, KgGraphIcon } from '@/components/common/icons';
 
@@ -47,14 +48,16 @@ export function RightPanel({
 			)}
 			style={{
 				right: sidebarWidth,
-				// Never exceed the viewport: on narrow screens the panel becomes an
-				// overlay sheet sized to fit beside the tool rail, so it can't push
-				// the document off-screen or cause horizontal overflow.
 				width: `min(${width}px, calc(100vw - ${sidebarWidth + 8}px))`,
 				transform: isOpen ? 'translateX(0)' : `translateX(calc(100% + ${sidebarWidth + 20}px))`,
 			}}
 		>
-			<header className="flex items-center justify-between border-b border-border bg-header px-4 py-2.5">
+			<header
+				className={cn(
+					'flex items-center justify-between border-b border-border bg-header px-4',
+					TOP_HEADER_HEIGHT
+				)}
+			>
 				<div className="flex min-w-0 flex-1 items-center gap-2">
 					<h2 className="inline-flex min-w-0 flex-1 items-center gap-2 truncate text-sm font-semibold text-primary">
 						<span className="shrink-0 text-primary">

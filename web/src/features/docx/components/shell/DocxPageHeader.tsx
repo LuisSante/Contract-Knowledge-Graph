@@ -1,31 +1,40 @@
 'use client';
 
 import Link from 'next/link';
-import { FileText, ChevronLeft } from 'lucide-react';
+import { FileText } from 'lucide-react';
+import { BRAND_NAME, TOP_HEADER_HEIGHT } from '@/constants/brand';
+import { cn } from '@/lib/utils';
 
 interface DocxPageHeaderProps {
 	documentName: string | null;
 }
 
+function displayName(name: string | null): string {
+	return (name ?? '').replace(/\s*\[[^\]]*\]\s*$/, '').trim();
+}
+
 export function DocxPageHeader({ documentName }: DocxPageHeaderProps) {
+	const title = displayName(documentName);
+
 	return (
-		<header className="flex flex-none items-center gap-3 border-b border-border bg-header px-4 py-2.5">
+		<header
+			className={cn(
+				'relative flex flex-none items-center border-b border-border bg-header px-4',
+				TOP_HEADER_HEIGHT
+			)}
+		>
 			<Link
 				href="/"
-				className="flex size-7 flex-none items-center justify-center rounded-lg text-header-foreground/70 transition-colors hover:bg-header-foreground/15 hover:text-header-foreground"
-				aria-label="Back to documents"
-				title="Back to documents"
+				className="shrink-0 text-sm font-medium text-primary transition-opacity hover:opacity-75"
 			>
-				<ChevronLeft className="size-4" />
+				{BRAND_NAME}
 			</Link>
 
-			<div className="flex min-w-0 flex-1 items-center gap-2">
-				<span className="flex size-7 flex-none items-center justify-center rounded-lg bg-card text-primary shadow-sm">
-					<FileText className="size-4" />
+			<div className="pointer-events-none absolute top-1/2 left-1/2 flex max-w-[58%] -translate-x-1/2 -translate-y-1/2 items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 shadow-sm">
+				<FileText className="size-3.5 shrink-0 text-primary" />
+				<span className="truncate text-[13px] text-header-foreground" title={title || undefined}>
+					{title || 'No document selected'}
 				</span>
-				<div className="min-w-0 truncate text-sm font-medium text-header-foreground">
-					{documentName || 'No document selected'}
-				</div>
 			</div>
 		</header>
 	);

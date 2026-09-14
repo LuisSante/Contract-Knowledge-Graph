@@ -3,10 +3,9 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { RIGHT_PANEL_TOOLS } from '@/constants/docx-viewer';
+import { BRAND_NAME } from '@/constants/brand';
 import type { RightPanelTab } from '@/types/document';
 import { ChatIcon, ClauseAnalyzerIcon, KgGraphIcon } from '@/components/common/icons';
-
-const TOOL_BRAND_SHORT_NAME = 'ContraVis';
 
 const TOOL_ICONS: Record<RightPanelTab, React.ComponentType<{ className?: string }>> = {
 	clause_analyzer: ClauseAnalyzerIcon,
@@ -53,7 +52,7 @@ export function ToolRail({
 				>
 					{labelsPinned && (
 						<span className="ml-1 text-[17px] font-semibold tracking-wide text-header-foreground">
-							{TOOL_BRAND_SHORT_NAME}
+							{BRAND_NAME}
 						</span>
 					)}
 					<Button

@@ -1,20 +1,38 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import {
 	RIGHT_DRAWER_DEFAULT_WIDTH,
 	RIGHT_DRAWER_MAX_RATIO,
 	RIGHT_DRAWER_MIN_WIDTH,
+	RIGHT_PANEL_TOOLS,
 	RIGHT_TOOLBAR_WIDTH,
 	RIGHT_TOOLBAR_EXPANDED_WIDTH,
 } from '@/constants/docx-viewer';
 import type { RightPanelTab } from '@/types/document';
 
-export function useRightDrawer(initialTab: RightPanelTab = 'clause_analyzer') {
+export const TAB_PARAM = 'tab';
+
+function isTab(value: string | null): value is RightPanelTab {
+	return RIGHT_PANEL_TOOLS.some((tool) => tool.id === value);
+}
+
+export function useRightDrawer(fallbackTab: RightPanelTab = 'clause_analyzer') {
+	const searchParams = useSearchParams();
 	const [isOpen, setIsOpen] = useState(true);
 	const [width, setWidthState] = useState(RIGHT_DRAWER_DEFAULT_WIDTH);
-	const [activeTab, setActiveTab] = useState<RightPanelTab>(initialTab);
 	const [labelsPinned, setLabelsPinned] = useState(false);
+
+	const raw = searchParams.get(TAB_PARAM);
+	const activeTab = isTab(raw) ? raw : fallbackTab;
+
+	useEffect(() => {
+		if (isTab(raw)) return;
+		const params = new URLSearchParams(searchParams.toString());
+		params.set(TAB_PARAM, fallbackTab);
+		window.history.replaceState(null, '', `?${params.toString()}`);
+	}, [raw, searchParams, fallbackTab]);
 
 	const setWidth = useCallback((next: number) => {
 		const max =
@@ -29,10 +47,16 @@ export function useRightDrawer(initialTab: RightPanelTab = 'clause_analyzer') {
 	const toggle = useCallback(() => setIsOpen((value) => !value), []);
 	const toggleLabels = useCallback(() => setLabelsPinned((value) => !value), []);
 
-	const selectTool = useCallback((tab: RightPanelTab) => {
-		setActiveTab(tab);
-		setIsOpen(true);
-	}, []);
+	const selectTool = useCallback(
+		(tab: RightPanelTab) => {
+			setIsOpen(true);
+			if (tab === activeTab) return;
+			const params = new URLSearchParams(searchParams.toString());
+			params.set(TAB_PARAM, tab);
+			window.history.pushState(null, '', `?${params.toString()}`);
+		},
+		[searchParams, activeTab]
+	);
 
 	const sidebarWidth = labelsPinned ? RIGHT_TOOLBAR_EXPANDED_WIDTH : RIGHT_TOOLBAR_WIDTH;
 
@@ -42,7 +66,6 @@ export function useRightDrawer(initialTab: RightPanelTab = 'clause_analyzer') {
 		activeTab,
 		labelsPinned,
 		sidebarWidth,
-		setActiveTab,
 		selectTool,
 		setWidth,
 		open,

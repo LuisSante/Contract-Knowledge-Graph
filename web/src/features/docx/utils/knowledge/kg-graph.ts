@@ -46,6 +46,14 @@ export const KG_NODE_KINDS: KgNodeKind[] = [
 	'reference',
 ];
 
+export const DEFAULT_NODE_KINDS: KgNodeKind[] = [
+	'party',
+	'clause',
+	'obligation',
+	'right',
+	'prohibition',
+];
+
 function truncate(text: string, max = 42): string {
 	const clean = text.replace(/\s+/g, ' ').trim();
 	return clean.length > max ? `${clean.slice(0, max - 1)}…` : clean;
@@ -81,23 +89,6 @@ function collectNodes(kg: KnowledgeGraph): RawNode[] {
 	];
 }
 
-/**
- * The top-`limit` nodes by PPR mass, with every edge that runs between them.
- *
- * The scores are the server's — `byNode` and `priorByNode` from the clause-importance
- * endpoint — not recomputed here. Passing the fixed point *and* the restart vector it
- * came from is the point: the gap between them is what propagation actually did.
- *
- * Sizing is logarithmic and computed over the drawn set. The full vector spans ~400:1,
- * from the heaviest party down to a defined term, so once the cut is wide a linear
- * radius pins everything below the top few onto the minimum and the picture stops
- * discriminating exactly where most of the nodes live.
- *
- * `pinned` survives the cut. Without it the selected clause is mostly invisible: at the
- * default 40 the top-N holds 3 of the 15 nodes of *Rights Granted* and 6 of the 18 of
- * *Term and Termination*, because conditions and values sit at the bottom of the vector.
- * The kind filter still applies — that one is the reader's own choice, not the cut's.
- */
 export function buildKgViz(
 	kg: KnowledgeGraph,
 	scoreById: Record<string, number>,

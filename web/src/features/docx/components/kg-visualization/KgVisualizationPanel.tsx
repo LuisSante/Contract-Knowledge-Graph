@@ -10,7 +10,11 @@ import {
 	buildClauseIndex,
 	clauseNeighbourhood,
 } from '@/features/docx/utils/knowledge/clause-subgraph';
-import { buildKgViz, KG_NODE_KINDS } from '@/features/docx/utils/knowledge/kg-graph';
+import {
+	buildKgViz,
+	DEFAULT_NODE_KINDS,
+	KG_NODE_KINDS,
+} from '@/features/docx/utils/knowledge/kg-graph';
 import { ClauseList } from '@/features/docx/components/kg-visualization/ClauseList';
 import {
 	GraphCanvas,
@@ -34,7 +38,9 @@ export function KgVisualizationPanel({ docId }: KgVisualizationPanelProps) {
 
 	const [selectedId, setSelectedId] = useState<string | null>(null);
 	const [limit, setLimit] = useState(DEFAULT_NODE_LIMIT);
-	const [visibleKinds, setVisibleKinds] = useState<Set<KgNodeKind>>(() => new Set(KG_NODE_KINDS));
+	const [visibleKinds, setVisibleKinds] = useState<Set<KgNodeKind>>(
+		() => new Set(DEFAULT_NODE_KINDS)
+	);
 	const [scoreMode, setScoreMode] = useState<ScoreMode>('ppr');
 	const [showLabels, setShowLabels] = useState(true);
 

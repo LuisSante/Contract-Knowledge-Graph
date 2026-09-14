@@ -1,6 +1,6 @@
 import type { RightPanelTab } from '@/types/document';
 
-export const ASSISTANT_KG_SUGGESTIONS = [
+export const ASSISTANT_CLAUSE_SUGGESTIONS = [
 	'Why does the contract burden this party?',
 	'Which clause is riskiest for this party?',
 	'Which clauses benefit this party the most?',
@@ -13,7 +13,7 @@ export const MODEL_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
 ];
 
 export const RIGHT_PANEL_TOOLS: Array<{ id: RightPanelTab; label: string }> = [
-	{ id: 'knowledge_graph', label: 'Knowledge Graph' },
+	{ id: 'clause_analyzer', label: 'Clause Analyzer' },
 	{ id: 'assistant', label: 'Chat' },
 ];
 

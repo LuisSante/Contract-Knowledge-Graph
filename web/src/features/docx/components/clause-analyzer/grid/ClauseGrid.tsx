@@ -9,14 +9,14 @@ import type {
 } from '@/features/docx/utils/knowledge/statement-grid';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ClauseRow } from '@/features/docx/components/knowledge-graph/grid/ClauseRow';
+import { ClauseRow } from '@/features/docx/components/clause-analyzer/grid/ClauseRow';
 import {
 	LABEL_WIDTH,
 	LANE_WIDTH,
 	PAIR_SECOND_COLOR,
 	PARTY_COLOR,
 	ROW_PAGE,
-} from '@/features/docx/components/knowledge-graph/constants';
+} from '@/features/docx/components/clause-analyzer/constants';
 
 interface ClauseGridProps {
 	clauseRows: GridRow[];

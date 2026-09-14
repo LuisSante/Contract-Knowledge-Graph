@@ -4,16 +4,16 @@ import { useMemo, useState } from 'react';
 import type { KnowledgeGraph } from '@/types/knowledge';
 import { deonticNodes } from '@/types/knowledge';
 import { defaultPair } from '@/features/docx/utils/knowledge/pair';
-import { mergeGroupId } from '@/stores/knowledge-graph';
+import { mergeGroupId } from '@/stores/clause-analyzer';
 import type { MergeGroup } from '@/features/docx/utils/knowledge/party-view';
 import {
 	PartySelection,
 	type PartyCardData,
-} from '@/features/docx/components/knowledge-graph/PartySelection';
+} from '@/features/docx/components/clause-analyzer/PartySelection';
 import {
 	PAIR_SECOND_COLOR,
 	PARTY_COLOR,
-} from '@/features/docx/components/knowledge-graph/constants';
+} from '@/features/docx/components/clause-analyzer/constants';
 
 interface PartyEntryProps {
 	kg: KnowledgeGraph;

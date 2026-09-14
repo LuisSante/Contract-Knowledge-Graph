@@ -263,7 +263,7 @@
 		0 0 0 2px rgba(37, 99, 235, 0.35);
 }
 
-/* Knowledge Graph deontic rail: burden = red, benefit = green; the inline
+/* Clause Analyzer deontic rail: burden = red, benefit = green; the inline
 	   opacity encodes the attention score of that paragraph. */
 .docx-kg-scroll-marker {
 	position: absolute;

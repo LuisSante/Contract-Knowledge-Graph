@@ -7,15 +7,15 @@ import type {
 	GridRow,
 	MarkKind,
 } from '@/features/docx/utils/knowledge/statement-grid';
-import { Mark } from '@/features/docx/components/knowledge-graph/grid/Mark';
-import { ShareBar } from '@/features/docx/components/knowledge-graph/grid/ShareBar';
+import { Mark } from '@/features/docx/components/clause-analyzer/grid/Mark';
+import { ShareBar } from '@/features/docx/components/clause-analyzer/grid/ShareBar';
 import {
 	LABEL_WIDTH,
 	LANE_COLUMNS,
 	LANE_WIDTH,
 	MARK_GAP,
 	MARK_SIZE,
-} from '@/features/docx/components/knowledge-graph/constants';
+} from '@/features/docx/components/clause-analyzer/constants';
 
 interface ClauseRowProps {
 	row: GridRow;

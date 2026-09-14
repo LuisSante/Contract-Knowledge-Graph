@@ -5,7 +5,7 @@ type IconProps = SVGProps<SVGSVGElement> & {
 	strokeWidth?: number | string;
 };
 
-export function KnowledgeGraphIcon({
+export function ClauseAnalyzerIcon({
 	className = 'h-4 w-4',
 	strokeWidth = 1.8,
 	color = 'currentColor',

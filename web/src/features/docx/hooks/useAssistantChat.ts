@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useDocumentStore } from '@/stores/document';
-import { useGraphStore } from '@/stores/knowledge-graph';
+import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
 import { fetchAssistantResponse } from '@/services/assistant';
 import { getAxiosErrorMessage } from '@/features/docx/utils/docx-engine/http-error';
 import {
@@ -69,9 +69,9 @@ export function useAssistantChat({
 			return;
 		}
 
-		const kgState = useGraphStore.getState();
+		const kgState = useClauseAnalyzerStore.getState();
 		if (!kgState.focusNodeId) {
-			setError('Focus a party in the Knowledge Graph before asking about it.');
+			setError('Focus a party in the Clause Analyzer before asking about it.');
 			return;
 		}
 

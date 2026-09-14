@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react';
 import { useDocumentStore } from '@/stores/document';
-import { useGraphStore } from '@/stores/knowledge-graph';
+import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
 import { buildDocumentTarget } from '@/features/docx/utils/knowledge/graph-payload';
 import { applyPartyView } from '@/features/docx/utils/knowledge/party-view';
 import {
@@ -21,28 +21,28 @@ import { computeBenefitShare, shareOfClause } from '@/features/docx/utils/knowle
 import { useClauseImportance } from '@/features/docx/hooks/useClauseImportance';
 import { useFocusPayload } from '@/features/docx/hooks/useFocusPayload';
 import { useKnowledgeGraphData } from '@/features/docx/hooks/useKnowledgeGraphData';
-import { PartyManager } from '@/features/docx/components/knowledge-graph/PartyManager';
-import { PartyEntry } from '@/features/docx/components/knowledge-graph/PartyEntry';
-import { PanelHeader } from '@/features/docx/components/knowledge-graph/PanelHeader';
-import { ClauseGrid } from '@/features/docx/components/knowledge-graph/grid/ClauseGrid';
+import { PartyManager } from '@/features/docx/components/clause-analyzer/PartyManager';
+import { PartyEntry } from '@/features/docx/components/clause-analyzer/PartyEntry';
+import { PanelHeader } from '@/features/docx/components/clause-analyzer/PanelHeader';
+import { ClauseGrid } from '@/features/docx/components/clause-analyzer/grid/ClauseGrid';
 import {
 	MarkTooltip,
 	type HoverInfo,
-} from '@/features/docx/components/knowledge-graph/grid/MarkTooltip';
-import { Legend } from '@/features/docx/components/knowledge-graph/legend/Legend';
+} from '@/features/docx/components/clause-analyzer/grid/MarkTooltip';
+import { Legend } from '@/features/docx/components/clause-analyzer/legend/Legend';
 import {
 	PAIR_SECOND_COLOR,
 	PARTY_COLOR,
-} from '@/features/docx/components/knowledge-graph/constants';
+} from '@/features/docx/components/clause-analyzer/constants';
 import type { DeonticKind } from '@/types/knowledge';
 
-interface KnowledgeGraphPanelProps {
+interface ClauseAnalyzerPanelProps {
 	docId: string;
 }
 
 const LANE_COLORS: [string, string] = [PARTY_COLOR, PAIR_SECOND_COLOR];
 
-export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
+export function ClauseAnalyzerPanel({ docId }: ClauseAnalyzerPanelProps) {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [hover, setHover] = useState<HoverInfo | null>(null);
 
@@ -60,27 +60,27 @@ export function KnowledgeGraphPanel({ docId }: KnowledgeGraphPanelProps) {
 	});
 
 	const [showShared, setShowShared] = useState(false);
-	const focusNodeId = useGraphStore((s) => s.focusNodeId);
-	const hops = useGraphStore((s) => s.hops);
-	const topK = useGraphStore((s) => s.topK);
-	const severity = useGraphStore((s) => s.severity);
-	const setSeverity = useGraphStore((s) => s.setSeverity);
-	const resetSeverity = useGraphStore((s) => s.resetSeverity);
-	const usePageRank = useGraphStore((s) => s.usePageRank);
-	const focusNode = useGraphStore((s) => s.focusNode);
-	const clearFocus = useGraphStore((s) => s.clearFocus);
-	const setFocusMeta = useGraphStore((s) => s.setFocusMeta);
-	const setDocumentTarget = useGraphStore((s) => s.setDocumentTarget);
-	const mergeGroups = useGraphStore((s) => s.mergeGroups);
-	const mergeParties = useGraphStore((s) => s.mergeParties);
-	const splitGroup = useGraphStore((s) => s.splitGroup);
-	const hideParty = useGraphStore((s) => s.hideParty);
-	const hiddenParties = useGraphStore((s) => s.hiddenParties);
-	const unhideParty = useGraphStore((s) => s.unhideParty);
-	const clearPartyView = useGraphStore((s) => s.clearPartyView);
-	const secondPartyId = useGraphStore((s) => s.secondPartyId);
-	const setSecondParty = useGraphStore((s) => s.setSecondParty);
-	const focusPair = useGraphStore((s) => s.focusPair);
+	const focusNodeId = useClauseAnalyzerStore((s) => s.focusNodeId);
+	const hops = useClauseAnalyzerStore((s) => s.hops);
+	const topK = useClauseAnalyzerStore((s) => s.topK);
+	const severity = useClauseAnalyzerStore((s) => s.severity);
+	const setSeverity = useClauseAnalyzerStore((s) => s.setSeverity);
+	const resetSeverity = useClauseAnalyzerStore((s) => s.resetSeverity);
+	const usePageRank = useClauseAnalyzerStore((s) => s.usePageRank);
+	const focusNode = useClauseAnalyzerStore((s) => s.focusNode);
+	const clearFocus = useClauseAnalyzerStore((s) => s.clearFocus);
+	const setFocusMeta = useClauseAnalyzerStore((s) => s.setFocusMeta);
+	const setDocumentTarget = useClauseAnalyzerStore((s) => s.setDocumentTarget);
+	const mergeGroups = useClauseAnalyzerStore((s) => s.mergeGroups);
+	const mergeParties = useClauseAnalyzerStore((s) => s.mergeParties);
+	const splitGroup = useClauseAnalyzerStore((s) => s.splitGroup);
+	const hideParty = useClauseAnalyzerStore((s) => s.hideParty);
+	const hiddenParties = useClauseAnalyzerStore((s) => s.hiddenParties);
+	const unhideParty = useClauseAnalyzerStore((s) => s.unhideParty);
+	const clearPartyView = useClauseAnalyzerStore((s) => s.clearPartyView);
+	const secondPartyId = useClauseAnalyzerStore((s) => s.secondPartyId);
+	const setSecondParty = useClauseAnalyzerStore((s) => s.setSecondParty);
+	const focusPair = useClauseAnalyzerStore((s) => s.focusPair);
 	const [partyPickerOpen, setPartyPickerOpen] = useState(false);
 	const paragraphs = useDocumentStore((s) => s.paragraphs);
 	const nodesById = useMemo(() => new Map(paragraphs.map((n) => [n.id, n])), [paragraphs]);

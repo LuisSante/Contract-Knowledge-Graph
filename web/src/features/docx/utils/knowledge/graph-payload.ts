@@ -2,7 +2,7 @@ import type { DeonticKind, KgDeonticNode, KnowledgeGraph } from '@/types/knowled
 import { deonticNodes } from '@/types/knowledge';
 import type { Node as ParagraphNode, EvidenceParagraph } from '@/types/document';
 import type { EntityHighlight } from '@/features/docx/utils/assistant/entity-marks';
-import type { GraphPayload } from '@/stores/knowledge-graph';
+import type { GraphPayload } from '@/stores/clause-analyzer';
 import type { PairScores } from '@/features/docx/utils/knowledge/pair';
 import {
 	computePartyScores,

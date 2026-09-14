@@ -52,7 +52,7 @@ export interface FocusMeta {
 
 const CLEARED_FOCUS = { focusNodeId: null, focusMeta: null, ...EMPTY_PAYLOAD };
 
-interface GraphState extends GraphPayload {
+interface ClauseAnalyzerState extends GraphPayload {
 	focusNodeId: string | null;
 	focusMeta: FocusMeta | null;
 	hops: number;
@@ -84,7 +84,7 @@ interface GraphState extends GraphPayload {
 	focusPair: (anchorId: string, secondId: string) => void;
 }
 
-export const useGraphStore = create<GraphState>((set) => ({
+export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
 	focusNodeId: null,
 	focusMeta: null,
 	hops: 1,
@@ -189,4 +189,4 @@ export const useGraphStore = create<GraphState>((set) => ({
 	focusPair: (focusNodeId, secondPartyId) => set({ focusNodeId, secondPartyId, hops: 1 }),
 }));
 
-export const KG_TOP_K_STEP_SIZE = TOP_K_STEP;
+export const TOP_K_STEP_SIZE = TOP_K_STEP;

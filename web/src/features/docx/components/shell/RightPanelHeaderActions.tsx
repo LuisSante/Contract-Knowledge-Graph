@@ -12,12 +12,12 @@ import {
 } from '@/components/ui/select';
 import { MODEL_OPTIONS } from '@/constants/docx-viewer';
 import {
-	KG_TOP_K_STEP_SIZE,
+	TOP_K_STEP_SIZE,
 	MAX_HOPS,
 	MAX_TOP_K,
 	MIN_TOP_K,
-	useGraphStore,
-} from '@/stores/knowledge-graph';
+	useClauseAnalyzerStore,
+} from '@/stores/clause-analyzer';
 import type { RightPanelTab } from '@/types/document';
 
 interface RightPanelHeaderActionsProps {
@@ -33,18 +33,18 @@ export function RightPanelHeaderActions({
 	model,
 	onModelChange,
 }: RightPanelHeaderActionsProps) {
-	const focusMeta = useGraphStore((state) => state.focusMeta);
-	const hops = useGraphStore((state) => state.hops);
-	const topK = useGraphStore((state) => state.topK);
-	const setHops = useGraphStore((state) => state.setHops);
-	const setTopK = useGraphStore((state) => state.setTopK);
-	const clearFocus = useGraphStore((state) => state.clearFocus);
+	const focusMeta = useClauseAnalyzerStore((state) => state.focusMeta);
+	const hops = useClauseAnalyzerStore((state) => state.hops);
+	const topK = useClauseAnalyzerStore((state) => state.topK);
+	const setHops = useClauseAnalyzerStore((state) => state.setHops);
+	const setTopK = useClauseAnalyzerStore((state) => state.setTopK);
+	const clearFocus = useClauseAnalyzerStore((state) => state.clearFocus);
 	const focusedPartyName = focusMeta?.kind === 'party' ? focusMeta.label : null;
 
-	if (activeTab === 'knowledge_graph') {
+	if (activeTab === 'clause_analyzer') {
 		const partyFocus = focusMeta?.kind === 'party';
 		const step = (delta: number) =>
-			partyFocus ? setTopK((k) => k + delta * KG_TOP_K_STEP_SIZE) : setHops((h) => h + delta);
+			partyFocus ? setTopK((k) => k + delta * TOP_K_STEP_SIZE) : setHops((h) => h + delta);
 		const atMin = partyFocus ? topK <= MIN_TOP_K : hops <= 0;
 		const atMax = partyFocus ? topK >= MAX_TOP_K : hops >= MAX_HOPS;
 		const stepUnit = partyFocus ? 'statements' : 'hops';
@@ -106,7 +106,7 @@ export function RightPanelHeaderActions({
 					title={
 						focusedPartyName
 							? `Chatting about ${focusedPartyName}`
-							: 'Focus a party in the Knowledge Graph'
+							: 'Focus a party in the Clause Analyzer'
 					}
 				>
 					<span className="text-2xs font-medium text-header-foreground/50">Party</span>

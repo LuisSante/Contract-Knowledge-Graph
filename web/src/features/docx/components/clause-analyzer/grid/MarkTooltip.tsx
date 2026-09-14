@@ -2,7 +2,7 @@
 
 import type { MarkKind } from '@/features/docx/utils/knowledge/statement-grid';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { KIND_COLORS, KIND_LABEL } from '@/features/docx/components/knowledge-graph/constants';
+import { KIND_COLORS, KIND_LABEL } from '@/features/docx/components/clause-analyzer/constants';
 
 /** Where the pointer is, relative to the panel, plus what it is over. */
 export interface HoverInfo {

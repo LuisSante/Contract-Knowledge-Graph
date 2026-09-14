@@ -7,7 +7,7 @@ import type { DeonticSeverity } from '@/features/docx/utils/knowledge/party-page
 import type { PairScores } from '@/features/docx/utils/knowledge/pair';
 import type { GridLane, GridRow } from '@/features/docx/utils/knowledge/statement-grid';
 import { buildFocusPayload, buildPairPayload } from '@/features/docx/utils/knowledge/graph-payload';
-import { useGraphStore } from '@/stores/knowledge-graph';
+import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
 
 interface FocusPayloadInput {
 	kg: KnowledgeGraph | null;
@@ -42,7 +42,7 @@ export function useFocusPayload({
 	severity,
 	usePageRank,
 }: FocusPayloadInput) {
-	const setPayload = useGraphStore((s) => s.setPayload);
+	const setPayload = useClauseAnalyzerStore((s) => s.setPayload);
 
 	useEffect(() => {
 		if (!kg || !focusNodeId) return;

@@ -10,7 +10,7 @@ import {
 } from '@/constants/docx-viewer';
 import type { RightPanelTab } from '@/types/document';
 
-export function useRightDrawer(initialTab: RightPanelTab = 'knowledge_graph') {
+export function useRightDrawer(initialTab: RightPanelTab = 'clause_analyzer') {
 	const [isOpen, setIsOpen] = useState(true);
 	const [width, setWidthState] = useState(RIGHT_DRAWER_DEFAULT_WIDTH);
 	const [activeTab, setActiveTab] = useState<RightPanelTab>(initialTab);

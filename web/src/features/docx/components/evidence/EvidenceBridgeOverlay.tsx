@@ -8,7 +8,7 @@ interface EvidenceBridgeOverlayProps {
 	onJumpToParagraph: (paragraphId: string) => void;
 	onRailMouseDown?: (event: MouseEvent) => void;
 	/**
-	 * Knowledge Graph deontic rail: when provided, scroll markers are colored by
+	 * Clause Analyzer deontic rail: when provided, scroll markers are colored by
 	 * burden/benefit and faded by attention score instead of reference/similarity.
 	 */
 	toneByParagraph?: Record<string, 'burden' | 'benefit'>;

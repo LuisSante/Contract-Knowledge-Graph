@@ -1,11 +1,11 @@
 'use client';
 
-import { ASSISTANT_KG_SUGGESTIONS } from '@/constants/docx-viewer';
+import { ASSISTANT_CLAUSE_SUGGESTIONS } from '@/constants/docx-viewer';
 import type { useAssistantChat } from '@/features/docx/hooks/useAssistantChat';
 import type { RightPanelTab } from '@/types/document';
 
 import { RightPanelAssistant } from '@/features/docx/components/assistant/RightPanelAssistant';
-import { KnowledgeGraphPanel } from '@/features/docx/components/knowledge-graph/KnowledgeGraphPanel';
+import { ClauseAnalyzerPanel } from '@/features/docx/components/clause-analyzer/ClauseAnalyzerPanel';
 
 interface RightPanelContentProps {
 	activeTab: RightPanelTab;
@@ -20,8 +20,8 @@ export function RightPanelContent({
 	assistant,
 	onFocusNodeFromPanel,
 }: RightPanelContentProps) {
-	if (activeTab === 'knowledge_graph') {
-		return <KnowledgeGraphPanel docId={docId} />;
+	if (activeTab === 'clause_analyzer') {
+		return <ClauseAnalyzerPanel docId={docId} />;
 	}
 
 	if (activeTab === 'assistant') {
@@ -36,7 +36,7 @@ export function RightPanelContent({
 				onKeydown={assistant.handleKgNodeKeydown}
 				onSuggestionClick={(question) => void assistant.submitKgNodeQuestion(question)}
 				onFocusNodeFromPanel={onFocusNodeFromPanel}
-				initialSuggestions={ASSISTANT_KG_SUGGESTIONS}
+				initialSuggestions={ASSISTANT_CLAUSE_SUGGESTIONS}
 				onInitialSuggestionClick={(question) => void assistant.submitKgNodeQuestion(question)}
 			/>
 		);

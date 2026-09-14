@@ -5,7 +5,7 @@ parte**. El lector puede decir *«esta cláusula es mía en un 11%»* y tratar e
 como el aviso.
 
 En `web/src/features/docx/utils/knowledge/benefit-share.ts`, sobre el modelo de
-`statement-grid.ts`; la dibuja `components/knowledge-graph/grid/ShareBar.tsx`.
+`statement-grid.ts`; la dibuja `components/clause-analyzer/grid/ShareBar.tsx`.
 
 El **orden** de las filas no sale de aquí: viene de
 [`importancia-clausula.md`](./importancia-clausula.md). Esta métrica dice **a quién le

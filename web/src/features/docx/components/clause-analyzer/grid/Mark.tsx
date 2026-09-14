@@ -7,7 +7,7 @@ import {
 	KIND_LABEL,
 	MARK_SIZE,
 	MUTED_LANE_OPACITY,
-} from '@/features/docx/components/knowledge-graph/constants';
+} from '@/features/docx/components/clause-analyzer/constants';
 
 interface MarkProps {
 	mark: GridMark;

@@ -16,7 +16,7 @@ import { useDocumentViewer } from '@/features/docx/hooks/useDocumentViewer';
 import { useAssistantChat } from '@/features/docx/hooks/useAssistantChat';
 import { useLlmTotalCost } from '@/features/docx/hooks/useLlmTotalCost';
 import { useDocumentStore } from '@/stores/document';
-import { useGraphStore } from '@/stores/knowledge-graph';
+import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
 import { RIGHT_DRAWER_KEYBOARD_STEP } from '@/constants/docx-viewer';
 import { extractParagraphs } from '@/services/paragraphs';
 
@@ -52,14 +52,14 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	const { data: llmCost } = useLlmTotalCost();
 	const costLabel = llmCost ? `Cost: ${llmCost.totalCostUsdFormatted} $` : null;
 
-	const knowledgeGraphActive = drawer.isOpen && drawer.activeTab === 'knowledge_graph';
+	const clauseAnalyzerActive = drawer.isOpen && drawer.activeTab === 'clause_analyzer';
 
-	const kgAnchorParagraphId = useGraphStore((s) => s.anchorParagraphId);
-	const kgRelatedParagraphs = useGraphStore((s) => s.relatedParagraphs);
-	const kgEntities = useGraphStore((s) => s.entities);
-	const kgParagraphIds = useGraphStore((s) => s.paragraphIds);
-	const kgToneByParagraphId = useGraphStore((s) => s.toneByParagraph);
-	const kgScoreByParagraphId = useGraphStore((s) => s.scoreByParagraph);
+	const kgAnchorParagraphId = useClauseAnalyzerStore((s) => s.anchorParagraphId);
+	const kgRelatedParagraphs = useClauseAnalyzerStore((s) => s.relatedParagraphs);
+	const kgEntities = useClauseAnalyzerStore((s) => s.entities);
+	const kgParagraphIds = useClauseAnalyzerStore((s) => s.paragraphIds);
+	const kgToneByParagraphId = useClauseAnalyzerStore((s) => s.toneByParagraph);
+	const kgScoreByParagraphId = useClauseAnalyzerStore((s) => s.scoreByParagraph);
 	const paragraphs = useDocumentStore((s) => s.paragraphs);
 	const kgAnchorParagraph = useMemo(
 		() =>
@@ -74,17 +74,17 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 		confirmLlmEstimate: llmEstimate.confirm,
 	});
 
-	const bridgeActive = knowledgeGraphActive;
-	const bridgeSelectedParagraph = knowledgeGraphActive ? kgAnchorParagraph : null;
-	const bridgeParagraphs = knowledgeGraphActive ? kgRelatedParagraphs : [];
+	const bridgeActive = clauseAnalyzerActive;
+	const bridgeSelectedParagraph = clauseAnalyzerActive ? kgAnchorParagraph : null;
+	const bridgeParagraphs = clauseAnalyzerActive ? kgRelatedParagraphs : [];
 
 	const documentEntities = kgEntities;
 	const entityTargetIds = useMemo(
-		() => (knowledgeGraphActive ? kgParagraphIds : []),
-		[knowledgeGraphActive, kgParagraphIds]
+		() => (clauseAnalyzerActive ? kgParagraphIds : []),
+		[clauseAnalyzerActive, kgParagraphIds]
 	);
 	useEntityHighlights({
-		active: documentEntities.length > 0 && knowledgeGraphActive,
+		active: documentEntities.length > 0 && clauseAnalyzerActive,
 		renderEpoch: viewer.renderEpoch,
 		paragraphElementById: paragraphElementById.current,
 		targetIds: entityTargetIds,
@@ -92,12 +92,12 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	});
 
 	useEffect(() => {
-		if (!knowledgeGraphActive || !kgAnchorParagraphId || viewer.renderEpoch === 0) return;
+		if (!clauseAnalyzerActive || !kgAnchorParagraphId || viewer.renderEpoch === 0) return;
 		const element = paragraphElementById.current.get(kgAnchorParagraphId);
 		if (!element) return;
 		element.scrollIntoView({ behavior: 'smooth', block: 'center' });
 		flashElement(element);
-	}, [knowledgeGraphActive, kgAnchorParagraphId, viewer.renderEpoch, paragraphElementById]);
+	}, [clauseAnalyzerActive, kgAnchorParagraphId, viewer.renderEpoch, paragraphElementById]);
 
 	const extractedDocIdRef = useRef<string | null>(null);
 	useEffect(() => {
@@ -180,8 +180,8 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 					evidenceBridgeActive={bridgeActive}
 					selectedParagraph={bridgeSelectedParagraph}
 					evidenceParagraphs={bridgeParagraphs}
-					toneByParagraph={knowledgeGraphActive ? kgToneByParagraphId : undefined}
-					scoreByParagraph={knowledgeGraphActive ? kgScoreByParagraphId : undefined}
+					toneByParagraph={clauseAnalyzerActive ? kgToneByParagraphId : undefined}
+					scoreByParagraph={clauseAnalyzerActive ? kgScoreByParagraphId : undefined}
 				/>
 			</div>
 

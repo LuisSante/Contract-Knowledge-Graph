@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import {
 	PAIR_SECOND_COLOR,
 	PARTY_COLOR,
-} from '@/features/docx/components/knowledge-graph/constants';
+} from '@/features/docx/components/clause-analyzer/constants';
 
 interface PanelHeaderProps {
 	parties: KgParty[];

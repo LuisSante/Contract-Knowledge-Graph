@@ -122,3 +122,32 @@ class LlmEstimateResponseSerializer(serializers.Serializer):
 class LlmUsageTotalResponseSerializer(serializers.Serializer):
     totalCostUsd = serializers.FloatField()
     totalCostUsdFormatted = serializers.CharField()
+
+
+# ---------------------------------------------------------------------------
+# Contract abstract serializers (mirror schemas/summary.py)
+# ---------------------------------------------------------------------------
+
+
+class ContractSummaryPartySerializer(serializers.Serializer):
+    partyId = serializers.CharField(required=False, allow_null=True)
+    name = serializers.CharField(allow_blank=True)
+    role = serializers.CharField(allow_blank=True)
+    does = serializers.CharField(allow_blank=True)
+
+
+class ContractSummarySerializer(serializers.Serializer):
+    documentId = serializers.CharField()
+    documentName = serializers.CharField(allow_blank=True)
+    title = serializers.CharField(allow_blank=True)
+    contractType = serializers.CharField(allow_blank=True)
+    summary = serializers.CharField(allow_blank=True)
+    parties = ContractSummaryPartySerializer(many=True)
+
+
+class ContractSummaryRequestSerializer(serializers.Serializer):
+    # Without it an existing abstract is returned untouched, so the button
+    # cannot burn a call by being clicked twice.
+    force = serializers.BooleanField(required=False, default=False)
+    provider = serializers.ChoiceField(choices=_ASSISTANT_PROVIDER_CHOICES, default="openai")
+    model = serializers.CharField(required=False, allow_null=True)

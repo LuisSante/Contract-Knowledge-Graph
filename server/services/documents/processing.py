@@ -129,3 +129,19 @@ def save_paragraphs_dump(doc_id: str, paragraphs: list[dict], output_dir: Path) 
         json.dump(payload, handle, ensure_ascii=False, indent=2)
     logger.info("Saved %d paragraphs to %s", len(payload["paragraphs"]), path)
     return path
+
+
+def load_paragraphs_dump(doc_id: str, output_dir: Path) -> list[dict]:
+    path = output_dir / f"{_safe_filename(doc_id)}.json"
+    if not path.exists():
+        return []
+    try:
+        with path.open(encoding="utf-8") as handle:
+            payload = json.load(handle)
+    except (OSError, json.JSONDecodeError):
+        logger.exception("Could not read the paragraph dump at %s", path)
+        return []
+    paragraphs = payload.get("paragraphs") if isinstance(payload, dict) else None
+    if not isinstance(paragraphs, list):
+        return []
+    return sorted(paragraphs, key=lambda row: (row.get("page") or 0, row.get("paragraph_enum") or 0))

@@ -203,8 +203,9 @@ export function PartySelection({
 		);
 	};
 
+	// The abstract above owns the scroll, so this only claims the leftover height.
 	return (
-		<div className="flex h-full flex-col items-center justify-center gap-5 overflow-y-auto px-6 py-6">
+		<div className="flex min-h-fit flex-1 flex-col items-center justify-center gap-5 px-6 py-6">
 			<div className="w-full max-w-xl text-center">
 				<div className="text-sm font-medium text-foreground">
 					Pick the two parties of the contract

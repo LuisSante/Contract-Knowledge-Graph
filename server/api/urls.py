@@ -1,6 +1,6 @@
 from django.urls import path
 
-from api import views, views_assistant, views_llm
+from api import views, views_assistant, views_llm, views_summary
 
 urlpatterns = [
     path("list_documents", views.ListDocumentsView.as_view()),
@@ -12,6 +12,7 @@ urlpatterns = [
         "knowledge_graph/<str:doc_id>/clause_importance",
         views.ClauseImportanceView.as_view(),
     ),
+    path("contract_summary/<str:doc_id>", views_summary.ContractSummaryView.as_view()),
     path("assistant/chat", views_assistant.AssistantChatView.as_view()),
     path("llm/estimate", views_llm.LlmEstimateView.as_view()),
     path("llm/cost/total", views_llm.LlmTotalCostView.as_view()),

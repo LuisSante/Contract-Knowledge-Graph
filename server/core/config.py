@@ -11,6 +11,8 @@ class Settings(BaseSettings):
     GRAPH_OUTPUT_DIR: Path = Path("../infra/json/graph")
     PARAGRAPHS_OUTPUT_DIR: Path = Path("../infra/json/paragraphs")
     KNOWLEDGE_GRAPH_DIR: Path = Path("../infra/json/kg")
+    # A file, not a directory: every contract abstract lives in this one map.
+    CONTRACT_SUMMARY_PATH: Path = Path("../infra/json/abstract.json")
 
     # this extract paragraphs from a document
     EXTRACT_PARAGRAPHS: bool = True

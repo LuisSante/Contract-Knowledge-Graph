@@ -117,3 +117,51 @@ Documento de estudio, el resumen del contrato Bellicum–Miltenyi:
 Tres partes para un contrato bilateral: la tercera es el nodo «each Party» de las
 cláusulas recíprocas. El desglose completo está en las
 [medidas del documento](../medidas/corpus.md).
+
+---
+
+## El *abstract* — una capa encima, no dentro
+
+Se le llama **abstract** y no «resumen» a propósito: en este proyecto *el resumen* es el
+documento fuente —el contrato Bellicum–Miltenyi que ya viene resumido—, y confundir los
+dos nombres arruina cualquier frase sobre qué se midió sobre qué.
+
+`infra/json/abstract.json` guarda el abstract en prosa de cada contrato, indexado por
+`documentId`. **No es parte del KG** y no se genera con él: el grafo lo construye el
+notebook offline, mientras que el abstract se pide desde la UI, cuando alguien pulsa el
+botón, y se cachea en ese archivo para no volver a pagarlo.
+
+Un archivo único para todo el corpus, a diferencia de los KGs, que van uno por documento.
+Un abstract ocupa unas líneas: separarlos costaría más de lo que ahorra, y en un solo mapa
+se leen y se diffean todos a la vez.
+
+### Las partes no se vuelven a extraer
+
+El prompt **recibe las partes del grafo** —id, nombre, rol y alias— y solo puede elegir
+entre ellas. El modelo devuelve `partyId` y una línea de qué hace esa parte; el nombre y
+el rol se rellenan desde el nodo del KG, nunca desde lo que escriba el modelo.
+
+La razón es que la alternativa ya se sabe cómo termina: dos listas de partes que divergen
+en ortografía, en número y en rol, y ninguna forma de decidir cuál manda. Aquí el KG manda
+por construcción.
+
+Eso deja dos desviaciones visibles, y ambas son señal:
+
+| Qué pasa | Qué significa |
+|---|---|
+| el modelo **no elige** una parte del grafo | ese nodo probablemente no es una entidad contratante — es el caso de «each Party» |
+| el modelo **nombra una parte que no está** (`partyId: null`) | la extracción del KG se dejó una entidad fuera |
+
+La primera es una comprobación independiente del trabajo de deduplicación: un nodo que el
+abstract ignora es un candidato a fusionar o a descartar, dicho por una pasada que no vio
+el resolver.
+
+### Las menciones van marcadas
+
+Dentro de `summary`, cada mención de una parte se escribe `{{partyId|texto corto}}` — el
+id da el color en la UI y el texto corto es cómo debe leerse en la frase. El cliente no
+busca nombres en la prosa: los recibe delimitados.
+
+Un `partyId` que el grafo no tenga se degrada a texto plano: pierde el color, nunca la
+frase. El recorte por longitud opera sobre segmentos enteros, así que tampoco puede partir
+una mención por la mitad.

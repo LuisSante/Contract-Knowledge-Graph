@@ -1,11 +1,13 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import type { KnowledgeGraph } from '@/types/knowledge';
 import { deonticNodes } from '@/types/knowledge';
 import { defaultPair } from '@/features/docx/utils/knowledge/pair';
 import { mergeGroupId } from '@/stores/clause-analyzer';
 import type { MergeGroup } from '@/features/docx/utils/knowledge/party-view';
+import { useContractSummary } from '@/features/docx/hooks/useContractSummary';
+import { ContractAbstract } from '@/features/docx/components/clause-analyzer/ContractAbstract';
 import {
 	PartySelection,
 	type PartyCardData,
@@ -16,6 +18,7 @@ import {
 } from '@/features/docx/components/clause-analyzer/constants';
 
 interface PartyEntryProps {
+	docId: string;
 	kg: KnowledgeGraph;
 	mergeHints: Record<string, string[]>;
 	mergeGroups: MergeGroup[];
@@ -26,6 +29,7 @@ interface PartyEntryProps {
 }
 
 export function PartyEntry({
+	docId,
 	kg,
 	mergeHints,
 	mergeGroups,
@@ -35,6 +39,7 @@ export function PartyEntry({
 	onContinue,
 }: PartyEntryProps) {
 	const [slotOverride, setSlotOverride] = useState<[string | null, string | null] | null>(null);
+	const { summary, status, generate } = useContractSummary(docId);
 
 	const parties = useMemo<PartyCardData[]>(() => {
 		const tally = new Map<string, PartyCardData>(
@@ -72,60 +77,103 @@ export function PartyEntry({
 		return suggested ? [suggested[0], suggested[1]] : [null, null];
 	}, [kg, slotOverride]);
 
-	return (
-		<PartySelection
-			parties={parties}
-			slots={slots}
-			slotColors={[PARTY_COLOR, PAIR_SECOND_COLOR]}
-			onAssign={(id, side) =>
-				setSlotOverride(() => {
-					const next: [string | null, string | null] = [slots[0], slots[1]];
-					if (side === undefined) {
-						if (next[0] === null) next[0] = id;
-						else if (next[1] === null) next[1] = id;
-						return next;
-					}
-					// Seating one card on the other's chair exchanges them
-					// instead of duplicating the id across both seats.
-					const other = side === 0 ? 1 : 0;
-					if (next[other] === id) next[other] = next[side];
-					next[side] = id;
+	const assign = useCallback(
+		(id: string, side?: 0 | 1) =>
+			setSlotOverride(() => {
+				const next: [string | null, string | null] = [slots[0], slots[1]];
+				if (side === undefined) {
+					if (next[0] === null) next[0] = id;
+					else if (next[1] === null) next[1] = id;
 					return next;
-				})
-			}
-			onRelease={(side) => {
-				const next: [string | null, string | null] = [...slots];
-				next[side] = null;
-				setSlotOverride(next);
-			}}
-			mergeHints={mergeHints}
-			groupIds={mergeGroups.map((group) => group.id)}
-			onMerge={(ids) => {
-				// Predict the group id so a seated party keeps its seat as
-				// the merged entity, instead of being pruned to an empty chair.
-				const groupById = new Map(mergeGroups.map((g) => [g.id, g]));
-				const members = new Set<string>();
-				for (const id of ids) {
-					const group = groupById.get(id);
-					if (group) group.members.forEach((m) => members.add(m));
-					else members.add(id);
 				}
-				if (members.size < 2) return;
-				const newId = mergeGroupId(members);
-				onMerge(ids);
-				setSlotOverride(() => {
-					const remap = (seat: string | null) =>
-						seat && (ids.includes(seat) || members.has(seat)) ? newId : seat;
-					const a = remap(slots[0]);
-					const b = remap(slots[1]);
-					return a !== null && a === b ? [a, null] : [a, b];
-				});
-			}}
-			onSplit={onSplit}
-			onDelete={onDelete}
-			onContinue={() => {
-				if (slots[0] && slots[1]) onContinue(slots[0], slots[1]);
-			}}
-		/>
+				// Seating one card on the other's chair exchanges them
+				// instead of duplicating the id across both seats.
+				const other = side === 0 ? 1 : 0;
+				if (next[other] === id) next[other] = next[side];
+				next[side] = id;
+				return next;
+			}),
+		[slots]
+	);
+
+	/** The abstract's own ids are raw party ids; a seat may hold a merge group instead. */
+	const colorByPartyId = useMemo(() => {
+		const byId = new Map<string, string>();
+		const groupById = new Map(mergeGroups.map((g) => [g.id, g] as const));
+		([0, 1] as const).forEach((side) => {
+			const seat = slots[side];
+			if (!seat) return;
+			const color = side === 0 ? PARTY_COLOR : PAIR_SECOND_COLOR;
+			const group = groupById.get(seat);
+			for (const member of group ? group.members : [seat]) byId.set(member, color);
+		});
+		return byId;
+	}, [slots, mergeGroups]);
+
+	const colorOf = useCallback(
+		(partyId: string | null) => (partyId ? (colorByPartyId.get(partyId) ?? null) : null),
+		[colorByPartyId]
+	);
+
+	/** Already seated is a no-op; otherwise it takes an open chair, or the second
+	    one — that seat is the "compared against" side, and the pair usually
+	    arrives pre-filled by the suggestion. */
+	const seatFromAbstract = useCallback(
+		(partyId: string) => {
+			if (colorByPartyId.has(partyId)) return;
+			assign(partyId, slots[0] === null ? 0 : slots[1] === null ? 1 : 1);
+		},
+		[assign, colorByPartyId, slots]
+	);
+
+	return (
+		<div className="flex h-full min-h-0 flex-col overflow-y-auto">
+			<ContractAbstract
+				status={status}
+				summary={summary}
+				onGenerate={generate}
+				colorOf={colorOf}
+				onSeatParty={seatFromAbstract}
+			/>
+			<PartySelection
+				parties={parties}
+				slots={slots}
+				slotColors={[PARTY_COLOR, PAIR_SECOND_COLOR]}
+				onAssign={assign}
+				onRelease={(side) => {
+					const next: [string | null, string | null] = [...slots];
+					next[side] = null;
+					setSlotOverride(next);
+				}}
+				mergeHints={mergeHints}
+				groupIds={mergeGroups.map((group) => group.id)}
+				onMerge={(ids) => {
+					// Predict the group id so a seated party keeps its seat as
+					// the merged entity, instead of being pruned to an empty chair.
+					const groupById = new Map(mergeGroups.map((g) => [g.id, g]));
+					const members = new Set<string>();
+					for (const id of ids) {
+						const group = groupById.get(id);
+						if (group) group.members.forEach((m) => members.add(m));
+						else members.add(id);
+					}
+					if (members.size < 2) return;
+					const newId = mergeGroupId(members);
+					onMerge(ids);
+					setSlotOverride(() => {
+						const remap = (seat: string | null) =>
+							seat && (ids.includes(seat) || members.has(seat)) ? newId : seat;
+						const a = remap(slots[0]);
+						const b = remap(slots[1]);
+						return a !== null && a === b ? [a, null] : [a, b];
+					});
+				}}
+				onSplit={onSplit}
+				onDelete={onDelete}
+				onContinue={() => {
+					if (slots[0] && slots[1]) onContinue(slots[0], slots[1]);
+				}}
+			/>
+		</div>
 	);
 }

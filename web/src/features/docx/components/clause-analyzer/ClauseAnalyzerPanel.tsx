@@ -294,6 +294,7 @@ export function ClauseAnalyzerPanel({ docId }: ClauseAnalyzerPanelProps) {
 					{/* Entry view: the pair is chosen before anything is drawn, in one place. */}
 					{status === 'ready' && viewKg && !focusNodeId && (
 						<PartyEntry
+							docId={docId}
 							kg={viewKg}
 							mergeHints={mergeHints}
 							mergeGroups={mergeGroups}

@@ -7,12 +7,12 @@ import { fetchClauseImportance, type ClauseImportance } from '@/services/knowled
  * `countedIds` restricts the restart prior to the statements on screen. Pass `null`
  * to count every statement — the document-wide reading, with no view filtering it.
  */
-export function useClauseImportance(docId: string, countedIds: Set<string> | null) {
+export function useClauseImportance(docId: string, countedIds: readonly string[] | null) {
 	const [importance, setImportance] = useState<ClauseImportance | null>(null);
 
 	useEffect(() => {
 		if (!docId) return;
-		if (countedIds !== null && countedIds.size === 0) return;
+		if (countedIds !== null && countedIds.length === 0) return;
 		const controller = new AbortController();
 		void fetchClauseImportance(docId, countedIds && [...countedIds], controller.signal).then(
 			(result) => {

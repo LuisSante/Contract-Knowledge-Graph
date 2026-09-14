@@ -15,7 +15,6 @@ export const MODEL_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
 export const RIGHT_PANEL_TOOLS: Array<{ id: RightPanelTab; label: string }> = [
 	{ id: 'clause_analyzer', label: 'Clause Analyzer' },
 	{ id: 'assistant', label: 'Chat' },
-	{ id: 'kg_visualization', label: 'Visualization KG' },
 ];
 
 export const RIGHT_TOOLBAR_WIDTH = 42;

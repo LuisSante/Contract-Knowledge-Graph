@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react';
+import { cn } from '@/lib/utils';
 import { useDocumentStore } from '@/stores/document';
 import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
 import { buildDocumentTarget } from '@/features/docx/utils/knowledge/graph-payload';
@@ -30,6 +31,7 @@ import {
 	type HoverInfo,
 } from '@/features/docx/components/clause-analyzer/grid/MarkTooltip';
 import { Legend } from '@/features/docx/components/clause-analyzer/legend/Legend';
+import { GraphSection } from '@/features/docx/components/clause-analyzer/graph/GraphSection';
 import {
 	PAIR_SECOND_COLOR,
 	PARTY_COLOR,
@@ -139,7 +141,9 @@ export function ClauseAnalyzerPanel({ docId }: ClauseAnalyzerPanelProps) {
 				}
 			}
 		}
-		return ids;
+		// Empty means the grid has not resolved yet, not "count nothing": publishing []
+		// would leave the graph tab waiting forever on a request that never fires.
+		return ids.size > 0 ? [...ids].sort() : null;
 	}, [grid, shownLanes, visibleKinds]);
 
 	const clauseImportance = useClauseImportance(docId, countedIds);
@@ -243,6 +247,8 @@ export function ClauseAnalyzerPanel({ docId }: ClauseAnalyzerPanelProps) {
 					: 'Party B'
 				: 'Both parties';
 
+	const showGraph = status === 'ready' && Boolean(viewKg) && Boolean(grid);
+
 	return (
 		<div className="flex h-full flex-col">
 			{status === 'ready' && viewKg && (
@@ -258,7 +264,15 @@ export function ClauseAnalyzerPanel({ docId }: ClauseAnalyzerPanelProps) {
 				/>
 			)}
 
-			<div className="flex min-h-0 flex-1">
+			{/* With the graph below, this hugs its rows instead of claiming a fixed share:
+			    seven clauses are ~300px and the rest belongs to the graph. The floor keeps
+			    the legend from scrolling on short documents; the cap keeps a long grid from
+			    pushing the graph off screen — it scrolls inside instead. With no graph —
+			    party picker, loading, error — it fills, or the footer's border would float
+			    mid-panel with white space under it. */}
+			<div
+				className={cn('flex', showGraph ? 'max-h-[62%] min-h-[240px] shrink-0' : 'min-h-0 flex-1')}
+			>
 				<div ref={containerRef} className="relative min-h-0 flex-1">
 					{status === 'loading' && (
 						<div className="flex h-full items-center justify-center text-sm text-muted-foreground">
@@ -334,6 +348,18 @@ export function ClauseAnalyzerPanel({ docId }: ClauseAnalyzerPanelProps) {
 					/>
 				)}
 			</div>
+
+			{showGraph && viewKg && (
+				<GraphSection
+					kg={viewKg}
+					importance={clauseImportance}
+					visibleKinds={visibleKinds}
+					selectedClauseId={activeClause?.clauseId ?? null}
+					onSelectClause={(clauseId) =>
+						setSelectedClauseId((prev) => (prev === clauseId ? null : clauseId))
+					}
+				/>
+			)}
 
 			{status === 'ready' && (
 				<PartyManager

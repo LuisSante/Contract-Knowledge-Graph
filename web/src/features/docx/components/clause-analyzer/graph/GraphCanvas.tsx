@@ -2,14 +2,14 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { KgVizGraph, KgVizNode } from '@/features/docx/utils/knowledge/kg-graph';
-import { useForceLayout } from '@/features/docx/components/kg-visualization/useForceLayout';
+import { useForceLayout } from '@/features/docx/components/clause-analyzer/graph/useForceLayout';
 import {
 	formatGain,
 	formatMass,
 	NODE_COLORS,
 	NODE_LABEL,
 	radiusOf,
-} from '@/features/docx/components/kg-visualization/constants';
+} from '@/features/docx/components/clause-analyzer/constants';
 
 export type ScoreMode = 'ppr' | 'prior' | 'gain';
 
@@ -271,15 +271,6 @@ export function GraphCanvas({
 					})}
 				</g>
 			</svg>
-
-			<button
-				type="button"
-				onClick={() => setView({ x: 0, y: 0, k: 1 })}
-				className="absolute bottom-2 left-2 rounded border border-border/70 bg-card/90 px-1.5 py-0.5 text-2xs text-muted-foreground shadow-sm hover:text-foreground"
-				title="Re-centre the layout"
-			>
-				Fit
-			</button>
 
 			{hovered && (
 				<div

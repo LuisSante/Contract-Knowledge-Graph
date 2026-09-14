@@ -36,10 +36,15 @@ resumen que se manda al chat, y `pair.ts`, para las puntuaciones del par cuando 
 partes abiertas. **No ordena nada de lo que se ve en la retícula**: eso es
 [`importancia-clausula.md`](./importancia-clausula.md), que se calcula en el servidor.
 
-**Tampoco se dibuja.** La pestaña *Visualization KG* llegó a construirse sobre este
+**Tampoco se dibuja.** El grafo del KG llegó a construirse sobre este
 vector y se rehízo antes de usarla: lo que se dibuja ahí es el PPR del servidor,
 descrito en [`importancia-clausula.md`](./importancia-clausula.md). Este vector no
 dibuja nada.
+
+La pestaña propia que tuvo el grafo también se retiró: vivía separada de la retícula y
+obligaba a mantener dos listas de cláusulas, dos priors y dos órdenes que conciliar.
+Ahora cuelga debajo de la retícula y comparte con ella la selección, el filtro de tipos
+y la respuesta del servidor.
 
 De paso se cayó una vista intermedia —maestro-detalle, la cláusula abierta en tres
 columnas cláusula → disposiciones → entidades— construida sobre el argumento de que el

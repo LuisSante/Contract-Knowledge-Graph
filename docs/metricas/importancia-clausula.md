@@ -70,13 +70,15 @@ barra y no toca el orden.
 
 ---
 
-## Dos lecturas, dos órdenes
+## El alcance del prior cambia el orden
 
-La tabla de arriba es la de la **retícula**, donde el prior se restringe a las marcas en
-pantalla. La pestaña *Visualization KG* hace la otra lectura posible: pasa
-`countedStatementIds: null`, de modo que cuentan los 62 enunciados con cláusula —también
-los recíprocos de «each Party»—. El orden que sale **no es el mismo**, y la diferencia es
-exactamente la que anticipaba el apartado *Qué arregla*:
+El prior admite dos alcances y la diferencia entre ellos es grande. Hoy solo se usa uno:
+la retícula restringe el prior a las marcas que está mostrando, y el grafo que vive
+debajo lee la misma respuesta del servidor, así que no hay dos órdenes que conciliar.
+
+La otra lectura posible —`countedStatementIds: null`, los 62 enunciados con cláusula,
+incluidos los recíprocos de «each Party»— ya no aparece en la interfaz, pero conviene
+tenerla escrita porque es la que separa la métrica de su recorte:
 
 | # | cláusula | importancia |
 |---|---|---|
@@ -98,10 +100,11 @@ cuentan. Con el prior completo el paseo converge en **132 iteraciones** y el pic
 `infra/json/kg/root_BELLICUM_MILTENYI_Supply_Agreement_Summary.json` —el módulo que se
 ejecuta, no una réplica—.
 
-**Que las dos pestañas no coincidan no es un fallo**: son dos preguntas distintas. La
-retícula responde *«de lo que estoy mirando, qué manda»*; la visualización, *«en este
-contrato, qué cláusula manda»*. Sale en la cabecera de la lista para que nadie tenga que
-adivinarlo.
+La diferencia entre las dos tablas es la que anticipaba *Qué arregla*: contando todo,
+*Limitation of Liability* encabeza por sus tres disposiciones recíprocas; al restringir
+el prior a lo que la retícula muestra se hunde y sube *Rights Granted*. Es el mismo
+efecto medido, no dos métricas — pero significa que **un orden solo es interpretable
+junto al recorte que lo produjo**.
 
 **`byStatement` no lo lee nadie, y no hace falta.** Llegó a alimentar una vista de
 cláusula que se retiró; el valor por enunciado está de todos modos dentro de `byNode`,
@@ -112,7 +115,7 @@ define la métrica, y quien la verifique querrá verlo sin recalcularlo.
 
 ## El paseo visto por encima
 
-La pestaña *Visualization KG* dibuja el vector entero sobre el grafo.
+El grafo bajo la retícula dibuja el vector entero.
 Para eso el endpoint devuelve ahora dos campos más —`byNode`, los 147 nodos, y
 `priorByNode`, los 62 que reciben prior—; `compute` ya los calculaba y los tiraba. El
 grafo ofrece tres lecturas del mismo nodo: **PPR** (dónde acaba la masa), **prior** (de

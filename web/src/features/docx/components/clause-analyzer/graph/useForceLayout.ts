@@ -10,7 +10,7 @@ import {
 	type SimulationNodeDatum,
 } from 'd3';
 import type { KgVizGraph } from '@/features/docx/utils/knowledge/kg-graph';
-import { radiusOf } from '@/features/docx/components/kg-visualization/constants';
+import { radiusOf } from '@/features/docx/components/clause-analyzer/constants';
 
 export interface NodePosition {
 	x: number;

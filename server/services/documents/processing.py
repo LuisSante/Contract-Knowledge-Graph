@@ -104,9 +104,7 @@ def build_paragraphs(pages: list[dict], doc_id: str) -> list[dict]:
     return all_paragraphs_input
 
 
-SECTION_HEADING_RE = re.compile(
-    r"^\s*(?:(?:ARTICLE|Article|SECTION|Section)\s+)?(\d+(?:\.\d+){0,3})\s*([.)])?\s+(\S.*)$"
-)
+SECTION_HEADING_RE = re.compile(r"^\s*(?:(?:ARTICLE|Article|SECTION|Section)\s+)?(\d+(?:\.\d+){0,3})\s*([.)])?\s+(\S.*)$")
 HEADING_PREVIEW_CHARS = 70
 
 
@@ -180,9 +178,7 @@ def _safe_filename(value: str) -> str:
     return token or "unknown"
 
 
-def save_paragraphs_dump(
-    doc_id: str, paragraphs: list[dict], output_dir: Path
-) -> tuple[Path, list[dict]]:
+def save_paragraphs_dump(doc_id: str, paragraphs: list[dict], output_dir: Path) -> tuple[Path, list[dict]]:
     """Returns the dump path and the section tree stored in it, so the caller can hand
     the frontend the same tree the extraction will chunk by."""
     output_dir.mkdir(parents=True, exist_ok=True)

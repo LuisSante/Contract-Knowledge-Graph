@@ -1,9 +1,5 @@
 import { api } from '@/lib/api';
-import type {
-	ClauseTreeNode,
-	Node as ParagraphNode,
-	ParagraphEditState,
-} from '@/types/document';
+import type { ClauseTreeNode, Node as ParagraphNode, ParagraphEditState } from '@/types/document';
 import { getNodeCurrentText } from '@/features/docx/utils/edit';
 
 function buildProcessPages(

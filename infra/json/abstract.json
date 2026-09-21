@@ -20,6 +20,27 @@
           "does": "Purchase products, pay fees and milestones, provide forecasts, meet minimum purchase, use products within license, and manage regulatory compliance."
         }
       ]
+    },
+    "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement": {
+      "documentId": "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement",
+      "documentName": "SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement.docx",
+      "title": "Affiliate Marketing Agreement between Equidata, Inc. and National Credit Report.com, LLC",
+      "contractType": "Affiliate Marketing Agreement",
+      "summary": "This agreement allows {{party-2|National Credit Report.com, LLC}} to market and sell the personal credit and fraud detection services provided by {{party-1|Equidata, Inc.}}, under specified operational, compliance, and compensation terms, for an initial term of one year with automatic renewal unless terminated as outlined.",
+      "parties": [
+        {
+          "partyId": "party-1",
+          "name": "Equidata, Inc.",
+          "role": "Service Provider",
+          "does": "Provide credit-related services, invoice for services, approve marketing materials, and may audit affiliate's practices."
+        },
+        {
+          "partyId": "party-2",
+          "name": "National Credit Report.com, LLC",
+          "role": "Marketing Affiliate",
+          "does": "Market and sell Equidata's services, collect payments from consumers, pay Equidata, comply with laws, and avoid soliciting Equidata's clients."
+        }
+      ]
     }
   }
 }

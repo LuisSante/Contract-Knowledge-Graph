@@ -1,5 +1,225 @@
 {
   "documentId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement",
+  "tree": [
+    {
+      "ref": "1",
+      "heading": "SERVICES & DEVELOPMENT",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-36",
+      "children": []
+    },
+    {
+      "ref": "2",
+      "heading": "MLX'S OBLIGATIONS AND RESPONSIBILITIES",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-42",
+      "children": []
+    },
+    {
+      "ref": "3",
+      "heading": "HCI's OBLIGATIONS AND RESPONSIBILITIES",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-75",
+      "children": []
+    },
+    {
+      "ref": "4",
+      "heading": "ADVERTISING",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-122",
+      "children": []
+    },
+    {
+      "ref": "5",
+      "heading": "E-COMMERCE",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-129",
+      "children": []
+    },
+    {
+      "ref": "6",
+      "heading": "FINANCIALS",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-134",
+      "children": []
+    },
+    {
+      "ref": "7",
+      "heading": "CUSTOMER INFORMATION",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-153",
+      "children": []
+    },
+    {
+      "ref": "8",
+      "heading": "PAGE VIEWS",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-160",
+      "children": []
+    },
+    {
+      "ref": "9",
+      "heading": "EXCLUSIVITY",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-164",
+      "children": []
+    },
+    {
+      "ref": "10",
+      "heading": "BRANDING & COMMUNICATIONS",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-173",
+      "children": []
+    },
+    {
+      "ref": "11",
+      "heading": "TERM & TERMINATION",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-179",
+      "children": [
+        {
+          "ref": "11.1",
+          "heading": "Term",
+          "level": 2,
+          "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-181",
+          "children": []
+        },
+        {
+          "ref": "11.2",
+          "heading": "Termination",
+          "level": 2,
+          "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-185",
+          "children": []
+        },
+        {
+          "ref": "11.3",
+          "heading": "The exercise of a right of termination or other right or remedy in con",
+          "level": 2,
+          "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-211",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "12",
+      "heading": "REPRESENTATIONS & WARRANTIES",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-214",
+      "children": []
+    },
+    {
+      "ref": "13",
+      "heading": "NO ADDITIONAL WARRANTIES",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-261",
+      "children": []
+    },
+    {
+      "ref": "14",
+      "heading": "INDEMNIFICATION",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-270",
+      "children": []
+    },
+    {
+      "ref": "15",
+      "heading": "LIMITATION OF LIABILITY",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-286",
+      "children": []
+    },
+    {
+      "ref": "16",
+      "heading": "CONFIDENTIALITY",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-295",
+      "children": []
+    },
+    {
+      "ref": "17",
+      "heading": "NO PUBLIC NOTICE",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-299",
+      "children": []
+    },
+    {
+      "ref": "18",
+      "heading": "COSTS",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-303",
+      "children": []
+    },
+    {
+      "ref": "19",
+      "heading": "INDEPENDENT CONTRACTORS",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-307",
+      "children": []
+    },
+    {
+      "ref": "20",
+      "heading": "YEAR 2000 COMPLIANCE",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-314",
+      "children": []
+    },
+    {
+      "ref": "21",
+      "heading": "GOVERNING LAW",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-320",
+      "children": []
+    },
+    {
+      "ref": "22",
+      "heading": "ENTIRE AGREEMENT",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-324",
+      "children": []
+    },
+    {
+      "ref": "23",
+      "heading": "LEGAL FEES",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-328",
+      "children": []
+    },
+    {
+      "ref": "24",
+      "heading": "SUCCESSORS AND ASSIGNS",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-337",
+      "children": []
+    },
+    {
+      "ref": "25",
+      "heading": "FORCE MAJEURE",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-341",
+      "children": []
+    },
+    {
+      "ref": "26",
+      "heading": "NOTICES",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-345",
+      "children": []
+    },
+    {
+      "ref": "27",
+      "heading": "COUNTERPARTS",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-359",
+      "children": []
+    },
+    {
+      "ref": "28",
+      "heading": "HEADINGS",
+      "level": 1,
+      "paragraphId": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-363",
+      "children": []
+    }
+  ],
   "paragraphs": [
     {
       "id": "root::HealthcentralCom_19991108_S-1A_EX-10.27_6623292_EX-10.27_Co-Branding Agreement-p-9",

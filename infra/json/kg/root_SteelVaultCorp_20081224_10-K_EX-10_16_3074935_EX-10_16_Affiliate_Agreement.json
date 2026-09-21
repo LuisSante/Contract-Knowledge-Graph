@@ -6,7 +6,6 @@
       "role": "Service Provider",
       "address": "",
       "aliases": [
-        "Company",
         "EQUIDATA",
         "Equidata"
       ],
@@ -364,7 +363,7 @@
     {
       "id": "term-2",
       "term": "Services",
-      "definition": "Equidata provides certain personal credit, fraud detection, credit scoring services and credit monitoring for consumers, the (“Services”).",
+      "definition": "certain personal credit, fraud detection, credit scoring services and credit monitoring for consumers, the (“Services”)",
       "definedInClauseId": "clause-1",
       "paragraphIds": [
         "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-7"
@@ -373,7 +372,7 @@
     {
       "id": "term-3",
       "term": "Marketing Affiliate",
-      "definition": "National Credit Report.com, LLC a Corporation organized under the laws of Florida, with its principal place of business at 7700 N. Congress Ave, Suite 3113, Boca Raton FL33487 (“Marketing Affiliate”).",
+      "definition": "National Credit Report.com, LLC a Corporation organized under the laws of Florida, with its principal place of business at 7700 N. Congress Ave, Suite 3113, Boca Raton FL33487 (“Marketing Affiliate”)",
       "definedInClauseId": null,
       "paragraphIds": [
         "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-5"
@@ -382,7 +381,7 @@
     {
       "id": "term-4",
       "term": "disputed charge",
-      "definition": "disputed charge, defined as a non-payment of an invoice for which notice of dispute has been given in writing by Marketing Affiliate to Equidata",
+      "definition": "a non-payment of an invoice for which notice of dispute has been given in writing by Marketing Affiliate to Equidata",
       "definedInClauseId": "clause-5",
       "paragraphIds": [
         "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-15"
@@ -417,24 +416,15 @@
     },
     {
       "id": "term-8",
-      "term": "Receiving Party",
-      "definition": "The Receiving Party may not disclose or use the Disclosing Party’s Confidential and Proprietary Information for any reason other than in the performance of this Agreement.",
-      "definedInClauseId": "clause-27",
+      "term": "CRAs",
+      "definition": "Experian, Equifax and/or TransUnion (Credit Reporting Agencies — CRAs)",
+      "definedInClauseId": "clause-20",
       "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-47"
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-35"
       ]
     },
     {
       "id": "term-9",
-      "term": "Disclosing Party",
-      "definition": "The Receiving Party may not disclose or use the Disclosing Party’s Confidential and Proprietary Information for any reason other than in the performance of this Agreement.",
-      "definedInClauseId": "clause-27",
-      "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-47"
-      ]
-    },
-    {
-      "id": "term-10",
       "term": "Independent Contractors",
       "definition": "The Parties shall operate as Independent Contractors in performing their obligations under the Agreement and shall have exclusive control of the manner and means of performing such obligations.",
       "definedInClauseId": "clause-29",
@@ -446,7 +436,7 @@
   "obligations": [
     {
       "id": "obligation-1",
-      "action": "Collect all amounts due from Consumer",
+      "action": "Collect amounts due from Consumer",
       "summary": "Marketing Affiliate must collect all amounts due directly from the Consumer.",
       "text": "Marketing Affiliate shall be responsible for collecting all amounts due directly from the Consumer",
       "evidenceVerified": true,
@@ -466,13 +456,13 @@
       "id": "obligation-2",
       "action": "Bear responsibility for non-payment",
       "summary": "Marketing Affiliate must bear sole responsibility for non-payment of any fees charged to the Consumer.",
-      "text": "shall bear sole responsibility for non-payment of any fees charged to the Consumer.",
+      "text": "shall bear sole responsibility for non-payment of any fees charged to the Consumer",
       "evidenceVerified": true,
       "evidenceSpans": [
-        "shall bear sole responsibility for non-payment of any fees charged to the Consumer."
+        "shall bear sole responsibility for non-payment of any fees charged to the Consumer"
       ],
       "burdenPartyId": "party-2",
-      "benefitPartyId": null,
+      "benefitPartyId": "party-1",
       "clauseId": "clause-1",
       "deadline": "",
       "frequency": "",
@@ -483,7 +473,7 @@
     {
       "id": "obligation-3",
       "action": "Pay compensation for Services",
-      "summary": "Marketing Affiliate must pay Equidata compensation as outlined in Exhibit A.",
+      "summary": "Marketing Affiliate must pay Equidata compensation for Services as outlined in Exhibit A.",
       "text": "Marketing Affiliate shall pay to Equidata, as compensation for its providing of Services under this agreement, such amounts as outlined and detailed in Exhibit A attached hereto.",
       "evidenceVerified": true,
       "evidenceSpans": [
@@ -500,8 +490,8 @@
     },
     {
       "id": "obligation-4",
-      "action": "Pay billed amounts within 30 days",
-      "summary": "Marketing Affiliate must pay billed amounts in full within 30 days from the invoice date.",
+      "action": "Pay bi-monthly invoices within 30 days",
+      "summary": "Marketing Affiliate must pay Equidata's bi-monthly invoices in full within 30 days from the invoice date.",
       "text": "Such amounts shall be billed on a bi-monthly basis by Equidata and are due and payable in full by Marketing Affiliate 30 days from the invoice date.",
       "evidenceVerified": true,
       "evidenceSpans": [
@@ -519,7 +509,7 @@
     {
       "id": "obligation-5",
       "action": "Pay additional fees and taxes",
-      "summary": "Marketing Affiliate must pay additional fees, surcharges, and taxes billed separately.",
+      "summary": "Marketing Affiliate must pay additional fees, surcharges, and taxes billed separately by Equidata.",
       "text": "Said amounts charged to Equidata will be billed separately to Marketing Affiliate and are due immediately upon receipt.",
       "evidenceVerified": true,
       "evidenceSpans": [
@@ -537,7 +527,7 @@
     {
       "id": "obligation-6",
       "action": "Reimburse collection costs",
-      "summary": "Marketing Affiliate must reimburse Equidata all costs of collecting any past due amounts, including attorney fees.",
+      "summary": "Marketing Affiliate must reimburse Equidata all costs of collecting any past due amounts, including attorney fees and disbursements.",
       "text": "Marketing Affiliate agrees to reimburse Equidata all costs of collecting any past due amounts from Marketing Affiliate by reason of non payment, including reasonable attorney fees and disbursements.",
       "evidenceVerified": true,
       "evidenceSpans": [
@@ -582,7 +572,7 @@
       "burdenPartyId": "party-2",
       "benefitPartyId": "party-1",
       "clauseId": null,
-      "deadline": "when billed",
+      "deadline": "",
       "frequency": "",
       "paragraphIds": [
         "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-14"
@@ -590,8 +580,8 @@
     },
     {
       "id": "obligation-9",
-      "action": "Pay for revoked/disputed credit card items and associated fees",
-      "summary": "Marketing Affiliate must pay for all items revoked or disputed by the credit card company or card holder, including processing fees.",
+      "action": "Pay for revoked or disputed credit card items and associated fees",
+      "summary": "Marketing Affiliate must pay for all items revoked or disputed by the credit card company or card holder, including associated fees.",
       "text": "the Marketing Affiliate agrees to pay for all items that are revoked or disputed by the credit card company or the card holder along with any charges or fees charged by the credit card company including fees associated with processing the credit card transaction and that the Marketing Affiliate will be billed for those items in accordance with Equidata standard practices.",
       "evidenceVerified": true,
       "evidenceSpans": [
@@ -608,24 +598,6 @@
     },
     {
       "id": "obligation-10",
-      "action": "Personal guaranty for unpaid balances",
-      "summary": "The undersigned principal, partner or owner of Marketing Affiliate personally guarantees any unpaid balance past due on any invoice.",
-      "text": "this Agreement will serve as a personal guaranty by the undersigned principal, partner or owner of the company, and the undersigned principal, partner or owner will become responsible for any unpaid balance past due on any invoice.",
-      "evidenceVerified": true,
-      "evidenceSpans": [
-        "this Agreement will serve as a personal guaranty by the undersigned principal, partner or owner of the company, and the undersigned principal, partner or owner will become responsible for any unpaid balance past due on any invoice."
-      ],
-      "burdenPartyId": null,
-      "benefitPartyId": "party-1",
-      "clauseId": null,
-      "deadline": "",
-      "frequency": "",
-      "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-14"
-      ]
-    },
-    {
-      "id": "obligation-11",
       "action": "Pay late charge on unpaid, past-due amount",
       "summary": "Marketing Affiliate must pay a late charge of 1 1/2% per month on unpaid, past-due amounts.",
       "text": "The Marketing Affiliate agrees to pay a late charge of 1 l/2% per month on the unpaid, past-due amount",
@@ -637,13 +609,13 @@
       "benefitPartyId": "party-1",
       "clauseId": null,
       "deadline": "monthly",
-      "frequency": "per month",
+      "frequency": "monthly",
       "paragraphIds": [
         "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-14"
       ]
     },
     {
-      "id": "obligation-12",
+      "id": "obligation-11",
       "action": "Pay returned check fee",
       "summary": "Marketing Affiliate must pay a returned check fee of not less than $35.00 per returned item.",
       "text": "as well as a returned check fee of not less than $35.00 per returned item.",
@@ -661,8 +633,8 @@
       ]
     },
     {
-      "id": "obligation-13",
-      "action": "Pay attorney’s fees and court costs for collection",
+      "id": "obligation-12",
+      "action": "Pay attorney’s fees and court cost if account referred for collection",
       "summary": "Marketing Affiliate must pay 25% attorney’s fees plus court cost if account is referred to an attorney for collection.",
       "text": "the Marketing Affiliate agrees to pay 25% attorney’s fees plus court cost in the event that the Marketing Affiliate’s account is referred to an attorney for collection.",
       "evidenceVerified": true,
@@ -679,16 +651,34 @@
       ]
     },
     {
+      "id": "obligation-13",
+      "action": "Be obligated by arbitration terms",
+      "summary": "Both parties must comply with the terms agreed upon by arbitration.",
+      "text": "Marketing Affiliate and Equidata shall be obligated by the terms agreed upon by arbitration",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Marketing Affiliate and Equidata shall be obligated by the terms agreed upon by arbitration"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-15"
+      ]
+    },
+    {
       "id": "obligation-14",
       "action": "Be obligated by arbitration terms",
       "summary": "Both parties must comply with the terms agreed upon by arbitration.",
-      "text": "Equidata or Marketing Affiliate may choose arbitration and Marketing Affiliate and Equidata shall be obligated by the terms agreed upon by arbitration and all monies determined owed shall be considered due and payable immediately.",
+      "text": "Marketing Affiliate and Equidata shall be obligated by the terms agreed upon by arbitration",
       "evidenceVerified": true,
       "evidenceSpans": [
-        "Equidata or Marketing Affiliate may choose arbitration and Marketing Affiliate and Equidata shall be obligated by the terms agreed upon by arbitration and all monies determined owed shall be considered due and payable immediately."
+        "Marketing Affiliate and Equidata shall be obligated by the terms agreed upon by arbitration"
       ],
-      "burdenPartyId": null,
-      "benefitPartyId": null,
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
       "clauseId": "clause-5",
       "deadline": "",
       "frequency": "",
@@ -716,8 +706,44 @@
     },
     {
       "id": "obligation-16",
+      "action": "Settle disputes by arbitration",
+      "summary": "Disputes must be settled by arbitration in Newport News, Virginia.",
+      "text": "Such disputes shall be settled by arbitration in the City of Newport News, Virginia.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Such disputes shall be settled by arbitration in the City of Newport News, Virginia."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-15"
+      ]
+    },
+    {
+      "id": "obligation-17",
+      "action": "Settle disputes by arbitration",
+      "summary": "Disputes must be settled by arbitration in Newport News, Virginia.",
+      "text": "Such disputes shall be settled by arbitration in the City of Newport News, Virginia.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Such disputes shall be settled by arbitration in the City of Newport News, Virginia."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-15"
+      ]
+    },
+    {
+      "id": "obligation-18",
       "action": "Give written demand of dispute",
-      "summary": "Marketing Affiliate must give Equidata written demand of dispute within 10 days of the due date of the invoice.",
+      "summary": "Marketing Affiliate must give Equidata written demand of dispute within 10 days of invoice due date.",
       "text": "Marketing Affiliate shall give Equidata written demand of dispute within 10 days of the due date of the invoice.",
       "evidenceVerified": true,
       "evidenceSpans": [
@@ -733,8 +759,8 @@
       ]
     },
     {
-      "id": "obligation-17",
-      "action": "Set forth statement for nature and amount of dispute",
+      "id": "obligation-19",
+      "action": "Set forth statement for dispute",
       "summary": "The demand must set forth a statement for the nature of the dispute and the amount involved.",
       "text": "The demand shall set forth a statement for the nature of the dispute and the amount involved.",
       "evidenceVerified": true,
@@ -751,16 +777,16 @@
       ]
     },
     {
-      "id": "obligation-18",
-      "action": "Jointly select arbitrator",
+      "id": "obligation-20",
+      "action": "Jointly select an arbitrator",
       "summary": "If the parties cannot resolve the dispute within 10 days, they must jointly select an arbitrator.",
-      "text": "If Equidata and Marketing Affiliate can not resolve the dispute on their own within 10 days after Equidata receive said dispute, the parties shall jointly select an arbitrator.",
+      "text": "the parties shall jointly select an arbitrator.",
       "evidenceVerified": true,
       "evidenceSpans": [
-        "If Equidata and Marketing Affiliate can not resolve the dispute on their own within 10 days after Equidata receive said dispute, the parties shall jointly select an arbitrator."
+        "the parties shall jointly select an arbitrator."
       ],
-      "burdenPartyId": null,
-      "benefitPartyId": null,
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
       "clauseId": "clause-5",
       "deadline": "within 10 days after Equidata receive said dispute",
       "frequency": "",
@@ -769,13 +795,67 @@
       ]
     },
     {
-      "id": "obligation-19",
-      "action": "Select arbitrators and schedule hearing",
-      "summary": "If the parties do not agree on an arbitrator, each selects one and the two select a third; hearing must be scheduled within 5 days.",
-      "text": "If the parties do not agree on the selection of an arbitrator, each party will select an arbitrator of their choosing, and the two arbitrators will jointly select a third arbitrator(s). Not later than 5 calendar days after the arbitrator(s) have been selected, the arbitrator(s) shall schedule the arbitration hearing to commence on a mutually convenient date.",
+      "id": "obligation-21",
+      "action": "Jointly select an arbitrator",
+      "summary": "If the parties cannot resolve the dispute within 10 days, they must jointly select an arbitrator.",
+      "text": "the parties shall jointly select an arbitrator.",
       "evidenceVerified": true,
       "evidenceSpans": [
-        "If the parties do not agree on the selection of an arbitrator, each party will select an arbitrator of their choosing, and the two arbitrators will jointly select a third arbitrator(s). Not later than 5 calendar days after the arbitrator(s) have been selected, the arbitrator(s) shall schedule the arbitration hearing to commence on a mutually convenient date."
+        "the parties shall jointly select an arbitrator."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-5",
+      "deadline": "within 10 days after Equidata receive said dispute",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-16"
+      ]
+    },
+    {
+      "id": "obligation-22",
+      "action": "Select arbitrator if no agreement",
+      "summary": "If the parties do not agree on the arbitrator, each party will select one and the two will select a third.",
+      "text": "each party will select an arbitrator of their choosing, and the two arbitrators will jointly select a third arbitrator(s).",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "each party will select an arbitrator of their choosing, and the two arbitrators will jointly select a third arbitrator(s)."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-20"
+      ]
+    },
+    {
+      "id": "obligation-23",
+      "action": "Select arbitrator if no agreement",
+      "summary": "If the parties do not agree on the arbitrator, each party will select one and the two will select a third.",
+      "text": "each party will select an arbitrator of their choosing, and the two arbitrators will jointly select a third arbitrator(s).",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "each party will select an arbitrator of their choosing, and the two arbitrators will jointly select a third arbitrator(s)."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-20"
+      ]
+    },
+    {
+      "id": "obligation-24",
+      "action": "Schedule arbitration hearing",
+      "summary": "Arbitrators must schedule the hearing within 5 days of selection.",
+      "text": "Not later than 5 calendar days after the arbitrator(s) have been selected, the arbitrator(s) shall schedule the arbitration hearing to commence on a mutually convenient date.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Not later than 5 calendar days after the arbitrator(s) have been selected, the arbitrator(s) shall schedule the arbitration hearing to commence on a mutually convenient date."
       ],
       "burdenPartyId": null,
       "benefitPartyId": null,
@@ -787,13 +867,13 @@
       ]
     },
     {
-      "id": "obligation-20",
+      "id": "obligation-25",
       "action": "Commence hearing within 25 days",
       "summary": "The hearing must commence no later than 25 days after Equidata receives the dispute.",
-      "text": "The hearing shall commence no later than 25 calendar days after Equidata receives receipt of dispute from Marketing Affiliate and shall continue from day to day until completed.",
+      "text": "The hearing shall commence no later than 25 calendar days after Equidata receives receipt of dispute from Marketing Affiliate",
       "evidenceVerified": true,
       "evidenceSpans": [
-        "The hearing shall commence no later than 25 calendar days after Equidata receives receipt of dispute from Marketing Affiliate and shall continue from day to day until completed."
+        "The hearing shall commence no later than 25 calendar days after Equidata receives receipt of dispute from Marketing Affiliate"
       ],
       "burdenPartyId": null,
       "benefitPartyId": null,
@@ -805,9 +885,27 @@
       ]
     },
     {
-      "id": "obligation-21",
+      "id": "obligation-26",
+      "action": "Continue hearing until completed",
+      "summary": "The hearing shall continue from day to day until completed.",
+      "text": "shall continue from day to day until completed.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "shall continue from day to day until completed."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": null,
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-20"
+      ]
+    },
+    {
+      "id": "obligation-27",
       "action": "Issue arbitration award in writing",
-      "summary": "The arbitrator(s) must issue an award in writing no later than 10 days after the hearing.",
+      "summary": "Arbitrators must issue an award in writing no later than 10 days after the hearing.",
       "text": "The arbitrator(s) shall issue an award in writing no later than 10 calendar days after the conclusion of the hearing.",
       "evidenceVerified": true,
       "evidenceSpans": [
@@ -823,16 +921,52 @@
       ]
     },
     {
-      "id": "obligation-22",
+      "id": "obligation-28",
+      "action": "Be bound by arbitration award",
+      "summary": "The arbitration award is final and binding on both parties.",
+      "text": "The arbitration award shall be final and binding on both parties.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The arbitration award shall be final and binding on both parties."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-20"
+      ]
+    },
+    {
+      "id": "obligation-29",
+      "action": "Be bound by arbitration award",
+      "summary": "The arbitration award is final and binding on both parties.",
+      "text": "The arbitration award shall be final and binding on both parties.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The arbitration award shall be final and binding on both parties."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-20"
+      ]
+    },
+    {
+      "id": "obligation-30",
       "action": "Agree upon Operational Specifications",
-      "summary": "Marketing Affiliate and Equidata must agree upon Operational Specifications.",
+      "summary": "Both parties must agree upon Operational Specifications.",
       "text": "Marketing Affiliate and Equidata shall agree upon Operational Specifications pertaining to the methodology and logistics of data transfer and database coordination.",
       "evidenceVerified": true,
       "evidenceSpans": [
         "Marketing Affiliate and Equidata shall agree upon Operational Specifications pertaining to the methodology and logistics of data transfer and database coordination."
       ],
-      "burdenPartyId": null,
-      "benefitPartyId": null,
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
       "clauseId": "clause-6",
       "deadline": "",
       "frequency": "",
@@ -841,7 +975,25 @@
       ]
     },
     {
-      "id": "obligation-23",
+      "id": "obligation-31",
+      "action": "Agree upon Operational Specifications",
+      "summary": "Both parties must agree upon Operational Specifications.",
+      "text": "Marketing Affiliate and Equidata shall agree upon Operational Specifications pertaining to the methodology and logistics of data transfer and database coordination.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Marketing Affiliate and Equidata shall agree upon Operational Specifications pertaining to the methodology and logistics of data transfer and database coordination."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-6",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-21"
+      ]
+    },
+    {
+      "id": "obligation-32",
       "action": "Agree upon changes to Operational Specifications in writing",
       "summary": "Both parties must agree in writing to any changes to the Operational Specifications.",
       "text": "Both parties must agree upon any changes to the Operational Specifications in writing.",
@@ -849,8 +1001,8 @@
       "evidenceSpans": [
         "Both parties must agree upon any changes to the Operational Specifications in writing."
       ],
-      "burdenPartyId": null,
-      "benefitPartyId": null,
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
       "clauseId": "clause-6",
       "deadline": "",
       "frequency": "",
@@ -859,7 +1011,43 @@
       ]
     },
     {
-      "id": "obligation-24",
+      "id": "obligation-33",
+      "action": "Agree upon changes to Operational Specifications in writing",
+      "summary": "Both parties must agree in writing to any changes to the Operational Specifications.",
+      "text": "Both parties must agree upon any changes to the Operational Specifications in writing.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Both parties must agree upon any changes to the Operational Specifications in writing."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-6",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-21"
+      ]
+    },
+    {
+      "id": "obligation-34",
+      "action": "Remove URL related data",
+      "summary": "Marketing Affiliate must immediately remove all URL related data pertaining to the Agreement upon termination.",
+      "text": "Marketing Affiliate shall immediately remove all URL related data pertaining to said Agreement",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Marketing Affiliate shall immediately remove all URL related data pertaining to said Agreement"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-19",
+      "deadline": "immediately upon termination",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-34"
+      ]
+    },
+    {
+      "id": "obligation-35",
       "action": "Pay all amounts owed",
       "summary": "Marketing Affiliate must pay all amounts owed to Equidata upon termination.",
       "text": "Termination does not release Marketing Affiliate from paying all amounts owed to Equidata.",
@@ -870,32 +1058,14 @@
       "burdenPartyId": "party-2",
       "benefitPartyId": "party-1",
       "clauseId": "clause-18",
-      "deadline": "",
+      "deadline": "upon termination",
       "frequency": "",
       "paragraphIds": [
         "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-33"
       ]
     },
     {
-      "id": "obligation-25",
-      "action": "Remove all URL related data",
-      "summary": "Marketing Affiliate must immediately remove all URL related data pertaining to the Agreement at termination.",
-      "text": "Marketing Affiliate shall immediately remove all URL related data pertaining to said Agreement;",
-      "evidenceVerified": true,
-      "evidenceSpans": [
-        "Marketing Affiliate shall immediately remove all URL related data pertaining to said Agreement;"
-      ],
-      "burdenPartyId": "party-2",
-      "benefitPartyId": "party-1",
-      "clauseId": "clause-19",
-      "deadline": "immediately",
-      "frequency": "",
-      "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-34"
-      ]
-    },
-    {
-      "id": "obligation-26",
+      "id": "obligation-36",
       "action": "Be liable for cost of forced removal",
       "summary": "Marketing Affiliate agrees to be liable for the cost of forced removal of Equidata URL related data, including attorney fees.",
       "text": "Marketing Affiliate agrees to be liable for the cost of such action, including but not limited to reasonable attorney fees.",
@@ -913,69 +1083,16 @@
       ]
     },
     {
-      "id": "obligation-27",
-      "action": "Not engage in restricted businesses or use site for restricted purposes",
-      "summary": "Marketing Affiliate must not engage in or use its site for restricted businesses or purposes.",
-      "text": "Marketing Affiliate does not engage in any business with respect to, and the Marketing Affiliate Web Site will not be used, or display any materials, in any form or medium, in connection with a credit clinic, credit repair or restoration, credit counseling firm, financial counseling firm, detective agency, private investigation, security services, practice of law, news reporting or journalism, or fraudulent or unethical conduct.",
-      "evidenceVerified": true,
-      "evidenceSpans": [
-        "Marketing Affiliate does not engage in any business with respect to, and the Marketing Affiliate Web Site will not be used, or display any materials, in any form or medium, in connection with a credit clinic, credit repair or restoration, credit counseling firm, financial counseling firm, detective agency, private investigation, security services, practice of law, news reporting or journalism, or fraudulent or unethical conduct."
-      ],
-      "burdenPartyId": "party-2",
-      "benefitPartyId": "party-1",
-      "clauseId": "clause-22",
-      "deadline": "",
-      "frequency": "",
-      "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-37"
-      ]
-    },
-    {
-      "id": "obligation-28",
-      "action": "Provide accurate information",
-      "summary": "Marketing Affiliate must provide accurate information regarding itself and its website.",
-      "text": "The information regarding Marketing Affiliate set forth in this Agreement, and the information provided to Equidata with respect to Marketing Affiliate and the Marketing Affiliate Web Site, is accurate;",
-      "evidenceVerified": true,
-      "evidenceSpans": [
-        "The information regarding Marketing Affiliate set forth in this Agreement, and the information provided to Equidata with respect to Marketing Affiliate and the Marketing Affiliate Web Site, is accurate;"
-      ],
-      "burdenPartyId": "party-2",
-      "benefitPartyId": "party-1",
-      "clauseId": "clause-23",
-      "deadline": "",
-      "frequency": "",
-      "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-38"
-      ]
-    },
-    {
-      "id": "obligation-29",
-      "action": "Not violate law or agreements",
-      "summary": "Marketing Affiliate’s business must not violate any applicable law, regulation, court order or material agreement.",
-      "text": "Marketing Affiliate’s business, including without limitation any business conducted in connection with the Marketing Affiliate Web Site, does not violate any applicable law, regulation, court order or material agreement to which Marketing Affiliate is subject.",
-      "evidenceVerified": false,
-      "evidenceSpans": [],
-      "burdenPartyId": "party-2",
-      "benefitPartyId": "party-1",
-      "clauseId": "clause-24",
-      "deadline": "",
-      "frequency": "",
-      "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-39",
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-41"
-      ]
-    },
-    {
-      "id": "obligation-30",
+      "id": "obligation-37",
       "action": "Defend, indemnify and hold harmless",
-      "summary": "Each party must defend, indemnify and hold harmless the other party and its related persons from claims arising from breach of warranties or failure to provide services.",
+      "summary": "Each party agrees to defend, indemnify and hold harmless the other party and its affiliates from claims arising from breach of warranties or failure to provide services.",
       "text": "Equidata and Marketing Affiliate each hereby agree to defend, indemnify and hold harmless each other and each of its employees, agents, officers, directors and shareholders from and against any claims, suits, demand or actions arising from breach of any warranties under this Agreement or failure to provide Services under this Agreement.",
       "evidenceVerified": true,
       "evidenceSpans": [
         "Equidata and Marketing Affiliate each hereby agree to defend, indemnify and hold harmless each other and each of its employees, agents, officers, directors and shareholders from and against any claims, suits, demand or actions arising from breach of any warranties under this Agreement or failure to provide Services under this Agreement."
       ],
-      "burdenPartyId": null,
-      "benefitPartyId": null,
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
       "clauseId": "clause-26",
       "deadline": "",
       "frequency": "",
@@ -984,7 +1101,25 @@
       ]
     },
     {
-      "id": "obligation-31",
+      "id": "obligation-38",
+      "action": "Defend, indemnify and hold harmless",
+      "summary": "Each party agrees to defend, indemnify and hold harmless the other party and its affiliates from claims arising from breach of warranties or failure to provide services.",
+      "text": "Equidata and Marketing Affiliate each hereby agree to defend, indemnify and hold harmless each other and each of its employees, agents, officers, directors and shareholders from and against any claims, suits, demand or actions arising from breach of any warranties under this Agreement or failure to provide Services under this Agreement.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Equidata and Marketing Affiliate each hereby agree to defend, indemnify and hold harmless each other and each of its employees, agents, officers, directors and shareholders from and against any claims, suits, demand or actions arising from breach of any warranties under this Agreement or failure to provide Services under this Agreement."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-26",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-46"
+      ]
+    },
+    {
+      "id": "obligation-39",
       "action": "Defend, indemnify and hold harmless",
       "summary": "Marketing Affiliate must defend, indemnify and hold harmless Equidata and its personnel from certain claims.",
       "text": "MARKETING AFFILIATE AGREES TO DEFEND, INDEMNIFY AND HOLD HARMLESS EQUIDATA, AND EACH OF ITS EMPLOYEES, AGENTS, OFFICERS AND DIRECTORS, FROM AND AGAINST ANY CLAIM, SUIT, DEMAND, OR ACTION, INCLUDING WITHOUT LIMITATION ATTORNEY FEES, ARISING FROM (A) BREACH OF THIS AGREEMENT BY MARKETING AFFILIATE, (B) THE MARKETING AFFILIATE WEB SITE, OR (C) MARKETING AFFILIATE’S BUSINESS.",
@@ -1002,15 +1137,51 @@
       ]
     },
     {
-      "id": "obligation-32",
+      "id": "obligation-40",
       "action": "Send written notices by overnight delivery",
-      "summary": "Each party must send all required written notices by overnight delivery service to the designated address.",
+      "summary": "Each party must send required written notices by overnight delivery service to the designated address.",
       "text": "All notices required to be given in writing must be sent by overnight delivery service to the name and address designated in this Agreement or to such other address that the receiving party may in advance designate by written notice.",
       "evidenceVerified": true,
       "evidenceSpans": [
         "All notices required to be given in writing must be sent by overnight delivery service to the name and address designated in this Agreement or to such other address that the receiving party may in advance designate by written notice."
       ],
-      "burdenPartyId": null,
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-29",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-49"
+      ]
+    },
+    {
+      "id": "obligation-41",
+      "action": "Send written notices by overnight delivery",
+      "summary": "Each party must send required written notices by overnight delivery service to the designated address.",
+      "text": "All notices required to be given in writing must be sent by overnight delivery service to the name and address designated in this Agreement or to such other address that the receiving party may in advance designate by written notice.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "All notices required to be given in writing must be sent by overnight delivery service to the name and address designated in this Agreement or to such other address that the receiving party may in advance designate by written notice."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-29",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-49"
+      ]
+    },
+    {
+      "id": "obligation-42",
+      "action": "Supervise and pay employees",
+      "summary": "Each party is solely responsible for supervision, daily direction and control of its employees and payment of their salaries and benefits.",
+      "text": "Each party shall be solely responsible for supervision, daily direction and control of its employees and payment of their salaries, worker’s compensation, disability and other benefits.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Each party shall be solely responsible for supervision, daily direction and control of its employees and payment of their salaries, worker’s compensation, disability and other benefits."
+      ],
+      "burdenPartyId": "party-1",
       "benefitPartyId": null,
       "clauseId": "clause-29",
       "deadline": "",
@@ -1020,15 +1191,15 @@
       ]
     },
     {
-      "id": "obligation-33",
+      "id": "obligation-43",
       "action": "Supervise and pay employees",
-      "summary": "Each party is solely responsible for supervision, daily direction and control of its employees and payment of their salaries, worker’s compensation, disability and other benefits.",
+      "summary": "Each party is solely responsible for supervision, daily direction and control of its employees and payment of their salaries and benefits.",
       "text": "Each party shall be solely responsible for supervision, daily direction and control of its employees and payment of their salaries, worker’s compensation, disability and other benefits.",
       "evidenceVerified": true,
       "evidenceSpans": [
         "Each party shall be solely responsible for supervision, daily direction and control of its employees and payment of their salaries, worker’s compensation, disability and other benefits."
       ],
-      "burdenPartyId": null,
+      "burdenPartyId": "party-2",
       "benefitPartyId": null,
       "clauseId": "clause-29",
       "deadline": "",
@@ -1041,50 +1212,14 @@
   "rights": [
     {
       "id": "right-1",
-      "action": "Market the Services",
-      "summary": "Marketing Affiliate may market the Services.",
-      "text": "Marketing Affiliate may market the Services.",
-      "evidenceVerified": true,
-      "evidenceSpans": [
-        "Marketing Affiliate may market the Services."
-      ],
-      "burdenPartyId": null,
-      "benefitPartyId": "party-2",
-      "clauseId": "clause-2",
-      "deadline": "",
-      "frequency": "",
-      "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-8"
-      ]
-    },
-    {
-      "id": "right-2",
-      "action": "Market Services indirectly and operate web site",
-      "summary": "Marketing Affiliate may market the Services indirectly and operate a web site with direct access to the Services.",
-      "text": "Marketing Affiliate wishes to market the Services indirectly through third party programs, direct mail, Internet and both inbound and outbound telemarketing. In addition, each may own and operate a web site utilizing direct access to the Services through Internet links.",
-      "evidenceVerified": true,
-      "evidenceSpans": [
-        "Marketing Affiliate wishes to market the Services indirectly through third party programs, direct mail, Internet and both inbound and outbound telemarketing. In addition, each may own and operate a web site utilizing direct access to the Services through Internet links."
-      ],
-      "burdenPartyId": null,
-      "benefitPartyId": "party-2",
-      "clauseId": "clause-3",
-      "deadline": "",
-      "frequency": "",
-      "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-9"
-      ]
-    },
-    {
-      "id": "right-3",
       "action": "Display Marketing Materials and link to Equidata",
-      "summary": "Marketing Affiliate may display Marketing Materials at its business or partners' locations and link to Equidata's website.",
+      "summary": "Marketing Affiliate may display Marketing Materials at its business or its partners' business, and link from its website to Equidata's website.",
       "text": "Marketing Affiliate may display Marketing Materials at its principal place(s) of business, or at the principal place(s) of its third party partners, together with a link from the Marketing Affiliate Web Site to Fquidata (and its partners) Web Site.",
       "evidenceVerified": true,
       "evidenceSpans": [
         "Marketing Affiliate may display Marketing Materials at its principal place(s) of business, or at the principal place(s) of its third party partners, together with a link from the Marketing Affiliate Web Site to Fquidata (and its partners) Web Site."
       ],
-      "burdenPartyId": null,
+      "burdenPartyId": "party-1",
       "benefitPartyId": "party-2",
       "clauseId": "clause-4",
       "deadline": "",
@@ -1094,7 +1229,7 @@
       ]
     },
     {
-      "id": "right-4",
+      "id": "right-2",
       "action": "Use Marketing Materials in marketing",
       "summary": "Marketing Affiliate may use Marketing Materials in direct mail, personal solicitation, and telemarketing.",
       "text": "Marketing Materials may also be used in the marketing of potential customers through direct mail and personal solicitation as well as inbound and outbound telemarketing.",
@@ -1102,7 +1237,7 @@
       "evidenceSpans": [
         "Marketing Materials may also be used in the marketing of potential customers through direct mail and personal solicitation as well as inbound and outbound telemarketing."
       ],
-      "burdenPartyId": null,
+      "burdenPartyId": "party-1",
       "benefitPartyId": "party-2",
       "clauseId": "clause-4",
       "deadline": "",
@@ -1112,7 +1247,7 @@
       ]
     },
     {
-      "id": "right-5",
+      "id": "right-3",
       "action": "Increase base cost of Services",
       "summary": "Equidata reserves the right to increase the base cost of Services with 30 days written notice.",
       "text": "Equidata reserves the right to increase the base cost of Services. Notice will be given to Marketing Affiliate in writing no less than 30 days prior to such increase taking affect.",
@@ -1120,26 +1255,26 @@
       "evidenceSpans": [
         "Equidata reserves the right to increase the base cost of Services. Notice will be given to Marketing Affiliate in writing no less than 30 days prior to such increase taking affect."
       ],
-      "burdenPartyId": null,
+      "burdenPartyId": "party-2",
       "benefitPartyId": "party-1",
       "clauseId": "clause-1",
-      "deadline": "",
+      "deadline": "no less than 30 days prior to such increase taking affect",
       "frequency": "",
       "paragraphIds": [
         "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-13"
       ]
     },
     {
-      "id": "right-6",
+      "id": "right-4",
       "action": "Choose arbitration",
-      "summary": "Either party may choose arbitration in the case of a disputed charge.",
+      "summary": "Equidata may choose arbitration in the case of a disputed charge.",
       "text": "Equidata or Marketing Affiliate may choose arbitration",
       "evidenceVerified": true,
       "evidenceSpans": [
         "Equidata or Marketing Affiliate may choose arbitration"
       ],
-      "burdenPartyId": null,
-      "benefitPartyId": null,
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
       "clauseId": "clause-5",
       "deadline": "",
       "frequency": "",
@@ -1148,43 +1283,25 @@
       ]
     },
     {
-      "id": "right-7",
-      "action": "Audit Marketing Affiliate’s marketing, practices and activities",
-      "summary": "Equidata may audit Marketing Affiliate’s marketing, practices and activities for compliance.",
-      "text": "Equidata may audit, at Equidata’s expense, the Marketing Affiliate’s marketing, practices and activities for the purpose of assuring compliance with this Agreement.",
+      "id": "right-5",
+      "action": "Choose arbitration",
+      "summary": "Marketing Affiliate may choose arbitration in the case of a disputed charge.",
+      "text": "Equidata or Marketing Affiliate may choose arbitration",
       "evidenceVerified": true,
       "evidenceSpans": [
-        "Equidata may audit, at Equidata’s expense, the Marketing Affiliate’s marketing, practices and activities for the purpose of assuring compliance with this Agreement."
+        "Equidata or Marketing Affiliate may choose arbitration"
       ],
-      "burdenPartyId": null,
-      "benefitPartyId": "party-1",
-      "clauseId": "clause-15",
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-5",
       "deadline": "",
       "frequency": "",
       "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-30"
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-15"
       ]
     },
     {
-      "id": "right-8",
-      "action": "Site inspect Marketing Affiliate’s business location",
-      "summary": "Equidata reserves the right to site inspect Marketing Affiliate’s physical location of business at any time.",
-      "text": "Equidata reserves the right to site inspect Marketing Affiliate’s physical location of business at any time.",
-      "evidenceVerified": true,
-      "evidenceSpans": [
-        "Equidata reserves the right to site inspect Marketing Affiliate’s physical location of business at any time."
-      ],
-      "burdenPartyId": null,
-      "benefitPartyId": "party-1",
-      "clauseId": "clause-15",
-      "deadline": "",
-      "frequency": "",
-      "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-30"
-      ]
-    },
-    {
-      "id": "right-9",
+      "id": "right-6",
       "action": "Terminate Agreement with cause on notice",
       "summary": "Either party may terminate the Agreement with cause upon 30 days written notice.",
       "text": "This Agreement may be terminated by either party with cause upon thirty (30) days written notice.",
@@ -1192,8 +1309,62 @@
       "evidenceSpans": [
         "This Agreement may be terminated by either party with cause upon thirty (30) days written notice."
       ],
-      "burdenPartyId": null,
-      "benefitPartyId": null,
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-18",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-33"
+      ]
+    },
+    {
+      "id": "right-7",
+      "action": "Terminate Agreement with cause on notice",
+      "summary": "Either party may terminate the Agreement with cause upon 30 days written notice.",
+      "text": "This Agreement may be terminated by either party with cause upon thirty (30) days written notice.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "This Agreement may be terminated by either party with cause upon thirty (30) days written notice."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-18",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-33"
+      ]
+    },
+    {
+      "id": "right-8",
+      "action": "Terminate Agreement without notice on default",
+      "summary": "Equidata may terminate the Agreement without notice if Marketing Affiliate defaults in payment or breaches the Agreement.",
+      "text": "Upon Marketing Affiliate’s default in payment or other breach of this Agreement, Equidata may terminate this Agreement without notice to Marketing Affiliate.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Upon Marketing Affiliate’s default in payment or other breach of this Agreement, Equidata may terminate this Agreement without notice to Marketing Affiliate."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-18",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-33"
+      ]
+    },
+    {
+      "id": "right-9",
+      "action": "Deactivate access upon termination",
+      "summary": "Equidata reserves the right to deactivate Marketing Affiliate’s access to the services including the Equidata Web Site upon termination.",
+      "text": "Equidata reserves the right to deactivate Marketing Affiliate’s access to the services including the Equidata Web Site.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Equidata reserves the right to deactivate Marketing Affiliate’s access to the services including the Equidata Web Site."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
       "clauseId": "clause-18",
       "deadline": "",
       "frequency": "",
@@ -1203,50 +1374,14 @@
     },
     {
       "id": "right-10",
-      "action": "Terminate Agreement without notice on default",
-      "summary": "Equidata may terminate the Agreement without notice if Marketing Affiliate defaults in payment or breaches the Agreement.",
-      "text": "Upon Marketing Affiliate’s default in payment or other breach of this Agreement, Equidata may terminate this Agreement without notice to Marketing Affiliate.",
-      "evidenceVerified": true,
-      "evidenceSpans": [
-        "Upon Marketing Affiliate’s default in payment or other breach of this Agreement, Equidata may terminate this Agreement without notice to Marketing Affiliate."
-      ],
-      "burdenPartyId": null,
-      "benefitPartyId": "party-1",
-      "clauseId": "clause-18",
-      "deadline": "",
-      "frequency": "",
-      "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-33"
-      ]
-    },
-    {
-      "id": "right-11",
-      "action": "Deactivate access upon termination",
-      "summary": "Equidata may deactivate Marketing Affiliate’s access to services upon termination for any reason.",
-      "text": "Upon termination for any reason, Equidata reserves the right to deactivate Marketing Affiliate’s access to the services including the Equidata Web Site.",
-      "evidenceVerified": true,
-      "evidenceSpans": [
-        "Upon termination for any reason, Equidata reserves the right to deactivate Marketing Affiliate’s access to the services including the Equidata Web Site."
-      ],
-      "burdenPartyId": null,
-      "benefitPartyId": "party-1",
-      "clauseId": "clause-18",
-      "deadline": "",
-      "frequency": "",
-      "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-33"
-      ]
-    },
-    {
-      "id": "right-12",
-      "action": "Use legal resources to force removal of URL data",
-      "summary": "Equidata may use legal resources to force removal of its URL related data if not voluntarily removed.",
+      "action": "Use legal resources to force removal",
+      "summary": "Equidata reserves the right to use all available legal resources to force the removal of Equidata URL related data if not voluntarily removed.",
       "text": "Equidata reserves the right to use all available legal resources to force the removal of Equidata URL related data",
       "evidenceVerified": true,
       "evidenceSpans": [
         "Equidata reserves the right to use all available legal resources to force the removal of Equidata URL related data"
       ],
-      "burdenPartyId": null,
+      "burdenPartyId": "party-2",
       "benefitPartyId": "party-1",
       "clauseId": "clause-19",
       "deadline": "",
@@ -1256,21 +1391,57 @@
       ]
     },
     {
-      "id": "right-13",
-      "action": "Terminate Agreement immediately if CRAs decline services",
-      "summary": "Equidata may terminate the Agreement immediately for cause if CRAs decline to render services or notify Equidata to cease services.",
+      "id": "right-11",
+      "action": "Terminate Agreement immediately for cause if CRAs decline",
+      "summary": "Equidata reserves the right to terminate the Agreement immediately for cause if CRAs decline to render Services or notify Equidata to cease rendering Services.",
       "text": "Equidata reserves the right to terminate this Agreement immediately for cause if Experian, Equifax and/or TransUnion (Credit Reporting Agencies — CRAs) decline to render Services to Marketing Affiliate for any reason or if Equidata is notified by any of the CRAs to cease rendering Services to Marketing Affiliate.",
       "evidenceVerified": true,
       "evidenceSpans": [
         "Equidata reserves the right to terminate this Agreement immediately for cause if Experian, Equifax and/or TransUnion (Credit Reporting Agencies — CRAs) decline to render Services to Marketing Affiliate for any reason or if Equidata is notified by any of the CRAs to cease rendering Services to Marketing Affiliate."
       ],
-      "burdenPartyId": null,
+      "burdenPartyId": "party-2",
       "benefitPartyId": "party-1",
       "clauseId": "clause-20",
       "deadline": "",
       "frequency": "",
       "paragraphIds": [
         "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-35"
+      ]
+    },
+    {
+      "id": "right-12",
+      "action": "Benefit of successors, assigns and legal representatives",
+      "summary": "Each party's permitted successors, assigns and legal representatives benefit from the Agreement.",
+      "text": "This Agreement binds and inures to the benefit of each party’s permitted successors, assigns and legal representatives, including the purchasers of the stock or assets of either party hereto.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "This Agreement binds and inures to the benefit of each party’s permitted successors, assigns and legal representatives, including the purchasers of the stock or assets of either party hereto."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-29",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-49"
+      ]
+    },
+    {
+      "id": "right-13",
+      "action": "Benefit of successors, assigns and legal representatives",
+      "summary": "Each party's permitted successors, assigns and legal representatives benefit from the Agreement.",
+      "text": "This Agreement binds and inures to the benefit of each party’s permitted successors, assigns and legal representatives, including the purchasers of the stock or assets of either party hereto.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "This Agreement binds and inures to the benefit of each party’s permitted successors, assigns and legal representatives, including the purchasers of the stock or assets of either party hereto."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-29",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-49"
       ]
     },
     {
@@ -1283,7 +1454,7 @@
         "The Parties shall operate as Independent Contractors in performing their obligations under the Agreement and shall have exclusive control of the manner and means of performing such obligations."
       ],
       "burdenPartyId": null,
-      "benefitPartyId": null,
+      "benefitPartyId": "party-1",
       "clauseId": "clause-29",
       "deadline": "",
       "frequency": "",
@@ -1293,15 +1464,87 @@
     },
     {
       "id": "right-15",
-      "action": "Benefit of successors, assigns and legal representatives",
-      "summary": "Agreement binds and inures to the benefit of each party’s permitted successors, assigns and legal representatives.",
-      "text": "This Agreement binds and inures to the benefit of each party’s permitted successors, assigns and legal representatives, including the purchasers of the stock or assets of either party hereto.",
+      "action": "Exclusive control of manner and means of performance",
+      "summary": "Each party has exclusive control of the manner and means of performing its obligations.",
+      "text": "The Parties shall operate as Independent Contractors in performing their obligations under the Agreement and shall have exclusive control of the manner and means of performing such obligations.",
       "evidenceVerified": true,
       "evidenceSpans": [
-        "This Agreement binds and inures to the benefit of each party’s permitted successors, assigns and legal representatives, including the purchasers of the stock or assets of either party hereto."
+        "The Parties shall operate as Independent Contractors in performing their obligations under the Agreement and shall have exclusive control of the manner and means of performing such obligations."
       ],
       "burdenPartyId": null,
-      "benefitPartyId": null,
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-29",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-49"
+      ]
+    },
+    {
+      "id": "right-16",
+      "action": "Deem notice effective after delivery",
+      "summary": "Notice is deemed effective on the day after delivery by the overnight carrier.",
+      "text": "Notice is deemed effective on the day after delivery by the overnight carrier.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Notice is deemed effective on the day after delivery by the overnight carrier."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-29",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-49"
+      ]
+    },
+    {
+      "id": "right-17",
+      "action": "Deem notice effective after delivery",
+      "summary": "Notice is deemed effective on the day after delivery by the overnight carrier.",
+      "text": "Notice is deemed effective on the day after delivery by the overnight carrier.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Notice is deemed effective on the day after delivery by the overnight carrier."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-29",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-49"
+      ]
+    },
+    {
+      "id": "right-18",
+      "action": "Agreement governed by Virginia law",
+      "summary": "Each party is entitled to have the Agreement governed by Virginia law.",
+      "text": "This Agreement is governed by and construed in accordance with the laws of the State of Virginia.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "This Agreement is governed by and construed in accordance with the laws of the State of Virginia."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-29",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-49"
+      ]
+    },
+    {
+      "id": "right-19",
+      "action": "Agreement governed by Virginia law",
+      "summary": "Each party is entitled to have the Agreement governed by Virginia law.",
+      "text": "This Agreement is governed by and construed in accordance with the laws of the State of Virginia.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "This Agreement is governed by and construed in accordance with the laws of the State of Virginia."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-2",
       "clauseId": "clause-29",
       "deadline": "",
       "frequency": "",
@@ -1314,7 +1557,7 @@
     {
       "id": "prohibition-1",
       "action": "Offer, market, sell or distribute Services without written permission",
-      "summary": "Marketing Affiliate may not offer for sale, market, sell or distribute the Services of Equidata without express written permission.",
+      "summary": "Marketing Affiliate may not offer, market, sell or distribute Equidata's Services without express written permission.",
       "text": "Marketing Affiliate may not otherwise offer for sale, market, sell or distribute the Services of Equidata without express written permission.",
       "evidenceVerified": true,
       "evidenceSpans": [
@@ -1332,7 +1575,7 @@
     {
       "id": "prohibition-2",
       "action": "Solicit existing business customer of Equidata",
-      "summary": "Marketing Affiliate must not solicit an existing business customer of Equidata during the term except for joint marketing.",
+      "summary": "Marketing Affiliate shall not solicit existing business customers of Equidata during the term except for joint marketing.",
       "text": "Marketing Affiliate shall not directly or indirectly solicit an existing business customer of Equidata during the term and condition of this Agreement other than for joint marketing purposes.",
       "evidenceVerified": true,
       "evidenceSpans": [
@@ -1349,15 +1592,15 @@
     },
     {
       "id": "prohibition-3",
-      "action": "Market similar products from competing companies on certain landing pages",
-      "summary": "Marketing Affiliate must not market similar products from competing companies on any Web Site Landing Page containing the Equidata or Marketing Affiliate Web link as long as this Agreement is in effect.",
-      "text": "Further, Marketing Affiliate shall not market similar products from competing companies on any Web Site Landing Page containing the Equidata or Marketing Affiliate Web link as long as this Agreement is in effect.",
+      "action": "Market similar products from competing companies on certain Web Site Landing Pages",
+      "summary": "Marketing Affiliate shall not market similar products from competing companies on any Web Site Landing Page containing the Equidata or Marketing Affiliate Web link as long as this Agreement is in effect.",
+      "text": "Marketing Affiliate shall not market similar products from competing companies on any Web Site Landing Page containing the Equidata or Marketing Affiliate Web link as long as this Agreement is in effect.",
       "evidenceVerified": true,
       "evidenceSpans": [
-        "Further, Marketing Affiliate shall not market similar products from competing companies on any Web Site Landing Page containing the Equidata or Marketing Affiliate Web link as long as this Agreement is in effect."
+        "Marketing Affiliate shall not market similar products from competing companies on any Web Site Landing Page containing the Equidata or Marketing Affiliate Web link as long as this Agreement is in effect."
       ],
       "burdenPartyId": "party-2",
-      "benefitPartyId": null,
+      "benefitPartyId": "party-1",
       "clauseId": "clause-7",
       "deadline": "",
       "frequency": "",
@@ -1374,8 +1617,8 @@
       "evidenceSpans": [
         "Marketing Affiliate nor Equidata, shall engage in any practice or activity that is not in compliance with the Fair Credit Reporting Act (FCRA), the Fair Debt Collection Practices Act (FDCPA) and the Health Insurance Portability and Accountability Act (HIPAA) as well as, but not limited to, any practice or activity that:"
       ],
-      "burdenPartyId": null,
-      "benefitPartyId": null,
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
       "clauseId": "clause-8",
       "deadline": "",
       "frequency": "",
@@ -1385,6 +1628,24 @@
     },
     {
       "id": "prohibition-5",
+      "action": "Engage in non-compliant practices",
+      "summary": "Neither party shall engage in any practice or activity not in compliance with FCRA, FDCPA, HIPAA, or other applicable law.",
+      "text": "Marketing Affiliate nor Equidata, shall engage in any practice or activity that is not in compliance with the Fair Credit Reporting Act (FCRA), the Fair Debt Collection Practices Act (FDCPA) and the Health Insurance Portability and Accountability Act (HIPAA) as well as, but not limited to, any practice or activity that:",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Marketing Affiliate nor Equidata, shall engage in any practice or activity that is not in compliance with the Fair Credit Reporting Act (FCRA), the Fair Debt Collection Practices Act (FDCPA) and the Health Insurance Portability and Accountability Act (HIPAA) as well as, but not limited to, any practice or activity that:"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-8",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-23"
+      ]
+    },
+    {
+      "id": "prohibition-6",
       "action": "Violate any applicable law or regulation",
       "summary": "Neither party shall violate any applicable law or regulation, including but not limited to the sale of illegal goods, export control, obscenity laws, privacy invasion, junk mail, spam, or unethical marketing.",
       "text": "Violates any applicable law or regulation; including but not limited to the sale of illegal goods or the violation of export control or obscenity laws; that invade the privacy of any third party; that are in any way connected with the transmission of “junk mail”, “spam” or the unsolicited mass distribution of e-mail, or with any unethical marketing practices.",
@@ -1392,8 +1653,8 @@
       "evidenceSpans": [
         "Violates any applicable law or regulation; including but not limited to the sale of illegal goods or the violation of export control or obscenity laws; that invade the privacy of any third party; that are in any way connected with the transmission of “junk mail”, “spam” or the unsolicited mass distribution of e-mail, or with any unethical marketing practices."
       ],
-      "burdenPartyId": null,
-      "benefitPartyId": null,
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
       "clauseId": "clause-9",
       "deadline": "",
       "frequency": "",
@@ -1402,7 +1663,25 @@
       ]
     },
     {
-      "id": "prohibition-6",
+      "id": "prohibition-7",
+      "action": "Violate any applicable law or regulation",
+      "summary": "Neither party shall violate any applicable law or regulation, including but not limited to the sale of illegal goods, export control, obscenity laws, privacy invasion, junk mail, spam, or unethical marketing.",
+      "text": "Violates any applicable law or regulation; including but not limited to the sale of illegal goods or the violation of export control or obscenity laws; that invade the privacy of any third party; that are in any way connected with the transmission of “junk mail”, “spam” or the unsolicited mass distribution of e-mail, or with any unethical marketing practices.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Violates any applicable law or regulation; including but not limited to the sale of illegal goods or the violation of export control or obscenity laws; that invade the privacy of any third party; that are in any way connected with the transmission of “junk mail”, “spam” or the unsolicited mass distribution of e-mail, or with any unethical marketing practices."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-9",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-24"
+      ]
+    },
+    {
+      "id": "prohibition-8",
       "action": "Engage in misleading, deceptive, confusing or abusive practices",
       "summary": "Neither party shall engage in misleading, deceptive, confusing or abusive practices as outlined in the Telemarketing Fraud Prevention Act.",
       "text": "Is misleading, deceptive, confusing or abusive as outlined in the Telemarketing Fraud Prevention Act;",
@@ -1410,8 +1689,8 @@
       "evidenceSpans": [
         "Is misleading, deceptive, confusing or abusive as outlined in the Telemarketing Fraud Prevention Act;"
       ],
-      "burdenPartyId": null,
-      "benefitPartyId": null,
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
       "clauseId": "clause-10",
       "deadline": "",
       "frequency": "",
@@ -1420,16 +1699,34 @@
       ]
     },
     {
-      "id": "prohibition-7",
+      "id": "prohibition-9",
+      "action": "Engage in misleading, deceptive, confusing or abusive practices",
+      "summary": "Neither party shall engage in misleading, deceptive, confusing or abusive practices as outlined in the Telemarketing Fraud Prevention Act.",
+      "text": "Is misleading, deceptive, confusing or abusive as outlined in the Telemarketing Fraud Prevention Act;",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Is misleading, deceptive, confusing or abusive as outlined in the Telemarketing Fraud Prevention Act;"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-10",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-25"
+      ]
+    },
+    {
+      "id": "prohibition-10",
       "action": "Make unauthorized representations or warranties",
-      "summary": "Neither party shall make any representation, statement, warranty, or obligation with respect to the Services that is inconsistent with those stated by Equidata.",
+      "summary": "Neither party shall make any representation, statement, warranty or create any obligation with respect to the Services inconsistent with those stated by Equidata.",
       "text": "Makes any representation or statement, or grants any warranty or creates any other obligation with respect to the Services, that is in addition to or otherwise inconsistent with any representation, statement or warranty stated expressly by Equidata.",
       "evidenceVerified": true,
       "evidenceSpans": [
         "Makes any representation or statement, or grants any warranty or creates any other obligation with respect to the Services, that is in addition to or otherwise inconsistent with any representation, statement or warranty stated expressly by Equidata."
       ],
-      "burdenPartyId": null,
-      "benefitPartyId": null,
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
       "clauseId": "clause-11",
       "deadline": "",
       "frequency": "",
@@ -1438,7 +1735,25 @@
       ]
     },
     {
-      "id": "prohibition-8",
+      "id": "prohibition-11",
+      "action": "Make unauthorized representations or warranties",
+      "summary": "Neither party shall make any representation, statement, warranty or create any obligation with respect to the Services inconsistent with those stated by Equidata.",
+      "text": "Makes any representation or statement, or grants any warranty or creates any other obligation with respect to the Services, that is in addition to or otherwise inconsistent with any representation, statement or warranty stated expressly by Equidata.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Makes any representation or statement, or grants any warranty or creates any other obligation with respect to the Services, that is in addition to or otherwise inconsistent with any representation, statement or warranty stated expressly by Equidata."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-11",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-26"
+      ]
+    },
+    {
+      "id": "prohibition-12",
       "action": "Use unapproved Marketing Materials, media or methods",
       "summary": "Neither party shall use Marketing Materials, media or methods that are not approved.",
       "text": "Uses Marketing Materials, media or methods that are not approved, including, but nor limited to telemarketing scripts.",
@@ -1446,8 +1761,8 @@
       "evidenceSpans": [
         "Uses Marketing Materials, media or methods that are not approved, including, but nor limited to telemarketing scripts."
       ],
-      "burdenPartyId": null,
-      "benefitPartyId": null,
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
       "clauseId": "clause-12",
       "deadline": "",
       "frequency": "",
@@ -1456,16 +1771,34 @@
       ]
     },
     {
-      "id": "prohibition-9",
+      "id": "prohibition-13",
+      "action": "Use unapproved Marketing Materials, media or methods",
+      "summary": "Neither party shall use Marketing Materials, media or methods that are not approved.",
+      "text": "Uses Marketing Materials, media or methods that are not approved, including, but nor limited to telemarketing scripts.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Uses Marketing Materials, media or methods that are not approved, including, but nor limited to telemarketing scripts."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-12",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-27"
+      ]
+    },
+    {
+      "id": "prohibition-14",
       "action": "Fail to meet standards for good industry practices",
-      "summary": "Neither party shall fail to meet the standards for good industry practices for the direct marketing industry.",
+      "summary": "Neither party shall fail to meet standards for good industry practices for the direct marketing industry.",
       "text": "Does not meet the standards for good industry practices for the direct marketing industry.",
       "evidenceVerified": true,
       "evidenceSpans": [
         "Does not meet the standards for good industry practices for the direct marketing industry."
       ],
-      "burdenPartyId": null,
-      "benefitPartyId": null,
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
       "clauseId": "clause-13",
       "deadline": "",
       "frequency": "",
@@ -1474,8 +1807,26 @@
       ]
     },
     {
-      "id": "prohibition-10",
-      "action": "Not disclose or use Confidential and Proprietary Information except in performance",
+      "id": "prohibition-15",
+      "action": "Fail to meet standards for good industry practices",
+      "summary": "Neither party shall fail to meet standards for good industry practices for the direct marketing industry.",
+      "text": "Does not meet the standards for good industry practices for the direct marketing industry.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Does not meet the standards for good industry practices for the direct marketing industry."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-13",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-28"
+      ]
+    },
+    {
+      "id": "prohibition-16",
+      "action": "Not disclose or use Confidential and Proprietary Information",
       "summary": "The Receiving Party may not disclose or use the Disclosing Party’s Confidential and Proprietary Information except in performance of the Agreement.",
       "text": "The Receiving Party may not disclose or use the Disclosing Party’s Confidential and Proprietary Information for any reason other than in the performance of this Agreement.",
       "evidenceVerified": true,
@@ -1492,9 +1843,9 @@
       ]
     },
     {
-      "id": "prohibition-11",
-      "action": "Equidata not use Proprietary information except as outlined",
-      "summary": "Equidata will not use Marketing Affiliate's Proprietary information except as outlined in the Agreement.",
+      "id": "prohibition-17",
+      "action": "Equidata not use Proprietary information",
+      "summary": "Equidata will not use Marketing Affiliate's Proprietary information in any manner other than as outlined herein.",
       "text": "will not be used by Equidata in any manner other than as outlined herein.",
       "evidenceVerified": true,
       "evidenceSpans": [
@@ -1510,15 +1861,15 @@
       ]
     },
     {
-      "id": "prohibition-12",
-      "action": "Be deemed agent, partner, or joint venturer",
-      "summary": "Neither party may be deemed the agent, partner, or joint venturer of the other.",
-      "text": "Nothing in the Agreement shall be construed as making either party the agent of the other party, as granting to the other party the right to enter into any contract on behalf of the other party, or as establishing an association, franchise, joint venture or partnership between the Parties.",
+      "id": "prohibition-18",
+      "action": "Deem delegation as assignment",
+      "summary": "No delegation by either party of any duty is deemed an assignment of the Agreement.",
+      "text": "No delegation by either party of any duty hereunder shall be deemed an assignment of this Agreement, nor shall any change in control or an assignment of by operation of law by either party be deemed an assignment hereunder.",
       "evidenceVerified": true,
       "evidenceSpans": [
-        "Nothing in the Agreement shall be construed as making either party the agent of the other party, as granting to the other party the right to enter into any contract on behalf of the other party, or as establishing an association, franchise, joint venture or partnership between the Parties."
+        "No delegation by either party of any duty hereunder shall be deemed an assignment of this Agreement, nor shall any change in control or an assignment of by operation of law by either party be deemed an assignment hereunder."
       ],
-      "burdenPartyId": null,
+      "burdenPartyId": "party-1",
       "benefitPartyId": null,
       "clauseId": "clause-29",
       "deadline": "",
@@ -1528,7 +1879,25 @@
       ]
     },
     {
-      "id": "prohibition-13",
+      "id": "prohibition-19",
+      "action": "Deem delegation as assignment",
+      "summary": "No delegation by either party of any duty is deemed an assignment of the Agreement.",
+      "text": "No delegation by either party of any duty hereunder shall be deemed an assignment of this Agreement, nor shall any change in control or an assignment of by operation of law by either party be deemed an assignment hereunder.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "No delegation by either party of any duty hereunder shall be deemed an assignment of this Agreement, nor shall any change in control or an assignment of by operation of law by either party be deemed an assignment hereunder."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": null,
+      "clauseId": "clause-29",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-49"
+      ]
+    },
+    {
+      "id": "prohibition-20",
       "action": "Deem employees of one party as employees of the other",
       "summary": "Employees of one party may not be deemed employees of the other for any purpose.",
       "text": "Under no circumstances shall the employees of one party be deemed to be employees of the other for any purpose.",
@@ -1536,7 +1905,25 @@
       "evidenceSpans": [
         "Under no circumstances shall the employees of one party be deemed to be employees of the other for any purpose."
       ],
-      "burdenPartyId": null,
+      "burdenPartyId": "party-1",
+      "benefitPartyId": null,
+      "clauseId": "clause-29",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-49"
+      ]
+    },
+    {
+      "id": "prohibition-21",
+      "action": "Deem employees of one party as employees of the other",
+      "summary": "Employees of one party may not be deemed employees of the other for any purpose.",
+      "text": "Under no circumstances shall the employees of one party be deemed to be employees of the other for any purpose.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Under no circumstances shall the employees of one party be deemed to be employees of the other for any purpose."
+      ],
+      "burdenPartyId": "party-2",
       "benefitPartyId": null,
       "clauseId": "clause-29",
       "deadline": "",
@@ -1549,81 +1936,81 @@
   "conditions": [
     {
       "id": "condition-1",
-      "trigger": "Subject to the terms and conditions of this Agreement",
+      "trigger": "in the event that the Marketing Affiliate’s account is referred to an attorney for collection",
       "operator": "IF",
-      "gatesId": "right-3",
+      "gatesId": "obligation-12",
       "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-12"
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-14"
       ]
     },
     {
       "id": "condition-2",
-      "trigger": "if accepted",
-      "operator": "IF",
-      "gatesId": null,
-      "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-10"
-      ]
-    },
-    {
-      "id": "condition-3",
-      "trigger": "Notice will be given to Marketing Affiliate in writing no less than 30 days prior to such increase taking affect.",
-      "operator": "IF",
-      "gatesId": "right-5",
+      "trigger": "upon a signed agreement of project scope",
+      "operator": "UPON",
+      "gatesId": "obligation-7",
       "paragraphIds": [
         "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-13"
       ]
     },
     {
-      "id": "condition-4",
+      "id": "condition-3",
       "trigger": "If Equidata and Marketing Affiliate can not resolve the dispute on their own within 10 days after Equidata receive said dispute",
       "operator": "IF",
-      "gatesId": "obligation-18",
+      "gatesId": "obligation-20",
       "paragraphIds": [
         "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-16"
+      ]
+    },
+    {
+      "id": "condition-4",
+      "trigger": "If the parties do not agree on the selection of an arbitrator",
+      "operator": "IF",
+      "gatesId": "obligation-22",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-20"
       ]
     },
     {
       "id": "condition-5",
       "trigger": "If the parties do not agree on the selection of an arbitrator",
       "operator": "IF",
-      "gatesId": "obligation-19",
+      "gatesId": "obligation-23",
       "paragraphIds": [
         "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-20"
       ]
     },
     {
       "id": "condition-6",
-      "trigger": "Upon Marketing Affiliate’s default in payment or other breach of this Agreement",
-      "operator": "UPON",
+      "trigger": "if data is not voluntarily removed",
+      "operator": "IF",
       "gatesId": "right-10",
       "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-33"
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-34"
       ]
     },
     {
       "id": "condition-7",
-      "trigger": "Upon termination for any reason",
+      "trigger": "Upon Marketing Affiliate’s default in payment or other breach of this Agreement",
       "operator": "UPON",
-      "gatesId": "right-11",
+      "gatesId": "right-8",
       "paragraphIds": [
         "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-33"
       ]
     },
     {
       "id": "condition-8",
-      "trigger": "if data is not voluntarily removed",
-      "operator": "IF",
-      "gatesId": "right-12",
+      "trigger": "Upon termination for any reason",
+      "operator": "UPON",
+      "gatesId": "right-9",
       "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-34"
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-33"
       ]
     },
     {
       "id": "condition-9",
       "trigger": "if Experian, Equifax and/or TransUnion (Credit Reporting Agencies — CRAs) decline to render Services to Marketing Affiliate for any reason or if Equidata is notified by any of the CRAs to cease rendering Services to Marketing Affiliate",
       "operator": "IF",
-      "gatesId": "right-13",
+      "gatesId": "right-11",
       "paragraphIds": [
         "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-35"
       ]
@@ -1713,33 +2100,6 @@
     },
     {
       "id": "reference-9",
-      "name": "Experian",
-      "citation": "",
-      "citedById": "clause-20",
-      "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-35"
-      ]
-    },
-    {
-      "id": "reference-10",
-      "name": "Equifax",
-      "citation": "",
-      "citedById": "clause-20",
-      "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-35"
-      ]
-    },
-    {
-      "id": "reference-11",
-      "name": "TransUnion",
-      "citation": "",
-      "citedById": "clause-20",
-      "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-35"
-      ]
-    },
-    {
-      "id": "reference-12",
       "name": "laws of the State of Virginia",
       "citation": "",
       "citedById": "clause-29",
@@ -1751,6 +2111,36 @@
   "values": [
     {
       "id": "value-1",
+      "valueType": "Percentage",
+      "amount": "1 1/2",
+      "unit": "%",
+      "quantifiesId": "obligation-10",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-14"
+      ]
+    },
+    {
+      "id": "value-2",
+      "valueType": "Currency",
+      "amount": "35.00",
+      "unit": "USD",
+      "quantifiesId": "obligation-11",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-14"
+      ]
+    },
+    {
+      "id": "value-3",
+      "valueType": "Percentage",
+      "amount": "25",
+      "unit": "%",
+      "quantifiesId": "obligation-12",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-14"
+      ]
+    },
+    {
+      "id": "value-4",
       "valueType": "Duration",
       "amount": "30",
       "unit": "days",
@@ -1760,47 +2150,7 @@
       ]
     },
     {
-      "id": "value-2",
-      "valueType": "Percentage",
-      "amount": "1 1/2",
-      "unit": "%",
-      "quantifiesId": "obligation-11",
-      "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-14"
-      ]
-    },
-    {
-      "id": "value-3",
-      "valueType": "Currency",
-      "amount": "35.00",
-      "unit": "USD",
-      "quantifiesId": "obligation-12",
-      "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-14"
-      ]
-    },
-    {
-      "id": "value-4",
-      "valueType": "Percentage",
-      "amount": "25",
-      "unit": "%",
-      "quantifiesId": "obligation-13",
-      "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-14"
-      ]
-    },
-    {
       "id": "value-5",
-      "valueType": "Duration",
-      "amount": "10",
-      "unit": "days",
-      "quantifiesId": "obligation-16",
-      "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-16"
-      ]
-    },
-    {
-      "id": "value-6",
       "valueType": "Duration",
       "amount": "10",
       "unit": "days",
@@ -1810,11 +2160,21 @@
       ]
     },
     {
+      "id": "value-6",
+      "valueType": "Duration",
+      "amount": "10",
+      "unit": "days",
+      "quantifiesId": "obligation-20",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-16"
+      ]
+    },
+    {
       "id": "value-7",
       "valueType": "Duration",
       "amount": "5",
       "unit": "days",
-      "quantifiesId": "obligation-19",
+      "quantifiesId": "obligation-24",
       "paragraphIds": [
         "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-20"
       ]
@@ -1824,7 +2184,7 @@
       "valueType": "Duration",
       "amount": "25",
       "unit": "days",
-      "quantifiesId": "obligation-20",
+      "quantifiesId": "obligation-25",
       "paragraphIds": [
         "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-20"
       ]
@@ -1834,23 +2194,13 @@
       "valueType": "Duration",
       "amount": "10",
       "unit": "days",
-      "quantifiesId": "obligation-21",
+      "quantifiesId": "obligation-27",
       "paragraphIds": [
         "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-20"
       ]
     },
     {
       "id": "value-10",
-      "valueType": "Duration",
-      "amount": "48",
-      "unit": "hours",
-      "quantifiesId": "clause-12",
-      "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-27"
-      ]
-    },
-    {
-      "id": "value-11",
       "valueType": "Duration",
       "amount": "one",
       "unit": "year",
@@ -1860,30 +2210,20 @@
       ]
     },
     {
-      "id": "value-12",
+      "id": "value-11",
       "valueType": "Duration",
       "amount": "thirty",
       "unit": "days",
-      "quantifiesId": "right-9",
+      "quantifiesId": "right-6",
       "paragraphIds": [
         "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-33"
-      ]
-    },
-    {
-      "id": "value-13",
-      "valueType": "Duration",
-      "amount": "the day after delivery",
-      "unit": "days",
-      "quantifiesId": "obligation-32",
-      "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-49"
       ]
     }
   ],
   "edges": [
     {
       "source": "right-1",
-      "target": "clause-2",
+      "target": "clause-4",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
@@ -1897,7 +2237,7 @@
     },
     {
       "source": "right-2",
-      "target": "clause-3",
+      "target": "clause-4",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
@@ -1911,56 +2251,63 @@
     },
     {
       "source": "right-3",
-      "target": "clause-4",
-      "type": "is_part_of",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "right-3",
-      "target": "party-2",
-      "type": "grants_right_to",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "right-4",
-      "target": "clause-4",
-      "type": "is_part_of",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "right-4",
-      "target": "party-2",
-      "type": "grants_right_to",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "right-5",
       "target": "clause-1",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
     },
     {
-      "source": "right-5",
+      "source": "right-3",
       "target": "party-1",
       "type": "grants_right_to",
       "evidence": "",
       "paragraphIds": []
     },
     {
-      "source": "right-6",
+      "source": "right-4",
       "target": "clause-5",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
     },
     {
+      "source": "right-4",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-5",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-5",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-6",
+      "target": "clause-18",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-6",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
       "source": "right-7",
-      "target": "clause-15",
+      "target": "clause-18",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
@@ -1974,7 +2321,7 @@
     },
     {
       "source": "right-8",
-      "target": "clause-15",
+      "target": "clause-18",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
@@ -1994,41 +2341,48 @@
       "paragraphIds": []
     },
     {
-      "source": "right-10",
-      "target": "clause-18",
-      "type": "is_part_of",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "right-10",
+      "source": "right-9",
       "target": "party-1",
       "type": "grants_right_to",
       "evidence": "",
       "paragraphIds": []
     },
     {
-      "source": "right-11",
-      "target": "clause-18",
-      "type": "is_part_of",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "right-11",
-      "target": "party-1",
-      "type": "grants_right_to",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "right-12",
+      "source": "right-10",
       "target": "clause-19",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
     },
     {
+      "source": "right-10",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-11",
+      "target": "clause-20",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-11",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-12",
+      "target": "clause-29",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
       "source": "right-12",
       "target": "party-1",
       "type": "grants_right_to",
@@ -2037,14 +2391,14 @@
     },
     {
       "source": "right-13",
-      "target": "clause-20",
+      "target": "clause-29",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
     },
     {
       "source": "right-13",
-      "target": "party-1",
+      "target": "party-2",
       "type": "grants_right_to",
       "evidence": "",
       "paragraphIds": []
@@ -2057,9 +2411,79 @@
       "paragraphIds": []
     },
     {
+      "source": "right-14",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
       "source": "right-15",
       "target": "clause-29",
       "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-15",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-16",
+      "target": "clause-29",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-16",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-17",
+      "target": "clause-29",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-17",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-18",
+      "target": "clause-29",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-18",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-19",
+      "target": "clause-29",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-19",
+      "target": "party-2",
+      "type": "grants_right_to",
       "evidence": "",
       "paragraphIds": []
     },
@@ -2176,6 +2600,13 @@
       "paragraphIds": []
     },
     {
+      "source": "obligation-10",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
       "source": "obligation-11",
       "target": "party-2",
       "type": "assigns_obligation_to",
@@ -2191,7 +2622,14 @@
     },
     {
       "source": "obligation-13",
-      "target": "party-2",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-13",
+      "target": "party-1",
       "type": "assigns_obligation_to",
       "evidence": "",
       "paragraphIds": []
@@ -2204,6 +2642,13 @@
       "paragraphIds": []
     },
     {
+      "source": "obligation-14",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
       "source": "obligation-15",
       "target": "clause-5",
       "type": "is_part_of",
@@ -2226,7 +2671,7 @@
     },
     {
       "source": "obligation-16",
-      "target": "party-2",
+      "target": "party-1",
       "type": "assigns_obligation_to",
       "evidence": "",
       "paragraphIds": []
@@ -2253,9 +2698,23 @@
       "paragraphIds": []
     },
     {
+      "source": "obligation-18",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
       "source": "obligation-19",
       "target": "clause-5",
       "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-19",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
       "evidence": "",
       "paragraphIds": []
     },
@@ -2267,6 +2726,13 @@
       "paragraphIds": []
     },
     {
+      "source": "obligation-20",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
       "source": "obligation-21",
       "target": "clause-5",
       "type": "is_part_of",
@@ -2274,92 +2740,85 @@
       "paragraphIds": []
     },
     {
+      "source": "obligation-21",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
       "source": "obligation-22",
-      "target": "clause-6",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-22",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-23",
+      "target": "clause-5",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
     },
     {
       "source": "obligation-23",
-      "target": "clause-6",
-      "type": "is_part_of",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "obligation-24",
-      "target": "clause-18",
-      "type": "is_part_of",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "obligation-24",
       "target": "party-2",
       "type": "assigns_obligation_to",
       "evidence": "",
       "paragraphIds": []
     },
     {
-      "source": "obligation-25",
-      "target": "clause-19",
+      "source": "obligation-24",
+      "target": "clause-5",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
     },
     {
       "source": "obligation-25",
-      "target": "party-2",
-      "type": "assigns_obligation_to",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "obligation-26",
-      "target": "clause-19",
+      "target": "clause-5",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
     },
     {
       "source": "obligation-26",
-      "target": "party-2",
-      "type": "assigns_obligation_to",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "obligation-27",
-      "target": "clause-22",
+      "target": "clause-5",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
     },
     {
       "source": "obligation-27",
-      "target": "party-2",
-      "type": "assigns_obligation_to",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "obligation-28",
-      "target": "clause-23",
+      "target": "clause-5",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
     },
     {
       "source": "obligation-28",
-      "target": "party-2",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-28",
+      "target": "party-1",
       "type": "assigns_obligation_to",
       "evidence": "",
       "paragraphIds": []
     },
     {
       "source": "obligation-29",
-      "target": "clause-24",
+      "target": "clause-5",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
@@ -2373,14 +2832,21 @@
     },
     {
       "source": "obligation-30",
-      "target": "clause-26",
+      "target": "clause-6",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
     },
     {
+      "source": "obligation-30",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
       "source": "obligation-31",
-      "target": "clause-28",
+      "target": "clause-6",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
@@ -2394,15 +2860,169 @@
     },
     {
       "source": "obligation-32",
-      "target": "clause-29",
+      "target": "clause-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-32",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-33",
+      "target": "clause-6",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
     },
     {
       "source": "obligation-33",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-34",
+      "target": "clause-19",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-34",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-35",
+      "target": "clause-18",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-35",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-36",
+      "target": "clause-19",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-36",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-37",
+      "target": "clause-26",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-37",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-38",
+      "target": "clause-26",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-38",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-39",
+      "target": "clause-28",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-39",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-40",
       "target": "clause-29",
       "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-40",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-41",
+      "target": "clause-29",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-41",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-42",
+      "target": "clause-29",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-42",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-43",
+      "target": "clause-29",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-43",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
       "evidence": "",
       "paragraphIds": []
     },
@@ -2456,7 +3076,28 @@
       "paragraphIds": []
     },
     {
+      "source": "prohibition-4",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
       "source": "prohibition-5",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-5",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-6",
       "target": "clause-9",
       "type": "is_part_of",
       "evidence": "",
@@ -2464,64 +3105,211 @@
     },
     {
       "source": "prohibition-6",
-      "target": "clause-10",
-      "type": "is_part_of",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "prohibition-7",
-      "target": "clause-11",
-      "type": "is_part_of",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "prohibition-8",
-      "target": "clause-12",
-      "type": "is_part_of",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "prohibition-9",
-      "target": "clause-13",
-      "type": "is_part_of",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "prohibition-10",
-      "target": "clause-27",
-      "type": "is_part_of",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "prohibition-11",
-      "target": "clause-27",
-      "type": "is_part_of",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "prohibition-11",
       "target": "party-1",
       "type": "assigns_obligation_to",
       "evidence": "",
       "paragraphIds": []
     },
     {
+      "source": "prohibition-7",
+      "target": "clause-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-7",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-8",
+      "target": "clause-10",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-8",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-9",
+      "target": "clause-10",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-9",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-10",
+      "target": "clause-11",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-10",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-11",
+      "target": "clause-11",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-11",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
       "source": "prohibition-12",
-      "target": "clause-29",
+      "target": "clause-12",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-12",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-13",
+      "target": "clause-12",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
     },
     {
       "source": "prohibition-13",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-14",
+      "target": "clause-13",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-14",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-15",
+      "target": "clause-13",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-15",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-16",
+      "target": "clause-27",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-17",
+      "target": "clause-27",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-17",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-18",
       "target": "clause-29",
       "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-18",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-19",
+      "target": "clause-29",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-19",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-20",
+      "target": "clause-29",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-20",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-21",
+      "target": "clause-29",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-21",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
       "evidence": "",
       "paragraphIds": []
     },
@@ -2561,50 +3349,50 @@
       "paragraphIds": []
     },
     {
-      "source": "clause-27",
+      "source": "clause-20",
       "target": "term-8",
       "type": "defines",
       "evidence": "",
       "paragraphIds": []
     },
     {
-      "source": "clause-27",
+      "source": "clause-29",
       "target": "term-9",
       "type": "defines",
       "evidence": "",
       "paragraphIds": []
     },
     {
-      "source": "clause-29",
-      "target": "term-10",
-      "type": "defines",
+      "source": "condition-1",
+      "target": "obligation-12",
+      "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
     },
     {
-      "source": "condition-1",
-      "target": "right-3",
+      "source": "condition-2",
+      "target": "obligation-7",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
     },
     {
       "source": "condition-3",
-      "target": "right-5",
+      "target": "obligation-20",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
     },
     {
       "source": "condition-4",
-      "target": "obligation-18",
+      "target": "obligation-22",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
     },
     {
       "source": "condition-5",
-      "target": "obligation-19",
+      "target": "obligation-23",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
@@ -2618,21 +3406,21 @@
     },
     {
       "source": "condition-7",
-      "target": "right-11",
+      "target": "right-8",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
     },
     {
       "source": "condition-8",
-      "target": "right-12",
+      "target": "right-9",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
     },
     {
       "source": "condition-9",
-      "target": "right-13",
+      "target": "right-11",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
@@ -2702,27 +3490,6 @@
     },
     {
       "source": "reference-9",
-      "target": "clause-20",
-      "type": "is_part_of",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "reference-10",
-      "target": "clause-20",
-      "type": "is_part_of",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "reference-11",
-      "target": "clause-20",
-      "type": "is_part_of",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "reference-12",
       "target": "clause-29",
       "type": "is_part_of",
       "evidence": "",
@@ -2730,7 +3497,7 @@
     },
     {
       "source": "value-1",
-      "target": "obligation-4",
+      "target": "obligation-10",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
@@ -2751,70 +3518,56 @@
     },
     {
       "source": "value-4",
-      "target": "obligation-13",
+      "target": "obligation-4",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
     },
     {
       "source": "value-5",
-      "target": "obligation-16",
-      "type": "is_part_of",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "value-6",
       "target": "obligation-18",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
     },
     {
-      "source": "value-7",
-      "target": "obligation-19",
-      "type": "is_part_of",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "value-8",
+      "source": "value-6",
       "target": "obligation-20",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
     },
     {
+      "source": "value-7",
+      "target": "obligation-24",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-8",
+      "target": "obligation-25",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
       "source": "value-9",
-      "target": "obligation-21",
+      "target": "obligation-27",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
     },
     {
       "source": "value-10",
-      "target": "clause-12",
-      "type": "is_part_of",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "value-11",
       "target": "clause-17",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
     },
     {
-      "source": "value-12",
-      "target": "right-9",
-      "type": "is_part_of",
-      "evidence": "",
-      "paragraphIds": []
-    },
-    {
-      "source": "value-13",
-      "target": "obligation-32",
+      "source": "value-11",
+      "target": "right-6",
       "type": "is_part_of",
       "evidence": "",
       "paragraphIds": []
@@ -2930,16 +3683,25 @@
       "source": "clause-3",
       "target": "term-2",
       "type": "uses",
-      "evidence": "Marketing Affiliate wishes to market the Services indirectly through third party programs, direct mail, Internet and both inbound and outbound telemarketing.",
+      "evidence": "Marketing Affiliate wishes to market the Services indirectly",
       "paragraphIds": [
         "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-9"
+      ]
+    },
+    {
+      "source": "right-3",
+      "target": "clause-7",
+      "type": "modifies",
+      "evidence": "Equidata reserves the right to increase the base cost of Services.",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-13"
       ]
     },
     {
       "source": "clause-5",
       "target": "term-4",
       "type": "uses",
-      "evidence": "disputed charge, defined as a non-payment of an invoice for which notice of dispute has been given in writing by Marketing Affiliate to Equidata",
+      "evidence": "In the case of disputed charge, defined as a non-payment of an invoice for which notice of dispute has been given in writing by Marketing Affiliate to Equidata",
       "paragraphIds": [
         "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-15"
       ]
@@ -2948,27 +3710,45 @@
       "source": "clause-6",
       "target": "term-5",
       "type": "uses",
-      "evidence": "Operational Specifications pertaining to the methodology and logistics of data transfer and database coordination",
+      "evidence": "Operational Specifications pertaining to the methodology and logistics of data transfer and database coordination.",
       "paragraphIds": [
         "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-21"
       ]
     },
     {
-      "source": "right-10",
-      "target": "clause-1",
-      "type": "modifies",
-      "evidence": "Upon Marketing Affiliate’s default in payment or other breach of this Agreement, Equidata may terminate this Agreement without notice to Marketing Affiliate.",
+      "source": "prohibition-16",
+      "target": "term-6",
+      "type": "uses",
+      "evidence": "The Receiving Party may not disclose or use the Disclosing Party’s Confidential and Proprietary Information",
       "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-33"
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-47"
       ]
     },
     {
-      "source": "right-12",
-      "target": "clause-2",
-      "type": "modifies",
-      "evidence": "if data is not voluntarily removed, Equidata reserves the right to use all available legal resources to force the removal of Equidata URL related data",
+      "source": "prohibition-16",
+      "target": "term-7",
+      "type": "uses",
+      "evidence": "The Receiving Party may not disclose or use the Disclosing Party’s Confidential and Proprietary Information",
       "paragraphIds": [
-        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-34"
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-47"
+      ]
+    },
+    {
+      "source": "prohibition-17",
+      "target": "term-7",
+      "type": "uses",
+      "evidence": "will not be used by Equidata in any manner other than as outlined herein.",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-47"
+      ]
+    },
+    {
+      "source": "right-11",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "if Experian, Equifax and/or TransUnion (Credit Reporting Agencies — CRAs) decline to render Services to Marketing Affiliate for any reason or if Equidata is notified by any of the CRAs to cease rendering Services to Marketing Affiliate.",
+      "paragraphIds": [
+        "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement-p-35"
       ]
     }
   ]

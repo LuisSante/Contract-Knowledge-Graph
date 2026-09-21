@@ -1,0 +1,47 @@
+{
+  "root_SteelVaultCorp_20081224_10-K_EX-10_16_3074935_EX-10_16_Affiliate_Agreement": [
+    {
+      "timestamp": "2026-09-21 13:53",
+      "kg": null,
+      "prompt": "v_0",
+      "prompt_sha": null,
+      "score": 35.0,
+      "indicators": {
+        "statements": 61,
+        "with_burden_party_%": 43,
+        "rights_with_burden_%": 0,
+        "bilateral_split_%": 0,
+        "breach_with_condition_%": 33,
+        "figures_with_value_%": 100,
+        "verbatim_ok_%": 100,
+        "model_edges_per_100_statements": 10,
+        "phantom_parties": 0,
+        "orphan_conditions": 1,
+        "dangling_refs": 0,
+        "illegal_edges": 0
+      },
+      "note": "transcrita de la sesión; el KG que la produjo fue sobrescrito y no es recomputable"
+    },
+    {
+      "timestamp": "2026-09-21 15:31",
+      "kg": "43016751c775",
+      "prompt": "v_1",
+      "prompt_sha": "126d29557c4e",
+      "score": 54.5,
+      "indicators": {
+        "statements": 83,
+        "with_burden_party_%": 84,
+        "rights_with_burden_%": 58,
+        "bilateral_split_%": 86,
+        "breach_with_condition_%": 50,
+        "figures_with_value_%": 80,
+        "verbatim_ok_%": 100,
+        "model_edges_per_100_statements": 11,
+        "phantom_parties": 0,
+        "orphan_conditions": 0,
+        "dangling_refs": 0,
+        "illegal_edges": 0
+      }
+    }
+  ]
+}

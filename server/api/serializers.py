@@ -50,6 +50,7 @@ class ExtractParagraphsResponseSerializer(serializers.Serializer):
     enabled = serializers.BooleanField()
     saved = serializers.IntegerField()
     path = serializers.CharField(required=False, allow_null=True)
+    tree = serializers.ListField(child=serializers.DictField(), required=False)
 
 
 # ---------------------------------------------------------------------------

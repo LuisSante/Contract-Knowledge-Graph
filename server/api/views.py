@@ -69,12 +69,13 @@ class ExtractParagraphsView(APIView):
                     "enabled": False,
                     "saved": 0,
                     "path": None,
+                    "tree": [],
                 }
             )
             return Response(response.data)
 
         paragraphs = build_paragraphs(payload["pages"], doc_id)
-        path = save_paragraphs_dump(doc_id, paragraphs, settings.PARAGRAPHS_OUTPUT_DIR)
+        path, tree = save_paragraphs_dump(doc_id, paragraphs, settings.PARAGRAPHS_OUTPUT_DIR)
 
         response = ExtractParagraphsResponseSerializer(
             {
@@ -83,6 +84,7 @@ class ExtractParagraphsView(APIView):
                 "enabled": True,
                 "saved": len(paragraphs),
                 "path": str(path),
+                "tree": tree,
             }
         )
         return Response(response.data)

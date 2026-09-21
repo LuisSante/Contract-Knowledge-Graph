@@ -104,16 +104,92 @@ def build_paragraphs(pages: list[dict], doc_id: str) -> list[dict]:
     return all_paragraphs_input
 
 
+SECTION_HEADING_RE = re.compile(
+    r"^\s*(?:(?:ARTICLE|Article|SECTION|Section)\s+)?(\d+(?:\.\d+){0,3})\s*([.)])?\s+(\S.*)$"
+)
+HEADING_PREVIEW_CHARS = 70
+
+
+def _accept_heading(text: str) -> tuple[str, str] | None:
+    """A numbered heading, or None. A bare number with no separator is rejected:
+    "30 days from the invoice date" opens a paragraph the same way "1. Term" does."""
+    match = SECTION_HEADING_RE.match(text)
+    if not match:
+        return None
+    ref, separator, rest = match.group(1), match.group(2), match.group(3)
+    if not separator and "." not in ref and not text.lstrip()[:1].isalpha():
+        return None
+    return ref, rest[:HEADING_PREVIEW_CHARS].strip()
+
+
+def _longest_numbering_run(headings: list[dict]) -> list[dict]:
+    """Recitals are numbered too, and their run collides with the sections'. Splitting
+    wherever the top-level number stops growing separates the two; the body is the longer."""
+    runs: list[list[dict]] = []
+    current: list[dict] = []
+    top = 0
+    for heading in headings:
+        head = int(heading["ref"].split(".")[0])
+        if current and "." not in heading["ref"] and head <= top:
+            runs.append(current)
+            current = []
+        current.append(heading)
+        if "." not in heading["ref"]:
+            top = head
+    if current:
+        runs.append(current)
+    return max(runs, key=len) if runs else []
+
+
+def build_clause_tree(paragraphs: list[dict]) -> list[dict]:
+    """Section hierarchy read off the numbering, with no model in the loop.
+
+    The KG carries the same tree in its `Clause` nodes, but that one costs a call and
+    varies between runs; this one is a function of the text, so chunking and navigation
+    can rely on it being the same every time.
+    """
+    headings: list[dict] = []
+    for row in paragraphs:
+        text = normalize_text(str(row.get("text") or ""))
+        accepted = _accept_heading(text)
+        if accepted:
+            ref, preview = accepted
+            headings.append(
+                {
+                    "ref": ref,
+                    "heading": preview,
+                    "level": ref.count(".") + 1,
+                    "paragraphId": row.get("id"),
+                    "children": [],
+                }
+            )
+
+    body = _longest_numbering_run(headings)
+    by_ref = {node["ref"]: node for node in body}
+    roots: list[dict] = []
+    for node in body:
+        parent_ref = node["ref"].rsplit(".", 1)[0] if "." in node["ref"] else None
+        parent = by_ref.get(parent_ref) if parent_ref else None
+        (parent["children"] if parent else roots).append(node)
+    return roots
+
+
 def _safe_filename(value: str) -> str:
     token = re.sub(r"[^a-zA-Z0-9_-]+", "_", (value or "").strip())
     token = re.sub(r"_+", "_", token).strip("_")
     return token or "unknown"
 
 
-def save_paragraphs_dump(doc_id: str, paragraphs: list[dict], output_dir: Path) -> Path:
+def save_paragraphs_dump(
+    doc_id: str, paragraphs: list[dict], output_dir: Path
+) -> tuple[Path, list[dict]]:
+    """Returns the dump path and the section tree stored in it, so the caller can hand
+    the frontend the same tree the extraction will chunk by."""
     output_dir.mkdir(parents=True, exist_ok=True)
+    tree = build_clause_tree(paragraphs)
     payload = {
         "documentId": doc_id,
+        "tree": tree,
         "paragraphs": [
             {
                 "id": row.get("id"),
@@ -128,7 +204,7 @@ def save_paragraphs_dump(doc_id: str, paragraphs: list[dict], output_dir: Path) 
     with path.open("w", encoding="utf-8") as handle:
         json.dump(payload, handle, ensure_ascii=False, indent=2)
     logger.info("Saved %d paragraphs to %s", len(payload["paragraphs"]), path)
-    return path
+    return path, tree
 
 
 def load_paragraphs_dump(doc_id: str, output_dir: Path) -> list[dict]:

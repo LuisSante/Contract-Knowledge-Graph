@@ -1,5 +1,9 @@
 import { api } from '@/lib/api';
-import type { Node as ParagraphNode, ParagraphEditState } from '@/types/document';
+import type {
+	ClauseTreeNode,
+	Node as ParagraphNode,
+	ParagraphEditState,
+} from '@/types/document';
 import { getNodeCurrentText } from '@/features/docx/utils/edit';
 
 function buildProcessPages(
@@ -23,14 +27,17 @@ function buildProcessPages(
 		.map(([pageNumber, elements]) => ({ pageNumber, elements }));
 }
 
-/** Persist the rendered paragraphs server-side; the KG build reads this dump. */
+/** Persist the rendered paragraphs server-side; the KG build reads this dump.
+ *  Returns the section tree the server derived from them, so navigation and the
+ *  chunking that feeds extraction read the same structure. */
 export async function extractParagraphs(
 	docId: string,
 	nodesSnapshot: ParagraphNode[],
 	nodeEditStateById: Map<string, ParagraphEditState>
-): Promise<void> {
-	await api.post('/extract_paragraphs', {
+): Promise<ClauseTreeNode[]> {
+	const response = await api.post('/extract_paragraphs', {
 		documentId: docId,
 		pages: buildProcessPages(nodesSnapshot, nodeEditStateById),
 	});
+	return response.data?.tree ?? [];
 }

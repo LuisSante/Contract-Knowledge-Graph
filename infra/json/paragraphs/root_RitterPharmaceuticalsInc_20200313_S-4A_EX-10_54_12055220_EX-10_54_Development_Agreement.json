@@ -1,5 +1,962 @@
 {
   "documentId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement",
+  "tree": [
+    {
+      "ref": "1",
+      "heading": "Definitions",
+      "level": 1,
+      "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-8",
+      "children": [
+        {
+          "ref": "1.1",
+          "heading": "Adverse Event shall mean an incident in which the Product was alleged",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-9",
+          "children": []
+        },
+        {
+          "ref": "1.2",
+          "heading": "Affiliate shall mean, (i) with respect to Qualigen, any corporation or",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-10",
+          "children": []
+        },
+        {
+          "ref": "1.3",
+          "heading": "Applicable Markets shall mean the United States, Canada, the European",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-11",
+          "children": []
+        },
+        {
+          "ref": "1.4",
+          "heading": "Available Margin is defined on Exhibit A.",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-12",
+          "children": []
+        },
+        {
+          "ref": "1.5",
+          "heading": "Business Plan shall mean the business plan attached as Exhibit B heret",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-13",
+          "children": []
+        },
+        {
+          "ref": "1.6",
+          "heading": "COGS is defined on Exhibit A.",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-14",
+          "children": []
+        },
+        {
+          "ref": "1.7",
+          "heading": "Competent Authority shall mean the governmental authority in a member",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-16",
+          "children": []
+        },
+        {
+          "ref": "1.8",
+          "heading": "Development Plan shall mean the development plan attached as Exhibit C",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-17",
+          "children": []
+        },
+        {
+          "ref": "1.9",
+          "heading": "Effective Date shall mean May 1, 2016.",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-18",
+          "children": []
+        },
+        {
+          "ref": "1.10",
+          "heading": "European Union shall mean the countries in Europe that are under the C",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-19",
+          "children": []
+        },
+        {
+          "ref": "1.11",
+          "heading": "Exclusivity Period shall mean the period from the Effective Date until",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-20",
+          "children": []
+        },
+        {
+          "ref": "1.12",
+          "heading": "FDA shall mean the U.S. Food and Drug Administration or any successor",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-21",
+          "children": []
+        },
+        {
+          "ref": "1.13",
+          "heading": "Health Canada shall mean the department of the government of Canada wi",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-22",
+          "children": []
+        },
+        {
+          "ref": "1.14",
+          "heading": "Intellectual Property Rights means all intellectual property rights in",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-23",
+          "children": []
+        },
+        {
+          "ref": "1.15",
+          "heading": "Net Revenue is defined on Exhibit A.",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-24",
+          "children": []
+        },
+        {
+          "ref": "1.16",
+          "heading": "Patent Rights means all patents, patent applications and inventions on",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-25",
+          "children": []
+        },
+        {
+          "ref": "1.17",
+          "heading": "Potentially Serious Complaint shall mean any information coming to the",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-26",
+          "children": []
+        },
+        {
+          "ref": "1.18",
+          "heading": "Products shall mean all of Qualigen’s current and future products, inc",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-27",
+          "children": []
+        },
+        {
+          "ref": "1.19",
+          "heading": "Qualigen Retained Customers shall mean certain of Qualigen’s existing",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-28",
+          "children": []
+        },
+        {
+          "ref": "1.20",
+          "heading": "Regulatory Approval shall mean the approval of the applicable Regulato",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-29",
+          "children": []
+        },
+        {
+          "ref": "1.21",
+          "heading": "Regulatory Authorities shall mean the FDA, each Competent Authority, H",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-32",
+          "children": []
+        },
+        {
+          "ref": "1.22",
+          "heading": "Revenue Affiliate shall mean any entity of which Sekisui has the direc",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-33",
+          "children": []
+        },
+        {
+          "ref": "1.23",
+          "heading": "Sale Transaction shall mean (i) any transaction in which Qualigen, Qua",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-34",
+          "children": []
+        },
+        {
+          "ref": "1.24",
+          "heading": "Serious Incident shall mean an incident involving the Products, which",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-35",
+          "children": []
+        },
+        {
+          "ref": "1.25",
+          "heading": "Territory shall mean worldwide excluding Qualigen Retained Customers.",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-36",
+          "children": []
+        },
+        {
+          "ref": "1.26",
+          "heading": "Third Party shall mean a party other than Sekisui or Qualigen or any A",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-37",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "2",
+      "heading": "Appointment and Term",
+      "level": 1,
+      "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-38",
+      "children": [
+        {
+          "ref": "2.1",
+          "heading": "Appointment. Qualigen hereby appoints Sekisui, and Sekisui accepts the",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-39",
+          "children": []
+        },
+        {
+          "ref": "2.2",
+          "heading": "Term. The initial term of this Agreement shall commence on the Effecti",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-40",
+          "children": []
+        },
+        {
+          "ref": "2.3",
+          "heading": "Customer Product Rentals. All instruments placed with customers under",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-43",
+          "children": []
+        },
+        {
+          "ref": "2.4",
+          "heading": "Qualigen Retained Customers. In addition to the retention of the Quali",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-44",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "3",
+      "heading": "Supply; Orders",
+      "level": 1,
+      "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-45",
+      "children": [
+        {
+          "ref": "3.1",
+          "heading": "Supply. Qualigen shall supply Sekisui with all of Sekisui’s commercial",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-46",
+          "children": []
+        },
+        {
+          "ref": "3.2",
+          "heading": "Forecast. Sekisui shall submit to Qualigen by the fifth day of each ca",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-48",
+          "children": []
+        },
+        {
+          "ref": "3.3",
+          "heading": "Orders. Orders shall be processed as set forth in Exhibit F. Each purc",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-51",
+          "children": []
+        },
+        {
+          "ref": "3.3",
+          "heading": "Qualigen agrees to accept such “preprinted” term. Similarly, Qualigen",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-52",
+          "children": []
+        },
+        {
+          "ref": "3.4",
+          "heading": "Product Records. Qualigen shall test or cause to be tested each lot of",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-53",
+          "children": []
+        },
+        {
+          "ref": "3.5",
+          "heading": "No Alterations or Mishandling. Sekisui shall not, and shall also cause",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-54",
+          "children": []
+        },
+        {
+          "ref": "3.6",
+          "heading": "Packaging and Labeling. The Products shall be delivered by Qualigen, a",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-55",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "4",
+      "heading": "Price, Shipment and Payment",
+      "level": 1,
+      "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-59",
+      "children": [
+        {
+          "ref": "4.1",
+          "heading": "Price. The price that Sekisui shall pay for the Products shall be esta",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-60",
+          "children": []
+        },
+        {
+          "ref": "4.2",
+          "heading": "Shipment. The shipment of orders to Sekisui’s customers shall be subje",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-62",
+          "children": []
+        },
+        {
+          "ref": "4.3",
+          "heading": "Delivery Terms. Qualigen shall deliver Products ordered by Sekisui, FC",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-63",
+          "children": []
+        },
+        {
+          "ref": "4.4",
+          "heading": "Sales Expense; Business Plan. For the avoidance of doubt, Sekisui shal",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-66",
+          "children": []
+        },
+        {
+          "ref": "4.5",
+          "heading": "Financing Payments; Development Plan. In addition to the payments for",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-67",
+          "children": []
+        },
+        {
+          "ref": "4.6",
+          "heading": "Personnel Matters. Sekisui shall offer employment to four Qualigen sal",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-68",
+          "children": []
+        },
+        {
+          "ref": "4.7",
+          "heading": "Invoice Terms. Sekisui shall pay for each Product sold by Qualigen wit",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-69",
+          "children": []
+        },
+        {
+          "ref": "4.8",
+          "heading": "Marketing Claims. Sekisui covenants to Qualigen that Sekisui will not",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-70",
+          "children": []
+        },
+        {
+          "ref": "4.9",
+          "heading": "Taxes. Qualigen’s stated Product prices do not include any foreign, fe",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-73",
+          "children": [
+            {
+              "ref": "4.9.1",
+              "heading": "Medical Device Tax. The party responsible for paying any applicable me",
+              "level": 3,
+              "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-74",
+              "children": []
+            }
+          ]
+        },
+        {
+          "ref": "4.10",
+          "heading": "Interest. Accrual and payment of interest shall not be deemed to excus",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-76",
+          "children": []
+        },
+        {
+          "ref": "4.11",
+          "heading": "Currency. All invoices under this Agreement shall be paid in United St",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-77",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "5",
+      "heading": "Manufacturing and Quality Assurance",
+      "level": 1,
+      "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-78",
+      "children": [
+        {
+          "ref": "5.1",
+          "heading": "Manufacturing Conformance. Qualigen represents and warrants that it sh",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-79",
+          "children": []
+        },
+        {
+          "ref": "5.2",
+          "heading": "Manufacturing Changes. Qualigen shall notify Sekisui in writing no les",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-81",
+          "children": []
+        },
+        {
+          "ref": "5.3",
+          "heading": "Manufacturing Site. During the Term, Qualigen shall manufacture all Pr",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-82",
+          "children": []
+        },
+        {
+          "ref": "5.4",
+          "heading": "Approved Supplier. It is acknowledged that Qualigen is an “Approved Su",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-85",
+          "children": []
+        },
+        {
+          "ref": "5.5",
+          "heading": "Technical Support. Qualigen shall provide to Sekisui and its customers",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-86",
+          "children": []
+        },
+        {
+          "ref": "5.6",
+          "heading": "Trade Compliance. Upon execution of this Agreement, Qualigen, with Sek",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-87",
+          "children": []
+        },
+        {
+          "ref": "5.7",
+          "heading": "REACH and RoHS Compliance. If any Product supplied by Qualigen is manu",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-91",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "6",
+      "heading": "Management Committee",
+      "level": 1,
+      "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-92",
+      "children": [
+        {
+          "ref": "6.1",
+          "heading": "Management Committee. Each Party shall, within five (5) business days",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-93",
+          "children": []
+        },
+        {
+          "ref": "6.2",
+          "heading": "Meetings. The Management Committee shall be responsible for: (A) meeti",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-96",
+          "children": []
+        },
+        {
+          "ref": "6.3",
+          "heading": "R&D Subcommittee. The Management Committee shall also organize researc",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-97",
+          "children": []
+        },
+        {
+          "ref": "6.4",
+          "heading": "Quality Subcommittee. The Management Committee may also organize quali",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-98",
+          "children": []
+        },
+        {
+          "ref": "6.5",
+          "heading": "Other Subcommittees. The Management Committee may establish other subc",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-99",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "7",
+      "heading": "Information Rights",
+      "level": 1,
+      "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-100",
+      "children": [
+        {
+          "ref": "7.1",
+          "heading": "Development Plan. Qualigen shall maintain complete and accurate record",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-101",
+          "children": []
+        },
+        {
+          "ref": "7.2",
+          "heading": "Delivery of Financial Statements and Other Information. Qualigen shall",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-102",
+          "children": [
+            {
+              "ref": "7.2.1",
+              "heading": "as soon as practicable, but in any event within one-hundred eighty (18",
+              "level": 3,
+              "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-103",
+              "children": []
+            },
+            {
+              "ref": "7.2.2",
+              "heading": "as soon as practicable, but in any event within thirty (30) days after",
+              "level": 3,
+              "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-104",
+              "children": []
+            },
+            {
+              "ref": "7.2.3",
+              "heading": "as soon as practicable, but in any event within thirty (30) days of th",
+              "level": 3,
+              "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-107",
+              "children": []
+            },
+            {
+              "ref": "7.2.4",
+              "heading": "as soon as practicable, but in any event within forty five (45) days a",
+              "level": 3,
+              "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-108",
+              "children": []
+            },
+            {
+              "ref": "7.2.5",
+              "heading": "as soon as practicable, but in any event no later than sixty (60) days",
+              "level": 3,
+              "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-109",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ref": "8",
+      "heading": "Intellectual Property Rights",
+      "level": 1,
+      "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-110",
+      "children": [
+        {
+          "ref": "8.1",
+          "heading": "Background Intellectual Property Rights. Each Party shall own and reta",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-111",
+          "children": []
+        },
+        {
+          "ref": "8.2",
+          "heading": "Development Plan Intellectual Property Rights. Except as set forth in",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-112",
+          "children": []
+        },
+        {
+          "ref": "8.3",
+          "heading": "Prosecution and Enforcement of Development IP. Except as set forth bel",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-113",
+          "children": []
+        },
+        {
+          "ref": "8.4",
+          "heading": "Marks. During and after the Term, neither Party shall register, use or",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-116",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "9",
+      "heading": "Sale Transaction",
+      "level": 1,
+      "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-117",
+      "children": [
+        {
+          "ref": "9.1",
+          "heading": "Exclusivity Period. The parties anticipate that they will entertain a",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-118",
+          "children": []
+        },
+        {
+          "ref": "9.2",
+          "heading": "Negotiation Period. No later than July 1, 2018 (and sooner upon Sekisu",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-119",
+          "children": []
+        },
+        {
+          "ref": "9.3",
+          "heading": "Right of First Refusal. During the Term, Sekisui shall have a right of",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-120",
+          "children": []
+        },
+        {
+          "ref": "9.4",
+          "heading": "Penalty for Breach. In the event of any breach of Sections 9.1 through",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-125",
+          "children": []
+        },
+        {
+          "ref": "9.5",
+          "heading": "Molecular Clinical Diagnostics. In furtherance of the foregoing, durin",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-126",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "10",
+      "heading": "Representations and Warranties",
+      "level": 1,
+      "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-127",
+      "children": [
+        {
+          "ref": "10.1",
+          "heading": "By Qualigen. Qualigen hereby represents, warrants and covenants that:",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-128",
+          "children": []
+        },
+        {
+          "ref": "10.2",
+          "heading": "By Sekisui. Sekisui represents, warrants and covenants that:",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-139",
+          "children": []
+        },
+        {
+          "ref": "10.3",
+          "heading": "No Implied Warranties. The express warranties set forth in this Sectio",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-148",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "11",
+      "heading": "Indemnities",
+      "level": 1,
+      "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-150",
+      "children": [
+        {
+          "ref": "11.1",
+          "heading": "Indemnification by Sekisui. Sekisui shall indemnify, defend and hold h",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-151",
+          "children": []
+        },
+        {
+          "ref": "11.2",
+          "heading": "Indemnification by Qualigen. Qualigen shall indemnify, defend and hold",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-152",
+          "children": []
+        },
+        {
+          "ref": "11.3",
+          "heading": "Patent Indemnity. Qualigen and Sekisui shall notify each other promptl",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-155",
+          "children": []
+        },
+        {
+          "ref": "11.4",
+          "heading": "Indemnification Procedures. The Party or other Indemnitee intending to",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-156",
+          "children": []
+        },
+        {
+          "ref": "11.5",
+          "heading": "Expenses of Enforcement. As the Parties intend complete indemnificatio",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-160",
+          "children": []
+        },
+        {
+          "ref": "11.6",
+          "heading": "Insurance. Qualigen, at its own expense, shall procure and maintain du",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-161",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "12",
+      "heading": "Regulatory Matters",
+      "level": 1,
+      "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-172",
+      "children": [
+        {
+          "ref": "12.1",
+          "heading": "Regulatory Approval. Qualigen shall be responsible for maintaining, at",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-173",
+          "children": []
+        },
+        {
+          "ref": "12.2",
+          "heading": "Distribution Approvals. Sekisui shall be responsible for seeking, obta",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-176",
+          "children": []
+        },
+        {
+          "ref": "12.3",
+          "heading": "Communication With Agencies. In the Applicable Markets, Qualigen shall",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-177",
+          "children": []
+        },
+        {
+          "ref": "12.4",
+          "heading": "Governmental Warnings. Each Party shall advise the other Party promptl",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-178",
+          "children": []
+        },
+        {
+          "ref": "12.5",
+          "heading": "Adverse Events, Recalls and Field Corrections. Qualigen shall have res",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-179",
+          "children": []
+        },
+        {
+          "ref": "12.6",
+          "heading": "Complaints. Qualigen shall receive, investigate in a timely manner, an",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-180",
+          "children": []
+        },
+        {
+          "ref": "12.7",
+          "heading": "Product Recalls. In the event that (i) any Applicable Market governmen",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-183",
+          "children": []
+        },
+        {
+          "ref": "12.8",
+          "heading": "European Union Vigilance and Canada Mandatory Problem Reporting. In th",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-184",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "13",
+      "heading": "Confidential Information; Audit Rights",
+      "level": 1,
+      "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-187",
+      "children": [
+        {
+          "ref": "13.1",
+          "heading": "Confidentiality Obligation. It is contemplated that in the course of t",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-188",
+          "children": []
+        },
+        {
+          "ref": "13.2",
+          "heading": "Use of Names. During the Term, Sekisui is hereby permitted to use the",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-201",
+          "children": []
+        },
+        {
+          "ref": "13.3",
+          "heading": "Press Releases. Neither Party shall make any press release or other si",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-202",
+          "children": []
+        },
+        {
+          "ref": "13.4",
+          "heading": "Audit Rights. Each Party shall keep accurate books and records in suff",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-203",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "14",
+      "heading": "Termination",
+      "level": 1,
+      "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-206",
+      "children": [
+        {
+          "ref": "14.1",
+          "heading": "Termination by Either Party. Either Party may terminate this Agreement",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-207",
+          "children": []
+        },
+        {
+          "ref": "14.2",
+          "heading": "Termination by Qualigen. Qualigen may terminate this Agreement (i) upo",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-208",
+          "children": []
+        },
+        {
+          "ref": "14.3",
+          "heading": "Termination by Sekisui. Sekisui may terminate this Agreement upon prio",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-209",
+          "children": []
+        },
+        {
+          "ref": "14.4",
+          "heading": "Effect of Termination. Sections 4.6, 5.5, 8.1, 8.2, 11.1-11.4, 13, 14.",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-210",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "15",
+      "heading": "Miscellaneous",
+      "level": 1,
+      "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-213",
+      "children": [
+        {
+          "ref": "15.1",
+          "heading": "Independent Contractor. For the purpose of the Agreement each Party sh",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-214",
+          "children": []
+        },
+        {
+          "ref": "15.2",
+          "heading": "Assignment. The Agreement shall not be assigned and is not assignable",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-215",
+          "children": []
+        },
+        {
+          "ref": "15.3",
+          "heading": "No Waiver. Failure of either Party to enforce (or reasonable delay in",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-216",
+          "children": []
+        },
+        {
+          "ref": "15.4",
+          "heading": "Severability. This Agreement is divisible and separable. If any provis",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-217",
+          "children": []
+        },
+        {
+          "ref": "15.5",
+          "heading": "Notices. All notices required or permitted under this Agreement shall",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-218",
+          "children": []
+        },
+        {
+          "ref": "15.6",
+          "heading": "Entire Agreement and Modification. The Agreement, including the Exhibi",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-241",
+          "children": []
+        },
+        {
+          "ref": "15.7",
+          "heading": "Governing Law. This Agreement shall be governed by, and construed and",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-242",
+          "children": []
+        },
+        {
+          "ref": "15.8",
+          "heading": "Attorney Fees. If litigation becomes necessary to enforce the provisio",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-243",
+          "children": []
+        },
+        {
+          "ref": "15.9",
+          "heading": "Headings. The headings contained in this Agreement are for reference p",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-246",
+          "children": []
+        },
+        {
+          "ref": "15.10",
+          "heading": "Counterparts; Delivery. This Agreement may be executed in one or more",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-247",
+          "children": []
+        },
+        {
+          "ref": "15.11",
+          "heading": "Further Assurances. Each Party covenants and agrees to, without the ne",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-248",
+          "children": []
+        },
+        {
+          "ref": "15.12",
+          "heading": "Force Majeure. No Party shall be liable to any other Party or be deeme",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-249",
+          "children": []
+        },
+        {
+          "ref": "15.13",
+          "heading": "Equitable Relief. Each Party recognizes that the covenants and agreeme",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-250",
+          "children": []
+        },
+        {
+          "ref": "15.14",
+          "heading": "Rights and Remedies are Cumulative. Except to the extent as may be exp",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-251",
+          "children": []
+        },
+        {
+          "ref": "15.15",
+          "heading": "Third Party Beneficiaries. Except as expressly set forth in Section 11",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-254",
+          "children": []
+        },
+        {
+          "ref": "15.16",
+          "heading": "No Implied License. No right or license is granted to Sekisui by impli",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-255",
+          "children": []
+        },
+        {
+          "ref": "15.17",
+          "heading": "Exhibits. The Exhibits referred to in the Agreement are deemed incorpo",
+          "level": 2,
+          "paragraphId": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-256",
+          "children": []
+        }
+      ]
+    }
+  ],
   "paragraphs": [
     {
       "id": "root::RitterPharmaceuticalsInc_20200313_S-4A_EX-10.54_12055220_EX-10.54_Development Agreement-p-3",

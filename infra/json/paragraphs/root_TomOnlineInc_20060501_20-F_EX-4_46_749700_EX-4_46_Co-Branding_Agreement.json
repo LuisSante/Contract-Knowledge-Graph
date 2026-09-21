@@ -1,5 +1,1226 @@
 {
   "documentId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement",
+  "tree": [
+    {
+      "ref": "1",
+      "heading": "DEFINITIONS",
+      "level": 1,
+      "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-20",
+      "children": [
+        {
+          "ref": "1.1",
+          "heading": "“Adjusted Net Revenue” means Gross Revenue less Direct Expenses.",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-22",
+          "children": []
+        },
+        {
+          "ref": "1.2",
+          "heading": "“Affiliate” means in relation to any Person, any Subsidiary or Holding",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-23",
+          "children": []
+        },
+        {
+          "ref": "1.3",
+          "heading": "“Affiliate Program” means a marketing and/or advertising affiliate pro",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-24",
+          "children": []
+        },
+        {
+          "ref": "1.4",
+          "heading": "“Code” means the existing proprietary computer software of any Party o",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-25",
+          "children": []
+        },
+        {
+          "ref": "1.5",
+          "heading": "“Company-Skype Branded Application” means a customized version of the",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-26",
+          "children": []
+        },
+        {
+          "ref": "1.6",
+          "heading": "“Company-Skype Branded Content” means the combined content and brandin",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-27",
+          "children": []
+        },
+        {
+          "ref": "1.7",
+          "heading": "“Company-Skype Branded Customer” means all subscribers, users or other",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-28",
+          "children": []
+        },
+        {
+          "ref": "1.8",
+          "heading": "“Company-Skype Branded Web Site” means the set of Web Pages, initially",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-31",
+          "children": []
+        },
+        {
+          "ref": "1.9",
+          "heading": "“Company-Skype Toolbar” means the Skype Toolbar made available and/or",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-32",
+          "children": []
+        },
+        {
+          "ref": "1.10",
+          "heading": "“Confidential Information” shall have the meaning set forth in Section",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-33",
+          "children": []
+        },
+        {
+          "ref": "1.11",
+          "heading": "“Consumer” means, in relation to a product or service or market for a",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-34",
+          "children": []
+        },
+        {
+          "ref": "1.12",
+          "heading": "“Control” means, with respect to any Person, the possession, directly",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-35",
+          "children": []
+        },
+        {
+          "ref": "1.13",
+          "heading": "“Customers” means all subscribers, users or other customers procured b",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-36",
+          "children": []
+        },
+        {
+          "ref": "1.14",
+          "heading": "“Deliverable” means an item specified in the “Deliverables” portion of",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-37",
+          "children": []
+        },
+        {
+          "ref": "1.15",
+          "heading": "“Direct Expenses” means only those direct expenses set forth below tha",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-38",
+          "children": []
+        },
+        {
+          "ref": "1.16",
+          "heading": "“Gross Revenue” means any and all revenue actually received and collec",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-49",
+          "children": []
+        },
+        {
+          "ref": "1.17",
+          "heading": "“Group” means the Company and its Subsidiaries.",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-50",
+          "children": []
+        },
+        {
+          "ref": "1.18",
+          "heading": "“HTML” means the series of commands for formatting Web Pages known as",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-51",
+          "children": []
+        },
+        {
+          "ref": "1.19",
+          "heading": "“Improvement” means any invention, modification, addition, derivative",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-52",
+          "children": []
+        },
+        {
+          "ref": "1.20",
+          "heading": "“Indemnified Party” means the Party claiming indemnification under Sec",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-53",
+          "children": []
+        },
+        {
+          "ref": "1.21",
+          "heading": "“Indemnifying Party” means the Party liable to indemnify the Indemnifi",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-54",
+          "children": []
+        },
+        {
+          "ref": "1.22",
+          "heading": "“Intellectual Property” means, in the case of Skype, the Skype Intelle",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-55",
+          "children": []
+        },
+        {
+          "ref": "1.23",
+          "heading": "“Internet” means the world-wide network of computers commonly understo",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-56",
+          "children": []
+        },
+        {
+          "ref": "1.24",
+          "heading": "“Link” means a hypertext link directly between Web Pages on the World",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-57",
+          "children": []
+        },
+        {
+          "ref": "1.25",
+          "heading": "“Look and Feel” means the general appearance and functionality of any",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-58",
+          "children": []
+        },
+        {
+          "ref": "1.26",
+          "heading": "“Online BVI Brand Features” means the trade marks, trade names, servic",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-59",
+          "children": []
+        },
+        {
+          "ref": "1.27",
+          "heading": "“Online BVI Intellectual Property” means all Online BVI Brand Features",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-62",
+          "children": []
+        },
+        {
+          "ref": "1.28",
+          "heading": "“Online BVI Web Site” means www.tom.com and any other “*.tom.com” Web",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-63",
+          "children": []
+        },
+        {
+          "ref": "1.29",
+          "heading": "“Online Group” means Tom Holding and its Subsidiaries (other than the",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-64",
+          "children": []
+        },
+        {
+          "ref": "1.30",
+          "heading": "“Person” means any individual, company (whether general or limited), l",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-65",
+          "children": []
+        },
+        {
+          "ref": "1.31",
+          "heading": "“PRC” or “Territory” means the People’s Republic of China (excluding t",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-66",
+          "children": []
+        },
+        {
+          "ref": "1.32",
+          "heading": "“Primarily PRC Based Service Provider” means a service provider having",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-67",
+          "children": []
+        },
+        {
+          "ref": "1.33",
+          "heading": "“Services” means those services specified in the “General Description",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-68",
+          "children": []
+        },
+        {
+          "ref": "1.34",
+          "heading": "“Skype API” means application program interface consisting of the set",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-69",
+          "children": []
+        },
+        {
+          "ref": "1.35",
+          "heading": "“Skype Brand Features” means the trade marks, trade names, service mar",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-70",
+          "children": []
+        },
+        {
+          "ref": "1.36",
+          "heading": "“Skype Group” means Skype Holding and its subsidiaries.",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-71",
+          "children": []
+        },
+        {
+          "ref": "1.37",
+          "heading": "“Skype Intellectual Property” means all Skype Brand Features, Skype So",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-72",
+          "children": []
+        },
+        {
+          "ref": "1.38",
+          "heading": "“Skype Parties” means Skype and Skype Holding and “Skype Party” means",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-75",
+          "children": []
+        },
+        {
+          "ref": "1.39",
+          "heading": "“Skype Plus” means any Skype Toolbar (or similar Skype product), if an",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-76",
+          "children": []
+        },
+        {
+          "ref": "1.40",
+          "heading": "“Skype Policies” means the guidelines and policies provided by Skype t",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-77",
+          "children": []
+        },
+        {
+          "ref": "1.41",
+          "heading": "“Skype Software” means the proprietary communication software product",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-78",
+          "children": []
+        },
+        {
+          "ref": "1.42",
+          "heading": "“Skype Toolbar” means a proprietary software product, distributed by S",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-79",
+          "children": []
+        },
+        {
+          "ref": "1.43",
+          "heading": "“Skype Zones” means the proprietary software product entitled “Skype Z",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-80",
+          "children": []
+        },
+        {
+          "ref": "1.44",
+          "heading": "“SkypeIn” means a feature of the Skype Software which allows a user of",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-81",
+          "children": []
+        },
+        {
+          "ref": "1.45",
+          "heading": "“SkypeOut” means a feature of the Skype Software which allows a user o",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-84",
+          "children": []
+        },
+        {
+          "ref": "1.46",
+          "heading": "“Statement” shall have the meaning set forth in Section 5.3.1 herein.",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-85",
+          "children": []
+        },
+        {
+          "ref": "1.47",
+          "heading": "“Statement of Work” means each sequentially numbered document executed",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-86",
+          "children": []
+        },
+        {
+          "ref": "1.48",
+          "heading": "“Subsidiary” and “Holding Company” each have the meaning set out in Se",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-87",
+          "children": []
+        },
+        {
+          "ref": "1.49",
+          "heading": "“Term” shall have the meaning set forth in Section 6.1 herein.",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-88",
+          "children": []
+        },
+        {
+          "ref": "1.50",
+          "heading": "“Third Party Affiliate Partner” shall have the meaning set forth in Se",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-89",
+          "children": []
+        },
+        {
+          "ref": "1.51",
+          "heading": "“Tom Parties” means Online BVI and Tom Holding and “Tom Party” means a",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-90",
+          "children": []
+        },
+        {
+          "ref": "1.52",
+          "heading": "“Transaction Documents” means this Agreement, the Deed and any other a",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-91",
+          "children": []
+        },
+        {
+          "ref": "1.53",
+          "heading": "“Web Browser” means third party software designed to allow interactive",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-92",
+          "children": []
+        },
+        {
+          "ref": "1.54",
+          "heading": "“Web Page” means a document or file that is formatted using HTML, Java",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-93",
+          "children": []
+        },
+        {
+          "ref": "1.55",
+          "heading": "“Web Site” means a group of related HTML documents and associated file",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-94",
+          "children": []
+        },
+        {
+          "ref": "1.56",
+          "heading": "“World Wide Web” means all of the Web Pages that are accessible to a t",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-97",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "2",
+      "heading": "COMPANY-SKYPE BRANDED APPLICATION, COMPANY-SKYPE BRANDED WEB SITE and",
+      "level": 1,
+      "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-99",
+      "children": [
+        {
+          "ref": "2.1",
+          "heading": "Company-Skype Branded Application. At its sole cost, Skype shall desig",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-100",
+          "children": []
+        },
+        {
+          "ref": "2.2",
+          "heading": "Company-Skype Branded Web Site. The Company will, and Online BVI will",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-101",
+          "children": []
+        },
+        {
+          "ref": "2.3",
+          "heading": "Promotions.",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-104",
+          "children": [
+            {
+              "ref": "2.3.1",
+              "heading": "The Company will, and Online BVI will cause the Company to, use its co",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-105",
+              "children": []
+            },
+            {
+              "ref": "2.3.2",
+              "heading": "Notwithstanding anything herein to the contrary, the Parties agree tha",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-106",
+              "children": []
+            }
+          ]
+        },
+        {
+          "ref": "2.4",
+          "heading": "Customer Support.",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-108",
+          "children": [
+            {
+              "ref": "2.4.1",
+              "heading": "During the Term, each of Online BVI and the Company, on the one hand,",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-109",
+              "children": []
+            },
+            {
+              "ref": "2.4.2",
+              "heading": "The Company shall be responsible for, and Online BVI shall cause the C",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-110",
+              "children": []
+            },
+            {
+              "ref": "2.4.3",
+              "heading": "In the event any Party has a major service fault, they will inform the",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-111",
+              "children": []
+            }
+          ]
+        },
+        {
+          "ref": "2.5",
+          "heading": "Payment Methods. The Company will, and Online BVI will cause the Compa",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-114",
+          "children": []
+        },
+        {
+          "ref": "2.6",
+          "heading": "Support Information. Should Online BVI or Company at any time develop",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-115",
+          "children": []
+        },
+        {
+          "ref": "2.7",
+          "heading": "Look and Feel. Subject to the express terms contained in any Statement",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-116",
+          "children": []
+        },
+        {
+          "ref": "2.8",
+          "heading": "Skype EULA. Each of Online BVI and the Company acknowledges and agrees",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-117",
+          "children": []
+        },
+        {
+          "ref": "2.9",
+          "heading": "Compliance with Laws. To the extent practicable and not otherwise adve",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-118",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "3",
+      "heading": "PUBLIC ANNOUNCEMENTS",
+      "level": 1,
+      "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-121",
+      "children": []
+    },
+    {
+      "ref": "4",
+      "heading": "PROPRIETARY RIGHTS & LICENSE GRANTS",
+      "level": 1,
+      "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-124",
+      "children": [
+        {
+          "ref": "4.1",
+          "heading": "Licenses.",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-125",
+          "children": [
+            {
+              "ref": "4.1.1",
+              "heading": "Skype License. Subject to the terms and conditions of this Agreement,",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-126",
+              "children": []
+            },
+            {
+              "ref": "4.1.2",
+              "heading": "Company License. Subject to the terms and conditions of this Agreement",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-127",
+              "children": [
+                {
+                  "ref": "4.1.2.1",
+                  "heading": "Skype hereby grants to Online BVI and the Company a limited, non-exclu",
+                  "level": 4,
+                  "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-128",
+                  "children": []
+                },
+                {
+                  "ref": "4.1.2.2",
+                  "heading": "Notwithstanding the foregoing, upon the prior written approval of Skyp",
+                  "level": 4,
+                  "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-131",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "ref": "4.1.3",
+              "heading": "Restrictions. Each Party may only use the Intellectual Property of the",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-132",
+              "children": [
+                {
+                  "ref": "4.1.3.1",
+                  "heading": "Except as provided herein, no member of the Online Group or the Group",
+                  "level": 4,
+                  "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-133",
+                  "children": []
+                },
+                {
+                  "ref": "4.1.3.2",
+                  "heading": "Except as provided herein, no member of the Skype Group or the Group m",
+                  "level": 4,
+                  "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-135",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "ref": "4.1.4",
+              "heading": "Reservation of Rights. Each Party does not grant, and hereby expressly",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-136",
+              "children": []
+            }
+          ]
+        },
+        {
+          "ref": "4.2",
+          "heading": "Ownership.",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-138",
+          "children": [
+            {
+              "ref": "4.2.1",
+              "heading": "Skype Intellectual Property. Each of Online BVI and the Company acknow",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-139",
+              "children": []
+            },
+            {
+              "ref": "4.2.2",
+              "heading": "Online BVI Intellectual Property. Each of Skype and the Company acknow",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-142",
+              "children": []
+            },
+            {
+              "ref": "4.2.3",
+              "heading": "Improvements; Jointly Created Intellectual Property.",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-143",
+              "children": [
+                {
+                  "ref": "4.2.3.1",
+                  "heading": "Each of Online BVI and the Company acknowledges and agrees that Skype",
+                  "level": 4,
+                  "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-144",
+                  "children": []
+                },
+                {
+                  "ref": "4.2.3.2",
+                  "heading": "If any intellectual property rights that are subject to legal protecti",
+                  "level": 4,
+                  "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-145",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ref": "5",
+      "heading": "PAYMENTS AND REPORTING",
+      "level": 1,
+      "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-154",
+      "children": [
+        {
+          "ref": "5.1",
+          "heading": "Other Revenue. The Company-Skype Branded Application will permit Compa",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-155",
+          "children": []
+        },
+        {
+          "ref": "5.2",
+          "heading": "Revenue Sharing. In consideration of the licenses and other agreements",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-158",
+          "children": []
+        },
+        {
+          "ref": "5.3",
+          "heading": "Statements; Payments.",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-160",
+          "children": [
+            {
+              "ref": "5.3.1",
+              "heading": "Within thirty (30) days of the end of each calendar quarter during the",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-161",
+              "children": []
+            },
+            {
+              "ref": "5.3.2",
+              "heading": "Interest shall be payable on any amounts paid later than the date due",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-165",
+              "children": []
+            },
+            {
+              "ref": "5.3.3",
+              "heading": "The Parties agree to provide such further information relating to Adju",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-166",
+              "children": []
+            },
+            {
+              "ref": "5.3.4",
+              "heading": "All sums payable to a Party under this Agreement shall be made to such",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-167",
+              "children": []
+            },
+            {
+              "ref": "5.3.5",
+              "heading": "All payments will be made without deduction, withholding, counterclaim",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-168",
+              "children": []
+            },
+            {
+              "ref": "5.3.6",
+              "heading": "All payments to be made to a receiving Party hereunder shall be exclus",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-169",
+              "children": []
+            }
+          ]
+        },
+        {
+          "ref": "5.4",
+          "heading": "Audit Rights. The Parties (including Online BVI on behalf of the Onlin",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-170",
+          "children": []
+        },
+        {
+          "ref": "5.5",
+          "heading": "Notwithstanding any other provision in this Agreement, in the event of",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-175",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "6",
+      "heading": "TERM AND TERMINATION",
+      "level": 1,
+      "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-177",
+      "children": [
+        {
+          "ref": "6.1",
+          "heading": "Term. The term of this Agreement shall continue for a period of five y",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-178",
+          "children": []
+        },
+        {
+          "ref": "6.2",
+          "heading": "Termination for Cause. Any party to this Agreement shall have the righ",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-179",
+          "children": []
+        },
+        {
+          "ref": "6.3",
+          "heading": "Duties Upon Termination. Subject to Section 6.5 and to the extent requ",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-182",
+          "children": [
+            {
+              "ref": "6.3.1",
+              "heading": "Each Party shall (i) immediately stop displaying, featuring, linking o",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-183",
+              "children": []
+            },
+            {
+              "ref": "6.3.2",
+              "heading": "The Parties agree that upon termination of this Agreement, all Links,",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-184",
+              "children": []
+            },
+            {
+              "ref": "6.3.3",
+              "heading": "The termination or expiration of this Agreement shall not act as a wai",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-185",
+              "children": []
+            }
+          ]
+        },
+        {
+          "ref": "6.4",
+          "heading": "The Parties agree that notwithstanding any termination or expiration o",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-186",
+          "children": []
+        },
+        {
+          "ref": "6.5",
+          "heading": "Except as otherwise set forth in Section 4.2.3.2.3 and this Section 6,",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-187",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "7",
+      "heading": "REPRESENTATIONS AND WARRANTIES",
+      "level": 1,
+      "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-189",
+      "children": [
+        {
+          "ref": "7.1",
+          "heading": "Mutual Representations and Warranties. Each of the parties to this Agr",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-190",
+          "children": []
+        },
+        {
+          "ref": "7.2",
+          "heading": "No Representation as to Number of Users, Capabilities or Revenue Hereu",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-193",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "8",
+      "heading": "NON-COMPETITION",
+      "level": 1,
+      "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-195",
+      "children": [
+        {
+          "ref": "8.1",
+          "heading": "Non-Competition.",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-196",
+          "children": [
+            {
+              "ref": "8.1.1",
+              "heading": "Each Party agrees that, for a period of five years (“Non-Competition P",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-197",
+              "children": []
+            },
+            {
+              "ref": "8.1.2",
+              "heading": "Each Party agrees that, from the Effective Date and through the three",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-198",
+              "children": []
+            }
+          ]
+        },
+        {
+          "ref": "8.2",
+          "heading": "Skype Exception. In the case of Skype and its Affiliates, the foregoin",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-201",
+          "children": [
+            {
+              "ref": "8.2.1",
+              "heading": "(a) (i) for the avoidance of doubt, to the operations of Skype as exis",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-202",
+              "children": []
+            },
+            {
+              "ref": "8.2.2",
+              "heading": "with respect to the provisions of Section 8.1.2, during any period fol",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-203",
+              "children": []
+            }
+          ]
+        },
+        {
+          "ref": "8.3",
+          "heading": "Termination of Non-Competition Period. Notwithstanding any portion of",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-205",
+          "children": [
+            {
+              "ref": "8.3.1",
+              "heading": "within thirty (30) days of the end of the Type One Cure Period (define",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-206",
+              "children": [
+                {
+                  "ref": "8.3.1.1",
+                  "heading": "Skype or Online BVI has delivered a notice (“Type One Notice”) to (i)",
+                  "level": 4,
+                  "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-207",
+                  "children": []
+                },
+                {
+                  "ref": "8.3.1.2",
+                  "heading": "the circumstances under Section 8.3.1.1(B) have not been cured by the",
+                  "level": 4,
+                  "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-212",
+                  "children": []
+                },
+                {
+                  "ref": "8.3.1.3",
+                  "heading": "the Party who delivers the Type One Notice gives notice to the other P",
+                  "level": 4,
+                  "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-213",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "ref": "8.3.2",
+              "heading": "within thirty (30) days of the end of the Type Two Cure Period (define",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-215",
+              "children": [
+                {
+                  "ref": "8.3.2.1",
+                  "heading": "Skype or Online BVI has delivered a notice (“Type Two Notice”) to (i)",
+                  "level": 4,
+                  "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-216",
+                  "children": []
+                },
+                {
+                  "ref": "8.3.2.2",
+                  "heading": "the growth rate specified in Section 8.3.2.1(A) or Section 8.3.2.1(B)",
+                  "level": 4,
+                  "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-222",
+                  "children": []
+                },
+                {
+                  "ref": "8.3.2.3",
+                  "heading": "the Party who delivers the Type Two Notice gives notice to the other P",
+                  "level": 4,
+                  "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-223",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ref": "9",
+      "heading": "LICENSES",
+      "level": 1,
+      "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-225",
+      "children": [
+        {
+          "ref": "9.1",
+          "heading": "The Group shall, and Online BVI shall cause the Group to, use its reas",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-226",
+          "children": []
+        },
+        {
+          "ref": "9.2",
+          "heading": "The parties to this Agreement agree that, during the Term and prior to",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-227",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "10",
+      "heading": "DEPENDENCY",
+      "level": 1,
+      "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-229",
+      "children": [
+        {
+          "ref": "10.1",
+          "heading": "In the event that a Tom Party, a Skype Party, the Company or any other",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-230",
+          "children": [
+            {
+              "ref": "10.1.1",
+              "heading": "in the case of a Tom Party, a Skype Party;",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-231",
+              "children": []
+            },
+            {
+              "ref": "10.1.2",
+              "heading": "in the case of a Skype Party, a Tom Party; and",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-232",
+              "children": []
+            },
+            {
+              "ref": "10.1.3",
+              "heading": "in the case of the Company or any member of the Group, a Skype Party o",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-233",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ref": "11",
+      "heading": "CONFIDENTIAL INFORMATION",
+      "level": 1,
+      "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-237",
+      "children": [
+        {
+          "ref": "11.1",
+          "heading": "Each party to this Agreement acknowledges and agrees that by reason of",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-238",
+          "children": []
+        },
+        {
+          "ref": "11.2",
+          "heading": "The Receiving Party agrees: (i) that it will maintain and preserve the",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-239",
+          "children": []
+        },
+        {
+          "ref": "11.3",
+          "heading": "The Receiving Party agrees (i) not to alter or remove any identificati",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-240",
+          "children": []
+        },
+        {
+          "ref": "11.4",
+          "heading": "Confidential Information shall exclude any information that (i) has be",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-241",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "12",
+      "heading": "DISCLAIMER & LIMITATION OF LIABILITY",
+      "level": 1,
+      "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-244",
+      "children": [
+        {
+          "ref": "12.1",
+          "heading": "Disclaimer of Warranties. THE WARRANTIES SET FORTH HEREIN ARE LIMITED",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-245",
+          "children": []
+        },
+        {
+          "ref": "12.2",
+          "heading": "Limitation of Liability.",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-246",
+          "children": [
+            {
+              "ref": "12.2.1",
+              "heading": "TO THE MAXIMUM EXTENT PERMISSIBLE UNDER APPLICABLE LAW, EXCEPT FOR THE",
+              "level": 3,
+              "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-247",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ref": "13",
+      "heading": "INDEMNIFICATION",
+      "level": 1,
+      "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-249",
+      "children": [
+        {
+          "ref": "13.1",
+          "heading": "Company Indemnification. Tom Holding unconditionally guarantees the ti",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-250",
+          "children": []
+        },
+        {
+          "ref": "13.2",
+          "heading": "Skype Indemnification. Skype Holding unconditionally guarantees the ti",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-253",
+          "children": []
+        },
+        {
+          "ref": "13.3",
+          "heading": "Guarantor. The guarantees in the foregoing clauses are to be continuin",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-254",
+          "children": []
+        },
+        {
+          "ref": "13.4",
+          "heading": "Notice; Participation. The party claiming indemnification pursuant to",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-255",
+          "children": []
+        },
+        {
+          "ref": "13.5",
+          "heading": "Infringement Remedy. If a claim, action, suit or proceeding is brought",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-256",
+          "children": []
+        },
+        {
+          "ref": "13.6",
+          "heading": "Settlement. The Indemnified Party agrees that the Indemnifying Party s",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-260",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "14",
+      "heading": "GENERAL",
+      "level": 1,
+      "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-262",
+      "children": [
+        {
+          "ref": "14.1",
+          "heading": "Effect of Termination of Deed; References to Company. In the event tha",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-263",
+          "children": []
+        },
+        {
+          "ref": "14.2",
+          "heading": "Governing Law. This Agreement will be governed by and construed in acc",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-264",
+          "children": []
+        },
+        {
+          "ref": "14.3",
+          "heading": "Entire Agreement; Termination of Memorandum. This Agreement, including",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-284",
+          "children": []
+        },
+        {
+          "ref": "14.4",
+          "heading": "Assignment. This Agreement may not be assigned by a party to this Agre",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-285",
+          "children": []
+        },
+        {
+          "ref": "14.5",
+          "heading": "Notices. All legal notices required or permitted hereunder shall be gi",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-286",
+          "children": []
+        },
+        {
+          "ref": "14.6",
+          "heading": "Rights to Injunctive Relief. The parties to this Agreement acknowledge",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-287",
+          "children": []
+        },
+        {
+          "ref": "14.7",
+          "heading": "Waiver. The waiver, express or implied, by a party to this Agreement o",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-290",
+          "children": []
+        },
+        {
+          "ref": "14.8",
+          "heading": "Headings. The headings to the Sections and Exhibits of this Agreement",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-291",
+          "children": []
+        },
+        {
+          "ref": "14.9",
+          "heading": "Independent Contractors. The parties to this Agreement acknowledge and",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-292",
+          "children": []
+        },
+        {
+          "ref": "14.10",
+          "heading": "Severability. In the event any provision of this Agreement is held by",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-293",
+          "children": []
+        },
+        {
+          "ref": "14.11",
+          "heading": "Counterparts. This Agreement may be executed in two or more counterpar",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-294",
+          "children": []
+        },
+        {
+          "ref": "14.12",
+          "heading": "Attorney’s Fees. Should a party hereto initiate a legal or administrat",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-295",
+          "children": []
+        },
+        {
+          "ref": "14.13",
+          "heading": "Further Assurances. Each Party shall promptly execute and deliver all",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-296",
+          "children": []
+        },
+        {
+          "ref": "14.14",
+          "heading": "Governing Language. This Agreement is in the English language only, an",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-297",
+          "children": []
+        },
+        {
+          "ref": "14.15",
+          "heading": "Survival. Sections 1, 4.2 (but not 4.2.3.2.4), 5.4, 6.3, 6.4, 6.5, 7,",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-298",
+          "children": []
+        },
+        {
+          "ref": "14.16",
+          "heading": "The parties agree that the provisions of this Agreement are personal t",
+          "level": 2,
+          "paragraphId": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-299",
+          "children": []
+        }
+      ]
+    }
+  ],
   "paragraphs": [
     {
       "id": "root::TomOnlineInc_20060501_20-F_EX-4.46_749700_EX-4.46_Co-Branding Agreement-p-3",

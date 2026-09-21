@@ -108,10 +108,12 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 		if (snapshot.length === 0) return;
 
 		extractedDocIdRef.current = docId;
-		void extractParagraphs(docId, snapshot, nodeEditStateById.current).catch((error) => {
-			extractedDocIdRef.current = null;
-			console.error('Failed to extract paragraphs:', error);
-		});
+		void extractParagraphs(docId, snapshot, nodeEditStateById.current)
+			.then((tree) => useDocumentStore.getState().setClauseTree(tree))
+			.catch((error) => {
+				extractedDocIdRef.current = null;
+				console.error('Failed to extract paragraphs:', error);
+			});
 	}, [docId, viewer.renderEpoch, nodeEditStateById]);
 
 	const startDrawerResize = (event: React.MouseEvent) => {

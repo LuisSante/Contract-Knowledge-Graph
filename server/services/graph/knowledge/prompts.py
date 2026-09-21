@@ -30,18 +30,36 @@ NODES — abstract these kinds of nodes from the given paragraphs:
 4. DEONTIC STATEMENTS — emit them in THREE separate lists by their modality
    (there is no generic "provision" node; the list a statement is in IS its type):
 {_TYPE_GUIDE_TEXT}
-5. CONDITIONS — prerequisites that gate a deontic statement or clause. "gates" is the
-   id of the statement or clause that only applies once the trigger holds.
+5. CONDITIONS — a future, uncertain event that gates a deontic statement or clause;
+   "gates" is the id of what only applies once the trigger holds. A condition is not a
+   settled requirement: it is something that may or may not come to pass. Its trigger is
+   very often the NON-PERFORMANCE of another provision — see CONSEQUENCES OF BREACH.
 6. REFERENCES — external standards, laws or documents the contract points to
    (e.g. "ISO 27001", "Article 30 GDPR"). "citedBy" is the citing clause/statement.
 7. VALUES — specific quanta: amounts, percentages, durations. "quantifies" is the
    statement or clause the value belongs to.
 
-For every obligation, right and prohibition you MUST identify, from the perspective
-of the parties:
-- obligor: the party that must comply, or that is prohibited (for obligation/prohibition).
-- beneficiary: the party that benefits or holds the right (for right, and the
-  counterparty that an obligation is owed to when it is clear).
+For every obligation, right and prohibition you MUST identify, from the perspective of
+the parties. BOTH fields apply to ALL THREE kinds — a right has an obligor too:
+- obligor: the party the statement acts ON. For an obligation, the one that must
+  perform; for a prohibition, the one restrained; FOR A RIGHT, the party subject to its
+  exercise — the one that must tolerate, accept or submit to what the holder may do.
+  Leave it null only when the right burdens nobody, as with a freedom the holder
+  exercises alone. A power recorded with no party subject to it reads like a permission
+  with no counterpart, and the asymmetry it encodes is lost.
+- beneficiary: the party the statement acts FOR. For a right, its holder; for an
+  obligation or prohibition, the counterparty it is owed to when that is clear.
+
+A DUTY THAT BINDS EVERY PARTY is not one statement with a collective subject. "Each
+Party shall", "neither Party may", "the Parties shall", "both parties agree": emit ONE
+STATEMENT PER REAL PARTY, each carrying the same verbatim "text", its own obligor, and
+the other party as beneficiary. Never create a party node for a collective expression
+("each Party", "both parties", "the Parties") — those name no entity.
+
+When the subject is a ROLE the text does not resolve ("the Receiving Party", "the
+breaching Party", "the undersigned principal, partner or owner"), use the party the
+contract identifies with that role elsewhere; if it identifies none, leave the obligor
+null rather than guessing.
 
 RELATIONS — also emit links that cannot be read off a single node. Each relation carries
 "source" (an id you assigned), "target" (a STRING copied as written, NOT an id), and
@@ -65,6 +83,24 @@ WHERE THE IMBALANCE HIDES — read for these as carefully as for "shall" and "ma
   quantum, also emit the VALUE and point its "quantifies" at that statement.
 - An ASYMMETRIC freedom: "is not obliged to", "shall have no access", "no implied", "each
   Party keeps its own". Emit it as a right of the party thereby freed.
+
+CONSEQUENCES OF BREACH — what happens when a party does not perform is the part a
+reader most needs, and it is useless unless it is linked to the failure that triggers
+it. Whenever a provision applies BECAUSE another one was not performed:
+- emit the consequence as its own deontic statement — a duty of the party that failed
+  (a charge, a fee, interest, a reimbursement, an indemnity) or a power of the other
+  party (to terminate, suspend, withhold, cut off access, accelerate, claim);
+- emit a CONDITION whose "trigger" is the verbatim wording of the failure and whose
+  "gates" is that consequence;
+- attribute it the right way round: the obligor of a charge is the party that failed,
+  and the beneficiary is the party that did not. Inverted, the consequence cannot be
+  read from either party's side.
+Wording varies from contract to contract; these are examples, not a checklist:
+"fails to", "in the event of default", "past due", "upon breach", "if ... does not",
+"late charge", "shall be entitled to terminate", "shall indemnify". Apply the rule
+whenever the causal link is stated, even when none of these words appear. The failure
+and its consequence often sit in different sentences or different clauses — link them
+anyway.
 
 TIE-BREAK, references vs depends_on — apply it every time both seem to fit:
 if the wording makes the clause conditional, limited, carved out or overridden by the

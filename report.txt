@@ -1,0 +1,372 @@
+================================================================================
+¿QUÉ SE GANA CONSTRUYENDO EL "CONTRACT LINTER" DE GRAPH-GRPO-LEX?
+Medición sobre los 6 grafos de infra/json/kg/, todos extraídos con el prompt v_1
+================================================================================
+
+RESUMEN EN DOS LÍNEAS
+---------------------
+Tres de los doce chequeos del linter no transfieren a nuestros grafos, uno
+funciona tal cual, y el verdadero hallazgo no es ninguna de sus métricas sino el
+diagnóstico que dejan a la vista: el grafo todavía no es un grafo. El 88-96% de
+sus aristas es derivable de la posición en la retícula.
+
+La puntuación única 0-100 con que se venía juzgando el prompt medía longitud, no
+calidad: sus topes hacían ciego al 42% de las faltas del corpus y hundían a 0.0 a
+cuatro de los seis contratos. Arreglada sigue sin servir, y se recomienda
+retirarla y quedarse con los indicadores (sección 5).
+
+
+ADVERTENCIA DE TRAZABILIDAD
+---------------------------
+Las cifras de este informe se calcularon con scripts ad-hoc que NO están
+comprometidos en el repositorio. No son regenerables con `make docs` ni
+ejecutando el cuaderno. Antes de que cualquier número de aquí entre en docs/ o
+en el paper hay que cablear los tres chequeos supervivientes (ver el final).
+Las únicas cifras ya trazables son las de cobertura por canal, y solo porque
+quedaron transcritas en este informe desde la misma sesión que las midió.
+
+
+================================================================================
+1. DE QUÉ ESTÁ HECHO EL GRAFO
+================================================================================
+
+Aristas "derivadas" = las que la posición en la retícula ya codifica
+(is_part_of -> la fila, assigns_obligation_to / grants_right_to -> el carril,
+defines). Aristas "informativas" = las que habría que dibujar porque nada de la
+posición las dice.
+
+  contrato          aristas    derivadas        informativas
+  ---------------------------------------------------------------
+  SteelVault            216    207 ( 96%)         9 (  4%)
+  Bellicum             1311   1169 ( 89%)       142 ( 11%)
+  Ritter                959    880 ( 92%)        79 (  8%)
+  Ediets                447    404 ( 90%)        43 ( 10%)
+  TomOnline             786    698 ( 89%)        88 ( 11%)
+  Healthcentral         317    278 ( 88%)        39 ( 12%)
+
+Por tipo, sumando el corpus entero (4.036 aristas, 1.368 enunciados):
+
+  is_part_of                2164   derivada
+  assigns_obligation_to      943   derivada
+  grants_right_to            297   derivada
+  defines                    232   derivada
+  uses                       255   INFORMATIVA
+  references                  69   INFORMATIVA
+  depends_on                  59   INFORMATIVA   <-- la que el linter necesita
+  modifies                    17   INFORMATIVA
+
+59 aristas `depends_on` y 17 `modifies` para 1.368 enunciados repartidos en seis
+contratos.
+
+
+================================================================================
+2. LOS CHEQUEOS DEL LINTER, CORRIDOS
+================================================================================
+
+  métrica                    SteelV  Bellic  Ritter  Ediets  TomOnl  Healthc | Zogenix
+  ------------------------------------------------------------------------------------
+  nodos                         153     983     709     366     620      241 |     257
+  orphan ratio                  68%     66%     65%     61%     61%      65% |    ~50%
+  leaf ratio                    12%     21%     20%     24%     28%      24% |   37.7%
+  densidad                   0.0093  0.0014  0.0019  0.0033  0.0020   0.0055 |   0.014
+  profundidad (todas)             3       6       4       4      10        3 |       6
+  profundidad (depends_on)        0       2       2       1       3        1 |     n/d
+  ciclos                          0       1       0       0       0        0 |     n/d
+
+Zogenix Inc. Distributor Agreement es el caso de estudio del paper (Sección VI),
+el único punto de comparación externo que existe: su F1 de 0.798 NO es
+comparable con nada de lo nuestro, porque ellos extraen por cláusula con
+max_tokens=300 y este pipeline trocea contratos completos por 5.000 caracteres.
+
+
+LO QUE NO TRANSFIERE
+--------------------
+
+(a) PATH FINDING obligación -> cláusula de incumplimiento. Es el chequeo más
+    prometedor sobre el papel: el paper lo describe como "maps consequence chains
+    from obligations to breach clauses", que es exactamente la cadena que hace
+    falta para leer una penalidad. No hay nada que recorrer. La profundidad sobre
+    `depends_on` es 0-3, y en SteelVault es 0: no existe ni una sola cadena.
+
+(b) ORPHAN RATIO. Nuestro `is_part_of` va enunciado -> cláusula y eliminamos la
+    arista `CONTAINS` que ellos sí tienen. Por tanto todo enunciado tiene
+    grado-entrada 0 POR CONSTRUCCIÓN, y el 61-68% no mide un defecto: mide qué
+    fracción de los nodos no son contenedores. Su lectura -- "orphans may have
+    unstated activating conditions" -- no aplica a nuestra convención de aristas,
+    y su ~50% no es comparable.
+
+(c) DENSIDAD. Depende de N^2. SteelVault sale 0.0093 y Bellicum 0.0014 sobre todo
+    porque uno tiene 153 nodos y el otro 983. Es el mismo error de
+    dependencia-del-tamaño que tenía la puntuación s_1 y que se acaba de retirar.
+
+    Y la PROFUNDIDAD sobre todas las aristas mide el índice del documento, no la
+    lógica: el 10 de TomOnline es su numeración 8.3.2.1, no una cadena de
+    consecuencias. CICLOS encuentra 1 en todo el corpus.
+
+
+LO QUE SÍ FUNCIONA: DEFINITION COVERAGE
+---------------------------------------
+Términos definidos que no tienen ni una arista `uses` que los conecte con las
+cláusulas que los emplean.
+
+  contrato          términos   usados   sin usar
+  -----------------------------------------------
+  SteelVault               9        6      3  33%
+  Bellicum               119       46     73  61%
+  Ritter                  82       38     44  54%
+  Ediets                  38       18     20  53%
+  TomOnline              104       37     67  64%
+  Healthcentral           25       14     11  44%
+
+Defecto concreto e inspeccionable, y relevante para el objetivo: si "Net Revenue"
+o "Confidential Information" está definido pero no ligado a las cláusulas que lo
+usan, no se puede rastrear sobre qué se calcula una penalidad.
+
+
+================================================================================
+3. LO QUE SE GANA DE VERDAD
+================================================================================
+
+No una métrica mejor. El diagnóstico: LA CAPA QUE FALTA ES LA DE DEPENDENCIAS, NO
+LA DE ENUNCIADOS.
+
+El 88-96% de las aristas es redundante con la posición. Eso confirma sobre seis
+contratos COMPLETOS y con un ÚNICO extractor lo que docs/medidas/corpus.md ya
+había medido (98% redundante) sobre un resumen -- que es precisamente lo que la
+sección "Qué falta" de ese documento pedía para que su cifra significara algo.
+
+Y reencuadra la prioridad. El 20-27% de párrafos con deber y sin enunciado que
+veníamos persiguiendo es un problema menor al lado de tener 59 `depends_on`:
+ninguna cantidad de ajuste del prompt sobre recall deóntico construye la capa que
+permite preguntar "si incumplo 5.2, qué me pasa".
+
+
+================================================================================
+4. EL INSTRUMENTO CORRECTO PARA EL OBJETIVO DECLARADO
+================================================================================
+
+El objetivo es detectar penalidades, plazos y riesgos EN LAS CLÁUSULAS. Eso es
+recall de atributos por cláusula, y el linter no lo mide -- el linter responde
+"¿es coherente como red?", y la respuesta es que apenas es una red.
+
+La medición que sí corresponde (párrafos con la pista en el texto -> el grafo
+tiene el nodo que hace falta):
+
+  canal                                              pista  stmt  ok
+  ---------------------------------------------------------------------
+  RIESGO      (limitación, exclusión, terminación)      69    55   55   80%
+  PLAZO       (campo `deadline` o nodo `Value`)         95    84   68   72%
+  PENALIDAD   (`Condition` que la liga al fallo)        21    20    8   38%
+
+Riesgo y plazo llegan. La penalidad no, y es justo lo que el cambio 3 del prompt
+("CONSEQUENCES OF BREACH") debía arreglar. El modelo crea la consecuencia como
+nodo y NO crea el enlace, incluso cuando el fallo está en la misma oración:
+
+  Bellicum   "reserves the right to assess a late fee equal to X% per month"
+  TomOnline  "Interest shall be payable on any amounts paid later than the date
+              due"
+  Ritter     "Interest. Accrual ... shall not be deemed to excuse ... breaches
+              arising from late payment or nonpayment"
+
+Ninguno lleva `Condition`. Con n=21 en el canal de penalidad esto es una señal,
+no una tasa defendible.
+
+Sesgo de plantilla detectado, aparte: OUTPUT_SHAPE en
+server/services/graph/knowledge/ontology.py pone "deadline": "null" como valor
+EJEMPLAR para rights y prohibitions, y solo da un ejemplo real en obligations. El
+resultado se lee directo:
+
+  contrato          obligations   rights   prohibitions
+  ------------------------------------------------------
+  Bellicum                  21%       4%      0/69  (0%)
+  SteelVault                30%       5%      0/21  (0%)
+  Ritter                    22%       6%             2%
+  Ediets                    26%       4%             4%
+  TomOnline                 23%       6%             9%
+  Healthcentral             13%      15%             8%
+
+Ninguna prohibición de Bellicum ni de SteelVault lleva plazo. Una cláusula de
+no-competencia o no-solicitación es una prohibición ACOTADA EN EL TIEMPO -- "shall
+not, for a period of two years after termination" -- y ese plazo es exactamente
+lo que se quiere detectar.
+
+
+================================================================================
+5. POR QUÉ LA PUNTUACIÓN ÚNICA SE ESTABA USANDO MAL Y NO SIRVE
+================================================================================
+
+5.1 EL BUG: LA PUNTUACIÓN MEDÍA LONGITUD
+----------------------------------------
+La fórmula retirada (s_1) restaba `peso x nº_de_faltas` con un tope por
+categoría. Los topes sumaban 185 sobre un presupuesto de 100, así que cualquier
+documento largo los alcanzaba todos y tocaba fondo con independencia de sus
+tasas.
+
+  Bellicum      falló 65 de 221 párrafos deónticos = 29%  ->  -40 (tope)
+  SteelVault    falló  6 de  23 párrafos deónticos = 26%  ->  -18
+
+Tasas prácticamente iguales, penalización más del doble. Resultado agregado:
+CUATRO DE LOS SEIS CONTRATOS SALIERON 0.0, y Healthcentral 7.5, frente a 54.5 de
+SteelVault, que es el más corto del corpus.
+
+Bellicum obtuvo 0.0 siendo el mejor grafo del corpus en la mayoría de los
+indicadores. La puntuación no estaba midiendo calidad: estaba midiendo tamaño.
+
+
+5.2 LOS TOPES HACÍAN CIEGO AL 42% DE LAS FALTAS
+-----------------------------------------------
+Una vez saturado el tope, una categoría dejaba de responder: las faltas por
+encima no movían la puntuación ni un punto, en ninguna dirección. Faltas reales
+frente a las necesarias para topar:
+
+  contrato        categoría                 faltas  topa en  ciegas
+  ------------------------------------------------------------------
+  Bellicum        deontic_no_statement          65       14      51
+                  bilateral_not_split           12        7       5
+                  breach_no_condition           10        7       3
+                  rights_no_burden              27       15      12
+                  statements_no_burden          42       20      22
+                  not_verbatim                  18       10       8
+  Ritter          deontic_no_statement          43       14      29
+                  rights_no_burden              18       15       3
+                  statements_no_burden          37       20      17
+                  figure_no_value               13       10       3
+  Ediets          deontic_no_statement          22       14       8
+                  bilateral_not_split           14        7       7
+                  statements_no_burden          21       20       1
+                  figure_no_value               13       10       3
+  TomOnline       deontic_no_statement          45       14      31
+                  bilateral_not_split           11        7       4
+                  rights_no_burden              37       15      22
+                  statements_no_burden          56       20      36
+  Healthcentral   deontic_no_statement          16       14       2
+                  bilateral_not_split           17        7      10
+
+  277 de 665 faltas del corpus caían por encima de un tope = EL 42%.
+
+Bellicum podía reducir sus fallos deónticos de 65 a 14 -- una mejora del 78%, la
+mayor que el prompt podría aspirar a producir -- y la puntuación NO SE MOVERÍA
+UN SOLO PUNTO.
+
+Y nótese quién NO aparece en esa tabla: SteelVault, el único contrato sin una
+sola categoría saturada. Ahí está la asimetría completa. El contrato corto se
+medía entero; los largos se medían a ciegas. Por eso SteelVault sacaba 54.5 y el
+resto 0.0.
+
+
+5.3 CÓMO SE ESTABA USANDO MAL
+-----------------------------
+(a) SE COMPARABA ENTRE CONTRATOS. La puntuación solo era defendible -- si acaso
+    -- para comparar EL MISMO contrato entre versiones del prompt. "SteelVault
+    54.5 contra Bellicum 0.0" es una comparación entre documentos distintos y no
+    significa nada, porque los pesos no están normalizados contra nada que los
+    dos compartan.
+
+(b) SE LEÍA COMO MEDIDA DE CALIDAD. El propio cuaderno advertía que un 35 no
+    significa que el grafo esté 35% bien, pero la puntuación era el campo
+    principal de score_history.json y lo primero que imprimía la celda de
+    ejecución. La advertencia estaba en la prosa; la jerarquía visual decía lo
+    contrario.
+
+(c) EL SALTO v_0 -> v_1 (35.0 -> 54.5) SE LEYÓ COMO MEJORA. No es
+    descomponible: en ese mismo intervalo los enunciados pasaron de 61 a 83, lo
+    que cambia simultáneamente numeradores y denominadores en varias categorías
+    y mueve algunas por encima o por debajo de su tope. Los 19 puntos mezclan
+    mejora real con efecto de recuento, y no hay forma de separarlos a
+    posteriori.
+
+(d) DOS FÓRMULAS COMPARTÍAN COLUMNA EN SILENCIO. El historial indexaba las filas
+    solo por el hash del grafo, así que volver a puntuar con la fórmula cambiada
+    reutilizaba el valor viejo sin avisar. Ya está corregido: la fila es
+    (grafo, scorer) y las filas antiguas quedaron etiquetadas s_1.
+
+
+5.4 POR QUÉ SIGUE SIN SERVIR, YA ARREGLADA
+------------------------------------------
+Normalizar por el universo quita la dependencia del tamaño, y eso había que
+hacerlo. Pero no convierte la puntuación en evidencia:
+
+- LOS PESOS NO LOS VALIDA NADA. Nada justifica 20 para el recall deóntico, 15
+  para la literalidad y 10 para el reparto bilateral. Se eligieron conservando
+  el orden relativo de los topes anteriores, que eran igual de arbitrarios.
+
+- NO DISCRIMINA. Los seis contratos caen entre 76.8 y 85.9: nueve puntos de
+  recorrido. Un instrumento cuyo rango completo sobre el corpus es de nueve
+  puntos no distingue un grafo bueno de uno mediocre.
+
+- AGREGA DIMENSIONES QUE NO SON COMPARABLES. Mezcla literalidad (una restricción
+  dura: o el texto es subcadena exacta o no lo es), recall deóntico (cobertura) y
+  validez estructural (referencias colgantes, aristas ilegales). Un movimiento en
+  el total no se puede atribuir a ninguna de las tres.
+
+- NO ES DEL PAPER. La recompensa de GRAPH-GRPO-LEX es F1 supervisado contra
+  etiquetas de oro. La puntuación 0-100 es invención nuestra, y se estaba
+  presentando con autoridad prestada.
+
+- NO CRUZA VERSIONES DE FÓRMULA. La fila v_0 de SteelVault no es recomputable
+  bajo s_2, así que la única comparación temporal que existe en el proyecto
+  tiene que hacerse indicador por indicador de todas formas -- que es
+  exactamente lo que la puntuación pretendía ahorrar.
+
+
+5.5 QUÉ SÍ SIRVIÓ
+-----------------
+Los INDICADORES, no la puntuación. Fueron ellos los que produjeron todas las
+conclusiones de esta sesión: el sobreajuste del cambio 2 del prompt (86 contra 0
+en la columna estricta), la generalización de los cambios 1 y 3, y la regresión
+de cobertura del 20-27%. Son razones simples, sin pesos que ajustar, y cada una
+se remonta a un hecho contable del grafo.
+
+Lo que hay que tirar es la AGREGACIÓN, no la medición.
+
+
+================================================================================
+6. RECOMENDACIÓN
+================================================================================
+
+NO construir los doce chequeos. Sobreviven tres, y las cifras ya están
+calculadas: cablearlos es media hora, no un proyecto.
+
+  1. composición de aristas (derivadas vs informativas)
+  2. profundidad sobre `depends_on` solamente
+  3. definition coverage
+
+Ordenado por retorno, el trabajo real está en otro sitio:
+
+  (1) BARATO, DESBLOQUEA PLAZOS. Cambiar el ejemplo "deadline": "null" por uno
+      real en rights y prohibitions en ontology.py. Una línea. Obliga a
+      reextraer para medirlo.
+
+  (2) EL 38%. Reforzar en CONSEQUENCES OF BREACH que el cargo -- late fee,
+      interés, indemnidad -- exige `Condition` aunque el fallo esté en la misma
+      oración.
+
+  (3) EL PROBLEMA DE FONDO Y EL MÁS CARO. `depends_on`. 59 aristas en seis
+      contratos no sostienen ninguna lectura de cadenas de consecuencias.
+
+Hacer (1) y (2) a la vez impide saber cuál movió qué.
+
+
+================================================================================
+7. ADVERTENCIAS QUE ACOMPAÑAN A ESTAS CIFRAS
+================================================================================
+
+- Los indicadores basados en disparadores son un SUELO, no una estimación. El
+  regex DEONTIC solo conoce verbos modales, así que una declaración en presente
+  de indicativo es invisible: 4 de los 5 párrafos del artículo 8 de SteelVault
+  ("represents and warrants that", "does not engage in any business") no levantan
+  ningún disparador. La pérdida de ese artículo entero -- el caso que originó toda
+  esta investigación -- apenas mueve ninguna cifra.
+
+- Cada contrato se extrajo UNA vez. Sin K corridas del mismo contrato con el
+  mismo prompt no se sabe cuánto del rango 20-27% es ruido de muestreo.
+
+- Toda comparación v_0 -> v_1 cuelga de un solo contrato (SteelVault), y su grafo
+  v_0 fue sobrescrito, así que no es recomputable.
+
+- La puntuación única 0-100 no es evidencia y se recomienda retirarla. El
+  desarrollo está en la sección 5; en corto: sus pesos no los valida nada, su
+  rango sobre el corpus es de nueve puntos, y agrega tres dimensiones que no son
+  comparables entre sí.
+
+================================================================================

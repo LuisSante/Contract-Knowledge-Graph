@@ -1,4 +1,96 @@
 {
+  "root_BELLICUMPHARMACEUTICALS_INC_05_07_2019-EX-10_1-Supply_Agreement": [
+    {
+      "timestamp": "2026-09-22 01:43",
+      "kg": "bdf3c89aa672",
+      "prompt": "v_1",
+      "prompt_sha": "126d29557c4e",
+      "score": 0.0,
+      "indicators": {
+        "statements": 457,
+        "with_burden_party_%": 91,
+        "rights_with_burden_%": 77,
+        "bilateral_split_%": 78,
+        "breach_with_condition_%": 79,
+        "figures_with_value_%": 83,
+        "verbatim_ok_%": 96,
+        "model_edges_per_100_statements": 31,
+        "phantom_parties": 0,
+        "orphan_conditions": 2,
+        "dangling_refs": 0,
+        "illegal_edges": 0
+      }
+    }
+  ],
+  "root_EdietsComInc_20001030_10QSB_EX-10_4_2606646_EX-10_4_Co-Branding_Agreement": [
+    {
+      "timestamp": "2026-09-22 01:43",
+      "kg": "7d465211eafd",
+      "prompt": "v_1",
+      "prompt_sha": "126d29557c4e",
+      "score": 0.0,
+      "indicators": {
+        "statements": 166,
+        "with_burden_party_%": 87,
+        "rights_with_burden_%": 75,
+        "bilateral_split_%": 50,
+        "breach_with_condition_%": 75,
+        "figures_with_value_%": 59,
+        "verbatim_ok_%": 96,
+        "model_edges_per_100_statements": 26,
+        "phantom_parties": 0,
+        "orphan_conditions": 2,
+        "dangling_refs": 0,
+        "illegal_edges": 0
+      }
+    }
+  ],
+  "root_HealthcentralCom_19991108_S-1A_EX-10_27_6623292_EX-10_27_Co-Branding_Agreement": [
+    {
+      "timestamp": "2026-09-22 01:43",
+      "kg": "52d67e325d46",
+      "prompt": "v_1",
+      "prompt_sha": "126d29557c4e",
+      "score": 7.5,
+      "indicators": {
+        "statements": 111,
+        "with_burden_party_%": 86,
+        "rights_with_burden_%": 67,
+        "bilateral_split_%": 15,
+        "breach_with_condition_%": 70,
+        "figures_with_value_%": 73,
+        "verbatim_ok_%": 99,
+        "model_edges_per_100_statements": 35,
+        "phantom_parties": 0,
+        "orphan_conditions": 1,
+        "dangling_refs": 0,
+        "illegal_edges": 0
+      }
+    }
+  ],
+  "root_RitterPharmaceuticalsInc_20200313_S-4A_EX-10_54_12055220_EX-10_54_Development_Agreement": [
+    {
+      "timestamp": "2026-09-22 01:43",
+      "kg": "581d21396034",
+      "prompt": "v_1",
+      "prompt_sha": "126d29557c4e",
+      "score": 0.0,
+      "indicators": {
+        "statements": 316,
+        "with_burden_party_%": 88,
+        "rights_with_burden_%": 73,
+        "bilateral_split_%": 84,
+        "breach_with_condition_%": 72,
+        "figures_with_value_%": 71,
+        "verbatim_ok_%": 99,
+        "model_edges_per_100_statements": 25,
+        "phantom_parties": 0,
+        "orphan_conditions": 0,
+        "dangling_refs": 0,
+        "illegal_edges": 0
+      }
+    }
+  ],
   "root_SteelVaultCorp_20081224_10-K_EX-10_16_3074935_EX-10_16_Affiliate_Agreement": [
     {
       "timestamp": "2026-09-21 13:53",
@@ -39,6 +131,29 @@
         "model_edges_per_100_statements": 11,
         "phantom_parties": 0,
         "orphan_conditions": 0,
+        "dangling_refs": 0,
+        "illegal_edges": 0
+      }
+    }
+  ],
+  "root_TomOnlineInc_20060501_20-F_EX-4_46_749700_EX-4_46_Co-Branding_Agreement": [
+    {
+      "timestamp": "2026-09-22 01:43",
+      "kg": "6064c50b11f9",
+      "prompt": "v_1",
+      "prompt_sha": "126d29557c4e",
+      "score": 0.0,
+      "indicators": {
+        "statements": 235,
+        "with_burden_party_%": 76,
+        "rights_with_burden_%": 45,
+        "bilateral_split_%": 50,
+        "breach_with_condition_%": 70,
+        "figures_with_value_%": 88,
+        "verbatim_ok_%": 97,
+        "model_edges_per_100_statements": 37,
+        "phantom_parties": 0,
+        "orphan_conditions": 3,
         "dangling_refs": 0,
         "illegal_edges": 0
       }

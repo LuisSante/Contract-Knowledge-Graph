@@ -2,10 +2,15 @@ import type { DeonticKind, KnowledgeGraph } from '@/types/knowledge';
 import { deonticNodes } from '@/types/knowledge';
 
 /**
- * Party-centric scores over the deontic KG.
+ * Party-centric ledger over the deontic KG.
  *
- *   magnitude(v|P) = PPR_P(v) · severity(kind)     unsigned, every statement — visual weight
+ *   magnitude(v|P) = severity(kind)                unsigned, every statement — visual weight
  *   impact(v|P)    = magnitude · sign(tone(v,P))   signed, P's statements only — the ledger
+ *
+ * Ranking is NOT computed here. Clause importance is the personalized PageRank seeded on
+ * clauses that the server returns from `/clause_importance`; a second walk seeded on the
+ * party node used to run here and was retired — it ordered by size (rho = 0.882 against
+ * counting statements) and left four clauses at exactly zero.
  */
 
 export type DeonticTone = 'burden' | 'benefit';
@@ -35,7 +40,6 @@ export interface KgLedger {
 export interface PartyScores {
 	deonticScore: Map<string, number>;
 	clauseScore: Map<string, number>;
-	clauseMagnitude: Map<string, number>;
 	nodeScore: Map<string, number>;
 	toneByDeontic: Map<string, DeonticTone>;
 	ledger: KgLedger;
@@ -49,59 +53,10 @@ export const DEFAULT_SEVERITY: DeonticSeverity = {
 	right: 0.3,
 };
 
-const RESTART = 0.15;
-const ITERATIONS = 80;
 const TOP_CLAUSES = 5;
 
-function graphNodeIds(kg: KnowledgeGraph): string[] {
-	return [
-		...kg.parties.map((p) => p.id),
-		...kg.clauses.map((c) => c.id),
-		...kg.definedTerms.map((t) => t.id),
-		...deonticNodes(kg).map((v) => v.id),
-		...kg.conditions.map((c) => c.id),
-		...kg.references.map((r) => r.id),
-		...kg.values.map((v) => v.id),
-	];
-}
 
-function buildAdjacency(kg: KnowledgeGraph, index: Map<string, number>): number[][] {
-	const adjacency: number[][] = Array.from({ length: index.size }, () => []);
-	for (const edge of kg.edges) {
-		const source = index.get(edge.source);
-		const target = index.get(edge.target);
-		if (source == null || target == null) continue;
-		adjacency[source].push(target);
-		adjacency[target].push(source);
-	}
-	return adjacency;
-}
 
-function personalizedPageRank(adjacency: number[][], seedIndex: number): number[] {
-	const n = adjacency.length;
-	const restart = new Array<number>(n).fill(0);
-	if (seedIndex >= 0) restart[seedIndex] = 1;
-	let rank = restart.slice();
-
-	for (let iteration = 0; iteration < ITERATIONS; iteration += 1) {
-		const next = new Array<number>(n).fill(0);
-		let dangling = 0;
-		for (let j = 0; j < n; j += 1) {
-			const degree = adjacency[j].length;
-			if (degree === 0) {
-				dangling += rank[j];
-				continue;
-			}
-			const share = ((1 - RESTART) * rank[j]) / degree;
-			for (const neighbor of adjacency[j]) next[neighbor] += share;
-		}
-		// Restart + dangling mass fall back onto the seed.
-		const reinjected = RESTART + (1 - RESTART) * dangling;
-		for (let i = 0; i < n; i += 1) next[i] += reinjected * restart[i];
-		rank = next;
-	}
-	return rank;
-}
 
 function normalize(values: Map<string, number>): Map<string, number> {
 	let peak = 0;
@@ -113,17 +68,9 @@ function normalize(values: Map<string, number>): Map<string, number> {
 export function computePartyScores(
 	kg: KnowledgeGraph,
 	partyId: string,
-	severity: DeonticSeverity = DEFAULT_SEVERITY,
-	usePageRank = true
+	severity: DeonticSeverity = DEFAULT_SEVERITY
 ): PartyScores {
 	const deontic = deonticNodes(kg);
-
-	// With PPR off, every node weighs 1, so magnitude = severity — the raw baseline.
-	const ids = graphNodeIds(kg);
-	const index = new Map(ids.map((id, i) => [id, i]));
-	const rank = usePageRank
-		? personalizedPageRank(buildAdjacency(kg, index), index.get(partyId) ?? -1)
-		: null;
 
 	// 2. Which statements concern this party (tone from obligor/beneficiary).
 	const toneByDeontic = new Map<string, DeonticTone>();
@@ -135,13 +82,9 @@ export function computePartyScores(
 		}
 	}
 
-	// 3. Magnitude = weight × severity for every statement.
+	// 3. Magnitude = severity for every statement.
 	const deonticMagnitude = new Map<string, number>();
-	for (const v of deontic) {
-		const i = index.get(v.id);
-		if (i == null) continue;
-		deonticMagnitude.set(v.id, (rank ? rank[i] : 1) * severity[v.kind]);
-	}
+	for (const v of deontic) deonticMagnitude.set(v.id, severity[v.kind]);
 
 	// 4. Roll up to the clause: total magnitude, plus the burden/benefit split.
 	const clauseMagnitude = new Map<string, number>();
@@ -226,7 +169,6 @@ export function computePartyScores(
 	return {
 		deonticScore,
 		clauseScore,
-		clauseMagnitude,
 		nodeScore,
 		toneByDeontic,
 		ledger,

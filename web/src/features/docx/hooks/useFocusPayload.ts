@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import type { Node as ParagraphNode } from '@/types/document';
 import type { KnowledgeGraph } from '@/types/knowledge';
-import type { DeonticSeverity } from '@/features/docx/utils/knowledge/party-pagerank';
+import type { DeonticSeverity } from '@/features/docx/utils/knowledge/party-ledger';
 import type { PairScores } from '@/features/docx/utils/knowledge/pair';
 import type { GridLane, GridRow } from '@/features/docx/utils/knowledge/statement-grid';
 import { buildFocusPayload, buildPairPayload } from '@/features/docx/utils/knowledge/graph-payload';
@@ -23,7 +23,7 @@ interface FocusPayloadInput {
 	hops: number;
 	topK: number;
 	severity: DeonticSeverity;
-	usePageRank: boolean;
+	importanceByNode: Record<string, number> | null;
 }
 
 export function useFocusPayload({
@@ -40,7 +40,7 @@ export function useFocusPayload({
 	hops,
 	topK,
 	severity,
-	usePageRank,
+	importanceByNode,
 }: FocusPayloadInput) {
 	const setPayload = useClauseAnalyzerStore((s) => s.setPayload);
 
@@ -69,7 +69,7 @@ export function useFocusPayload({
 						topK,
 						nodesById,
 						severity,
-						usePageRank
+						importanceByNode
 					)
 		);
 	}, [
@@ -86,7 +86,7 @@ export function useFocusPayload({
 		hops,
 		topK,
 		severity,
-		usePageRank,
+		importanceByNode,
 		setPayload,
 	]);
 }

@@ -1,5 +1,5 @@
 import type { DeonticKind } from '@/types/knowledge';
-import type { DeonticSeverity } from '@/features/docx/utils/knowledge/party-pagerank';
+import type { DeonticSeverity } from '@/features/docx/utils/knowledge/party-ledger';
 import type { GridLane, StatementGrid } from '@/features/docx/utils/knowledge/statement-grid';
 
 export function computeBenefitShare(

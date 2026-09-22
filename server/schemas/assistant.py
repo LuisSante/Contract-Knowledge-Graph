@@ -30,7 +30,6 @@ class KgChatLedger(BaseModel):
     benefitWeight: float
     burdenCount: int
     benefitCount: int
-    usePageRank: bool = True
     topClauses: list[KgChatClause] = Field(default_factory=list)
 
 

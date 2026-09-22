@@ -6,7 +6,7 @@ import {
 	type MarkKind,
 } from '@/features/docx/utils/knowledge/statement-grid';
 import type { DeonticKind } from '@/types/knowledge';
-import type { DeonticSeverity } from '@/features/docx/utils/knowledge/party-pagerank';
+import type { DeonticSeverity } from '@/features/docx/utils/knowledge/party-ledger';
 import { Checkbox } from '@/components/ui/checkbox';
 import { WeightField } from '@/features/docx/components/clause-analyzer/legend/WeightField';
 import { KIND_COLORS, KIND_LABEL } from '@/features/docx/components/clause-analyzer/constants';

@@ -210,7 +210,7 @@ def _format_kg_facts(payload: AssistantChatRequest) -> str:
     if ledger is None:
         return f"Focused party: {party}\n(no impact facts were provided)"
 
-    weighting = "Personalized PageRank × severity" if ledger.usePageRank else "severity only"
+    weighting = "severity"
     lines = [
         f"Focused party: {party}",
         f"Impact weighting: {weighting}",

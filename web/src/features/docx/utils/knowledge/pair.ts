@@ -1,24 +1,14 @@
 import type { KnowledgeGraph } from '@/types/knowledge';
 import { deonticNodes } from '@/types/knowledge';
-import { DEFAULT_SEVERITY, computePartyScores, type DeonticSeverity } from './party-pagerank';
-
-export type PairOwner = 'a' | 'b' | 'both';
-
-export interface PairClauseSplit {
-	a: number;
-	b: number;
-}
+import { DEFAULT_SEVERITY, computePartyScores, type DeonticSeverity } from './party-ledger';
 
 export interface PairScores {
 	partyAId: string;
 	partyBId: string;
 	nodeScores: Record<string, number>;
 	focusNodeIds: string[];
-	clauseSplit: Record<string, PairClauseSplit>;
-	ownerByNode: Record<string, PairOwner>;
 	topA: string[];
 	topB: string[];
-	sharedStatementIds: string[];
 }
 
 export function defaultPair(kg: KnowledgeGraph): [string, string] | null {
@@ -43,31 +33,33 @@ export function computePairScores(
 	partyBId: string,
 	topK: number,
 	severity: DeonticSeverity = DEFAULT_SEVERITY,
-	usePageRank = true
+	importanceByClause: Record<string, number> | null = null
 ): PairScores {
-	const scoresA = computePartyScores(kg, partyAId, severity, usePageRank);
-	const scoresB = computePartyScores(kg, partyBId, severity, usePageRank);
+	const scoresA = computePartyScores(kg, partyAId, severity);
+	const scoresB = computePartyScores(kg, partyBId, severity);
 	const clauseOfStatement = new Map(deonticNodes(kg).map((v) => [v.id, v.clauseId] as const));
 
+	// The top is a set of CLAUSES, ranked by the server's clause importance — the same
+	// value that orders the rows. Until it arrives, severity alone stands in for it.
+	const rankOf = (clauseId: string | null) =>
+		clauseId ? (importanceByClause?.[clauseId] ?? scoresA.clauseScore.get(clauseId) ?? 0) : 0;
+	const topClauseIds = new Set(
+		kg.clauses
+			.map((c) => c.id)
+			.sort((x, y) => rankOf(y) - rankOf(x))
+			.slice(0, topK)
+	);
+
+	const inTopClause = (id: string) => {
+		const clauseId = clauseOfStatement.get(id);
+		return Boolean(clauseId && topClauseIds.has(clauseId));
+	};
 	const topOf = (scores: typeof scoresA) =>
 		[...scores.toneByDeontic.keys()]
-			.sort((x, y) => (scores.deonticScore.get(y) ?? 0) - (scores.deonticScore.get(x) ?? 0))
-			.slice(0, topK);
+			.filter(inTopClause)
+			.sort((x, y) => (scores.deonticScore.get(y) ?? 0) - (scores.deonticScore.get(x) ?? 0));
 	const topA = topOf(scoresA);
 	const topB = topOf(scoresB);
-	const setA = new Set(topA);
-	const setB = new Set(topB);
-
-	const ownerByNode: Record<string, PairOwner> = {};
-	for (const id of setA) ownerByNode[id] = setB.has(id) ? 'both' : 'a';
-	for (const id of setB) if (!ownerByNode[id]) ownerByNode[id] = 'b';
-
-	const clauseSplit: Record<string, PairClauseSplit> = {};
-	for (const clause of kg.clauses) {
-		const a = scoresA.clauseScore.get(clause.id) ?? 0;
-		const b = scoresB.clauseScore.get(clause.id) ?? 0;
-		if (a > 0 || b > 0) clauseSplit[clause.id] = { a, b };
-	}
 
 	const nodeScores: Record<string, number> = {};
 	for (const id of clauseOfStatement.keys()) {
@@ -75,27 +67,24 @@ export function computePairScores(
 		if (score > 0) nodeScores[id] = score;
 	}
 
-	const peak = Math.max(0, ...Object.values(clauseSplit).map(({ a, b }) => a + b));
+	// A clause node weighs what both parties hold in it, against the heaviest clause.
+	const clauseWeight = kg.clauses.map(
+		(c) =>
+			[c.id, (scoresA.clauseScore.get(c.id) ?? 0) + (scoresB.clauseScore.get(c.id) ?? 0)] as const
+	);
+	const peak = Math.max(0, ...clauseWeight.map(([, weight]) => weight));
 	if (peak > 0) {
-		for (const [id, { a, b }] of Object.entries(clauseSplit)) nodeScores[id] = (a + b) / peak;
+		for (const [id, weight] of clauseWeight) if (weight > 0) nodeScores[id] = weight / peak;
 	}
 	nodeScores[partyAId] = 1;
 	nodeScores[partyBId] = 1;
-
-	const clausesOf = (ids: string[]) =>
-		ids.map((id) => clauseOfStatement.get(id)).filter((id): id is string => Boolean(id));
 
 	return {
 		partyAId,
 		partyBId,
 		nodeScores,
-		focusNodeIds: [
-			...new Set([partyAId, partyBId, ...topA, ...topB, ...clausesOf(topA), ...clausesOf(topB)]),
-		],
-		clauseSplit,
-		ownerByNode,
+		focusNodeIds: [...new Set([partyAId, partyBId, ...topA, ...topB, ...topClauseIds])],
 		topA,
 		topB,
-		sharedStatementIds: topA.filter((id) => setB.has(id)),
 	};
 }

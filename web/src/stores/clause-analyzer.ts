@@ -6,8 +6,8 @@ import type {
 	DeonticSeverity,
 	DeonticTone,
 	KgLedger,
-} from '@/features/docx/utils/knowledge/party-pagerank';
-import { DEFAULT_SEVERITY } from '@/features/docx/utils/knowledge/party-pagerank';
+} from '@/features/docx/utils/knowledge/party-ledger';
+import { DEFAULT_SEVERITY } from '@/features/docx/utils/knowledge/party-ledger';
 import type { MergeGroup } from '@/features/docx/utils/knowledge/party-view';
 import type { DocumentTarget } from '@/features/docx/utils/knowledge/graph-payload';
 
@@ -58,7 +58,6 @@ interface ClauseAnalyzerState extends GraphPayload {
 	hops: number;
 	topK: number;
 	severity: DeonticSeverity;
-	usePageRank: boolean;
 	mergeGroups: MergeGroup[];
 	hiddenParties: string[];
 	selectedPartyIds: string[];
@@ -90,7 +89,6 @@ export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
 	hops: 1,
 	topK: DEFAULT_TOP_K,
 	severity: DEFAULT_SEVERITY,
-	usePageRank: true,
 	mergeGroups: [],
 	hiddenParties: [],
 	selectedPartyIds: [],

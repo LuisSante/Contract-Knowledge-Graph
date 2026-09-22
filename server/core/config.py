@@ -7,8 +7,6 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore", case_sensitive=False)
 
-    SAVED_CONTRADICTIONS_DIR: Path = Path("../infra/contradiction_results")
-    GRAPH_OUTPUT_DIR: Path = Path("../infra/json/graph")
     PARAGRAPHS_OUTPUT_DIR: Path = Path("../infra/json/paragraphs")
     KNOWLEDGE_GRAPH_DIR: Path = Path("../infra/json/kg")
     # A file, not a directory: every contract abstract lives in this one map.

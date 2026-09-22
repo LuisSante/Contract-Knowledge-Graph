@@ -107,7 +107,6 @@ export function useAssistantChat({
 							benefitWeight: ledger.benefitWeight,
 							burdenCount: ledger.burdenCount,
 							benefitCount: ledger.benefitCount,
-							usePageRank: kgState.usePageRank,
 							topClauses: ledger.topClauses,
 						},
 					}

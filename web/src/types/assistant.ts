@@ -15,7 +15,6 @@ export type KgChatLedger = {
 	benefitWeight: number;
 	burdenCount: number;
 	benefitCount: number;
-	usePageRank: boolean;
 	topClauses: KgChatClause[];
 };
 

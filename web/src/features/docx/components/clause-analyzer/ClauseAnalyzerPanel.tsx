@@ -16,7 +16,7 @@ import {
 	type GridRow,
 	type MarkKind,
 } from '@/features/docx/utils/knowledge/statement-grid';
-import { DEFAULT_SEVERITY } from '@/features/docx/utils/knowledge/party-pagerank';
+import { DEFAULT_SEVERITY } from '@/features/docx/utils/knowledge/party-ledger';
 import { computePairScores } from '@/features/docx/utils/knowledge/pair';
 import { computeBenefitShare, shareOfClause } from '@/features/docx/utils/knowledge/benefit-share';
 import { useClauseImportance } from '@/features/docx/hooks/useClauseImportance';
@@ -68,7 +68,6 @@ export function ClauseAnalyzerPanel({ docId }: ClauseAnalyzerPanelProps) {
 	const severity = useClauseAnalyzerStore((s) => s.severity);
 	const setSeverity = useClauseAnalyzerStore((s) => s.setSeverity);
 	const resetSeverity = useClauseAnalyzerStore((s) => s.resetSeverity);
-	const usePageRank = useClauseAnalyzerStore((s) => s.usePageRank);
 	const focusNode = useClauseAnalyzerStore((s) => s.focusNode);
 	const clearFocus = useClauseAnalyzerStore((s) => s.clearFocus);
 	const setFocusMeta = useClauseAnalyzerStore((s) => s.setFocusMeta);
@@ -99,14 +98,6 @@ export function ClauseAnalyzerPanel({ docId }: ClauseAnalyzerPanelProps) {
 		[viewKg, focusNodeId]
 	);
 
-	const pair = useMemo(
-		() =>
-			viewKg && isPartyFocus && focusNodeId && secondPartyId && secondPartyId !== focusNodeId
-				? computePairScores(viewKg, focusNodeId, secondPartyId, topK, severity, usePageRank)
-				: null,
-		[viewKg, isPartyFocus, focusNodeId, secondPartyId, topK, severity, usePageRank]
-	);
-
 	const partyNameById = useMemo(
 		() => new Map((kg?.parties ?? []).map((p) => [p.id, p.name] as const)),
 		[kg]
@@ -132,6 +123,7 @@ export function ClauseAnalyzerPanel({ docId }: ClauseAnalyzerPanelProps) {
 	);
 	const shareOf = (clauseId: string | null) => shareOfClause(clauseBenefit, clauseId);
 
+
 	const countedIds = useMemo(() => {
 		const ids = new Set<string>();
 		for (const row of grid?.rows ?? []) {
@@ -147,6 +139,21 @@ export function ClauseAnalyzerPanel({ docId }: ClauseAnalyzerPanelProps) {
 	}, [grid, shownLanes, visibleKinds]);
 
 	const clauseImportance = useClauseImportance(docId, countedIds);
+
+	const pair = useMemo(
+		() =>
+			viewKg && isPartyFocus && focusNodeId && secondPartyId && secondPartyId !== focusNodeId
+				? computePairScores(
+						viewKg,
+						focusNodeId,
+						secondPartyId,
+						topK,
+						severity,
+						clauseImportance?.byClause ?? null
+					)
+				: null,
+		[viewKg, isPartyFocus, focusNodeId, secondPartyId, topK, severity, clauseImportance]
+	);
 
 	const visibleRows = useMemo(() => {
 		const rows = (grid?.rows ?? []).filter((row) =>
@@ -198,7 +205,7 @@ export function ClauseAnalyzerPanel({ docId }: ClauseAnalyzerPanelProps) {
 		hops,
 		topK,
 		severity,
-		usePageRank,
+		importanceByNode: clauseImportance?.byNode ?? null,
 	});
 
 	const allKindsOn = MARK_KINDS.every(

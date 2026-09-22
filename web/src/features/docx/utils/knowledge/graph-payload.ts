@@ -8,7 +8,7 @@ import {
 	computePartyScores,
 	type DeonticSeverity,
 	type DeonticTone,
-} from '@/features/docx/utils/knowledge/party-pagerank';
+} from '@/features/docx/utils/knowledge/party-ledger';
 
 type EntityKind = 'party' | 'clause' | 'definedTerm' | DeonticKind;
 
@@ -275,7 +275,7 @@ export function buildFocusPayload(
 	topK: number,
 	nodesById: Map<string, ParagraphNode>,
 	severity: DeonticSeverity,
-	usePageRank: boolean
+	importanceByNode: Record<string, number> | null
 ): GraphPayload {
 	if (!focusNodeId) return EMPTY;
 
@@ -295,15 +295,16 @@ export function buildFocusPayload(
 			}))
 			.sort((a, b) => a.node.paragraph_enum - b.node.paragraph_enum);
 
-	// ---- Party focus: score-ranked top-K statements -------------------------
+	// ---- Party focus: top-K statements ranked by the server's fixed point ---
 	if (partyById.has(focusNodeId)) {
 		const party = partyById.get(focusNodeId)!;
-		const scores = computePartyScores(kg, focusNodeId, severity, usePageRank);
+		const scores = computePartyScores(kg, focusNodeId, severity);
+		const rankValue = (id: string) => importanceByNode?.[id] ?? scores.deonticScore.get(id) ?? 0;
 
 		const rankedStatements = [...scores.toneByDeontic.keys()]
 			.map((id) => deonticById.get(id))
 			.filter((v): v is KgDeonticNode => Boolean(v))
-			.sort((a, b) => (scores.deonticScore.get(b.id) ?? 0) - (scores.deonticScore.get(a.id) ?? 0));
+			.sort((a, b) => rankValue(b.id) - rankValue(a.id));
 		const topStatements = rankedStatements.slice(0, topK);
 
 		const { entities, add } = makeEntityCollector();
@@ -350,7 +351,7 @@ export function buildFocusPayload(
 			entities,
 			paragraphIds: presentParagraphIds,
 			focusNodeIds,
-			nodeScores: Object.fromEntries(scores.nodeScore),
+			nodeScores: importanceByNode ?? Object.fromEntries(scores.nodeScore),
 			scoreByParagraph,
 			toneByParagraph,
 			ledger: scores.ledger,

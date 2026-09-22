@@ -123,7 +123,6 @@ export function ClauseAnalyzerPanel({ docId }: ClauseAnalyzerPanelProps) {
 	);
 	const shareOf = (clauseId: string | null) => shareOfClause(clauseBenefit, clauseId);
 
-
 	const countedIds = useMemo(() => {
 		const ids = new Set<string>();
 		for (const row of grid?.rows ?? []) {

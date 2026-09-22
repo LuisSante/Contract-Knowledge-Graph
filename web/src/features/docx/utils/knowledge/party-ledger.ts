@@ -55,9 +55,6 @@ export const DEFAULT_SEVERITY: DeonticSeverity = {
 
 const TOP_CLAUSES = 5;
 
-
-
-
 function normalize(values: Map<string, number>): Map<string, number> {
 	let peak = 0;
 	for (const value of values.values()) peak = Math.max(peak, Math.abs(value));

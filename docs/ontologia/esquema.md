@@ -40,9 +40,9 @@ fragmentos aunque se le pida literalidad, así que se comprueba en vez de confia
 - **quién carga** — el obligado de un deber, el restringido de una prohibición;
 - **quién se beneficia** — el titular de un derecho, o el destinatario del deber ajeno.
 
-Son dos caras del mismo hecho: un deber de A es una pretensión de B. En el documento de
-estudio, **el 54% de los enunciados nombran las dos**
-([medidas](../medidas/corpus.md)).
+Son dos caras del mismo hecho: un deber de A es una pretensión de B. No todos los
+enunciados nombran las dos: cuando el texto no dice a quién se debe algo, el campo
+queda nulo.
 
 ### Qué no sabe expresar
 
@@ -115,8 +115,7 @@ Documento de estudio, el resumen del contrato Bellicum–Miltenyi:
 | 3 | 14 | 74 | 11 | 14 | 22 |
 
 Tres partes para un contrato bilateral: la tercera es el nodo «each Party» de las
-cláusulas recíprocas. El desglose completo está en las
-[medidas del documento](../medidas/corpus.md).
+cláusulas recíprocas.
 
 ---
 

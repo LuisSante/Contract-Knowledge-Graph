@@ -133,7 +133,8 @@ rendered document.
 ## Documentation
 
 - **Setup & run:** [INSTALL.md](INSTALL.md)
-- Corpus measurements: [docs/medidas/corpus.md](docs/medidas/corpus.md)
 - Graph schema: [docs/ontologia/esquema.md](docs/ontologia/esquema.md)
+- Clause importance: [docs/metricas/importancia-clausula.md](docs/metricas/importancia-clausula.md)
+- Graph indicators: [notebooks/KG/measure_kg.ipynb](notebooks/KG/measure_kg.ipynb)
 - Backend: [server/README.md](server/README.md)
 - Frontend: [web/README.md](web/README.md)

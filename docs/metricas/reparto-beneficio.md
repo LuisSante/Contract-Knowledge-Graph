@@ -24,8 +24,8 @@ Solo sumas. Cada enunciado acredita a la parte a la que sirve:
 | Prohibición | a la parte que protege — el otro extremo | 1.0 |
 | Recíproca | a las dos | — |
 
-Los pesos son los sliders de la barra lateral; sus límites están en la tarea 1.9 de
-[marco-conceptual.md](../marco-conceptual.md).
+Los pesos son los sliders de la barra lateral, y son **parámetros de exploración**: nada
+valida todavía qué significa ponderar una obligación por encima de un derecho.
 
 Que una obligación acredite al otro carril no es una excepción: el beneficiario de un
 deber es quien lo recibe, no quien lo cumple. **El carril dice a quién le toca cumplir;
@@ -92,7 +92,8 @@ Resolution* 0.6, y las dos dibujan la barra igual de larga. Un 50/50 puede ser u
 cláusula enorme y equilibrada o una diminuta. La magnitud la lleva el orden de las filas.
 
 **Y no dice cuánto cuesta.** Es el reparto del beneficio, no un balance: nadie resta.
-Sustituyó al neto con signo, descartado en [`descartados.md`](./descartados.md).
+Sustituyó al neto con signo, que se descartó porque dejaba fuera 30 de 74 enunciados —los
+que solo nombran a una parte— y escondía la magnitud en un tercero que nunca se mostraba.
 
 ---
 

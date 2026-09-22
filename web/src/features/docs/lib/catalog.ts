@@ -19,7 +19,6 @@ const GUIDES: Array<{ file: string; slug: string; label: string }> = [
 const SHELVES: Array<{ folder: string; group: string; order: number }> = [
 	{ folder: 'ontologia', group: 'Ontología', order: 10 },
 	{ folder: 'metricas', group: 'Métricas', order: 20 },
-	{ folder: 'medidas', group: 'Medidas', order: 30 },
 	{ folder: '', group: 'Documentación', order: 40 },
 ];
 
@@ -27,11 +26,6 @@ const WITHIN: Record<string, number> = {
 	'ontologia/esquema': 1,
 	'metricas/importancia-clausula': 1,
 	'metricas/reparto-beneficio': 2,
-	'metricas/burden-benefit': 3,
-	'metricas/pagerank': 4,
-	'medidas/corpus': 1,
-	'marco-conceptual': 1,
-	tasks: 2,
 };
 
 function shelfOf(slug: string) {

@@ -32,8 +32,9 @@ retienen sus enunciados.
 
 ## Qué arregla
 
-Sustituye a un PPR sembrado en el nodo de la parte, cuyos defectos medidos están en
-[`descartados.md`](./descartados.md). Dos cosas cambian:
+Sustituye a un PPR sembrado en el nodo de la parte, que se descartó con medidas: ordenaba
+por tamaño (ρ = **0.882** contra una simple suma de severidades) y dejaba **cuatro
+cláusulas en cero exacto**. Dos cosas cambian:
 
 **Ya no ordena por tamaño.** El `1/|V_c|` es el desesgo que faltaba: **una cláusula de
 once enunciados no empieza pesando once veces una de uno.** La correlación con

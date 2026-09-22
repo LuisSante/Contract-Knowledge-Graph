@@ -1,8 +1,14 @@
 # Cómo se mantiene la documentación
 
-`docs/` es la memoria del proyecto: lo que se decidió, lo que se midió y por qué. Si
-una decisión no llega aquí, dentro de dos semanas nadie sabrá por qué el código es como
-es. Estas reglas existen para eso, no por formalidad.
+`docs/` es la memoria del proyecto: lo que se decidió, lo que se midió y por qué. Si una
+decisión no llega aquí, dentro de dos semanas nadie sabrá por qué el código es como es.
+
+La pregunta que ordena todo:
+
+> ¿Cómo puede un sistema de análisis visual ayudar a identificar y explicar qué cláusulas
+> favorecen a cada parte de un contrato y qué exposición al riesgo generan?
+
+Un documento que no ayuda a responderla no pertenece a `docs/`.
 
 ## La carpeta decide dónde aparece
 
@@ -13,8 +19,6 @@ organizarlo: no hay ninguna lista que tocar en el código.
 |---|---|
 | `docs/ontologia/` | el esquema del KG: tipos de nodo y arista, campos, qué no sabe expresar |
 | `docs/metricas/` | qué se calcula y cómo — fórmulas, y por qué se descartó lo anterior |
-| `docs/medidas/` | qué salió al medir sobre el corpus |
-| `docs/` (raíz) | investigación: marco conceptual, plan de tareas |
 
 El título del `#` es la etiqueta de la barra: la parte anterior al guion largo es el
 nombre corto, y el resto la frase completa. `# PageRank personalizado — impacto deóntico
@@ -25,27 +29,14 @@ también en disco para que funcionen en GitHub.
 
 ## Cuándo actualizar, sin esperar a que lo pidan
 
-- **Cambia una fórmula o se sustituye una métrica** → `docs/metricas/`. Un método
-  descartado **no se borra**: se le pone una nota de estado arriba que diga qué lo
-  reemplazó y qué se midió para decidirlo. El resultado negativo es material del paper.
+- **Cambia una fórmula o se sustituye una métrica** → `docs/metricas/`. Lo descartado **no
+  se borra**: se resume en una frase dentro del documento que lo reemplazó, con el número
+  que decidió el cambio. El resultado negativo es material del paper, pero no necesita
+  fichero propio.
 - **Cambia el esquema del KG, el prompt de extracción o la ontología** →
   `docs/ontologia/esquema.md`.
-- **Se completa una tarea de `docs/tasks.md`** → marcarla `[x]` y escribir su sección en
-  `docs/marco-conceptual.md`, siguiendo la forma de las anteriores: definición
-  operacional, tabla de origen en la ontología, cómo identificarlo, ejemplos
-  hipotéticos, límites de la interpretación.
-- **Se regeneran los grafos de `infra/json/kg/`** → `make docs`.
-- **Se elimina una vista o una capa** → los documentos que la describían se borran o se
-  anotan. Un documento que describe algo que ya no existe es peor que no tenerlo.
-
-## Las tablas se generan, la prosa no
-
-Las tablas de `docs/medidas/corpus.md` viven entre marcadores `<!-- tabla:N -->` y las
-escribe `scripts/measure_kg_corpus.py`. **Nunca se editan a mano**: `make docs` las
-regenera y deja intacto el texto que las interpreta.
-
-Si una medición nueva merece su propia tabla, va al script y al documento con su propio
-marcador — no como números pegados.
+- **Se elimina una vista o una capa** → los documentos que la describían se borran. Un
+  documento que describe algo que ya no existe es peor que no tenerlo.
 
 ## Qué no documentar
 
@@ -53,9 +44,20 @@ Nada que el código ya diga: firmas, estructura de ficheros, qué importa cada m
 documentación es para lo que **no** se deduce leyendo el código — por qué se eligió algo,
 qué se probó y falló, qué números respaldan una decisión.
 
+Tampoco va aquí el detalle de ingeniería del pipeline. Si hace falta explicarlo, va en el
+propio código o en un cuaderno de `notebooks/`, no en `docs/`.
+
 ## Números medidos, no recordados
 
-Toda cifra en `docs/` debe poder rastrearse a un script o a un procedimiento descrito. Si
-una afirmación se apoya en un solo documento, hay que decirlo ahí mismo: los tres grafos
-actuales fueron generados por **versiones distintas del extractor**, y comparar entre
-ellos mezcla efectos del contrato con efectos del pipeline.
+Toda cifra en `docs/` debe poder rastrearse a un script o a un cuaderno que la regenere.
+Una cifra copiada de una sesión no cuenta.
+
+Los indicadores del grafo los calcula `notebooks/KG/measure_kg.ipynb`, que los mide contra
+el texto del que salieron y los acumula por documento en `infra/json/indicator_history.json`,
+con la huella del grafo y la del prompt que lo produjo. **Se reportan por separado; no se
+agregan en una puntuación única** — la que hubo se retiró porque sus pesos no los validaba
+nada y su recorrido sobre el corpus entero era de nueve puntos.
+
+Al comparar entre contratos, recordar que cada uno se extrajo una sola vez: sin corridas
+repetidas del mismo documento con el mismo prompt no se sabe cuánto de una diferencia es
+ruido de muestreo.

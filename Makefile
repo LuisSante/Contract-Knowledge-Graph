@@ -8,7 +8,7 @@ WEB_PORT = 3000
 .PHONY: install finstall run frun \
 	build fbuild \
 	sinstall srun \
-	preprocess docs format format-check lint lint-fix hooks help
+	preprocess format format-check lint lint-fix hooks help
 
 help:
 	@echo "Commands available:"
@@ -20,7 +20,6 @@ help:
 	@echo "  make sinstall     - Install legacy Svelte dependencies"
 	@echo "  make srun         - Run legacy Svelte app"
 	@echo "  make preprocess   - Preprocess data"
-	@echo "  make docs         - Regenerate the measurement tables in docs/"
 	@echo "  make format       - Format everything (Prettier for web, Ruff for Python)"
 	@echo "  make format-check - Check formatting without writing (every file)"
 	@echo "  make lint         - Report suspicious code (ESLint for web, Ruff for server)"
@@ -80,7 +79,3 @@ hooks:
 preprocess:
 	@echo "Preprocessing data..."
 	cd notebooks/KG && $(PYTHON) create_kg.py
-
-docs:
-	@echo "Regenerating measurement tables..."
-	$(PYTHON) scripts/measure_kg_corpus.py --write

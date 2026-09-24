@@ -4,7 +4,10 @@ import { useEffect, useMemo, useRef, useState, type MouseEvent as ReactMouseEven
 import { cn } from '@/lib/utils';
 import { useDocumentStore } from '@/stores/document';
 import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
-import { buildDocumentTarget } from '@/features/docx/utils/knowledge/graph-payload';
+import {
+	buildDocumentTarget,
+	buildParagraphTarget,
+} from '@/features/docx/utils/knowledge/graph-payload';
 import { applyPartyView } from '@/features/docx/utils/knowledge/party-view';
 import {
 	buildStatementGrid,
@@ -22,6 +25,7 @@ import { computeBenefitShare, shareOfClause } from '@/features/docx/utils/knowle
 import { useClauseImportance } from '@/features/docx/hooks/useClauseImportance';
 import { useFocusPayload } from '@/features/docx/hooks/useFocusPayload';
 import { useKnowledgeGraphData } from '@/features/docx/hooks/useKnowledgeGraphData';
+import { useAnalyzerView } from '@/features/docx/hooks/useAnalyzerView';
 import { PartyManager } from '@/features/docx/components/clause-analyzer/PartyManager';
 import { PartyEntry } from '@/features/docx/components/clause-analyzer/PartyEntry';
 import { PanelHeader } from '@/features/docx/components/clause-analyzer/PanelHeader';
@@ -36,15 +40,22 @@ import {
 	PAIR_SECOND_COLOR,
 	PARTY_COLOR,
 } from '@/features/docx/components/clause-analyzer/constants';
+import { ViewBar } from '@/features/docx/components/clause-analyzer/views/ViewBar';
+import { MirrorView } from '@/features/docx/components/clause-analyzer/views/MirrorView';
+import { BenchView } from '@/features/docx/components/clause-analyzer/views/BenchView';
+import { CasesView } from '@/features/docx/components/clause-analyzer/views/CasesView';
+import type { ViewProps } from '@/features/docx/components/clause-analyzer/views/types';
 import type { DeonticKind } from '@/types/knowledge';
 
 interface ClauseAnalyzerPanelProps {
 	docId: string;
+	/** Sends a question to the chat tab. */
+	onAsk?: (question: string) => void;
 }
 
 const LANE_COLORS: [string, string] = [PARTY_COLOR, PAIR_SECOND_COLOR];
 
-export function ClauseAnalyzerPanel({ docId }: ClauseAnalyzerPanelProps) {
+export function ClauseAnalyzerPanel({ docId, onAsk }: ClauseAnalyzerPanelProps) {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [hover, setHover] = useState<HoverInfo | null>(null);
 
@@ -253,7 +264,68 @@ export function ClauseAnalyzerPanel({ docId }: ClauseAnalyzerPanelProps) {
 					: 'Party B'
 				: 'Both parties';
 
-	const showGraph = status === 'ready' && Boolean(viewKg) && Boolean(grid);
+	const nav = useAnalyzerView();
+	const pairIds =
+		status === 'ready' &&
+		isPartyFocus &&
+		focusNodeId &&
+		secondPartyId &&
+		secondPartyId !== focusNodeId
+			? { a: focusNodeId, b: secondPartyId }
+			: null;
+	const pairA = pairIds?.a ?? null;
+	const pairB = pairIds?.b ?? null;
+	const names = useMemo(
+		() => ({
+			a: viewKg?.parties.find((p) => p.id === pairA)?.name ?? 'Party A',
+			b: viewKg?.parties.find((p) => p.id === pairB)?.name ?? 'Party B',
+		}),
+		[viewKg, pairA, pairB]
+	);
+	const viewProps: ViewProps | null =
+		pairIds && viewKg && grid
+			? {
+					docId,
+					kg: viewKg,
+					aId: pairIds.a,
+					bId: pairIds.b,
+					names,
+					reader: nav.reader,
+					row: nav.row,
+					onRow: nav.setRow,
+					grid,
+					shareOf,
+					onOpen: openInDocument,
+					onOpenParas: (pids) => setDocumentTarget(buildParagraphTarget(pids, nodesById)),
+					onAsk,
+					onTable: () => nav.setView('table'),
+				}
+			: null;
+	const inView = viewProps !== null && nav.view !== 'table';
+
+	// The pair lives in the URL too: a shared link opens on the same comparison.
+	const { pair: urlPair, setPair } = nav;
+	const pairKey = pairIds ? `${pairIds.a},${pairIds.b}` : null;
+	const hadPair = useRef(false);
+	useEffect(() => {
+		if (pairKey) {
+			hadPair.current = true;
+			const [a, b] = pairKey.split(',');
+			setPair({ a, b });
+		} else if (hadPair.current && focusNodeId === null) {
+			hadPair.current = false;
+			setPair(null);
+		}
+	}, [pairKey, focusNodeId, setPair]);
+	const wantA = urlPair?.a ?? null;
+	const wantB = urlPair?.b ?? null;
+	useEffect(() => {
+		if (status !== 'ready' || !viewKg || focusNodeId || !wantA || !wantB) return;
+		const known = (id: string) => viewKg.parties.some((p) => p.id === id);
+		if (known(wantA) && known(wantB)) focusPair(wantA, wantB);
+	}, [status, viewKg, focusNodeId, wantA, wantB, focusPair]);
+
+	const showGraph = status === 'ready' && Boolean(viewKg) && Boolean(grid) && !inView;
 
 	return (
 		<div className="flex h-full flex-col">
@@ -270,6 +342,19 @@ export function ClauseAnalyzerPanel({ docId }: ClauseAnalyzerPanelProps) {
 				/>
 			)}
 
+			{viewProps && (
+				<ViewBar
+					view={nav.view}
+					onView={nav.setView}
+					reader={nav.reader}
+					onReader={nav.setReader}
+					names={viewProps.names}
+				/>
+			)}
+			{inView && viewProps && nav.view === 'mirror' && <MirrorView {...viewProps} />}
+			{inView && viewProps && nav.view === 'benchmark' && <BenchView {...viewProps} />}
+			{inView && viewProps && nav.view === 'scenarios' && <CasesView {...viewProps} />}
+
 			{/* With the graph below, this hugs its rows instead of claiming a fixed share:
 			    seven clauses are ~300px and the rest belongs to the graph. The floor keeps
 			    the legend from scrolling on short documents; the cap keeps a long grid from
@@ -277,7 +362,10 @@ export function ClauseAnalyzerPanel({ docId }: ClauseAnalyzerPanelProps) {
 			    party picker, loading, error — it fills, or the footer's border would float
 			    mid-panel with white space under it. */}
 			<div
-				className={cn('flex', showGraph ? 'max-h-[62%] min-h-[240px] shrink-0' : 'min-h-0 flex-1')}
+				className={cn(
+					'flex',
+					inView ? 'hidden' : showGraph ? 'max-h-[62%] min-h-[240px] shrink-0' : 'min-h-0 flex-1'
+				)}
 			>
 				<div ref={containerRef} className="relative min-h-0 flex-1">
 					{status === 'loading' && (

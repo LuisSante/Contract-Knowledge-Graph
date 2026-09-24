@@ -10,6 +10,7 @@ import type {
 import { DEFAULT_SEVERITY } from '@/features/docx/utils/knowledge/party-ledger';
 import type { MergeGroup } from '@/features/docx/utils/knowledge/party-view';
 import type { DocumentTarget } from '@/features/docx/utils/knowledge/graph-payload';
+import type { DocNote } from '@/features/docx/hooks/useDocNotes';
 
 export function mergeGroupId(members: Iterable<string>): string {
 	return `merge:${[...members].sort().join('+')}`;
@@ -62,6 +63,7 @@ interface ClauseAnalyzerState extends GraphPayload {
 	hiddenParties: string[];
 	selectedPartyIds: string[];
 	secondPartyId: string | null;
+	notes: DocNote[];
 
 	focusNode: (nodeId: string) => void;
 	setFocusMeta: (meta: FocusMeta | null) => void;
@@ -81,6 +83,7 @@ interface ClauseAnalyzerState extends GraphPayload {
 	setDocumentTarget: (target: DocumentTarget) => void;
 	setSecondParty: (id: string | null) => void;
 	focusPair: (anchorId: string, secondId: string) => void;
+	setNotes: (notes: DocNote[]) => void;
 }
 
 export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
@@ -93,6 +96,7 @@ export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
 	hiddenParties: [],
 	selectedPartyIds: [],
 	secondPartyId: null,
+	notes: [],
 	...EMPTY_PAYLOAD,
 
 	focusNode: (focusNodeId) => set({ focusNodeId, hops: 1, secondPartyId: null }),
@@ -185,6 +189,7 @@ export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
 	setDocumentTarget: (target) => set(target),
 	setSecondParty: (secondPartyId) => set({ secondPartyId }),
 	focusPair: (focusNodeId, secondPartyId) => set({ focusNodeId, secondPartyId, hops: 1 }),
+	setNotes: (notes) => set({ notes }),
 }));
 
 export const TOP_K_STEP_SIZE = TOP_K_STEP;

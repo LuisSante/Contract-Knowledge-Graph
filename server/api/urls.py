@@ -12,6 +12,7 @@ urlpatterns = [
         "knowledge_graph/<str:doc_id>/clause_importance",
         views.ClauseImportanceView.as_view(),
     ),
+    path("knowledge_graph/<str:doc_id>/benchmark", views.BenchmarkView.as_view()),
     path("contract_summary/<str:doc_id>", views_summary.ContractSummaryView.as_view()),
     path("assistant/chat", views_assistant.AssistantChatView.as_view()),
     path("llm/estimate", views_llm.LlmEstimateView.as_view()),

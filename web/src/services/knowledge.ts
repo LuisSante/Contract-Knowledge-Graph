@@ -21,22 +21,6 @@ export async function fetchKnowledgeGraph(docId: string): Promise<KnowledgeGraph
 	}
 }
 
-export interface PartyMergeHints {
-	candidates: Record<string, string[]>;
-	entities: string[];
-}
-
-export async function fetchPartyMergeHints(docId: string): Promise<PartyMergeHints> {
-	try {
-		const response = await api.get<Partial<PartyMergeHints>>(
-			`/knowledge_graph/${encodeURIComponent(docId)}/party_hints`
-		);
-		return { candidates: response.data.candidates ?? {}, entities: response.data.entities ?? [] };
-	} catch {
-		return { candidates: {}, entities: [] };
-	}
-}
-
 export interface ClauseImportance {
 	byClause: Record<string, number>;
 	/** The whole fixed point, every node kind included. Sums to 1. */

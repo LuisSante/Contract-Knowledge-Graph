@@ -15,7 +15,13 @@ DEONTIC_ID_PREFIX: dict[str, str] = {
 }
 
 DEONTIC_KIND_GUIDE: dict[str, str] = {
-    "obligation": "a duty the obligor party MUST perform ('shall', 'must', 'agrees to').",
+    "obligation": (
+        "a duty the obligor party MUST perform ('shall', 'must', 'agrees to'). A REPRESENTATION "
+        "or WARRANTY ('represents and warrants that', 'warrants that') is an obligation too: the "
+        "party giving it answers for what it states being true, owed to the other party. Emit one "
+        "per warranted statement; when a list follows a lead-in ('X represents and warrants "
+        "that:'), each item is X's."
+    ),
     "right": (
         "an entitlement the holder party HAS. Three forms, all of them rights:\n"
         "      * a plain permission — 'may', 'is entitled to';\n"
@@ -66,24 +72,22 @@ LLM_RELATION_GUIDE: dict[str, str] = {
 
 RELATION_TYPES: tuple[str, ...] = tuple(LLM_RELATION_GUIDE)
 
-OUTPUT_SHAPE = {
+# What the first pass reads off the whole contract, once: the ids every later call must use.
+SKELETON_SHAPE = {
     "parties": [
         {
             "id": "party1",
             "name": "full legal name as written",
             "role": "short role label (e.g. Company, Distributor, Supplier)",
             "address": "physical address if stated, else null",
-            "aliases": ["defined-term or short name used for this party"],
+            "aliases": ["every other name or defined term the contract uses for this party"],
             "paragraphs": [0],
         }
     ],
-    "clauses": [
+    "roles": [
         {
-            "id": "clause1",
-            "ref": "Section 3.2 | Article 5 | null",
-            "heading": "clause heading if any",
-            "level": 1,
-            "paragraphs": [0],
+            "role": "Receiving Party",
+            "playedBy": ["party1", "party2"],
         }
     ],
     "definedTerms": [
@@ -91,19 +95,28 @@ OUTPUT_SHAPE = {
             "id": "term1",
             "term": "Confidential Information",
             "definition": "verbatim substring copied exactly from a paragraph",
-            "definedIn": "clause1 | null",
             "paragraphs": [0],
         }
     ],
+    "clauseHeadings": [
+        {
+            "clause": "clause-3",
+            "heading": "the clause's title as the contract writes it, or null if it has none",
+        }
+    ],
+}
+
+# What each block call returns. Parties, clauses and defined terms are not in it: they come
+# from the skeleton, and a block can only point at them by id.
+OUTPUT_SHAPE = {
     "obligations": [
         {
             "id": "obligation1",
             "action": "short verb phrase (e.g. Pay Invoices, Audit Records)",
             "summary": "one short sentence paraphrasing the duty",
             "text": "verbatim substring copied exactly from a paragraph",
-            "obligor": "party1 | null",
-            "beneficiary": "party2 | null",
-            "clause": "clause1 | null",
+            "obligor": "party-1 | null",
+            "beneficiary": "party-2 | null",
             "deadline": "within 30 days of receipt | null",
             "frequency": "once per calendar year | null",
             "paragraphs": [0],
@@ -115,9 +128,8 @@ OUTPUT_SHAPE = {
             "action": "short verb phrase",
             "summary": "one short sentence paraphrasing the entitlement",
             "text": "verbatim substring copied exactly from a paragraph",
-            "obligor": "party1 | null",
-            "beneficiary": "party2 | null",
-            "clause": "clause1 | null",
+            "obligor": "party-1 | null",
+            "beneficiary": "party-2 | null",
             "deadline": "null",
             "frequency": "null",
             "paragraphs": [0],
@@ -129,9 +141,8 @@ OUTPUT_SHAPE = {
             "action": "short verb phrase",
             "summary": "one short sentence paraphrasing the restriction",
             "text": "verbatim substring copied exactly from a paragraph",
-            "obligor": "party1 | null",
-            "beneficiary": "party2 | null",
-            "clause": "clause1 | null",
+            "obligor": "party-1 | null",
+            "beneficiary": "party-2 | null",
             "deadline": "null",
             "frequency": "null",
             "paragraphs": [0],
@@ -142,7 +153,7 @@ OUTPUT_SHAPE = {
             "id": "condition1",
             "trigger": "verbatim substring stating the prerequisite",
             "operator": "IF | UNLESS | UNTIL | UPON",
-            "gates": "obligation1 | clause1",
+            "gates": "obligation1 | clause-1",
             "paragraphs": [0],
         }
     ],
@@ -151,7 +162,7 @@ OUTPUT_SHAPE = {
             "id": "reference1",
             "name": "ISO 27001 | GDPR | Delaware General Corporation Law",
             "citation": "Article 30 | Section 262 | null",
-            "citedBy": "clause1 | obligation1",
+            "citedBy": "obligation1 | clause-1",
             "paragraphs": [0],
         }
     ],
@@ -161,17 +172,76 @@ OUTPUT_SHAPE = {
             "valueType": "Currency | Percentage | Duration | Quantity",
             "amount": "5,000,000",
             "unit": "USD | % | days",
-            "quantifies": "obligation1 | clause1",
+            "quantifies": "obligation1 | clause-1",
             "paragraphs": [0],
         }
     ],
     "relations": [
         {
             "type": " | ".join(RELATION_TYPES),
-            "source": "clause1 | obligation1",
-            "target": "Section 3.1 | Confidential Information",
+            "source": "obligation1 | clause-1",
+            "target": "clause-4 | term-2",
             "evidence": "verbatim substring that states the link",
             "paragraphs": [0],
         }
     ],
 }
+
+CONDITION_OPERATORS: tuple[str, ...] = ("IF", "UNLESS", "UNTIL", "UPON")
+
+
+def _field_schema(field: str, example: object, closed: dict[str, list[str]]) -> dict[str, object]:
+    if field in closed:
+        if not closed[field]:
+            # Nothing to choose from — no party found, no clause numbered: only null fits.
+            return {"type": "null"}
+        # anyOf rather than an enum holding null: the form strict mode documents.
+        values = {"type": "string", "enum": closed[field]}
+        return {"anyOf": [values, {"type": "null"}]} if example is None or "null" in str(example) else values
+    if field == "id":
+        return {"type": "string"}
+    if isinstance(example, list):
+        item_is_int = bool(example) and isinstance(example[0], int)
+        return {"type": "array", "items": {"type": "integer" if item_is_int else "string"}}
+    if isinstance(example, int):
+        return {"type": ["integer", "null"]}
+    return {"type": ["string", "null"]}
+
+
+def _json_schema(name: str, shape: dict, closed: dict[str, dict[str, list[str]]]) -> dict[str, object]:
+    """A shape as a strict JSON schema: the prompt shows the shape, the API enforces it.
+
+    Strict mode wants every field required, so "unknown" is a null value, never a missing
+    key. closed[collection][field] lists the only values a field may take.
+    """
+    properties: dict[str, object] = {}
+    for collection, (example,) in shape.items():
+        fields = closed.get(collection, {})
+        item_properties = {field: _field_schema(field, value, fields) for field, value in example.items()}
+        properties[collection] = {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": item_properties,
+                "required": list(item_properties),
+                "additionalProperties": False,
+            },
+        }
+    return {
+        "name": name,
+        "schema": {"type": "object", "properties": properties, "required": list(properties), "additionalProperties": False},
+    }
+
+
+def skeleton_json_schema(clause_ids: list[str]) -> dict[str, object]:
+    return _json_schema("contract_skeleton", SKELETON_SHAPE, {"clauseHeadings": {"clause": clause_ids}})
+
+
+def block_json_schema(party_ids: list[str], clause_ids: list[str], term_ids: list[str]) -> dict[str, object]:
+    """The block schema for one contract: a party field can only name a party the skeleton
+    found, and a relation can only land on a clause or term that exists."""
+    parties = {"obligor": party_ids, "beneficiary": party_ids}
+    closed: dict[str, dict[str, list[str]]] = {kind: parties for kind in ("obligations", "rights", "prohibitions")}
+    closed["conditions"] = {"operator": list(CONDITION_OPERATORS)}
+    closed["relations"] = {"type": list(RELATION_TYPES), "target": clause_ids + term_ids}
+    return _json_schema("contract_block", OUTPUT_SHAPE, closed)

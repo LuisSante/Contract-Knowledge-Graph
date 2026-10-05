@@ -17,7 +17,6 @@ from core.config import settings
 from services.documents.processing import build_paragraphs, load_paragraphs_dump, save_paragraphs_dump
 from services.documents.store import DocumentStore
 from services.graph.knowledge import benchmark, personalized_pagerank
-from services.graph.knowledge.party_hints import suggest_party_merges
 from services.graph.knowledge.store import load_knowledge_graph
 
 logger = logging.getLogger(__name__)
@@ -134,30 +133,6 @@ class ClauseImportanceView(APIView):
             }
         )
         return Response(response.data)
-
-
-class KnowledgePartyHintsView(APIView):
-    # DRF builds a view per request, so the cache has to outlive the instance.
-    _cache: ClassVar[dict[str, dict]] = {}
-
-    def get(self, request, doc_id: str):
-        document_store.ensure_initialized()
-        canonical_id = document_store.get_canonical_id(doc_id) or doc_id
-        cached = self._cache.get(canonical_id)
-        if cached is not None and "entities" in cached:
-            return Response(cached)
-
-        kg = load_knowledge_graph(canonical_id, settings.KNOWLEDGE_GRAPH_DIR)
-        if kg is None:
-            raise NotFound("Knowledge graph not generated for this document")
-
-        try:
-            result = suggest_party_merges(kg)
-        except Exception:
-            logger.exception("party merge hints failed for %s", canonical_id)
-            result = {"candidates": {}, "entities": []}
-        self._cache[canonical_id] = result
-        return Response(result)
 
 
 class BenchmarkView(APIView):

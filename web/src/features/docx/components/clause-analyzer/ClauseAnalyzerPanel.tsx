@@ -97,7 +97,7 @@ export function ClauseAnalyzerPanel({ docId, onAsk }: ClauseAnalyzerPanelProps) 
 	const paragraphs = useDocumentStore((s) => s.paragraphs);
 	const nodesById = useMemo(() => new Map(paragraphs.map((n) => [n.id, n])), [paragraphs]);
 
-	const { kg, status, mergeHints, hintsLoading } = useKnowledgeGraphData(docId, clearFocus);
+	const { kg, status } = useKnowledgeGraphData(docId, clearFocus);
 
 	const viewKg = useMemo(
 		() => (kg ? applyPartyView(kg, mergeGroups, new Set(hiddenParties)) : null),
@@ -390,7 +390,6 @@ export function ClauseAnalyzerPanel({ docId, onAsk }: ClauseAnalyzerPanelProps) 
 						<PartyEntry
 							docId={docId}
 							kg={viewKg}
-							mergeHints={mergeHints}
 							mergeGroups={mergeGroups}
 							onMerge={mergeParties}
 							onSplit={splitGroup}
@@ -460,7 +459,6 @@ export function ClauseAnalyzerPanel({ docId, onAsk }: ClauseAnalyzerPanelProps) 
 				<PartyManager
 					hidden={hiddenNamed}
 					hasView={mergeGroups.length > 0 || hiddenParties.length > 0}
-					hintsLoading={hintsLoading}
 					onUnhide={unhideParty}
 					onReset={clearPartyView}
 				/>

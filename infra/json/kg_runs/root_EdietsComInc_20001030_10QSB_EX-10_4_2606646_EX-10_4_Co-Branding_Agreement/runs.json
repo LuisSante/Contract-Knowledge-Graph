@@ -1,0 +1,23 @@
+[
+  {
+    "file": "20261005-034401_gpt-6.1-sol_D2.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": null,
+    "pipeline": "skeleton-v2",
+    "design": "D2",
+    "prompt": "75f20786f4b8",
+    "kgSha": "08147d413a8d",
+    "createdAt": "2026-10-05T03:44:01",
+    "costUsd": 0.85845,
+    "seconds": 964,
+    "usage": {
+      "calls": 16,
+      "prompt": 149742,
+      "cached": 86864,
+      "cacheWrite": 62830,
+      "completion": 69259,
+      "reasoning": 1145
+    },
+    "note": "Fase 5 — Ediets hold-out, final configuration, rebuilt tree (repeat: the first run was lost by a logging bug)"
+  }
+]

@@ -7,7 +7,6 @@ urlpatterns = [
     path("document_file/<str:doc_id>", views.DocumentFileView.as_view()),
     path("extract_paragraphs", views.ExtractParagraphsView.as_view()),
     path("knowledge_graph/<str:doc_id>", views.KnowledgeGraphView.as_view()),
-    path("knowledge_graph/<str:doc_id>/party_hints", views.KnowledgePartyHintsView.as_view()),
     path(
         "knowledge_graph/<str:doc_id>/clause_importance",
         views.ClauseImportanceView.as_view(),

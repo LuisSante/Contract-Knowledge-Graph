@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { fetchKnowledgeGraph, fetchPartyMergeHints } from '@/services/knowledge';
+import { fetchKnowledgeGraph } from '@/services/knowledge';
 import type { KnowledgeGraph } from '@/types/knowledge';
 
 export type KnowledgeGraphStatus = 'loading' | 'ready' | 'missing' | 'error';
@@ -9,8 +9,6 @@ export type KnowledgeGraphStatus = 'loading' | 'ready' | 'missing' | 'error';
 export function useKnowledgeGraphData(docId: string, onReload: () => void) {
 	const [kg, setKg] = useState<KnowledgeGraph | null>(null);
 	const [status, setStatus] = useState<KnowledgeGraphStatus>('loading');
-	const [mergeHints, setMergeHints] = useState<Record<string, string[]>>({});
-	const [hintsLoading, setHintsLoading] = useState(false);
 
 	useEffect(() => {
 		if (!docId) return;
@@ -29,15 +27,6 @@ export function useKnowledgeGraphData(docId: string, onReload: () => void) {
 				}
 				setKg(graph);
 				setStatus('ready');
-				setMergeHints({});
-				setHintsLoading(true);
-				fetchPartyMergeHints(docId)
-					.then((hints) => {
-						if (!cancelled) setMergeHints(hints.candidates);
-					})
-					.finally(() => {
-						if (!cancelled) setHintsLoading(false);
-					});
 			} catch {
 				if (!cancelled) setStatus('error');
 			}
@@ -49,5 +38,5 @@ export function useKnowledgeGraphData(docId: string, onReload: () => void) {
 		};
 	}, [docId, onReload]);
 
-	return { kg, status, mergeHints, hintsLoading };
+	return { kg, status };
 }

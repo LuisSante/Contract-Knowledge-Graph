@@ -1,5 +1,6 @@
 import { api } from '@/lib/api';
 import type { KnowledgeGraph, KnowledgeGraphResponse } from '@/types/knowledge';
+import type { Bench, BenchTopic } from '@/features/docx/utils/knowledge/benchmark';
 
 export async function fetchKnowledgeGraph(docId: string): Promise<KnowledgeGraph | null> {
 	try {
@@ -17,22 +18,6 @@ export async function fetchKnowledgeGraph(docId: string): Promise<KnowledgeGraph
 			return null;
 		}
 		throw error;
-	}
-}
-
-export interface PartyMergeHints {
-	candidates: Record<string, string[]>;
-	entities: string[];
-}
-
-export async function fetchPartyMergeHints(docId: string): Promise<PartyMergeHints> {
-	try {
-		const response = await api.get<Partial<PartyMergeHints>>(
-			`/knowledge_graph/${encodeURIComponent(docId)}/party_hints`
-		);
-		return { candidates: response.data.candidates ?? {}, entities: response.data.entities ?? [] };
-	} catch {
-		return { candidates: {}, entities: [] };
 	}
 }
 
@@ -62,6 +47,20 @@ export async function fetchClauseImportance(
 			priorByNode: response.data.priorByNode ?? {},
 			iterations: response.data.iterations ?? 0,
 		};
+	} catch {
+		return null;
+	}
+}
+
+export async function fetchBench(docId: string, signal?: AbortSignal): Promise<Bench | null> {
+	try {
+		const response = await api.get<{
+			contractType: string;
+			peers: number;
+			categories: BenchTopic[];
+		}>(`/knowledge_graph/${encodeURIComponent(docId)}/benchmark`, { signal });
+		const { contractType, peers, categories } = response.data;
+		return { contractType, peers, topics: categories ?? [] };
 	} catch {
 		return null;
 	}

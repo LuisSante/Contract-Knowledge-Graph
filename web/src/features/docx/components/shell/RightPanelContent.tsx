@@ -12,6 +12,7 @@ interface RightPanelContentProps {
 	docId: string;
 	assistant: ReturnType<typeof useAssistantChat>;
 	onFocusNodeFromPanel: (nodeId: string, emphasize?: boolean) => void;
+	onAsk: (question: string) => void;
 }
 
 export function RightPanelContent({
@@ -19,9 +20,10 @@ export function RightPanelContent({
 	docId,
 	assistant,
 	onFocusNodeFromPanel,
+	onAsk,
 }: RightPanelContentProps) {
 	if (activeTab === 'clause_analyzer') {
-		return <ClauseAnalyzerPanel docId={docId} />;
+		return <ClauseAnalyzerPanel docId={docId} onAsk={onAsk} />;
 	}
 
 	if (activeTab === 'assistant') {

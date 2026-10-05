@@ -194,6 +194,31 @@ export function buildDocumentTarget(
 	};
 }
 
+/** For evidence the graph holds no node for, such as a span CUAD marked. */
+export function buildParagraphTarget(
+	paragraphIds: string[],
+	nodesById: Map<string, ParagraphNode>
+): DocumentTarget {
+	const ordered = [...new Set(paragraphIds)]
+		.filter((pid) => nodesById.has(pid))
+		.sort((a, b) => paragraphEnum(a, nodesById) - paragraphEnum(b, nodesById));
+	const anchorParagraphId = ordered[0] ?? null;
+	return {
+		anchorParagraphId,
+		relatedParagraphs: ordered
+			.filter((pid) => pid !== anchorParagraphId)
+			.map((pid) => ({
+				node: nodesById.get(pid) as ParagraphNode,
+				relationTypes: [],
+				references: [],
+			})),
+		entities: [],
+		paragraphIds: ordered,
+		scoreByParagraph: Object.fromEntries(ordered.map((pid) => [pid, 1] as const)),
+		toneByParagraph: {},
+	};
+}
+
 export function buildPairPayload(
 	kg: KnowledgeGraph,
 	pair: PairScores,

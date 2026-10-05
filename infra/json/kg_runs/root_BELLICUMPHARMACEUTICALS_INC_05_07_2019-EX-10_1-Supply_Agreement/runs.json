@@ -1,0 +1,23 @@
+[
+  {
+    "file": "20261005-050552_gpt-6.1-sol_D2.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": null,
+    "pipeline": "skeleton-v2",
+    "design": "D2",
+    "prompt": "75f20786f4b8",
+    "kgSha": "d6dc9f75a905",
+    "createdAt": "2026-10-05T05:05:52",
+    "costUsd": 2.81662,
+    "seconds": 2471,
+    "usage": {
+      "calls": 50,
+      "prompt": 654261,
+      "cached": 258768,
+      "cacheWrite": 395343,
+      "completion": 180209,
+      "reasoning": 2730
+    },
+    "note": "Bellicum re-extraction with the final configuration, compared against the old-pipeline graph"
+  }
+]

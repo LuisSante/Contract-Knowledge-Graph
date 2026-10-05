@@ -20,7 +20,6 @@ import {
 interface PartyEntryProps {
 	docId: string;
 	kg: KnowledgeGraph;
-	mergeHints: Record<string, string[]>;
 	mergeGroups: MergeGroup[];
 	onMerge: (ids: string[]) => void;
 	onSplit: (groupId: string) => void;
@@ -31,7 +30,6 @@ interface PartyEntryProps {
 export function PartyEntry({
 	docId,
 	kg,
-	mergeHints,
 	mergeGroups,
 	onMerge,
 	onSplit,
@@ -145,7 +143,6 @@ export function PartyEntry({
 					next[side] = null;
 					setSlotOverride(next);
 				}}
-				mergeHints={mergeHints}
 				groupIds={mergeGroups.map((group) => group.id)}
 				onMerge={(ids) => {
 					// Predict the group id so a seated party keeps its seat as

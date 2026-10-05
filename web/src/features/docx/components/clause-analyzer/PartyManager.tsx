@@ -3,26 +3,17 @@
 interface PartyManagerProps {
 	hidden: Array<{ id: string; name: string }>;
 	hasView: boolean;
-	hintsLoading: boolean;
 	onUnhide: (id: string) => void;
 	onReset: () => void;
 }
 
-export function PartyManager({
-	hidden,
-	hasView,
-	hintsLoading,
-	onUnhide,
-	onReset,
-}: PartyManagerProps) {
+export function PartyManager({ hidden, hasView, onUnhide, onReset }: PartyManagerProps) {
 	// Nothing to undo is the usual case: rendering anyway leaves a bordered,
 	// padded strip under the panel that says nothing.
-	if (!hasView && !hintsLoading) return null;
+	if (!hasView) return null;
 
 	return (
 		<div className="flex items-center gap-2 border-t border-border/60 px-3 py-1.5 text-2xs text-muted-foreground">
-			{hintsLoading && <span className="text-foreground/40">loading hints…</span>}
-
 			{hidden.length > 0 && (
 				<span className="flex flex-wrap items-center gap-1">
 					<span className="font-medium text-foreground/50">Hidden:</span>

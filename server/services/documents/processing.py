@@ -117,6 +117,14 @@ def _accept_heading(text: str) -> tuple[str, str] | None:
     ref, separator, rest = match.group(1), match.group(2), match.group(3)
     if not separator and "." not in ref and not text.lstrip()[:1].isalpha():
         return None
+    # "2) inspection of ..." is an item of a list inside a clause: in the corpus every
+    # ")"-numbered paragraph is one. Taken for a heading, its number runs backwards and
+    # cuts the section numbering short — Bellicum's tree stopped at 9.4 of 20 articles.
+    if separator == ")":
+        return None
+    # "13.1 , Bellicum shall ..." is a reference split by a page break, not a heading.
+    if not rest[:1].isalnum() and rest[:1] not in "\"“'‘(":
+        return None
     return ref, rest[:HEADING_PREVIEW_CHARS].strip()
 
 

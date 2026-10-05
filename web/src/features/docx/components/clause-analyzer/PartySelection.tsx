@@ -22,8 +22,6 @@ interface PartySelectionProps {
 	/** With a side, the drop was aimed; without one, the first open seat takes it. */
 	onAssign: (partyId: string, side?: 0 | 1) => void;
 	onRelease: (side: 0 | 1) => void;
-	/** Parties the resolver thinks may be the same entity, keyed by party id. */
-	mergeHints: Record<string, string[]>;
 	/** Ids that are merge groups, so their cards can offer Split. */
 	groupIds: string[];
 	onMerge: (ids: string[]) => void;
@@ -50,7 +48,6 @@ export function PartySelection({
 	slotColors,
 	onAssign,
 	onRelease,
-	mergeHints,
 	groupIds,
 	onMerge,
 	onSplit,
@@ -230,7 +227,6 @@ export function PartySelection({
 					</div>
 					<div className="flex flex-wrap gap-1.5">
 						{pool.map((party) => {
-							const suggested = (mergeHints[party.id] ?? []).some((other) => seated.has(other));
 							const zone = `pool-${party.id}`;
 							const targeted = dropZone === zone;
 							return (
@@ -250,11 +246,9 @@ export function PartySelection({
 										})
 									}
 									title={
-										suggested
-											? 'The resolver thinks this may be the same entity as one of the seated parties — drop it on that card to merge'
-											: full
-												? 'Drag onto a seat to swap it in · drop another card here to merge'
-												: 'Click to seat it · drag onto a card to merge'
+										full
+											? 'Drag onto a seat to swap it in · drop another card here to merge'
+											: 'Click to seat it · drag onto a card to merge'
 									}
 									className={`group flex max-w-full cursor-grab items-center gap-1.5 rounded-full border px-2.5 py-1 text-2xs transition active:cursor-grabbing ${
 										targeted
@@ -263,12 +257,6 @@ export function PartySelection({
 									}`}
 									style={{ opacity: draggingId === party.id ? 0.4 : undefined }}
 								>
-									{suggested && (
-										<span
-											className="inline-block size-1.5 shrink-0 rounded-full bg-emerald-500"
-											aria-label="possible duplicate"
-										/>
-									)}
 									<span className="truncate">{party.name}</span>
 									<span className="shrink-0 tabular-nums opacity-60">{party.total}</span>
 									{groups.has(party.id) && splitBadge(party.id)}

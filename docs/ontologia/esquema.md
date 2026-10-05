@@ -24,6 +24,12 @@ a todo lo demás. En el código: `server/schemas/knowledge.py` (tipos y campos),
 Los tres del medio — obligación, derecho y prohibición — son los **enunciados
 deónticos**: lo que el contrato afirma. El resto los describe.
 
+**Las declaraciones y garantías no tienen tipo propio, y la ontología no se amplía.** Se
+extraen como `Obligation` de quien garantiza, frente a la otra parte: quien declara que
+algo es cierto responde si no lo es. Dejarlas fuera perdía la asimetría que más pesa en
+SteelVault —el Affiliate garantiza tres cosas, Equidata una, y §11 anula esa una— y el
+vínculo con la indemnización de §9, que se dispara por *«breach of any warranties»*.
+
 ### Todo nodo lleva su procedencia
 
 Cada uno guarda `paragraphIds`, y los enunciados además `text` con el fragmento literal
@@ -49,13 +55,23 @@ queda nulo.
 `burdenPartyId` es un puntero a **un** nodo `Party`. De ahí salen dos límites que se
 notan en los datos:
 
-**Lo bilateral.** Una cláusula recíproca no obliga a una parte, obliga a las dos. La
-extracción lo resuelve inventando una tercera parte llamada *«each Party»* — que queda
-en un componente desconectado del grafo, porque no toca a ninguna de las dos reales.
+**Lo bilateral.** Una cláusula recíproca no obliga a una parte, obliga a las dos. Se
+emite un enunciado por parte, con el mismo texto y la otra como beneficiaria. La
+extracción antigua lo resolvía inventando una tercera parte, *«each Party»*, que quedaba
+en un componente desconectado del grafo; ya no puede, porque las partes las fija una
+lectura previa del contrato y cada bloque solo elige entre ellas (ver *De dónde salen los
+ids*). Los roles que las partes juegan por turnos —*Receiving Party*, *Indemnified
+Party*— se listan con quién los juega, y un enunciado de ese rol sale una vez por parte.
 
 **Lo condicionado a un rol.** *«La parte que incumpla debe presentar un plan
 correctivo»* no nombra a nadie: el obligado depende de un hecho futuro. El campo se
 queda nulo y se lee igual que un fallo de extracción.
+
+**Lo que firma alguien que no es parte.** El avalista personal de SteelVault (§1, *«the
+undersigned principal, partner or owner»*) responde con su patrimonio de la deuda del
+Affiliate, pero el contrato no lo nombra como parte. Se decidió dejarlo nulo, como
+cualquier rol sin resolver: un nodo `Party` para él sería la única parte que no firma
+como entidad contratante.
 
 ---
 
@@ -71,6 +87,7 @@ Se separan por **cómo se obtienen**, que determina cuánto fiarse de ellas.
 | `assigns_obligation_to` | `burdenPartyId` de una obligación o prohibición |
 | `grants_right_to` | `benefitPartyId` de un derecho |
 | `defines` | `definedInClauseId` de un término |
+| `is_part_of` entre cláusulas | el árbol numerado del fichero de párrafos |
 
 Son deterministas. Y son también las que la retícula **no dibuja**: la fila ya dice la
 cláusula y el carril ya dice la parte, así que trazarlas sería repetir la posición.
@@ -84,6 +101,11 @@ cláusula y el carril ya dice la parte, así que trazarlas sería repetir la pos
 | `depends_on` | su aplicabilidad está supeditada a otra cláusula |
 | `supersedes` | prevalece sobre otra en caso de conflicto |
 | `modifies` | cambia lo que otra significa, o si se aplica |
+
+El destino de cada una es un id que ya existe —una cláusula, o un término para `uses`—:
+el esquema de la respuesta no admite otro. Antes era el texto de la referencia, que se
+emparejaba después con una cláusula por su número, y una referencia a *«Section 2»*
+podía caer en el considerando 2.
 
 Estas son las informativas, y son las que el modelo apenas produce: en el documento de
 estudio suman **3**, y **`modifies` y `supersedes` salieron 0 en tres corridas
@@ -101,8 +123,8 @@ Cualquier cosa que recorra `kg.edges` es ciega a ellos, y ahí vive parte de la 
 interesante: 10 de las 11 condiciones apuntan a un enunciado concreto, y **7 de esas 10
 cierran un derecho, no una obligación** — lo que se condiciona son los permisos.
 
-`DefinedTerm.definedInClauseId`, en cambio, viene nulo en los 22 términos: la extracción
-no lo rellena nunca.
+`DefinedTerm.definedInClauseId` venía nulo en los 22 términos de la extracción antigua.
+Ahora no lo pide al modelo: es la cláusula del párrafo donde está la definición literal.
 
 ---
 
@@ -116,6 +138,44 @@ Documento de estudio, el resumen del contrato Bellicum–Miltenyi:
 
 Tres partes para un contrato bilateral: la tercera es el nodo «each Party» de las
 cláusulas recíprocas.
+
+---
+
+## De dónde salen los ids
+
+Partes, cláusulas y términos existen **antes** de extraer ningún enunciado. Antes cada
+trozo del contrato inventaba los suyos y luego se fusionaban comparando nombres y números;
+así fue como §1 *Compensation* absorbió el considerando 1 de SteelVault.
+
+| Nodo | De dónde sale | Lo que no puede expresar |
+|---|---|---|
+| `Clause` | el árbol que `build_clause_tree` lee de la numeración | una cláusula sin número —*Permission* en SteelVault— queda fuera, y sus enunciados sin cláusula |
+| `Party` | una lectura del contrato entero: solo quien firma o por quien se firma | terceros mencionados, roles, colectivos y personas que el contrato no nombra como parte |
+| `DefinedTerm` | la misma lectura; la definición, literal | — |
+
+El título de una cláusula lo propone esa lectura y **solo se acepta si la cláusula
+empieza por él**: el modelo lo nombra, el texto decide.
+
+### Lo que no se extrae, aunque el texto diga *may* o *shall*
+
+- **Los considerandos.** Cuentan por qué existe el contrato, no qué debe o puede hacer
+  nadie; los deberes y derechos que anuncian los repiten las cláusulas operativas. En la
+  primera corrida del pipeline nuevo el modelo sacó tres «derechos» de los considerandos
+  de SteelVault.
+- **Una mención al contrato entero** —*«subject to the terms and conditions of this
+  Agreement»*— no es una relación: no apunta a ninguna cláusula, y como el esquema obliga
+  a elegir un id, el modelo la colgaba de la que tuviera más cerca.
+- **La misma disposición en dos listas.** Una disposición es un deber, un derecho o una
+  prohibición, no varios: repetida bajo otro tipo cuenta dos veces lo que el contrato
+  dice una. Una frase que dice dos cosas distintas —un derecho y quién paga su coste— sí
+  son dos enunciados.
+
+El árbol depende de que la numeración sea limpia. En Bellicum se cortaba en 9.4: el
+artículo 10 no tiene encabezado propio y una lista *«2) …»* justo antes parecía una
+numeración que retrocede. El constructor ya no toma un *«2)»* por un título. El árbol
+guardado de cada contrato se regenera solo cada vez que se abre el documento en la app, y
+[`clause_tree_check.ipynb`](../../notebooks/KG/clause_tree_check.ipynb) avisa de los que aún
+no se han regenerado.
 
 ---
 
@@ -151,9 +211,10 @@ Eso deja dos desviaciones visibles, y ambas son señal:
 | el modelo **no elige** una parte del grafo | ese nodo probablemente no es una entidad contratante — es el caso de «each Party» |
 | el modelo **nombra una parte que no está** (`partyId: null`) | la extracción del KG se dejó una entidad fuera |
 
-La primera es una comprobación independiente del trabajo de deduplicación: un nodo que el
-abstract ignora es un candidato a fusionar o a descartar, dicho por una pasada que no vio
-el resolver.
+La primera es una comprobación independiente de las partes del grafo: un nodo que el
+abstract ignora es un candidato a fusionar o a descartar. Ya no hay otra pasada que lo
+sugiera: la que proponía fusiones (`party_hints`) se retiró porque, desde que las partes las
+fija una lectura del contrato entero, no salen roles ni colectivos que fusionar.
 
 ### Las menciones van marcadas
 

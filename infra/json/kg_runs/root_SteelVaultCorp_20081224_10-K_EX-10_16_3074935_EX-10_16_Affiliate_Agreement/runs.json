@@ -1,0 +1,349 @@
+[
+  {
+    "file": "baseline_gpt-4.1.json",
+    "model": "gpt-4.1",
+    "reasoningEffort": null,
+    "pipeline": "chunks-v1",
+    "design": null,
+    "prompt": "v_1",
+    "kgSha": "43016751c775",
+    "createdAt": "2026-09-21",
+    "costUsd": null,
+    "note": "The graph the app served before Fase 2: per-chunk ids merged by string matching, 5000-char chunks with no shared context."
+  },
+  {
+    "file": "20261005-015915_gpt-6-luna_D2.json",
+    "model": "gpt-6-luna",
+    "reasoningEffort": null,
+    "pipeline": "skeleton-v2",
+    "design": "D2",
+    "prompt": "72d6826f3a3c",
+    "kgSha": "d36ee445f663",
+    "createdAt": "2026-10-05T01:59:15",
+    "costUsd": 0.01003,
+    "usage": {
+      "calls": 5,
+      "prompt": 29467,
+      "cached": 12093,
+      "cacheWrite": 17359,
+      "completion": 15475,
+      "reasoning": 0
+    },
+    "note": "Fase 2 validation run"
+  },
+  {
+    "file": "20261005-021402_gpt-6-luna_D2.json",
+    "model": "gpt-6-luna",
+    "reasoningEffort": null,
+    "pipeline": "skeleton-v2",
+    "design": "D2",
+    "prompt": "6844e36950c5",
+    "kgSha": "13cafcfe15d1",
+    "createdAt": "2026-10-05T02:14:02",
+    "costUsd": 0.00996,
+    "seconds": 120,
+    "usage": {
+      "calls": 5,
+      "prompt": 30699,
+      "cached": 18678,
+      "cacheWrite": 12006,
+      "completion": 16533,
+      "reasoning": 0
+    },
+    "note": "Fase 4"
+  },
+  {
+    "file": "20261005-021542_gpt-6-luna_D2.json",
+    "model": "gpt-6-luna",
+    "reasoningEffort": null,
+    "pipeline": "skeleton-v2",
+    "design": "D2",
+    "prompt": "6844e36950c5",
+    "kgSha": "a4d4d0bb91c3",
+    "createdAt": "2026-10-05T02:15:42",
+    "costUsd": 0.00832,
+    "seconds": 100,
+    "usage": {
+      "calls": 5,
+      "prompt": 30695,
+      "cached": 23025,
+      "cacheWrite": 7655,
+      "completion": 14261,
+      "reasoning": 0
+    },
+    "note": "Fase 4"
+  },
+  {
+    "file": "20261005-021727_gpt-6-luna_D2.json",
+    "model": "gpt-6-luna",
+    "reasoningEffort": null,
+    "pipeline": "skeleton-v2",
+    "design": "D2",
+    "prompt": "6844e36950c5",
+    "kgSha": "33c26c53379f",
+    "createdAt": "2026-10-05T02:17:27",
+    "costUsd": 0.00913,
+    "seconds": 106,
+    "usage": {
+      "calls": 5,
+      "prompt": 30619,
+      "cached": 23025,
+      "cacheWrite": 7579,
+      "completion": 15900,
+      "reasoning": 0
+    },
+    "note": "Fase 4"
+  },
+  {
+    "file": "20261005-021901_gpt-6-luna_D1.json",
+    "model": "gpt-6-luna",
+    "reasoningEffort": null,
+    "pipeline": "skeleton-v2",
+    "design": "D1",
+    "prompt": "6844e36950c5",
+    "kgSha": "4c3f24dc84fa",
+    "createdAt": "2026-10-05T02:19:01",
+    "costUsd": 0.01047,
+    "seconds": 93,
+    "usage": {
+      "calls": 5,
+      "prompt": 45637,
+      "cached": 23025,
+      "cacheWrite": 22597,
+      "completion": 14834,
+      "reasoning": 0
+    },
+    "note": "Fase 4"
+  },
+  {
+    "file": "20261005-022032_gpt-6-luna_D1.json",
+    "model": "gpt-6-luna",
+    "reasoningEffort": null,
+    "pipeline": "skeleton-v2",
+    "design": "D1",
+    "prompt": "6844e36950c5",
+    "kgSha": "cf713a9bd151",
+    "createdAt": "2026-10-05T02:20:32",
+    "costUsd": 0.01004,
+    "seconds": 91,
+    "usage": {
+      "calls": 5,
+      "prompt": 45573,
+      "cached": 23025,
+      "cacheWrite": 22533,
+      "completion": 13977,
+      "reasoning": 0
+    },
+    "note": "Fase 4"
+  },
+  {
+    "file": "20261005-022155_gpt-6-luna_D1.json",
+    "model": "gpt-6-luna",
+    "reasoningEffort": null,
+    "pipeline": "skeleton-v2",
+    "design": "D1",
+    "prompt": "6844e36950c5",
+    "kgSha": "8112a06ea31c",
+    "createdAt": "2026-10-05T02:21:55",
+    "costUsd": 0.01078,
+    "seconds": 83,
+    "usage": {
+      "calls": 5,
+      "prompt": 45809,
+      "cached": 18702,
+      "cacheWrite": 27092,
+      "completion": 14409,
+      "reasoning": 0
+    },
+    "note": "Fase 4"
+  },
+  {
+    "file": "20261005-022559_gpt-6.1-sol_D2.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": null,
+    "pipeline": "skeleton-v2",
+    "design": "D2",
+    "prompt": "6844e36950c5",
+    "kgSha": "60b352fb0d1d",
+    "createdAt": "2026-10-05T02:25:59",
+    "costUsd": 0.23084,
+    "seconds": 244,
+    "usage": {
+      "calls": 5,
+      "prompt": 31847,
+      "cached": 13149,
+      "cacheWrite": 18683,
+      "completion": 18279,
+      "reasoning": 220
+    },
+    "note": "Fase 4"
+  },
+  {
+    "file": "20261005-022944_gpt-6.1-sol_D2.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": null,
+    "pipeline": "skeleton-v2",
+    "design": "D2",
+    "prompt": "6844e36950c5",
+    "kgSha": "4d9dddb6bb98",
+    "createdAt": "2026-10-05T02:29:44",
+    "costUsd": 0.20506,
+    "seconds": 224,
+    "usage": {
+      "calls": 5,
+      "prompt": 31739,
+      "cached": 18774,
+      "cacheWrite": 12950,
+      "completion": 17078,
+      "reasoning": 230
+    },
+    "note": "Fase 4"
+  },
+  {
+    "file": "20261005-023331_gpt-6.1-sol_D2.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": null,
+    "pipeline": "skeleton-v2",
+    "design": "D2",
+    "prompt": "6844e36950c5",
+    "kgSha": "fcf8cb116679",
+    "createdAt": "2026-10-05T02:33:31",
+    "costUsd": 0.20063,
+    "seconds": 227,
+    "usage": {
+      "calls": 5,
+      "prompt": 31735,
+      "cached": 23153,
+      "cacheWrite": 8567,
+      "completion": 17687,
+      "reasoning": 246
+    },
+    "note": "Fase 4"
+  },
+  {
+    "file": "20261005-023736_gpt-6.1-sol_D1.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": null,
+    "pipeline": "skeleton-v2",
+    "design": "D1",
+    "prompt": "6844e36950c5",
+    "kgSha": "5d42353ebd81",
+    "createdAt": "2026-10-05T02:37:36",
+    "costUsd": 0.24804,
+    "seconds": 246,
+    "usage": {
+      "calls": 5,
+      "prompt": 46617,
+      "cached": 23153,
+      "cacheWrite": 23449,
+      "completion": 18707,
+      "reasoning": 254
+    },
+    "note": "Fase 4"
+  },
+  {
+    "file": "20261005-024141_gpt-6.1-sol_D1.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": null,
+    "pipeline": "skeleton-v2",
+    "design": "D1",
+    "prompt": "6844e36950c5",
+    "kgSha": "05de2941fff8",
+    "createdAt": "2026-10-05T02:41:41",
+    "costUsd": 0.2387,
+    "seconds": 244,
+    "usage": {
+      "calls": 5,
+      "prompt": 46617,
+      "cached": 23153,
+      "cacheWrite": 23449,
+      "completion": 17773,
+      "reasoning": 235
+    },
+    "note": "Fase 4"
+  },
+  {
+    "file": "20261005-024611_gpt-6.1-sol_D1.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": null,
+    "pipeline": "skeleton-v2",
+    "design": "D1",
+    "prompt": "6844e36950c5",
+    "kgSha": "c367199d38dc",
+    "createdAt": "2026-10-05T02:46:11",
+    "costUsd": 0.2517,
+    "seconds": 271,
+    "usage": {
+      "calls": 5,
+      "prompt": 46613,
+      "cached": 23153,
+      "cacheWrite": 23445,
+      "completion": 19074,
+      "reasoning": 296
+    },
+    "note": "Fase 4"
+  },
+  {
+    "file": "20261005-025541_gpt-6.1-sol_D2.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": null,
+    "pipeline": "skeleton-v2",
+    "design": "D2",
+    "prompt": "75f20786f4b8",
+    "kgSha": "117bf65f5716",
+    "createdAt": "2026-10-05T02:55:41",
+    "costUsd": 0.19383,
+    "seconds": 226,
+    "usage": {
+      "calls": 5,
+      "prompt": 32395,
+      "cached": 19260,
+      "cacheWrite": 13120,
+      "completion": 15907,
+      "reasoning": 317
+    },
+    "note": "boilerplate rule"
+  },
+  {
+    "file": "20261005-025913_gpt-6.1-sol_D2.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": null,
+    "pipeline": "skeleton-v2",
+    "design": "D2",
+    "prompt": "75f20786f4b8",
+    "kgSha": "002ee9c73b0a",
+    "createdAt": "2026-10-05T02:59:13",
+    "costUsd": 0.17426,
+    "seconds": 212,
+    "usage": {
+      "calls": 5,
+      "prompt": 32227,
+      "cached": 23801,
+      "cacheWrite": 8411,
+      "completion": 15082,
+      "reasoning": 291
+    },
+    "note": "boilerplate rule"
+  },
+  {
+    "file": "20261005-030342_gpt-6.1-sol_D2.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": null,
+    "pipeline": "skeleton-v2",
+    "design": "D2",
+    "prompt": "75f20786f4b8",
+    "kgSha": "cf8331100532",
+    "createdAt": "2026-10-05T03:03:42",
+    "costUsd": 0.19958,
+    "seconds": 269,
+    "usage": {
+      "calls": 5,
+      "prompt": 32387,
+      "cached": 23801,
+      "cacheWrite": 8571,
+      "completion": 17574,
+      "reasoning": 289
+    },
+    "note": "boilerplate rule"
+  }
+]

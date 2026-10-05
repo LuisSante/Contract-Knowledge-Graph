@@ -266,8 +266,8 @@ Ningún contrato de CUAD llega a ese tamaño.
 - **Los anexos caen en la última cláusula numerada.** En Ediets son 205 párrafos, y 75
   enunciados, que quedan bajo §15.8 *Entire Agreement*
   ([`clause_tree_check.ipynb`](../../notebooks/KG/clause_tree_check.ipynb)).
-- **Solo se re-extraen SteelVault y Ediets.** Los otros cuatro grafos siguen como los dejó
-  el pipeline viejo: re-extraerlos costaría unos \$4–5.
+- **Se re-extrajeron SteelVault, Ediets y Bellicum** (este último por \$2.82). Healthcentral,
+  Ritter y TomOnline siguen como los dejó el pipeline viejo: re-extraerlos costaría unos \$4.
 
 ---
 

@@ -21,6 +21,12 @@ dev = [
     "jupyterlab>=4.6.3",
     "ruff>=0.6",
 ]
+link-prediction = [
+    "pykeen>=1.11.1",
+    "torch==2.12.1",
+    "scikit-learn>=1.9.1",
+    "sentence-transformers>=6.1.0",
+]
 
 [tool.ruff]
 line-length = 150

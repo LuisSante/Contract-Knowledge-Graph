@@ -1,0 +1,3937 @@
+{
+ "documentId": "root_SteelVaultCorp_20081224_10-K_EX-10_16_3074935_EX-10_16_Affiliate_Agreement",
+ "kgFingerprint": "117bf65f5716",
+ "note": "Aristas predichas, fuera del grafo. depends_on de una consecuencia al deber cuyo incumplimiento la dispara; el esquema solo admite el destino a nivel de cláusula (targetClause).",
+ "edges": [
+  {
+   "source": "prohibition-1",
+   "type": "depends_on",
+   "target": "obligation-1",
+   "targetClause": "clause-1",
+   "rank": 1,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-1"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "prohibition-1",
+   "type": "depends_on",
+   "target": "obligation-2",
+   "targetClause": "clause-1",
+   "rank": 2,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-1"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "prohibition-1",
+   "type": "depends_on",
+   "target": "obligation-3",
+   "targetClause": "clause-1",
+   "rank": 3,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-1"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "prohibition-1",
+   "type": "depends_on",
+   "target": "obligation-6",
+   "targetClause": "clause-1",
+   "rank": 4,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-1"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "prohibition-1",
+   "type": "depends_on",
+   "target": "obligation-7",
+   "targetClause": "clause-1",
+   "rank": 5,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-1"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "prohibition-1",
+   "type": "depends_on",
+   "target": "obligation-9",
+   "targetClause": "clause-1",
+   "rank": 6,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-1"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "prohibition-1",
+   "type": "depends_on",
+   "target": "obligation-10",
+   "targetClause": "clause-1",
+   "rank": 7,
+   "score": -2.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-1"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "prohibition-1",
+   "type": "depends_on",
+   "target": "obligation-11",
+   "targetClause": "clause-1",
+   "rank": 8,
+   "score": -2.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-1"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "prohibition-1",
+   "type": "depends_on",
+   "target": "obligation-13",
+   "targetClause": "clause-1",
+   "rank": 9,
+   "score": -2.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-1"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "prohibition-1",
+   "type": "depends_on",
+   "target": "obligation-14",
+   "targetClause": "clause-1",
+   "rank": 10,
+   "score": -2.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-1"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-6",
+   "type": "depends_on",
+   "target": "obligation-1",
+   "targetClause": "clause-1",
+   "rank": 1,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-2"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-6",
+   "type": "depends_on",
+   "target": "obligation-2",
+   "targetClause": "clause-1",
+   "rank": 2,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-2"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-6",
+   "type": "depends_on",
+   "target": "obligation-3",
+   "targetClause": "clause-1",
+   "rank": 3,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-2"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-6",
+   "type": "depends_on",
+   "target": "obligation-7",
+   "targetClause": "clause-1",
+   "rank": 4,
+   "score": -0.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-2"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-6",
+   "type": "depends_on",
+   "target": "obligation-9",
+   "targetClause": "clause-1",
+   "rank": 5,
+   "score": -0.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-2"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-6",
+   "type": "depends_on",
+   "target": "prohibition-1",
+   "targetClause": null,
+   "rank": 6,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-2"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-6",
+   "type": "depends_on",
+   "target": "obligation-10",
+   "targetClause": "clause-1",
+   "rank": 7,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-2"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-6",
+   "type": "depends_on",
+   "target": "obligation-11",
+   "targetClause": "clause-1",
+   "rank": 8,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-2"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-6",
+   "type": "depends_on",
+   "target": "obligation-13",
+   "targetClause": "clause-1",
+   "rank": 9,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-2"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-6",
+   "type": "depends_on",
+   "target": "obligation-14",
+   "targetClause": "clause-1",
+   "rank": 10,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-2"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-7",
+   "type": "depends_on",
+   "target": "obligation-1",
+   "targetClause": "clause-1",
+   "rank": 1,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-3"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-7",
+   "type": "depends_on",
+   "target": "obligation-2",
+   "targetClause": "clause-1",
+   "rank": 2,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-3"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-7",
+   "type": "depends_on",
+   "target": "obligation-3",
+   "targetClause": "clause-1",
+   "rank": 3,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-3"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-7",
+   "type": "depends_on",
+   "target": "obligation-6",
+   "targetClause": "clause-1",
+   "rank": 4,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-3"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-7",
+   "type": "depends_on",
+   "target": "obligation-9",
+   "targetClause": "clause-1",
+   "rank": 5,
+   "score": -0.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-3"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-7",
+   "type": "depends_on",
+   "target": "prohibition-1",
+   "targetClause": null,
+   "rank": 6,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-3"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-7",
+   "type": "depends_on",
+   "target": "obligation-10",
+   "targetClause": "clause-1",
+   "rank": 7,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-3"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-7",
+   "type": "depends_on",
+   "target": "obligation-11",
+   "targetClause": "clause-1",
+   "rank": 8,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-3"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-7",
+   "type": "depends_on",
+   "target": "obligation-13",
+   "targetClause": "clause-1",
+   "rank": 9,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-3"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-7",
+   "type": "depends_on",
+   "target": "obligation-14",
+   "targetClause": "clause-1",
+   "rank": 10,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-3"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-8",
+   "type": "depends_on",
+   "target": "obligation-4",
+   "targetClause": "clause-1",
+   "rank": 1,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-4"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-8",
+   "type": "depends_on",
+   "target": "obligation-5",
+   "targetClause": "clause-1",
+   "rank": 2,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-4"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-8",
+   "type": "depends_on",
+   "target": "obligation-12",
+   "targetClause": "clause-1",
+   "rank": 3,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-4"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-8",
+   "type": "depends_on",
+   "target": "obligation-18",
+   "targetClause": "clause-2",
+   "rank": 4,
+   "score": -2.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-4"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-8",
+   "type": "depends_on",
+   "target": "obligation-22",
+   "targetClause": "clause-2",
+   "rank": 5,
+   "score": -2.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-4"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-8",
+   "type": "depends_on",
+   "target": "obligation-25",
+   "targetClause": "clause-2",
+   "rank": 6,
+   "score": -3.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-4"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-8",
+   "type": "depends_on",
+   "target": "obligation-27",
+   "targetClause": "clause-2",
+   "rank": 7,
+   "score": -7.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-4"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-8",
+   "type": "depends_on",
+   "target": "obligation-34",
+   "targetClause": "clause-3",
+   "rank": 8,
+   "score": -8.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-4"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-8",
+   "type": "depends_on",
+   "target": "prohibition-5",
+   "targetClause": "clause-5",
+   "rank": 9,
+   "score": -10.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-4"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-8",
+   "type": "depends_on",
+   "target": "prohibition-7",
+   "targetClause": "clause-6",
+   "rank": 10,
+   "score": -11.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-4"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-9",
+   "type": "depends_on",
+   "target": "obligation-1",
+   "targetClause": "clause-1",
+   "rank": 1,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-5"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-9",
+   "type": "depends_on",
+   "target": "obligation-2",
+   "targetClause": "clause-1",
+   "rank": 2,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-5"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-9",
+   "type": "depends_on",
+   "target": "obligation-3",
+   "targetClause": "clause-1",
+   "rank": 3,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-5"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-9",
+   "type": "depends_on",
+   "target": "obligation-6",
+   "targetClause": "clause-1",
+   "rank": 4,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-5"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-9",
+   "type": "depends_on",
+   "target": "obligation-7",
+   "targetClause": "clause-1",
+   "rank": 5,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-5"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-9",
+   "type": "depends_on",
+   "target": "prohibition-1",
+   "targetClause": null,
+   "rank": 6,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-5"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-9",
+   "type": "depends_on",
+   "target": "obligation-10",
+   "targetClause": "clause-1",
+   "rank": 7,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-5"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-9",
+   "type": "depends_on",
+   "target": "obligation-11",
+   "targetClause": "clause-1",
+   "rank": 8,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-5"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-9",
+   "type": "depends_on",
+   "target": "obligation-13",
+   "targetClause": "clause-1",
+   "rank": 9,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-5"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-9",
+   "type": "depends_on",
+   "target": "obligation-14",
+   "targetClause": "clause-1",
+   "rank": 10,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-5"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-11",
+   "type": "depends_on",
+   "target": "obligation-10",
+   "targetClause": "clause-1",
+   "rank": 1,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-6",
+    "condition-7"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-11",
+   "type": "depends_on",
+   "target": "obligation-13",
+   "targetClause": "clause-1",
+   "rank": 2,
+   "score": -0.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-6",
+    "condition-7"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-11",
+   "type": "depends_on",
+   "target": "obligation-14",
+   "targetClause": "clause-1",
+   "rank": 3,
+   "score": -0.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-6",
+    "condition-7"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-11",
+   "type": "depends_on",
+   "target": "obligation-15",
+   "targetClause": "clause-1",
+   "rank": 4,
+   "score": -0.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-6",
+    "condition-7"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-11",
+   "type": "depends_on",
+   "target": "obligation-16",
+   "targetClause": "clause-1",
+   "rank": 5,
+   "score": -0.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-6",
+    "condition-7"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-11",
+   "type": "depends_on",
+   "target": "obligation-1",
+   "targetClause": "clause-1",
+   "rank": 6,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-6",
+    "condition-7"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-11",
+   "type": "depends_on",
+   "target": "obligation-2",
+   "targetClause": "clause-1",
+   "rank": 7,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-6",
+    "condition-7"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-11",
+   "type": "depends_on",
+   "target": "obligation-3",
+   "targetClause": "clause-1",
+   "rank": 8,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-6",
+    "condition-7"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-11",
+   "type": "depends_on",
+   "target": "obligation-6",
+   "targetClause": "clause-1",
+   "rank": 9,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-6",
+    "condition-7"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-11",
+   "type": "depends_on",
+   "target": "obligation-7",
+   "targetClause": "clause-1",
+   "rank": 10,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-6",
+    "condition-7"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-13",
+   "type": "depends_on",
+   "target": "obligation-10",
+   "targetClause": "clause-1",
+   "rank": 1,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-8"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-13",
+   "type": "depends_on",
+   "target": "obligation-11",
+   "targetClause": "clause-1",
+   "rank": 2,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-8"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-13",
+   "type": "depends_on",
+   "target": "obligation-14",
+   "targetClause": "clause-1",
+   "rank": 3,
+   "score": -0.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-8"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-13",
+   "type": "depends_on",
+   "target": "obligation-15",
+   "targetClause": "clause-1",
+   "rank": 4,
+   "score": -0.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-8"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-13",
+   "type": "depends_on",
+   "target": "obligation-16",
+   "targetClause": "clause-1",
+   "rank": 5,
+   "score": -0.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-8"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-13",
+   "type": "depends_on",
+   "target": "obligation-1",
+   "targetClause": "clause-1",
+   "rank": 6,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-8"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-13",
+   "type": "depends_on",
+   "target": "obligation-2",
+   "targetClause": "clause-1",
+   "rank": 7,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-8"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-13",
+   "type": "depends_on",
+   "target": "obligation-3",
+   "targetClause": "clause-1",
+   "rank": 8,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-8"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-13",
+   "type": "depends_on",
+   "target": "obligation-6",
+   "targetClause": "clause-1",
+   "rank": 9,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-8"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-13",
+   "type": "depends_on",
+   "target": "obligation-7",
+   "targetClause": "clause-1",
+   "rank": 10,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-8"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-14",
+   "type": "depends_on",
+   "target": "obligation-10",
+   "targetClause": "clause-1",
+   "rank": 1,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-9"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-14",
+   "type": "depends_on",
+   "target": "obligation-11",
+   "targetClause": "clause-1",
+   "rank": 2,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-9"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-14",
+   "type": "depends_on",
+   "target": "obligation-13",
+   "targetClause": "clause-1",
+   "rank": 3,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-9"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-14",
+   "type": "depends_on",
+   "target": "obligation-15",
+   "targetClause": "clause-1",
+   "rank": 4,
+   "score": -0.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-9"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-14",
+   "type": "depends_on",
+   "target": "obligation-16",
+   "targetClause": "clause-1",
+   "rank": 5,
+   "score": -0.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-9"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-14",
+   "type": "depends_on",
+   "target": "obligation-1",
+   "targetClause": "clause-1",
+   "rank": 6,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-9"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-14",
+   "type": "depends_on",
+   "target": "obligation-2",
+   "targetClause": "clause-1",
+   "rank": 7,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-9"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-14",
+   "type": "depends_on",
+   "target": "obligation-3",
+   "targetClause": "clause-1",
+   "rank": 8,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-9"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-14",
+   "type": "depends_on",
+   "target": "obligation-6",
+   "targetClause": "clause-1",
+   "rank": 9,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-9"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-14",
+   "type": "depends_on",
+   "target": "obligation-7",
+   "targetClause": "clause-1",
+   "rank": 10,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-9"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-15",
+   "type": "depends_on",
+   "target": "obligation-10",
+   "targetClause": "clause-1",
+   "rank": 1,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-10"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-15",
+   "type": "depends_on",
+   "target": "obligation-11",
+   "targetClause": "clause-1",
+   "rank": 2,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-10"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-15",
+   "type": "depends_on",
+   "target": "obligation-13",
+   "targetClause": "clause-1",
+   "rank": 3,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-10"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-15",
+   "type": "depends_on",
+   "target": "obligation-14",
+   "targetClause": "clause-1",
+   "rank": 4,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-10"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-15",
+   "type": "depends_on",
+   "target": "obligation-16",
+   "targetClause": "clause-1",
+   "rank": 5,
+   "score": -0.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-10"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-15",
+   "type": "depends_on",
+   "target": "obligation-1",
+   "targetClause": "clause-1",
+   "rank": 6,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-10"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-15",
+   "type": "depends_on",
+   "target": "obligation-2",
+   "targetClause": "clause-1",
+   "rank": 7,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-10"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-15",
+   "type": "depends_on",
+   "target": "obligation-3",
+   "targetClause": "clause-1",
+   "rank": 8,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-10"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-15",
+   "type": "depends_on",
+   "target": "obligation-6",
+   "targetClause": "clause-1",
+   "rank": 9,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-10"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-15",
+   "type": "depends_on",
+   "target": "obligation-7",
+   "targetClause": "clause-1",
+   "rank": 10,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-10"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-16",
+   "type": "depends_on",
+   "target": "obligation-10",
+   "targetClause": "clause-1",
+   "rank": 1,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-11"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-16",
+   "type": "depends_on",
+   "target": "obligation-11",
+   "targetClause": "clause-1",
+   "rank": 2,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-11"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-16",
+   "type": "depends_on",
+   "target": "obligation-13",
+   "targetClause": "clause-1",
+   "rank": 3,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-11"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-16",
+   "type": "depends_on",
+   "target": "obligation-14",
+   "targetClause": "clause-1",
+   "rank": 4,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-11"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-16",
+   "type": "depends_on",
+   "target": "obligation-15",
+   "targetClause": "clause-1",
+   "rank": 5,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-11"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-16",
+   "type": "depends_on",
+   "target": "obligation-1",
+   "targetClause": "clause-1",
+   "rank": 6,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-11"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-16",
+   "type": "depends_on",
+   "target": "obligation-2",
+   "targetClause": "clause-1",
+   "rank": 7,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-11"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-16",
+   "type": "depends_on",
+   "target": "obligation-3",
+   "targetClause": "clause-1",
+   "rank": 8,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-11"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-16",
+   "type": "depends_on",
+   "target": "obligation-6",
+   "targetClause": "clause-1",
+   "rank": 9,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-11"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-16",
+   "type": "depends_on",
+   "target": "obligation-7",
+   "targetClause": "clause-1",
+   "rank": 10,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-11"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "right-4",
+   "type": "depends_on",
+   "target": "obligation-17",
+   "targetClause": "clause-2",
+   "rank": 1,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-12"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-4",
+   "type": "depends_on",
+   "target": "obligation-20",
+   "targetClause": "clause-2",
+   "rank": 2,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-12"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-4",
+   "type": "depends_on",
+   "target": "obligation-21",
+   "targetClause": "clause-2",
+   "rank": 3,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-12"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-4",
+   "type": "depends_on",
+   "target": "obligation-10",
+   "targetClause": "clause-1",
+   "rank": 4,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-12"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-4",
+   "type": "depends_on",
+   "target": "obligation-11",
+   "targetClause": "clause-1",
+   "rank": 5,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-12"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-4",
+   "type": "depends_on",
+   "target": "obligation-13",
+   "targetClause": "clause-1",
+   "rank": 6,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-12"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-4",
+   "type": "depends_on",
+   "target": "obligation-14",
+   "targetClause": "clause-1",
+   "rank": 7,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-12"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-4",
+   "type": "depends_on",
+   "target": "obligation-15",
+   "targetClause": "clause-1",
+   "rank": 8,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-12"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-4",
+   "type": "depends_on",
+   "target": "obligation-16",
+   "targetClause": "clause-1",
+   "rank": 9,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-12"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-4",
+   "type": "depends_on",
+   "target": "obligation-23",
+   "targetClause": "clause-2",
+   "rank": 10,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-12"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-5",
+   "type": "depends_on",
+   "target": "obligation-18",
+   "targetClause": "clause-2",
+   "rank": 1,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-13"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "right-5",
+   "type": "depends_on",
+   "target": "obligation-22",
+   "targetClause": "clause-2",
+   "rank": 2,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-13"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "right-5",
+   "type": "depends_on",
+   "target": "obligation-12",
+   "targetClause": "clause-1",
+   "rank": 3,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-13"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "right-5",
+   "type": "depends_on",
+   "target": "obligation-25",
+   "targetClause": "clause-2",
+   "rank": 4,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-13"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "right-5",
+   "type": "depends_on",
+   "target": "obligation-4",
+   "targetClause": "clause-1",
+   "rank": 5,
+   "score": -2.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-13"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "right-5",
+   "type": "depends_on",
+   "target": "obligation-5",
+   "targetClause": "clause-1",
+   "rank": 6,
+   "score": -2.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-13"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "right-5",
+   "type": "depends_on",
+   "target": "obligation-8",
+   "targetClause": "clause-1",
+   "rank": 7,
+   "score": -2.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-13"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "right-5",
+   "type": "depends_on",
+   "target": "obligation-27",
+   "targetClause": "clause-2",
+   "rank": 8,
+   "score": -5.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-13"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "right-5",
+   "type": "depends_on",
+   "target": "obligation-34",
+   "targetClause": "clause-3",
+   "rank": 9,
+   "score": -6.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-13"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "right-5",
+   "type": "depends_on",
+   "target": "prohibition-5",
+   "targetClause": "clause-5",
+   "rank": 10,
+   "score": -8.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-13"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-25",
+   "type": "depends_on",
+   "target": "obligation-18",
+   "targetClause": "clause-2",
+   "rank": 1,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-14"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-25",
+   "type": "depends_on",
+   "target": "obligation-22",
+   "targetClause": "clause-2",
+   "rank": 2,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-14"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-25",
+   "type": "depends_on",
+   "target": "obligation-12",
+   "targetClause": "clause-1",
+   "rank": 3,
+   "score": -2.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-14"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-25",
+   "type": "depends_on",
+   "target": "obligation-4",
+   "targetClause": "clause-1",
+   "rank": 4,
+   "score": -3.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-14"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-25",
+   "type": "depends_on",
+   "target": "obligation-5",
+   "targetClause": "clause-1",
+   "rank": 5,
+   "score": -3.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-14"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-25",
+   "type": "depends_on",
+   "target": "obligation-8",
+   "targetClause": "clause-1",
+   "rank": 6,
+   "score": -3.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-14"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-25",
+   "type": "depends_on",
+   "target": "obligation-27",
+   "targetClause": "clause-2",
+   "rank": 7,
+   "score": -4.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-14"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-25",
+   "type": "depends_on",
+   "target": "obligation-34",
+   "targetClause": "clause-3",
+   "rank": 8,
+   "score": -5.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-14"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-25",
+   "type": "depends_on",
+   "target": "prohibition-5",
+   "targetClause": "clause-5",
+   "rank": 9,
+   "score": -7.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-14"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-25",
+   "type": "depends_on",
+   "target": "prohibition-7",
+   "targetClause": "clause-6",
+   "rank": 10,
+   "score": -8.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-14"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-26",
+   "type": "depends_on",
+   "target": "obligation-23",
+   "targetClause": "clause-2",
+   "rank": 1,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-15"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-26",
+   "type": "depends_on",
+   "target": "obligation-24",
+   "targetClause": "clause-2",
+   "rank": 2,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-15"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-26",
+   "type": "depends_on",
+   "target": "obligation-17",
+   "targetClause": "clause-2",
+   "rank": 3,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-15"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-26",
+   "type": "depends_on",
+   "target": "obligation-20",
+   "targetClause": "clause-2",
+   "rank": 4,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-15"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-26",
+   "type": "depends_on",
+   "target": "obligation-21",
+   "targetClause": "clause-2",
+   "rank": 5,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-15"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-26",
+   "type": "depends_on",
+   "target": "obligation-10",
+   "targetClause": "clause-1",
+   "rank": 6,
+   "score": -2.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-15"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-26",
+   "type": "depends_on",
+   "target": "obligation-11",
+   "targetClause": "clause-1",
+   "rank": 7,
+   "score": -2.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-15"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-26",
+   "type": "depends_on",
+   "target": "obligation-13",
+   "targetClause": "clause-1",
+   "rank": 8,
+   "score": -2.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-15"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-26",
+   "type": "depends_on",
+   "target": "obligation-14",
+   "targetClause": "clause-1",
+   "rank": 9,
+   "score": -2.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-15"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-26",
+   "type": "depends_on",
+   "target": "obligation-15",
+   "targetClause": "clause-1",
+   "rank": 10,
+   "score": -2.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-15"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-27",
+   "type": "depends_on",
+   "target": "obligation-34",
+   "targetClause": "clause-3",
+   "rank": 1,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-16"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-27",
+   "type": "depends_on",
+   "target": "prohibition-5",
+   "targetClause": "clause-5",
+   "rank": 2,
+   "score": -3.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-16"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-27",
+   "type": "depends_on",
+   "target": "obligation-25",
+   "targetClause": "clause-2",
+   "rank": 3,
+   "score": -4.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-16"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-27",
+   "type": "depends_on",
+   "target": "prohibition-7",
+   "targetClause": "clause-6",
+   "rank": 4,
+   "score": -4.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-16"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-27",
+   "type": "depends_on",
+   "target": "obligation-18",
+   "targetClause": "clause-2",
+   "rank": 5,
+   "score": -5.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-16"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-27",
+   "type": "depends_on",
+   "target": "obligation-22",
+   "targetClause": "clause-2",
+   "rank": 6,
+   "score": -5.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-16"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-27",
+   "type": "depends_on",
+   "target": "prohibition-9",
+   "targetClause": "clause-7",
+   "rank": 7,
+   "score": -5.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-16"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-27",
+   "type": "depends_on",
+   "target": "obligation-12",
+   "targetClause": "clause-1",
+   "rank": 8,
+   "score": -6.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-16"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-27",
+   "type": "depends_on",
+   "target": "prohibition-11",
+   "targetClause": "clause-8",
+   "rank": 9,
+   "score": -6.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-16"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-27",
+   "type": "depends_on",
+   "target": "obligation-4",
+   "targetClause": "clause-1",
+   "rank": 10,
+   "score": -7.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-16"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-28",
+   "type": "depends_on",
+   "target": "obligation-33",
+   "targetClause": "clause-3",
+   "rank": 1,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-17"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "dudosa"
+  },
+  {
+   "source": "obligation-28",
+   "type": "depends_on",
+   "target": "prohibition-2",
+   "targetClause": "clause-4",
+   "rank": 2,
+   "score": -2.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-17"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "dudosa"
+  },
+  {
+   "source": "obligation-28",
+   "type": "depends_on",
+   "target": "prohibition-3",
+   "targetClause": "clause-4",
+   "rank": 3,
+   "score": -2.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-17"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "dudosa"
+  },
+  {
+   "source": "obligation-28",
+   "type": "depends_on",
+   "target": "prohibition-4",
+   "targetClause": "clause-5",
+   "rank": 4,
+   "score": -3.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-17"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "dudosa"
+  },
+  {
+   "source": "obligation-28",
+   "type": "depends_on",
+   "target": "obligation-23",
+   "targetClause": "clause-2",
+   "rank": 5,
+   "score": -4.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-17"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "dudosa"
+  },
+  {
+   "source": "obligation-28",
+   "type": "depends_on",
+   "target": "obligation-24",
+   "targetClause": "clause-2",
+   "rank": 6,
+   "score": -4.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-17"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "dudosa"
+  },
+  {
+   "source": "obligation-28",
+   "type": "depends_on",
+   "target": "obligation-26",
+   "targetClause": "clause-2",
+   "rank": 7,
+   "score": -4.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-17"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "dudosa"
+  },
+  {
+   "source": "obligation-28",
+   "type": "depends_on",
+   "target": "prohibition-6",
+   "targetClause": "clause-6",
+   "rank": 8,
+   "score": -4.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-17"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "dudosa"
+  },
+  {
+   "source": "obligation-28",
+   "type": "depends_on",
+   "target": "obligation-17",
+   "targetClause": "clause-2",
+   "rank": 9,
+   "score": -5.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-17"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "dudosa"
+  },
+  {
+   "source": "obligation-28",
+   "type": "depends_on",
+   "target": "obligation-20",
+   "targetClause": "clause-2",
+   "rank": 10,
+   "score": -5.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-17"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "dudosa"
+  },
+  {
+   "source": "obligation-29",
+   "type": "depends_on",
+   "target": "obligation-27",
+   "targetClause": "clause-2",
+   "rank": 1,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-18"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-29",
+   "type": "depends_on",
+   "target": "obligation-28",
+   "targetClause": "clause-2",
+   "rank": 2,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-18"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-29",
+   "type": "depends_on",
+   "target": "obligation-30",
+   "targetClause": "clause-2",
+   "rank": 3,
+   "score": -0.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-18"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-29",
+   "type": "depends_on",
+   "target": "obligation-31",
+   "targetClause": "clause-2",
+   "rank": 4,
+   "score": -0.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-18"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-29",
+   "type": "depends_on",
+   "target": "obligation-32",
+   "targetClause": "clause-2",
+   "rank": 5,
+   "score": -0.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-18"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-29",
+   "type": "depends_on",
+   "target": "obligation-33",
+   "targetClause": "clause-3",
+   "rank": 6,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-18"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-29",
+   "type": "depends_on",
+   "target": "obligation-34",
+   "targetClause": "clause-3",
+   "rank": 7,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-18"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-29",
+   "type": "depends_on",
+   "target": "prohibition-2",
+   "targetClause": "clause-4",
+   "rank": 8,
+   "score": -2.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-18"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-29",
+   "type": "depends_on",
+   "target": "prohibition-3",
+   "targetClause": "clause-4",
+   "rank": 9,
+   "score": -2.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-18"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "obligation-29",
+   "type": "depends_on",
+   "target": "prohibition-4",
+   "targetClause": "clause-5",
+   "rank": 10,
+   "score": -3.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-18"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "right-8",
+   "type": "depends_on",
+   "target": "obligation-37",
+   "targetClause": "clause-15",
+   "rank": 1,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-19"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "dudosa"
+  },
+  {
+   "source": "right-8",
+   "type": "depends_on",
+   "target": "obligation-38",
+   "targetClause": "clause-16",
+   "rank": 2,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-19"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "dudosa"
+  },
+  {
+   "source": "right-8",
+   "type": "depends_on",
+   "target": "obligation-39",
+   "targetClause": "clause-16",
+   "rank": 3,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-19"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "dudosa"
+  },
+  {
+   "source": "right-8",
+   "type": "depends_on",
+   "target": "obligation-40",
+   "targetClause": "clause-19",
+   "rank": 4,
+   "score": -4.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-19"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "dudosa"
+  },
+  {
+   "source": "right-8",
+   "type": "depends_on",
+   "target": "obligation-41",
+   "targetClause": "clause-19",
+   "rank": 5,
+   "score": -4.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-19"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "dudosa"
+  },
+  {
+   "source": "right-8",
+   "type": "depends_on",
+   "target": "prohibition-15",
+   "targetClause": "clause-10",
+   "rank": 6,
+   "score": -5.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-19"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "dudosa"
+  },
+  {
+   "source": "right-8",
+   "type": "depends_on",
+   "target": "obligation-42",
+   "targetClause": "clause-20",
+   "rank": 7,
+   "score": -5.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-19"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "dudosa"
+  },
+  {
+   "source": "right-8",
+   "type": "depends_on",
+   "target": "prohibition-12",
+   "targetClause": "clause-9",
+   "rank": 8,
+   "score": -6.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-19"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "dudosa"
+  },
+  {
+   "source": "right-8",
+   "type": "depends_on",
+   "target": "prohibition-10",
+   "targetClause": "clause-8",
+   "rank": 9,
+   "score": -7.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-19"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "dudosa"
+  },
+  {
+   "source": "right-8",
+   "type": "depends_on",
+   "target": "prohibition-8",
+   "targetClause": "clause-7",
+   "rank": 10,
+   "score": -8.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-19"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "dudosa"
+  },
+  {
+   "source": "right-9",
+   "type": "depends_on",
+   "target": "obligation-36",
+   "targetClause": "clause-12",
+   "rank": 1,
+   "score": -3.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-20"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "right-9",
+   "type": "depends_on",
+   "target": "prohibition-16",
+   "targetClause": "clause-10",
+   "rank": 2,
+   "score": -5.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-20"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "right-9",
+   "type": "depends_on",
+   "target": "obligation-35",
+   "targetClause": "clause-9",
+   "rank": 3,
+   "score": -6.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-20"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "right-9",
+   "type": "depends_on",
+   "target": "prohibition-13",
+   "targetClause": "clause-9",
+   "rank": 4,
+   "score": -6.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-20"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "right-9",
+   "type": "depends_on",
+   "target": "prohibition-14",
+   "targetClause": "clause-9",
+   "rank": 5,
+   "score": -6.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-20"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "right-9",
+   "type": "depends_on",
+   "target": "prohibition-11",
+   "targetClause": "clause-8",
+   "rank": 6,
+   "score": -7.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-20"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "right-9",
+   "type": "depends_on",
+   "target": "prohibition-9",
+   "targetClause": "clause-7",
+   "rank": 7,
+   "score": -8.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-20"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "right-9",
+   "type": "depends_on",
+   "target": "prohibition-7",
+   "targetClause": "clause-6",
+   "rank": 8,
+   "score": -9.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-20"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "right-9",
+   "type": "depends_on",
+   "target": "obligation-44",
+   "targetClause": "clause-22",
+   "rank": 9,
+   "score": -9.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-20"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "right-9",
+   "type": "depends_on",
+   "target": "obligation-45",
+   "targetClause": "clause-22",
+   "rank": 10,
+   "score": -9.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-20"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "sin anotar"
+  },
+  {
+   "source": "right-10",
+   "type": "depends_on",
+   "target": "obligation-37",
+   "targetClause": "clause-15",
+   "rank": 1,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-21"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "right-10",
+   "type": "depends_on",
+   "target": "obligation-38",
+   "targetClause": "clause-16",
+   "rank": 2,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-21"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "right-10",
+   "type": "depends_on",
+   "target": "obligation-39",
+   "targetClause": "clause-16",
+   "rank": 3,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-21"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "right-10",
+   "type": "depends_on",
+   "target": "obligation-40",
+   "targetClause": "clause-19",
+   "rank": 4,
+   "score": -4.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-21"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "right-10",
+   "type": "depends_on",
+   "target": "obligation-41",
+   "targetClause": "clause-19",
+   "rank": 5,
+   "score": -4.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-21"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "right-10",
+   "type": "depends_on",
+   "target": "prohibition-15",
+   "targetClause": "clause-10",
+   "rank": 6,
+   "score": -5.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-21"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "right-10",
+   "type": "depends_on",
+   "target": "obligation-42",
+   "targetClause": "clause-20",
+   "rank": 7,
+   "score": -5.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-21"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "right-10",
+   "type": "depends_on",
+   "target": "prohibition-12",
+   "targetClause": "clause-9",
+   "rank": 8,
+   "score": -6.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-21"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "right-10",
+   "type": "depends_on",
+   "target": "prohibition-10",
+   "targetClause": "clause-8",
+   "rank": 9,
+   "score": -7.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-21"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "right-10",
+   "type": "depends_on",
+   "target": "prohibition-8",
+   "targetClause": "clause-7",
+   "rank": 10,
+   "score": -8.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-21"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "right-11",
+   "type": "depends_on",
+   "target": "obligation-37",
+   "targetClause": "clause-15",
+   "rank": 1,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-22"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-11",
+   "type": "depends_on",
+   "target": "obligation-38",
+   "targetClause": "clause-16",
+   "rank": 2,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-22"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-11",
+   "type": "depends_on",
+   "target": "obligation-39",
+   "targetClause": "clause-16",
+   "rank": 3,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-22"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-11",
+   "type": "depends_on",
+   "target": "obligation-40",
+   "targetClause": "clause-19",
+   "rank": 4,
+   "score": -4.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-22"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-11",
+   "type": "depends_on",
+   "target": "obligation-41",
+   "targetClause": "clause-19",
+   "rank": 5,
+   "score": -4.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-22"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-11",
+   "type": "depends_on",
+   "target": "prohibition-15",
+   "targetClause": "clause-10",
+   "rank": 6,
+   "score": -5.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-22"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-11",
+   "type": "depends_on",
+   "target": "obligation-42",
+   "targetClause": "clause-20",
+   "rank": 7,
+   "score": -5.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-22"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-11",
+   "type": "depends_on",
+   "target": "prohibition-12",
+   "targetClause": "clause-9",
+   "rank": 8,
+   "score": -6.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-22"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-11",
+   "type": "depends_on",
+   "target": "prohibition-10",
+   "targetClause": "clause-8",
+   "rank": 9,
+   "score": -7.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-22"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-11",
+   "type": "depends_on",
+   "target": "prohibition-8",
+   "targetClause": "clause-7",
+   "rank": 10,
+   "score": -8.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-22"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-38",
+   "type": "depends_on",
+   "target": "obligation-39",
+   "targetClause": "clause-16",
+   "rank": 1,
+   "score": -0.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-23"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-38",
+   "type": "depends_on",
+   "target": "obligation-37",
+   "targetClause": "clause-15",
+   "rank": 2,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-23"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-38",
+   "type": "depends_on",
+   "target": "obligation-40",
+   "targetClause": "clause-19",
+   "rank": 3,
+   "score": -3.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-23"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-38",
+   "type": "depends_on",
+   "target": "obligation-41",
+   "targetClause": "clause-19",
+   "rank": 4,
+   "score": -3.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-23"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-38",
+   "type": "depends_on",
+   "target": "obligation-42",
+   "targetClause": "clause-20",
+   "rank": 5,
+   "score": -4.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-23"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-38",
+   "type": "depends_on",
+   "target": "prohibition-15",
+   "targetClause": "clause-10",
+   "rank": 6,
+   "score": -6.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-23"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-38",
+   "type": "depends_on",
+   "target": "prohibition-12",
+   "targetClause": "clause-9",
+   "rank": 7,
+   "score": -7.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-23"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-38",
+   "type": "depends_on",
+   "target": "obligation-43",
+   "targetClause": "clause-21",
+   "rank": 8,
+   "score": -7.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-23"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-38",
+   "type": "depends_on",
+   "target": "prohibition-10",
+   "targetClause": "clause-8",
+   "rank": 9,
+   "score": -8.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-23"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-38",
+   "type": "depends_on",
+   "target": "prohibition-8",
+   "targetClause": "clause-7",
+   "rank": 10,
+   "score": -9.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-23"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-39",
+   "type": "depends_on",
+   "target": "obligation-38",
+   "targetClause": "clause-16",
+   "rank": 1,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-25"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-39",
+   "type": "depends_on",
+   "target": "obligation-37",
+   "targetClause": "clause-15",
+   "rank": 2,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-25"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-39",
+   "type": "depends_on",
+   "target": "obligation-40",
+   "targetClause": "clause-19",
+   "rank": 3,
+   "score": -3.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-25"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-39",
+   "type": "depends_on",
+   "target": "obligation-41",
+   "targetClause": "clause-19",
+   "rank": 4,
+   "score": -3.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-25"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-39",
+   "type": "depends_on",
+   "target": "obligation-42",
+   "targetClause": "clause-20",
+   "rank": 5,
+   "score": -4.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-25"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-39",
+   "type": "depends_on",
+   "target": "prohibition-15",
+   "targetClause": "clause-10",
+   "rank": 6,
+   "score": -6.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-25"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-39",
+   "type": "depends_on",
+   "target": "prohibition-12",
+   "targetClause": "clause-9",
+   "rank": 7,
+   "score": -7.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-25"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-39",
+   "type": "depends_on",
+   "target": "obligation-43",
+   "targetClause": "clause-21",
+   "rank": 8,
+   "score": -7.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-25"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-39",
+   "type": "depends_on",
+   "target": "prohibition-10",
+   "targetClause": "clause-8",
+   "rank": 9,
+   "score": -8.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-25"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-39",
+   "type": "depends_on",
+   "target": "prohibition-8",
+   "targetClause": "clause-7",
+   "rank": 10,
+   "score": -9.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-25"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "right-12",
+   "type": "depends_on",
+   "target": "obligation-38",
+   "targetClause": "clause-16",
+   "rank": 1,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-24"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "right-12",
+   "type": "depends_on",
+   "target": "obligation-39",
+   "targetClause": "clause-16",
+   "rank": 2,
+   "score": 0.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-24"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "right-12",
+   "type": "depends_on",
+   "target": "obligation-37",
+   "targetClause": "clause-15",
+   "rank": 3,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-24"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "right-12",
+   "type": "depends_on",
+   "target": "obligation-40",
+   "targetClause": "clause-19",
+   "rank": 4,
+   "score": -3.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-24"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "right-12",
+   "type": "depends_on",
+   "target": "obligation-41",
+   "targetClause": "clause-19",
+   "rank": 5,
+   "score": -3.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-24"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "right-12",
+   "type": "depends_on",
+   "target": "obligation-42",
+   "targetClause": "clause-20",
+   "rank": 6,
+   "score": -4.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-24"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "right-12",
+   "type": "depends_on",
+   "target": "prohibition-15",
+   "targetClause": "clause-10",
+   "rank": 7,
+   "score": -6.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-24"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "right-12",
+   "type": "depends_on",
+   "target": "prohibition-12",
+   "targetClause": "clause-9",
+   "rank": 8,
+   "score": -7.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-24"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "right-12",
+   "type": "depends_on",
+   "target": "obligation-43",
+   "targetClause": "clause-21",
+   "rank": 9,
+   "score": -7.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-24"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "right-12",
+   "type": "depends_on",
+   "target": "prohibition-10",
+   "targetClause": "clause-8",
+   "rank": 10,
+   "score": -8.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-24"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "right-13",
+   "type": "depends_on",
+   "target": "obligation-38",
+   "targetClause": "clause-16",
+   "rank": 1,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-26"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-13",
+   "type": "depends_on",
+   "target": "obligation-39",
+   "targetClause": "clause-16",
+   "rank": 2,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-26"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-13",
+   "type": "depends_on",
+   "target": "obligation-37",
+   "targetClause": "clause-15",
+   "rank": 3,
+   "score": -2.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-26"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-13",
+   "type": "depends_on",
+   "target": "obligation-40",
+   "targetClause": "clause-19",
+   "rank": 4,
+   "score": -2.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-26"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-13",
+   "type": "depends_on",
+   "target": "obligation-41",
+   "targetClause": "clause-19",
+   "rank": 5,
+   "score": -2.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-26"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-13",
+   "type": "depends_on",
+   "target": "obligation-42",
+   "targetClause": "clause-20",
+   "rank": 6,
+   "score": -3.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-26"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-13",
+   "type": "depends_on",
+   "target": "obligation-43",
+   "targetClause": "clause-21",
+   "rank": 7,
+   "score": -6.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-26"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-13",
+   "type": "depends_on",
+   "target": "prohibition-15",
+   "targetClause": "clause-10",
+   "rank": 8,
+   "score": -7.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-26"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-13",
+   "type": "depends_on",
+   "target": "prohibition-12",
+   "targetClause": "clause-9",
+   "rank": 9,
+   "score": -8.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-26"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "right-13",
+   "type": "depends_on",
+   "target": "prohibition-10",
+   "targetClause": "clause-8",
+   "rank": 10,
+   "score": -9.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-26"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "no es incumplimiento"
+  },
+  {
+   "source": "obligation-46",
+   "type": "depends_on",
+   "target": "prohibition-17",
+   "targetClause": "clause-24",
+   "rank": 1,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-27"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-46",
+   "type": "depends_on",
+   "target": "prohibition-19",
+   "targetClause": "clause-24",
+   "rank": 2,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-27"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-46",
+   "type": "depends_on",
+   "target": "obligation-49",
+   "targetClause": "clause-26",
+   "rank": 3,
+   "score": -3.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-27"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-46",
+   "type": "depends_on",
+   "target": "obligation-51",
+   "targetClause": "clause-26",
+   "rank": 4,
+   "score": -3.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-27"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-46",
+   "type": "depends_on",
+   "target": "obligation-44",
+   "targetClause": "clause-22",
+   "rank": 5,
+   "score": -4.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-27"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-46",
+   "type": "depends_on",
+   "target": "obligation-45",
+   "targetClause": "clause-22",
+   "rank": 6,
+   "score": -4.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-27"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-46",
+   "type": "depends_on",
+   "target": "obligation-36",
+   "targetClause": "clause-12",
+   "rank": 7,
+   "score": -16.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-27"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-46",
+   "type": "depends_on",
+   "target": "prohibition-16",
+   "targetClause": "clause-10",
+   "rank": 8,
+   "score": -18.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-27"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-46",
+   "type": "depends_on",
+   "target": "obligation-35",
+   "targetClause": "clause-9",
+   "rank": 9,
+   "score": -19.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-27"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-46",
+   "type": "depends_on",
+   "target": "prohibition-13",
+   "targetClause": "clause-9",
+   "rank": 10,
+   "score": -19.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-27"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-47",
+   "type": "depends_on",
+   "target": "prohibition-18",
+   "targetClause": "clause-24",
+   "rank": 1,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-28"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-47",
+   "type": "depends_on",
+   "target": "obligation-48",
+   "targetClause": "clause-25",
+   "rank": 2,
+   "score": -2.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-28"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-47",
+   "type": "depends_on",
+   "target": "obligation-50",
+   "targetClause": "clause-26",
+   "rank": 3,
+   "score": -3.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-28"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-47",
+   "type": "depends_on",
+   "target": "obligation-52",
+   "targetClause": "clause-26",
+   "rank": 4,
+   "score": -3.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-28"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-47",
+   "type": "depends_on",
+   "target": "obligation-43",
+   "targetClause": "clause-21",
+   "rank": 5,
+   "score": -5.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-28"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-47",
+   "type": "depends_on",
+   "target": "obligation-42",
+   "targetClause": "clause-20",
+   "rank": 6,
+   "score": -8.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-28"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-47",
+   "type": "depends_on",
+   "target": "obligation-40",
+   "targetClause": "clause-19",
+   "rank": 7,
+   "score": -9.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-28"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-47",
+   "type": "depends_on",
+   "target": "obligation-41",
+   "targetClause": "clause-19",
+   "rank": 8,
+   "score": -9.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-28"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-47",
+   "type": "depends_on",
+   "target": "obligation-38",
+   "targetClause": "clause-16",
+   "rank": 9,
+   "score": -12.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-28"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-47",
+   "type": "depends_on",
+   "target": "obligation-39",
+   "targetClause": "clause-16",
+   "rank": 10,
+   "score": -12.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-28"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "específica"
+  },
+  {
+   "source": "obligation-48",
+   "type": "depends_on",
+   "target": "prohibition-18",
+   "targetClause": "clause-24",
+   "rank": 1,
+   "score": -1.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-29"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "genérica"
+  },
+  {
+   "source": "obligation-48",
+   "type": "depends_on",
+   "target": "obligation-50",
+   "targetClause": "clause-26",
+   "rank": 2,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-29"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "genérica"
+  },
+  {
+   "source": "obligation-48",
+   "type": "depends_on",
+   "target": "obligation-52",
+   "targetClause": "clause-26",
+   "rank": 3,
+   "score": -1.5,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-29"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "genérica"
+  },
+  {
+   "source": "obligation-48",
+   "type": "depends_on",
+   "target": "obligation-47",
+   "targetClause": "clause-23",
+   "rank": 4,
+   "score": -2.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-29"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "genérica"
+  },
+  {
+   "source": "obligation-48",
+   "type": "depends_on",
+   "target": "obligation-43",
+   "targetClause": "clause-21",
+   "rank": 5,
+   "score": -7.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-29"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "genérica"
+  },
+  {
+   "source": "obligation-48",
+   "type": "depends_on",
+   "target": "obligation-42",
+   "targetClause": "clause-20",
+   "rank": 6,
+   "score": -10.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-29"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "genérica"
+  },
+  {
+   "source": "obligation-48",
+   "type": "depends_on",
+   "target": "obligation-40",
+   "targetClause": "clause-19",
+   "rank": 7,
+   "score": -11.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-29"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "genérica"
+  },
+  {
+   "source": "obligation-48",
+   "type": "depends_on",
+   "target": "obligation-41",
+   "targetClause": "clause-19",
+   "rank": 8,
+   "score": -11.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-29"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "genérica"
+  },
+  {
+   "source": "obligation-48",
+   "type": "depends_on",
+   "target": "obligation-38",
+   "targetClause": "clause-16",
+   "rank": 9,
+   "score": -14.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-29"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "genérica"
+  },
+  {
+   "source": "obligation-48",
+   "type": "depends_on",
+   "target": "obligation-39",
+   "targetClause": "clause-16",
+   "rank": 10,
+   "score": -14.0,
+   "method": "mismo beneficiario → orden del documento",
+   "conditions": [
+    "condition-29"
+   ],
+   "status": "predicha, sin revisar",
+   "annotatedClass": "genérica"
+  }
+ ]
+}

@@ -17,7 +17,9 @@ import numpy as np
 # de que torch arranque CUDA.
 os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
 
-ROOT = Path(__file__).resolve().parents[2]
+# La raíz del repositorio: la primera carpeta por encima que contiene infra/ (vale aunque el
+# cuaderno se mueva de carpeta).
+ROOT = next(p for p in Path(__file__).resolve().parents if (p / "infra").is_dir())
 KG_DIR = ROOT / "infra/json/kg"
 PARAGRAPHS_DIR = ROOT / "infra/json/paragraphs"
 GOLD_DIR = ROOT / "infra/json/gold"
@@ -124,8 +126,7 @@ def load_contract(name: str) -> Contract:
         paragraph_text=text_of,
         parent=parent,
     )
-    # Un gemelo bilateral es el mismo texto, del mismo tipo y en la misma cláusula, emitido
-    # una vez por parte: la extracción lo hace así con las cláusulas recíprocas.
+
     groups = collections.defaultdict(list)
     for sid, s in statements.items():
         groups[(s["kind"], s.get("clauseId"), norm(s.get("text")))].append(sid)
@@ -247,12 +248,7 @@ KGE_DEFAULTS = {
 
 
 def train_kge(model_name: str, train_triples: list, e2i: dict, r2i: dict, seed: int, **overrides):
-    """Entrena un modelo de PyKEEN sobre un único grafo y lo devuelve listo para puntuar.
-
-    El modelo —la función de puntuación— es el de PyKEEN; el bucle de entrenamiento es propio,
-    porque el de PyKEEN, pensado para grafos grandes, gasta en preparar cada época más de lo
-    que estos grafos tardan en entrenar. Dos formas de entrenar:
-
+    """
     - `loss="1vsall"`: cada arista conocida contra todas las entidades a la vez, con entropía
       cruzada, prediciendo destino y origen (Ruffinelli et al., ICLR 2020);
     - `loss="margin"`: la de los artículos originales de TransE/TransH/TransR — negativos al

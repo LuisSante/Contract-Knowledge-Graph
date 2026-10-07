@@ -4,18 +4,14 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { KgVizGraph, KgVizNode } from '@/features/docx/utils/knowledge/kg-graph';
 import { useForceLayout } from '@/features/docx/components/clause-analyzer/graph/useForceLayout';
 import {
-	formatGain,
 	formatMass,
 	NODE_COLORS,
 	NODE_LABEL,
 	radiusOf,
 } from '@/features/docx/components/clause-analyzer/constants';
 
-export type ScoreMode = 'ppr' | 'prior' | 'gain';
-
 interface GraphCanvasProps {
 	graph: KgVizGraph;
-	scoreMode: ScoreMode;
 	showLabels: boolean;
 	selectedClauseId: string | null;
 	/** The selected clause plus its provisions and everything they reach; null = no selection. */
@@ -34,15 +30,8 @@ const MAX_ZOOM = 4;
 const FIT_PADDING = 48;
 const LABEL_CHARS = 18;
 
-function valueOf(node: KgVizNode, mode: ScoreMode): number {
-	if (mode === 'prior') return node.prior;
-	if (mode === 'gain') return node.gain;
-	return node.score;
-}
-
 export function GraphCanvas({
 	graph,
-	scoreMode,
 	showLabels,
 	selectedClauseId,
 	highlightIds,
@@ -130,6 +119,9 @@ export function GraphCanvas({
 	}, []);
 
 	const onPointerDown = (event: React.PointerEvent<SVGSVGElement>) => {
+		// A press on a node is a click, not the start of a pan: capturing the pointer here
+		// would hand the click to the canvas and the node would never see it.
+		if ((event.target as Element).closest('[data-node]')) return;
 		dragRef.current = { pointerId: event.pointerId, x: event.clientX, y: event.clientY };
 		event.currentTarget.setPointerCapture(event.pointerId);
 	};
@@ -146,9 +138,6 @@ export function GraphCanvas({
 	const endDrag = (event: React.PointerEvent<SVGSVGElement>) => {
 		if (dragRef.current?.pointerId === event.pointerId) dragRef.current = null;
 	};
-
-	const scoreText = (node: KgVizNode) =>
-		scoreMode === 'gain' ? formatGain(node.gain) : formatMass(valueOf(node, scoreMode));
 
 	// Text is counter-scaled so it keeps a constant size on screen. Fitting 40 nodes
 	// puts the frame around k≈0.55, which would render a 9px number at 5px — unreadable,
@@ -200,10 +189,10 @@ export function GraphCanvas({
 						const inSelection = lit(node.id);
 						const dimmed = hovered !== null && hovered.node.id !== node.id;
 						const selected = node.id === selectedClauseId;
-						const negative = scoreMode === 'gain' && node.gain < 0;
 						return (
 							<g
 								key={node.id}
+								data-node
 								transform={`translate(${point.x},${point.y})`}
 								opacity={dimmed ? 0.35 : inSelection ? 1 : 0.2}
 								className={node.kind === 'clause' ? 'cursor-pointer' : 'cursor-default'}
@@ -237,10 +226,9 @@ export function GraphCanvas({
 								<circle
 									r={radius}
 									fill={color}
-									fillOpacity={negative ? 0.06 : (inSelection ? 0.2 : 0.12) + 0.34 * node.weight}
+									fillOpacity={(inSelection ? 0.2 : 0.12) + 0.34 * node.weight}
 									stroke={color}
 									strokeWidth={selected ? 3 : inSelection ? 2.2 : 1.4}
-									strokeDasharray={negative ? '3 2' : undefined}
 								/>
 								<text
 									textAnchor="middle"
@@ -250,7 +238,7 @@ export function GraphCanvas({
 									fill="currentColor"
 									className="pointer-events-none tabular-nums"
 								>
-									{scoreText(node)}
+									{formatMass(node.score)}
 								</text>
 								{showLabels && (
 									<text
@@ -289,8 +277,7 @@ export function GraphCanvas({
 					</div>
 					<div className="mb-1 text-foreground/80">{hovered.node.label}</div>
 					<div className="text-muted-foreground tabular-nums">
-						PPR {formatMass(hovered.node.score)}% · prior {formatMass(hovered.node.prior)}% · gain{' '}
-						{formatGain(hovered.node.gain)} · {hovered.node.degree} edges here
+						PPR {formatMass(hovered.node.score)}% · {hovered.node.degree} edges here
 					</div>
 					{hovered.node.kind === 'clause' && (
 						<div className="mt-1 text-muted-foreground">Click to open it on the left.</div>

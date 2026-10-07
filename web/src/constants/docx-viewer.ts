@@ -14,6 +14,7 @@ export const MODEL_OPTIONS: ReadonlyArray<{ value: string; label: string }> = [
 
 export const RIGHT_PANEL_TOOLS: Array<{ id: RightPanelTab; label: string }> = [
 	{ id: 'clause_analyzer', label: 'Clause Analyzer' },
+	{ id: 'knowledge_graph', label: 'Knowledge Graph' },
 	{ id: 'assistant', label: 'Chat' },
 ];
 

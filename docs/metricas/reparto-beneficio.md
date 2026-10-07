@@ -88,8 +88,9 @@ pesos retirados, para comparar:
 Sobre el documento entero, **45% / 55%** (antes 33% / 67%). El 38% / 62% que figuraba
 aquí era la cifra con la columna bilateral abierta; hoy esa cifra es 47% / 53%.
 
-Abrir la columna bilateral mete tres filas más, **todas 50/50 exacto**, y acerca las
-demás al centro. Cerrada, la retícula responde qué separa a las dos partes; abierta, qué
+Abrir la columna bilateral mete tres filas más, **todas 50/50 exacto**, y acerca al
+centro las que ya tenían algún enunciado recíproco: *Term and Termination* pasa a
+56% / 44% y *Visual inspection* a 60% / 40%. Cerrada, la retícula responde qué separa a las dos partes; abierta, qué
 cargan juntas.
 
 ---

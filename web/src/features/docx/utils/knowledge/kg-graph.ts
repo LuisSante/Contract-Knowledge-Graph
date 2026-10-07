@@ -9,8 +9,6 @@ export interface KgVizNode {
 	score: number;
 	/** Where the restart vector put mass on this node; 0 for everything but statements. */
 	prior: number;
-	/** score − prior: what propagation added, or drained away. */
-	gain: number;
 	/** 0–1 position on a log scale over the drawn set; what the radius reads from. */
 	weight: number;
 	degree: number;
@@ -141,7 +139,6 @@ export function buildKgViz(
 			label: truncate(node.label || node.id),
 			score: node.score,
 			prior,
-			gain: node.score - prior,
 			weight: node.score > 0 && logSpan > 0 ? (Math.log(node.score) - logMin) / logSpan : 0,
 			degree: degree.get(node.id) ?? 0,
 		};

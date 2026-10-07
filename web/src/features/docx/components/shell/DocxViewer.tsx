@@ -54,6 +54,8 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	const costLabel = llmCost ? `Cost: ${llmCost.totalCostUsdFormatted} $` : null;
 
 	const clauseAnalyzerActive = drawer.isOpen && drawer.activeTab === 'clause_analyzer';
+	// The graph tab opens clauses on the left too, without the analyzer's highlights.
+	const graphActive = drawer.isOpen && drawer.activeTab === 'knowledge_graph';
 
 	const kgAnchorParagraphId = useClauseAnalyzerStore((s) => s.anchorParagraphId);
 	const kgRelatedParagraphs = useClauseAnalyzerStore((s) => s.relatedParagraphs);
@@ -106,12 +108,19 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	};
 
 	useEffect(() => {
-		if (!clauseAnalyzerActive || !kgAnchorParagraphId || viewer.renderEpoch === 0) return;
+		if (!(clauseAnalyzerActive || graphActive) || !kgAnchorParagraphId || viewer.renderEpoch === 0)
+			return;
 		const element = paragraphElementById.current.get(kgAnchorParagraphId);
 		if (!element) return;
 		element.scrollIntoView({ behavior: 'smooth', block: 'center' });
 		flashElement(element);
-	}, [clauseAnalyzerActive, kgAnchorParagraphId, viewer.renderEpoch, paragraphElementById]);
+	}, [
+		clauseAnalyzerActive,
+		graphActive,
+		kgAnchorParagraphId,
+		viewer.renderEpoch,
+		paragraphElementById,
+	]);
 
 	const extractedDocIdRef = useRef<string | null>(null);
 	useEffect(() => {

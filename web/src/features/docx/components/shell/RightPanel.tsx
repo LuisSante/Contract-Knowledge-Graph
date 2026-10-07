@@ -6,10 +6,16 @@ import { cn } from '@/lib/utils';
 import { RIGHT_PANEL_TOOLS } from '@/constants/docx-viewer';
 import { TOP_HEADER_HEIGHT } from '@/constants/brand';
 import type { RightPanelTab } from '@/types/document';
-import { ChatIcon, CloseIcon, ClauseAnalyzerIcon } from '@/components/common/icons';
+import {
+	ChatIcon,
+	CloseIcon,
+	ClauseAnalyzerIcon,
+	KnowledgeGraphIcon,
+} from '@/components/common/icons';
 
 const HEADER_ICONS: Record<RightPanelTab, React.ComponentType<{ className?: string }>> = {
 	clause_analyzer: ClauseAnalyzerIcon,
+	knowledge_graph: KnowledgeGraphIcon,
 	assistant: ChatIcon,
 };
 

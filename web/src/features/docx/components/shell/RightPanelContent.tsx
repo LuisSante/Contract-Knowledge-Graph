@@ -6,6 +6,7 @@ import type { RightPanelTab } from '@/types/document';
 
 import { RightPanelAssistant } from '@/features/docx/components/assistant/RightPanelAssistant';
 import { ClauseAnalyzerPanel } from '@/features/docx/components/clause-analyzer/ClauseAnalyzerPanel';
+import { KnowledgeGraphPanel } from '@/features/docx/components/knowledge-graph/KnowledgeGraphPanel';
 
 interface RightPanelContentProps {
 	activeTab: RightPanelTab;
@@ -24,6 +25,10 @@ export function RightPanelContent({
 }: RightPanelContentProps) {
 	if (activeTab === 'clause_analyzer') {
 		return <ClauseAnalyzerPanel docId={docId} onAsk={onAsk} />;
+	}
+
+	if (activeTab === 'knowledge_graph') {
+		return <KnowledgeGraphPanel docId={docId} />;
 	}
 
 	if (activeTab === 'assistant') {

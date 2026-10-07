@@ -5,8 +5,15 @@ import { useSearchParams } from 'next/navigation';
 import type { Side } from '@/features/docx/utils/knowledge/statement-grid';
 
 export const VIEWS = [
-	{ id: 'scenarios', label: 'What if…' },
 	{ id: 'table', label: 'Table' },
+	{ id: 'scenarios', label: 'What if…' },
+	// Prototypes to compare side by side; they go one by one as they are ruled out.
+	{ id: 'diff', label: 'C2 · Diff' },
+	{ id: 'events', label: 'C3 · Events' },
+	{ id: 'lanes', label: 'P1 · Lanes' },
+	{ id: 'bytype', label: 'P2 · By type' },
+	{ id: 'balance', label: 'P3 · Balance' },
+	{ id: 'verdict', label: 'P4 · Verdict' },
 ] as const;
 
 export type View = (typeof VIEWS)[number]['id'];

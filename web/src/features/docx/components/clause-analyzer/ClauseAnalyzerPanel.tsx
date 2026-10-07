@@ -31,16 +31,22 @@ import { PanelHeader } from '@/features/docx/components/clause-analyzer/PanelHea
 import { ClauseGrid } from '@/features/docx/components/clause-analyzer/grid/ClauseGrid';
 import {
 	MarkTooltip,
+	markDetails,
 	type HoverInfo,
 } from '@/features/docx/components/clause-analyzer/grid/MarkTooltip';
 import { Legend } from '@/features/docx/components/clause-analyzer/legend/Legend';
-import { GraphSection } from '@/features/docx/components/clause-analyzer/graph/GraphSection';
 import {
 	PAIR_SECOND_COLOR,
 	PARTY_COLOR,
 } from '@/features/docx/components/clause-analyzer/constants';
 import { ViewBar } from '@/features/docx/components/clause-analyzer/views/ViewBar';
 import { CasesView } from '@/features/docx/components/clause-analyzer/views/CasesView';
+import { DiffGridView } from '@/features/docx/components/clause-analyzer/views/DiffGridView';
+import { EventGridView } from '@/features/docx/components/clause-analyzer/views/EventGridView';
+import { LanesView } from '@/features/docx/components/clause-analyzer/views/LanesView';
+import { ByTypeView } from '@/features/docx/components/clause-analyzer/views/ByTypeView';
+import { BalanceView } from '@/features/docx/components/clause-analyzer/views/BalanceView';
+import { VerdictView } from '@/features/docx/components/clause-analyzer/views/VerdictView';
 import type { ViewProps } from '@/features/docx/components/clause-analyzer/views/types';
 
 interface ClauseAnalyzerPanelProps {
@@ -233,16 +239,15 @@ export function ClauseAnalyzerPanel({ docId, onAsk }: ClauseAnalyzerPanelProps) 
 		setDocumentTarget(buildDocumentTarget(viewKg, nodeId, nodesById));
 	};
 
+	const detailsOf = useMemo(
+		() => (viewKg && grid ? markDetails(viewKg, grid) : null),
+		[viewKg, grid]
+	);
+
 	const showTooltip = (event: ReactMouseEvent, mark: GridMark) => {
 		const rect = containerRef.current?.getBoundingClientRect();
-		if (!rect) return;
-		setHover({
-			x: event.clientX - rect.left,
-			y: event.clientY - rect.top,
-			kind: mark.kind,
-			detail: mark.detail,
-			owner: mark.ownerName ?? (mark.lane === 'shared' ? 'both parties' : undefined),
-		});
+		if (!rect || !detailsOf) return;
+		setHover({ x: event.clientX - rect.left, y: event.clientY - rect.top, ...detailsOf(mark) });
 	};
 
 	const laneName = (lane: GridLane) =>
@@ -285,6 +290,10 @@ export function ClauseAnalyzerPanel({ docId, onAsk }: ClauseAnalyzerPanelProps) 
 					onRow: nav.setRow,
 					grid,
 					shareOf,
+					importance: clauseImportance?.byClause ?? null,
+					lanes: shownLanes,
+					showShared,
+					onShowShared: setShowShared,
 					onOpen: openInDocument,
 					onOpenParas: (pids) => setDocumentTarget(buildParagraphTarget(pids, nodesById)),
 					onAsk,
@@ -315,8 +324,6 @@ export function ClauseAnalyzerPanel({ docId, onAsk }: ClauseAnalyzerPanelProps) 
 		if (known(wantA) && known(wantB)) focusPair(wantA, wantB);
 	}, [status, viewKg, focusNodeId, wantA, wantB, focusPair]);
 
-	const showGraph = status === 'ready' && Boolean(viewKg) && Boolean(grid) && !inView;
-
 	return (
 		<div className="flex h-full flex-col">
 			{status === 'ready' && viewKg && (
@@ -342,19 +349,15 @@ export function ClauseAnalyzerPanel({ docId, onAsk }: ClauseAnalyzerPanelProps) 
 				/>
 			)}
 			{inView && viewProps && nav.view === 'scenarios' && <CasesView {...viewProps} />}
+			{inView && viewProps && nav.view === 'diff' && <DiffGridView {...viewProps} />}
+			{inView && viewProps && nav.view === 'events' && <EventGridView {...viewProps} />}
+			{inView && viewProps && nav.view === 'lanes' && <LanesView {...viewProps} />}
+			{inView && viewProps && nav.view === 'bytype' && <ByTypeView {...viewProps} />}
+			{inView && viewProps && nav.view === 'balance' && <BalanceView {...viewProps} />}
+			{inView && viewProps && nav.view === 'verdict' && <VerdictView {...viewProps} />}
 
-			{/* With the graph below, this hugs its rows instead of claiming a fixed share:
-			    seven clauses are ~300px and the rest belongs to the graph. The floor keeps
-			    the legend from scrolling on short documents; the cap keeps a long grid from
-			    pushing the graph off screen — it scrolls inside instead. With no graph —
-			    party picker, loading, error — it fills, or the footer's border would float
-			    mid-panel with white space under it. */}
-			<div
-				className={cn(
-					'flex',
-					inView ? 'hidden' : showGraph ? 'max-h-[62%] min-h-[240px] shrink-0' : 'min-h-0 flex-1'
-				)}
-			>
+			{/* The table fills the panel; the graph has a tab of its own. */}
+			<div className={cn('flex', inView ? 'hidden' : 'min-h-0 flex-1')}>
 				<div ref={containerRef} className="relative min-h-0 flex-1">
 					{status === 'loading' && (
 						<div className="flex h-full items-center justify-center text-sm text-muted-foreground">
@@ -426,18 +429,6 @@ export function ClauseAnalyzerPanel({ docId, onAsk }: ClauseAnalyzerPanelProps) 
 					/>
 				)}
 			</div>
-
-			{showGraph && viewKg && (
-				<GraphSection
-					kg={viewKg}
-					importance={clauseImportance}
-					visibleKinds={visibleKinds}
-					selectedClauseId={activeClause?.clauseId ?? null}
-					onSelectClause={(clauseId) =>
-						setSelectedClauseId((prev) => (prev === clauseId ? null : clauseId))
-					}
-				/>
-			)}
 
 			{status === 'ready' && (
 				<PartyManager

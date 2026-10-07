@@ -4,5 +4,6 @@ export { AssistantIcon } from './AssistantIcon';
 export { DocumentIcon } from './DocumentIcon';
 export { HammerShieldIcon } from './HammerShieldIcon';
 export { ClauseAnalyzerIcon } from './ClauseAnalyzerIcon';
+export { KnowledgeGraphIcon } from './KnowledgeGraphIcon';
 export { LightningBoltIcon } from './LightningBoltIcon';
 export { UserIcon } from './UserIcon';

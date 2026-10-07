@@ -10,8 +10,7 @@ dentro de la primera.
 |---|---|---|---|
 | What if… | un paso dentro de una situación | el hecho que dispara las condiciones | `utils/knowledge/scenarios.ts` |
 
-Las cifras de este documento salen de `node scripts/comparators.mjs` sobre el acuerdo de
-suministro Bellicum–Miltenyi, con los mismos módulos que ejecuta la web.
+Las cifras de este documento son del acuerdo de suministro Bellicum–Miltenyi.
 
 ---
 

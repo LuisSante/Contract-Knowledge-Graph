@@ -11,10 +11,8 @@ El **orden** de las filas no sale de aquí: viene de
 [`importancia-clausula.md`](./importancia-clausula.md). Esta métrica dice **a quién le
 sirve**; aquella, **cuánto manda**.
 
-Las cifras salen de `node scripts/benefit-share.mjs` sobre el documento de estudio, el
-resumen del acuerdo de suministro Bellicum–Miltenyi, con los mismos módulos que ejecuta
-la web. Ese grafo ya no está en `infra/json/kg/`; la cabecera del script explica cómo
-recuperarlo.
+Las cifras son del documento de estudio, el resumen del acuerdo de suministro
+Bellicum–Miltenyi, cuyo grafo ya no está en `infra/json/kg/`.
 
 ---
 

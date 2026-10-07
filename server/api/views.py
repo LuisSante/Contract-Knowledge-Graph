@@ -1,5 +1,4 @@
 import logging
-from typing import ClassVar
 
 from django.http import FileResponse
 from rest_framework.exceptions import NotFound, ValidationError
@@ -14,9 +13,9 @@ from api.serializers import (
     ProcessDocumentRequestSerializer,
 )
 from core.config import settings
-from services.documents.processing import build_paragraphs, load_paragraphs_dump, save_paragraphs_dump
+from services.documents.processing import build_paragraphs, save_paragraphs_dump
 from services.documents.store import DocumentStore
-from services.graph.knowledge import benchmark, personalized_pagerank
+from services.graph.knowledge import personalized_pagerank
 from services.graph.knowledge.store import load_knowledge_graph
 
 logger = logging.getLogger(__name__)
@@ -133,25 +132,3 @@ class ClauseImportanceView(APIView):
             }
         )
         return Response(response.data)
-
-
-class BenchmarkView(APIView):
-    _cache: ClassVar[dict[str, dict]] = {}
-
-    def get(self, request, doc_id: str):
-        document_store.ensure_initialized()
-        canonical_id = document_store.get_canonical_id(doc_id) or doc_id
-        cached = self._cache.get(canonical_id)
-        if cached is not None:
-            return Response(cached)
-
-        if not settings.CUAD_PATH.exists():
-            raise NotFound("CUAD labels not found")
-        paragraphs = load_paragraphs_dump(canonical_id, settings.PARAGRAPHS_OUTPUT_DIR)
-        result = benchmark.compare(canonical_id, paragraphs, settings.CUAD_PATH)
-        if result is None:
-            raise NotFound("Document is not part of CUAD")
-
-        payload = {"status": "success", "documentId": canonical_id, **result}
-        self._cache[canonical_id] = payload
-        return Response(payload)

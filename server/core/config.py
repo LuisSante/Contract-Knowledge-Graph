@@ -11,7 +11,6 @@ class Settings(BaseSettings):
     KNOWLEDGE_GRAPH_DIR: Path = Path("../infra/json/kg")
     # A file, not a directory: every contract abstract lives in this one map.
     CONTRACT_SUMMARY_PATH: Path = Path("../infra/json/abstract.json")
-    CUAD_PATH: Path = Path("../infra/json/CUAD_v1.json")
 
     # this extract paragraphs from a document
     EXTRACT_PARAGRAPHS: bool = True

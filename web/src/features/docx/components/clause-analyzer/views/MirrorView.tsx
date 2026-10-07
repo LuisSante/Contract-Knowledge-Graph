@@ -100,10 +100,7 @@ export function MirrorView(props: ViewProps) {
 
 	const main = (
 		<>
-			<Head
-				title="What one party holds — does the other hold it too?"
-				lead="Each row is something either party could hold. A dashed slot is what the contract gives one side and not the other."
-			/>
+			<Head title="What one party holds — does the other hold it too?" />
 			<div className="flex flex-wrap items-center gap-1.5">
 				<Stat n={mirror.counts.same} label="same" />
 				<Stat n={mirror.counts.onlyA} label={`only ${short(names.a)}`} color={SIDE_COLOR.a} />
@@ -180,11 +177,6 @@ export function MirrorView(props: ViewProps) {
 					);
 				})}
 			</div>
-			<p className="text-2xs leading-relaxed text-muted-foreground">
-				Only families either party could hold are paired: leaving, assigning, auditing, liability.
-				What belongs to a role — making, delivering, paying — is not compared, because there the
-				difference is the contract itself.
-			</p>
 		</>
 	);
 
@@ -289,15 +281,6 @@ function MirrorDetail({
 						color={SIDE_COLOR[side === 'a' ? 'b' : 'a']}
 					/>
 				)}
-				{lonely && (
-					<>
-						<Caps>How the gap was decided</Caps>
-						<p className="text-2xs leading-relaxed text-muted-foreground">
-							Compared with the {r.pool} rights {short(other)} holds. None shares{' '}
-							{Math.round(MATCH * 100)}% of its wording with this one. Human review: pending.
-						</p>
-					</>
-				)}
 			</Card>
 			<AskBox
 				onAsk={onAsk}
@@ -314,7 +297,6 @@ function MirrorDetail({
 				ghosts={lonely && h.s.clauseId ? { [h.s.clauseId]: side === 'a' ? 'b' : 'a' } : {}}
 				shareOf={shareOf}
 				names={names}
-				caption={`The table as it is today. The dashed square is the missing mirror in ${short(other)}’s lane.`}
 				onOpen={onOpen}
 				onExpand={onTable}
 			/>

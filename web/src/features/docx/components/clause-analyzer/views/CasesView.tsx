@@ -98,10 +98,7 @@ export function CasesView(props: ViewProps) {
 
 	const main = (
 		<>
-			<Head
-				title={picked.title}
-				lead={`Read as ${me}. The steps follow the order things happen in the contract, not a score.`}
-			/>
+			<Head title={picked.title} />
 			<div className="grid grid-cols-3 gap-2">
 				{tile(
 					'You can',

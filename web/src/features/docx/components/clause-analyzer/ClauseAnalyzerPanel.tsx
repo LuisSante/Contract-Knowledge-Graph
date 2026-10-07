@@ -42,7 +42,6 @@ import {
 } from '@/features/docx/components/clause-analyzer/constants';
 import { ViewBar } from '@/features/docx/components/clause-analyzer/views/ViewBar';
 import { MirrorView } from '@/features/docx/components/clause-analyzer/views/MirrorView';
-import { BenchView } from '@/features/docx/components/clause-analyzer/views/BenchView';
 import { CasesView } from '@/features/docx/components/clause-analyzer/views/CasesView';
 import type { ViewProps } from '@/features/docx/components/clause-analyzer/views/types';
 import type { DeonticKind } from '@/types/knowledge';
@@ -352,7 +351,6 @@ export function ClauseAnalyzerPanel({ docId, onAsk }: ClauseAnalyzerPanelProps) 
 				/>
 			)}
 			{inView && viewProps && nav.view === 'mirror' && <MirrorView {...viewProps} />}
-			{inView && viewProps && nav.view === 'benchmark' && <BenchView {...viewProps} />}
 			{inView && viewProps && nav.view === 'scenarios' && <CasesView {...viewProps} />}
 
 			{/* With the graph below, this hugs its rows instead of claiming a fixed share:

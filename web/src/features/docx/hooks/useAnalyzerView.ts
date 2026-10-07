@@ -6,7 +6,6 @@ import type { Side } from '@/features/docx/utils/knowledge/mirror';
 
 export const VIEWS = [
 	{ id: 'mirror', label: 'Mirror' },
-	{ id: 'benchmark', label: 'Benchmark' },
 	{ id: 'scenarios', label: 'What if…' },
 	{ id: 'table', label: 'Table' },
 ] as const;

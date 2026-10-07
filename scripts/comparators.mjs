@@ -1,10 +1,9 @@
-// Runs the three comparators of the Clause Analyzer on one knowledge graph, with the
+// Runs the two comparators of the Clause Analyzer on one knowledge graph, with the
 // same modules the web app ships, so any number quoted in docs/ can be regenerated.
 //
 //   node scripts/comparators.mjs [kg json] [party A id] [party B id]
 //
-// Needs Node >= 23.6 (strips TypeScript types natively). The benchmark part calls the
-// running Django server, as the app does.
+// Needs Node >= 23.6 (strips TypeScript types natively).
 import { readFileSync } from 'node:fs';
 import { register } from 'node:module';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -32,7 +31,6 @@ const kg = JSON.parse(readFileSync(kgFile, 'utf8'));
 
 const { buildMirror } = await import('@/features/docx/utils/knowledge/mirror');
 const { buildScenarios } = await import('@/features/docx/utils/knowledge/scenarios');
-const { shapeBench } = await import('@/features/docx/utils/knowledge/benchmark');
 
 const name = (id) => kg.parties.find((p) => p.id === id)?.name ?? id;
 console.log(`A = ${name(aId)} · B = ${name(bId)}\n`);
@@ -49,19 +47,3 @@ for (const c of buildScenarios(kg, aId, bId, 'b'))
 	console.log(
 		`  ${c.id.padEnd(10)} ${c.steps.length} steps · ${c.steps.filter((s) => s.risk).length} risks · ${c.limits.length} limits · ${c.gaps.length} gaps`
 	);
-
-const docId = `root::${kg.parties[0]?.paragraphIds[0]?.split('::')[1]?.replace(/-p-\d+$/, '')}`;
-try {
-	const res = await fetch(
-		`http://127.0.0.1:8300/api/v1/knowledge_graph/${encodeURIComponent(docId)}/benchmark`
-	);
-	const body = await res.json();
-	const rows = shapeBench({ ...body, topics: body.categories }, kg, aId, bId);
-	console.log(`\nBenchmark · ${body.peers} ${body.contractType} contracts`);
-	for (const r of rows.filter((r) => r.group !== 'absent'))
-		console.log(
-			`  ${r.group.padEnd(7)} ${String(r.hits).padStart(2)}/${body.peers} ${r.label}${r.present && !r.ids.length ? ' (not extracted)' : ''}`
-		);
-} catch {
-	console.log('\nBenchmark skipped: the Django server is not running on :8300.');
-}

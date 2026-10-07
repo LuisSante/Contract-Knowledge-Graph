@@ -41,6 +41,27 @@
           "does": "Market and sell Equidata's services, collect payments from consumers, pay Equidata, comply with laws, and avoid soliciting Equidata's clients."
         }
       ]
+    },
+    "root::BELLICUMPHARMACEUTICALS,INC_05_07_2019-EX-10.1-Supply Agreement": {
+      "documentId": "root::BELLICUMPHARMACEUTICALS,INC_05_07_2019-EX-10.1-Supply Agreement",
+      "documentName": "BELLICUMPHARMACEUTICALS,INC_05_07_2019-EX-10.1-Supply Agreement.docx",
+      "title": "Miltenyi Biotec-Bellicum Supply Agreement",
+      "contractType": "Supply Agreement",
+      "summary": "Under this agreement, {{party-1|Miltenyi Biotec GmbH}} supplies specified products and technologies to {{party-2|Bellicum Pharmaceuticals, Inc.}} for use in Bellicum’s research, development, and manufacture of cell-based therapeutics, on agreed terms and pricing, for an initial term with possible renewal, covering worldwide territory.",
+      "parties": [
+        {
+          "partyId": "party-1",
+          "name": "Miltenyi Biotec GmbH",
+          "role": "Supplier",
+          "does": "Supply products and technologies to Bellicum as specified."
+        },
+        {
+          "partyId": "party-2",
+          "name": "Bellicum Pharmaceuticals, Inc.",
+          "role": "Buyer",
+          "does": "Purchase and use Miltenyi products for development and manufacture of therapeutics."
+        }
+      ]
     }
   }
 }

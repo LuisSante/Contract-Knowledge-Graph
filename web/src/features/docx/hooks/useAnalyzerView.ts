@@ -8,8 +8,6 @@ export const VIEWS = [
 	{ id: 'table', label: 'Table' },
 	{ id: 'scenarios', label: 'What if…' },
 	// Prototypes to compare side by side; they go one by one as they are ruled out.
-	{ id: 'diff', label: 'C2 · Diff' },
-	{ id: 'events', label: 'C3 · Events' },
 	{ id: 'lanes', label: 'P1 · Lanes' },
 	{ id: 'bytype', label: 'P2 · By type' },
 	{ id: 'balance', label: 'P3 · Balance' },

@@ -39,8 +39,6 @@ import {
 } from '@/features/docx/components/clause-analyzer/constants';
 import { ViewBar } from '@/features/docx/components/clause-analyzer/views/ViewBar';
 import { CasesView } from '@/features/docx/components/clause-analyzer/views/CasesView';
-import { DiffGridView } from '@/features/docx/components/clause-analyzer/views/DiffGridView';
-import { EventGridView } from '@/features/docx/components/clause-analyzer/views/EventGridView';
 import { LanesView } from '@/features/docx/components/clause-analyzer/views/LanesView';
 import { ByTypeView } from '@/features/docx/components/clause-analyzer/views/ByTypeView';
 import { BalanceView } from '@/features/docx/components/clause-analyzer/views/BalanceView';
@@ -332,8 +330,6 @@ export function ClauseAnalyzerPanel({ docId, onAsk, onOpenGraph }: ClauseAnalyze
 				/>
 			)}
 			{inView && viewProps && nav.view === 'scenarios' && <CasesView {...viewProps} />}
-			{inView && viewProps && nav.view === 'diff' && <DiffGridView {...viewProps} />}
-			{inView && viewProps && nav.view === 'events' && <EventGridView {...viewProps} />}
 			{inView && viewProps && nav.view === 'lanes' && <LanesView {...viewProps} />}
 			{inView && viewProps && nav.view === 'bytype' && <ByTypeView {...viewProps} />}
 			{inView && viewProps && nav.view === 'balance' && <BalanceView {...viewProps} />}

@@ -158,20 +158,3 @@ export function KindSquare({
 		/>
 	);
 }
-
-/** An empty slot drawn on purpose: the other party has it and this one does not. */
-export function GhostSquare({ size = 12, title }: { size?: number; title?: string }) {
-	return (
-		<span
-			title={title}
-			className="shrink-0 rounded-[3px] border border-dashed border-muted-foreground/70"
-			style={{
-				width: size,
-				height: size,
-				backgroundImage:
-					'repeating-linear-gradient(135deg, transparent 0 2px, var(--muted-foreground) 2px 3px)',
-				opacity: 0.6,
-			}}
-		/>
-	);
-}

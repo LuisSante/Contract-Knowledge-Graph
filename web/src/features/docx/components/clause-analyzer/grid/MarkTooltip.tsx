@@ -87,13 +87,24 @@ const trim = (text: string, max: number) =>
 	text.length > max ? `${text.slice(0, max).trim()}…` : text;
 
 /** The mark card: the kind as a tag, the party it belongs to, the words, the clause. */
-export function MarkTooltip({ hover }: { hover: HoverInfo | null }) {
+export function MarkTooltip({
+	hover,
+	above = false,
+}: {
+	hover: HoverInfo | null;
+	/** Opens upwards, for marks at the foot of the panel where below there is no room. */
+	above?: boolean;
+}) {
 	if (!hover) return null;
 	const color = KIND_COLORS[hover.kind];
 	return (
 		<div
 			className="pointer-events-none absolute z-30 w-[22rem] rounded-xl border border-border bg-card px-3.5 py-3 text-xs shadow-lg"
-			style={{ left: Math.max(8, hover.x - 362), top: hover.y + 14 }}
+			style={{
+				left: Math.max(8, hover.x - 362),
+				top: above ? hover.y - 14 : hover.y + 14,
+				transform: above ? 'translateY(-100%)' : undefined,
+			}}
 		>
 			<div className="flex items-center justify-between gap-3">
 				<span

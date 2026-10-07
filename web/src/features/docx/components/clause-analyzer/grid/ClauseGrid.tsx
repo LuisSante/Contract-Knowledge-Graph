@@ -36,6 +36,7 @@ interface ClauseGridProps {
 	canPaintB: boolean;
 	showShared: boolean;
 	onSelectClause: (clauseId: string) => void;
+	onOpenGraph?: (clauseId: string) => void;
 	onOpenMark: (nodeId: string) => void;
 	onFocusMark: (nodeId: string) => void;
 	onHoverMark: (event: ReactMouseEvent, mark: GridMark) => void;
@@ -58,6 +59,7 @@ export function ClauseGrid({
 	canPaintB,
 	showShared,
 	onSelectClause,
+	onOpenGraph,
 	onOpenMark,
 	onFocusMark,
 	onHoverMark,
@@ -149,6 +151,7 @@ export function ClauseGrid({
 						share={shareOf(row.clauseId)}
 						laneName={laneName}
 						onSelect={onSelectClause}
+						onOpenGraph={onOpenGraph}
 						onOpenMark={onOpenMark}
 						onFocusMark={onFocusMark}
 						onHoverMark={onHoverMark}

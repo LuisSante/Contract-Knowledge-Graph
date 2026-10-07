@@ -9,10 +9,20 @@ import { useKnowledgeGraphData } from '@/features/docx/hooks/useKnowledgeGraphDa
 import { useClauseImportance } from '@/features/docx/hooks/useClauseImportance';
 import { applyPartyView } from '@/features/docx/utils/knowledge/party-view';
 import { buildKgViz, KG_NODE_KINDS } from '@/features/docx/utils/knowledge/kg-graph';
-import { clauseNeighbourhood } from '@/features/docx/utils/knowledge/clause-subgraph';
+import { clauseNeighbourhood, clauseRowIds } from '@/features/docx/utils/knowledge/clause-subgraph';
+import { buildStatementGrid, GRID_LANES } from '@/features/docx/utils/knowledge/statement-grid';
+import { useAnalyzerView } from '@/features/docx/hooks/useAnalyzerView';
 import { buildDocumentTarget } from '@/features/docx/utils/knowledge/graph-payload';
 import { GraphCanvas } from '@/features/docx/components/clause-analyzer/graph/GraphCanvas';
-import { NODE_COLORS, NODE_LABEL } from '@/features/docx/components/clause-analyzer/constants';
+import { SelectedRow } from '@/features/docx/components/knowledge-graph/SelectedRow';
+import {
+	NEUTRAL_COLOR,
+	NODE_COLORS,
+	NODE_LABEL,
+	PAIR_SECOND_COLOR,
+	PARTY_COLOR,
+} from '@/features/docx/components/clause-analyzer/constants';
+import type { KgVizNode } from '@/features/docx/utils/knowledge/kg-graph';
 
 const ALL_KINDS = new Set<KgNodeKind>(KG_NODE_KINDS);
 const noReset = () => {};
@@ -24,10 +34,20 @@ const noReset = () => {};
  */
 export function KnowledgeGraphPanel({ docId }: { docId: string }) {
 	const [showLabels, setShowLabels] = useState(false);
-	const [selectedClauseId, setSelectedClauseId] = useState<string | null>(null);
+	const [byParty, setByParty] = useState(false);
+	const selectedClause = useClauseAnalyzerStore((s) => s.selectedClause);
+	const selectClause = useClauseAnalyzerStore((s) => s.selectClause);
+	const selectedClauseId = selectedClause?.docId === docId ? selectedClause.clauseId : null;
 	const mergeGroups = useClauseAnalyzerStore((s) => s.mergeGroups);
 	const hiddenParties = useClauseAnalyzerStore((s) => s.hiddenParties);
 	const setDocumentTarget = useClauseAnalyzerStore((s) => s.setDocumentTarget);
+	const focusNodeId = useClauseAnalyzerStore((s) => s.focusNodeId);
+	const secondPartyId = useClauseAnalyzerStore((s) => s.secondPartyId);
+	// The pair chosen in the Clause Analyzer, or the one the link carries if the analyzer
+	// has not been opened in this visit.
+	const { pair } = useAnalyzerView();
+	const aId = focusNodeId ?? pair?.a ?? null;
+	const bId = focusNodeId ? secondPartyId : (pair?.b ?? null);
 	const paragraphs = useDocumentStore((s) => s.paragraphs);
 	const nodesById = useMemo(() => new Map(paragraphs.map((n) => [n.id, n])), [paragraphs]);
 
@@ -39,10 +59,33 @@ export function KnowledgeGraphPanel({ docId }: { docId: string }) {
 	// null counts every statement: the document-wide reading, with no view filtering it.
 	const importance = useClauseImportance(docId, null);
 
-	const highlightIds = useMemo(
-		() => (viewKg && selectedClauseId ? clauseNeighbourhood(viewKg, selectedClauseId) : null),
-		[viewKg, selectedClauseId]
+	const grid = useMemo(
+		() => (viewKg && aId ? buildStatementGrid(viewKg, aId, bId) : null),
+		[viewKg, aId, bId]
 	);
+	// Each node in the colour of the Table column it is drawn in: a statement in its
+	// owner's lane, a qualifier in the lane of what it qualifies. The clause keeps its own.
+	const colorOf = useMemo(() => {
+		if (!byParty || !grid) return undefined;
+		const laneColor = { a: PARTY_COLOR, b: PAIR_SECOND_COLOR, shared: NEUTRAL_COLOR };
+		const byId = new Map<string, string>();
+		if (aId) byId.set(aId, PARTY_COLOR);
+		if (bId) byId.set(bId, PAIR_SECOND_COLOR);
+		for (const row of grid.rows)
+			for (const lane of GRID_LANES)
+				for (const mark of row.marks[lane]) byId.set(mark.id, laneColor[lane]);
+		return (node: KgVizNode) =>
+			node.kind === 'clause' ? NODE_COLORS.clause : (byId.get(node.id) ?? NEUTRAL_COLOR);
+	}, [byParty, grid, aId, bId]);
+
+	// A selected clause lights what its row in the Table shows, and the two parties.
+	// With no pair chosen there is no row, so it lights the clause's neighbourhood.
+	const highlightIds = useMemo(() => {
+		if (!viewKg || !selectedClauseId) return null;
+		return grid
+			? clauseRowIds(grid, selectedClauseId, [aId, bId])
+			: clauseNeighbourhood(viewKg, selectedClauseId);
+	}, [viewKg, grid, selectedClauseId, aId, bId]);
 	const graph = useMemo(
 		() =>
 			viewKg && importance
@@ -57,6 +100,12 @@ export function KnowledgeGraphPanel({ docId }: { docId: string }) {
 				: null,
 		[viewKg, importance]
 	);
+
+	const nameOf = (id: string | null) =>
+		(id && viewKg?.parties.find((p) => p.id === id)?.name) || 'Party';
+	const openInDocument = (nodeId: string) => {
+		if (viewKg) setDocumentTarget(buildDocumentTarget(viewKg, nodeId, nodesById));
+	};
 
 	if (status === 'missing' || status === 'error' || !graph) {
 		return (
@@ -82,9 +131,9 @@ export function KnowledgeGraphPanel({ docId }: { docId: string }) {
 					/>
 					<span>Labels</span>
 				</label>
-				<span className="tabular-nums">
-					{graph.nodes.length} nodes · {graph.edges.length} edges
-				</span>
+				{/* <span className="tabular-nums">
+					{graph.nodes.length} nodes {graph.edges.length} edges
+				</span> */}
 				<span className="ml-auto flex flex-wrap items-center gap-x-2.5 gap-y-1">
 					{KG_NODE_KINDS.filter((kind) => graph.countByKind[kind] > 0).map((kind) => (
 						<span key={kind} className="inline-flex items-center gap-1">
@@ -103,11 +152,26 @@ export function KnowledgeGraphPanel({ docId }: { docId: string }) {
 				showLabels={showLabels}
 				selectedClauseId={selectedClauseId}
 				highlightIds={highlightIds}
+				colorOf={colorOf}
 				onSelectClause={(clauseId) => {
-					setSelectedClauseId((prev) => (prev === clauseId ? null : clauseId));
+					selectClause(docId, selectedClauseId === clauseId ? null : clauseId);
 					if (viewKg) setDocumentTarget(buildDocumentTarget(viewKg, clauseId, nodesById));
 				}}
 			/>
+			{viewKg && grid && (
+				<SelectedRow
+					kg={viewKg}
+					grid={grid}
+					clauseId={selectedClauseId}
+					names={{ a: nameOf(aId), b: nameOf(bId) }}
+					onSelect={(clauseId) =>
+						selectClause(docId, selectedClauseId === clauseId ? null : clauseId)
+					}
+					onOpenMark={openInDocument}
+					byParty={byParty}
+					onByParty={setByParty}
+				/>
+			)}
 		</div>
 	);
 }

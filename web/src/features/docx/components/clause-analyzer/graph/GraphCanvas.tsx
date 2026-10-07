@@ -17,6 +17,8 @@ interface GraphCanvasProps {
 	/** The selected clause plus its provisions and everything they reach; null = no selection. */
 	highlightIds: Set<string> | null;
 	onSelectClause: (clauseId: string) => void;
+	/** Overrides the colour by kind, e.g. to paint each node in its party's colour. */
+	colorOf?: (node: KgVizNode) => string;
 }
 
 interface View {
@@ -36,6 +38,7 @@ export function GraphCanvas({
 	selectedClauseId,
 	highlightIds,
 	onSelectClause,
+	colorOf,
 }: GraphCanvasProps) {
 	const wrapperRef = useRef<HTMLDivElement>(null);
 	const [size, setSize] = useState({ width: 0, height: 0 });
@@ -185,7 +188,7 @@ export function GraphCanvas({
 						const point = positions.get(node.id);
 						if (!point) return null;
 						const radius = radiusOf(node.weight);
-						const color = NODE_COLORS[node.kind];
+						const color = colorOf?.(node) ?? NODE_COLORS[node.kind];
 						const inSelection = lit(node.id);
 						const dimmed = hovered !== null && hovered.node.id !== node.id;
 						const selected = node.id === selectedClauseId;

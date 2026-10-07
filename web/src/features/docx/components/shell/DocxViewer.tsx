@@ -231,6 +231,7 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 					assistant={assistant}
 					onFocusNodeFromPanel={onFocusNodeFromPanel}
 					onAsk={askChat}
+					onSelectTool={drawer.selectTool}
 				/>
 			</RightPanel>
 

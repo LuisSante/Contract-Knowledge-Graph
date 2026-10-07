@@ -1,5 +1,6 @@
 import type { KnowledgeGraph } from '@/types/knowledge';
 import { deonticNodes } from '@/types/knowledge';
+import { GRID_LANES, type StatementGrid } from '@/features/docx/utils/knowledge/statement-grid';
 
 function isEntity(kg: KnowledgeGraph, id: string): boolean {
 	return (
@@ -35,5 +36,23 @@ export function clauseNeighbourhood(kg: KnowledgeGraph, clauseId: string): Set<s
 				: null;
 		if (other && isEntity(kg, other)) ids.add(other);
 	}
+	return ids;
+}
+
+/**
+ * Exactly what the Table draws in a clause's row — its statements and the conditions,
+ * values, terms and references anchored to them or to the clause — plus the clause
+ * itself and the two parties being compared. Not a hop count: conditions sit two hops
+ * from their clause, while sub-clauses one hop away are not part of the row.
+ */
+export function clauseRowIds(
+	grid: StatementGrid,
+	clauseId: string,
+	partyIds: Array<string | null>
+): Set<string> {
+	const ids = new Set<string>([clauseId]);
+	for (const partyId of partyIds) if (partyId) ids.add(partyId);
+	const row = grid.rows.find((r) => r.clauseId === clauseId);
+	for (const lane of GRID_LANES) for (const mark of row?.marks[lane] ?? []) ids.add(mark.id);
 	return ids;
 }

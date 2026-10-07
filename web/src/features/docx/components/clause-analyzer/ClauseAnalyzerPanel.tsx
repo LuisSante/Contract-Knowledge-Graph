@@ -13,7 +13,6 @@ import {
 	buildStatementGrid,
 	DEONTIC_MARK_KINDS,
 	GRID_LANES,
-	MARK_KINDS,
 	type GridLane,
 	type GridMark,
 	type GridRow,
@@ -27,7 +26,6 @@ import { useKnowledgeGraphData } from '@/features/docx/hooks/useKnowledgeGraphDa
 import { useAnalyzerView } from '@/features/docx/hooks/useAnalyzerView';
 import { PartyManager } from '@/features/docx/components/clause-analyzer/PartyManager';
 import { PartyEntry } from '@/features/docx/components/clause-analyzer/PartyEntry';
-import { PanelHeader } from '@/features/docx/components/clause-analyzer/PanelHeader';
 import { ClauseGrid } from '@/features/docx/components/clause-analyzer/grid/ClauseGrid';
 import {
 	MarkTooltip,
@@ -53,11 +51,13 @@ interface ClauseAnalyzerPanelProps {
 	docId: string;
 	/** Sends a question to the chat tab. */
 	onAsk?: (question: string) => void;
+	/** Switches the drawer to the knowledge graph tab. */
+	onOpenGraph?: () => void;
 }
 
 const LANE_COLORS: [string, string] = [PARTY_COLOR, PAIR_SECOND_COLOR];
 
-export function ClauseAnalyzerPanel({ docId, onAsk }: ClauseAnalyzerPanelProps) {
+export function ClauseAnalyzerPanel({ docId, onAsk, onOpenGraph }: ClauseAnalyzerPanelProps) {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [hover, setHover] = useState<HoverInfo | null>(null);
 
@@ -65,7 +65,9 @@ export function ClauseAnalyzerPanel({ docId, onAsk }: ClauseAnalyzerPanelProps) 
 		() => new Set(DEONTIC_MARK_KINDS)
 	);
 
-	const [selectedClauseId, setSelectedClauseId] = useState<string | null>(null);
+	const selectedClause = useClauseAnalyzerStore((s) => s.selectedClause);
+	const selectClause = useClauseAnalyzerStore((s) => s.selectClause);
+	const selectedClauseId = selectedClause?.docId === docId ? selectedClause.clauseId : null;
 
 	const [sortByImportance, setSortByImportance] = useState(true);
 	const [paintLanes, setPaintLanes] = useState<Record<GridLane, boolean>>({
@@ -91,9 +93,7 @@ export function ClauseAnalyzerPanel({ docId, onAsk }: ClauseAnalyzerPanelProps) 
 	const unhideParty = useClauseAnalyzerStore((s) => s.unhideParty);
 	const clearPartyView = useClauseAnalyzerStore((s) => s.clearPartyView);
 	const secondPartyId = useClauseAnalyzerStore((s) => s.secondPartyId);
-	const setSecondParty = useClauseAnalyzerStore((s) => s.setSecondParty);
 	const focusPair = useClauseAnalyzerStore((s) => s.focusPair);
-	const [partyPickerOpen, setPartyPickerOpen] = useState(false);
 	const paragraphs = useDocumentStore((s) => s.paragraphs);
 	const nodesById = useMemo(() => new Map(paragraphs.map((n) => [n.id, n])), [paragraphs]);
 
@@ -218,10 +218,6 @@ export function ClauseAnalyzerPanel({ docId, onAsk }: ClauseAnalyzerPanelProps) 
 		importanceByNode: clauseImportance?.byNode ?? null,
 	});
 
-	const allKindsOn = MARK_KINDS.every(
-		(kind) => (grid?.countByKind[kind] ?? 0) === 0 || visibleKinds.has(kind)
-	);
-
 	const toggleKind = (kind: MarkKind, on: boolean) => {
 		setVisibleKinds((prev) => {
 			const next = new Set(prev);
@@ -326,19 +322,6 @@ export function ClauseAnalyzerPanel({ docId, onAsk }: ClauseAnalyzerPanelProps) 
 
 	return (
 		<div className="flex h-full flex-col">
-			{status === 'ready' && viewKg && (
-				<PanelHeader
-					parties={viewKg.parties}
-					focusPartyId={isPartyFocus ? focusNodeId : null}
-					secondPartyId={secondPartyId}
-					onSecondParty={setSecondParty}
-					pickerOpen={partyPickerOpen}
-					onPickerOpen={setPartyPickerOpen}
-					allKindsOn={allKindsOn}
-					onToggleAllKinds={() => setVisibleKinds(allKindsOn ? new Set() : new Set(MARK_KINDS))}
-				/>
-			)}
-
 			{viewProps && (
 				<ViewBar
 					view={nav.view}
@@ -406,9 +389,17 @@ export function ClauseAnalyzerPanel({ docId, onAsk }: ClauseAnalyzerPanelProps) 
 								canPaintB={Boolean(secondPartyId)}
 								showShared={showShared}
 								onSelectClause={(clauseId) => {
-									setSelectedClauseId((prev) => (prev === clauseId ? null : clauseId));
+									selectClause(docId, selectedClauseId === clauseId ? null : clauseId);
 									openInDocument(clauseId);
 								}}
+								onOpenGraph={
+									onOpenGraph &&
+									((clauseId) => {
+										selectClause(docId, clauseId);
+										openInDocument(clauseId);
+										onOpenGraph();
+									})
+								}
 								onOpenMark={openInDocument}
 								onFocusMark={focusNode}
 								onHoverMark={showTooltip}

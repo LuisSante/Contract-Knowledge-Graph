@@ -3,6 +3,8 @@ import type { MarkKind } from '@/features/docx/utils/knowledge/statement-grid';
 
 export const PARTY_COLOR = '#984ea3';
 export const PAIR_SECOND_COLOR = '#0d9488';
+/** What belongs to both parties, or to neither, when nodes are painted by party. */
+export const NEUTRAL_COLOR = '#a3a3a3';
 
 export const KIND_COLORS: Record<MarkKind, string> = {
 	obligation: '#e41a1c',

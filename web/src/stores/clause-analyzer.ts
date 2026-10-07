@@ -64,6 +64,9 @@ interface ClauseAnalyzerState extends GraphPayload {
 	selectedPartyIds: string[];
 	secondPartyId: string | null;
 	notes: DocNote[];
+	/** The clause picked in the Table or in the graph; both tabs show the same one. Keyed
+	 *  by document, since every contract has a clause-1. */
+	selectedClause: { docId: string; clauseId: string } | null;
 
 	focusNode: (nodeId: string) => void;
 	setFocusMeta: (meta: FocusMeta | null) => void;
@@ -79,9 +82,9 @@ interface ClauseAnalyzerState extends GraphPayload {
 	clearFocus: () => void;
 	setPayload: (payload: GraphPayload) => void;
 	setDocumentTarget: (target: DocumentTarget) => void;
-	setSecondParty: (id: string | null) => void;
 	focusPair: (anchorId: string, secondId: string) => void;
 	setNotes: (notes: DocNote[]) => void;
+	selectClause: (docId: string, clauseId: string | null) => void;
 }
 
 export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
@@ -95,6 +98,7 @@ export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
 	selectedPartyIds: [],
 	secondPartyId: null,
 	notes: [],
+	selectedClause: null,
 	...EMPTY_PAYLOAD,
 
 	focusNode: (focusNodeId) => set({ focusNodeId, hops: 1, secondPartyId: null }),
@@ -180,9 +184,9 @@ export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
 	clearFocus: () => set({ ...CLEARED_FOCUS, hops: 1, secondPartyId: null }),
 	setPayload: (payload) => set(payload),
 	setDocumentTarget: (target) => set(target),
-	setSecondParty: (secondPartyId) => set({ secondPartyId }),
 	focusPair: (focusNodeId, secondPartyId) => set({ focusNodeId, secondPartyId, hops: 1 }),
 	setNotes: (notes) => set({ notes }),
+	selectClause: (docId, clauseId) => set({ selectedClause: clauseId ? { docId, clauseId } : null }),
 }));
 
 export const TOP_K_STEP_SIZE = TOP_K_STEP;

@@ -1,6 +1,5 @@
 import type { KnowledgeGraph } from '@/types/knowledge';
-import type { StatementGrid } from '@/features/docx/utils/knowledge/statement-grid';
-import type { Side } from '@/features/docx/utils/knowledge/mirror';
+import type { Side, StatementGrid } from '@/features/docx/utils/knowledge/statement-grid';
 
 export interface ViewProps {
 	docId: string;

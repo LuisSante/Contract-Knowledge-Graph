@@ -7,7 +7,7 @@ import {
 	PAIR_SECOND_COLOR,
 	PARTY_COLOR,
 } from '@/features/docx/components/clause-analyzer/constants';
-import type { Side } from '@/features/docx/utils/knowledge/mirror';
+import type { Side } from '@/features/docx/utils/knowledge/statement-grid';
 import type { DeonticKind } from '@/types/knowledge';
 
 export const SIDE_COLOR: Record<Side, string> = { a: PARTY_COLOR, b: PAIR_SECOND_COLOR };
@@ -86,18 +86,6 @@ export function Caps({ children }: { children: ReactNode }) {
 	);
 }
 
-export function Quote({ text, color, note }: { text: string; color: string; note?: ReactNode }) {
-	return (
-		<div
-			className="space-y-1.5 border-l-[3px] bg-secondary px-3 py-2"
-			style={{ borderColor: color }}
-		>
-			<p className="text-xs leading-relaxed text-foreground italic">“{text}”</p>
-			{note}
-		</div>
-	);
-}
-
 /** The drawn absence: dashed, so it reads as a slot that is empty on purpose. */
 export function Hatch({ children, className }: { children: ReactNode; className?: string }) {
 	return (
@@ -109,17 +97,6 @@ export function Hatch({ children, className }: { children: ReactNode; className?
 		>
 			{children}
 		</div>
-	);
-}
-
-export function Stat({ n, label, color }: { n: number; label: string; color?: string }) {
-	return (
-		<span className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-2.5 py-1">
-			<span className="text-sm font-bold" style={color ? { color } : undefined}>
-				{n}
-			</span>
-			<span className="text-2xs text-muted-foreground">{label}</span>
-		</span>
 	);
 }
 

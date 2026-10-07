@@ -1,40 +1,25 @@
 'use client';
 
-import {
-	DEONTIC_MARK_KINDS,
-	MARK_KINDS,
-	type MarkKind,
-} from '@/features/docx/utils/knowledge/statement-grid';
-import type { DeonticKind } from '@/types/knowledge';
-import type { DeonticSeverity } from '@/features/docx/utils/knowledge/party-ledger';
+import { MARK_KINDS, type MarkKind } from '@/features/docx/utils/knowledge/statement-grid';
 import { Checkbox } from '@/components/ui/checkbox';
-import { WeightField } from '@/features/docx/components/clause-analyzer/legend/WeightField';
 import { KIND_COLORS, KIND_LABEL } from '@/features/docx/components/clause-analyzer/constants';
 
 interface LegendProps {
 	countByKind: Record<MarkKind, number>;
 	visibleKinds: Set<MarkKind>;
 	onToggleKind: (kind: MarkKind, on: boolean) => void;
-	severity: DeonticSeverity;
-	onSeverity: (kind: DeonticKind, value: number) => void;
-	severityDirty: boolean;
-	onResetSeverity: () => void;
 	showShared: boolean;
 	onShowShared: (on: boolean) => void;
 }
 
 /**
- * Kind filter and severity dials. Only the seven mark kinds appear: clauses are
- * bands and parties are lanes, so neither of those is a mark.
+ * Kind filter. Only the seven mark kinds appear: clauses are bands and parties are
+ * lanes, so neither of those is a mark. There are no weights: every statement counts once.
  */
 export function Legend({
 	countByKind,
 	visibleKinds,
 	onToggleKind,
-	severity,
-	onSeverity,
-	severityDirty,
-	onResetSeverity,
 	showShared,
 	onShowShared,
 }: LegendProps) {
@@ -43,22 +28,11 @@ export function Legend({
 			<div>
 				<div className="mb-1 flex items-baseline justify-between">
 					<span className="font-medium text-foreground/50">Entities</span>
-					{severityDirty && (
-						<button
-							type="button"
-							onClick={onResetSeverity}
-							className="text-muted-foreground underline hover:text-foreground"
-							title="Back to the calibrated defaults (prohibition 1.0 · obligation 0.7 · right 0.3)"
-						>
-							reset
-						</button>
-					)}
 				</div>
 				<div className="grid grid-cols-1 gap-y-1">
 					{MARK_KINDS.map((kind) => {
 						const count = countByKind[kind] ?? 0;
 						const color = KIND_COLORS[kind];
-						const deontic = (DEONTIC_MARK_KINDS as readonly MarkKind[]).includes(kind);
 						return (
 							<div key={kind}>
 								<label
@@ -83,31 +57,6 @@ export function Legend({
 									</span>
 									<span className="ml-auto shrink-0 tabular-nums opacity-60">{count}</span>
 								</label>
-								{/* Severity is the analyst's call, so the legend row that names the kind
-								    also holds the dial: a clause weighs the sum of these. */}
-								{deontic && (
-									<div className="mt-0.5 flex items-center gap-1 pl-5">
-										<input
-											type="range"
-											min={0}
-											max={1}
-											step={0.05}
-											value={severity[kind as DeonticKind]}
-											onChange={(event) =>
-												onSeverity(kind as DeonticKind, Number(event.target.value))
-											}
-											className="min-w-0 flex-1 cursor-pointer"
-											style={{ accentColor: color }}
-											aria-label={`Weight of ${KIND_LABEL[kind]} in the clause weight`}
-											title={`How much one ${KIND_LABEL[kind].toLowerCase()} counts toward its clause's weight`}
-										/>
-										<WeightField
-											value={severity[kind as DeonticKind]}
-											label={`Type the weight of ${KIND_LABEL[kind]}`}
-											onCommit={(value) => onSeverity(kind as DeonticKind, value)}
-										/>
-									</div>
-								)}
 							</div>
 						);
 					})}

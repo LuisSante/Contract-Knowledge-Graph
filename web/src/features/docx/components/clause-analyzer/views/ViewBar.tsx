@@ -3,7 +3,7 @@
 import { cn } from '@/lib/utils';
 import { VIEWS, type View } from '@/features/docx/hooks/useAnalyzerView';
 import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/views/bits';
-import type { Side } from '@/features/docx/utils/knowledge/mirror';
+import type { Side } from '@/features/docx/utils/knowledge/statement-grid';
 
 interface ViewBarProps {
 	view: View;

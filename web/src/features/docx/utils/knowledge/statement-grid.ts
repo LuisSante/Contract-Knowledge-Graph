@@ -3,6 +3,9 @@ import { deonticNodes } from '@/types/knowledge';
 
 export type GridLane = 'a' | 'b' | 'shared';
 
+/** One of the two parties being compared. */
+export type Side = Exclude<GridLane, 'shared'>;
+
 export const GRID_LANES: GridLane[] = ['a', 'b', 'shared'];
 
 export type MarkKind = DeonticKind | 'condition' | 'value' | 'definedTerm' | 'reference';

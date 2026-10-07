@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { EvidenceParagraph } from '@/types/document';
-import type { DeonticKind, KgNodeKind } from '@/types/knowledge';
+import type { KgNodeKind } from '@/types/knowledge';
 import type { EntityHighlight } from '@/features/docx/utils/assistant/entity-marks';
 import type {
 	DeonticSeverity,
@@ -69,8 +69,6 @@ interface ClauseAnalyzerState extends GraphPayload {
 	setFocusMeta: (meta: FocusMeta | null) => void;
 	setHops: (updater: number | ((prev: number) => number)) => void;
 	setTopK: (updater: number | ((prev: number) => number)) => void;
-	setSeverity: (kind: DeonticKind, value: number) => void;
-	resetSeverity: () => void;
 	mergeParties: (ids: string[]) => void;
 	splitGroup: (groupId: string) => void;
 	hideParty: (id: string) => void;
@@ -179,11 +177,6 @@ export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
 			const snapped = Math.round(raw / TOP_K_STEP) * TOP_K_STEP;
 			return { topK: Math.min(MAX_TOP_K, Math.max(MIN_TOP_K, snapped)) };
 		}),
-	setSeverity: (kind, value) =>
-		set((state) => ({
-			severity: { ...state.severity, [kind]: Math.min(1, Math.max(0, value)) },
-		})),
-	resetSeverity: () => set({ severity: DEFAULT_SEVERITY }),
 	clearFocus: () => set({ ...CLEARED_FOCUS, hops: 1, secondPartyId: null }),
 	setPayload: (payload) => set(payload),
 	setDocumentTarget: (target) => set(target),

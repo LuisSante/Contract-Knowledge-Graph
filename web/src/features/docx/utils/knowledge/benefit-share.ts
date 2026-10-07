@@ -1,10 +1,12 @@
-import type { DeonticKind } from '@/types/knowledge';
-import type { DeonticSeverity } from '@/features/docx/utils/knowledge/party-ledger';
-import type { GridLane, StatementGrid } from '@/features/docx/utils/knowledge/statement-grid';
+import {
+	DEONTIC_MARK_KINDS,
+	type GridLane,
+	type StatementGrid,
+} from '@/features/docx/utils/knowledge/statement-grid';
 
+/** Every statement counts once: the per-kind weights the bar used were never validated. */
 export function computeBenefitShare(
 	grid: StatementGrid,
-	severity: DeonticSeverity,
 	lanes: GridLane[]
 ): Map<string, { a: number; b: number }> {
 	const byClause = new Map<string, { a: number; b: number }>();
@@ -13,17 +15,16 @@ export function computeBenefitShare(
 		const benefit = { a: 0, b: 0 };
 		for (const lane of lanes) {
 			for (const mark of row.marks[lane]) {
-				// Only the deontic three carry a severity; a qualifier describes a
-				// statement that is already counted.
-				if (!(mark.kind in severity)) continue;
-				const weight = severity[mark.kind as DeonticKind];
+				// Only the deontic three count; a qualifier describes a statement that is
+				// already counted.
+				if (!DEONTIC_MARK_KINDS.includes(mark.kind)) continue;
 				if (lane === 'shared') {
-					benefit.a += weight;
-					benefit.b += weight;
+					benefit.a += 1;
+					benefit.b += 1;
 					continue;
 				}
 				const gains = mark.kind === 'right' ? lane : mark.counterpartLane;
-				if (gains === 'a' || gains === 'b') benefit[gains] += weight;
+				if (gains === 'a' || gains === 'b') benefit[gains] += 1;
 			}
 		}
 		byClause.set(row.clauseId, benefit);

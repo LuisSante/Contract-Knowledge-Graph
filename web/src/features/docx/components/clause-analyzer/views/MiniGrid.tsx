@@ -4,15 +4,12 @@ import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { KIND_COLORS } from '@/features/docx/components/clause-analyzer/constants';
 import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/views/bits';
-import type { GridMark, StatementGrid } from '@/features/docx/utils/knowledge/statement-grid';
-import type { Side } from '@/features/docx/utils/knowledge/mirror';
+import type { GridMark, Side, StatementGrid } from '@/features/docx/utils/knowledge/statement-grid';
 
 interface MiniGridProps {
 	grid: StatementGrid;
 	clauseIds: string[];
 	activeId?: string | null;
-	/** Lane that is missing a mark in that clause, drawn as a dashed slot. */
-	ghosts?: Record<string, Side>;
 	extra?: Record<string, ReactNode>;
 	shareOf: (clauseId: string | null) => { a: number; b: number } | null;
 	names: Record<Side, string>;
@@ -23,7 +20,7 @@ interface MiniGridProps {
 
 const SHOWN = new Set(['obligation', 'right', 'prohibition', 'condition']);
 
-function Lane({ marks, side, ghost }: { marks: GridMark[]; side: Side; ghost: boolean }) {
+function Lane({ marks, side }: { marks: GridMark[]; side: Side }) {
 	const shown = marks.filter((m) => SHOWN.has(m.kind));
 	return (
 		<div className={cn('flex w-20 flex-wrap gap-[3px]', side === 'a' && 'flex-row-reverse')}>
@@ -34,12 +31,6 @@ function Lane({ marks, side, ghost }: { marks: GridMark[]; side: Side; ghost: bo
 					style={{ backgroundColor: KIND_COLORS[m.kind] }}
 				/>
 			))}
-			{ghost && (
-				<span
-					className="size-2.5 rounded-[2px] border border-dashed bg-card"
-					style={{ borderColor: KIND_COLORS.right }}
-				/>
-			)}
 		</div>
 	);
 }
@@ -49,7 +40,6 @@ export function MiniGrid({
 	grid,
 	clauseIds,
 	activeId,
-	ghosts = {},
 	extra = {},
 	shareOf,
 	names,
@@ -113,9 +103,9 @@ export function MiniGrid({
 								</span>
 							)}
 						</span>
-						<Lane marks={row.marks.a} side="a" ghost={ghosts[id] === 'a'} />
+						<Lane marks={row.marks.a} side="a" />
 						<span className="w-px self-stretch bg-border" />
-						<Lane marks={row.marks.b} side="b" ghost={ghosts[id] === 'b'} />
+						<Lane marks={row.marks.b} side="b" />
 						<span className="flex w-8 justify-end">{extra[id]}</span>
 					</button>
 				);

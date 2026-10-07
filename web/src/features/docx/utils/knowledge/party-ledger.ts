@@ -47,10 +47,12 @@ export interface PartyScores {
 
 export type DeonticSeverity = Record<DeonticKind, number>;
 
+// Every statement counts once. The per-kind weights (prohibition 1.0 · obligation 0.7 ·
+// right 0.3) were never validated, so they no longer scale anything.
 export const DEFAULT_SEVERITY: DeonticSeverity = {
-	prohibition: 1.0,
-	obligation: 0.7,
-	right: 0.3,
+	prohibition: 1,
+	obligation: 1,
+	right: 1,
 };
 
 const TOP_CLAUSES = 5;

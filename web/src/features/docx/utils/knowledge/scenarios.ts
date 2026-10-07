@@ -1,6 +1,6 @@
 import type { DeonticKind, KgCondition, KgDeontic, KnowledgeGraph } from '@/types/knowledge';
 import { termOf } from '@/features/docx/utils/knowledge/fine-print';
-import type { Side } from '@/features/docx/utils/knowledge/mirror';
+import type { Side } from '@/features/docx/utils/knowledge/statement-grid';
 
 // A situation is the event a condition waits for. A trigger can belong to more than
 // one: "if the rejected shipment is not paid" is both a defect and a payment.

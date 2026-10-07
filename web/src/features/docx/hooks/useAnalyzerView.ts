@@ -2,10 +2,9 @@
 
 import { useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
-import type { Side } from '@/features/docx/utils/knowledge/mirror';
+import type { Side } from '@/features/docx/utils/knowledge/statement-grid';
 
 export const VIEWS = [
-	{ id: 'mirror', label: 'Mirror' },
 	{ id: 'scenarios', label: 'What if…' },
 	{ id: 'table', label: 'Table' },
 ] as const;
@@ -18,7 +17,7 @@ const isView = (value: string | null): value is View => VIEWS.some((v) => v.id =
 export function useAnalyzerView() {
 	const params = useSearchParams();
 	const raw = params.get('view');
-	const view: View = isView(raw) ? raw : 'mirror';
+	const view: View = isView(raw) ? raw : 'table';
 	const row = params.get('row');
 	const reader: Side = params.get('as') === 'b' ? 'b' : 'a';
 	const pairRaw = params.get('pair')?.split(',') ?? [];

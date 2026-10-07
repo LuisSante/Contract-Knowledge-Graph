@@ -19,7 +19,6 @@ import {
 	type GridRow,
 	type MarkKind,
 } from '@/features/docx/utils/knowledge/statement-grid';
-import { DEFAULT_SEVERITY } from '@/features/docx/utils/knowledge/party-ledger';
 import { computePairScores } from '@/features/docx/utils/knowledge/pair';
 import { computeBenefitShare, shareOfClause } from '@/features/docx/utils/knowledge/benefit-share';
 import { useClauseImportance } from '@/features/docx/hooks/useClauseImportance';
@@ -41,10 +40,8 @@ import {
 	PARTY_COLOR,
 } from '@/features/docx/components/clause-analyzer/constants';
 import { ViewBar } from '@/features/docx/components/clause-analyzer/views/ViewBar';
-import { MirrorView } from '@/features/docx/components/clause-analyzer/views/MirrorView';
 import { CasesView } from '@/features/docx/components/clause-analyzer/views/CasesView';
 import type { ViewProps } from '@/features/docx/components/clause-analyzer/views/types';
-import type { DeonticKind } from '@/types/knowledge';
 
 interface ClauseAnalyzerPanelProps {
 	docId: string;
@@ -76,8 +73,6 @@ export function ClauseAnalyzerPanel({ docId, onAsk }: ClauseAnalyzerPanelProps) 
 	const hops = useClauseAnalyzerStore((s) => s.hops);
 	const topK = useClauseAnalyzerStore((s) => s.topK);
 	const severity = useClauseAnalyzerStore((s) => s.severity);
-	const setSeverity = useClauseAnalyzerStore((s) => s.setSeverity);
-	const resetSeverity = useClauseAnalyzerStore((s) => s.resetSeverity);
 	const focusNode = useClauseAnalyzerStore((s) => s.focusNode);
 	const clearFocus = useClauseAnalyzerStore((s) => s.clearFocus);
 	const setFocusMeta = useClauseAnalyzerStore((s) => s.setFocusMeta);
@@ -128,8 +123,8 @@ export function ClauseAnalyzerPanel({ docId, onAsk }: ClauseAnalyzerPanelProps) 
 	);
 
 	const clauseBenefit = useMemo(
-		() => (grid && isPartyFocus ? computeBenefitShare(grid, severity, shownLanes) : null),
-		[grid, isPartyFocus, severity, shownLanes]
+		() => (grid && isPartyFocus ? computeBenefitShare(grid, shownLanes) : null),
+		[grid, isPartyFocus, shownLanes]
 	);
 	const shareOf = (clauseId: string | null) => shareOfClause(clauseBenefit, clauseId);
 
@@ -219,10 +214,6 @@ export function ClauseAnalyzerPanel({ docId, onAsk }: ClauseAnalyzerPanelProps) 
 
 	const allKindsOn = MARK_KINDS.every(
 		(kind) => (grid?.countByKind[kind] ?? 0) === 0 || visibleKinds.has(kind)
-	);
-
-	const severityDirty = DEONTIC_MARK_KINDS.some(
-		(kind) => severity[kind as DeonticKind] !== DEFAULT_SEVERITY[kind as DeonticKind]
 	);
 
 	const toggleKind = (kind: MarkKind, on: boolean) => {
@@ -350,7 +341,6 @@ export function ClauseAnalyzerPanel({ docId, onAsk }: ClauseAnalyzerPanelProps) 
 					names={viewProps.names}
 				/>
 			)}
-			{inView && viewProps && nav.view === 'mirror' && <MirrorView {...viewProps} />}
 			{inView && viewProps && nav.view === 'scenarios' && <CasesView {...viewProps} />}
 
 			{/* With the graph below, this hugs its rows instead of claiming a fixed share:
@@ -431,10 +421,6 @@ export function ClauseAnalyzerPanel({ docId, onAsk }: ClauseAnalyzerPanelProps) 
 						countByKind={grid.countByKind}
 						visibleKinds={visibleKinds}
 						onToggleKind={toggleKind}
-						severity={severity}
-						onSeverity={setSeverity}
-						severityDirty={severityDirty}
-						onResetSeverity={resetSeverity}
 						showShared={showShared}
 						onShowShared={setShowShared}
 					/>

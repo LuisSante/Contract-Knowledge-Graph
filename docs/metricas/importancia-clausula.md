@@ -56,8 +56,10 @@ no puede comprobar.
 El **paseo sí recorre el grafo entero**: lo que una cláusula tiene conectado no deja de
 existir porque se cierre una columna.
 
-La severidad **no interviene**, así que mover un slider cambia los porcentajes de la
-barra y no toca el orden.
+**Ningún peso por tipo interviene**: un derecho y una prohibición entran en el prior con
+la misma masa. Por eso quitar los pesos de la barra (ver
+[`reparto-beneficio.md`](./reparto-beneficio.md)) no movió este orden: la tabla de abajo
+es la misma antes y después.
 
 | # | cláusula | importancia |
 |---|---|---|

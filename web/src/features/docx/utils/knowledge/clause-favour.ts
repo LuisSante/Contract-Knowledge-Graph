@@ -58,14 +58,16 @@ export function clauseTitle(
 }
 
 /**
- * Every deontic statement on the shown lanes, credited the way the share bar credits it:
+ * Every deontic statement in the given lanes, credited the way the share bar credits it:
  * a right to its holder, an obligation or prohibition to the party on its other end, a
- * reciprocal statement to both. Each one counts once; nothing is weighted.
+ * reciprocal statement to both. Each one counts once; nothing is weighted. By default only
+ * the two parties' lanes: the extraction writes a reciprocal provision as one copy per
+ * party, so the shared lane is almost always empty.
  */
 export function tallyClauses(
 	grid: StatementGrid,
 	kg: KnowledgeGraph,
-	lanes: GridLane[]
+	lanes: GridLane[] = ['a', 'b']
 ): ClauseTally[] {
 	const clauseOf = new Map(kg.clauses.map((c) => [c.id, c] as const));
 	const textOf = new Map(
@@ -140,13 +142,17 @@ export function totalOf(tallies: ClauseTally[]): ClauseTally['count'] {
  * some type and loses in none. Winning one type and losing another is "mixed" — choosing
  * between them would mean weighting them.
  */
-export function typeVerdict(count: ClauseTally['count']): {
+export function typeVerdict(
+	count: ClauseTally['count'],
+	kinds: DeonticKind[] = DEONTIC_KINDS
+): {
 	verdict: TypeVerdict;
-	byKind: Record<DeonticKind, Favour>;
+	/** Only the kinds asked about: a kind left out cannot win or lose. */
+	byKind: Partial<Record<DeonticKind, Favour>>;
 } {
-	const byKind = Object.fromEntries(
-		DEONTIC_KINDS.map((kind) => [kind, favourOf(count[kind])])
-	) as Record<DeonticKind, Favour>;
+	const byKind: Partial<Record<DeonticKind, Favour>> = Object.fromEntries(
+		kinds.map((kind) => [kind, favourOf(count[kind])])
+	);
 	const won = new Set(Object.values(byKind).filter((f) => f !== 'tie'));
 	const verdict: TypeVerdict = won.size === 0 ? 'tie' : won.size === 2 ? 'mixed' : [...won][0];
 	return { verdict, byKind };

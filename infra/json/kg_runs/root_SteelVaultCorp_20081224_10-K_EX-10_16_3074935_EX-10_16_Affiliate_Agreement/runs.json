@@ -345,5 +345,25 @@
       "reasoning": 289
     },
     "note": "boilerplate rule"
+  },
+  {
+    "file": "20261008-141445_gpt-6.1-sol_D2.json",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": null,
+    "pipeline": "skeleton-v2",
+    "design": "D2",
+    "prompt": "75f20786f4b8",
+    "kgSha": "4a1dc5cd56af",
+    "createdAt": "2026-10-08T14:14:45",
+    "costUsd": 0.19858,
+    "usage": {
+      "calls": 5,
+      "prompt": 32447,
+      "cached": 19260,
+      "cacheWrite": 13172,
+      "completion": 16369,
+      "reasoning": 321
+    },
+    "note": ""
   }
 ]

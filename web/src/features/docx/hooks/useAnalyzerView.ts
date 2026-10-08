@@ -8,9 +8,7 @@ export const VIEWS = [
 	{ id: 'table', label: 'Table' },
 	{ id: 'scenarios', label: 'What if…' },
 	// Prototypes to compare side by side; they go one by one as they are ruled out.
-	{ id: 'lanes', label: 'P1 · Lanes' },
 	{ id: 'bytype', label: 'P2 · By type' },
-	{ id: 'balance', label: 'P3 · Balance' },
 	{ id: 'verdict', label: 'P4 · Verdict' },
 ] as const;
 

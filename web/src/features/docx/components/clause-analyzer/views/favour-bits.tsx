@@ -2,7 +2,6 @@
 
 import type { MouseEvent as ReactMouseEvent, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
-import { Checkbox } from '@/components/ui/checkbox';
 import { KIND_COLORS, KIND_LABEL } from '@/features/docx/components/clause-analyzer/constants';
 import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/views/bits';
 import type { Favour, Served, TypeVerdict } from '@/features/docx/utils/knowledge/clause-favour';
@@ -35,8 +34,8 @@ export function ViewHeader({
 	children,
 }: {
 	tag?: string;
-	title: string;
-	lead: string;
+	title?: string;
+	lead?: string;
 	children?: ReactNode;
 }) {
 	return (
@@ -52,30 +51,6 @@ export function ViewHeader({
 			<p className="text-xs leading-relaxed text-muted-foreground">{lead}</p>
 			{children}
 		</div>
-	);
-}
-
-/** The Table's "Both parties" switch, offered where the Table's legend is not on screen. */
-export function ReciprocalToggle({
-	on,
-	onChange,
-}: {
-	on: boolean;
-	onChange: (on: boolean) => void;
-}) {
-	return (
-		<label
-			className="inline-flex cursor-pointer items-center gap-1.5 text-2xs text-muted-foreground"
-			title="Statements the contract addresses to both parties at once. They serve both, so they add one to each side."
-		>
-			<Checkbox
-				checked={on}
-				onCheckedChange={(value) => onChange(value === true)}
-				className="size-3.5"
-				aria-label="Count reciprocal statements for both parties"
-			/>
-			Count reciprocal statements for both
-		</label>
 	);
 }
 

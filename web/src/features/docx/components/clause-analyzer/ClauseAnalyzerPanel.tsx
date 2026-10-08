@@ -39,9 +39,7 @@ import {
 } from '@/features/docx/components/clause-analyzer/constants';
 import { ViewBar } from '@/features/docx/components/clause-analyzer/views/ViewBar';
 import { CasesView } from '@/features/docx/components/clause-analyzer/views/CasesView';
-import { LanesView } from '@/features/docx/components/clause-analyzer/views/LanesView';
 import { ByTypeView } from '@/features/docx/components/clause-analyzer/views/ByTypeView';
-import { BalanceView } from '@/features/docx/components/clause-analyzer/views/BalanceView';
 import { VerdictView } from '@/features/docx/components/clause-analyzer/views/VerdictView';
 import type { ViewProps } from '@/features/docx/components/clause-analyzer/views/types';
 
@@ -285,9 +283,6 @@ export function ClauseAnalyzerPanel({ docId, onAsk, onOpenGraph }: ClauseAnalyze
 					grid,
 					shareOf,
 					importance: clauseImportance?.byClause ?? null,
-					lanes: shownLanes,
-					showShared,
-					onShowShared: setShowShared,
 					onOpen: openInDocument,
 					onOpenParas: (pids) => setDocumentTarget(buildParagraphTarget(pids, nodesById)),
 					onAsk,
@@ -330,9 +325,7 @@ export function ClauseAnalyzerPanel({ docId, onAsk, onOpenGraph }: ClauseAnalyze
 				/>
 			)}
 			{inView && viewProps && nav.view === 'scenarios' && <CasesView {...viewProps} />}
-			{inView && viewProps && nav.view === 'lanes' && <LanesView {...viewProps} />}
 			{inView && viewProps && nav.view === 'bytype' && <ByTypeView {...viewProps} />}
-			{inView && viewProps && nav.view === 'balance' && <BalanceView {...viewProps} />}
 			{inView && viewProps && nav.view === 'verdict' && <VerdictView {...viewProps} />}
 
 			{/* The table fills the panel; the graph has a tab of its own. */}

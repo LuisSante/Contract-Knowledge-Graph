@@ -9,7 +9,6 @@ import {
 	FavourPill,
 	KIND_PLURAL,
 	KindSquare,
-	ReciprocalToggle,
 	ViewHeader,
 	favourWords,
 	relationOf,
@@ -60,17 +59,7 @@ function sentenceOf(t: ClauseTally, names: Record<Side, string>): string {
 }
 
 /** Propuesta 4: the verdict in a sentence, the fragments that hold it up, and a question. */
-export function VerdictView({
-	docId,
-	kg,
-	grid,
-	names,
-	importance,
-	lanes,
-	showShared,
-	onShowShared,
-	onOpen,
-}: ViewProps) {
+export function VerdictView({ docId, kg, grid, names, importance, onOpen }: ViewProps) {
 	const setNotes = useClauseAnalyzerStore((s) => s.setNotes);
 	const [filter, setFilter] = useState<Favour | null>(null);
 	const [openId, setOpenId] = useState<string | null>(null);
@@ -79,8 +68,8 @@ export function VerdictView({
 	const [reviews, setReviews] = useState<Record<string, string>>(() => loadReviews(docId));
 
 	const tallies = useMemo(
-		() => byImportance(tallyClauses(grid, kg, lanes), importance),
-		[grid, kg, lanes, importance]
+		() => byImportance(tallyClauses(grid, kg), importance),
+		[grid, kg, importance]
 	);
 	const rank = new Map(tallies.map((t, i) => [t.clauseId, i + 1]));
 	const counts = { a: 0, b: 0, tie: 0 };
@@ -304,9 +293,6 @@ export function VerdictView({
 						<span className="text-2xs text-muted-foreground">
 							of {tallies.length} clauses ·{' '}
 							{importance ? 'ordered by importance' : 'document order'}
-						</span>
-						<span className="ml-auto">
-							<ReciprocalToggle on={showShared} onChange={onShowShared} />
 						</span>
 					</div>
 				</ViewHeader>

@@ -7,7 +7,6 @@ import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/vi
 import {
 	FavourPill,
 	KIND_PLURAL,
-	ReciprocalToggle,
 	ViewHeader,
 	relationOf,
 } from '@/features/docx/components/clause-analyzer/views/favour-bits';
@@ -32,24 +31,18 @@ const trim = (text: string, max = 180) =>
 	text.length > max ? `${text.slice(0, max).trim()}…` : text;
 
 /** Propuesta 2: obligations, rights and prohibitions never added together. */
-export function ByTypeView({
-	kg,
-	grid,
-	names,
-	importance,
-	lanes,
-	showShared,
-	onShowShared,
-	onOpen,
-}: ViewProps) {
+export function ByTypeView({ kg, grid, names, importance, onOpen }: ViewProps) {
 	const [limit, setLimit] = useState(PAGE);
 	const [open, setOpen] = useState<{ clauseId: string; kind: DeonticKind } | null>(null);
+	const [kinds, setKinds] = useState<DeonticKind[]>(DEONTIC_KINDS);
 
 	const tallies = useMemo(
-		() => byImportance(tallyClauses(grid, kg, lanes), importance),
-		[grid, kg, lanes, importance]
+		() => byImportance(tallyClauses(grid, kg), importance),
+		[grid, kg, importance]
 	);
 	const total = useMemo(() => totalOf(tallies), [tallies]);
+	// A clause with nothing of the kinds on screen has no row to show.
+	const rows = tallies.filter((t) => kinds.some((kind) => t.count[kind].a + t.count[kind].b > 0));
 	const peak = useMemo(
 		() =>
 			Object.fromEntries(
@@ -61,10 +54,11 @@ export function ByTypeView({
 		[tallies]
 	);
 
-	const note = (verdict: TypeVerdict, byKind: Record<DeonticKind, Favour>) => {
+	const note = (verdict: TypeVerdict, byKind: Partial<Record<DeonticKind, Favour>>) => {
 		if (verdict === 'tie') return 'equal in every type';
 		if (verdict !== 'mixed') return 'loses in no type';
-		return DEONTIC_KINDS.filter((kind) => byKind[kind] !== 'tie')
+		return kinds
+			.filter((kind) => byKind[kind] && byKind[kind] !== 'tie')
 			.map((kind) => `${KIND_PLURAL[kind].toLowerCase()} → ${short(names[byKind[kind] as Side])}`)
 			.join(' · ');
 	};
@@ -109,31 +103,72 @@ export function ByTypeView({
 		);
 	};
 
-	const contract = typeVerdict(total);
-	const wins = DEONTIC_KINDS.filter((kind) => contract.byKind[kind] === contract.verdict).length;
+	const contract = typeVerdict(total, kinds);
+	const wins = kinds.filter((kind) => contract.byKind[kind] === contract.verdict).length;
+	const winsIn =
+		wins < kinds.length
+			? `${wins} ${wins === 1 ? 'type' : 'types'} and loses in none`
+			: kinds.length === 1
+				? KIND_PLURAL[kinds[0]].toLowerCase()
+				: kinds.length === 3
+					? 'all three types'
+					: 'both types shown';
 	const contractLine =
 		contract.verdict === 'tie'
 			? 'the two parties are even in every type.'
 			: contract.verdict === 'mixed'
 				? `it depends on the type (${note(contract.verdict, contract.byKind)}).`
-				: `${short(names[contract.verdict])} wins in ${wins === 3 ? 'all three types' : `${wins} types and loses in none`}.`;
+				: `${short(names[contract.verdict])} wins in ${winsIn}.`;
+
+	const toggleKind = (kind: DeonticKind) => {
+		setOpen(null);
+		setKinds((prev) =>
+			prev.includes(kind)
+				? prev.filter((k) => k !== kind)
+				: DEONTIC_KINDS.filter((k) => k === kind || prev.includes(k))
+		);
+	};
 
 	return (
 		<div className="min-h-0 flex-1 overflow-auto">
 			<div className="min-w-[760px] space-y-3 p-4">
-				<ViewHeader
-					title="One type at a time, side by side"
-					lead="Obligations, rights and prohibitions are never added together: each type has its own column and, in each, how many statements serve each party."
-				>
-					<div className="flex items-start gap-3 rounded-lg bg-secondary px-3 py-2">
+				<ViewHeader>
+					{/* <div className="flex items-start gap-3 rounded-lg bg-secondary px-3 py-2">
 						<span className="shrink-0 text-xs font-bold">Weight-free rule</span>
 						<p className="text-2xs leading-relaxed text-muted-foreground">
 							A party wins the clause if it loses in no type and wins in at least one. If it wins
 							one and loses another, the view says “depends on the type”: choosing between them
 							would mean putting weights on them.
 						</p>
+					</div> */}
+					<div className="flex flex-wrap items-center gap-2 text-2xs text-muted-foreground">
+						Show
+						{DEONTIC_KINDS.map((kind) => {
+							const on = kinds.includes(kind);
+							// The last type on stays on: with none, there is nothing to compare.
+							const last = on && kinds.length === 1;
+							return (
+								<button
+									type="button"
+									key={kind}
+									onClick={() => toggleKind(kind)}
+									disabled={last}
+									title={last ? 'At least one type stays on' : undefined}
+									className={cn(
+										'inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs disabled:cursor-default',
+										on ? 'border-foreground/30 text-foreground' : 'border-border opacity-50'
+									)}
+								>
+									<span
+										className="size-2.5 rounded-[2px]"
+										style={{ backgroundColor: KIND_COLORS[kind] }}
+									/>
+									{KIND_PLURAL[kind]}
+									{on && <span className="text-2xs">✓</span>}
+								</button>
+							);
+						})}
 					</div>
-					<ReciprocalToggle on={showShared} onChange={onShowShared} />
 				</ViewHeader>
 
 				<div className="overflow-hidden rounded-xl border border-border bg-card">
@@ -141,7 +176,7 @@ export function ByTypeView({
 						<span className="flex-1 text-muted-foreground">
 							Clause <span className="font-normal normal-case">· most important first ↓</span>
 						</span>
-						{DEONTIC_KINDS.map((kind) => (
+						{kinds.map((kind) => (
 							<span key={kind} className="flex w-[132px] flex-col items-center">
 								<span className="flex items-center gap-1">
 									<span
@@ -159,8 +194,8 @@ export function ByTypeView({
 						))}
 						<span className="w-40 text-muted-foreground">Weight-free verdict</span>
 					</div>
-					{tallies.slice(0, limit).map((t) => {
-						const { verdict, byKind } = typeVerdict(t.count);
+					{rows.slice(0, limit).map((t) => {
+						const { verdict, byKind } = typeVerdict(t.count, kinds);
 						const side = verdict === 'a' || verdict === 'b' ? verdict : null;
 						const listed =
 							open?.clauseId === t.clauseId ? t.served.filter((s) => s.kind === open.kind) : [];
@@ -189,7 +224,7 @@ export function ByTypeView({
 											<span className="text-2xs text-muted-foreground">{t.section}</span>
 										)}
 									</button>
-									{DEONTIC_KINDS.map((kind) => (
+									{kinds.map((kind) => (
 										<Fragment key={kind}>{cell(t, kind)}</Fragment>
 									))}
 									<span className="w-40 space-y-0.5">
@@ -222,19 +257,19 @@ export function ByTypeView({
 				</div>
 
 				<p className="text-2xs text-muted-foreground">
-					{tallies.length > limit && (
+					{rows.length > limit && (
 						<button
 							type="button"
 							onClick={() => setLimit((n) => n + PAGE)}
 							className="mr-3 font-medium text-primary hover:underline"
 						>
-							↓ {tallies.length - limit} more clauses
+							↓ {rows.length - limit} more clauses
 						</button>
 					)}
 					Across the contract:{' '}
-					{DEONTIC_KINDS.map(
-						(kind) => `${KIND_PLURAL[kind].toLowerCase()} ${total[kind].a}·${total[kind].b}`
-					).join(', ')}{' '}
+					{kinds
+						.map((kind) => `${KIND_PLURAL[kind].toLowerCase()} ${total[kind].a}·${total[kind].b}`)
+						.join(', ')}{' '}
 					— {contractLine}
 				</p>
 			</div>

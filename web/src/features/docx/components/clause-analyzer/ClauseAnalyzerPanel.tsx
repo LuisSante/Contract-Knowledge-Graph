@@ -40,7 +40,6 @@ import {
 import { ViewBar } from '@/features/docx/components/clause-analyzer/views/ViewBar';
 import { CasesView } from '@/features/docx/components/clause-analyzer/views/CasesView';
 import { ByTypeView } from '@/features/docx/components/clause-analyzer/views/ByTypeView';
-import { VerdictView } from '@/features/docx/components/clause-analyzer/views/VerdictView';
 import type { ViewProps } from '@/features/docx/components/clause-analyzer/views/types';
 
 interface ClauseAnalyzerPanelProps {
@@ -326,7 +325,6 @@ export function ClauseAnalyzerPanel({ docId, onAsk, onOpenGraph }: ClauseAnalyze
 			)}
 			{inView && viewProps && nav.view === 'scenarios' && <CasesView {...viewProps} />}
 			{inView && viewProps && nav.view === 'bytype' && <ByTypeView {...viewProps} />}
-			{inView && viewProps && nav.view === 'verdict' && <VerdictView {...viewProps} />}
 
 			{/* The table fills the panel; the graph has a tab of its own. */}
 			<div className={cn('flex', inView ? 'hidden' : 'min-h-0 flex-1')}>

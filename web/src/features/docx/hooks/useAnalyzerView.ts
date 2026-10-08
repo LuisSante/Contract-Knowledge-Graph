@@ -9,7 +9,6 @@ export const VIEWS = [
 	{ id: 'scenarios', label: 'What if…' },
 	// Prototypes to compare side by side; they go one by one as they are ruled out.
 	{ id: 'bytype', label: 'P2 · By type' },
-	{ id: 'verdict', label: 'P4 · Verdict' },
 ] as const;
 
 export type View = (typeof VIEWS)[number]['id'];

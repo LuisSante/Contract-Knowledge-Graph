@@ -4,7 +4,7 @@ import type { MouseEvent as ReactMouseEvent, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { KIND_COLORS, KIND_LABEL } from '@/features/docx/components/clause-analyzer/constants';
 import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/views/bits';
-import type { Favour, Served, TypeVerdict } from '@/features/docx/utils/knowledge/clause-favour';
+import type { Served, TypeVerdict } from '@/features/docx/utils/knowledge/clause-favour';
 import type { MarkKind, Side } from '@/features/docx/utils/knowledge/statement-grid';
 import type { DeonticKind } from '@/types/knowledge';
 
@@ -88,10 +88,6 @@ export function FavourPill({
 		</span>
 	);
 }
-
-/** "Favours Equidata" in words, for sentences and filters. */
-export const favourWords = (favour: Favour, names: Record<Side, string>) =>
-	favour === 'tie' ? 'Tie' : `Favours ${short(names[favour])}`;
 
 export function KindSquare({
 	kind,

@@ -112,17 +112,6 @@ export function tallyClauses(
 	return out;
 }
 
-/** Both sides' totals over the chosen kinds. */
-export function countOf(
-	count: ClauseTally['count'],
-	kinds: DeonticKind[] = DEONTIC_KINDS
-): Record<Side, number> {
-	return kinds.reduce((sum, kind) => ({ a: sum.a + count[kind].a, b: sum.b + count[kind].b }), {
-		a: 0,
-		b: 0,
-	});
-}
-
 export const favourOf = ({ a, b }: Record<Side, number>): Favour =>
 	a > b ? 'a' : b > a ? 'b' : 'tie';
 

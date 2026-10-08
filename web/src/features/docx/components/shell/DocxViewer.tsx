@@ -102,11 +102,6 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 		notes: kgNotes,
 	});
 
-	const askChat = (question: string) => {
-		drawer.selectTool('assistant');
-		void assistant.submitKgNodeQuestion(question);
-	};
-
 	useEffect(() => {
 		if (!(clauseAnalyzerActive || graphActive) || !kgAnchorParagraphId || viewer.renderEpoch === 0)
 			return;
@@ -230,7 +225,6 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 					docId={docId}
 					assistant={assistant}
 					onFocusNodeFromPanel={onFocusNodeFromPanel}
-					onAsk={askChat}
 					onSelectTool={drawer.selectTool}
 				/>
 			</RightPanel>

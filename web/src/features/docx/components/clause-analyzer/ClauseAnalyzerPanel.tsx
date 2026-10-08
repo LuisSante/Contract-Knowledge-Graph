@@ -4,10 +4,7 @@ import { useEffect, useMemo, useRef, useState, type MouseEvent as ReactMouseEven
 import { cn } from '@/lib/utils';
 import { useDocumentStore } from '@/stores/document';
 import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
-import {
-	buildDocumentTarget,
-	buildParagraphTarget,
-} from '@/features/docx/utils/knowledge/graph-payload';
+import { buildDocumentTarget } from '@/features/docx/utils/knowledge/graph-payload';
 import { applyPartyView } from '@/features/docx/utils/knowledge/party-view';
 import {
 	buildStatementGrid,
@@ -38,21 +35,18 @@ import {
 	PARTY_COLOR,
 } from '@/features/docx/components/clause-analyzer/constants';
 import { ViewBar } from '@/features/docx/components/clause-analyzer/views/ViewBar';
-import { CasesView } from '@/features/docx/components/clause-analyzer/views/CasesView';
 import { ByTypeView } from '@/features/docx/components/clause-analyzer/views/ByTypeView';
 import type { ViewProps } from '@/features/docx/components/clause-analyzer/views/types';
 
 interface ClauseAnalyzerPanelProps {
 	docId: string;
-	/** Sends a question to the chat tab. */
-	onAsk?: (question: string) => void;
 	/** Switches the drawer to the knowledge graph tab. */
 	onOpenGraph?: () => void;
 }
 
 const LANE_COLORS: [string, string] = [PARTY_COLOR, PAIR_SECOND_COLOR];
 
-export function ClauseAnalyzerPanel({ docId, onAsk, onOpenGraph }: ClauseAnalyzerPanelProps) {
+export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelProps) {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [hover, setHover] = useState<HoverInfo | null>(null);
 
@@ -273,19 +267,10 @@ export function ClauseAnalyzerPanel({ docId, onAsk, onOpenGraph }: ClauseAnalyze
 			? {
 					docId,
 					kg: viewKg,
-					aId: pairIds.a,
-					bId: pairIds.b,
 					names,
-					reader: nav.reader,
-					row: nav.row,
-					onRow: nav.setRow,
 					grid,
-					shareOf,
 					importance: clauseImportance?.byClause ?? null,
 					onOpen: openInDocument,
-					onOpenParas: (pids) => setDocumentTarget(buildParagraphTarget(pids, nodesById)),
-					onAsk,
-					onTable: () => nav.setView('table'),
 				}
 			: null;
 	const inView = viewProps !== null && nav.view !== 'table';
@@ -314,16 +299,7 @@ export function ClauseAnalyzerPanel({ docId, onAsk, onOpenGraph }: ClauseAnalyze
 
 	return (
 		<div className="flex h-full flex-col">
-			{viewProps && (
-				<ViewBar
-					view={nav.view}
-					onView={nav.setView}
-					reader={nav.reader}
-					onReader={nav.setReader}
-					names={viewProps.names}
-				/>
-			)}
-			{inView && viewProps && nav.view === 'scenarios' && <CasesView {...viewProps} />}
+			{viewProps && <ViewBar view={nav.view} onView={nav.setView} />}
 			{inView && viewProps && nav.view === 'bytype' && <ByTypeView {...viewProps} />}
 
 			{/* The table fills the panel; the graph has a tab of its own. */}

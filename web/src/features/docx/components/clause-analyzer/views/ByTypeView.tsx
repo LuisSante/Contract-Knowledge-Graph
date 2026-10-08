@@ -70,7 +70,6 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen }: ViewP
 		[grid, kg, importance]
 	);
 	const total = useMemo(() => totalOf(tallies), [tallies]);
-	const rank = new Map(tallies.map((t, i) => [t.clauseId, i + 1]));
 	// A clause with nothing of the kinds on screen has no row to show.
 	const rows = tallies.filter((t) => kinds.some((kind) => t.count[kind].a + t.count[kind].b > 0));
 	const opened =
@@ -239,11 +238,6 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen }: ViewP
 			<div className="space-y-3">
 				<div className="flex items-start gap-3">
 					<p className="flex-1 text-xs leading-relaxed">{sentenceOf(t, verdict, byKind)}</p>
-					{importance && (
-						<span className="shrink-0 text-2xs text-muted-foreground">
-							No. {rank.get(t.clauseId)} in importance
-						</span>
-					)}
 				</div>
 				{fragmentKind && (
 					<p className="flex items-center gap-1.5 text-2xs text-muted-foreground">

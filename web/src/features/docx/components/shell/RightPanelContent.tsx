@@ -13,7 +13,6 @@ interface RightPanelContentProps {
 	docId: string;
 	assistant: ReturnType<typeof useAssistantChat>;
 	onFocusNodeFromPanel: (nodeId: string, emphasize?: boolean) => void;
-	onAsk: (question: string) => void;
 	onSelectTool: (tab: RightPanelTab) => void;
 }
 
@@ -22,16 +21,11 @@ export function RightPanelContent({
 	docId,
 	assistant,
 	onFocusNodeFromPanel,
-	onAsk,
 	onSelectTool,
 }: RightPanelContentProps) {
 	if (activeTab === 'clause_analyzer') {
 		return (
-			<ClauseAnalyzerPanel
-				docId={docId}
-				onAsk={onAsk}
-				onOpenGraph={() => onSelectTool('knowledge_graph')}
-			/>
+			<ClauseAnalyzerPanel docId={docId} onOpenGraph={() => onSelectTool('knowledge_graph')} />
 		);
 	}
 

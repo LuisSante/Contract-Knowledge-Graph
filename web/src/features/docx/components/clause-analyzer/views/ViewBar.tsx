@@ -2,18 +2,13 @@
 
 import { cn } from '@/lib/utils';
 import { VIEWS, type View } from '@/features/docx/hooks/useAnalyzerView';
-import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/views/bits';
-import type { Side } from '@/features/docx/utils/knowledge/statement-grid';
 
 interface ViewBarProps {
 	view: View;
 	onView: (view: View) => void;
-	reader: Side;
-	onReader: (side: Side) => void;
-	names: Record<Side, string>;
 }
 
-export function ViewBar({ view, onView, reader, onReader, names }: ViewBarProps) {
+export function ViewBar({ view, onView }: ViewBarProps) {
 	return (
 		<div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/60 px-4 py-2.5">
 			<div
@@ -35,28 +30,6 @@ export function ViewBar({ view, onView, reader, onReader, names }: ViewBarProps)
 						)}
 					>
 						{v.label}
-					</button>
-				))}
-			</div>
-			<div className="flex items-center gap-1.5 text-2xs text-muted-foreground">
-				Read as
-				{(['a', 'b'] as const).map((side) => (
-					<button
-						key={side}
-						type="button"
-						onClick={() => onReader(side)}
-						className={cn(
-							'inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5',
-							reader === side ? 'font-semibold text-foreground' : 'border-border bg-card'
-						)}
-						style={
-							reader === side
-								? { borderColor: SIDE_COLOR[side], backgroundColor: `${SIDE_COLOR[side]}1a` }
-								: undefined
-						}
-					>
-						<span className="size-1.5 rounded-full" style={{ backgroundColor: SIDE_COLOR[side] }} />
-						{short(names[side])}
 					</button>
 				))}
 			</div>

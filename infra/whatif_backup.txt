@@ -1,0 +1,1090 @@
+RESPALDO DE LA PESTAÑA "WHAT IF…" DEL CLAUSE ANALYZER
+=====================================================
+
+Se borró de la app el 8 de octubre de 2026. Este archivo guarda la idea, el código y los
+estilos por si se quiere retomar (por ejemplo, si el profesor pide volver a la idea de
+"¿qué pasa si…?").
+
+Último commit que todavía la contiene: 0a040c7 2026-10-08 feat: table by type
+Para recuperar un archivo tal cual:  git show <commit>:<ruta>
+
+
+1. LA IDEA
+----------
+
+Pregunta que respondía: ante un suceso (alguien incumple, un pago llega tarde, una entrega
+es defectuosa, el contrato termina…), ¿qué se activa en el contrato, en qué orden, quién
+puede hacer qué y con qué plazos?
+
+Cómo se construía, a partir del grafo:
+- Cada nodo Condition tiene un disparador (Condition.trigger, el texto del "si…",
+  "en caso de…") y apunta al enunciado que activa (Condition.gatesId).
+- Una SITUACIÓN es una lista fija de sucesos escrita a mano (la constante EVENTS en
+  scenarios.ts), cada uno con una expresión regular. Si el disparador de una condición
+  encaja con la regex, el enunciado que activa pasa a ser un PASO de esa situación.
+- Una situación solo aparece si junta al menos 2 pasos.
+- Los pasos se ordenan por el orden de su párrafo en el documento.
+- RIESGO: un paso que da un derecho a la otra parte de quien lee ("Read as").
+- LÍMITES: enunciados de tope o exclusión ("sole and exclusive remedy", "shall not
+  exceed", "in no event"…) en los mismos artículos que los pasos.
+- HUECOS: un paso que no nombra a ninguna parte, o un deber de la otra parte sin plazo.
+- PLAZO: el campo deadline del enunciado o, si falta, un "N days notice" que diga el texto.
+
+Situaciones y palabras que buscaba en el disparador (EVENTS):
+- A delivery is defective  → non-conform, defect, reject, latent, warrant
+- A party breaches         → breach, default, fails to perform / comply / cure
+- A payment is late        → pay, invoice, fee
+- Supply falls short       → shortage, supply failure, unable to supply, second source,
+                             firm zone, forecast
+- The product changes      → change, modif
+- The contract ends        → terminat, expir
+- A party goes insolvent   → insolv, bankrupt, receiver, liquidat
+
+Qué mostraba la pestaña:
+- Arriba, un botón por situación ("What if a party breaches?") con su número de pasos.
+- Tres tarjetas: derechos de quien lee en esa situación, primer plazo, riesgos.
+- La lista numerada de pasos: el "If/Unless …" del disparador, la acción, la parte, el
+  tipo (must / may / must not), el plazo y, si era riesgo, un aviso "RISK FOR …".
+- Columna lateral: límites ("How far it goes"), huecos ("What does not appear"), una caja
+  para preguntar al chat y la mini-tabla cláusulas × partes cortada a las cláusulas de la
+  situación, con el número del primer paso de cada cláusula.
+- En el documento de la izquierda, una etiqueta antes de cada paso ("Step n", o
+  "Step n · risk for …") y una franja en trama donde faltaba algo.
+
+Por qué se quitó:
+- Las situaciones salen de listas de palabras pensadas para el contrato de suministro de
+  Bellicum. En SteelVault, un contrato de servicios, aparecía "A delivery is defective"
+  porque "breach of any warranties" contiene "warrant"; y "When paying by credit card"
+  contaba como pago atrasado.
+- Responde otra pregunta que la que pidió el asesor (a quién favorece cada cláusula, sin
+  pesos), que ahora cubren Table y P2.
+- Con el grafo antiguo de SteelVault las etiquetas caían en párrafos equivocados (el grafo
+  numeraba los párrafos distinto del visor); con el grafo regenerado eso ya no pasa.
+
+Si se retoma, lo razonable sería:
+- Clasificar los disparadores de verdad (una pasada de LLM con revisión a mano) en vez de
+  usar regex.
+- Las cadenas largas (aviso → plazo → terminación → después) necesitan aristas que el grafo
+  casi no tiene (depends_on); con lo que hay, solo se ve un salto: suceso → lo que activa.
+- Hubo una variante de diseño, "Camino 3 · Escenarios sobre la retícula" (Figma), que
+  encendía en la tabla las marcas activadas por el suceso y apagaba el resto, con los pasos
+  de cada parte en dos columnas. Se probó como pestaña (C3) y también se descartó.
+
+
+2. DOCUMENTACIÓN QUE TENÍA (docs/metricas/comparadores.md)
+------------------------------------------------------------
+
+# Comparadores — contra qué se mide cada ausencia
+
+Una ausencia solo se ve comparada con algo. La tabla cláusulas × partes no compara con
+nada, y por eso no puede enseñar lo que falta: una sola discreción, un tope, un derecho
+que tiene una parte y la otra no. El Clause Analyzer ofrece ahora un comparador en su
+propia pestaña, y deja la tabla de siempre como segunda pestaña y como tarjeta compacta
+dentro de la primera.
+
+| Pestaña | La fila es | Se compara con | Código |
+|---|---|---|---|
+| What if… | un paso dentro de una situación | el hecho que dispara las condiciones | `utils/knowledge/scenarios.ts` |
+
+Las cifras de este documento son del acuerdo de suministro Bellicum–Miltenyi.
+
+---
+
+## What if…
+
+Una situación es el hecho que espera una condición (`Condition.trigger`), y sus pasos
+son los enunciados que esa condición cierra (`gatesId`), en el orden del documento.
+Un paso es riesgo cuando da un derecho a la otra parte de quien lee. Los límites son los
+enunciados de tope o exclusión en los mismos artículos. Un hueco es un paso que no nombra
+a ninguna parte, o un deber de la otra parte sin plazo.
+
+Resultado leído como Bellicum: siete situaciones. La de entrega defectuosa tiene 21 pasos,
+2 riesgos —§7.2, Miltenyi no responde de nada una vez aceptado el envío, y §11.4, no
+responde de los defectos de causa externa—, 8 límites y 4 huecos, los cuatro deberes de
+Miltenyi sin plazo.
+
+---
+
+## Límites
+
+- Los hechos son una lista de palabras. Funciona en este corpus; una pasada de
+  clasificación por enunciado la sustituiría.
+- «Quién paga el laboratorio» y el tope de §12.1(b) no se ven porque el grafo no los
+  tiene. La pestaña los distingue de lo que el contrato no dice, pero no los recupera.
+
+
+3. ESTILOS
+----------
+
+Los componentes usan clases de Tailwind escritas en el propio código (ver la sección 5).
+Las notas que se dibujaban en el documento usan estas reglas de
+web/src/features/docx/styles/docx-viewer.css (siguen en ese archivo, porque P2 usa la
+variante "step"):
+
+/* Notes the Clause Analyzer places next to a paragraph: what is missing is drawn
+   as a hatched strip, so an absence has a place in the text. */
+.docx-note {
+	margin: 4px 0 8px;
+	padding: 4px 9px;
+	border: 1px dashed #b4b4c6;
+	border-radius: 4px;
+	background: repeating-linear-gradient(-45deg, #f8f8fc 0 6px, #e6e6ef 6px 7px);
+	color: var(--muted-foreground);
+	font-family: var(--font-sans);
+	font-size: 11.5px;
+	font-style: italic;
+	line-height: 1.4;
+}
+
+.docx-note--warn {
+	border-color: var(--warning);
+	background: repeating-linear-gradient(-45deg, #fdf4e1 0 6px, #f6e3b8 6px 7px);
+	color: var(--warning-foreground);
+}
+
+.docx-note--step {
+	display: inline-block;
+	border: none;
+	border-radius: 999px;
+	background: var(--primary);
+	color: var(--primary-foreground);
+	font-style: normal;
+	font-weight: 600;
+}
+
+
+4. CÓMO ESTABA CONECTADA EN EL PANEL (ClauseAnalyzerPanel.tsx)
+-----------------------------------------------------------------
+
+Líneas del panel que la conectaban (el resto del panel sigue igual):
+
+import { CasesView } from '@/features/docx/components/clause-analyzer/views/CasesView';
+	onAsk?: (question: string) => void;
+export function ClauseAnalyzerPanel({ docId, onAsk, onOpenGraph }: ClauseAnalyzerPanelProps) {
+					reader: nav.reader,
+					onRow: nav.setRow,
+					shareOf,
+					onOpenParas: (pids) => setDocumentTarget(buildParagraphTarget(pids, nodesById)),
+					onAsk,
+					onTable: () => nav.setView('table'),
+					reader={nav.reader}
+					onReader={nav.setReader}
+			{inView && viewProps && nav.view === 'scenarios' && <CasesView {...viewProps} />}
+
+La pestaña se registraba en useAnalyzerView.ts como { id: 'scenarios', label: 'What if…' }
+y el chat le llegaba por la prop onAsk desde DocxViewer (askChat) → RightPanelContent →
+ClauseAnalyzerPanel.
+
+
+5. CÓDIGO COMPLETO
+------------------
+
+
+========== web/src/features/docx/components/clause-analyzer/views/CasesView.tsx
+========== La vista (pestaña "What if…")
+
+'use client';
+
+import { useEffect, useMemo } from 'react';
+import { cn } from '@/lib/utils';
+import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
+import { buildScenarios, type Scenario } from '@/features/docx/utils/knowledge/scenarios';
+import type { DocNote } from '@/features/docx/hooks/useDocNotes';
+import { AskBox } from '@/features/docx/components/clause-analyzer/views/AskBox';
+import { MiniGrid } from '@/features/docx/components/clause-analyzer/views/MiniGrid';
+import {
+	Caps,
+	Card,
+	Frame,
+	Hatch,
+	Head,
+	Kind,
+	PartyTag,
+	Pill,
+	short,
+} from '@/features/docx/components/clause-analyzer/views/bits';
+import type { ViewProps } from '@/features/docx/components/clause-analyzer/views/types';
+
+const GAP = { noParty: 'no party assigned', noTerm: 'no deadline found' } as const;
+
+const trim = (text: string, max = 140) =>
+	text.length > max ? `${text.slice(0, max).trim()}…` : text;
+
+export function CasesView(props: ViewProps) {
+	const { kg, aId, bId, names, reader, row, onRow, onOpen, grid, shareOf, onAsk, onTable } = props;
+	const setNotes = useClauseAnalyzerStore((s) => s.setNotes);
+	const cases = useMemo(() => buildScenarios(kg, aId, bId, reader), [kg, aId, bId, reader]);
+	const picked = cases.find((c) => c.id === row) ?? cases[0] ?? null;
+	const me = short(names[reader]);
+	const them = short(names[reader === 'a' ? 'b' : 'a']);
+
+	useEffect(() => {
+		if (!picked) return;
+		const notes: DocNote[] = picked.steps.map((st, i) => ({
+			pid: st.s.paragraphIds[0],
+			text: st.risk ? `Step ${i + 1} · risk for ${me}` : `Step ${i + 1}`,
+			tone: st.risk ? 'warn' : 'step',
+			at: 'before',
+		}));
+		for (const gap of picked.gaps)
+			if (gap.paragraphId)
+				notes.push({
+					pid: gap.paragraphId,
+					text: `Not found: ${GAP[gap.kind]} — ${gap.action}`,
+					tone: 'gap',
+					at: 'after',
+				});
+		setNotes(notes.filter((n) => n.pid));
+		return () => setNotes([]);
+	}, [picked, me, setNotes]);
+
+	if (!picked)
+		return (
+			<p className="p-6 text-sm text-muted-foreground">
+				No condition in this contract waits for a recognisable event yet.
+			</p>
+		);
+
+	const mine = picked.steps.filter((st) => st.side === reader && st.s.kind === 'right');
+	const firstTerm = picked.steps.find((st) => st.term)?.term;
+	const risks = picked.steps.filter((st) => st.risk).length;
+
+	const tile = (label: string, value: string, note: string, warn = false) => (
+		<div className="rounded-xl border border-border bg-card px-3 py-2">
+			<Caps>{label}</Caps>
+			<p className={cn('mt-0.5 text-sm font-bold', warn && 'text-warning-foreground')}>{value}</p>
+			<p className="text-2xs text-muted-foreground">{note}</p>
+		</div>
+	);
+
+	const top = (
+		<div className="space-y-1.5">
+			<Caps>Situations · built from the contract’s conditions: “if…”, “unless…”, “upon…”</Caps>
+			<div className="flex flex-wrap gap-1.5">
+				{cases.map((c) => (
+					<button
+						type="button"
+						key={c.id}
+						onClick={() => onRow(c.id)}
+						className={cn(
+							'inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs',
+							c.id === picked.id
+								? 'border-primary bg-accent font-semibold text-accent-foreground'
+								: 'border-border bg-card text-foreground hover:bg-muted/40'
+						)}
+					>
+						What if {c.title.charAt(0).toLowerCase() + c.title.slice(1)}?
+						<span className="text-2xs font-normal text-muted-foreground">{c.steps.length}</span>
+					</button>
+				))}
+			</div>
+		</div>
+	);
+
+	const main = (
+		<>
+			<Head title={picked.title} />
+			<div className="grid grid-cols-3 gap-2">
+				{tile(
+					'You can',
+					`${mine.length} ${mine.length === 1 ? 'right' : 'rights'}`,
+					mine[0] ? trim(mine[0].s.action, 48) : 'none found'
+				)}
+				{tile(
+					'Deadline',
+					firstTerm ? trim(firstTerm, 40) : 'none found',
+					firstTerm ? 'first one in these steps' : 'no step carries one',
+					Boolean(firstTerm)
+				)}
+				{tile('Risks', `${risks} for ${me}`, risks ? `${them} gains a power` : 'none flagged')}
+			</div>
+			<div className="overflow-hidden rounded-xl border border-border bg-card">
+				{picked.steps.map((st, i) => (
+					<button
+						type="button"
+						key={st.s.id}
+						onClick={() => onOpen(st.s.id)}
+						className="flex w-full items-start gap-3 border-b border-border/60 px-3 py-2.5 text-left hover:bg-muted/40"
+					>
+						<span className="flex size-6 shrink-0 items-center justify-center rounded-full border border-border bg-secondary text-2xs font-bold text-accent-foreground">
+							{i + 1}
+						</span>
+						<span className="min-w-0 flex-1 space-y-1">
+							<span className="block text-2xs text-muted-foreground italic">
+								{st.cond.operator === 'UNLESS' ? 'Unless' : 'If'} {trim(st.cond.trigger)}
+							</span>
+							<span className="block text-xs font-medium">{st.s.action}</span>
+							<span className="flex flex-wrap items-center gap-2">
+								{st.side ? (
+									<PartyTag side={st.side} name={short(names[st.side])} />
+								) : (
+									<Pill tone="warn">no party assigned</Pill>
+								)}
+								<Kind kind={st.s.kind} />
+								{st.term && (
+									<span className="text-2xs text-muted-foreground">{trim(st.term, 50)}</span>
+								)}
+							</span>
+							{st.risk && (
+								<span className="block border-l-[3px] border-warning bg-warning/15 px-2 py-1.5 text-2xs text-warning-foreground">
+									<span className="font-bold tracking-wider">RISK FOR {me.toUpperCase()}</span> —{' '}
+									{them} may {st.s.action.charAt(0).toLowerCase() + st.s.action.slice(1)}.
+								</span>
+							)}
+						</span>
+						{st.ref && <span className="shrink-0 text-2xs font-medium text-primary">{st.ref}</span>}
+					</button>
+				))}
+			</div>
+			<p className="text-2xs leading-relaxed text-muted-foreground">
+				Each step opens its paragraph in the document, where it is numbered too.
+			</p>
+		</>
+	);
+
+	return (
+		<Frame
+			top={top}
+			main={main}
+			side={
+				<>
+					<Limits c={picked} names={names} onOpen={onOpen} />
+					<AskBox
+						onAsk={onAsk}
+						placeholder="Ask about this situation…"
+						question={`In “${picked.title.toLowerCase()}”, what should ${me} negotiate to be better protected?`}
+					/>
+					<MiniGrid
+						grid={grid}
+						clauseIds={picked.clauseIds}
+						shareOf={shareOf}
+						names={names}
+						extra={stepMarks(picked)}
+						caption="The table as it is today, cut to the clauses of this situation, in step order."
+						onOpen={onOpen}
+						onExpand={onTable}
+					/>
+				</>
+			}
+		/>
+	);
+}
+
+/** The first step each clause takes part in, as the number the document shows too. */
+function stepMarks(c: Scenario) {
+	const first = new Map<string, number>();
+	c.steps.forEach((st, i) => {
+		if (st.s.clauseId && !first.has(st.s.clauseId)) first.set(st.s.clauseId, i + 1);
+	});
+	return Object.fromEntries(
+		[...first].map(([id, n]) => [
+			id,
+			<span
+				key={id}
+				className="flex size-3.5 items-center justify-center rounded-full bg-primary text-[8px] font-bold text-primary-foreground"
+			>
+				{n}
+			</span>,
+		])
+	);
+}
+
+function Limits({
+	c,
+	names,
+	onOpen,
+}: {
+	c: Scenario;
+	names: ViewProps['names'];
+	onOpen: (id: string) => void;
+}) {
+	return (
+		<Card className="space-y-3">
+			<h4 className="text-sm font-bold">How far it goes</h4>
+			{c.limits.length === 0 && (
+				<p className="text-2xs text-muted-foreground">
+					No cap or exclusion found near these clauses.
+				</p>
+			)}
+			{c.limits.slice(0, 5).map((l) => (
+				<button
+					type="button"
+					key={l.s.id}
+					onClick={() => onOpen(l.s.id)}
+					className="block w-full space-y-0.5 text-left hover:opacity-80"
+				>
+					<PartyTag side={l.side} name={l.side ? short(names[l.side]) : 'Both / unnamed'} />
+					<p className="text-xs">{l.s.action}</p>
+					{l.ref && <p className="text-2xs font-medium text-primary">{l.ref}</p>}
+				</button>
+			))}
+			<div className="h-px bg-border" />
+			<h4 className="text-sm font-bold">What does not appear</h4>
+			<p className="text-2xs text-muted-foreground">
+				Two different things that should not look the same: what the contract does not say, and what
+				the graph did not extract.
+			</p>
+			{c.gaps.length === 0 && <p className="text-2xs text-muted-foreground">Nothing flagged.</p>}
+			{c.gaps.slice(0, 4).map((g) => (
+				<Hatch key={`${g.kind}-${g.action}`} className="not-italic">
+					<p className="text-xs text-foreground">{g.action}</p>
+					<Pill tone="warn" className="mt-1">
+						{GAP[g.kind]}
+					</Pill>
+				</Hatch>
+			))}
+		</Card>
+	);
+}
+
+
+========== web/src/features/docx/utils/knowledge/scenarios.ts
+========== La lógica: situaciones (EVENTS), pasos, límites y huecos
+
+import type { DeonticKind, KgCondition, KgDeontic, KnowledgeGraph } from '@/types/knowledge';
+import { termOf } from '@/features/docx/utils/knowledge/fine-print';
+import type { Side } from '@/features/docx/utils/knowledge/statement-grid';
+
+// A situation is the event a condition waits for. A trigger can belong to more than
+// one: "if the rejected shipment is not paid" is both a defect and a payment.
+export const EVENTS = [
+	{
+		id: 'defect',
+		title: 'A delivery is defective',
+		rx: /non-?conform|defect|reject|latent|warrant/i,
+	},
+	{
+		id: 'breach',
+		title: 'A party breaches',
+		rx: /breach|default|fails? to (?:perform|comply|cure)/i,
+	},
+	{ id: 'payment', title: 'A payment is late', rx: /\bpay|invoice|\bfees?\b/i },
+	{
+		id: 'supply',
+		title: 'Supply falls short',
+		rx: /shortage|supply failure|unable to supply|second.source|firm zone|forecast/i,
+	},
+	{ id: 'change', title: 'The product changes', rx: /\bchange|modif/i },
+	{ id: 'exit', title: 'The contract ends', rx: /terminat|expir/i },
+	{ id: 'insolvency', title: 'A party goes insolvent', rx: /insolv|bankrupt|receiver|liquidat/i },
+] as const;
+
+export type EventId = (typeof EVENTS)[number]['id'];
+
+const LIMIT =
+	/sole and exclusive remedy|shall not be (?:liable|responsible)|in no event|shall not exceed|free from responsibility|no liability/i;
+
+export type Stmt = KgDeontic & { kind: DeonticKind };
+
+export interface Step {
+	s: Stmt;
+	cond: KgCondition;
+	side: Side | null;
+	ref: string | null;
+	term: string | null;
+	/** A power the other side gets over the reader. */
+	risk: boolean;
+}
+
+export interface Scenario {
+	id: EventId;
+	title: string;
+	steps: Step[];
+	limits: Array<{ s: Stmt; side: Side | null; ref: string | null }>;
+	/** noParty: the text names nobody · noTerm: the other side owes it with no deadline. */
+	gaps: Array<{ kind: 'noParty' | 'noTerm'; action: string; paragraphId: string | null }>;
+	clauseIds: string[];
+}
+
+const holderOf = (s: Stmt) => (s.kind === 'right' ? s.benefitPartyId : s.burdenPartyId);
+const paraNo = (pid: string | undefined) => Number(/-p-(\d+)$/.exec(pid ?? '')?.[1] ?? 1e9);
+const sections = (text: string) =>
+	[...text.matchAll(/(?:section|article)s?\s+(\d+(?:\.\d+)*)/gi)].map((m) => m[1]);
+const topOf = (ref: string | null) => /(\d+)/.exec(ref ?? '')?.[1] ?? null;
+
+export function buildScenarios(
+	kg: KnowledgeGraph,
+	aId: string,
+	bId: string,
+	reader: Side
+): Scenario[] {
+	const stmts: Stmt[] = [
+		...kg.obligations.map((s) => ({ ...s, kind: 'obligation' as const })),
+		...kg.rights.map((s) => ({ ...s, kind: 'right' as const })),
+		...kg.prohibitions.map((s) => ({ ...s, kind: 'prohibition' as const })),
+	];
+	const byId = new Map(stmts.map((s) => [s.id, s]));
+	const refOf = (s: KgDeontic) => kg.clauses.find((c) => c.id === s.clauseId)?.ref ?? null;
+	const sideOf = (s: Stmt): Side | null => {
+		const holder = holderOf(s);
+		return holder === aId ? 'a' : holder === bId ? 'b' : null;
+	};
+	const other: Side = reader === 'a' ? 'b' : 'a';
+
+	const out: Scenario[] = [];
+	for (const ev of EVENTS) {
+		const seen = new Set<string>();
+		const steps: Step[] = [];
+		for (const cond of kg.conditions) {
+			const s = cond.gatesId ? byId.get(cond.gatesId) : undefined;
+			if (!s || seen.has(s.id) || !ev.rx.test(cond.trigger)) continue;
+			seen.add(s.id);
+			const side = sideOf(s);
+			steps.push({
+				s,
+				cond,
+				side,
+				ref: refOf(s),
+				term: termOf(s),
+				risk: s.kind === 'right' && side === other,
+			});
+		}
+		if (steps.length < 2) continue;
+		// Document order: clause ids are numbered as extracted, not as they appear.
+		steps.sort((x, y) => paraNo(x.s.paragraphIds[0]) - paraNo(y.s.paragraphIds[0]));
+
+		const clauseIds = [...new Set(steps.map((st) => st.s.clauseId).filter(Boolean))] as string[];
+		const tops = new Set(steps.map((st) => topOf(st.ref)).filter(Boolean));
+		const limits = stmts
+			.filter((s) => !seen.has(s.id) && LIMIT.test(`${s.action} ${s.text}`))
+			.filter(
+				(s) =>
+					clauseIds.includes(s.clauseId ?? '') ||
+					tops.has(topOf(refOf(s))) ||
+					sections(s.text ?? '').some((n) => tops.has(n.split('.')[0]))
+			)
+			.map((s) => ({ s, side: sideOf(s), ref: refOf(s) }));
+
+		const gaps: Scenario['gaps'] = [];
+		for (const st of steps) {
+			const at = { action: st.s.action, paragraphId: st.s.paragraphIds[0] ?? null };
+			if (st.side === null) gaps.push({ kind: 'noParty', ...at });
+			else if (st.side === other && st.s.kind === 'obligation' && !st.term)
+				gaps.push({ kind: 'noTerm', ...at });
+		}
+
+		out.push({ id: ev.id, title: ev.title, steps, limits, gaps, clauseIds });
+	}
+	return out;
+}
+
+
+========== web/src/features/docx/utils/knowledge/fine-print.ts
+========== Plazos: el plazo extraído o el aviso que dice el texto (termOf)
+
+import type { KgDeontic } from '@/types/knowledge';
+
+const NOTICE =
+	/\(?(\d+)\)?\s*(days?|months?)[’']?\s*(?:prior\s+)?(?:advance\s+)?(?:written\s+)?notice/i;
+
+/** The extracted deadline, or the notice period the text itself states. */
+export function termOf(s: KgDeontic): string | null {
+	if (s.deadline?.trim()) return s.deadline.trim();
+	const hit = NOTICE.exec(s.text ?? '');
+	return hit ? `${hit[1]} ${hit[2].toLowerCase()} notice` : null;
+}
+
+
+========== web/src/features/docx/components/clause-analyzer/views/MiniGrid.tsx
+========== Mini-tabla de la columna lateral
+
+'use client';
+
+import type { ReactNode } from 'react';
+import { cn } from '@/lib/utils';
+import { KIND_COLORS } from '@/features/docx/components/clause-analyzer/constants';
+import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/views/bits';
+import type { GridMark, Side, StatementGrid } from '@/features/docx/utils/knowledge/statement-grid';
+
+interface MiniGridProps {
+	grid: StatementGrid;
+	clauseIds: string[];
+	activeId?: string | null;
+	extra?: Record<string, ReactNode>;
+	shareOf: (clauseId: string | null) => { a: number; b: number } | null;
+	names: Record<Side, string>;
+	caption: string;
+	onOpen: (clauseId: string) => void;
+	onExpand: () => void;
+}
+
+const SHOWN = new Set(['obligation', 'right', 'prohibition', 'condition']);
+
+function Lane({ marks, side }: { marks: GridMark[]; side: Side }) {
+	const shown = marks.filter((m) => SHOWN.has(m.kind));
+	return (
+		<div className={cn('flex w-20 flex-wrap gap-[3px]', side === 'a' && 'flex-row-reverse')}>
+			{shown.map((m) => (
+				<span
+					key={m.id}
+					className="size-2.5 rounded-[2px]"
+					style={{ backgroundColor: KIND_COLORS[m.kind] }}
+				/>
+			))}
+		</div>
+	);
+}
+
+/** The clause × party table as it is today, cut down to the rows the view is about. */
+export function MiniGrid({
+	grid,
+	clauseIds,
+	activeId,
+	extra = {},
+	shareOf,
+	names,
+	caption,
+	onOpen,
+	onExpand,
+}: MiniGridProps) {
+	const rows = clauseIds
+		.map((id) => grid.rows.find((r) => r.clauseId === id))
+		.filter((r): r is NonNullable<typeof r> => Boolean(r));
+	if (rows.length === 0) return null;
+
+	return (
+		<div className="overflow-hidden rounded-xl border border-border bg-card">
+			<div className="flex items-center justify-between px-3 py-2">
+				<p className="text-xs font-bold">Table · clauses × parties</p>
+				<button
+					type="button"
+					onClick={onExpand}
+					className="text-2xs font-medium text-primary hover:underline"
+				>
+					open ↗
+				</button>
+			</div>
+			<div className="flex items-center gap-1.5 bg-secondary px-3 py-1 text-[9px] font-bold">
+				<span className="flex-1 text-muted-foreground">CLAUSE</span>
+				<span className="w-20 text-right" style={{ color: SIDE_COLOR.a }}>
+					{short(names.a)}
+				</span>
+				<span className="w-px self-stretch bg-border" />
+				<span className="w-20" style={{ color: SIDE_COLOR.b }}>
+					{short(names.b)}
+				</span>
+				<span className="w-8" />
+			</div>
+			{rows.map((row) => {
+				const id = row.clauseId as string;
+				const share = shareOf(id);
+				return (
+					<button
+						type="button"
+						key={id}
+						onClick={() => onOpen(id)}
+						className={cn(
+							'flex w-full items-start gap-1.5 border-b border-border/60 px-3 py-1.5 text-left hover:bg-muted/40',
+							id === activeId && 'bg-accent ring-1 ring-primary/40 ring-inset'
+						)}
+					>
+						<span className="min-w-0 flex-1">
+							<span className="block truncate text-2xs">{row.heading}</span>
+							{share && (
+								<span className="relative mt-1 block h-[3px] w-14 rounded-full bg-border">
+									<span
+										className="absolute inset-y-0 right-1/2 rounded-l-full"
+										style={{ width: `${share.a * 50}%`, backgroundColor: SIDE_COLOR.a }}
+									/>
+									<span
+										className="absolute inset-y-0 left-1/2 rounded-r-full"
+										style={{ width: `${share.b * 50}%`, backgroundColor: SIDE_COLOR.b }}
+									/>
+								</span>
+							)}
+						</span>
+						<Lane marks={row.marks.a} side="a" />
+						<span className="w-px self-stretch bg-border" />
+						<Lane marks={row.marks.b} side="b" />
+						<span className="flex w-8 justify-end">{extra[id]}</span>
+					</button>
+				);
+			})}
+			<p className="px-3 py-2 text-2xs leading-snug text-muted-foreground">{caption}</p>
+		</div>
+	);
+}
+
+
+========== web/src/features/docx/components/clause-analyzer/views/AskBox.tsx
+========== Caja para preguntar al chat
+
+'use client';
+
+import { useState } from 'react';
+import { Caps } from '@/features/docx/components/clause-analyzer/views/bits';
+
+interface AskBoxProps {
+	question: string;
+	placeholder?: string;
+	onAsk?: (question: string) => void;
+}
+
+/** Hands the question to the chat, which explains the risk and how to improve it. */
+export function AskBox({ question, placeholder = 'Ask about this row…', onAsk }: AskBoxProps) {
+	const [text, setText] = useState('');
+	if (!onAsk) return null;
+	return (
+		<div className="space-y-2 rounded-xl border border-border bg-secondary p-3">
+			<Caps>Chat — why it is risky and how to improve it</Caps>
+			<button
+				type="button"
+				onClick={() => onAsk(question)}
+				className="w-full rounded-lg border border-primary bg-card px-2.5 py-1.5 text-left text-xs font-medium text-accent-foreground hover:bg-accent"
+			>
+				{question}
+			</button>
+			<form
+				onSubmit={(event) => {
+					event.preventDefault();
+					const value = text.trim();
+					if (!value) return;
+					onAsk(value);
+					setText('');
+				}}
+			>
+				<input
+					value={text}
+					onChange={(event) => setText(event.target.value)}
+					placeholder={placeholder}
+					className="w-full rounded-lg border border-border bg-card px-2.5 py-1.5 text-xs placeholder:text-muted-foreground focus:border-primary focus:outline-none"
+				/>
+			</form>
+		</div>
+	);
+}
+
+
+========== web/src/features/docx/components/clause-analyzer/views/bits.tsx
+========== Piezas visuales compartidas (Kind, PartyTag, Pill, Caps, Hatch, Card, Frame, Head)
+
+'use client';
+
+import type { ReactNode } from 'react';
+import { cn } from '@/lib/utils';
+import {
+	KIND_COLORS,
+	PAIR_SECOND_COLOR,
+	PARTY_COLOR,
+} from '@/features/docx/components/clause-analyzer/constants';
+import type { Side } from '@/features/docx/utils/knowledge/statement-grid';
+import type { DeonticKind } from '@/types/knowledge';
+
+export const SIDE_COLOR: Record<Side, string> = { a: PARTY_COLOR, b: PAIR_SECOND_COLOR };
+
+const VERB: Record<DeonticKind, string> = {
+	obligation: 'must',
+	right: 'may',
+	prohibition: 'must not',
+};
+
+/** "Miltenyi Biotec GmbH" reads as "Miltenyi" everywhere the space is short. */
+export const short = (name: string) => name.split(/[\s,]+/)[0] || name;
+
+export function Kind({ kind }: { kind: DeonticKind }) {
+	return (
+		<span className="inline-flex items-center gap-1 text-2xs font-semibold text-foreground">
+			<span className="size-2.5 rounded-[3px]" style={{ backgroundColor: KIND_COLORS[kind] }} />
+			{VERB[kind]}
+		</span>
+	);
+}
+
+export function PartyTag({ name, side }: { name: string; side: Side | null }) {
+	return (
+		<span className="inline-flex items-center gap-1.5 text-2xs font-semibold text-foreground">
+			<span
+				className="size-2 rounded-full"
+				style={{ backgroundColor: side ? SIDE_COLOR[side] : 'var(--muted-foreground)' }}
+			/>
+			{name}
+		</span>
+	);
+}
+
+type Tone = 'muted' | 'accent' | 'warn' | Side;
+
+export function Pill({
+	children,
+	tone = 'muted',
+	dashed,
+	className,
+}: {
+	children: ReactNode;
+	tone?: Tone;
+	dashed?: boolean;
+	className?: string;
+}) {
+	const side = tone === 'a' || tone === 'b' ? tone : null;
+	return (
+		<span
+			className={cn(
+				'inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-2xs font-medium whitespace-nowrap',
+				tone === 'muted' && 'bg-secondary text-muted-foreground',
+				tone === 'accent' && 'bg-accent text-accent-foreground',
+				tone === 'warn' && 'bg-warning/15 text-warning-foreground',
+				dashed && 'border border-dashed border-muted-foreground/50 bg-transparent italic',
+				className
+			)}
+			style={
+				side ? { backgroundColor: `${SIDE_COLOR[side]}1f`, color: SIDE_COLOR[side] } : undefined
+			}
+		>
+			{side && (
+				<span className="size-1.5 rounded-full" style={{ backgroundColor: SIDE_COLOR[side] }} />
+			)}
+			{children}
+		</span>
+	);
+}
+
+export function Caps({ children }: { children: ReactNode }) {
+	return (
+		<p className="text-[10px] font-bold tracking-wider text-muted-foreground uppercase">
+			{children}
+		</p>
+	);
+}
+
+/** The drawn absence: dashed, so it reads as a slot that is empty on purpose. */
+export function Hatch({ children, className }: { children: ReactNode; className?: string }) {
+	return (
+		<div
+			className={cn(
+				'rounded-md border border-dashed border-muted-foreground/45 bg-background px-2 py-1.5 text-2xs text-muted-foreground italic',
+				className
+			)}
+		>
+			{children}
+		</div>
+	);
+}
+
+export function Card({ children, className }: { children: ReactNode; className?: string }) {
+	return (
+		<div className={cn('rounded-xl border border-border bg-card p-4', className)}>{children}</div>
+	);
+}
+
+/** Main column and side column side by side once the panel is wide enough. */
+export function Frame({ top, main, side }: { top?: ReactNode; main: ReactNode; side: ReactNode }) {
+	return (
+		<div className="@container min-h-0 flex-1 overflow-auto">
+			<div className="space-y-4 p-4">
+				{top}
+				<div className="grid grid-cols-1 items-start gap-4 @3xl:grid-cols-[minmax(0,1fr)_300px]">
+					<div className="min-w-0 space-y-3">{main}</div>
+					<div className="space-y-4">{side}</div>
+				</div>
+			</div>
+		</div>
+	);
+}
+
+export function Head({ title, lead }: { title: string; lead: string }) {
+	return (
+		<div className="space-y-1">
+			<h3 className="text-base font-bold text-foreground">{title}</h3>
+			<p className="text-xs leading-relaxed text-muted-foreground">{lead}</p>
+		</div>
+	);
+}
+
+
+========== web/src/features/docx/components/clause-analyzer/views/ViewBar.tsx
+========== Barra de pestañas con el selector "Read as" (lector A o B)
+
+'use client';
+
+import { cn } from '@/lib/utils';
+import { VIEWS, type View } from '@/features/docx/hooks/useAnalyzerView';
+import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/views/bits';
+import type { Side } from '@/features/docx/utils/knowledge/statement-grid';
+
+interface ViewBarProps {
+	view: View;
+	onView: (view: View) => void;
+	reader: Side;
+	onReader: (side: Side) => void;
+	names: Record<Side, string>;
+}
+
+export function ViewBar({ view, onView, reader, onReader, names }: ViewBarProps) {
+	return (
+		<div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/60 px-4 py-2.5">
+			<div
+				role="tablist"
+				className="inline-flex rounded-lg border border-border bg-secondary p-[3px]"
+			>
+				{VIEWS.map((v) => (
+					<button
+						key={v.id}
+						type="button"
+						role="tab"
+						aria-selected={view === v.id}
+						onClick={() => onView(v.id)}
+						className={cn(
+							'rounded-md px-3 py-1 text-xs font-medium',
+							view === v.id
+								? 'border border-border bg-card font-semibold text-primary shadow-sm'
+								: 'text-muted-foreground hover:text-foreground'
+						)}
+					>
+						{v.label}
+					</button>
+				))}
+			</div>
+			<div className="flex items-center gap-1.5 text-2xs text-muted-foreground">
+				Read as
+				{(['a', 'b'] as const).map((side) => (
+					<button
+						key={side}
+						type="button"
+						onClick={() => onReader(side)}
+						className={cn(
+							'inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5',
+							reader === side ? 'font-semibold text-foreground' : 'border-border bg-card'
+						)}
+						style={
+							reader === side
+								? { borderColor: SIDE_COLOR[side], backgroundColor: `${SIDE_COLOR[side]}1a` }
+								: undefined
+						}
+					>
+						<span className="size-1.5 rounded-full" style={{ backgroundColor: SIDE_COLOR[side] }} />
+						{short(names[side])}
+					</button>
+				))}
+			</div>
+		</div>
+	);
+}
+
+
+========== web/src/features/docx/hooks/useAnalyzerView.ts
+========== Navegación en la URL: view, row (situación elegida) y as (lector)
+
+'use client';
+
+import { useCallback } from 'react';
+import { useSearchParams } from 'next/navigation';
+import type { Side } from '@/features/docx/utils/knowledge/statement-grid';
+
+export const VIEWS = [
+	{ id: 'table', label: 'Table' },
+	{ id: 'scenarios', label: 'What if…' },
+	// Prototypes to compare side by side; they go one by one as they are ruled out.
+	{ id: 'bytype', label: 'P2 · By type' },
+] as const;
+
+export type View = (typeof VIEWS)[number]['id'];
+
+const isView = (value: string | null): value is View => VIEWS.some((v) => v.id === value);
+
+/** Everything the reader navigates lives in the URL, so a view can be shared or reloaded. */
+export function useAnalyzerView() {
+	const params = useSearchParams();
+	const raw = params.get('view');
+	const view: View = isView(raw) ? raw : 'table';
+	const row = params.get('row');
+	const reader: Side = params.get('as') === 'b' ? 'b' : 'a';
+	const pairRaw = params.get('pair')?.split(',') ?? [];
+	const pair = pairRaw.length === 2 ? { a: pairRaw[0], b: pairRaw[1] } : null;
+
+	const patch = useCallback((changes: Record<string, string | null>, push: boolean) => {
+		const next = new URLSearchParams(window.location.search);
+		for (const [key, value] of Object.entries(changes)) {
+			if (value === null) next.delete(key);
+			else next.set(key, value);
+		}
+		const url = `?${next.toString()}`;
+		if (push) window.history.pushState(null, '', url);
+		else window.history.replaceState(null, '', url);
+	}, []);
+
+	const setView = useCallback((next: View) => patch({ view: next, row: null }, true), [patch]);
+	const setRow = useCallback((id: string | null) => patch({ row: id }, true), [patch]);
+	const setReader = useCallback((side: Side) => patch({ as: side }, false), [patch]);
+	const setPair = useCallback(
+		(ids: { a: string; b: string } | null) =>
+			patch({ pair: ids ? `${ids.a},${ids.b}` : null }, false),
+		[patch]
+	);
+
+	return { view, row, reader, pair, setView, setRow, setReader, setPair };
+}
+
+
+========== web/src/features/docx/components/clause-analyzer/views/types.ts
+========== Props que recibían las pestañas
+
+import type { KnowledgeGraph } from '@/types/knowledge';
+import type { Side, StatementGrid } from '@/features/docx/utils/knowledge/statement-grid';
+
+export interface ViewProps {
+	docId: string;
+	kg: KnowledgeGraph;
+	aId: string;
+	bId: string;
+	names: Record<Side, string>;
+	reader: Side;
+	row: string | null;
+	onRow: (id: string | null) => void;
+	grid: StatementGrid;
+	shareOf: (clauseId: string | null) => { a: number; b: number } | null;
+	/** Clause importance, to order rows; null until the server answers. */
+	importance: Record<string, number> | null;
+	/** Opens a graph node in the document. */
+	onOpen: (nodeId: string) => void;
+	/** Opens paragraphs the graph has no node for. */
+	onOpenParas: (paragraphIds: string[]) => void;
+	onAsk?: (question: string) => void;
+	onTable: () => void;
+}
+
+
+========== web/src/features/docx/hooks/useDocNotes.ts
+========== Notas en el documento (las etiquetas "Step n", huecos en trama)
+
+'use client';
+
+import { useEffect } from 'react';
+
+export interface DocNote {
+	pid: string;
+	text: string;
+	tone: 'gap' | 'warn' | 'step';
+	at: 'before' | 'after';
+}
+
+interface DocNotesParams {
+	active: boolean;
+	renderEpoch: number;
+	paragraphElementById: Map<string, HTMLElement>;
+	notes: DocNote[];
+}
+
+/**
+ * Draws what the panel found next to the paragraph it belongs to — including what is
+ * missing, which the text itself cannot show.
+ */
+export function useDocNotes({ active, renderEpoch, paragraphElementById, notes }: DocNotesParams) {
+	const key = notes.map((n) => `${n.pid}|${n.at}|${n.tone}|${n.text}`).join('\n');
+
+	useEffect(() => {
+		if (!active || renderEpoch === 0 || notes.length === 0) return;
+		const made: HTMLElement[] = [];
+		for (const note of notes) {
+			const target = paragraphElementById.get(note.pid);
+			if (!target) continue;
+			const tag = document.createElement('div');
+			tag.className = `docx-note docx-note--${note.tone}`;
+			tag.textContent = note.text;
+			if (note.at === 'before') target.before(tag);
+			else target.after(tag);
+			made.push(tag);
+		}
+		return () => made.forEach((tag) => tag.remove());
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [active, renderEpoch, key, paragraphElementById]);
+}

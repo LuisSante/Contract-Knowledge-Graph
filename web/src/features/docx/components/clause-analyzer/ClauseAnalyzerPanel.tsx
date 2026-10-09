@@ -36,6 +36,9 @@ import {
 } from '@/features/docx/components/clause-analyzer/constants';
 import { ViewBar } from '@/features/docx/components/clause-analyzer/views/ViewBar';
 import { ByTypeView } from '@/features/docx/components/clause-analyzer/views/ByTypeView';
+import { ScoreboardView } from '@/features/docx/components/clause-analyzer/views/ScoreboardView';
+import { VerdictFirstView } from '@/features/docx/components/clause-analyzer/views/VerdictFirstView';
+import { EvidencePanelView } from '@/features/docx/components/clause-analyzer/views/EvidencePanelView';
 import type { ViewProps } from '@/features/docx/components/clause-analyzer/views/types';
 
 interface ClauseAnalyzerPanelProps {
@@ -224,6 +227,14 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		setDocumentTarget(buildDocumentTarget(viewKg, nodeId, nodesById));
 	};
 
+	const openClauseInGraph =
+		onOpenGraph &&
+		((clauseId: string) => {
+			selectClause(docId, clauseId);
+			openInDocument(clauseId);
+			onOpenGraph();
+		});
+
 	const detailsOf = useMemo(
 		() => (viewKg && grid ? markDetails(viewKg, grid) : null),
 		[viewKg, grid]
@@ -271,6 +282,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 					grid,
 					importance: clauseImportance?.byClause ?? null,
 					onOpen: openInDocument,
+					onOpenGraph: openClauseInGraph,
 				}
 			: null;
 	const inView = viewProps !== null && nav.view !== 'table';
@@ -301,6 +313,9 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		<div className="flex h-full flex-col">
 			{viewProps && <ViewBar view={nav.view} onView={nav.setView} />}
 			{inView && viewProps && nav.view === 'bytype' && <ByTypeView {...viewProps} />}
+			{inView && viewProps && nav.view === 'scoreboard' && <ScoreboardView {...viewProps} />}
+			{inView && viewProps && nav.view === 'verdict' && <VerdictFirstView {...viewProps} />}
+			{inView && viewProps && nav.view === 'evidence' && <EvidencePanelView {...viewProps} />}
 
 			{/* The table fills the panel; the graph has a tab of its own. */}
 			<div className={cn('flex', inView ? 'hidden' : 'min-h-0 flex-1')}>
@@ -355,14 +370,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 									selectClause(docId, selectedClauseId === clauseId ? null : clauseId);
 									openInDocument(clauseId);
 								}}
-								onOpenGraph={
-									onOpenGraph &&
-									((clauseId) => {
-										selectClause(docId, clauseId);
-										openInDocument(clauseId);
-										onOpenGraph();
-									})
-								}
+								onOpenGraph={openClauseInGraph}
 								onOpenMark={openInDocument}
 								onFocusMark={focusNode}
 								onHoverMark={showTooltip}

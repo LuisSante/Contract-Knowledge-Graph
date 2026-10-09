@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { cn } from '@/lib/utils';
-import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
 import { Accordion as AccordionPrimitive } from 'radix-ui';
 import { ChevronDownIcon } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem } from '@/components/ui/accordion';
@@ -11,67 +10,48 @@ import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/vi
 import {
 	FavourPill,
 	KIND_PLURAL,
+	KindFilter,
 	KindSquare,
 	ViewHeader,
 	relationOf,
 } from '@/features/docx/components/clause-analyzer/views/favour-bits';
 import {
 	DEONTIC_KINDS,
-	byImportance,
-	tallyClauses,
-	totalOf,
 	typeVerdict,
 	type ClauseTally,
 	type Favour,
 	type TypeVerdict,
 } from '@/features/docx/utils/knowledge/clause-favour';
+import {
+	hasKinds,
+	otherVerdicts,
+	useClauseNotes,
+	useKinds,
+	useReviews,
+	useTallies,
+	verdictNote,
+	verdictSentence,
+} from '@/features/docx/components/clause-analyzer/views/favour-shared';
 import type { Side } from '@/features/docx/utils/knowledge/statement-grid';
 import type { DeonticKind } from '@/types/knowledge';
-import type { DocNote } from '@/features/docx/hooks/useDocNotes';
 import type { ViewProps } from '@/features/docx/components/clause-analyzer/views/types';
 
 const PAGE = 10;
 const BAR = 64;
 const SHOWN_FRAGMENTS = 3;
 
-/** The reader's answers, per document — the start of a ground truth nobody has yet. */
-const reviewKey = (docId: string) => `clause-verdict-review:${docId}`;
-
-function loadReviews(docId: string): Record<string, string> {
-	try {
-		return JSON.parse(window.localStorage.getItem(reviewKey(docId)) ?? '{}');
-	} catch {
-		return {};
-	}
-}
-
-const quote = (text: string) => `“${text.length > 60 ? `${text.slice(0, 60).trim()}…` : text}”`;
-
-const listOf = (items: string[]) =>
-	items.length <= 1
-		? (items[0] ?? '')
-		: `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`;
-
 /** Obligations, rights and prohibitions never added together, each clause opening onto
  *  the fragments that hold its verdict up. */
 export function ByTypeView({ docId, kg, grid, names, importance, onOpen }: ViewProps) {
-	const setNotes = useClauseAnalyzerStore((s) => s.setNotes);
 	const [limit, setLimit] = useState(PAGE);
-	const [kinds, setKinds] = useState<DeonticKind[]>(DEONTIC_KINDS);
+	const [kinds, toggleKind] = useKinds();
 	// undefined until the reader picks: the most important clause opens on its own.
 	const [openId, setOpenId] = useState<string | null | undefined>(undefined);
 	const [fragmentKind, setFragmentKind] = useState<DeonticKind | null>(null);
 	const [allFragments, setAllFragments] = useState(false);
-	// The view mounts once the graph has loaded, in the browser, so storage is there to read.
-	const [reviews, setReviews] = useState<Record<string, string>>(() => loadReviews(docId));
-
-	const tallies = useMemo(
-		() => byImportance(tallyClauses(grid, kg), importance),
-		[grid, kg, importance]
-	);
-	const total = useMemo(() => totalOf(tallies), [tallies]);
-	// A clause with nothing of the kinds on screen has no row to show.
-	const rows = tallies.filter((t) => kinds.some((kind) => t.count[kind].a + t.count[kind].b > 0));
+	const { reviews, review } = useReviews(docId);
+	const { tallies, total } = useTallies(grid, kg, importance);
+	const rows = tallies.filter((t) => hasKinds(t, kinds));
 	const opened =
 		openId === undefined ? (rows[0] ?? null) : (rows.find((t) => t.clauseId === openId) ?? null);
 	const peak = useMemo(
@@ -85,80 +65,10 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen }: ViewP
 		[tallies]
 	);
 
-	const paragraphsOf = useMemo(
-		() =>
-			new Map(
-				[...kg.obligations, ...kg.rights, ...kg.prohibitions].map(
-					(s) => [s.id, s.paragraphIds] as const
-				)
-			),
-		[kg]
-	);
+	useClauseNotes(kg, opened, kinds, names);
 
-	// The open clause's fragments are marked in the contract on the left too, one note
-	// per paragraph: a paragraph often holds several statements.
-	useEffect(() => {
-		if (!opened) return;
-		const byParagraph = new Map<string, Map<string, number>>();
-		for (const s of opened.served) {
-			if (!kinds.includes(s.kind)) continue;
-			const pid = paragraphsOf.get(s.mark.id)?.[0];
-			if (!pid) continue;
-			const to = s.to === 'both' ? 'both' : short(names[s.to]);
-			const tally = byParagraph.get(pid) ?? new Map<string, number>();
-			tally.set(to, (tally.get(to) ?? 0) + 1);
-			byParagraph.set(pid, tally);
-		}
-		const notes: DocNote[] = [...byParagraph].map(([pid, tally]) => ({
-			pid,
-			text: `Serves ${[...tally].map(([to, n]) => (n > 1 ? `${to} ×${n}` : to)).join(' · ')}`,
-			tone: 'step',
-			at: 'before',
-		}));
-		setNotes(notes);
-		return () => setNotes([]);
-	}, [opened, kinds, paragraphsOf, names, setNotes]);
-
-	const note = (verdict: TypeVerdict, byKind: Partial<Record<DeonticKind, Favour>>) => {
-		if (verdict === 'tie') return 'equal in every type';
-		if (verdict !== 'mixed') return 'loses in no type';
-		return kinds
-			.filter((kind) => byKind[kind] && byKind[kind] !== 'tie')
-			.map((kind) => `${KIND_PLURAL[kind].toLowerCase()} → ${short(names[byKind[kind] as Side])}`)
-			.join(' · ');
-	};
-
-	/** One sentence from the counts alone, with the same weight-free reading; no model writes it. */
-	const sentenceOf = (
-		t: ClauseTally,
-		verdict: TypeVerdict,
-		byKind: Partial<Record<DeonticKind, Favour>>
-	) => {
-		const won = (side: Side) =>
-			kinds.filter((kind) => byKind[kind] === side).map((k) => KIND_PLURAL[k].toLowerCase());
-		if (verdict === 'tie') return 'The two parties are even in every type shown.';
-		if (verdict === 'mixed')
-			return `It depends on the type: ${short(names.a)} gets more ${listOf(won('a'))}, ${short(names.b)} gets more ${listOf(won('b'))}. Choosing between them would mean weighting them.`;
-		const led = t.served
-			.filter((s) => s.to === verdict && kinds.includes(s.kind))
-			.slice(0, 2)
-			.map((s) => quote(s.mark.label));
-		return `${short(names[verdict])} wins in ${listOf(won(verdict))} and loses in none${
-			led.length ? `; among what it gets, ${led.join(' and ')}` : ''
-		}.`;
-	};
-
-	const review = (clauseId: string, answer: string) => {
-		setReviews((prev) => {
-			const next = { ...prev, [clauseId]: answer };
-			try {
-				window.localStorage.setItem(reviewKey(docId), JSON.stringify(next));
-			} catch {
-				// Storage can be blocked; the answer still holds for this visit.
-			}
-			return next;
-		});
-	};
+	const note = (verdict: TypeVerdict, byKind: Partial<Record<DeonticKind, Favour>>) =>
+		verdictNote(verdict, byKind, kinds, names);
 
 	/** Opens the clause on that type's fragments; on the type already shown, on all of them. */
 	const filterBy = (clauseId: string, kind: DeonticKind) => {
@@ -227,17 +137,17 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen }: ViewP
 		const answer = reviews[t.clauseId];
 		const options: Array<{ id: string; label: string }> = [
 			{ id: 'agree', label: '✓ Yes' },
-			...(['a', 'b', 'tie'] as const)
-				.filter((f) => f !== verdict)
-				.map((f) => ({
-					id: f,
-					label: f === 'tie' ? 'No: it is a tie' : `No: it favours ${short(names[f])}`,
-				})),
+			...otherVerdicts(verdict).map((f) => ({
+				id: f,
+				label: f === 'tie' ? 'No: it is a tie' : `No: it favours ${short(names[f])}`,
+			})),
 		];
 		return (
 			<div className="space-y-3">
 				<div className="flex items-start gap-3">
-					<p className="flex-1 text-xs leading-relaxed">{sentenceOf(t, verdict, byKind)}</p>
+					<p className="flex-1 text-xs leading-relaxed">
+						{verdictSentence(t, verdict, byKind, kinds, names)}
+					</p>
 				</div>
 				{fragmentKind && (
 					<p className="flex items-center gap-1.5 text-2xs text-muted-foreground">
@@ -335,47 +245,16 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen }: ViewP
 				? `it depends on the type (${note(contract.verdict, contract.byKind)}).`
 				: `${short(names[contract.verdict])} wins in ${winsIn}.`;
 
-	const toggleKind = (kind: DeonticKind) => {
+	const showKind = (kind: DeonticKind) => {
 		setFragmentKind(null);
-		setKinds((prev) =>
-			prev.includes(kind)
-				? prev.filter((k) => k !== kind)
-				: DEONTIC_KINDS.filter((k) => k === kind || prev.includes(k))
-		);
+		toggleKind(kind);
 	};
 
 	return (
 		<div className="min-h-0 flex-1 overflow-auto">
 			<div className="min-w-[760px] space-y-3 p-4">
 				<ViewHeader>
-					<div className="flex flex-wrap items-center gap-2 text-2xs text-muted-foreground">
-						Show
-						{DEONTIC_KINDS.map((kind) => {
-							const on = kinds.includes(kind);
-							// The last type on stays on: with none, there is nothing to compare.
-							const last = on && kinds.length === 1;
-							return (
-								<button
-									type="button"
-									key={kind}
-									onClick={() => toggleKind(kind)}
-									disabled={last}
-									title={last ? 'At least one type stays on' : undefined}
-									className={cn(
-										'inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs disabled:cursor-default',
-										on ? 'border-foreground/30 text-foreground' : 'border-border opacity-50'
-									)}
-								>
-									<span
-										className="size-2.5 rounded-[2px]"
-										style={{ backgroundColor: KIND_COLORS[kind] }}
-									/>
-									{KIND_PLURAL[kind]}
-									{on && <span className="text-2xs">✓</span>}
-								</button>
-							);
-						})}
-					</div>
+					<KindFilter kinds={kinds} onToggle={showKind} />
 				</ViewHeader>
 
 				<div className="overflow-hidden rounded-xl border border-border bg-card">

@@ -7,6 +7,10 @@ export const VIEWS = [
 	{ id: 'table', label: 'Table' },
 	// Meant to replace Table; both stay while Table serves as the reference.
 	{ id: 'bytype', label: 'Table v2' },
+	// Proposals built on Table v2's weight-free rule, to compare against it.
+	{ id: 'scoreboard', label: 'Table v3' },
+	{ id: 'verdict', label: 'Table v4' },
+	{ id: 'evidence', label: 'Table v5' },
 ] as const;
 
 export type View = (typeof VIEWS)[number]['id'];

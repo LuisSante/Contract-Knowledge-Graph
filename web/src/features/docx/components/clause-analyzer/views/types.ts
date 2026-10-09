@@ -10,4 +10,6 @@ export interface ViewProps {
 	importance: Record<string, number> | null;
 	/** Opens a graph node in the document. */
 	onOpen: (nodeId: string) => void;
+	/** Selects the clause and switches to the knowledge graph tab; absent when there is none. */
+	onOpenGraph?: (clauseId: string) => void;
 }

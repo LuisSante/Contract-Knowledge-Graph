@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { CheckIcon } from 'lucide-react';
+import { useState, type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { KIND_COLORS } from '@/features/docx/components/clause-analyzer/constants';
 import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/views/bits';
@@ -348,6 +347,87 @@ export function WhatEachGets({
 	return <div className="grid grid-cols-2 gap-3">{SIDES.map(column)}</div>;
 }
 
+/** Each party's statements as dots growing out from an axis, with the count at the far end;
+ *  past `max` the dots stop growing and the number says the rest. */
+export function DotTally({ a, b, max = 10 }: { a: number; b: number; max?: number }) {
+	const side = (s: Side) => {
+		const n = s === 'a' ? a : b;
+		const wins = s === 'a' ? a > b : b > a;
+		return (
+			<span
+				className={cn(
+					'flex flex-1 items-center gap-[2px]',
+					s === 'a' ? 'flex-row-reverse justify-start' : 'justify-start'
+				)}
+			>
+				{Array.from({ length: Math.min(n, max) }, (_, i) => (
+					<span
+						key={i}
+						className="size-[5px] shrink-0 rounded-full"
+						style={{ backgroundColor: SIDE_COLOR[s] }}
+					/>
+				))}
+				<span
+					className={cn('text-xs tabular-nums', s === 'a' ? 'mr-0.5' : 'ml-0.5')}
+					style={wins ? { color: SIDE_COLOR[s], fontWeight: 700 } : undefined}
+				>
+					{n}
+				</span>
+			</span>
+		);
+	};
+	return (
+		<span className="flex w-full items-center gap-1">
+			{side('a')}
+			<span className="h-3 w-px shrink-0 bg-border" />
+			{side('b')}
+		</span>
+	);
+}
+
+/** A reader's answer as a pill in the colour of the verdict it stands for, filled once picked. */
+export function AnswerPill({
+	verdict,
+	on,
+	onClick,
+	children,
+}: {
+	verdict: TypeVerdict;
+	on: boolean;
+	onClick: () => void;
+	children: ReactNode;
+}) {
+	const color = verdictColor(verdict);
+	const party = verdict === 'a' || verdict === 'b';
+	return (
+		<button
+			type="button"
+			onClick={onClick}
+			aria-pressed={on}
+			className={cn(
+				'inline-flex items-center gap-1.5 rounded-full border-[1.5px] px-3 py-0.5 font-medium',
+				on ? 'font-semibold' : 'hover:bg-muted/40',
+				verdict === 'mixed' && 'text-warning-foreground'
+			)}
+			style={{
+				borderColor: color,
+				color: party ? (on ? 'white' : color) : undefined,
+				backgroundColor: on
+					? party
+						? color
+						: tint(color, verdict === 'mixed' ? 30 : 12)
+					: undefined,
+			}}
+		>
+			<span
+				className="size-1.5 rounded-full"
+				style={{ backgroundColor: on && party ? 'white' : color }}
+			/>
+			{children}
+		</button>
+	);
+}
+
 /** Asks the reader whether the verdict holds; the answer is stored the way every view reads it. */
 export function AgreeBox({
 	verdict,
@@ -360,33 +440,20 @@ export function AgreeBox({
 	answer: string | undefined;
 	onAnswer: (answer: string) => void;
 }) {
-	const options = [
-		{ id: 'agree', label: 'Yes' },
-		...otherVerdicts(verdict).map((f) => ({
-			id: f,
-			label: f === 'tie' ? 'No, it is a tie' : `No, it favours ${short(names[f])}`,
-		})),
-	];
 	return (
-		<div className="flex flex-wrap items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-xs font-medium">
-			Do you agree with «
-			{verdict === 'mixed' ? 'Depends on the type' : `Favours ${verdictLabel(verdict, names)}`}
-			»?
-			{options.map((o) => (
-				<button
-					type="button"
-					key={o.id}
-					onClick={() => onAnswer(o.id)}
-					className={cn(
-						'inline-flex items-center gap-1 rounded-md border px-2.5 py-1 text-xs font-normal',
-						answer === o.id
-							? 'border-primary bg-primary font-semibold text-primary-foreground'
-							: 'border-border bg-card hover:bg-muted/40'
-					)}
-				>
-					{o.id === 'agree' && <CheckIcon className="size-3" />}
-					{o.label}
-				</button>
+		<div className="flex flex-wrap items-center gap-2 text-xs">
+			<span className="font-medium">
+				Do you agree with «
+				{verdict === 'mixed' ? 'Depends on the type' : `Favours ${verdictLabel(verdict, names)}`}
+				»?
+			</span>
+			<AnswerPill verdict={verdict} on={answer === 'agree'} onClick={() => onAnswer('agree')}>
+				Yes
+			</AnswerPill>
+			{otherVerdicts(verdict).map((f) => (
+				<AnswerPill key={f} verdict={f} on={answer === f} onClick={() => onAnswer(f)}>
+					{f === 'tie' ? 'No, it is a tie' : `No, it favours ${short(names[f])}`}
+				</AnswerPill>
 			))}
 		</div>
 	);

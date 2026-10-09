@@ -117,14 +117,6 @@ export function useReviews(docId: string) {
 export const otherVerdicts = (verdict: TypeVerdict) =>
 	(['a', 'b', 'tie'] as const).filter((f) => f !== verdict);
 
-/** What the reader picked, in the same terms as the verdict. */
-export const choiceOf = (answer: string | undefined, verdict: TypeVerdict): TypeVerdict | null =>
-	answer === undefined ? null : answer === 'agree' ? verdict : (answer as TypeVerdict);
-
-/** The reader's pick, stored the way every view reads it back. */
-export const answerOf = (choice: TypeVerdict, verdict: TypeVerdict) =>
-	choice === verdict ? 'agree' : choice;
-
 /**
  * The open clause's fragments are marked in the contract on the left too, one note per
  * paragraph: a paragraph often holds several statements.

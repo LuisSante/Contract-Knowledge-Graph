@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Accordion as AccordionPrimitive } from 'radix-ui';
 import { ChevronDownIcon } from 'lucide-react';
@@ -12,7 +12,6 @@ import {
 	KindFilter,
 } from '@/features/docx/components/clause-analyzer/views/favour-bits';
 import {
-	DEONTIC_KINDS,
 	typeVerdict,
 	type ClauseTally,
 	type Favour,
@@ -31,18 +30,19 @@ import {
 import {
 	AgreeBox,
 	ClauseLead,
+	DotTally,
 	Scoreboard,
 	VerdictBadge,
 	VerdictFilter,
 	WhatEachGets,
 	type VerdictFilterValue,
 } from '@/features/docx/components/clause-analyzer/views/verdict-bits';
-import type { Side } from '@/features/docx/utils/knowledge/statement-grid';
 import type { DeonticKind } from '@/types/knowledge';
 import type { ViewProps } from '@/features/docx/components/clause-analyzer/views/types';
 
 const PAGE = 10;
-const BAR = 64;
+/** Past six a side's dots stop growing, so the clause name keeps its room beside the verdict. */
+const MAX_DOTS = 6;
 
 /** Obligations, rights and prohibitions never added together, each clause opening onto
  *  the fragments that hold its verdict up. */
@@ -60,16 +60,6 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 	const rows =
 		filter === 'all' ? shown : shown.filter((t) => typeVerdict(t.count, kinds).verdict === filter);
 	const opened = rows.find((t) => t.clauseId === openId) ?? null;
-	const peak = useMemo(
-		() =>
-			Object.fromEntries(
-				DEONTIC_KINDS.map((kind) => [
-					kind,
-					Math.max(1, ...tallies.map((t) => Math.max(t.count[kind].a, t.count[kind].b))),
-				])
-			) as Record<DeonticKind, number>,
-		[tallies]
-	);
 
 	useClauseNotes(kg, opened, kinds, names);
 
@@ -87,19 +77,17 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 		const { a, b } = t.count[kind];
 		if (a + b === 0)
 			return (
-				<span className="pointer-events-none flex w-[132px] shrink-0 justify-center text-2xs text-muted-foreground/60">
+				<span className="pointer-events-none flex w-[140px] shrink-0 justify-center text-xs text-muted-foreground/60">
 					—
 				</span>
 			);
-		const tone = (side: Side) =>
-			(side === 'a' ? a > b : b > a) ? { color: SIDE_COLOR[side], fontWeight: 700 } : undefined;
 		const active = opened?.clauseId === t.clauseId && fragmentKind === kind;
 		return (
 			<button
 				type="button"
 				onClick={() => filterBy(t.clauseId, kind)}
 				className={cn(
-					'relative z-10 flex w-[132px] shrink-0 items-center justify-center gap-1.5 rounded-md py-1 text-2xs tabular-nums hover:bg-muted',
+					'relative z-10 flex w-[140px] shrink-0 items-center rounded-md px-1 py-1 hover:bg-muted',
 					active && 'bg-accent ring-1 ring-primary/40'
 				)}
 				title={
@@ -108,23 +96,7 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 						: `${KIND_PLURAL[kind]}: ${a} serve ${short(names.a)}, ${b} serve ${short(names.b)} — click to see only these fragments`
 				}
 			>
-				<span className="w-5 text-right text-muted-foreground" style={tone('a')}>
-					{a}
-				</span>
-				<span className="relative h-1.5" style={{ width: BAR }}>
-					<span className="absolute inset-y-0 left-1/2 w-px bg-border" />
-					<span
-						className="absolute inset-y-0 right-1/2 rounded-l-full"
-						style={{ width: (a / peak[kind]) * (BAR / 2), backgroundColor: SIDE_COLOR.a }}
-					/>
-					<span
-						className="absolute inset-y-0 left-1/2 rounded-r-full"
-						style={{ width: (b / peak[kind]) * (BAR / 2), backgroundColor: SIDE_COLOR.b }}
-					/>
-				</span>
-				<span className="w-5 text-left text-muted-foreground" style={tone('b')}>
-					{b}
-				</span>
+				<DotTally a={a} b={b} max={MAX_DOTS} />
 			</button>
 		);
 	};
@@ -177,7 +149,7 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 
 	return (
 		<div className="min-h-0 flex-1 overflow-auto">
-			<div className="min-w-[760px] space-y-3 p-4">
+			<div className="min-w-[820px] space-y-3 p-4">
 				<Scoreboard total={total} kinds={kinds} counts={counts} names={names} />
 
 				<div className="flex flex-wrap items-center justify-between gap-2">
@@ -201,7 +173,7 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 							Clause <span className="font-normal normal-case">· most important first ↓</span>
 						</span>
 						{kinds.map((kind) => (
-							<span key={kind} className="flex w-[132px] shrink-0 flex-col items-center">
+							<span key={kind} className="flex w-[140px] shrink-0 flex-col items-center">
 								<span className="flex items-center gap-1">
 									<span
 										className="size-2 rounded-[2px]"
@@ -216,7 +188,7 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 								</span>
 							</span>
 						))}
-						<span className="w-40 shrink-0 text-muted-foreground">Weight-free verdict</span>
+						<span className="w-36 shrink-0 text-muted-foreground">Weight-free verdict</span>
 						{/* Room for the accordion's chevron, so the columns line up. */}
 						<span className="w-4 shrink-0" />
 					</div>
@@ -260,7 +232,7 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 												{cell(t, kind)}
 											</span>
 										))}
-										<span className="pointer-events-none w-40 shrink-0 space-y-0.5 font-normal">
+										<span className="pointer-events-none w-36 shrink-0 space-y-0.5 font-normal">
 											<VerdictBadge verdict={verdict} names={names} />
 											<span className="block text-[10px] leading-snug text-muted-foreground">
 												{note(verdict, byKind)}

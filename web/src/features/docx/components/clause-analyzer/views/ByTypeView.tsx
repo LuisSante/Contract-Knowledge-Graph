@@ -50,11 +50,12 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 	const [limit, setLimit] = useState(PAGE);
 	const [kinds, toggleKind] = useKinds();
 	const [filter, setFilter] = useState<VerdictFilterValue>('all');
+	const [sortByImportance, setSortByImportance] = useState(true);
 	// Every row starts closed; the reader opens the one they want.
 	const [openId, setOpenId] = useState<string | null>(null);
 	const [fragmentKind, setFragmentKind] = useState<DeonticKind | null>(null);
 	const { reviews, review } = useReviews(docId);
-	const { tallies, total, rank } = useTallies(grid, kg, importance);
+	const { tallies, total, rank } = useTallies(grid, kg, importance, sortByImportance);
 	const shown = tallies.filter((t) => hasKinds(t, kinds));
 	const counts = verdictCounts(shown, kinds);
 	const rows =
@@ -169,9 +170,21 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 
 				<div className="overflow-hidden rounded-xl border border-border bg-card">
 					<div className="flex items-center gap-2 bg-secondary px-3 py-1.5 text-[10px] font-bold tracking-wider uppercase">
-						<span className="flex-1 pl-11 text-muted-foreground">
-							Clause <span className="font-normal normal-case">· most important first ↓</span>
-						</span>
+						{/* The importance is fetched, so the ordering cannot be offered before it lands. */}
+						<button
+							type="button"
+							onClick={() => setSortByImportance((on) => !on)}
+							disabled={!importance}
+							className="flex-1 pl-11 text-left text-muted-foreground uppercase enabled:hover:text-foreground disabled:cursor-default"
+							title="Order the rows by how much each clause weighs inside the contract (PageRank with a per-clause prior), or by its position in the document"
+						>
+							Clause
+							{importance && (
+								<span className="font-normal normal-case">
+									{sortByImportance ? ' · by importance ↓' : ' · by order'}
+								</span>
+							)}
+						</button>
 						{kinds.map((kind) => (
 							<span key={kind} className="flex w-[140px] shrink-0 flex-col items-center">
 								<span className="flex items-center gap-1">

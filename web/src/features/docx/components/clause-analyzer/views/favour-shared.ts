@@ -29,19 +29,21 @@ export const listOf = (items: string[]) =>
 const wonBy = (byKind: ByKind, kinds: DeonticKind[], side: Side) =>
 	kinds.filter((kind) => byKind[kind] === side);
 
-/** Every clause with its counts, most important first, and the whole contract's. */
+/**
+ * Every clause with its counts, most important first or in document order, and the whole
+ * contract's. The rank is always the clause's place in importance, whichever order is shown.
+ */
 export function useTallies(
 	grid: StatementGrid,
 	kg: KnowledgeGraph,
-	importance: Record<string, number> | null
+	importance: Record<string, number> | null,
+	sortByImportance = true
 ) {
-	const tallies = useMemo(
-		() => byImportance(tallyClauses(grid, kg), importance),
-		[grid, kg, importance]
-	);
-	const total = useMemo(() => totalOf(tallies), [tallies]);
-	const rank = useMemo(() => new Map(tallies.map((t, i) => [t.clauseId, i + 1])), [tallies]);
-	return { tallies, total, rank };
+	const inDocument = useMemo(() => tallyClauses(grid, kg), [grid, kg]);
+	const ranked = useMemo(() => byImportance(inDocument, importance), [inDocument, importance]);
+	const total = useMemo(() => totalOf(inDocument), [inDocument]);
+	const rank = useMemo(() => new Map(ranked.map((t, i) => [t.clauseId, i + 1])), [ranked]);
+	return { tallies: sortByImportance ? ranked : inDocument, total, rank };
 }
 
 /** The types on screen, always in the same order; the last one on stays on. */

@@ -63,15 +63,12 @@ export function VerdictFirstView({
 
 	const [unfolded, setUnfolded] = useState<Set<TypeVerdict>>(new Set());
 	const [active, setActive] = useState<TypeVerdict | null>(null);
-	// undefined until the reader picks: the first clause that needs their call opens on its own.
-	const [openId, setOpenId] = useState<string | null | undefined>(undefined);
+	// Every row starts closed; the reader opens the one they want.
+	const [openId, setOpenId] = useState<string | null>(null);
 	const [allFragments, setAllFragments] = useState(false);
 	const groupRefs = useRef<Partial<Record<TypeVerdict, HTMLDivElement | null>>>({});
 
-	const opened =
-		openId === undefined
-			? (byGroup.mixed[0] ?? null)
-			: (rows.find((t) => t.clauseId === openId) ?? null);
+	const opened = rows.find((t) => t.clauseId === openId) ?? null;
 	useClauseNotes(kg, opened, KINDS, names);
 
 	const title = (g: TypeVerdict) =>

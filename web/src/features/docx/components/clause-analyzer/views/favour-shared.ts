@@ -21,9 +21,6 @@ import type { DocNote } from '@/features/docx/hooks/useDocNotes';
 
 type ByKind = Partial<Record<DeonticKind, Favour>>;
 
-export const quote = (text: string) =>
-	`“${text.length > 60 ? `${text.slice(0, 60).trim()}…` : text}”`;
-
 export const listOf = (items: string[]) =>
 	items.length <= 1
 		? (items[0] ?? '')
@@ -185,27 +182,6 @@ export function verdictNote(
 		.filter((kind) => byKind[kind] && byKind[kind] !== 'tie')
 		.map((kind) => `${KIND_PLURAL[kind].toLowerCase()} → ${short(names[byKind[kind] as Side])}`)
 		.join(' · ');
-}
-
-/** One sentence from the counts alone, with the same weight-free reading; no model writes it. */
-export function verdictSentence(
-	t: ClauseTally,
-	verdict: TypeVerdict,
-	byKind: ByKind,
-	kinds: DeonticKind[],
-	names: Record<Side, string>
-) {
-	const won = (side: Side) => wonBy(byKind, kinds, side).map((k) => KIND_PLURAL[k].toLowerCase());
-	if (verdict === 'tie') return 'The two parties are even in every type shown.';
-	if (verdict === 'mixed')
-		return `It depends on the type: ${short(names.a)} gets more ${listOf(won('a'))}, ${short(names.b)} gets more ${listOf(won('b'))}. Choosing between them would mean weighting them.`;
-	const led = t.served
-		.filter((s) => s.to === verdict && kinds.includes(s.kind))
-		.slice(0, 2)
-		.map((s) => quote(s.mark.label));
-	return `${short(names[verdict])} wins in ${listOf(won(verdict))} and loses in none${
-		led.length ? `; among what it gets, ${led.join(' and ')}` : ''
-	}.`;
 }
 
 /** The same reading with each type's score: "Equidata wins in obligations (11–4) and rights

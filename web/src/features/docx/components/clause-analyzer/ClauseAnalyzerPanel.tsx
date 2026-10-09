@@ -36,7 +36,6 @@ import {
 } from '@/features/docx/components/clause-analyzer/constants';
 import { ViewBar } from '@/features/docx/components/clause-analyzer/views/ViewBar';
 import { ByTypeView } from '@/features/docx/components/clause-analyzer/views/ByTypeView';
-import { ScoreboardView } from '@/features/docx/components/clause-analyzer/views/ScoreboardView';
 import { VerdictFirstView } from '@/features/docx/components/clause-analyzer/views/VerdictFirstView';
 import { EvidencePanelView } from '@/features/docx/components/clause-analyzer/views/EvidencePanelView';
 import type { ViewProps } from '@/features/docx/components/clause-analyzer/views/types';
@@ -313,7 +312,6 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		<div className="flex h-full flex-col">
 			{viewProps && <ViewBar view={nav.view} onView={nav.setView} />}
 			{inView && viewProps && nav.view === 'bytype' && <ByTypeView {...viewProps} />}
-			{inView && viewProps && nav.view === 'scoreboard' && <ScoreboardView {...viewProps} />}
 			{inView && viewProps && nav.view === 'verdict' && <VerdictFirstView {...viewProps} />}
 			{inView && viewProps && nav.view === 'evidence' && <EvidencePanelView {...viewProps} />}
 

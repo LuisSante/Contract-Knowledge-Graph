@@ -306,7 +306,7 @@ export function EvidencePanelView({
 									{b}
 								</span>
 								<span
-									className="w-24 shrink-0 text-2xs text-muted-foreground"
+									className="w-24 shrink-0 text-2xs text-foreground/70"
 									style={
 										favour === 'a' || favour === 'b' ? { color: SIDE_COLOR[favour] } : undefined
 									}

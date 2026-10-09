@@ -64,6 +64,8 @@ interface ClauseAnalyzerState extends GraphPayload {
 	selectedPartyIds: string[];
 	secondPartyId: string | null;
 	notes: DocNote[];
+	/** Counts every jump to the contract, so asking for the same place again still lands there. */
+	documentTargetSeq: number;
 	/** The clause picked in the Table or in the graph; both tabs show the same one. Keyed
 	 *  by document, since every contract has a clause-1. */
 	selectedClause: { docId: string; clauseId: string } | null;
@@ -98,6 +100,7 @@ export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
 	selectedPartyIds: [],
 	secondPartyId: null,
 	notes: [],
+	documentTargetSeq: 0,
 	selectedClause: null,
 	...EMPTY_PAYLOAD,
 
@@ -183,7 +186,8 @@ export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
 		}),
 	clearFocus: () => set({ ...CLEARED_FOCUS, hops: 1, secondPartyId: null }),
 	setPayload: (payload) => set(payload),
-	setDocumentTarget: (target) => set(target),
+	setDocumentTarget: (target) =>
+		set((state) => ({ ...target, documentTargetSeq: state.documentTargetSeq + 1 })),
 	focusPair: (focusNodeId, secondPartyId) => set({ focusNodeId, secondPartyId, hops: 1 }),
 	setNotes: (notes) => set({ notes }),
 	selectClause: (docId, clauseId) => set({ selectedClause: clauseId ? { docId, clauseId } : null }),

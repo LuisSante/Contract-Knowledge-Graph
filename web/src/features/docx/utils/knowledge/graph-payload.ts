@@ -131,6 +131,7 @@ export type DocumentTarget = Pick<
 	| 'relatedParagraphs'
 	| 'entities'
 	| 'paragraphIds'
+	| 'focusNodeIds'
 	| 'scoreByParagraph'
 	| 'toneByParagraph'
 >;
@@ -189,6 +190,7 @@ export function buildDocumentTarget(
 			})),
 		entities,
 		paragraphIds: ordered,
+		focusNodeIds: [nodeId],
 		scoreByParagraph: Object.fromEntries(ordered.map((pid) => [pid, 1] as const)),
 		toneByParagraph: {},
 	};
@@ -214,6 +216,7 @@ export function buildParagraphTarget(
 			})),
 		entities: [],
 		paragraphIds: ordered,
+		focusNodeIds: [],
 		scoreByParagraph: Object.fromEntries(ordered.map((pid) => [pid, 1] as const)),
 		toneByParagraph: {},
 	};

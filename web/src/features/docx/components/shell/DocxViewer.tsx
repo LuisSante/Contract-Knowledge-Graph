@@ -102,17 +102,30 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 		notes: kgNotes,
 	});
 
+	const documentTargetSeq = useClauseAnalyzerStore((s) => s.documentTargetSeq);
 	useEffect(() => {
 		if (!(clauseAnalyzerActive || graphActive) || !kgAnchorParagraphId || viewer.renderEpoch === 0)
 			return;
-		const element = paragraphElementById.current.get(kgAnchorParagraphId);
-		if (!element) return;
-		element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-		flashElement(element);
+		const paragraph = paragraphElementById.current.get(kgAnchorParagraphId);
+		if (!paragraph) return;
+		// One statement is underlined word by word inside its paragraph; a long paragraph
+		// centred whole would leave its words off screen, so land on them instead.
+		const { focusNodeIds } = useClauseAnalyzerStore.getState();
+		const words =
+			focusNodeIds.length === 1
+				? [
+						...paragraph.querySelectorAll<HTMLElement>(
+							`[data-entity-key="kg-${CSS.escape(focusNodeIds[0])}"]`
+						),
+					]
+				: [];
+		(words[0] ?? paragraph).scrollIntoView({ behavior: 'smooth', block: 'center' });
+		for (const element of words.length > 0 ? words : [paragraph]) flashElement(element);
 	}, [
 		clauseAnalyzerActive,
 		graphActive,
 		kgAnchorParagraphId,
+		documentTargetSeq,
 		viewer.renderEpoch,
 		paragraphElementById,
 	]);

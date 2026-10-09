@@ -19,6 +19,9 @@ export interface Served {
 	by: Side | 'both' | null;
 	/** The contract's own words for it. */
 	text: string;
+	/** Which of its clause's paragraphs holds it, from 1; null when the clause is a single
+	 *  paragraph or the statement sits outside it. */
+	paragraph: number | null;
 }
 
 export interface ClauseTally {
@@ -47,6 +50,9 @@ export const sectionOf = (ref: string | null | undefined): string | null => {
 	return number ? `§${number}` : null;
 };
 
+/** A paragraph's place in the document, from the number its id ends in. */
+const paragraphNumber = (pid: string) => Number(pid.match(/-p-(\d+)$/)?.[1] ?? 0);
+
 /** A clause's name and number; one with no heading goes by its number alone. */
 export function clauseTitle(
 	clause: KgClause | undefined,
@@ -70,12 +76,19 @@ export function tallyClauses(
 	lanes: GridLane[] = ['a', 'b']
 ): ClauseTally[] {
 	const clauseOf = new Map(kg.clauses.map((c) => [c.id, c] as const));
-	const textOf = new Map(
-		[...kg.obligations, ...kg.rights, ...kg.prohibitions].map((s) => [s.id, s.text] as const)
-	);
+	const statements = [...kg.obligations, ...kg.rights, ...kg.prohibitions];
+	const textOf = new Map(statements.map((s) => [s.id, s.text] as const));
+	const paragraphOf = new Map(statements.map((s) => [s.id, s.paragraphIds[0]] as const));
 	const out: ClauseTally[] = [];
 	for (const row of grid.rows) {
 		if (!row.clauseId) continue;
+		const inClause = [...(clauseOf.get(row.clauseId)?.paragraphIds ?? [])].sort(
+			(x, y) => paragraphNumber(x) - paragraphNumber(y)
+		);
+		const paragraphIn = (statementId: string) => {
+			const at = inClause.indexOf(paragraphOf.get(statementId) ?? '');
+			return inClause.length > 1 && at >= 0 ? at + 1 : null;
+		};
 		const tally: ClauseTally = {
 			clauseId: row.clauseId,
 			...clauseTitle(clauseOf.get(row.clauseId), row.heading),
@@ -102,7 +115,14 @@ export function tallyClauses(
 					to = mark.counterpartLane;
 					by = lane;
 				}
-				tally.served.push({ mark, kind, to, by, text: textOf.get(mark.id) || mark.detail });
+				tally.served.push({
+					mark,
+					kind,
+					to,
+					by,
+					text: textOf.get(mark.id) || mark.detail,
+					paragraph: paragraphIn(mark.id),
+				});
 				if (to === 'both' || to === 'a') tally.count[kind].a += 1;
 				if (to === 'both' || to === 'b') tally.count[kind].b += 1;
 			}

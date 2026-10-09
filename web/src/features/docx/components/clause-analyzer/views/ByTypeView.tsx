@@ -112,7 +112,7 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 				{scoredSentence(t.count, verdict, byKind, kinds, names)}
 			</p>
 			{fragmentKind && (
-				<p className="flex items-center gap-1.5 text-2xs text-muted-foreground">
+				<p className="flex items-center gap-1.5 text-2xs text-foreground/70">
 					<span
 						className="size-2.5 rounded-[2px]"
 						style={{ backgroundColor: KIND_COLORS[fragmentKind] }}
@@ -247,7 +247,7 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 										))}
 										<span className="pointer-events-none w-36 shrink-0 space-y-0.5 font-normal">
 											<VerdictBadge verdict={verdict} names={names} />
-											<span className="block text-[10px] leading-snug text-muted-foreground">
+											<span className="block text-[10px] leading-snug text-foreground/70">
 												{note(verdict, byKind)}
 											</span>
 										</span>

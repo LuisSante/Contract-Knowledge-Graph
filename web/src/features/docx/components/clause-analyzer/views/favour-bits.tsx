@@ -3,6 +3,7 @@
 import type { MouseEvent as ReactMouseEvent } from 'react';
 import { ArrowUpRightIcon, CheckIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
 import { KIND_COLORS } from '@/features/docx/components/clause-analyzer/constants';
 import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/views/bits';
 import {
@@ -142,7 +143,8 @@ export function GraphLink({ onClick, className }: { onClick: () => void; classNa
 	);
 }
 
-/** One statement in the contract's own words, with a link to where it sits. */
+/** One statement in the contract's own words; a click underlines it in the contract, and
+ *  the one underlined there stays marked here. */
 export function Fragment({
 	served,
 	section,
@@ -156,12 +158,33 @@ export function Fragment({
 	square?: boolean;
 	onOpen: (nodeId: string) => void;
 }) {
+	const shown = useClauseAnalyzerStore(
+		(s) => s.focusNodeIds.length === 1 && s.focusNodeIds[0] === served.mark.id
+	);
+	// "§1 ¶2": the clause's number and, when it runs over several paragraphs, which one.
+	const place =
+		[section, served.paragraph ? `¶${served.paragraph}` : null].filter(Boolean).join(' ') || 'View';
 	return (
-		<div className="flex items-start gap-2.5 px-3 py-2">
+		<button
+			type="button"
+			onClick={() => onOpen(served.mark.id)}
+			aria-current={shown || undefined}
+			title={
+				served.paragraph
+					? `Paragraph ${served.paragraph} of ${section ?? 'the clause'}: show it in the contract`
+					: 'Show it in the contract'
+			}
+			className={cn(
+				'group flex w-full items-start gap-2.5 px-3 py-2 text-left transition-colors hover:bg-muted/60',
+				shown && 'bg-accent hover:bg-accent'
+			)}
+			style={shown ? { boxShadow: `inset 3px 0 0 ${KIND_COLORS[served.kind]}` } : undefined}
+		>
 			{square && (
-				<span className="mt-1">
-					<KindSquare kind={served.kind} size={8} onClick={() => onOpen(served.mark.id)} />
-				</span>
+				<span
+					className="mt-1 size-2 shrink-0 rounded-[2px]"
+					style={{ backgroundColor: KIND_COLORS[served.kind] }}
+				/>
 			)}
 			<span className="min-w-0 flex-1">
 				<span className="flex flex-wrap items-center gap-1.5">
@@ -172,19 +195,14 @@ export function Fragment({
 						</span>
 					)}
 				</span>
-				<span className="block text-2xs leading-relaxed text-muted-foreground italic">
+				<span className="block text-xs leading-relaxed text-foreground/80 italic">
 					«{served.text}»
 				</span>
 			</span>
-			<button
-				type="button"
-				onClick={() => onOpen(served.mark.id)}
-				title="Show it in the contract"
-				className="inline-flex shrink-0 items-center text-2xs font-medium text-primary hover:underline"
-			>
-				{section ?? 'View'}
+			<span className="inline-flex shrink-0 items-center text-2xs font-medium whitespace-nowrap text-primary group-hover:underline">
+				{place}
 				<ArrowUpRightIcon className="size-3" />
-			</button>
-		</div>
+			</span>
+		</button>
 	);
 }

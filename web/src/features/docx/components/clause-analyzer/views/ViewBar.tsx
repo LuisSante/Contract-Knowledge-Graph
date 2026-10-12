@@ -22,7 +22,6 @@ export function ViewBar({ view, onView }: ViewBarProps) {
 						role="tab"
 						aria-selected={view === v.id}
 						onClick={() => onView(v.id)}
-						title={'title' in v ? v.title : undefined}
 						className={cn(
 							'rounded-md px-3 py-1 text-xs font-medium',
 							view === v.id

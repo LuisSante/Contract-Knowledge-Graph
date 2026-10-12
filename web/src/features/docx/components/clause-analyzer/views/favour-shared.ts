@@ -1,9 +1,9 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
 import { short } from '@/features/docx/components/clause-analyzer/views/bits';
-import { KIND_PLURAL } from '@/features/docx/components/clause-analyzer/views/favour-bits';
+import { KIND_LABEL } from '@/features/docx/components/clause-analyzer/views/favour-bits';
 import {
 	DEONTIC_KINDS,
 	byImportance,
@@ -73,6 +73,23 @@ export const servedTo = (t: ClauseTally, side: Side, kinds: DeonticKind[]): Serv
 		.filter((s) => kinds.includes(s.kind) && (s.to === side || s.to === 'both'))
 		.sort((x, y) => DEONTIC_KINDS.indexOf(x.kind) - DEONTIC_KINDS.indexOf(y.kind));
 
+/**
+ * Whose statement a party gets: its own right, or the other party's obligation or prohibition,
+ * which that party has to honour. The titles are worded from whoever acts ("Bear audit
+ * expense"), so without this "What National gets: Bear audit expense" reads as National paying.
+ */
+export function originOf(
+	s: Served,
+	names: Record<Side, string>
+): { text: string; side: Side | null } {
+	const side = s.kind === 'right' ? s.to : s.by;
+	const shared = side !== 'a' && side !== 'b';
+	if (s.kind === 'right')
+		return { text: shared ? 'shared right' : 'own right', side: shared ? null : side };
+	if (shared) return { text: `shared ${s.kind}`, side: null };
+	return { text: `${short(names[side])}'s ${s.kind}`, side };
+}
+
 /** How many clauses land on each verdict. */
 export function verdictCounts(
 	rows: ClauseTally[],
@@ -121,23 +138,15 @@ export const otherVerdicts = (verdict: TypeVerdict) =>
 
 /**
  * The open clause's fragments are marked in the contract on the left too, one note per
- * paragraph: a paragraph often holds several statements. `describe` words a paragraph's
- * statements the way a view names them; change `describeKey` when its wording changes.
+ * paragraph: a paragraph often holds several statements.
  */
 export function useClauseNotes(
 	kg: KnowledgeGraph,
 	opened: ClauseTally | null,
 	kinds: DeonticKind[],
-	names: Record<Side, string>,
-	describe?: (served: Served[]) => string,
-	describeKey = ''
+	names: Record<Side, string>
 ) {
 	const setNotes = useClauseAnalyzerStore((s) => s.setNotes);
-	// Kept in a ref: an inline function would be new on every render and re-run the effect.
-	const describeRef = useRef(describe);
-	useEffect(() => {
-		describeRef.current = describe;
-	});
 	const paragraphsOf = useMemo(
 		() =>
 			new Map(
@@ -150,31 +159,25 @@ export function useClauseNotes(
 
 	useEffect(() => {
 		if (!opened) return;
-		const byParagraph = new Map<string, Served[]>();
+		const byParagraph = new Map<string, Map<string, number>>();
 		for (const s of opened.served) {
 			if (!kinds.includes(s.kind)) continue;
 			const pid = paragraphsOf.get(s.mark.id)?.[0];
 			if (!pid) continue;
-			byParagraph.set(pid, [...(byParagraph.get(pid) ?? []), s]);
+			const to = s.to === 'both' ? 'both' : short(names[s.to]);
+			const tally = byParagraph.get(pid) ?? new Map<string, number>();
+			tally.set(to, (tally.get(to) ?? 0) + 1);
+			byParagraph.set(pid, tally);
 		}
-		const serves = (served: Served[]) => {
-			const tally = new Map<string, number>();
-			for (const s of served) {
-				const to = s.to === 'both' ? 'both' : short(names[s.to]);
-				tally.set(to, (tally.get(to) ?? 0) + 1);
-			}
-			return `Serves ${[...tally].map(([to, n]) => (n > 1 ? `${to} ×${n}` : to)).join(' · ')}`;
-		};
-		const words = describeRef.current ?? serves;
-		const notes: DocNote[] = [...byParagraph].map(([pid, served]) => ({
+		const notes: DocNote[] = [...byParagraph].map(([pid, tally]) => ({
 			pid,
-			text: words(served),
+			text: `Serves ${[...tally].map(([to, n]) => (n > 1 ? `${to} ×${n}` : to)).join(' · ')}`,
 			tone: 'step',
 			at: 'before',
 		}));
 		setNotes(notes);
 		return () => setNotes([]);
-	}, [opened, kinds, paragraphsOf, names, setNotes, describeKey]);
+	}, [opened, kinds, paragraphsOf, names, setNotes]);
 }
 
 /** The verdict's reason in a few words, for under a pill. */
@@ -188,12 +191,12 @@ export function verdictNote(
 	if (verdict !== 'mixed') return 'loses in no type';
 	return kinds
 		.filter((kind) => byKind[kind] && byKind[kind] !== 'tie')
-		.map((kind) => `${KIND_PLURAL[kind].toLowerCase()} → ${short(names[byKind[kind] as Side])}`)
+		.map((kind) => `${KIND_LABEL[kind].toLowerCase()} → ${short(names[byKind[kind] as Side])}`)
 		.join(' · ');
 }
 
-/** The same reading with each type's score: "Equidata wins in obligations (11–4) and rights
- *  (2–0), and loses in no type." */
+/** The same reading with each type's score: "Equidata wins in rights from obligations (11–4)
+ *  and own rights (2–0), and loses in no type." */
 export function scoredSentence(
 	count: ClauseTally['count'],
 	verdict: TypeVerdict,
@@ -201,10 +204,12 @@ export function scoredSentence(
 	kinds: DeonticKind[],
 	names: Record<Side, string>
 ) {
+	// The winner's count first, as a score is read: Equidata wins 11–4, whichever side it is on.
+	const other = (side: Side): Side => (side === 'a' ? 'b' : 'a');
 	const scored = (side: Side) =>
 		listOf(
 			wonBy(byKind, kinds, side).map(
-				(k) => `${KIND_PLURAL[k].toLowerCase()} (${count[k].a}–${count[k].b})`
+				(k) => `${KIND_LABEL[k].toLowerCase()} (${count[k][side]}–${count[k][other(side)]})`
 			)
 		);
 	if (verdict === 'tie') return 'The two parties are even in every type shown.';

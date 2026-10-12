@@ -47,9 +47,6 @@ export function PartyEntry({
 					id: p.id,
 					name: p.name,
 					role: p.role,
-					obligations: 0,
-					rights: 0,
-					prohibitions: 0,
 					total: 0,
 				},
 			])
@@ -57,11 +54,7 @@ export function PartyEntry({
 		for (const v of deonticNodes(kg)) {
 			for (const partyId of new Set([v.burdenPartyId, v.benefitPartyId])) {
 				const row = partyId ? tally.get(partyId) : undefined;
-				if (!row) continue;
-				if (v.kind === 'obligation') row.obligations += 1;
-				else if (v.kind === 'right') row.rights += 1;
-				else row.prohibitions += 1;
-				row.total += 1;
+				if (row) row.total += 1;
 			}
 		}
 		return [...tally.values()].sort((a, b) => b.total - a.total || a.name.localeCompare(b.name));

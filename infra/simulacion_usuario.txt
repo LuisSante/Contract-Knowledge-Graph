@@ -1,0 +1,175 @@
+SIMULACIÓN DE UN USUARIO NUEVO EN TABLE V2 — CONTRATO STEELVAULT (EQUIDATA / NATIONAL)
+=====================================================================================
+
+Fecha: 12 de octubre de 2026
+Contrato: Marketing Affiliate Agreement entre Equidata, Inc. y National Credit Report.com, LLC
+Vista evaluada: solo «Table v2» del Clause Analyzer (Table y Knowledge Graph quedan fuera).
+Pantalla: 1440 × 960 px, con el panel derecho a unos 750 px (el documento ocupa el resto).
+
+Quién soy en esta simulación
+----------------------------
+Trabajo en National Credit Report, la empresa que vende los servicios de Equidata (el contrato
+la llama «Marketing Affiliate»). No soy abogado. Leo inglés, pero despacio. Es la primera vez
+que uso el sistema y quiero saber dos cosas: si el contrato me conviene, y qué tengo que hacer
+yo y qué me puede hacer Equidata.
+
+Cómo se hizo
+------------
+La simulación la hizo Claude en el navegador integrado, actuando como esa persona: hizo clic
+donde lo haría alguien sin instrucciones, leyó solo lo que aparecía en pantalla y anotó cada
+duda. Dos cosas a propósito:
+- No respondió a la pregunta «Do you agree…?», para no mezclar respuestas inventadas con las
+  revisiones reales que se guardan en ese navegador.
+- Los controles que tocó por curiosidad («top 10 − +», los filtros) los dejó como estaban.
+
+
+RECORRIDO, PASO A PASO
+======================
+
+1. Llego a Table v2
+-------------------
+Abro el contrato, pulso «Compare the pair» con las dos partes ya elegidas y abro la pestaña
+«Table v2». A la izquierda queda el contrato; a la derecha, la tabla.
+
+2. Leo las tarjetas de arriba
+-----------------------------
+Qué veo: tres tarjetas y una oscura.
+- «Rights from obligations — what the other must do for it — 15 : 29», con «National» y
+  «Equidata» debajo.
+- «Own rights — what it may do — 3 : 14».
+- «Rights from prohibitions — what the other may not do — 8 : 9».
+- Tarjeta oscura «CONTRACT VERDICT: Equidata. Ahead in all three types, losing in none.
+  10 in favour · 9 favour neither · 2 for National · 1 depends on the type».
+Qué pienso: «Equidata tiene 29 derechos que salen de obligaciones; o sea, yo le debo 29 cosas
+y ella me debe 15. Equidata tiene 14 derechos propios y yo 3». Las palabras me ayudan: el
+número va con quien lo recibe.
+Dudas pequeñas:
+- «10 in favour», ¿de quién? Se entiende por el título (Equidata), pero la frase no lo dice.
+- «what the other must do for it»: tengo que releer para saber a quién se refiere «it».
+¿Lo entendí? Sí. La tarjeta oscura se lee entera.
+
+3. Miro la tabla
+----------------
+Qué veo: una fila por cláusula, con columnas «Rights from obligations», «Own rights», «Rights
+from prohibitions» y «Who it favours». En cada celda, puntos de color a cada lado de una raya
+y un número a cada extremo. En la última columna, una etiqueta: «Equidata», «Neither (tie)»,
+«National» o «Depends on the type», con una nota debajo («loses in no type», «equal in every
+type»).
+Qué pienso: los puntos morados son míos y los verdes de Equidata; se entiende por los colores
+de los nombres en la cabecera. «loses in no type» lo tengo que releer (doble negación).
+Debajo de cada cláusula hay un enlace «View in graph ↗»: ¿qué grafo? No lo uso.
+
+4. Paso el ratón por «Clause · by importance»
+---------------------------------------------
+Sale: «Order the rows by how much each clause weighs inside the contract (PageRank with a
+per-clause prior)…». No sé qué es PageRank ni «prior». Me quedo con «las más importantes
+primero».
+
+5. Paso el ratón por una celda de puntos
+----------------------------------------
+En Compensation, columna «Rights from obligations», sale: «Rights from obligations: 4 for
+National, 11 for Equidata — click to see only these fragments». Claro.
+
+6. Abro «Compensation»
+----------------------
+Qué veo: «Equidata wins in rights from obligations (11–4) and own rights (2–0), and loses in
+no type.» Debajo, dos listas: «What National gets (4)» y «What Equidata gets (13)».
+Cada fragmento lleva una etiqueta de color delante:
+- En «What National gets»: «Equidata's obligation — Bill compensation», «Equidata's
+  obligation — Notify price increases».
+- En «What Equidata gets»: «National's obligation — Collect consumer payments», «National's
+  obligation — Pay service compensation».
+Qué pienso: «Collect consumer payments» lo tengo que hacer yo (National) y le sirve a
+Equidata. Sin la etiqueta habría creído que Equidata cobra. Con ella está claro.
+Duda de fondo: «Bill compensation» (Equidata me factura cada dos meses) aparece como algo que
+yo gano. ¿Que me facturen es un beneficio para mí? Lo de avisarme 30 días antes de subir el
+precio sí lo es.
+Con el panel a 750 px, la lista «What Equidata gets» queda cortada a la derecha y tengo que
+mover la tabla de lado para ver sus enlaces «§1 ¶1 ↗».
+¿Lo entendí? Sí.
+
+7. Hago clic en un fragmento
+----------------------------
+Hago clic en «Collect consumer payments»: el documento salta a esa frase exacta («Marketing
+Affiliate shall be responsible for collecting all amounts due directly from the Consumer»), la
+subraya, y en el panel el fragmento queda marcado con fondo y una barra de color.
+En el documento, encima de cada párrafo de la cláusula, hay una etiqueta morada: «Serves
+Equidata ×8 · National ×3». En el panel decía «gets»; aquí dice «Serves». Es lo mismo, con
+otra palabra.
+¿Lo entendí? Sí, muy bien. Es la parte más útil para mí.
+
+8. Busco qué me favorece: filtro «National»
+-------------------------------------------
+Pulso «National» en los filtros de arriba de la tabla → salen 2 cláusulas: «Proprietary
+Information» y «§8.4».
+Abro «§8.4»: «National wins in rights from obligations (2–0)». Equidata me garantiza que está
+autorizada para dar el servicio y que puede darlo como se describe.
+Los enlaces de esos fragmentos dicen solo «¶1», sin el «§8.4» delante (pasa en las cláusulas
+que no tienen título).
+Leo en el documento la cláusula 11, «Liability»: «…PROVIDED ON AN "AS IS" BASIS. EQUIDATA
+EXPRESSLY DISCLAIMS ANY WARRANTY OF ANY KIND WHATSOEVER…».
+Qué pienso: «Entonces la garantía de §8.4 vale poco: en §11 Equidata dice que no garantiza
+nada». Table v2 me dice que §8.4 me favorece, pero leída junto a §11 no es tan así.
+¿Lo entendí? Table v2, sí. El contrato, solo porque leí las dos cláusulas por mi cuenta.
+
+9. Abro «Audit», la única que «Depends on the type»
+--------------------------------------------------
+Qué veo: «National wins in rights from obligations (1–0) and Equidata in own rights (2–0).»
+- What National gets: «Equidata's obligation — Bear audit expense».
+- What Equidata gets: «own right — Audit marketing activities», «own right — Inspect business
+  site».
+Qué pienso: Equidata puede auditarme y entrar a mi negocio, pero lo paga ella. Gana en un tipo
+y yo en otro, por eso «depends». La etiqueta «Equidata's obligation» me evita pensar que yo
+pago la auditoría.
+¿Lo entendí? Sí.
+
+10. Juego con los filtros de tipo
+---------------------------------
+Apago «Own rights»: quedan 21 cláusulas; National pasa de 2 a 3 (Audit ahora me favorece) y
+«Depends» queda en 0. La tarjeta dice «Ahead in both types shown, losing in none. 9 in favour ·
+9 favour neither · 3 for National · 0 depend on the type». Lo vuelvo a encender.
+¿Lo entendí? Sí: los números se recalculan con lo que muestro.
+
+11. Pruebo «top 10 − +», arriba a la derecha del panel
+------------------------------------------------------
+Pulso «+»: pasa a «top 15», pero en Table v2 no cambia nada. Lo vuelvo a 10.
+Qué pienso: «¿para qué sirve esto?».
+¿Lo entendí? No.
+
+
+LO QUE ME LLEVO COMO USUARIO
+============================
+- El contrato favorece a Equidata. Yo le debo 29 cosas y ella me debe 15; ella tiene 14
+  derechos propios (entre ellos subir el precio y auditarme) y yo 3.
+- Solo 2 cláusulas salen a mi favor, y una (§8.4, las garantías) queda debilitada por §11
+  (Equidata no garantiza nada, «as is»).
+- Lo más útil: abrir una cláusula, ver «What National gets / What Equidata gets» con su
+  etiqueta, y hacer clic para leer la frase exacta en el contrato.
+
+
+RESUMEN PARA EL EQUIPO (SOLO TABLE V2)
+======================================
+
+Lo que funcionó
+- Los nombres «Rights from obligations», «Own rights», «Rights from prohibitions» con su
+  subtítulo: el número va con quien lo recibe.
+- La tarjeta del contrato se lee completa.
+- La frase de cada cláusula pone primero el marcador del ganador («(11–4)»).
+- Las etiquetas «National's obligation / Equidata's obligation / own right» evitan leer al
+  revés títulos como «Collect consumer payments» o «Bear audit expense».
+- Clic en un fragmento → el documento salta a la frase y la subraya.
+- «Neither (tie)» y «Depends on the type» se entienden; los filtros recalculan bien.
+
+Dónde me trabé (de más a menos importante)
+1. §8.4 sale «Favours National», pero §11 (Liability) rechaza toda garantía. Leídas por
+   separado, el veredicto de §8.4 engaña.
+2. ¿«Bill compensation» es un beneficio para National? Contar «Equidata factura» como algo que
+   gana National es discutible.
+3. «top 10 − +» no cambia nada en Table v2.
+4. Con el panel a 750 px, la lista de la derecha de una cláusula abierta queda cortada y hay
+   que desplazarse de lado.
+5. Palabras sin explicar: «PageRank with a per-clause prior», «View in graph» (¿qué grafo?).
+6. En cláusulas sin título (§8.4) el enlace del fragmento dice solo «¶1».
+7. En el documento la etiqueta dice «Serves…»; en el panel, «gets».
+8. Frases que se releen: «loses in no type», «what the other must do for it», «10 in favour»
+   (sin decir de quién).

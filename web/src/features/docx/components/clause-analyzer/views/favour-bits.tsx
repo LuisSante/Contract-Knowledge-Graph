@@ -14,10 +14,22 @@ import {
 import type { MarkKind, Side } from '@/features/docx/utils/knowledge/statement-grid';
 import type { DeonticKind } from '@/types/knowledge';
 
-export const KIND_PLURAL: Record<DeonticKind, string> = {
-	obligation: 'Obligations',
-	right: 'Rights',
-	prohibition: 'Prohibitions',
+/**
+ * Each type named for the party it is counted for, which is what it gives that party: its own
+ * rights, and the rights the other party's obligations and prohibitions give it. A duty of one
+ * party is a right of the other, so "Equidata: 29 rights from obligations" reads the way it counts.
+ */
+export const KIND_LABEL: Record<DeonticKind, string> = {
+	obligation: 'Rights from obligations',
+	right: 'Own rights',
+	prohibition: 'Rights from prohibitions',
+};
+
+/** What each type gives the party it is counted for, in a few words. */
+export const KIND_GLOSS: Record<DeonticKind, string> = {
+	obligation: 'what the other must do for it',
+	right: 'what it may do',
+	prohibition: 'what the other may not do',
 };
 
 /** A verdict's colour: the side it favours, amber when it depends on the type. */
@@ -33,7 +45,7 @@ export const verdictLabel = (verdict: TypeVerdict, names: Record<Side, string>) 
 		? short(names[verdict])
 		: verdict === 'mixed'
 			? 'Depends on the type'
-			: 'Tie';
+			: 'Neither (tie)';
 
 /** A colour washed out to a background, for hex and CSS variables alike. */
 export const tint = (color: string, percent: number) =>
@@ -117,7 +129,7 @@ export function KindFilter({
 							className="size-2.5 rounded-[2px]"
 							style={{ backgroundColor: KIND_COLORS[kind] }}
 						/>
-						{KIND_PLURAL[kind]}
+						{KIND_LABEL[kind]}
 						{on && !compact && <CheckIcon className="size-3" />}
 					</button>
 				);
@@ -149,12 +161,16 @@ export function Fragment({
 	served,
 	section,
 	tag,
+	tagColor,
 	square = true,
 	onOpen,
 }: {
 	served: Served;
 	section: string | null;
+	/** Said before the title, so the reader knows whose statement it is. */
 	tag?: string;
+	/** The colour of the party the tag names. */
+	tagColor?: string;
 	square?: boolean;
 	onOpen: (nodeId: string) => void;
 }) {
@@ -188,12 +204,20 @@ export function Fragment({
 			)}
 			<span className="min-w-0 flex-1">
 				<span className="flex flex-wrap items-center gap-1.5">
-					<span className="text-xs font-semibold text-foreground">{served.mark.label}</span>
 					{tag && (
-						<span className="rounded bg-secondary px-1.5 py-px text-[10px] text-muted-foreground">
+						<span
+							className={cn(
+								'rounded px-1.5 py-px text-[10px] font-medium',
+								!tagColor && 'bg-secondary text-foreground/80'
+							)}
+							style={
+								tagColor ? { backgroundColor: tint(tagColor, 14), color: tagColor } : undefined
+							}
+						>
 							{tag}
 						</span>
 					)}
+					<span className="text-xs font-semibold text-foreground">{served.mark.label}</span>
 				</span>
 				<span className="block text-xs leading-relaxed text-foreground/80 italic">
 					«{served.text}»

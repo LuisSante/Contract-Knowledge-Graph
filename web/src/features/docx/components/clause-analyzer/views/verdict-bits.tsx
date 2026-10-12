@@ -7,13 +7,15 @@ import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/vi
 import {
 	Fragment,
 	GraphLink,
-	KIND_PLURAL,
+	KIND_GLOSS,
+	KIND_LABEL,
 	tint,
 	verdictColor,
 	verdictLabel,
 } from '@/features/docx/components/clause-analyzer/views/favour-bits';
 import {
 	listOf,
+	originOf,
 	otherVerdicts,
 	scoredSentence,
 	servedTo,
@@ -56,17 +58,17 @@ export function Scoreboard({
 		const won = kinds.filter((kind) => contract.byKind[kind] === contract.verdict);
 		const where =
 			won.length < kinds.length
-				? listOf(won.map((k) => KIND_PLURAL[k].toLowerCase()))
+				? listOf(won.map((k) => KIND_LABEL[k].toLowerCase()))
 				: kinds.length === 3
 					? 'all three types'
 					: kinds.length === 2
 						? 'both types shown'
-						: KIND_PLURAL[kinds[0]].toLowerCase();
+						: KIND_LABEL[kinds[0]].toLowerCase();
 		return `Ahead in ${where}, losing in none.`;
 	};
 
 	const clauseLine = () => {
-		const ties = `${counts.tie} ${counts.tie === 1 ? 'tie' : 'ties'}`;
+		const ties = `${counts.tie} ${counts.tie === 1 ? 'favours' : 'favour'} neither`;
 		const [first, second]: Side[] = lead === 'b' ? ['b', 'a'] : ['a', 'b'];
 		const parts = lead
 			? [`${counts[first]} in favour`, ties, `${counts[second]} for ${short(names[second])}`]
@@ -95,20 +97,21 @@ export function Scoreboard({
 					!kinds.includes(kind) && 'opacity-40'
 				)}
 			>
-				<div className="flex items-center justify-between gap-2">
-					<span className="flex items-center gap-1.5 text-xs font-semibold">
-						<span
-							className="size-2.5 rounded-[2px]"
-							style={{ backgroundColor: KIND_COLORS[kind] }}
-						/>
-						{KIND_PLURAL[kind]}
-					</span>
-					<span className="text-2xs text-muted-foreground">{a + b} statements</span>
-				</div>
-				<div className="mt-1 flex items-baseline gap-1.5 text-3xl leading-tight font-bold tabular-nums">
+				<p className="flex items-center gap-1.5 text-xs font-semibold">
+					<span
+						className="size-2.5 shrink-0 rounded-[2px]"
+						style={{ backgroundColor: KIND_COLORS[kind] }}
+					/>
+					{KIND_LABEL[kind]}
+				</p>
+				<p className="pl-4 text-2xs text-muted-foreground">{KIND_GLOSS[kind]}</p>
+				<div className="mt-1 flex flex-wrap items-baseline gap-x-1.5 text-3xl leading-tight font-bold tabular-nums">
 					{big('a')}
 					<span className="text-xl text-foreground">:</span>
 					{big('b')}
+					<span className="ml-auto text-2xs font-normal whitespace-nowrap text-muted-foreground">
+						{a + b} statements
+					</span>
 				</div>
 				<div className="flex justify-between text-2xs">
 					<span style={{ color: SIDE_COLOR.a }}>{short(names.a)}</span>
@@ -168,7 +171,7 @@ export function VerdictFilter({
 	const options: Array<{ id: VerdictFilterValue; label: string; color?: string }> = [
 		{ id: 'all', label: 'All' },
 		{ id: 'a', label: short(names.a), color: SIDE_COLOR.a },
-		{ id: 'tie', label: 'Tie' },
+		{ id: 'tie', label: 'Neither' },
 		{ id: 'mixed', label: 'Depends', color: 'var(--warning-foreground)' },
 		{ id: 'b', label: short(names.b), color: SIDE_COLOR.b },
 	];
@@ -314,14 +317,19 @@ export function WhatEachGets({
 					</p>
 				) : (
 					<div className="divide-y divide-border/60 bg-card">
-						{fragments.map((s) => (
-							<Fragment
-								key={`${s.mark.id}-${s.to}`}
-								served={s}
-								section={tally.section}
-								onOpen={onOpen}
-							/>
-						))}
+						{fragments.map((s) => {
+							const origin = originOf(s, names);
+							return (
+								<Fragment
+									key={`${s.mark.id}-${s.to}`}
+									served={s}
+									section={tally.section}
+									tag={origin.text}
+									tagColor={origin.side ? SIDE_COLOR[origin.side] : undefined}
+									onOpen={onOpen}
+								/>
+							);
+						})}
 					</div>
 				)}
 				{gets.length > SHOWN_FRAGMENTS && (
@@ -444,7 +452,11 @@ export function AgreeBox({
 		<div className="flex flex-wrap items-center gap-2 text-xs">
 			<span className="font-medium">
 				Do you agree with «
-				{verdict === 'mixed' ? 'Depends on the type' : `Favours ${verdictLabel(verdict, names)}`}
+				{verdict === 'mixed'
+					? 'Depends on the type'
+					: verdict === 'tie'
+						? 'Favours neither'
+						: `Favours ${verdictLabel(verdict, names)}`}
 				»?
 			</span>
 			<AnswerPill verdict={verdict} on={answer === 'agree'} onClick={() => onAnswer('agree')}>
@@ -452,7 +464,7 @@ export function AgreeBox({
 			</AnswerPill>
 			{otherVerdicts(verdict).map((f) => (
 				<AnswerPill key={f} verdict={f} on={answer === f} onClick={() => onAnswer(f)}>
-					{f === 'tie' ? 'No, it is a tie' : `No, it favours ${short(names[f])}`}
+					{f === 'tie' ? 'No, it favours neither' : `No, it favours ${short(names[f])}`}
 				</AnswerPill>
 			))}
 		</div>

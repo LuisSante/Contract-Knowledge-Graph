@@ -7,8 +7,11 @@ export const VIEWS = [
 	{ id: 'table', label: 'Table' },
 	// Meant to replace Table; both stay while Table serves as the reference.
 	{ id: 'bytype', label: 'Table v2' },
-	// Proposals built on Table v2's weight-free rule, to compare against it.
-	{ id: 'evidence', label: 'Table v3' },
+	// Proposals 6–9 from the Figma round on who owes and who benefits, built on Table v2.
+	{ id: 'p6', label: '6', title: 'Each number, a sentence' },
+	{ id: 'p7', label: '7', title: 'Double entry: in favour of / borne by' },
+	{ id: 'p8', label: '8', title: 'Demand, do, be protected' },
+	{ id: 'p9', label: '9', title: 'From my seat' },
 ] as const;
 
 export type View = (typeof VIEWS)[number]['id'];

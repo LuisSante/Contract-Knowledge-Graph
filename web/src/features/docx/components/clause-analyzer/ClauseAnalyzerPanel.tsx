@@ -36,7 +36,10 @@ import {
 } from '@/features/docx/components/clause-analyzer/constants';
 import { ViewBar } from '@/features/docx/components/clause-analyzer/views/ViewBar';
 import { ByTypeView } from '@/features/docx/components/clause-analyzer/views/ByTypeView';
-import { EvidencePanelView } from '@/features/docx/components/clause-analyzer/views/EvidencePanelView';
+import { P6View } from '@/features/docx/components/clause-analyzer/views/proposals/P6View';
+import { P7View } from '@/features/docx/components/clause-analyzer/views/proposals/P7View';
+import { P8View } from '@/features/docx/components/clause-analyzer/views/proposals/P8View';
+import { P9View } from '@/features/docx/components/clause-analyzer/views/proposals/P9View';
 import type { ViewProps } from '@/features/docx/components/clause-analyzer/views/types';
 
 interface ClauseAnalyzerPanelProps {
@@ -271,12 +274,20 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		}),
 		[viewKg, pairA, pairB]
 	);
+	const roles = useMemo(
+		() => ({
+			a: viewKg?.parties.find((p) => p.id === pairA)?.role ?? '',
+			b: viewKg?.parties.find((p) => p.id === pairB)?.role ?? '',
+		}),
+		[viewKg, pairA, pairB]
+	);
 	const viewProps: ViewProps | null =
 		pairIds && viewKg && grid
 			? {
 					docId,
 					kg: viewKg,
 					names,
+					roles,
 					grid,
 					importance: clauseImportance?.byClause ?? null,
 					onOpen: openInDocument,
@@ -311,7 +322,10 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		<div className="flex h-full flex-col">
 			{viewProps && <ViewBar view={nav.view} onView={nav.setView} />}
 			{inView && viewProps && nav.view === 'bytype' && <ByTypeView {...viewProps} />}
-			{inView && viewProps && nav.view === 'evidence' && <EvidencePanelView {...viewProps} />}
+			{inView && viewProps && nav.view === 'p6' && <P6View {...viewProps} />}
+			{inView && viewProps && nav.view === 'p7' && <P7View {...viewProps} />}
+			{inView && viewProps && nav.view === 'p8' && <P8View {...viewProps} />}
+			{inView && viewProps && nav.view === 'p9' && <P9View {...viewProps} />}
 
 			{/* The table fills the panel; the graph has a tab of its own. */}
 			<div className={cn('flex', inView ? 'hidden' : 'min-h-0 flex-1')}>

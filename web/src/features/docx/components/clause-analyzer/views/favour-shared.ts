@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
 import { short } from '@/features/docx/components/clause-analyzer/views/bits';
 import { KIND_PLURAL } from '@/features/docx/components/clause-analyzer/views/favour-bits';
@@ -121,15 +121,23 @@ export const otherVerdicts = (verdict: TypeVerdict) =>
 
 /**
  * The open clause's fragments are marked in the contract on the left too, one note per
- * paragraph: a paragraph often holds several statements.
+ * paragraph: a paragraph often holds several statements. `describe` words a paragraph's
+ * statements the way a view names them; change `describeKey` when its wording changes.
  */
 export function useClauseNotes(
 	kg: KnowledgeGraph,
 	opened: ClauseTally | null,
 	kinds: DeonticKind[],
-	names: Record<Side, string>
+	names: Record<Side, string>,
+	describe?: (served: Served[]) => string,
+	describeKey = ''
 ) {
 	const setNotes = useClauseAnalyzerStore((s) => s.setNotes);
+	// Kept in a ref: an inline function would be new on every render and re-run the effect.
+	const describeRef = useRef(describe);
+	useEffect(() => {
+		describeRef.current = describe;
+	});
 	const paragraphsOf = useMemo(
 		() =>
 			new Map(
@@ -142,25 +150,31 @@ export function useClauseNotes(
 
 	useEffect(() => {
 		if (!opened) return;
-		const byParagraph = new Map<string, Map<string, number>>();
+		const byParagraph = new Map<string, Served[]>();
 		for (const s of opened.served) {
 			if (!kinds.includes(s.kind)) continue;
 			const pid = paragraphsOf.get(s.mark.id)?.[0];
 			if (!pid) continue;
-			const to = s.to === 'both' ? 'both' : short(names[s.to]);
-			const tally = byParagraph.get(pid) ?? new Map<string, number>();
-			tally.set(to, (tally.get(to) ?? 0) + 1);
-			byParagraph.set(pid, tally);
+			byParagraph.set(pid, [...(byParagraph.get(pid) ?? []), s]);
 		}
-		const notes: DocNote[] = [...byParagraph].map(([pid, tally]) => ({
+		const serves = (served: Served[]) => {
+			const tally = new Map<string, number>();
+			for (const s of served) {
+				const to = s.to === 'both' ? 'both' : short(names[s.to]);
+				tally.set(to, (tally.get(to) ?? 0) + 1);
+			}
+			return `Serves ${[...tally].map(([to, n]) => (n > 1 ? `${to} ×${n}` : to)).join(' · ')}`;
+		};
+		const words = describeRef.current ?? serves;
+		const notes: DocNote[] = [...byParagraph].map(([pid, served]) => ({
 			pid,
-			text: `Serves ${[...tally].map(([to, n]) => (n > 1 ? `${to} ×${n}` : to)).join(' · ')}`,
+			text: words(served),
 			tone: 'step',
 			at: 'before',
 		}));
 		setNotes(notes);
 		return () => setNotes([]);
-	}, [opened, kinds, paragraphsOf, names, setNotes]);
+	}, [opened, kinds, paragraphsOf, names, setNotes, describeKey]);
 }
 
 /** The verdict's reason in a few words, for under a pill. */

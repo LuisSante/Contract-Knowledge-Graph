@@ -8,6 +8,7 @@ import { ToolRail } from '@/features/docx/components/shell/ToolRail';
 import { LlmEstimateDialog } from '@/features/docx/components/shell/LlmEstimateDialog';
 import { RightPanelHeaderActions } from '@/features/docx/components/shell/RightPanelHeaderActions';
 import { RightPanelContent } from '@/features/docx/components/shell/RightPanelContent';
+import { ViewBar } from '@/features/docx/components/clause-analyzer/views/ViewBar';
 import { useRightDrawer } from '@/features/docx/hooks/useRightDrawer';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useLlmEstimate } from '@/features/docx/hooks/useLlmEstimate';
@@ -223,6 +224,7 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 				isOpen={drawer.isOpen}
 				width={drawer.width}
 				sidebarWidth={drawer.sidebarWidth}
+				titleAddon={drawer.activeTab === 'clause_analyzer' ? <ViewBar /> : undefined}
 				headerActions={
 					<RightPanelHeaderActions
 						activeTab={drawer.activeTab}

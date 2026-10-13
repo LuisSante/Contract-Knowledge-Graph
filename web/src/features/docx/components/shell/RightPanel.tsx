@@ -24,6 +24,8 @@ interface RightPanelProps {
 	isOpen: boolean;
 	width: number;
 	sidebarWidth: number;
+	/** Shown right after the title, such as the Clause Analyzer's view switch. */
+	titleAddon?: ReactNode;
 	headerActions?: ReactNode;
 	children: ReactNode;
 	onClose: () => void;
@@ -35,6 +37,7 @@ export function RightPanel({
 	isOpen,
 	width,
 	sidebarWidth,
+	titleAddon,
 	headerActions,
 	children,
 	onClose,
@@ -64,13 +67,14 @@ export function RightPanel({
 				)}
 			>
 				<div className="flex min-w-0 flex-1 items-center gap-2">
-					<h2 className="inline-flex min-w-0 flex-1 items-center gap-2 truncate text-sm font-semibold text-primary">
+					<h2 className="inline-flex min-w-0 items-center gap-2 truncate text-sm font-semibold text-primary">
 						<span className="shrink-0 text-primary">
 							<Icon className="h-4 w-4" />
 						</span>
 						<span className="truncate">{label}</span>
 					</h2>
-					{headerActions}
+					{titleAddon}
+					<div className="ml-auto flex shrink-0 items-center">{headerActions}</div>
 				</div>
 
 				<Button

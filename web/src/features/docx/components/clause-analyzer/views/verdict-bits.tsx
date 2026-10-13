@@ -31,11 +31,13 @@ import type { DeonticKind } from '@/types/knowledge';
 
 const SIDES: Side[] = ['a', 'b'];
 const SHOWN_FRAGMENTS = 3;
+/** A clause that favours neither party, on the contract card. */
+const NEITHER_INK = '#a1a1aa';
 
 export type VerdictFilterValue = TypeVerdict | 'all';
 
-/** The whole contract at a glance: one card per type with each party's count, and the
- *  weight-free verdict over the types on screen. */
+/** The whole contract at a glance: one card per type with each party's count, and who the
+ *  contract favours over the types on screen, with its clauses by verdict. */
 export function Scoreboard({
 	total,
 	kinds,
@@ -50,34 +52,31 @@ export function Scoreboard({
 }) {
 	const contract = typeVerdict(total, kinds);
 	const lead = contract.verdict === 'a' || contract.verdict === 'b' ? contract.verdict : null;
+	const tone = verdictColor(contract.verdict);
 
+	/** Why, in one short line: where the favoured party is ahead; the rest are even, since a
+	 *  party that lost a type would not be favoured. */
 	const contractLine = () => {
 		if (contract.verdict === 'tie') return 'Even in every type shown.';
 		if (contract.verdict === 'mixed')
 			return scoredSentence(total, contract.verdict, contract.byKind, kinds, names);
 		const won = kinds.filter((kind) => contract.byKind[kind] === contract.verdict);
-		const where =
-			won.length < kinds.length
-				? listOf(won.map((k) => KIND_LABEL[k].toLowerCase()))
-				: kinds.length === 3
-					? 'all three types'
-					: kinds.length === 2
-						? 'both types shown'
-						: KIND_LABEL[kinds[0]].toLowerCase();
-		return `Ahead in ${where}, losing in none.`;
+		const even = kinds.filter((kind) => !won.includes(kind));
+		const label = (ks: DeonticKind[]) => listOf(ks.map((k) => KIND_LABEL[k].toLowerCase()));
+		if (even.length > 0) return `Ahead in ${label(won)}; even in ${label(even)}.`;
+		if (kinds.length === 1) return `Ahead in ${label(kinds)}.`;
+		return kinds.length === 3 ? 'Ahead in all three types.' : 'Ahead in both types shown.';
 	};
 
-	const clauseLine = () => {
-		const ties = `${counts.tie} ${counts.tie === 1 ? 'favours' : 'favour'} neither`;
-		const [first, second]: Side[] = lead === 'b' ? ['b', 'a'] : ['a', 'b'];
-		const parts = lead
-			? [`${counts[first]} in favour`, ties, `${counts[second]} for ${short(names[second])}`]
-			: [`${counts.a} for ${short(names.a)}`, `${counts.b} for ${short(names.b)}`, ties];
-		return [
-			...parts,
-			`${counts.mixed} ${counts.mixed === 1 ? 'depends' : 'depend'} on the type`,
-		].join(' · ');
-	};
+	/** The clauses by verdict, the favoured party first, as a bar and four counts. */
+	const [first, second]: Side[] = lead === 'b' ? ['b', 'a'] : ['a', 'b'];
+	const clauseGroups: Array<{ key: TypeVerdict; n: number; label: string; color: string }> = [
+		{ key: first, n: counts[first], label: short(names[first]), color: SIDE_COLOR[first] },
+		{ key: 'tie', n: counts.tie, label: 'Neither', color: NEITHER_INK },
+		{ key: second, n: counts[second], label: short(names[second]), color: SIDE_COLOR[second] },
+		{ key: 'mixed', n: counts.mixed, label: 'Depends', color: 'var(--warning)' },
+	];
+	const clauseTotal = clauseGroups.reduce((sum, g) => sum + g.n, 0);
 
 	const card = (kind: DeonticKind) => {
 		const { a, b } = total[kind];
@@ -135,21 +134,61 @@ export function Scoreboard({
 	};
 
 	return (
-		<div className="grid grid-cols-[repeat(3,minmax(0,1fr))_minmax(0,1.25fr)] gap-3">
+		<div className="grid grid-cols-[repeat(3,minmax(0,1fr))_minmax(0,1.5fr)] gap-3">
 			{DEONTIC_KINDS.map(card)}
-			<div className="rounded-xl bg-foreground p-3 text-background">
-				<p className="text-[10px] font-semibold tracking-wider uppercase opacity-70">
-					Contract verdict
+			{/* Washed in the favoured party's colour, its name in full colour: the card says who
+			    wins before a word is read. Grey when even, amber when it depends on the type. */}
+			<div
+				className="rounded-xl border p-3 text-foreground"
+				style={{ backgroundColor: tint(tone, 9), borderColor: tint(tone, 40) }}
+			>
+				<p className="text-[10px] font-semibold tracking-wider text-foreground/70 uppercase">
+					Who the contract favours
 				</p>
-				<p className="mt-0.5 flex items-center gap-2 text-2xl leading-tight font-bold">
-					<span
-						className="size-2.5 shrink-0 rounded-full"
-						style={{ backgroundColor: verdictColor(contract.verdict) }}
-					/>
+				<p
+					className={cn(
+						'mt-0.5 text-2xl leading-tight font-bold',
+						contract.verdict === 'mixed' && 'text-warning-foreground'
+					)}
+					style={lead ? { color: SIDE_COLOR[lead] } : undefined}
+				>
 					{verdictLabel(contract.verdict, names)}
 				</p>
-				<p className="mt-1 text-xs leading-snug opacity-90">{contractLine()}</p>
-				<p className="mt-1.5 text-2xs leading-snug opacity-70">{clauseLine()}</p>
+				<p className="mt-1 text-sm leading-snug text-foreground/90">{contractLine()}</p>
+				<div className="mt-3 border-t pt-2.5" style={{ borderColor: tint(tone, 30) }}>
+					<p className="text-[10px] font-semibold tracking-wider text-foreground/70 uppercase">
+						Its {clauseTotal} clauses
+					</p>
+					<div className="mt-1.5 flex h-1.5 gap-0.5" aria-hidden>
+						{clauseGroups
+							.filter((g) => g.n > 0)
+							.map((g) => (
+								<span
+									key={g.key}
+									className="rounded-full"
+									style={{ flexGrow: g.n, backgroundColor: g.color }}
+								/>
+							))}
+					</div>
+					<div className="mt-2 grid grid-cols-[repeat(auto-fill,minmax(92px,1fr))] gap-x-3 gap-y-1">
+						{clauseGroups.map((g) => (
+							<span
+								key={g.key}
+								className={cn('flex items-baseline gap-1.5', g.n === 0 && 'opacity-50')}
+								title={g.key === 'mixed' ? 'Each party is ahead in a different type' : undefined}
+							>
+								<span className="text-base font-bold tabular-nums">{g.n}</span>
+								<span className="flex min-w-0 items-center gap-1 text-xs">
+									<span
+										className="size-1.5 shrink-0 rounded-full"
+										style={{ backgroundColor: g.color }}
+									/>
+									<span className="truncate">{g.label}</span>
+								</span>
+							</span>
+						))}
+					</div>
+				</div>
 			</div>
 		</div>
 	);

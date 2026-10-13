@@ -34,7 +34,6 @@ import {
 	PAIR_SECOND_COLOR,
 	PARTY_COLOR,
 } from '@/features/docx/components/clause-analyzer/constants';
-import { ViewBar } from '@/features/docx/components/clause-analyzer/views/ViewBar';
 import { ByTypeView } from '@/features/docx/components/clause-analyzer/views/ByTypeView';
 import type { ViewProps } from '@/features/docx/components/clause-analyzer/views/types';
 
@@ -308,7 +307,6 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 
 	return (
 		<div className="flex h-full flex-col">
-			{viewProps && <ViewBar view={nav.view} onView={nav.setView} />}
 			{inView && viewProps && nav.view === 'bytype' && <ByTypeView {...viewProps} />}
 
 			{/* The table fills the panel; the graph has a tab of its own. */}

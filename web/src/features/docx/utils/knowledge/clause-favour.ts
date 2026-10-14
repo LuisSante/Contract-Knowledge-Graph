@@ -53,14 +53,29 @@ export const sectionOf = (ref: string | null | undefined): string | null => {
 /** A paragraph's place in the document, from the number its id ends in. */
 const paragraphNumber = (pid: string) => Number(pid.match(/-p-(\d+)$/)?.[1] ?? 0);
 
-/** A clause's name and number; one with no heading goes by its number alone. */
+/** A numbered subclause without a title inherits the nearest named section heading. */
 export function clauseTitle(
 	clause: KgClause | undefined,
-	fallback: string
+	fallback: string,
+	clauses: KgClause[] = []
 ): { heading: string; section: string | null } {
 	const section = sectionOf(clause?.ref);
-	const heading = clause?.heading?.trim();
-	return heading ? { heading, section } : { heading: section ?? fallback, section: null };
+	const namedHeading = (item: KgClause | undefined) => {
+		const heading = item?.heading?.trim();
+		return heading && !/^(?:§\s*|(?:section|article)\s+)?\d+(?:\.\d+)*[.)]?$/i.test(heading)
+			? heading
+			: null;
+	};
+	const heading = namedHeading(clause);
+	if (heading) return { heading, section };
+	const parts = section?.slice(1).split('.') ?? [];
+	while (parts.length > 1) {
+		parts.pop();
+		const parent = clauses.find((c) => sectionOf(c.ref) === `§${parts.join('.')}`);
+		const parentHeading = namedHeading(parent);
+		if (parentHeading) return { heading: parentHeading, section };
+	}
+	return { heading: section ?? fallback, section: null };
 }
 
 /**
@@ -91,7 +106,7 @@ export function tallyClauses(
 		};
 		const tally: ClauseTally = {
 			clauseId: row.clauseId,
-			...clauseTitle(clauseOf.get(row.clauseId), row.heading),
+			...clauseTitle(clauseOf.get(row.clauseId), row.heading, kg.clauses),
 			served: [],
 			count: emptyCount(),
 		};

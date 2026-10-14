@@ -1,17 +1,16 @@
 'use client';
 
-import { useState, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
-import { KIND_COLORS } from '@/features/docx/components/clause-analyzer/constants';
 import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/views/bits';
 import {
 	Fragment,
 	GraphLink,
-	KIND_GLOSS,
 	KIND_LABEL,
 	tint,
 	verdictColor,
 	verdictLabel,
+	rightsDirection,
 } from '@/features/docx/components/clause-analyzer/views/favour-bits';
 import {
 	listOf,
@@ -27,12 +26,11 @@ import {
 	type TypeVerdict,
 } from '@/features/docx/utils/knowledge/clause-favour';
 import type { Side } from '@/features/docx/utils/knowledge/statement-grid';
-import type { DeonticKind } from '@/types/knowledge';
+import type { DeonticKind, KgCondition } from '@/types/knowledge';
 
 const SIDES: Side[] = ['a', 'b'];
-const SHOWN_FRAGMENTS = 3;
-/** A clause that favours neither party, on the contract card. */
-const NEITHER_INK = '#a1a1aa';
+/** Equal counts use a neutral tone on the contract card. */
+const TIE_INK = '#a1a1aa';
 
 export type VerdictFilterValue = TypeVerdict | 'all';
 
@@ -51,28 +49,33 @@ export function Scoreboard({
 	names: Record<Side, string>;
 }) {
 	const contract = typeVerdict(total, kinds);
-	const lead = contract.verdict === 'a' || contract.verdict === 'b' ? contract.verdict : null;
+	const hasStatements = kinds.some((kind) => total[kind].a + total[kind].b > 0);
+	const lead =
+		hasStatements && (contract.verdict === 'a' || contract.verdict === 'b')
+			? contract.verdict
+			: null;
 	const tone = verdictColor(contract.verdict);
 
 	/** Why, in one short line: where the favoured party is ahead; the rest are even, since a
 	 *  party that lost a type would not be favoured. */
 	const contractLine = () => {
-		if (contract.verdict === 'tie') return 'Even in every type shown.';
+		if (!hasStatements) return 'No rights identified in the selected categories.';
+		if (contract.verdict === 'tie') return 'Same count in each selected category.';
 		if (contract.verdict === 'mixed')
 			return scoredSentence(total, contract.verdict, contract.byKind, kinds, names);
 		const won = kinds.filter((kind) => contract.byKind[kind] === contract.verdict);
 		const even = kinds.filter((kind) => !won.includes(kind));
 		const label = (ks: DeonticKind[]) => listOf(ks.map((k) => KIND_LABEL[k].toLowerCase()));
-		if (even.length > 0) return `Ahead in ${label(won)}; even in ${label(even)}.`;
-		if (kinds.length === 1) return `Ahead in ${label(kinds)}.`;
-		return kinds.length === 3 ? 'Ahead in all three types.' : 'Ahead in both types shown.';
+		if (even.length > 0) return `More ${label(won)}; equal counts in ${label(even)}.`;
+		if (kinds.length === 1) return `More ${label(kinds)}.`;
+		return `More rights in all ${kinds.length} selected categories.`;
 	};
 
 	/** The clauses by verdict, the favoured party first, as a bar and four counts. */
 	const [first, second]: Side[] = lead === 'b' ? ['b', 'a'] : ['a', 'b'];
 	const clauseGroups: Array<{ key: TypeVerdict; n: number; label: string; color: string }> = [
 		{ key: first, n: counts[first], label: short(names[first]), color: SIDE_COLOR[first] },
-		{ key: 'tie', n: counts.tie, label: 'Neither', color: NEITHER_INK },
+		{ key: 'tie', n: counts.tie, label: 'Equal counts', color: TIE_INK },
 		{ key: second, n: counts[second], label: short(names[second]), color: SIDE_COLOR[second] },
 		{ key: 'mixed', n: counts.mixed, label: 'Depends', color: 'var(--warning)' },
 	];
@@ -96,14 +99,7 @@ export function Scoreboard({
 					!kinds.includes(kind) && 'opacity-40'
 				)}
 			>
-				<p className="flex items-center gap-1.5 text-xs font-semibold">
-					<span
-						className="size-2.5 shrink-0 rounded-[2px]"
-						style={{ backgroundColor: KIND_COLORS[kind] }}
-					/>
-					{KIND_LABEL[kind]}
-				</p>
-				<p className="pl-4 text-2xs text-muted-foreground">{KIND_GLOSS[kind]}</p>
+				<p className="text-sm font-medium">{KIND_LABEL[kind]}</p>
 				<div className="mt-1 flex flex-wrap items-baseline gap-x-1.5 text-3xl leading-tight font-bold tabular-nums">
 					{big('a')}
 					<span className="text-xl text-foreground">:</span>
@@ -129,12 +125,17 @@ export function Scoreboard({
 						))
 					)}
 				</div>
+				<div className="mt-3 space-y-1 text-xs text-foreground/80">
+					{SIDES.map((side) => (
+						<p key={side}>{rightsDirection(kind, side, names)}</p>
+					))}
+				</div>
 			</div>
 		);
 	};
 
 	return (
-		<div className="grid grid-cols-[repeat(3,minmax(0,1fr))_minmax(0,1.5fr)] gap-3">
+		<div className="grid grid-cols-2 gap-3 @min-[900px]:grid-cols-[repeat(3,minmax(0,1fr))_minmax(0,1.5fr)]">
 			{DEONTIC_KINDS.map(card)}
 			{/* Washed in the favoured party's colour, its name in full colour: the card says who
 			    wins before a word is read. Grey when even, amber when it depends on the type. */}
@@ -143,7 +144,7 @@ export function Scoreboard({
 				style={{ backgroundColor: tint(tone, 9), borderColor: tint(tone, 40) }}
 			>
 				<p className="text-[10px] font-semibold tracking-wider text-foreground/70 uppercase">
-					Who the contract favours
+					Count-based advantage
 				</p>
 				<p
 					className={cn(
@@ -152,12 +153,12 @@ export function Scoreboard({
 					)}
 					style={lead ? { color: SIDE_COLOR[lead] } : undefined}
 				>
-					{verdictLabel(contract.verdict, names)}
+					{hasStatements ? verdictLabel(contract.verdict, names) : 'No statements'}
 				</p>
 				<p className="mt-1 text-sm leading-snug text-foreground/90">{contractLine()}</p>
 				<div className="mt-3 border-t pt-2.5" style={{ borderColor: tint(tone, 30) }}>
 					<p className="text-[10px] font-semibold tracking-wider text-foreground/70 uppercase">
-						Its {clauseTotal} clauses
+						{clauseTotal} clauses in selected categories
 					</p>
 					<div className="mt-1.5 flex h-1.5 gap-0.5" aria-hidden>
 						{clauseGroups
@@ -210,7 +211,7 @@ export function VerdictFilter({
 	const options: Array<{ id: VerdictFilterValue; label: string; color?: string }> = [
 		{ id: 'all', label: 'All' },
 		{ id: 'a', label: short(names.a), color: SIDE_COLOR.a },
-		{ id: 'tie', label: 'Neither' },
+		{ id: 'tie', label: 'Equal counts' },
 		{ id: 'mixed', label: 'Depends', color: 'var(--warning-foreground)' },
 		{ id: 'b', label: short(names.b), color: SIDE_COLOR.b },
 	];
@@ -218,7 +219,7 @@ export function VerdictFilter({
 		<div
 			role="tablist"
 			aria-label="Clauses by verdict"
-			className="inline-flex rounded-lg border border-border bg-secondary p-[3px]"
+			className="inline-flex flex-wrap rounded-lg border border-border bg-secondary p-[3px]"
 		>
 			{options.map((o) => {
 				const n = o.id === 'all' ? all : counts[o.id];
@@ -297,15 +298,13 @@ export function ClauseLead({
 				{rank}
 			</span>
 			<span className="min-w-0 flex-1">
-				<span className="pointer-events-none block truncate text-sm font-semibold text-foreground">
+				<span className="pointer-events-none block text-sm leading-snug font-semibold text-foreground">
+					{tally.section && (
+						<span className="font-normal text-foreground/70">{tally.section} </span>
+					)}
 					{tally.heading}
 				</span>
 				<span className="flex items-center gap-2">
-					{tally.section && (
-						<span className="pointer-events-none rounded bg-secondary px-1 text-[10px] font-medium">
-							{tally.section}
-						</span>
-					)}
 					{onOpenGraph && <GraphLink onClick={() => onOpenGraph(tally.clauseId)} />}
 				</span>
 			</span>
@@ -318,19 +317,17 @@ export function WhatEachGets({
 	tally,
 	kinds,
 	names,
+	conditions,
 	onOpen,
 }: {
 	tally: ClauseTally;
 	kinds: DeonticKind[];
 	names: Record<Side, string>;
+	conditions: KgCondition[];
 	onOpen: (nodeId: string) => void;
 }) {
-	const [unfolded, setUnfolded] = useState<Set<Side>>(new Set());
-
 	const column = (side: Side) => {
 		const gets = servedTo(tally, side, kinds);
-		const all = unfolded.has(side);
-		const fragments = all ? gets : gets.slice(0, SHOWN_FRAGMENTS);
 		return (
 			<div
 				key={side}
@@ -342,7 +339,7 @@ export function WhatEachGets({
 					style={{ backgroundColor: tint(SIDE_COLOR[side], 10), color: SIDE_COLOR[side] }}
 				>
 					<span className="size-2 rounded-full" style={{ backgroundColor: SIDE_COLOR[side] }} />
-					What {short(names[side])} gets
+					Rights for {short(names[side])}
 					<span
 						className="rounded-full px-1.5 text-[10px] text-white tabular-nums"
 						style={{ backgroundColor: SIDE_COLOR[side] }}
@@ -352,11 +349,11 @@ export function WhatEachGets({
 				</div>
 				{gets.length === 0 ? (
 					<p className="px-3 py-3 text-2xs text-muted-foreground">
-						Nothing of the types shown serves {short(names[side])} here.
+						No rights identified for {short(names[side])} in the selected categories.
 					</p>
 				) : (
 					<div className="divide-y divide-border/60 bg-card">
-						{fragments.map((s) => {
+						{gets.map((s) => {
 							const origin = originOf(s, names);
 							return (
 								<Fragment
@@ -364,28 +361,13 @@ export function WhatEachGets({
 									served={s}
 									section={tally.section}
 									tag={origin.text}
-									tagColor={origin.side ? SIDE_COLOR[origin.side] : undefined}
+									tagColor={SIDE_COLOR[side]}
+									conditions={conditions.filter((c) => c.gatesId === s.mark.id)}
 									onOpen={onOpen}
 								/>
 							);
 						})}
 					</div>
-				)}
-				{gets.length > SHOWN_FRAGMENTS && (
-					<button
-						type="button"
-						onClick={() =>
-							setUnfolded((prev) => {
-								const next = new Set(prev);
-								if (all) next.delete(side);
-								else next.add(side);
-								return next;
-							})
-						}
-						className="block w-full border-t border-border/60 bg-card px-3 py-1.5 text-left text-2xs font-medium text-primary hover:underline"
-					>
-						{all ? '− fewer fragments' : `+ ${gets.length - SHOWN_FRAGMENTS} more fragments`}
-					</button>
 				)}
 			</div>
 		);
@@ -394,32 +376,16 @@ export function WhatEachGets({
 	return <div className="grid grid-cols-2 gap-3">{SIDES.map(column)}</div>;
 }
 
-/** Each party's statements as dots growing out from an axis, with the count at the far end;
- *  past `max` the dots stop growing and the number says the rest. */
-export function DotTally({ a, b, max = 10 }: { a: number; b: number; max?: number }) {
+/** Counts align with the named party columns without a second visual encoding. */
+export function CountTally({ a, b }: { a: number; b: number }) {
 	const side = (s: Side) => {
 		const n = s === 'a' ? a : b;
-		const wins = s === 'a' ? a > b : b > a;
 		return (
 			<span
-				className={cn(
-					'flex flex-1 items-center gap-[2px]',
-					s === 'a' ? 'flex-row-reverse justify-start' : 'justify-start'
-				)}
+				className="flex-1 text-center text-sm font-semibold tabular-nums"
+				style={{ color: SIDE_COLOR[s] }}
 			>
-				{Array.from({ length: Math.min(n, max) }, (_, i) => (
-					<span
-						key={i}
-						className="size-[5px] shrink-0 rounded-full"
-						style={{ backgroundColor: SIDE_COLOR[s] }}
-					/>
-				))}
-				<span
-					className={cn('text-xs tabular-nums', s === 'a' ? 'mr-0.5' : 'ml-0.5')}
-					style={wins ? { color: SIDE_COLOR[s], fontWeight: 700 } : undefined}
-				>
-					{n}
-				</span>
+				{n}
 			</span>
 		);
 	};
@@ -494,8 +460,8 @@ export function AgreeBox({
 				{verdict === 'mixed'
 					? 'Depends on the type'
 					: verdict === 'tie'
-						? 'Favours neither'
-						: `Favours ${verdictLabel(verdict, names)}`}
+						? 'Equal counts'
+						: `${verdictLabel(verdict, names)} has a count-based advantage`}
 				»?
 			</span>
 			<AnswerPill verdict={verdict} on={answer === 'agree'} onClick={() => onAnswer('agree')}>
@@ -503,7 +469,7 @@ export function AgreeBox({
 			</AnswerPill>
 			{otherVerdicts(verdict).map((f) => (
 				<AnswerPill key={f} verdict={f} on={answer === f} onClick={() => onAnswer(f)}>
-					{f === 'tie' ? 'No, it favours neither' : `No, it favours ${short(names[f])}`}
+					{f === 'tie' ? 'No, equal counts' : `No, ${short(names[f])} has the advantage`}
 				</AnswerPill>
 			))}
 		</div>

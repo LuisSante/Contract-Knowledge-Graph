@@ -2,6 +2,7 @@
 
 import type { MouseEvent as ReactMouseEvent } from 'react';
 import { ArrowUpRightIcon, CheckIcon } from 'lucide-react';
+import type { KgCondition } from '@/types/knowledge';
 import { cn } from '@/lib/utils';
 import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
 import { KIND_COLORS } from '@/features/docx/components/clause-analyzer/constants';
@@ -27,10 +28,18 @@ export const KIND_LABEL: Record<DeonticKind, string> = {
 
 /** What each type gives the party it is counted for, in a few words. */
 export const KIND_GLOSS: Record<DeonticKind, string> = {
-	obligation: 'what the other must do for it',
-	right: 'what it may do',
-	prohibition: 'what the other may not do',
+	obligation: 'The other party’s obligations give the beneficiary rights',
+	right: 'Rights held directly by the named party',
+	prohibition: 'The other party’s prohibitions give the beneficiary rights',
 };
+
+/** Names both ends of the rule instead of leaving the beneficiary implicit. */
+export function rightsDirection(kind: DeonticKind, side: Side, names: Record<Side, string>) {
+	const recipient = short(names[side]);
+	const other = short(names[side === 'a' ? 'b' : 'a']);
+	if (kind === 'right') return `${recipient}'s own rights`;
+	return `${other}'s ${kind === 'obligation' ? 'obligations' : 'prohibitions'} → ${recipient}'s rights`;
+}
 
 /** A verdict's colour: the side it favours, amber when it depends on the type. */
 export const verdictColor = (verdict: TypeVerdict) =>
@@ -45,7 +54,7 @@ export const verdictLabel = (verdict: TypeVerdict, names: Record<Side, string>) 
 		? short(names[verdict])
 		: verdict === 'mixed'
 			? 'Depends on the type'
-			: 'Neither (tie)';
+			: 'Equal counts';
 
 /** A colour washed out to a background, for hex and CSS variables alike. */
 export const tint = (color: string, percent: number) =>
@@ -125,10 +134,6 @@ export function KindFilter({
 							on ? 'border-foreground/30 text-foreground' : 'border-border opacity-50'
 						)}
 					>
-						<span
-							className="size-2.5 rounded-[2px]"
-							style={{ backgroundColor: KIND_COLORS[kind] }}
-						/>
 						{KIND_LABEL[kind]}
 						{on && !compact && <CheckIcon className="size-3" />}
 					</button>
@@ -162,7 +167,7 @@ export function Fragment({
 	section,
 	tag,
 	tagColor,
-	square = true,
+	conditions = [],
 	onOpen,
 }: {
 	served: Served;
@@ -171,7 +176,7 @@ export function Fragment({
 	tag?: string;
 	/** The colour of the party the tag names. */
 	tagColor?: string;
-	square?: boolean;
+	conditions?: KgCondition[];
 	onOpen: (nodeId: string) => void;
 }) {
 	const shown = useClauseAnalyzerStore(
@@ -181,52 +186,45 @@ export function Fragment({
 	const place =
 		[section, served.paragraph ? `¶${served.paragraph}` : null].filter(Boolean).join(' ') || 'View';
 	return (
-		<button
-			type="button"
-			onClick={() => onOpen(served.mark.id)}
-			aria-current={shown || undefined}
-			title={
-				served.paragraph
-					? `Paragraph ${served.paragraph} of ${section ?? 'the clause'}: show it in the contract`
-					: 'Show it in the contract'
-			}
-			className={cn(
-				'group flex w-full items-start gap-2.5 px-3 py-2 text-left transition-colors hover:bg-muted/60',
-				shown && 'bg-accent hover:bg-accent'
-			)}
-			style={shown ? { boxShadow: `inset 3px 0 0 ${KIND_COLORS[served.kind]}` } : undefined}
+		<article
+			className={cn('space-y-2 px-3 py-3 text-left', shown && 'bg-accent')}
+			style={shown ? { boxShadow: `inset 3px 0 0 ${tagColor ?? 'var(--primary)'}` } : undefined}
 		>
-			{square && (
-				<span
-					className="mt-1 size-2 shrink-0 rounded-[2px]"
-					style={{ backgroundColor: KIND_COLORS[served.kind] }}
-				/>
-			)}
-			<span className="min-w-0 flex-1">
-				<span className="flex flex-wrap items-center gap-1.5">
+			<div className="flex items-start justify-between gap-3">
+				<div className="min-w-0 space-y-1">
 					{tag && (
-						<span
-							className={cn(
-								'rounded px-1.5 py-px text-[10px] font-medium',
-								!tagColor && 'bg-secondary text-foreground/80'
-							)}
-							style={
-								tagColor ? { backgroundColor: tint(tagColor, 14), color: tagColor } : undefined
-							}
+						<p
+							className={cn('text-xs font-medium', !tagColor && 'text-foreground/80')}
+							style={tagColor ? { color: tagColor } : undefined}
 						>
 							{tag}
-						</span>
+						</p>
 					)}
-					<span className="text-xs font-semibold text-foreground">{served.mark.label}</span>
-				</span>
-				<span className="block text-xs leading-relaxed text-foreground/80 italic">
-					«{served.text}»
-				</span>
-			</span>
-			<span className="inline-flex shrink-0 items-center text-2xs font-medium whitespace-nowrap text-primary group-hover:underline">
-				{place}
-				<ArrowUpRightIcon className="size-3" />
-			</span>
-		</button>
+					<p className="text-sm font-medium text-foreground">{served.mark.label}</p>
+				</div>
+				<button
+					type="button"
+					onClick={() => onOpen(served.mark.id)}
+					aria-current={shown || undefined}
+					aria-label={`Show ${served.mark.label} in the document`}
+					className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-primary hover:underline"
+				>
+					{place === 'View' ? 'Document' : place}
+					<ArrowUpRightIcon className="size-3" />
+				</button>
+			</div>
+			{conditions.map((condition) => (
+				<p key={condition.id} className="text-xs text-foreground/90">
+					<span className="font-medium">Condition: </span>
+					{condition.operator || 'IF'} {condition.trigger}
+				</p>
+			))}
+			<details className="text-xs">
+				<summary className="cursor-pointer font-medium text-primary">View evidence</summary>
+				<blockquote className="mt-2 border-l-2 border-border pl-3 leading-relaxed text-foreground/90">
+					{served.text}
+				</blockquote>
+			</details>
+		</article>
 	);
 }

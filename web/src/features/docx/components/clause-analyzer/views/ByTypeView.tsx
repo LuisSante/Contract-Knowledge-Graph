@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { Accordion as AccordionPrimitive } from 'radix-ui';
-import { ChevronDownIcon } from 'lucide-react';
+import { Accordion as AccordionPrimitive, Popover as PopoverPrimitive } from 'radix-ui';
+import { ChevronDownIcon, InfoIcon, XIcon } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem } from '@/components/ui/accordion';
-import { KIND_COLORS } from '@/features/docx/components/clause-analyzer/constants';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/views/bits';
 import {
 	KIND_GLOSS,
@@ -30,7 +30,7 @@ import {
 import {
 	AgreeBox,
 	ClauseLead,
-	DotTally,
+	CountTally,
 	Scoreboard,
 	VerdictBadge,
 	VerdictFilter,
@@ -41,19 +41,96 @@ import type { DeonticKind } from '@/types/knowledge';
 import type { ViewProps } from '@/features/docx/components/clause-analyzer/views/types';
 
 const PAGE = 10;
-/** Past six a side's dots stop growing, so the clause name keeps its room beside the verdict. */
-const MAX_DOTS = 6;
 
-/** Own rights and the rights from obligations and from prohibitions never added together, each clause opening onto
- *  the fragments that hold its verdict up. */
+function ClassificationInfo({ names }: { names: ViewProps['names'] }) {
+	return (
+		<PopoverPrimitive.Root>
+			<PopoverPrimitive.Trigger asChild>
+				<button
+					type="button"
+					aria-label="Explain count-based classifications"
+					className="inline-flex size-6 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+				>
+					<InfoIcon className="size-4" aria-hidden="true" />
+				</button>
+			</PopoverPrimitive.Trigger>
+			<PopoverPrimitive.Portal>
+				<PopoverPrimitive.Content
+					aria-label="Count-based classifications"
+					side="bottom"
+					align="end"
+					sideOffset={8}
+					collisionPadding={12}
+					className="z-50 w-80 max-w-[calc(100vw-2rem)] rounded-lg border border-border bg-card p-4 text-sm text-card-foreground shadow-sm"
+				>
+					<div className="flex items-start justify-between gap-3">
+						<p className="font-semibold">Count-based classifications</p>
+						<PopoverPrimitive.Close
+							aria-label="Close classification explanation"
+							className="inline-flex size-6 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+						>
+							<XIcon className="size-4" aria-hidden="true" />
+						</PopoverPrimitive.Close>
+					</div>
+					<dl className="mt-3 space-y-3 text-xs leading-relaxed">
+						<div>
+							<dt className="font-semibold">
+								{short(names.a)} / {short(names.b)}
+							</dt>
+							<dd className="mt-1">
+								More rights in at least one selected category; equal or more in the others.
+							</dd>
+						</div>
+						<div>
+							<dt className="font-semibold">Equal counts</dt>
+							<dd className="mt-1">Same number of rights in each selected category.</dd>
+						</div>
+						<div>
+							<dt className="font-semibold">Depends on the type</dt>
+							<dd className="mt-1">Different parties lead in different selected categories.</dd>
+						</div>
+					</dl>
+				</PopoverPrimitive.Content>
+			</PopoverPrimitive.Portal>
+		</PopoverPrimitive.Root>
+	);
+}
+
+function VerdictInfo({ reason, clause }: { reason: string; clause: string }) {
+	const [open, setOpen] = useState(false);
+	return (
+		<Tooltip open={open} onOpenChange={setOpen}>
+			<TooltipTrigger asChild>
+				<button
+					type="button"
+					aria-label={`Explain the result for ${clause}`}
+					className="relative z-10 inline-flex size-6 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+					onClick={(event) => {
+						event.preventDefault();
+						event.stopPropagation();
+						setOpen(true);
+					}}
+				>
+					<InfoIcon className="size-4" aria-hidden="true" />
+				</button>
+			</TooltipTrigger>
+			<TooltipContent
+				side="top"
+				sideOffset={6}
+				className="max-w-64 border border-border bg-card text-card-foreground shadow-sm [&_svg]:bg-card [&_svg]:fill-card"
+			>
+				{reason}
+			</TooltipContent>
+		</Tooltip>
+	);
+}
+
 export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenGraph }: ViewProps) {
 	const [limit, setLimit] = useState(PAGE);
 	const [kinds, toggleKind] = useKinds();
 	const [filter, setFilter] = useState<VerdictFilterValue>('all');
 	const [sortByImportance, setSortByImportance] = useState(true);
-	// Every row starts closed; the reader opens the one they want.
 	const [openId, setOpenId] = useState<string | null>(null);
-	const [fragmentKind, setFragmentKind] = useState<DeonticKind | null>(null);
 	const { reviews, review } = useReviews(docId);
 	const { tallies, total, rank } = useTallies(grid, kg, importance, sortByImportance);
 	const shown = tallies.filter((t) => hasKinds(t, kinds));
@@ -65,38 +142,18 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 	const note = (verdict: TypeVerdict, byKind: Partial<Record<DeonticKind, Favour>>) =>
 		verdictNote(verdict, byKind, kinds, names);
 
-	/** Opens the clause on that type's fragments; on the type already shown, on all of them. */
-	const filterBy = (clauseId: string, kind: DeonticKind) => {
-		const same = opened?.clauseId === clauseId && fragmentKind === kind;
-		setOpenId(clauseId);
-		setFragmentKind(same ? null : kind);
-	};
-
 	const cell = (t: ClauseTally, kind: DeonticKind) => {
 		const { a, b } = t.count[kind];
 		if (a + b === 0)
 			return (
-				<span className="pointer-events-none flex w-[140px] shrink-0 justify-center text-xs text-muted-foreground/60">
-					—
+				<span className="pointer-events-none flex min-w-[140px] flex-1 justify-center text-xs text-muted-foreground">
+					No statements
 				</span>
 			);
-		const active = opened?.clauseId === t.clauseId && fragmentKind === kind;
 		return (
-			<button
-				type="button"
-				onClick={() => filterBy(t.clauseId, kind)}
-				className={cn(
-					'relative z-10 flex w-[140px] shrink-0 items-center rounded-md px-1 py-1 hover:bg-muted',
-					active && 'bg-accent ring-1 ring-primary/40'
-				)}
-				title={
-					active
-						? 'Show the fragments of every type'
-						: `${KIND_LABEL[kind]}: ${a} for ${short(names.a)}, ${b} for ${short(names.b)} — click to see only these fragments`
-				}
-			>
-				<DotTally a={a} b={b} max={MAX_DOTS} />
-			</button>
+			<span className="pointer-events-none flex min-w-[140px] flex-1 items-center px-1 py-1">
+				<CountTally a={a} b={b} />
+			</span>
 		);
 	};
 
@@ -109,27 +166,11 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 			<p className="text-sm font-medium text-foreground">
 				{scoredSentence(t.count, verdict, byKind, kinds, names)}
 			</p>
-			{fragmentKind && (
-				<p className="flex items-center gap-1.5 text-2xs text-foreground/70">
-					<span
-						className="size-2.5 rounded-[2px]"
-						style={{ backgroundColor: KIND_COLORS[fragmentKind] }}
-					/>
-					Only {KIND_LABEL[fragmentKind].toLowerCase()}
-					<button
-						type="button"
-						onClick={() => setFragmentKind(null)}
-						className="font-medium text-primary hover:underline"
-					>
-						show every type
-					</button>
-				</p>
-			)}
 			<WhatEachGets
-				key={fragmentKind ?? 'every'}
 				tally={t}
-				kinds={fragmentKind ? [fragmentKind] : kinds}
+				kinds={kinds}
 				names={names}
+				conditions={kg.conditions}
 				onOpen={onOpen}
 			/>
 			<AgreeBox
@@ -141,19 +182,14 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 		</div>
 	);
 
-	const showKind = (kind: DeonticKind) => {
-		setFragmentKind(null);
-		toggleKind(kind);
-	};
-
 	return (
-		<div className="min-h-0 flex-1 overflow-auto">
+		<div className="@container min-h-0 flex-1 overflow-auto">
 			{/* Only the table needs its width; the scoreboard above fits whatever the panel gives. */}
 			<div className="space-y-3 p-4">
 				<Scoreboard total={total} kinds={kinds} counts={counts} names={names} />
 
 				<div className="flex flex-wrap items-center justify-between gap-2">
-					<KindFilter kinds={kinds} onToggle={showKind} />
+					<KindFilter kinds={kinds} onToggle={toggleKind} label="Compare" />
 					<VerdictFilter
 						value={filter}
 						counts={counts}
@@ -161,20 +197,22 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 						onChange={(value) => {
 							setFilter(value);
 							setOpenId(null);
-							setFragmentKind(null);
 							setLimit(PAGE);
 						}}
 					/>
 				</div>
 
-				<div className="min-w-[788px] overflow-hidden rounded-xl border border-border bg-card">
-					<div className="flex items-center gap-2 bg-secondary px-3 py-1.5 text-[10px] font-bold tracking-wider uppercase">
+				<div
+					className="overflow-hidden rounded-xl border border-border bg-card"
+					style={{ minWidth: 450 + kinds.length * 156 }}
+				>
+					<div className="flex items-center gap-4 bg-secondary px-3 py-2 text-xs font-semibold">
 						{/* The importance is fetched, so the ordering cannot be offered before it lands. */}
 						<button
 							type="button"
 							onClick={() => setSortByImportance((on) => !on)}
 							disabled={!importance}
-							className="flex-1 pl-11 text-left text-muted-foreground uppercase enabled:hover:text-foreground disabled:cursor-default"
+							className="w-[200px] shrink-0 pl-11 text-left text-muted-foreground uppercase enabled:hover:text-foreground disabled:cursor-default"
 							title="Order the rows by how much each clause weighs inside the contract (PageRank with a per-clause prior), or by its position in the document"
 						>
 							Clause
@@ -187,33 +225,33 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 						{kinds.map((kind) => (
 							<span
 								key={kind}
-								className="flex w-[140px] shrink-0 flex-col items-center text-center"
+								className="flex min-w-[140px] flex-1 flex-col items-center text-center"
 								title={`${KIND_LABEL[kind]}: ${KIND_GLOSS[kind]}`}
 							>
-								<span className="flex items-center gap-1">
-									<span
-										className="size-2 shrink-0 rounded-[2px]"
-										style={{ backgroundColor: KIND_COLORS[kind] }}
-									/>
-									{KIND_LABEL[kind]}
-								</span>
-								<span className="text-[9px] font-normal text-muted-foreground normal-case">
-									{KIND_GLOSS[kind]}
-								</span>
-								<span className="text-[9px] font-medium normal-case">
-									<span style={{ color: SIDE_COLOR.a }}>{short(names.a)}</span>
-									<span className="text-muted-foreground"> · </span>
-									<span style={{ color: SIDE_COLOR.b }}>{short(names.b)}</span>
+								<span>{KIND_LABEL[kind]}</span>
+								<span className="mt-1 flex w-full items-center gap-1 text-xs font-medium">
+									<span className="flex-1" style={{ color: SIDE_COLOR.a }}>
+										{short(names.a)}
+									</span>
+									<span className="text-muted-foreground"> | </span>
+									<span className="flex-1" style={{ color: SIDE_COLOR.b }}>
+										{short(names.b)}
+									</span>
 								</span>
 							</span>
 						))}
-						<span className="w-36 shrink-0 text-muted-foreground">Who it favours</span>
+						<div className="flex w-44 shrink-0 items-center gap-2 text-muted-foreground">
+							<span>Count-based advantage</span>
+							<ClassificationInfo names={names} />
+						</div>
 						{/* Room for the accordion's chevron, so the columns line up. */}
 						<span className="w-4 shrink-0" />
 					</div>
 					{rows.length === 0 && (
 						<p className="px-4 py-6 text-center text-xs text-muted-foreground">
-							No clause has this verdict in the types shown.
+							{shown.length === 0
+								? 'No statements identified in the selected categories.'
+								: 'No clause has this verdict in the selected categories.'}
 						</p>
 					)}
 					<Accordion
@@ -222,40 +260,41 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 						value={opened?.clauseId ?? ''}
 						onValueChange={(value) => {
 							setOpenId(value || null);
-							setFragmentKind(null);
 						}}
 					>
 						{rows.slice(0, limit).map((t) => {
 							const { verdict, byKind } = typeVerdict(t.count, kinds);
+							const title = [t.section, t.heading].filter(Boolean).join(' · ');
 							return (
 								<AccordionItem
 									key={t.clauseId}
 									value={t.clauseId}
 									className={cn('border-border/60', verdict === 'mixed' && 'bg-warning/10')}
 								>
-									{/* The trigger fills the row from underneath; the cells are buttons
-									    on top of it, so a click on a count filters instead of toggling. */}
-									<AccordionPrimitive.Header className="group relative flex items-center gap-2 px-3 py-2.5 hover:bg-muted/30 data-[state=open]:bg-muted/30">
+									{/* Counts and titles share the row trigger; graph and info stay separate. */}
+									<AccordionPrimitive.Header className="group relative flex items-center gap-4 px-3 py-2.5 hover:bg-muted/30 data-[state=open]:bg-muted/30">
 										<AccordionPrimitive.Trigger
 											className="absolute inset-0 outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
-											aria-label={`${t.heading}: show the fragments behind its verdict`}
+											aria-label={`${title}: show the fragments behind its verdict`}
 										/>
-										<ClauseLead
-											tally={t}
-											verdict={verdict}
-											rank={rank.get(t.clauseId)}
-											onOpenGraph={onOpenGraph}
-										/>
+										<span className="flex w-[200px] shrink-0 items-center gap-2">
+											<ClauseLead
+												tally={t}
+												verdict={verdict}
+												rank={rank.get(t.clauseId)}
+												onOpenGraph={onOpenGraph}
+											/>
+										</span>
 										{kinds.map((kind) => (
 											<span key={kind} className="contents">
 												{cell(t, kind)}
 											</span>
 										))}
-										<span className="pointer-events-none w-36 shrink-0 space-y-0.5 font-normal">
-											<VerdictBadge verdict={verdict} names={names} />
-											<span className="block text-[10px] leading-snug text-foreground/70">
-												{note(verdict, byKind)}
+										<span className="flex w-44 shrink-0 items-center gap-2 font-normal">
+											<span className="pointer-events-none">
+												<VerdictBadge verdict={verdict} names={names} />
 											</span>
+											<VerdictInfo reason={note(verdict, byKind)} clause={title} />
 										</span>
 										<ChevronDownIcon className="pointer-events-none size-4 shrink-0 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180" />
 									</AccordionPrimitive.Header>
@@ -278,8 +317,7 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 							↓ {rows.length - limit} more clauses
 						</button>
 					)}
-					Your answers stay in this browser: {Object.keys(reviews).length} of {tallies.length}{' '}
-					clauses reviewed.
+					{Object.keys(reviews).length} of {tallies.length} clauses reviewed.
 				</p>
 			</div>
 		</div>

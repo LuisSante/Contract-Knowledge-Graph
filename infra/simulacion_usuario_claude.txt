@@ -1,0 +1,390 @@
+SIMULACIÓN DE PRIMER USO — TABLE V2 (segunda ronda)
+Fecha de referencia de la sesión: 14 de octubre de 2026.
+Aplicación probada: http://localhost:3000, en el navegador integrado, con una
+ventana de 1440 × 900.
+Contrato: SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement.docx.
+Parte simulada: Equidata, Inc., proveedor del servicio (Service Provider).
+La simulación anterior (simulacion_usuario_gpt.txt) se hizo desde National;
+esta se hizo desde la otra parte, para no repetir el mismo recorrido.
+
+RESULTADO PRINCIPAL
+
+Table v2 funciona en lo esencial. En unos minutos pude saber a quién favorece
+cada cláusula SEGÚN EL CONTEO, abrir las cláusulas importantes, entender qué
+recibo y qué cedo, y comprobarlo en el texto. Comparado con la ronda de GPT,
+el lenguaje mejoró claramente: «Count-based advantage», «Equal counts», las
+tarjetas con nombres explícitos («National's obligations → Equidata's rights»)
+y la etiqueta de origen en cada fragmento («Equidata's obligation → right for
+National») resolvieron gran parte de lo que GPT había señalado.
+
+No se entiende TODO a primera vista. Lo que más me confundió como Equidata fue:
+- Varios «derechos» que el sistema le asigna a la otra parte son, para mí,
+  el costo o el mecanismo de un derecho mío: «Bear audit expense» (pago MI
+  auditoría), «Bill compensation» (facturar es cómo cobro). Por eso Audit
+  aparece como «Depends on the type» cuando yo diría que me favorece, y al
+  apagar «Own rights» Audit pasa a favorecer a National.
+- Algunas prohibiciones aparecen bajo «right for National» con el título de la
+  acción prohibida («Make unauthorized service commitments»), lo que se lee
+  como un permiso.
+- 12 de las 22 filas solo tienen número (§7.2, §5.3, §8.4…): hay que abrirlas
+  para saber de qué tratan.
+- Un desplazamiento de la tabla hizo que registrara sin querer una respuesta
+  de validación, y la interfaz no permite retirarla.
+
+ALCANCE Y MÉTODO
+
+Simulación hecha por un modelo, no prueba con una persona. No mide tiempos
+ni tasas de éxito, y no se puede generalizar.
+
+Sesgos que debo declarar, porque son mayores que los de GPT:
+- En esta misma sesión ya había leído parte de la implementación (cómo se
+  acredita cada enunciado a una parte, en clause-favour.ts). Conozco la regla
+  «el derecho va a quien lo tiene; la obligación o prohibición, a la otra
+  parte». Un usuario real no la conoce. Intenté reaccionar solo a lo que la
+  pantalla dice, pero no puedo borrar lo que sé.
+- Había leído el inicio del informe de GPT (resultado principal y método)
+  antes de empezar. El resto lo leí DESPUÉS del recorrido, solo para la
+  sección de comparación.
+- No leí los cambios de código hechos para esta ronda.
+
+Perfil simulado: gerente de operaciones de Equidata. Conoce el negocio (vende
+servicios de crédito y fraude a través de afiliados), lee inglés y no es
+abogado. No conoce grafos, PageRank ni los colores de la aplicación. Entra con
+poca paciencia y mira primero lo grande.
+
+Tarea personal: «Soy Equidata. Quiero saber qué me da este contrato, qué me
+exige y dónde estoy expuesto, y poder verlo en el texto».
+
+Distingo lo observado («Observado») de la reacción simulada («Reacción»).
+Las reacciones son plausibles, no testimonios. Algunas observaciones las marco
+como «lectura atenta»: un usuario rápido no llegaría a ellas.
+
+RECORRIDO Y SEGUIMIENTO
+
+1. ENTRADA Y BÚSQUEDA DEL CONTRATO
+Observado: la portada muestra seis contratos con el nombre de quien lo
+presentó ante la SEC (Steel Vault Corp, Ediets, Bellicum…), no el de las
+partes. Escribí «Equidata» en el buscador: «No contracts match your search».
+Reconocí el mío por «Affiliate Agreement». Al abrirlo, el logo de Equidata y
+el resumen con los dos papeles («Service Provider» / «Marketing Affiliate»)
+confirmaron que era el correcto.
+Reacción: «Busqué mi empresa y no apareció. Si hubiera más contratos, no lo
+habría encontrado. Una vez dentro, el resumen es claro».
+Resultado: fricción antes de llegar a Table v2. No es parte de Table v2, pero
+es el primer contacto.
+
+2. ACCESO A TABLE V2
+Observado: «Compare the pair» abre «Table», no «Table v2». Las dos pestañas
+están juntas, sin explicación de la diferencia.
+Reacción: «"v2" no me dice qué tiene de distinto. Entro porque me lo pidieron».
+Resultado: igual que en la ronda de GPT.
+
+3. PRIMERA IMPRESIÓN
+Observado: arriba hay tres tarjetas (National : Equidata):
+  Rights from obligations 15 : 29 (44 statements)
+  Own rights 3 : 14 (17 statements)
+  Rights from prohibitions 8 : 9 (17 statements)
+Debajo de cada número, dos líneas explican el origen, por ejemplo
+«National's obligations → Equidata's rights». A la derecha, en grande:
+«COUNT-BASED ADVANTAGE — Equidata — More rights in all 3 selected categories»,
+y el reparto «22 clauses: 10 Equidata, 9 Equal counts, 2 National, 1 Depends».
+Reacción: «El contrato me favorece. "Count-based" me avisa de que es un
+conteo, no un juicio. Las líneas con flecha me explican rápido que lo que
+National tiene que hacer cuenta como algo que yo recibo. "Statements" no sé
+qué es exactamente, pero no me impide seguir».
+Además, en la cabecera del panel aparece «National Credit Report.com, LLC ·
+top 10 − + · Clear». No hay explicación. Pulsé «Clear» y no vi ningún cambio.
+Reacción: «¿Por qué aparece el nombre de National arriba si yo soy Equidata?
+¿Estoy viendo la tabla desde su lado?».
+Resultado: la conclusión general se entiende en segundos, con la cautela de
+que es un conteo. El control de la cabecera genera dudas sin aportar nada.
+
+4. DEFINICIONES
+Observado: el ícono (i) junto a «Count-based advantage» abre «Count-based
+classifications»: National/Equidata = más derechos en al menos una categoría
+y no menos en las demás; Equal counts = mismo número en cada categoría;
+Depends on the type = cada parte gana en una categoría distinta.
+Reacción: «Claro y corto. Entiendo las cuatro etiquetas».
+
+5. COMPENSATION (§1)
+Observado: hice clic en el centro de la fila, sobre los números. Se abrió
+con «Only own rights · show every type» y solo mostraba 2 fragmentos. Pulsé
+«show every type». Con todo visible: «Rights for National 4» y «Rights for
+Equidata 13», y la frase «Equidata has more rights from obligations (11 vs 4)
+and own rights (2 vs 0), and no fewer rights in any selected category».
+Lo que recibo: National cobra al consumidor, asume los impagos, me paga la
+compensación, los cargos adicionales, los costos de cobranza, la cuota de
+desarrollo, las reversiones de tarjeta, los recargos por mora, los cheques
+devueltos y los honorarios de abogado. Además puedo excluir impuestos del
+precio y subir el precio base.
+Lo que recibe National: «Bill compensation», «Bill additional charges
+separately», «Notify price increases», «Bill credit card items».
+Reacción: «Correcto, esta cláusula es mía: me pagan y National carga con el
+riesgo de cobro. Pero que yo le facture no es un beneficio para National;
+facturar es cómo cobro. De los cuatro "derechos de National", solo el aviso
+de aumento de precio me parece un beneficio real para él».
+Abrí «View evidence» en «Increase service base cost»: muestra la cita literal
+«Equidata reserves the right to increase the base cost of Services». Pulsé
+«§1 ¶1»: el documento de la izquierda saltó al párrafo y resaltó solo esa
+frase. El documento ocupa una franja estrecha y las líneas quedan cortadas por
+la derecha; no descubrí cómo ampliarlo.
+Resultado: entendí la cláusula y pude verificarla. El clic sobre los números
+abre un alcance distinto que el clic sobre el título, y no lo esperaba.
+
+6. §7.2 (SIN TÍTULO)
+Observado: la fila solo dice «§7.2». Al abrirla: National 1 (terminar con
+causa, con aviso escrito de 30 días); Equidata 4 (cobrar lo pendiente,
+terminar con causa, terminar sin aviso si National no paga o incumple,
+desactivar el acceso al terminar). Los enlaces dicen «Document» en vez de
+«§7.2 ¶n».
+Reacción: «Es terminación y me favorece: puedo cortar sin aviso si no me
+pagan. Pero tuve que abrirla para saber de qué trataba».
+
+7. LIABILITY (§11)
+Observado: Equidata 4, National 0. National me defiende e indemniza; yo
+entrego el servicio «as is», excluyo garantías y excluyo daños.
+Reacción: «Es justo lo que esperaba de una cláusula de responsabilidad
+redactada por mi empresa. Se entiende sin esfuerzo».
+
+8. INDEMNIFICATION (§9)
+Observado: «Equal counts». La explicación dice «Same number of rights in each
+selected category. Both parties may receive rights». La cita es la misma para
+los dos lados: indemnización mutua.
+Reacción: «Empate porque es mutua. La frase me aclara que no es que nadie
+gane nada».
+Lectura atenta: el detonante es «breach of any warranties … or failure to
+provide Services». Fallar en prestar el servicio solo puede pasarme a mí. Es
+mutua en el texto, pero mi exposición es mayor. El conteo 1 : 1 no lo refleja
+y la pantalla no lo advierte.
+
+9. PROPRIETARY INFORMATION (§10)
+Observado: «National», 2 : 1 en prohibiciones. Las dos partes deben
+restringir el uso de información confidencial, y yo además no puedo usar la
+información de los clientes de National. La cita lo confirma.
+Reacción: «Es la que cedo. Razonable: son sus clientes. Entiendo por qué
+gana National».
+
+10. AUDIT (§6)
+Observado: «Depends on the type». National: «Bear audit expense» (obligación
+mía). Equidata: «Audit marketing activities» e «Inspect business site». La
+evidencia de «Bear audit expense» solo dice «at Equidata's expense». Tuve que
+ir al documento para entender: «Equidata may audit, at Equidata's expense, the
+Marketing Affiliate's marketing, practices and activities…».
+Reacción: «La auditoría es un derecho mío y lo pago yo. Pagar mi propia
+auditoría no es un derecho de National, es el costo de mi derecho. Si me
+preguntan, diría "No, Equidata has the advantage"».
+Resultado: es el caso más claro de una obligación que es en realidad la
+condición o el costo de un derecho propio, y que se cuenta como derecho de la
+otra parte. La cita es demasiado corta para entenderse sola.
+
+11. EL RESTO DE LA LISTA
+Observado: «↓ 12 more clauses» añadió 10 filas y dejó «↓ 2 more clauses».
+De las 22 filas, 12 solo tienen número: §7.2, §7.3, §7.4, §8.4, §5.3, §8.1,
+§5.1, §5.5, §5.2, §5.4, §8.2, §8.3.
+§8.4: National 2 : 0. Son garantías mías (estoy autorizado como proveedor y
+puedo prestar el servicio).
+Reacción: «Tiene sentido que favorezca a National. Aunque hace un momento leí
+en Liability que yo excluyo garantías… no sé cómo encajan las dos. Lo dejo».
+§5.3: Equal counts. A cada lado aparece «Make unauthorized service
+commitments» bajo «Equidata's prohibition → right for National» (y al revés).
+Reacción: «Leído rápido parece que National tiene derecho a hacer compromisos
+no autorizados. Solo la línea pequeña de arriba ("prohibition") y la cita me
+aclaran que es algo que NO se puede hacer». En Proprietary Information, en
+cambio, las prohibiciones se titulan «Restrict …», que sí se lee bien.
+Lectura atenta: el §5 dice literalmente «Marketing Affiliate nor Equidata
+shall engage…», así que el empate sigue el texto. En la práctica §5.3 y §5.4
+(materiales de marketing no aprobados) solo los puede incumplir quien hace
+marketing, que es National.
+
+12. UNA RESPUESTA REGISTRADA SIN QUERER
+Observado: con Audit abierta, hice clic en el título de §8.4, que estaba
+debajo. Audit se cerró, la tabla se desplazó y mi clic cayó sobre «No, equal
+counts» de la validación de Audit. El contador pasó de «0 of 22» a «1 of 22
+clauses reviewed» sin que me diera cuenta en el momento; lo vi después.
+No hay forma de retirar la respuesta, solo de cambiarla por otra.
+Resultado: la validación es la base de una verdad de terreno; una respuesta
+accidental la contamina. Borré esa respuesta del almacenamiento del navegador
+al terminar, así que el estado quedó como estaba («0 of 22»).
+
+13. FILTROS DE CATEGORÍA
+Observado: desactivé «Own rights». La tarjeta quedó atenuada. El titular pasó
+a «More rights in all 2 selected categories» y el reparto a «21 clauses in
+selected categories: 9 Equidata, 9 Equal counts, 3 National, 0 Depends».
+Audit pasó de «Depends on the type» a «National». §7.4 desapareció.
+Reacción: «Quité una columna y ahora la cláusula que me deja auditar a
+National dice que favorece a National. Si no vuelvo a encender el filtro, me
+llevo una idea equivocada». «all 2» suena raro; diría «both».
+Resultado: el recálculo es coherente con la regla, y el «21 clauses in
+selected categories» lo hace un poco más visible que en la ronda anterior.
+Pero sigue sin avisar ANTES de que el veredicto puede cambiar, y aquí el
+cambio produce una conclusión contraria a la intuición.
+
+14. FILTRO POR PARTE
+Observado: «National 2» deja Proprietary Information y §8.4. Los números de
+National se resaltan y los de Equidata se atenúan.
+Reacción: «Útil: en un clic veo todo lo que cedo».
+
+15. SALTO AL GRAFO Y REGRESO
+Observado: «View in graph» desde Proprietary Information abre «Knowledge
+Graph»: una nube de nodos con decimales (8.2, 6.9, 2.5…) y el vecindario de
+la cláusula resaltado. En la banda inferior: «Proprietary Information 67%/33%»
+sin decir de quién es cada porcentaje; un cuadrado naranja bajo National y dos
+bajo Equidata.
+Reacción: «En la tabla esta cláusula favorecía a National 2 : 1; aquí los dos
+cuadrados naranjas están de mi lado. ¿Son míos o en mi contra? ¿Qué son los
+decimales?».
+Volví con el ícono de tabla: Table v2 se reinició (filtro en «All», ninguna
+fila abierta). El documento sí conservó el resaltado de §10.
+Resultado: igual que en la ronda de GPT: otra convención visual y se pierde
+el contexto al volver.
+
+16. ORDEN DE LAS FILAS
+Observado: «CLAUSE · by importance ↓» cambia a «by order» (orden del
+documento). Los números de la izquierda siguen siendo el puesto por
+importancia: 1, 2, 14, 9, 20, 16, 18, 13, 19… La ayuda emergente dice
+«PageRank with a per-clause prior».
+Reacción: «Los números saltan y no sé qué son. "PageRank" no me dice nada».
+
+17. DISPUTES (§2)
+Observado: Equidata 7, National 5. Cinco de los fragmentos aparecen repetidos
+a ambos lados (cumplir el arbitraje, arbitrar localmente, elegir árbitro de
+común acuerdo, elegir árbitro propio, optar por arbitraje). La diferencia son
+dos obligaciones de National: pagar los cargos no disputados y presentar la
+disputa por escrito.
+Reacción: «Tuve que leer doce tarjetas para encontrar las dos que marcan la
+diferencia. Ayudaría ver juntas las que son mutuas».
+Lectura atenta: «Arbitrate disputes locally» cuenta igual para los dos, pero
+el lugar es Newport News, Virginia, donde está Equidata. En la práctica me
+favorece; el conteo no lo ve.
+
+QUÉ PUEDO EXPLICAR AL TERMINAR
+
+Como Equidata, puedo decir:
+«Según el conteo, el contrato me favorece en las tres categorías. En
+Compensation, National me paga, cobra al consumidor y asume los impagos y los
+costos de cobranza; yo puedo subir el precio. En terminación (§7.2) puedo
+cortar sin aviso si National no paga. En Liability no doy garantías, excluyo
+daños y National me defiende. Lo que cedo: no usar la información de los
+clientes de National (§10), dos garantías sobre mi autorización y capacidad
+(§8.4) y pagar mi propia auditoría (§6). La indemnización (§9) y las reglas de
+cumplimiento (§5) son mutuas. Cada punto lo puedo ver en el texto».
+
+No puedo explicar con seguridad:
+- Por qué facturar o pagar mi propia auditoría cuentan como derechos de
+  National.
+- Si un empate en el conteo significa igual exposición (indemnización y
+  arbitraje sugieren que no).
+- Cómo se combinan las garantías de §8.4 con la exclusión de garantías de §11.
+- De qué tratan las cláusulas que solo tienen número, sin abrirlas una a una.
+- Qué significan el grafo, sus decimales y el «67%/33%».
+- Qué hace el control «National Credit Report.com · top 10 · Clear».
+
+COMPARACIÓN CON LAS OBSERVACIONES DE GPT
+
+Resueltas en esta versión:
+- Veredicto demasiado fuerte («Who the contract favours») → ahora «Count-based
+  advantage» y «More rights in all 3 selected categories».
+- «Neither» confundía «empate» con «nadie gana» → ahora «Equal counts», con
+  la frase «Both parties may receive rights».
+- El pronombre «it» en las ayudas → ahora las tarjetas nombran a las partes
+  («National's obligations → Equidata's rights»).
+- No se veía de dónde salía cada derecho → cada fragmento dice su origen
+  («Equidata's obligation → right for National»).
+- Solo se mostraban tres fragmentos por lado → ahora se ven todos.
+- Faltaban definiciones de las etiquetas → popover «Count-based
+  classifications».
+
+Parciales:
+- Alcance de los filtros: ahora dice «N clauses in selected categories» y
+  atenúa la tarjeta apagada, pero no avisa antes de que el veredicto cambie.
+- 13 frente a 11 en Compensation: la frase nombra las dos categorías (11 + 2),
+  pero el usuario sigue teniendo que sumar.
+
+Pendientes (las vi de nuevo):
+- Abrir la fila desde los números la filtra a un solo tipo.
+- «Compare the pair» abre Table, no Table v2; no se explica la diferencia.
+- Filas con solo número (12 de 22).
+- Documento estrecho y cortado mientras el analizador está abierto.
+- Obligaciones ajenas contadas como beneficio aunque no lo sean (facturar,
+  pagar la propia auditoría).
+- El grafo usa otra convención y al volver se pierde el filtro y la fila
+  abierta.
+- Validación sin «no estoy seguro», sin razón y sin forma de retirar una
+  respuesta.
+- «12 more clauses» añade 10 y deja «2 more».
+- Relación entre garantías (§8.4) y exclusión de garantías (§11).
+- Igual conteo no es igual exposición.
+
+Nuevas en esta ronda (desde el lado de Equidata):
+- Buscar por el nombre de una parte no encuentra el contrato.
+- Títulos de prohibiciones redactados como la acción prohibida bajo «right for».
+- Un filtro de categoría puede invertir el veredicto contra la intuición
+  (Audit → National).
+- Desplazamiento de la tabla que provoca respuestas de validación accidentales.
+- Citas demasiado cortas para entenderse solas («at Equidata's expense»).
+- Control de cabecera sin explicación, que además muestra el nombre de la
+  otra parte.
+- En «by order», los números de fila siguen siendo puestos de importancia.
+- Fragmentos mutuos repetidos a ambos lados, sin agrupar.
+- Etiquetas de enlace inconsistentes («§1 ¶1», «Document», «¶1», «§6»).
+- «all 2 selected categories».
+
+PRIORIDADES DE MEJORA DERIVADAS DE ESTA PRUEBA
+
+Alta — Evitar que la validación se registre por accidente y permitir
+retirarla. Por ejemplo: que abrir otra fila no desplace lo que está bajo el
+cursor, o pedir confirmación, y ofrecer «quitar respuesta». Es la base de la
+verdad de terreno.
+
+Alta — Revisar las obligaciones que son el costo o el mecanismo de un derecho
+propio («Bear audit expense», «Bill compensation»). Sin cambiar la ontología:
+en la extracción podrían quedar como condición del derecho (por ejemplo,
+«Audit marketing activities» con condición «at Equidata's expense») en lugar
+de contarse como derecho de la otra parte. Es lo que más contradice la
+intuición de quien conoce su contrato.
+
+Alta — Titular las prohibiciones como prohibiciones («Not make unauthorized
+service commitments» o «No unauthorized commitments by Equidata»), igual que
+ya se hace con «Restrict …».
+
+Alta — Avisar que los filtros de categoría recalculan veredictos, sobre todo
+cuando una cláusula cambia de lado.
+
+Media — Dar un título temático a las filas que solo tienen número (§7.2
+Termination, §8.4 Warranties, §5.x Compliance…).
+
+Media — Cita demasiado corta. Nota posterior: la interfaz muestra el texto del
+grafo tal cual; en el grafo, «Bear audit expense» tiene como texto solo «at
+Equidata's expense». Es el único caso entre los 90 enunciados del contrato, así
+que es un detalle de la extracción y no de la interfaz.
+
+Media — Que el documento sea legible con el analizador abierto, o que sea
+evidente cómo ampliarlo.
+
+Media — Al volver del grafo, conservar el filtro y la fila abierta. En el
+grafo, decir qué representan los cuadrados y de quién es cada porcentaje.
+
+Media — Agrupar los fragmentos mutuos («5 shared») y mostrar aparte solo los
+que marcan la diferencia.
+
+Baja — Explicar o quitar el control «top 10 · Clear» en Table v2; en «by
+order», ocultar o etiquetar el puesto de importancia; «both» en lugar de
+«all 2»; unificar las etiquetas de los enlaces; permitir buscar por partes
+en la portada; explicar la diferencia entre Table y Table v2.
+
+CONCLUSIÓN
+
+Funcionó en lo principal. Como Equidata pude decir qué me da el contrato, qué
+cedo y dónde está escrito, sin ayuda externa, y los cambios de vocabulario de
+esta ronda se notan. No se entiende todo a primera vista: el conteo trata
+como derechos de la otra parte cosas que para mí son mis propios costos, los
+filtros pueden invertir conclusiones, y la mitad de las filas no dicen de qué
+tratan. Una persona real que mire rápido se quedaría con la conclusión
+correcta para las cláusulas grandes (Compensation, §7.2, Liability) y con
+dudas, o con una conclusión equivocada, en Audit y en las cláusulas sin
+título.
+
+No se modificó código. Se probaron controles en el navegador. Se registró por
+accidente una respuesta de validación en Audit, que después se borró del
+almacenamiento local; el estado final es «0 of 22 clauses reviewed».
+La prueba se limita a este contrato y a este recorrido.

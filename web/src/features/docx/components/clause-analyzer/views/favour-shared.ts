@@ -83,9 +83,13 @@ export function originOf(
 	const side = s.kind === 'right' ? s.to : s.by;
 	const shared = side !== 'a' && side !== 'b';
 	if (s.kind === 'right')
-		return { text: shared ? 'shared right' : 'own right', side: shared ? null : side };
-	if (shared) return { text: `shared ${s.kind}`, side: null };
-	return { text: `${short(names[side])}'s ${s.kind}`, side };
+		return {
+			text: shared ? 'Both parties’ own right' : `${short(names[side])}'s own right`,
+			side: shared ? null : side,
+		};
+	const recipient = s.to === 'both' ? 'both parties' : short(names[s.to]);
+	if (shared) return { text: `Shared ${s.kind} → rights for ${recipient}`, side: null };
+	return { text: `${short(names[side])}'s ${s.kind} → right for ${recipient}`, side };
 }
 
 /** How many clauses land on each verdict. */
@@ -141,16 +145,16 @@ export function verdictNote(
 	kinds: DeonticKind[],
 	names: Record<Side, string>
 ) {
-	if (verdict === 'tie') return 'equal in every type';
-	if (verdict !== 'mixed') return 'loses in no type';
+	if (verdict === 'tie') return 'Same count in each selected category';
+	if (verdict !== 'mixed' && kinds.length === 1) return 'More rights in this category';
+	if (verdict !== 'mixed') return 'More in at least one category; no fewer in the others';
 	return kinds
 		.filter((kind) => byKind[kind] && byKind[kind] !== 'tie')
 		.map((kind) => `${KIND_LABEL[kind].toLowerCase()} → ${short(names[byKind[kind] as Side])}`)
 		.join(' · ');
 }
 
-/** The same reading with each type's score: "Equidata wins in rights from obligations (11–4)
- *  and own rights (2–0), and loses in no type." */
+/** Explains the count-based result using the same selected categories and tallies. */
 export function scoredSentence(
 	count: ClauseTally['count'],
 	verdict: TypeVerdict,
@@ -163,11 +167,12 @@ export function scoredSentence(
 	const scored = (side: Side) =>
 		listOf(
 			wonBy(byKind, kinds, side).map(
-				(k) => `${KIND_LABEL[k].toLowerCase()} (${count[k][side]}–${count[k][other(side)]})`
+				(k) => `${KIND_LABEL[k].toLowerCase()} (${count[k][side]} vs ${count[k][other(side)]})`
 			)
 		);
-	if (verdict === 'tie') return 'The two parties are even in every type shown.';
+	if (verdict === 'tie')
+		return 'Same number of rights in each selected category. Both parties may receive rights.';
 	if (verdict === 'mixed')
-		return `${short(names.a)} wins in ${scored('a')} and ${short(names.b)} in ${scored('b')}.`;
-	return `${short(names[verdict])} wins in ${scored(verdict)}, and loses in no type.`;
+		return `${short(names.a)} has more ${scored('a')}; ${short(names.b)} has more ${scored('b')}. Each party leads in a different category.`;
+	return `${short(names[verdict])} has more ${scored(verdict)}, and no fewer rights in any selected category.`;
 }

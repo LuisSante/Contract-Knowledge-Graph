@@ -20,7 +20,6 @@ import {
 } from '@/features/docx/utils/knowledge/clause-favour';
 import {
 	hasKinds,
-	useClauseNotes,
 	useKinds,
 	useReviews,
 	useTallies,
@@ -62,8 +61,6 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 	const rows =
 		filter === 'all' ? shown : shown.filter((t) => typeVerdict(t.count, kinds).verdict === filter);
 	const opened = rows.find((t) => t.clauseId === openId) ?? null;
-
-	useClauseNotes(kg, opened, kinds, names);
 
 	const note = (verdict: TypeVerdict, byKind: Partial<Record<DeonticKind, Favour>>) =>
 		verdictNote(verdict, byKind, kinds, names);

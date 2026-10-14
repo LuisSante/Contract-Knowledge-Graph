@@ -1,0 +1,323 @@
+SIMULACIÓN DE PRIMER USO — TABLE V2
+Fecha de referencia de la sesión: 13 de octubre de 2026.
+Aplicación probada: http://localhost:3000, mediante navegador.
+Contrato: SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement.docx.
+Parte simulada: National Credit Report.com, LLC, denominada Marketing Affiliate.
+
+RESULTADO PRINCIPAL
+
+Table v2 funciona parcialmente para el objetivo señalado por el profesor. Puedo
+identificar de inmediato a quién favorece cada cláusula SEGÚN EL SISTEMA. Al abrir
+la explicación, puedo comprender varias obligaciones y derechos y contrastar
+fragmentos con el documento. Sin embargo, no puedo afirmar que todo se entienda
+de primera vista ni que el veredicto comunique el beneficio contractual real:
+todavía debo aprender la traducción entre obligaciones y beneficios, interpretar
+conteos, descubrir qué recalculan los filtros y cambiar de lógica al ir al grafo.
+
+La mejora más clara es la columna «Who it favours» y las explicaciones «What
+National gets» / «What Equidata gets». El problema principal restante es que el
+lenguaje de veredicto transmite una conclusión más fuerte que la comparación
+de cantidades que muestra la explicación.
+
+ALCANCE Y MÉTODO
+
+Esta es una simulación de usuario realizada por un modelo, no una prueba con
+una persona real. No permite medir tiempos humanos, porcentajes de éxito ni
+generalizar a todos los usuarios. Además, ya conozco el contexto de la reunión;
+no puedo borrar ese conocimiento. Para reducir ese sesgo, basé el recorrido en
+lo visible en la interfaz y no leí la implementación de Table v2 ni su documentación
+para resolver las dudas. No usé el resumen de la reunión como respuesta correcta
+de las cláusulas. La elección del contrato corresponde al caso de esa reunión.
+
+La UI respondió en el navegador, aunque una comprobación desde la terminal no
+pudo conectar. La evaluación siguiente corresponde a la UI efectivamente abierta.
+
+Perfil simulado: representante comercial de National que conoce el propósito
+general de su contrato, puede leer inglés y quiere revisar lo que le beneficia
+o le exige antes de discutirlo. No conoce grafos, algoritmos de importancia ni
+la convención de colores de la aplicación. No examina cada detalle al entrar.
+Asumir lectura de inglés evita confundir una barrera de idioma con el diseño;
+un usuario que solo lea español necesitaría una evaluación adicional.
+
+Tarea personal: «Soy National. Quiero saber qué me perjudica o beneficia,
+por qué el sistema lo dice y dónde está escrito en mi contrato».
+
+Primero registré una lectura rápida; después abrí ejemplos y seguí enlaces.
+Distingo a continuación lo observado de las reacciones simuladas. Las reacciones
+son plausibles, no testimonios de una persona entrevistada. No inspeccioné todos
+los fragmentos ni todas las relaciones del grafo, porque eso no representaría
+un primer uso con atención limitada.
+
+RECORRIDO Y SEGUIMIENTO
+
+1. ENTRADA Y ELECCIÓN DEL CONTRATO
+Observado: la portada muestra seis contratos y un buscador. Abrí «Affiliate
+Agreement — Steel Vault Corp». El documento se abre con «Clause Analyzer»,
+un resumen y los papeles de Equidata y National. Las dos partes ya aparecen
+seleccionadas y existe un botón «Compare the pair».
+Reacción simulada: «Puedo reconocer mi empresa en el resumen. Entiendo que
+Equidata presta los servicios y que yo los comercializo, cobro al consumidor
+y pago a Equidata. Comparar las dos partes parece el siguiente paso».
+Resultado: el resumen ayuda a evitar la confusión entre proveedor y afiliado
+que apareció durante la reunión. El nombre Steel Vault de la portada no es el
+nombre de las partes; necesito entrar al contrato para comprobar que es el mío.
+
+2. ACCESO A TABLE V2
+Observado: «Compare the pair» abre primero «Table». Hay una pestaña «Table v2».
+Entré en ella porque esta evaluación se centra explícitamente en Table v2.
+Reacción simulada: «Hay dos tablas. Sin esa indicación no sabría por qué usar
+la segunda ni qué cambia».
+Resultado: localizar Table v2 fue posible, pero no fue el recorrido predeterminado.
+
+3. PRIMERA IMPRESIÓN DE TABLE V2
+Observado: el resumen dice «Who the contract favours — Equidata — Ahead in all
+three types». Muestra 22 cláusulas: 10 Equidata, 9 Neither, 2 National y 1 Depends.
+Los tres resúmenes muestran National / Equidata:
+  Rights from obligations: 15 / 29, 44 statements.
+  Own rights: 3 / 14, 17 statements.
+  Rights from prohibitions: 8 / 9, 17 statements.
+Las filas tienen una columna «Who it favours» con el nombre de la parte.
+Reacción simulada: «La otra empresa parece tener ventaja. Solo dos cláusulas
+parecen favorecerme. ¿Las nueve que dicen Neither no ayudan a ninguno?
+¿Qué significa exactamente tener quince derechos derivados de obligaciones?»
+Resultado: la dirección del veredicto se entiende rápido. No se entiende todavía
+qué demuestra ni cuánto representa esa ventaja. La separación por categorías
+es visible; su significado requiere lectura adicional.
+
+4. COLORES, NÚMEROS Y POSICIONES
+Observado: National es morado y Equidata verde azulado. Las categorías usan rojo
+para obligaciones, verde para derechos propios y naranja para prohibiciones.
+Los encabezados repiten National · Equidata y los conteos incluyen puntos.
+Reacción simulada: «Los números son de cada empresa. Pero hay dos verdes y
+también rojo debajo de beneficios: debo recordar que unos colores identifican
+empresas y otros identifican tipos de enunciados».
+Resultado: no es necesario conocer todos los colores para leer el nombre del
+favorecido. Interpretar los puntos y las categorías exige mayor atención.
+Las ayudas «what the other must do for it» / «what it may do» son útiles, pero
+pequeñas, y el pronombre “it” obliga a resolver mentalmente a qué parte se refiere.
+
+5. COMPENSATION: QUIÉN PAGA A QUIÉN
+Observado: la fila presenta 4 / 11 en derechos derivados de obligaciones y
+0 / 2 en derechos propios. El veredicto es Equidata. Al abrir desde la zona
+de conteos apareció una explicación limitada a «Only own rights»; usé
+«show every type» para ver las demás categorías. Abrir por el título en otro
+caso mostró el conjunto completo. No considero esto prueba de un fallo técnico;
+sí demuestra que distintas zonas de una fila pueden abrir alcances distintos.
+Con todas las categorías, «What National gets» muestra 4 y «What Equidata gets»
+13. La explicación justifica el resultado mediante 11–4 y 2–0.
+Reacción simulada: «Ahora entiendo: mis obligaciones de pago están entre lo
+que recibe Equidata. No es que Equidata tenga que pagarme. Pero 13 no coincide
+con 11: tengo que darme cuenta de que también sumaron dos derechos propios».
+Resultado: se resuelve la confusión principal de la reunión después de expandir
+la fila. Hay un esfuerzo adicional para conectar el conteo de la categoría
+con el total de la tarjeta de detalle.
+
+6. EVIDENCIA DE COMPENSATION
+Observado: las tarjetas muestran quién debe actuar, una descripción breve,
+una cita literal y un enlace. Pulsé «Pay service compensation»: la selección
+se resaltó y el documento mostró la obligación de National de pagar a Equidata.
+Expandí «+ 10 more fragments» y encontré cargos adicionales, cobros atrasados,
+tarjetas, desarrollo y el derecho de aumentar el precio. National recibe,
+entre otros, «Bill compensation» y «Notify price increases».
+Reacción simulada: «Puedo comprobar el pago y ver costos que no había mirado.
+Entiendo por qué un aviso de aumento me protege. Que me facturen cargos
+adicionales por separado no me resulta, por sí solo, un beneficio evidente».
+Resultado: las citas permiten validar enunciados concretos. No explican por sí
+solas por qué TODA obligación ajena debería contarse como un beneficio mío.
+La explicación inicial muestra solo tres fragmentos por lado; una persona
+que no expanda puede pasar por alto cargos o condiciones relevantes.
+
+7. §7.2: TERMINACIÓN
+Observado: el resultado es Equidata, con 0 / 1 en obligaciones y 1 / 3 en
+derechos propios. El detalle muestra que ambas partes pueden terminar con
+causa y aviso escrito de treinta días. También muestra que Equidata puede
+terminar sin aviso cuando National incumple el pago u otra obligación, y
+desactivar el acceso después de la terminación.
+Pulsé «Terminate without notice» y comprobé la selección en el documento.
+El salto visual requirió dar tiempo a que se acomodara la vista; una captura
+inmediata todavía mostraba otra zona. Después se vio el fragmento correcto.
+Reacción simulada: «La diferencia no es simplemente que Equidata tenga más
+derechos: yo puedo perder el servicio sin aviso si incumplo. Sí veo la condición
+en la cita; no debo interpretar que puede hacerlo en cualquier circunstancia».
+Resultado: puedo explicar una diferencia concreta y su condición. El rótulo
+«§7.2» por sí solo no permite descubrir que trata de terminación.
+
+8. LECTURA DEL DOCUMENTO
+Observado: en la disposición inicial, el documento ocupa una franja estrecha,
+con letra pequeña y desplazamiento horizontal. Amplié el panel con el divisor.
+Eso ayudó a encontrar la terminación, pero dejó menos espacio para la tabla;
+hubo recortes y necesidad de desplazamiento en los paneles.
+Reacción simulada: «El sistema me lleva al texto, pero leerlo en esta franja
+es incómodo. Necesito ajustar el espacio antes de verificar con confianza».
+Resultado: hay trazabilidad efectiva en los ejemplos de pago y terminación.
+La visibilidad del documento reduce su utilidad para quien no descubre o no
+quiere manipular el divisor. No traté una captura tomada antes del salto como
+un enlace roto.
+
+9. LIABILITY Y LA GARANTÍA DE §8.4
+Observado: Liability (§11) favorece a Equidata. El detalle muestra la obligación
+de National de defender e indemnizar, los servicios “as is” y la exclusión
+de garantías; hay un fragmento    adicional oculto inicialmente.
+Después, con el filtro «National 2», abrí §8.4: National recibe dos garantías
+de Equidata, relativas a autorización y capacidad de prestar los servicios.
+Reacción simulada: «Aquí me dicen que tengo garantías y en la otra cláusula
+que Equidata excluye garantías. ¿Cómo se relacionan estas disposiciones?
+¿Mi beneficio de esta fila se mantiene cuando leo el resto?»
+Resultado: el sistema ayuda a encontrar ambas disposiciones por separado.
+En el detalle revisado no apareció una explicación de su efecto conjunto ni
+una indicación visible para resolver esa duda. No concluyo que exista una
+contradicción jurídica: la duda es precisamente lo que la UI deja sin explicar.
+
+10. INDEMNIFICATION: EMPATE
+Observado: §9 tiene 1 / 1, con veredicto «Neither (tie)». Al abrir, ambas partes
+reciben defensa e indemnización; se muestra la misma cita de compromiso mutuo.
+La explicación dice «The two parties are even in every type shown».
+Reacción simulada: «La cláusula sí beneficia a ambas. Neither me había hecho
+pensar que no beneficiaba a nadie. Aquí solo están empatadas las cantidades».
+Resultado: la explicación corrige parcialmente la interpretación inicial.
+El nombre del estado mezcla ausencia de beneficiario y ausencia de predominio.
+Además, igualdad de conteos no demuestra igualdad de alcance o de exposición.
+
+11. AUDIT: DEPENDE DE LA CATEGORÍA
+Observado: Audit (§6) dice «Depends on the type». National gana en derechos
+derivados de obligaciones 1–0 porque Equidata soporta el gasto de auditoría.
+Equidata gana en derechos propios 2–0 porque puede auditar e inspeccionar.
+Reacción simulada: «Comprendo que hay dos aspectos. Que Equidata pague la
+auditoría no me dice si a mí me conviene que pueda inspeccionarme en cualquier
+momento. No obtengo una explicación de cómo ponderar esos efectos».
+Resultado: se comunica el cruce entre categorías sin sumar arbitrariamente
+todo en un único marcador. La utilidad del resultado requiere explicar sus
+consecuencias concretas; ganar en una categoría no equivale a conveniencia global.
+
+12. FILTROS DE CATEGORÍA
+Observado: desactivé «Rights from obligations». El total cambió de 22 a 16
+cláusulas y la distribución pasó a 7 Equidata, 8 Neither, 1 National y 0 Depends.
+Audit cambió de «Depends on the type» a Equidata; Disputes pasó a empate.
+El resumen añadió «Ahead in both types shown» y la tarjeta de la categoría
+oculta quedó atenuada. Reactivé la categoría y volvieron los valores iniciales.
+Reacción simulada: «Creía que Show solo ocultaba una columna. También cambió
+la respuesta y desaparecieron cláusulas. Si no miro el total y la frase pequeña,
+podría pensar que el sistema cambió de opinión sobre el contrato entero».
+Resultado: el comportamiento es coherente con recalcular según categorías
+visibles, pero ese alcance necesita estar más explícito antes de la interacción.
+
+13. FILTROS POR PARTE Y ALCANCE DE LA LISTA
+Observado: «National 2» mostró Proprietary Information y §8.4, incluyendo una
+cláusula fuera de las diez primeras. «Equidata 10» mostró diez cláusulas, entre
+ellas Compensation, §7.2, Liability y §7.4. Pude encontrar el conjunto contrario.
+Al volver a All había diez filas y un botón «12 more clauses». Pulsarlo mostró
+veinte filas y dejó un botón «2 more clauses». Tras el segundo clic estuvieron
+las 22 filas. La etiqueta inicial indicaba las pendientes, no las que se añadían
+en ese clic; eso no era evidente.
+Reacción simulada: «Es fácil encontrar lo que beneficia a mi contraparte.
+No debo confundir las primeras diez con todas las cláusulas. Los números de
+fila parecen posiciones de importancia; el número jurídico está en §».
+Resultado: los filtros por veredicto son útiles y alcanzan filas fuera del lote
+inicial. «top 10», posiciones de importancia, números jurídicos y total 22 son
+varios conteos que un usuario debe distinguir. No se ve en esta pantalla cómo
+se decidió la importancia ni por qué habría que revisarla antes que otra fila.
+
+14. SALTO AL GRAFO Y REGRESO
+Observado: desde §8.4 pulsé «View in graph». Se abrió Knowledge Graph, con el
+vecindario seleccionado y una nube de nodos atenuados, cifras decimales y
+etiquetas pequeñas. Activé «Labels». Las etiquetas añadieron nombres, pero
+no pude explicar a primera vista las relaciones. La banda inferior mostró
+dos obligaciones rojas bajo Equidata y un reparto 100% / 0% National / Equidata.
+Reacción simulada: «En Table v2 esto estaba entre lo que recibo yo; aquí los
+cuadrados están bajo Equidata. Debo recordar que ahora muestran quién cumple
+la obligación, aunque la barra indique otra cosa. ¿Qué significan los decimales?
+¿Qué conexión debería mirar para resolver mi duda sobre las garantías?»
+Resultado: el enlace lleva a la cláusula, pero requiere otra convención visual.
+No interpreté espontáneamente sus aristas ni obtuve una explicación del efecto
+conjunto de §8.4 y Liability. No intenté exhaustivamente todos los nodos o gestos.
+Al regresar con «Clause Analyzer», seguía seleccionada Table v2, pero se había
+reiniciado el filtro a All y la fila abierta se había cerrado. Se conservó el
+documento en la zona de la garantía: mi contexto de comparación quedó repartido.
+
+15. VALIDACIÓN POR EL USUARIO
+Observado: las filas abiertas preguntan si estoy de acuerdo. Probé «Yes» en
+§7.2, después de leer su condición. El botón quedó seleccionado y el contador
+pasó de 0 a 1 de 22 cláusulas revisadas. Pulsar Yes otra vez no lo desmarcó.
+La UI dice que las respuestas quedan en este navegador. La elección sigue
+registrada en esta sesión de prueba; no comprobé persistencia tras recarga.
+Reacción simulada: «Puedo indicar acuerdo. Si no estoy seguro o si considero
+que depende de otros factores, las respuestas ofrecidas en esta fila me obligan
+a escoger entre Equidata, National y Neither».
+Resultado: se pudo registrar una respuesta. En los veredictos definidos no
+aparecía una alternativa de incertidumbre ni un campo para explicar el desacuerdo.
+La respuesta registrada es parte de esta simulación, no una anotación experta.
+
+QUÉ PUEDO EXPLICAR AL TERMINAR
+
+Como National, puedo decir:
+«El sistema considera que Equidata predomina en los tres tipos de enunciados
+comparados. En compensación yo pago a Equidata y asumo varios cargos. En §7.2,
+ambas partes tienen terminación con causa y aviso, pero Equidata tiene además
+terminación sin aviso si yo incumplo. En responsabilidad aparecen protecciones
+para Equidata. Algunas disposiciones son mutuas y otras tienen ventajas distintas
+según la categoría. Puedo abrir citas para contrastar varias de estas afirmaciones».
+
+No puedo explicar con seguridad:
+- Si el predominio por conteos equivale a mayor beneficio contractual total.
+- Si un enunciado contado tiene el mismo efecto que otro o está duplicando
+  aspectos de una misma obligación.
+- Por qué cada obligación ajena se considera automáticamente un beneficio mío.
+- Cómo cambian las garantías cuando se leen junto con exclusiones, condiciones
+  y otras cláusulas.
+- Qué significan los decimales del grafo o qué relaciones explican el veredicto.
+- Si las 22 cláusulas representan todo el contrato. El grafo muestra 26 nodos
+  Clause y 52 Obligation frente a 22 cláusulas y 44 statements de obligaciones
+  en Table v2. Los ámbitos pueden ser diferentes: no deduzco que haya extracción
+  faltante, pero no encontré una explicación visible de esa diferencia.
+
+PRIORIDADES DE MEJORA DERIVADAS DE ESTA PRUEBA
+
+Alta — Mostrar el alcance del veredicto junto al resultado principal.
+Ejemplo: «Predomina en cantidad de enunciados favorables detectados; revisa su
+contenido y condiciones». Evitar que “Who the contract favours” parezca demostrar
+por sí solo conveniencia, equilibrio o ausencia de exposición.
+
+Alta — Explicar beneficios concretos y sus condiciones en lenguaje de la parte.
+Ejemplo en §7.2: «Si incumples, Equidata puede terminar sin aviso; tus pagos
+pendientes continúan». Presentar también qué evidencia sostiene esa explicación.
+
+Alta — Aclarar el efecto de los filtros antes de que cambie el resultado.
+Indicar que cambiar Show recalcula veredictos y puede retirar filas; mostrar
+claramente «16 de 22 con las categorías seleccionadas», si ese es el alcance.
+
+Alta — Explicar relaciones relevantes dentro del recorrido de una cláusula.
+Para el caso de garantías y exclusiones, permitir seguir las disposiciones
+relacionadas y comprender su efecto conjunto, cuando haya evidencia para ello.
+Si ese efecto no se evaluó, explicitarlo en lugar de sugerir que ya está resuelto.
+
+Media — Renombrar Neither como «Sin predominio por conteos» o «Empate en las
+categorías seleccionadas». Distinguirlo de «no hay evidencia suficiente» y de
+«no beneficia a ninguna parte».
+
+Media — Mantener una convención consistente al saltar al grafo, o marcar
+explícitamente quién cumple y quién recibe el beneficio. Conservar filtro,
+fila abierta y posición al regresar.
+
+Media — Facilitar lectura del documento y destacar el fragmento elegido sin
+exigir ajustar dos paneles. Dar títulos temáticos a §7.2, §8.4 y otras filas
+numéricas; explicar el orden de importancia y los conteos de cobertura.
+
+Media — Permitir «No estoy seguro», «Depende» y una razón de desacuerdo;
+ofrecer una forma visible de retirar una respuesta de prueba.
+
+Baja — Hacer que «12 more clauses» comunique cuántas se añadirán ahora y
+cuántas seguirán pendientes; explicar la diferencia entre Table y Table v2.
+
+CONCLUSIÓN RESPECTO A LA OBSERVACIÓN DEL PROFESOR
+
+Table v2 sí avanza: ya puedo nombrar al favorecido y explicar con evidencia
+varios casos. Pero nombrar al favorecido no equivale todavía a entender todo
+el resultado. La siguiente revisión debería comprobar si una persona puede
+explicar el efecto de una cláusula con sus propias palabras, reconocer sus
+condiciones, distinguir conteo de importancia y contrastarla con otras
+disposiciones, sin que el diseñador tenga que interpretar la pantalla por ella.
+
+No se modificó el código de la UI. Se probaron controles y se registró un
+acuerdo simulado en §7.2 dentro del navegador de prueba. La prueba se limita
+al contrato y recorrido descritos; no constituye validación general del sistema.
+Captura del estado final: /tmp/simulacion_usuario_gpt_tablev2.jpg.

@@ -1,7 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
+import { useCallback, useMemo, useState } from 'react';
 import { short } from '@/features/docx/components/clause-analyzer/views/bits';
 import { KIND_LABEL } from '@/features/docx/components/clause-analyzer/views/favour-bits';
 import {
@@ -17,7 +16,6 @@ import {
 } from '@/features/docx/utils/knowledge/clause-favour';
 import type { Side, StatementGrid } from '@/features/docx/utils/knowledge/statement-grid';
 import type { DeonticKind, KnowledgeGraph } from '@/types/knowledge';
-import type { DocNote } from '@/features/docx/hooks/useDocNotes';
 
 type ByKind = Partial<Record<DeonticKind, Favour>>;
 
@@ -135,50 +133,6 @@ export function useReviews(docId: string) {
 /** The verdicts a reader can give instead of the one shown. */
 export const otherVerdicts = (verdict: TypeVerdict) =>
 	(['a', 'b', 'tie'] as const).filter((f) => f !== verdict);
-
-/**
- * The open clause's fragments are marked in the contract on the left too, one note per
- * paragraph: a paragraph often holds several statements.
- */
-export function useClauseNotes(
-	kg: KnowledgeGraph,
-	opened: ClauseTally | null,
-	kinds: DeonticKind[],
-	names: Record<Side, string>
-) {
-	const setNotes = useClauseAnalyzerStore((s) => s.setNotes);
-	const paragraphsOf = useMemo(
-		() =>
-			new Map(
-				[...kg.obligations, ...kg.rights, ...kg.prohibitions].map(
-					(s) => [s.id, s.paragraphIds] as const
-				)
-			),
-		[kg]
-	);
-
-	useEffect(() => {
-		if (!opened) return;
-		const byParagraph = new Map<string, Map<string, number>>();
-		for (const s of opened.served) {
-			if (!kinds.includes(s.kind)) continue;
-			const pid = paragraphsOf.get(s.mark.id)?.[0];
-			if (!pid) continue;
-			const to = s.to === 'both' ? 'both' : short(names[s.to]);
-			const tally = byParagraph.get(pid) ?? new Map<string, number>();
-			tally.set(to, (tally.get(to) ?? 0) + 1);
-			byParagraph.set(pid, tally);
-		}
-		const notes: DocNote[] = [...byParagraph].map(([pid, tally]) => ({
-			pid,
-			text: `Serves ${[...tally].map(([to, n]) => (n > 1 ? `${to} ×${n}` : to)).join(' · ')}`,
-			tone: 'step',
-			at: 'before',
-		}));
-		setNotes(notes);
-		return () => setNotes([]);
-	}, [opened, kinds, paragraphsOf, names, setNotes]);
-}
 
 /** The verdict's reason in a few words, for under a pill. */
 export function verdictNote(

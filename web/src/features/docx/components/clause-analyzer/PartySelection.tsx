@@ -8,9 +8,7 @@ export interface PartyCardData {
 	id: string;
 	name: string;
 	role: string;
-	obligations: number;
-	rights: number;
-	prohibitions: number;
+	/** How many statements name the party; it orders the parties, it is not shown. */
 	total: number;
 }
 
@@ -28,18 +26,6 @@ interface PartySelectionProps {
 	onSplit: (groupId: string) => void;
 	onDelete: (partyId: string) => void;
 	onContinue: () => void;
-}
-
-function Load({ party }: { party: PartyCardData }) {
-	if (party.total === 0) return <span className="text-2xs opacity-50">No provisions</span>;
-	return (
-		<span className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 text-2xs opacity-70">
-			<span className="font-medium">{party.total} provisions</span>
-			<span>
-				{party.obligations}o · {party.rights}r · {party.prohibitions}p
-			</span>
-		</span>
-	);
 }
 
 export function PartySelection({
@@ -164,7 +150,6 @@ export function PartySelection({
 						{groups.has(party.id) && splitBadge(party.id)}
 					</span>
 					{party.role && <span className="truncate text-2xs opacity-60">{party.role}</span>}
-					<Load party={party} />
 				</div>
 				{/* Two intents land on one card, so the drop is asked to choose: the top
 				    half swaps the seat, the bottom half fuses the two into one entity. */}
@@ -258,7 +243,6 @@ export function PartySelection({
 									style={{ opacity: draggingId === party.id ? 0.4 : undefined }}
 								>
 									<span className="truncate">{party.name}</span>
-									<span className="shrink-0 tabular-nums opacity-60">{party.total}</span>
 									{groups.has(party.id) && splitBadge(party.id)}
 									<span
 										role="button"

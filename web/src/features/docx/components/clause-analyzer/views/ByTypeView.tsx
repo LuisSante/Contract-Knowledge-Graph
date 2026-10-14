@@ -8,7 +8,8 @@ import { Accordion, AccordionContent, AccordionItem } from '@/components/ui/acco
 import { KIND_COLORS } from '@/features/docx/components/clause-analyzer/constants';
 import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/views/bits';
 import {
-	KIND_PLURAL,
+	KIND_GLOSS,
+	KIND_LABEL,
 	KindFilter,
 } from '@/features/docx/components/clause-analyzer/views/favour-bits';
 import {
@@ -44,7 +45,7 @@ const PAGE = 10;
 /** Past six a side's dots stop growing, so the clause name keeps its room beside the verdict. */
 const MAX_DOTS = 6;
 
-/** Obligations, rights and prohibitions never added together, each clause opening onto
+/** Own rights and the rights from obligations and from prohibitions never added together, each clause opening onto
  *  the fragments that hold its verdict up. */
 export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenGraph }: ViewProps) {
 	const [limit, setLimit] = useState(PAGE);
@@ -94,7 +95,7 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 				title={
 					active
 						? 'Show the fragments of every type'
-						: `${KIND_PLURAL[kind]}: ${a} serve ${short(names.a)}, ${b} serve ${short(names.b)} — click to see only these fragments`
+						: `${KIND_LABEL[kind]}: ${a} for ${short(names.a)}, ${b} for ${short(names.b)} — click to see only these fragments`
 				}
 			>
 				<DotTally a={a} b={b} max={MAX_DOTS} />
@@ -117,7 +118,7 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 						className="size-2.5 rounded-[2px]"
 						style={{ backgroundColor: KIND_COLORS[fragmentKind] }}
 					/>
-					Only {KIND_PLURAL[fragmentKind].toLowerCase()}
+					Only {KIND_LABEL[fragmentKind].toLowerCase()}
 					<button
 						type="button"
 						onClick={() => setFragmentKind(null)}
@@ -150,7 +151,8 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 
 	return (
 		<div className="min-h-0 flex-1 overflow-auto">
-			<div className="min-w-[820px] space-y-3 p-4">
+			{/* Only the table needs its width; the scoreboard above fits whatever the panel gives. */}
+			<div className="space-y-3 p-4">
 				<Scoreboard total={total} kinds={kinds} counts={counts} names={names} />
 
 				<div className="flex flex-wrap items-center justify-between gap-2">
@@ -168,7 +170,7 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 					/>
 				</div>
 
-				<div className="overflow-hidden rounded-xl border border-border bg-card">
+				<div className="min-w-[788px] overflow-hidden rounded-xl border border-border bg-card">
 					<div className="flex items-center gap-2 bg-secondary px-3 py-1.5 text-[10px] font-bold tracking-wider uppercase">
 						{/* The importance is fetched, so the ordering cannot be offered before it lands. */}
 						<button
@@ -186,13 +188,20 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 							)}
 						</button>
 						{kinds.map((kind) => (
-							<span key={kind} className="flex w-[140px] shrink-0 flex-col items-center">
+							<span
+								key={kind}
+								className="flex w-[140px] shrink-0 flex-col items-center text-center"
+								title={`${KIND_LABEL[kind]}: ${KIND_GLOSS[kind]}`}
+							>
 								<span className="flex items-center gap-1">
 									<span
-										className="size-2 rounded-[2px]"
+										className="size-2 shrink-0 rounded-[2px]"
 										style={{ backgroundColor: KIND_COLORS[kind] }}
 									/>
-									{KIND_PLURAL[kind]}
+									{KIND_LABEL[kind]}
+								</span>
+								<span className="text-[9px] font-normal text-muted-foreground normal-case">
+									{KIND_GLOSS[kind]}
 								</span>
 								<span className="text-[9px] font-medium normal-case">
 									<span style={{ color: SIDE_COLOR.a }}>{short(names.a)}</span>
@@ -201,7 +210,7 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 								</span>
 							</span>
 						))}
-						<span className="w-36 shrink-0 text-muted-foreground">Weight-free verdict</span>
+						<span className="w-36 shrink-0 text-muted-foreground">Who it favours</span>
 						{/* Room for the accordion's chevron, so the columns line up. */}
 						<span className="w-4 shrink-0" />
 					</div>

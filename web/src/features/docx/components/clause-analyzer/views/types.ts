@@ -5,8 +5,6 @@ export interface ViewProps {
 	docId: string;
 	kg: KnowledgeGraph;
 	names: Record<Side, string>;
-	/** Each party's role in the contract ("Service provider"), empty when the extraction gave none. */
-	roles: Record<Side, string>;
 	grid: StatementGrid;
 	/** Clause importance, to order rows; null until the server answers. */
 	importance: Record<string, number> | null;

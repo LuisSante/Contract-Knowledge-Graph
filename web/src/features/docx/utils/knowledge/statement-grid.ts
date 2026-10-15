@@ -20,6 +20,9 @@ export interface GridMark {
 	id: string;
 	kind: MarkKind;
 	lane: GridLane;
+	/** The lane of the party that owns it — the one that must honour it, or a right's
+	 *  holder. The same as `lane` except in a grid built by benefit. */
+	ownerLane: GridLane;
 	ownerName: string | null;
 	counterpartLane: GridLane | null;
 	label: string;
@@ -33,10 +36,21 @@ export interface GridRow {
 	total: number;
 }
 
+/**
+ * Which party a statement's mark is filed under. "owner": the party that must honour it (a
+ * right under its holder). "benefit": the party it favours — a right under its holder, an
+ * obligation or a prohibition under the party on its other end, since one party's duty is
+ * the other's right.
+ */
+export type GridSide = 'owner' | 'benefit';
+
 export interface StatementGrid {
 	rows: GridRow[];
 	countByKind: Record<MarkKind, number>;
 	unfiled: number;
+	side: GridSide;
+	/** The two parties' names, by lane. */
+	names: Record<Side, string | null>;
 }
 
 function ownerIdOf(statement: KgDeonticNode): string | null {
@@ -55,7 +69,8 @@ interface Anchor {
 export function buildStatementGrid(
 	kg: KnowledgeGraph,
 	partyAId: string,
-	partyBId: string | null
+	partyBId: string | null,
+	side: GridSide = 'owner'
 ): StatementGrid {
 	const partyName = new Map(kg.parties.map((p) => [p.id, p.name] as const));
 	const emptyLanes = (): Record<GridLane, GridMark[]> => ({ a: [], b: [], shared: [] });
@@ -95,24 +110,31 @@ export function buildStatementGrid(
 	const anchorOf = new Map<string, Anchor>();
 	for (const statement of deonticNodes(kg)) {
 		const ownerId = ownerIdOf(statement);
-		const lane: GridLane = ownerId === partyAId ? 'a' : ownerId === partyBId ? 'b' : 'shared';
+		const ownerLane: GridLane = ownerId === partyAId ? 'a' : ownerId === partyBId ? 'b' : 'shared';
 		const ownerName = ownerId ? (partyName.get(ownerId) ?? null) : null;
 		const wording = `${ownerName ?? ''} ${statement.text ?? ''} ${statement.summary ?? ''}`;
 		// The contract attributes it to nobody: a mark for it would be one nobody can act on.
-		if (lane === 'shared' && !RECIPROCAL.test(wording)) continue;
+		if (ownerLane === 'shared' && !RECIPROCAL.test(wording)) continue;
 		const clauseId =
 			statement.clauseId && byClause.has(statement.clauseId) ? statement.clauseId : null;
-		anchorOf.set(statement.id, { clauseId, lane });
 		const counterpartId = counterpartIdOf(statement);
 		const counterpart: GridLane | null =
 			counterpartId === partyAId ? 'a' : counterpartId === partyBId ? 'b' : null;
+		const otherEnd = counterpart === ownerLane ? null : counterpart;
+		// By benefit, a duty moves to the party it is owed to; one owed to neither of the two
+		// favours neither, and goes with the statements of both.
+		const moves = side === 'benefit' && statement.kind !== 'right' && ownerLane !== 'shared';
+		const lane: GridLane = moves ? (otherEnd ?? 'shared') : ownerLane;
+		anchorOf.set(statement.id, { clauseId, lane });
 		place(
 			{
 				id: statement.id,
 				kind: statement.kind,
 				lane,
+				ownerLane,
 				ownerName,
-				counterpartLane: counterpart === lane ? null : counterpart,
+				// Always the other end from where the mark sits: by benefit, the party that owes it.
+				counterpartLane: moves ? ownerLane : otherEnd,
 				label: statement.action || statement.kind,
 				detail: statement.summary || statement.action || statement.text,
 			},
@@ -141,7 +163,16 @@ export function buildStatementGrid(
 	) => {
 		const anchor = anchorFor(targetId, paragraphIds);
 		place(
-			{ id, kind, lane: anchor.lane, ownerName: null, counterpartLane: null, label, detail },
+			{
+				id,
+				kind,
+				lane: anchor.lane,
+				ownerLane: anchor.lane,
+				ownerName: null,
+				counterpartLane: null,
+				label,
+				detail,
+			},
 			anchor.clauseId
 		);
 	};
@@ -194,5 +225,10 @@ export function buildStatementGrid(
 		rows: unfiled.total > 0 ? [...filled, unfiled] : filled,
 		countByKind,
 		unfiled: unfiled.total,
+		side,
+		names: {
+			a: partyName.get(partyAId) ?? null,
+			b: partyBId ? (partyName.get(partyBId) ?? null) : null,
+		},
 	};
 }

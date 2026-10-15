@@ -35,6 +35,8 @@ interface ClauseGridProps {
 	onPaintLane: (lane: GridLane, on: boolean) => void;
 	canPaintB: boolean;
 	showShared: boolean;
+	/** The marks are filed under the party they favour, so each column is headed "In favour of". */
+	byBenefit?: boolean;
 	onSelectClause: (clauseId: string) => void;
 	onOpenGraph?: (clauseId: string) => void;
 	onOpenMark: (nodeId: string) => void;
@@ -58,6 +60,7 @@ export function ClauseGrid({
 	onPaintLane,
 	canPaintB,
 	showShared,
+	byBenefit = false,
 	onSelectClause,
 	onOpenGraph,
 	onOpenMark,
@@ -103,7 +106,11 @@ export function ClauseGrid({
 								width: LANE_WIDTH,
 								color: lane === 'a' ? PARTY_COLOR : PAIR_SECOND_COLOR,
 							}}
-							title={`Paint ${laneName(lane)}’s entities in the document`}
+							title={
+								byBenefit
+									? `Paint what favours ${laneName(lane)} in the document`
+									: `Paint ${laneName(lane)}’s entities in the document`
+							}
 						>
 							{lane === 'b' && (
 								<Checkbox
@@ -115,7 +122,14 @@ export function ClauseGrid({
 									aria-label={`Paint ${laneName('b')}’s statements`}
 								/>
 							)}
-							<span className="truncate">{laneName(lane)}</span>
+							<span
+								className={`flex min-w-0 flex-col leading-tight ${
+									lane === 'a' ? 'items-end text-right' : 'items-start'
+								}`}
+							>
+								{byBenefit && <span className="font-normal opacity-80">In favour of</span>}
+								<span className="max-w-full truncate">{laneName(lane)}</span>
+							</span>
 							{lane === 'a' && (
 								<Checkbox
 									checked={paintLanes.a}

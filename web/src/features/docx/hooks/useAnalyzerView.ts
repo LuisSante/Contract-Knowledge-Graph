@@ -5,6 +5,8 @@ import { useSearchParams } from 'next/navigation';
 
 export const VIEWS = [
 	{ id: 'table', label: 'Table' },
+	// Table with every mark on the side of the party it favours (advisor, Oct 2026).
+	{ id: 'table11', label: 'Table v1.1' },
 	// Meant to replace Table; both stay while Table serves as the reference.
 	{ id: 'bytype', label: 'Table v2' },
 ] as const;

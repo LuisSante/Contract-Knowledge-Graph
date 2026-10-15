@@ -1,12 +1,14 @@
 'use client';
 
 import type { ReactNode } from 'react';
+import { XIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/views/bits';
 import {
 	Fragment,
 	GraphLink,
 	KIND_LABEL,
+	PLAIN_KIND_LABEL,
 	tint,
 	verdictColor,
 	verdictLabel,
@@ -48,39 +50,6 @@ export function Scoreboard({
 	counts: Record<TypeVerdict, number>;
 	names: Record<Side, string>;
 }) {
-	const contract = typeVerdict(total, kinds);
-	const hasStatements = kinds.some((kind) => total[kind].a + total[kind].b > 0);
-	const lead =
-		hasStatements && (contract.verdict === 'a' || contract.verdict === 'b')
-			? contract.verdict
-			: null;
-	const tone = verdictColor(contract.verdict);
-
-	/** Why, in one short line: where the favoured party is ahead; the rest are even, since a
-	 *  party that lost a type would not be favoured. */
-	const contractLine = () => {
-		if (!hasStatements) return 'No rights identified in the selected categories.';
-		if (contract.verdict === 'tie') return 'Same count in each selected category.';
-		if (contract.verdict === 'mixed')
-			return scoredSentence(total, contract.verdict, contract.byKind, kinds, names);
-		const won = kinds.filter((kind) => contract.byKind[kind] === contract.verdict);
-		const even = kinds.filter((kind) => !won.includes(kind));
-		const label = (ks: DeonticKind[]) => listOf(ks.map((k) => KIND_LABEL[k].toLowerCase()));
-		if (even.length > 0) return `More ${label(won)}; equal counts in ${label(even)}.`;
-		if (kinds.length === 1) return `More ${label(kinds)}.`;
-		return `More rights in all ${kinds.length} selected categories.`;
-	};
-
-	/** The clauses by verdict, the favoured party first, as a bar and four counts. */
-	const [first, second]: Side[] = lead === 'b' ? ['b', 'a'] : ['a', 'b'];
-	const clauseGroups: Array<{ key: TypeVerdict; n: number; label: string; color: string }> = [
-		{ key: first, n: counts[first], label: short(names[first]), color: SIDE_COLOR[first] },
-		{ key: 'tie', n: counts.tie, label: 'Equal counts', color: TIE_INK },
-		{ key: second, n: counts[second], label: short(names[second]), color: SIDE_COLOR[second] },
-		{ key: 'mixed', n: counts.mixed, label: 'Depends', color: 'var(--warning)' },
-	];
-	const clauseTotal = clauseGroups.reduce((sum, g) => sum + g.n, 0);
-
 	const card = (kind: DeonticKind) => {
 		const { a, b } = total[kind];
 		const big = (side: Side) => {
@@ -137,12 +106,79 @@ export function Scoreboard({
 	return (
 		<div className="grid grid-cols-2 gap-3 @min-[900px]:grid-cols-[repeat(3,minmax(0,1fr))_minmax(0,1.5fr)]">
 			{DEONTIC_KINDS.map(card)}
-			{/* Washed in the favoured party's colour, its name in full colour: the card says who
-			    wins before a word is read. Grey when even, amber when it depends on the type. */}
-			<div
-				className="rounded-xl border p-3 text-foreground"
-				style={{ backgroundColor: tint(tone, 9), borderColor: tint(tone, 40) }}
-			>
+			<ContractCard total={total} kinds={kinds} counts={counts} names={names} />
+		</div>
+	);
+}
+
+/**
+ * Who the contract favours over the types on screen, and its clauses by verdict. Stacked
+ * beside the type cards, or laid out in a row above a table.
+ */
+export function ContractCard({
+	total,
+	kinds,
+	counts,
+	names,
+	layout = 'stack',
+	kindLabel = (kind) => KIND_LABEL[kind].toLowerCase(),
+}: {
+	total: ClauseTally['count'];
+	kinds: DeonticKind[];
+	/** How many clauses land on each verdict. */
+	counts: Record<TypeVerdict, number>;
+	names: Record<Side, string>;
+	layout?: 'stack' | 'row';
+	/** A type's name inside a sentence, for a view that names the types its own way. */
+	kindLabel?: (kind: DeonticKind) => string;
+}) {
+	const contract = typeVerdict(total, kinds);
+	const hasStatements = kinds.some((kind) => total[kind].a + total[kind].b > 0);
+	const lead =
+		hasStatements && (contract.verdict === 'a' || contract.verdict === 'b')
+			? contract.verdict
+			: null;
+	const tone = verdictColor(contract.verdict);
+
+	/** Why, in one short line: where the favoured party is ahead; the rest are even, since a
+	 *  party that lost a type would not be favoured. */
+	const contractLine = () => {
+		if (!hasStatements) return 'No rights identified in the selected categories.';
+		if (contract.verdict === 'tie') return 'Same count in each selected category.';
+		if (contract.verdict === 'mixed')
+			return scoredSentence(total, contract.verdict, contract.byKind, kinds, names);
+		const won = kinds.filter((kind) => contract.byKind[kind] === contract.verdict);
+		const even = kinds.filter((kind) => !won.includes(kind));
+		const label = (ks: DeonticKind[]) => listOf(ks.map(kindLabel));
+		if (even.length > 0) return `More ${label(won)}; equal counts in ${label(even)}.`;
+		if (kinds.length === 1) return `More ${label(kinds)}.`;
+		return `More rights in all ${kinds.length} selected categories.`;
+	};
+
+	/** The clauses by verdict, the favoured party first, as a bar and four counts. */
+	const [first, second]: Side[] = lead === 'b' ? ['b', 'a'] : ['a', 'b'];
+	const clauseGroups: Array<{ key: TypeVerdict; n: number; label: string; color: string }> = [
+		{ key: first, n: counts[first], label: short(names[first]), color: SIDE_COLOR[first] },
+		{ key: 'tie', n: counts.tie, label: 'Equal counts', color: TIE_INK },
+		{ key: second, n: counts[second], label: short(names[second]), color: SIDE_COLOR[second] },
+		{ key: 'mixed', n: counts.mixed, label: 'Depends', color: 'var(--warning)' },
+	];
+	const clauseTotal = clauseGroups.reduce((sum, g) => sum + g.n, 0);
+	// With one type shown no clause can depend on the type, so the count would always be 0.
+	const groupsShown =
+		kinds.length > 1 ? clauseGroups : clauseGroups.filter((g) => g.key !== 'mixed');
+
+	// Washed in the favoured party's colour, its name in full colour: the card says who wins
+	// before a word is read. Grey when even, amber when it depends on the type.
+	return (
+		<div
+			className={cn(
+				'rounded-xl border p-3 text-foreground',
+				layout === 'row' && 'flex flex-wrap items-start gap-x-6 gap-y-3'
+			)}
+			style={{ backgroundColor: tint(tone, 9), borderColor: tint(tone, 40) }}
+		>
+			<div className={cn(layout === 'row' && 'min-w-[180px] flex-1')}>
 				<p className="text-[10px] font-semibold tracking-wider text-foreground/70 uppercase">
 					Count-based advantage
 				</p>
@@ -156,39 +192,44 @@ export function Scoreboard({
 					{hasStatements ? verdictLabel(contract.verdict, names) : 'No statements'}
 				</p>
 				<p className="mt-1 text-sm leading-snug text-foreground/90">{contractLine()}</p>
-				<div className="mt-3 border-t pt-2.5" style={{ borderColor: tint(tone, 30) }}>
-					<p className="text-[10px] font-semibold tracking-wider text-foreground/70 uppercase">
-						{clauseTotal} clauses in selected categories
-					</p>
-					<div className="mt-1.5 flex h-1.5 gap-0.5" aria-hidden>
-						{clauseGroups
-							.filter((g) => g.n > 0)
-							.map((g) => (
-								<span
-									key={g.key}
-									className="rounded-full"
-									style={{ flexGrow: g.n, backgroundColor: g.color }}
-								/>
-							))}
-					</div>
-					<div className="mt-2 grid grid-cols-[repeat(auto-fill,minmax(92px,1fr))] gap-x-3 gap-y-1">
-						{clauseGroups.map((g) => (
+			</div>
+			<div
+				className={cn(
+					layout === 'row' ? 'min-w-[220px] flex-1 border-l pl-6' : 'mt-3 border-t pt-2.5'
+				)}
+				style={{ borderColor: tint(tone, 30) }}
+			>
+				<p className="text-[10px] font-semibold tracking-wider text-foreground/70 uppercase">
+					{clauseTotal} clauses in selected categories
+				</p>
+				<div className="mt-1.5 flex h-1.5 gap-0.5" aria-hidden>
+					{clauseGroups
+						.filter((g) => g.n > 0)
+						.map((g) => (
 							<span
 								key={g.key}
-								className={cn('flex items-baseline gap-1.5', g.n === 0 && 'opacity-50')}
-								title={g.key === 'mixed' ? 'Each party is ahead in a different type' : undefined}
-							>
-								<span className="text-base font-bold tabular-nums">{g.n}</span>
-								<span className="flex min-w-0 items-center gap-1 text-xs">
-									<span
-										className="size-1.5 shrink-0 rounded-full"
-										style={{ backgroundColor: g.color }}
-									/>
-									<span className="truncate">{g.label}</span>
-								</span>
-							</span>
+								className="rounded-full"
+								style={{ flexGrow: g.n, backgroundColor: g.color }}
+							/>
 						))}
-					</div>
+				</div>
+				<div className="mt-2 grid grid-cols-[repeat(auto-fill,minmax(92px,1fr))] gap-x-3 gap-y-1">
+					{groupsShown.map((g) => (
+						<span
+							key={g.key}
+							className={cn('flex items-baseline gap-1.5', g.n === 0 && 'opacity-50')}
+							title={g.key === 'mixed' ? 'Each party is ahead in a different type' : undefined}
+						>
+							<span className="text-base font-bold tabular-nums">{g.n}</span>
+							<span className="flex min-w-0 items-center gap-1 text-xs">
+								<span
+									className="size-1.5 shrink-0 rounded-full"
+									style={{ backgroundColor: g.color }}
+								/>
+								<span className="truncate">{g.label}</span>
+							</span>
+						</span>
+					))}
 				</div>
 			</div>
 		</div>
@@ -374,6 +415,72 @@ export function WhatEachGets({
 	};
 
 	return <div className="grid grid-cols-2 gap-3">{SIDES.map(column)}</div>;
+}
+
+/**
+ * One clause opened under the table: in the type on screen, how many statements favour each
+ * party, and what each one gets, each fragment a click away from its paragraph.
+ */
+export function ClauseDetail({
+	tally,
+	kind,
+	names,
+	conditions,
+	onOpen,
+	onClose,
+}: {
+	tally: ClauseTally;
+	kind: DeonticKind;
+	names: Record<Side, string>;
+	conditions: KgCondition[];
+	onOpen: (nodeId: string) => void;
+	onClose: () => void;
+}) {
+	const { a, b } = tally.count[kind];
+	const plural = PLAIN_KIND_LABEL[kind].toLowerCase();
+	const ahead: Side | null = a > b ? 'a' : b > a ? 'b' : null;
+	const sentence =
+		a + b === 0
+			? `No ${plural} in this clause.`
+			: ahead
+				? `More ${plural} in favour of ${short(names[ahead])}: ${tally.count[kind][ahead]} against ${tally.count[kind][ahead === 'a' ? 'b' : 'a']}.`
+				: `As many ${plural} in favour of each party: ${a} and ${b}.`;
+	return (
+		<section
+			aria-label={`${tally.heading}: what each party gets`}
+			className="max-h-[50%] shrink-0 overflow-auto border-t border-border bg-background px-4 py-3"
+		>
+			<div className="flex items-start justify-between gap-3">
+				<div className="min-w-0">
+					{tally.section && (
+						<p className="text-[10px] font-semibold tracking-wider text-foreground/70 uppercase">
+							{tally.section}
+						</p>
+					)}
+					<h3 className="text-base leading-tight font-semibold text-foreground">{tally.heading}</h3>
+					<p className="mt-1 text-sm text-foreground/90">{sentence}</p>
+				</div>
+				<button
+					type="button"
+					onClick={onClose}
+					aria-label="Close this clause"
+					title="Close this clause"
+					className="shrink-0 rounded p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+				>
+					<XIcon className="size-4" />
+				</button>
+			</div>
+			<div className="mt-3">
+				<WhatEachGets
+					tally={tally}
+					kinds={[kind]}
+					names={names}
+					conditions={conditions}
+					onOpen={onOpen}
+				/>
+			</div>
+		</section>
+	);
 }
 
 /** Counts align with the named party columns without a second visual encoding. */

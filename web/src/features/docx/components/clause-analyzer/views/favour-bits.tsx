@@ -101,6 +101,52 @@ export function KindSquare({
 	);
 }
 
+/** The types by their plain names, for a view whose columns already say whom they favour. */
+export const PLAIN_KIND_LABEL: Record<DeonticKind, string> = {
+	obligation: 'Obligations',
+	right: 'Rights',
+	prohibition: 'Prohibitions',
+};
+
+/** One deontic type on screen at a time: obligations, rights and prohibitions are never
+ *  shown or counted together. */
+export function KindPicker({
+	kind,
+	onPick,
+	labels = PLAIN_KIND_LABEL,
+}: {
+	kind: DeonticKind;
+	onPick: (kind: DeonticKind) => void;
+	labels?: Record<DeonticKind, string>;
+}) {
+	return (
+		<div
+			role="radiogroup"
+			aria-label="Type shown"
+			className="inline-flex rounded-lg border border-border bg-secondary p-[3px]"
+		>
+			{DEONTIC_KINDS.map((k) => (
+				<button
+					key={k}
+					type="button"
+					role="radio"
+					aria-checked={kind === k}
+					onClick={() => onPick(k)}
+					className={cn(
+						'inline-flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-medium',
+						kind === k
+							? 'border border-border bg-card font-semibold text-foreground shadow-sm'
+							: 'text-muted-foreground hover:text-foreground'
+					)}
+				>
+					<span className="size-2.5 rounded-[2px]" style={{ backgroundColor: KIND_COLORS[k] }} />
+					{labels[k]}
+				</button>
+			))}
+		</div>
+	);
+}
+
 /** Which deontic types are on screen. */
 export function KindFilter({
 	kinds,

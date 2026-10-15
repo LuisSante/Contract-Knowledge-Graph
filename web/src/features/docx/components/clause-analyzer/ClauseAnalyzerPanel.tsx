@@ -35,6 +35,20 @@ import {
 	PARTY_COLOR,
 } from '@/features/docx/components/clause-analyzer/constants';
 import { ByTypeView } from '@/features/docx/components/clause-analyzer/views/ByTypeView';
+import {
+	ClauseDetail,
+	ContractCard,
+} from '@/features/docx/components/clause-analyzer/views/verdict-bits';
+import {
+	KindPicker,
+	PLAIN_KIND_LABEL,
+} from '@/features/docx/components/clause-analyzer/views/favour-bits';
+import {
+	hasKinds,
+	verdictCounts,
+} from '@/features/docx/components/clause-analyzer/views/favour-shared';
+import { tallyClauses, totalOf } from '@/features/docx/utils/knowledge/clause-favour';
+import type { DeonticKind } from '@/types/knowledge';
 import type { ViewProps } from '@/features/docx/components/clause-analyzer/views/types';
 
 interface ClauseAnalyzerPanelProps {
@@ -111,9 +125,30 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		[viewKg, focusNodeId, secondPartyId]
 	);
 
+	// Table v1.1 files every mark under the party it favours; Table v2's counts and the
+	// importance request keep reading the grid by owner.
+	const nav = useAnalyzerView();
+	const byBenefit = nav.view === 'table11';
+	const benefitGrid = useMemo(
+		() =>
+			viewKg && focusNodeId && byBenefit
+				? buildStatementGrid(viewKg, focusNodeId, secondPartyId, 'benefit')
+				: null,
+		[viewKg, focusNodeId, secondPartyId, byBenefit]
+	);
+	const shownGrid = byBenefit ? benefitGrid : grid;
+	// Table v1.1 shows one type at a time and only the two parties: what favours neither of
+	// them has no side to sit on.
+	const [benefitKind, setBenefitKind] = useState<DeonticKind>('obligation');
+	const kindsShown = useMemo(
+		() => (byBenefit ? new Set<MarkKind>([benefitKind]) : visibleKinds),
+		[byBenefit, benefitKind, visibleKinds]
+	);
+	const sharedShown = showShared && !byBenefit;
+
 	const shownLanes = useMemo<GridLane[]>(
-		() => (showShared ? GRID_LANES : GRID_LANES.filter((lane) => lane !== 'shared')),
-		[showShared]
+		() => (sharedShown ? GRID_LANES : GRID_LANES.filter((lane) => lane !== 'shared')),
+		[sharedShown]
 	);
 
 	const clauseBenefit = useMemo(
@@ -154,24 +189,24 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 	);
 
 	const visibleRows = useMemo(() => {
-		const rows = (grid?.rows ?? []).filter((row) =>
-			shownLanes.some((lane) => row.marks[lane].some((mark) => visibleKinds.has(mark.kind)))
+		const rows = (shownGrid?.rows ?? []).filter((row) =>
+			shownLanes.some((lane) => row.marks[lane].some((mark) => kindsShown.has(mark.kind)))
 		);
 		if (!sortByImportance || !clauseImportance) return rows;
 		const weight = (row: GridRow) =>
 			row.clauseId ? (clauseImportance.byClause[row.clauseId] ?? 0) : -1;
 		return rows.slice().sort((x, y) => weight(y) - weight(x));
-	}, [grid, visibleKinds, shownLanes, sortByImportance, clauseImportance]);
+	}, [shownGrid, kindsShown, shownLanes, sortByImportance, clauseImportance]);
 
 	const laneByStatement = useMemo(() => {
 		const byId = new Map<string, GridLane>();
-		for (const row of grid?.rows ?? []) {
+		for (const row of shownGrid?.rows ?? []) {
 			for (const lane of GRID_LANES) {
 				for (const mark of row.marks[lane]) byId.set(mark.id, lane);
 			}
 		}
 		return byId;
-	}, [grid]);
+	}, [shownGrid]);
 
 	const clauseRows = useMemo(
 		() => visibleRows.filter((row) => row.clauseId !== null),
@@ -197,7 +232,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		laneByStatement,
 		lanes: shownLanes,
 		paintLanes,
-		showShared,
+		showShared: sharedShown,
 		nodesById,
 		laneColors: LANE_COLORS,
 		hops,
@@ -232,8 +267,8 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		});
 
 	const detailsOf = useMemo(
-		() => (viewKg && grid ? markDetails(viewKg, grid) : null),
-		[viewKg, grid]
+		() => (viewKg && shownGrid ? markDetails(viewKg, shownGrid) : null),
+		[viewKg, shownGrid]
 	);
 
 	const showTooltip = (event: ReactMouseEvent, mark: GridMark) => {
@@ -251,7 +286,6 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 					: 'Party B'
 				: 'Both parties';
 
-	const nav = useAnalyzerView();
 	const pairIds =
 		status === 'ready' &&
 		isPartyFocus &&
@@ -281,7 +315,21 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 					onOpenGraph: openClauseInGraph,
 				}
 			: null;
-	const inView = viewProps !== null && nav.view !== 'table';
+	// Who the contract favours in the type shown, counted the way Table v2 counts it: from
+	// the grid by owner, crediting each statement to the party it serves.
+	const hasPair = pairIds !== null;
+	const benefitSummary = useMemo(() => {
+		if (!byBenefit || !hasPair || !grid || !viewKg) return null;
+		const tallies = tallyClauses(grid, viewKg);
+		const kinds: DeonticKind[] = [benefitKind];
+		const shown = tallies.filter((t) => hasKinds(t, kinds));
+		return { tallies, total: totalOf(tallies), counts: verdictCounts(shown, kinds), kinds };
+	}, [byBenefit, hasPair, grid, viewKg, benefitKind]);
+	// The clause clicked in Table v1.1 opens under the table, in the type on screen.
+	const openedTally = benefitSummary?.tallies.find((t) => t.clauseId === selectedClauseId) ?? null;
+
+	// Table and Table v1.1 are the grid below; every other view takes its place.
+	const inView = viewProps !== null && nav.view !== 'table' && !byBenefit;
 
 	// The pair lives in the URL too: a shared link opens on the same comparison.
 	const { pair: urlPair, setPair } = nav;
@@ -309,71 +357,100 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		<div className="flex h-full flex-col">
 			{inView && viewProps && nav.view === 'bytype' && <ByTypeView {...viewProps} />}
 
+			{/* Table v1.1 opens on the answer: who the contract favours in the type picked. */}
+			{benefitSummary && (
+				<div className="space-y-3 border-b border-border/60 px-4 py-3">
+					<KindPicker kind={benefitKind} onPick={setBenefitKind} />
+					<ContractCard
+						total={benefitSummary.total}
+						kinds={benefitSummary.kinds}
+						counts={benefitSummary.counts}
+						names={names}
+						layout="row"
+						kindLabel={(kind) => `${PLAIN_KIND_LABEL[kind].toLowerCase()} in its favour`}
+					/>
+				</div>
+			)}
+
 			{/* The table fills the panel; the graph has a tab of its own. */}
 			<div className={cn('flex', inView ? 'hidden' : 'min-h-0 flex-1')}>
-				<div ref={containerRef} className="relative min-h-0 flex-1">
-					{status === 'loading' && (
-						<div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-							Loading knowledge graph…
-						</div>
-					)}
-					{status === 'missing' && (
-						<div className="flex h-full items-center justify-center px-6 text-center text-sm text-muted-foreground">
-							No knowledge graph generated for this document yet. Build it with the notebook
-							(notebooks/KG/build_kg.ipynb) into infra/json/kg/.
-						</div>
-					)}
-					{status === 'error' && (
-						<div className="flex h-full items-center justify-center text-sm text-destructive">
-							Failed to load the knowledge graph.
-						</div>
-					)}
-					{/* Entry view: the pair is chosen before anything is drawn, in one place. */}
-					{/* Entry view: the pair is chosen before anything is drawn, in one place. */}
-					{status === 'ready' && viewKg && !focusNodeId && (
-						<PartyEntry
-							docId={docId}
-							kg={viewKg}
-							mergeGroups={mergeGroups}
-							onMerge={mergeParties}
-							onSplit={splitGroup}
-							onDelete={hideParty}
-							onContinue={focusPair}
-						/>
-					)}
-					{status === 'ready' && grid && (
-						<>
-							<ClauseGrid
-								clauseRows={clauseRows}
-								unfiledRow={unfiledRow}
-								lanes={shownLanes}
-								visibleKinds={visibleKinds}
-								activeClauseId={activeClause?.clauseId ?? null}
-								shareOf={shareOf}
-								laneName={laneName}
-								sortByImportance={sortByImportance}
-								sortable={Boolean(clauseImportance)}
-								onToggleSort={() => setSortByImportance((on) => !on)}
-								paintLanes={paintLanes}
-								onPaintLane={setPaintLane}
-								canPaintB={Boolean(secondPartyId)}
-								showShared={showShared}
-								onSelectClause={(clauseId) => {
-									selectClause(docId, selectedClauseId === clauseId ? null : clauseId);
-									openInDocument(clauseId);
-								}}
-								onOpenGraph={openClauseInGraph}
-								onOpenMark={openInDocument}
-								onFocusMark={focusNode}
-								onHoverMark={showTooltip}
-								onLeaveMark={() => setHover(null)}
+				<div className="flex min-h-0 flex-1 flex-col">
+					<div ref={containerRef} className="relative min-h-0 flex-1">
+						{status === 'loading' && (
+							<div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+								Loading knowledge graph…
+							</div>
+						)}
+						{status === 'missing' && (
+							<div className="flex h-full items-center justify-center px-6 text-center text-sm text-muted-foreground">
+								No knowledge graph generated for this document yet. Build it with the notebook
+								(notebooks/KG/build_kg.ipynb) into infra/json/kg/.
+							</div>
+						)}
+						{status === 'error' && (
+							<div className="flex h-full items-center justify-center text-sm text-destructive">
+								Failed to load the knowledge graph.
+							</div>
+						)}
+						{/* Entry view: the pair is chosen before anything is drawn, in one place. */}
+						{/* Entry view: the pair is chosen before anything is drawn, in one place. */}
+						{status === 'ready' && viewKg && !focusNodeId && (
+							<PartyEntry
+								docId={docId}
+								kg={viewKg}
+								mergeGroups={mergeGroups}
+								onMerge={mergeParties}
+								onSplit={splitGroup}
+								onDelete={hideParty}
+								onContinue={focusPair}
 							/>
-							<MarkTooltip hover={hover} />
-						</>
+						)}
+						{status === 'ready' && shownGrid && (
+							<>
+								<ClauseGrid
+									clauseRows={clauseRows}
+									unfiledRow={unfiledRow}
+									lanes={shownLanes}
+									visibleKinds={kindsShown}
+									activeClauseId={activeClause?.clauseId ?? null}
+									shareOf={byBenefit ? () => null : shareOf}
+									laneName={laneName}
+									sortByImportance={sortByImportance}
+									sortable={Boolean(clauseImportance)}
+									onToggleSort={() => setSortByImportance((on) => !on)}
+									paintLanes={paintLanes}
+									onPaintLane={setPaintLane}
+									canPaintB={Boolean(secondPartyId)}
+									showShared={sharedShown}
+									byBenefit={byBenefit}
+									onSelectClause={(clauseId) => {
+										selectClause(docId, selectedClauseId === clauseId ? null : clauseId);
+										openInDocument(clauseId);
+									}}
+									onOpenGraph={openClauseInGraph}
+									onOpenMark={openInDocument}
+									onFocusMark={focusNode}
+									onHoverMark={showTooltip}
+									onLeaveMark={() => setHover(null)}
+								/>
+								<MarkTooltip hover={hover} />
+							</>
+						)}
+					</div>
+					{openedTally && viewKg && (
+						<ClauseDetail
+							tally={openedTally}
+							kind={benefitKind}
+							names={names}
+							conditions={viewKg.conditions}
+							onOpen={openInDocument}
+							onClose={() => selectClause(docId, null)}
+						/>
 					)}
 				</div>
 
-				{status === 'ready' && grid && (
+				{/* Table v1.1 picks its one type above the table, so it has no legend to toggle. */}
+				{status === 'ready' && grid && !byBenefit && (
 					<Legend
 						countByKind={grid.countByKind}
 						visibleKinds={visibleKinds}

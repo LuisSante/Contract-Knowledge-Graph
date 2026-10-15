@@ -1,0 +1,3104 @@
+{
+  "parties": [
+    {
+      "id": "party-1",
+      "name": "Halverson Data Systems, Inc.",
+      "role": "Provider",
+      "address": "410 Quarry Lane, Suite 200, Wilmington, Delaware 19801",
+      "aliases": [
+        "Provider"
+      ],
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-3",
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-35"
+      ]
+    },
+    {
+      "id": "party-2",
+      "name": "Corvin Outreach Group, LLC",
+      "role": "Reseller",
+      "address": "88 Palm Court, Suite 12, Tampa, Florida 33602",
+      "aliases": [
+        "Reseller"
+      ],
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-3",
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-36"
+      ]
+    },
+    {
+      "id": "party-3",
+      "name": "Daniel Okafor",
+      "role": "Personal guarantor",
+      "address": "",
+      "aliases": [
+        "PRINCIPAL",
+        "the undersigned principal of Reseller"
+      ],
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-28",
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-37"
+      ]
+    }
+  ],
+  "clauses": [
+    {
+      "id": "clause-1",
+      "ref": "1",
+      "heading": "Appointment",
+      "level": 1,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-10"
+      ]
+    },
+    {
+      "id": "clause-2",
+      "ref": "2",
+      "heading": "Fees and Payment",
+      "level": 1,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-11",
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-12"
+      ]
+    },
+    {
+      "id": "clause-3",
+      "ref": "3",
+      "heading": "Marketing Materials",
+      "level": 1,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-13"
+      ]
+    },
+    {
+      "id": "clause-4",
+      "ref": "4",
+      "heading": "Compliance",
+      "level": 1,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-14"
+      ]
+    },
+    {
+      "id": "clause-5",
+      "ref": "5",
+      "heading": "Confidentiality and Customer Data",
+      "level": 1,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-15",
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-16"
+      ]
+    },
+    {
+      "id": "clause-6",
+      "ref": "6",
+      "heading": "Audit",
+      "level": 1,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-17"
+      ]
+    },
+    {
+      "id": "clause-7",
+      "ref": "7",
+      "heading": "Term and Termination",
+      "level": 1,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-18"
+      ]
+    },
+    {
+      "id": "clause-8",
+      "ref": "7.1",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-19"
+      ]
+    },
+    {
+      "id": "clause-9",
+      "ref": "7.2",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-20"
+      ]
+    },
+    {
+      "id": "clause-10",
+      "ref": "7.3",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-21"
+      ]
+    },
+    {
+      "id": "clause-11",
+      "ref": "8",
+      "heading": "Warranties",
+      "level": 1,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-22"
+      ]
+    },
+    {
+      "id": "clause-12",
+      "ref": "8.1",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-23"
+      ]
+    },
+    {
+      "id": "clause-13",
+      "ref": "8.2",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-24"
+      ]
+    },
+    {
+      "id": "clause-14",
+      "ref": "9",
+      "heading": "Limitation of Liability",
+      "level": 1,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-25"
+      ]
+    },
+    {
+      "id": "clause-15",
+      "ref": "10",
+      "heading": "Indemnification",
+      "level": 1,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-26"
+      ]
+    },
+    {
+      "id": "clause-16",
+      "ref": "11",
+      "heading": "Disputes",
+      "level": 1,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-27"
+      ]
+    },
+    {
+      "id": "clause-17",
+      "ref": "12",
+      "heading": "Personal Guaranty",
+      "level": 1,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-28"
+      ]
+    },
+    {
+      "id": "clause-18",
+      "ref": "13",
+      "heading": "Non-Solicitation",
+      "level": 1,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-29"
+      ]
+    },
+    {
+      "id": "clause-19",
+      "ref": "14",
+      "heading": "General",
+      "level": 1,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-30"
+      ]
+    },
+    {
+      "id": "clause-20",
+      "ref": "14.1",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-31"
+      ]
+    },
+    {
+      "id": "clause-21",
+      "ref": "14.2",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-32"
+      ]
+    },
+    {
+      "id": "clause-22",
+      "ref": "14.3",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-33",
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-34",
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-35",
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-36",
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-37",
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-38",
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-39",
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-40",
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-41"
+      ]
+    }
+  ],
+  "definedTerms": [
+    {
+      "id": "term-1",
+      "term": "Agreement",
+      "definition": "This Reseller Agreement (the “Agreement”)",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-3"
+      ]
+    },
+    {
+      "id": "term-2",
+      "term": "Effective Date",
+      "definition": "this 1st day of March 2024 (the “Effective Date”)",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-3"
+      ]
+    },
+    {
+      "id": "term-3",
+      "term": "Platform",
+      "definition": "a cloud platform that delivers identity verification and fraud screening reports to businesses (the “Platform”)",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-5"
+      ]
+    },
+    {
+      "id": "term-4",
+      "term": "Territory",
+      "definition": "the State of Florida (the “Territory”)",
+      "definedInClauseId": "clause-1",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-10"
+      ]
+    },
+    {
+      "id": "term-5",
+      "term": "Confidential Information",
+      "definition": "any information that the other party marks as confidential (“Confidential Information”)",
+      "definedInClauseId": "clause-5",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-15"
+      ]
+    }
+  ],
+  "obligations": [
+    {
+      "id": "obligation-1",
+      "action": "Pay subscription fees",
+      "summary": "Reseller must pay Exhibit A fees for each activated customer account.",
+      "text": "Reseller shall pay Provider the subscription fees set out in Exhibit A for each customer account that Reseller activates.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Reseller shall pay Provider the subscription fees set out in Exhibit A for each customer account that Reseller activates."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-2",
+      "deadline": "",
+      "frequency": "for each customer account that Reseller activates",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-11"
+      ]
+    },
+    {
+      "id": "obligation-2",
+      "action": "Invoice monthly",
+      "summary": "Provider must invoice Reseller monthly.",
+      "text": "Provider shall invoice Reseller monthly.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Provider shall invoice Reseller monthly."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-2",
+      "deadline": "",
+      "frequency": "monthly",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-11"
+      ]
+    },
+    {
+      "id": "obligation-3",
+      "action": "Pay invoices",
+      "summary": "Reseller must pay invoices in full within 30 days of their date.",
+      "text": "Reseller shall pay each invoice in full within thirty (30) days of the invoice date.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Reseller shall pay each invoice in full within thirty (30) days of the invoice date."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-2",
+      "deadline": "within thirty (30) days of the invoice date",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-11"
+      ]
+    },
+    {
+      "id": "obligation-4",
+      "action": "Pay late charges",
+      "summary": "Reseller owes a monthly 1.5% charge on overdue amounts.",
+      "text": "Any amount that is not paid when due shall bear a late charge of one and one-half percent (1.5%) per month.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Any amount that is not paid when due shall bear a late charge of one and one-half percent (1.5%) per month."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-2",
+      "deadline": "",
+      "frequency": "per month",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-12"
+      ]
+    },
+    {
+      "id": "obligation-5",
+      "action": "Pay returned-payment fee",
+      "summary": "Reseller must pay $50 for each returned or dishonored payment.",
+      "text": "Reseller shall pay a fee of fifty dollars ($50.00) for each returned or dishonored payment.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Reseller shall pay a fee of fifty dollars ($50.00) for each returned or dishonored payment."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-2",
+      "deadline": "",
+      "frequency": "for each returned or dishonored payment",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-12"
+      ]
+    },
+    {
+      "id": "obligation-6",
+      "action": "Reimburse collection costs",
+      "summary": "Reseller must reimburse reasonable collection costs, including attorneys’ fees, for overdue amounts.",
+      "text": "Reseller shall reimburse Provider for all reasonable costs of collecting past-due amounts, including attorneys’ fees.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Reseller shall reimburse Provider for all reasonable costs of collecting past-due amounts, including attorneys’ fees."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-2",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-12"
+      ]
+    },
+    {
+      "id": "obligation-7",
+      "action": "Allocate payments",
+      "summary": "Provider must apply payments first to the oldest outstanding invoice.",
+      "text": "Provider shall apply each payment it receives first to the oldest outstanding invoice.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Provider shall apply each payment it receives first to the oldest outstanding invoice."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-2",
+      "deadline": "",
+      "frequency": "each payment",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-12"
+      ]
+    },
+    {
+      "id": "obligation-8",
+      "action": "Submit marketing materials",
+      "summary": "Reseller must submit Platform marketing materials for approval before use.",
+      "text": "Reseller shall submit to Provider for approval all marketing materials that refer to the Platform before using them.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Reseller shall submit to Provider for approval all marketing materials that refer to the Platform before using them."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-3",
+      "deadline": "before using them",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-13"
+      ]
+    },
+    {
+      "id": "obligation-9",
+      "action": "Review marketing materials",
+      "summary": "Provider must approve or reject submitted materials within five business days.",
+      "text": "Provider shall approve or reject the submitted materials within five (5) business days of receipt.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Provider shall approve or reject the submitted materials within five (5) business days of receipt."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-3",
+      "deadline": "within five (5) business days of receipt",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-13"
+      ]
+    },
+    {
+      "id": "obligation-10",
+      "action": "Comply with laws",
+      "summary": "Provider must comply with applicable laws and regulations, including the Fair Credit Reporting Act.",
+      "text": "Each party shall comply with all laws and regulations that apply to its activities under this Agreement, including the Fair Credit Reporting Act.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Each party shall comply with all laws and regulations that apply to its activities under this Agreement, including the Fair Credit Reporting Act."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-4",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-14"
+      ]
+    },
+    {
+      "id": "obligation-11",
+      "action": "Comply with laws",
+      "summary": "Reseller must comply with applicable laws and regulations, including the Fair Credit Reporting Act.",
+      "text": "Each party shall comply with all laws and regulations that apply to its activities under this Agreement, including the Fair Credit Reporting Act.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Each party shall comply with all laws and regulations that apply to its activities under this Agreement, including the Fair Credit Reporting Act."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-4",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-14"
+      ]
+    },
+    {
+      "id": "obligation-12",
+      "action": "Bear audit expense",
+      "summary": "Provider must bear the expense of each audit.",
+      "text": "Each audit shall be conducted at Provider’s expense.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Each audit shall be conducted at Provider’s expense."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-6",
+      "deadline": "",
+      "frequency": "Each audit",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-17"
+      ]
+    },
+    {
+      "id": "obligation-13",
+      "action": "Pay outstanding invoices on termination",
+      "summary": "Reseller must pay all outstanding invoices within 15 days after termination.",
+      "text": "Reseller shall pay all outstanding invoices within fifteen (15) days after termination.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Reseller shall pay all outstanding invoices within fifteen (15) days after termination."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-10",
+      "deadline": "within fifteen (15) days after termination",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-21"
+      ]
+    },
+    {
+      "id": "obligation-14",
+      "action": "Warrant licenses and registrations",
+      "summary": "Reseller warrants it holds all licenses and registrations required for resale in the Territory.",
+      "text": "Reseller warrants that it holds every license and registration required to resell the Platform in the Territory.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Reseller warrants that it holds every license and registration required to resell the Platform in the Territory."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-12",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-23"
+      ]
+    },
+    {
+      "id": "obligation-15",
+      "action": "Warrant Platform performance",
+      "summary": "Provider warrants substantial conformity of Platform performance with its published documentation.",
+      "text": "Provider warrants that the Platform will perform substantially in accordance with its published documentation.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Provider warrants that the Platform will perform substantially in accordance with its published documentation."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-13",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-24"
+      ]
+    },
+    {
+      "id": "obligation-16",
+      "action": "Defend and indemnify Provider",
+      "summary": "Reseller must defend and indemnify Provider against claims arising from Reseller's marketing or resale.",
+      "text": "Reseller shall defend, indemnify and hold harmless Provider from any claim arising out of Reseller’s marketing or resale of the Platform.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Reseller shall defend, indemnify and hold harmless Provider from any claim arising out of Reseller’s marketing or resale of the Platform."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-15",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-26"
+      ]
+    },
+    {
+      "id": "obligation-17",
+      "action": "Indemnify against infringement claims",
+      "summary": "Provider must indemnify Reseller only against claims of United States patent or copyright infringement by the Platform.",
+      "text": "Provider shall indemnify Reseller only against claims that the Platform infringes a United States patent or copyright.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Provider shall indemnify Reseller only against claims that the Platform infringes a United States patent or copyright."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-15",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-26"
+      ]
+    },
+    {
+      "id": "obligation-18",
+      "action": "Attempt good-faith negotiation",
+      "summary": "Provider must first attempt to resolve disputes by fifteen days of good-faith negotiation.",
+      "text": "The parties shall first attempt to resolve any dispute through good-faith negotiation for fifteen (15) days.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The parties shall first attempt to resolve any dispute through good-faith negotiation for fifteen (15) days."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-16",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-27"
+      ]
+    },
+    {
+      "id": "obligation-19",
+      "action": "Attempt good-faith negotiation",
+      "summary": "Reseller must first attempt to resolve disputes by fifteen days of good-faith negotiation.",
+      "text": "The parties shall first attempt to resolve any dispute through good-faith negotiation for fifteen (15) days.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The parties shall first attempt to resolve any dispute through good-faith negotiation for fifteen (15) days."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-16",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-27"
+      ]
+    },
+    {
+      "id": "obligation-20",
+      "action": "Submit unresolved disputes to arbitration",
+      "summary": "Provider must submit disputes unresolved by negotiation to binding arbitration in Wilmington, Delaware.",
+      "text": "Any dispute that is not resolved by negotiation shall be settled by binding arbitration in Wilmington, Delaware.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Any dispute that is not resolved by negotiation shall be settled by binding arbitration in Wilmington, Delaware."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-16",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-27"
+      ]
+    },
+    {
+      "id": "obligation-21",
+      "action": "Submit unresolved disputes to arbitration",
+      "summary": "Reseller must submit disputes unresolved by negotiation to binding arbitration in Wilmington, Delaware.",
+      "text": "Any dispute that is not resolved by negotiation shall be settled by binding arbitration in Wilmington, Delaware.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Any dispute that is not resolved by negotiation shall be settled by binding arbitration in Wilmington, Delaware."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-16",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-27"
+      ]
+    },
+    {
+      "id": "obligation-22",
+      "action": "Issue written arbitration award",
+      "summary": "The arbitrator must issue a written award within thirty days after the final hearing.",
+      "text": "The arbitrator shall issue a written award within thirty (30) days after the final hearing.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The arbitrator shall issue a written award within thirty (30) days after the final hearing."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": null,
+      "clauseId": "clause-16",
+      "deadline": "within thirty (30) days after the final hearing",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-27"
+      ]
+    },
+    {
+      "id": "obligation-23",
+      "action": "Bear own attorneys' fees",
+      "summary": "Provider must bear its own attorneys' fees in arbitration.",
+      "text": "Each party shall bear its own attorneys’ fees in the arbitration.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Each party shall bear its own attorneys’ fees in the arbitration."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-16",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-27"
+      ]
+    },
+    {
+      "id": "obligation-24",
+      "action": "Bear own attorneys' fees",
+      "summary": "Reseller must bear its own attorneys' fees in arbitration.",
+      "text": "Each party shall bear its own attorneys’ fees in the arbitration.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Each party shall bear its own attorneys’ fees in the arbitration."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-16",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-27"
+      ]
+    },
+    {
+      "id": "obligation-25",
+      "action": "Guarantee Reseller payments",
+      "summary": "Daniel Okafor personally guarantees all amounts Reseller owes under the Agreement.",
+      "text": "The undersigned principal of Reseller personally guarantees the payment of all amounts that Reseller owes under this Agreement.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The undersigned principal of Reseller personally guarantees the payment of all amounts that Reseller owes under this Agreement."
+      ],
+      "burdenPartyId": "party-3",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-17",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-28"
+      ]
+    },
+    {
+      "id": "obligation-26",
+      "action": "Deliver written notices",
+      "summary": "Provider must deliver written notices to the stated addresses.",
+      "text": "All notices under this Agreement shall be in writing and delivered to the addresses set out above.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "All notices under this Agreement shall be in writing and delivered to the addresses set out above."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-21",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-32"
+      ]
+    },
+    {
+      "id": "obligation-27",
+      "action": "Deliver written notices",
+      "summary": "Reseller must deliver written notices to the stated addresses.",
+      "text": "All notices under this Agreement shall be in writing and delivered to the addresses set out above.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "All notices under this Agreement shall be in writing and delivered to the addresses set out above."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-21",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-32"
+      ]
+    },
+    {
+      "id": "obligation-28",
+      "action": "Pay standard subscription fee",
+      "summary": "Reseller owes forty dollars per standard customer account monthly.",
+      "text": "Standard subscription: forty dollars ($40.00) per customer account per month.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Standard subscription: forty dollars ($40.00) per customer account per month."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-22",
+      "deadline": "",
+      "frequency": "per customer account per month",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-39"
+      ]
+    },
+    {
+      "id": "obligation-29",
+      "action": "Pay premium subscription fee",
+      "summary": "Reseller owes ninety-five dollars per premium customer account monthly.",
+      "text": "Premium subscription: ninety-five dollars ($95.00) per customer account per month.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Premium subscription: ninety-five dollars ($95.00) per customer account per month."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-22",
+      "deadline": "",
+      "frequency": "per customer account per month",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-40"
+      ]
+    },
+    {
+      "id": "obligation-30",
+      "action": "Pay setup fee",
+      "summary": "Reseller owes a one-time setup fee of one hundred fifty dollars per customer account.",
+      "text": "Setup fee: one hundred fifty dollars ($150.00) per customer account, charged once.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Setup fee: one hundred fifty dollars ($150.00) per customer account, charged once."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-22",
+      "deadline": "",
+      "frequency": "once",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-41"
+      ]
+    }
+  ],
+  "rights": [
+    {
+      "id": "right-1",
+      "action": "Resell subscriptions",
+      "summary": "Reseller is appointed non-exclusively and may resell Platform subscriptions to customers in Florida.",
+      "text": "Provider appoints Reseller as a non-exclusive reseller of the Platform in the State of Florida (the “Territory”). Reseller may resell subscriptions to the Platform to customers located in the Territory.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Provider appoints Reseller as a non-exclusive reseller of the Platform in the State of Florida (the “Territory”). Reseller may resell subscriptions to the Platform to customers located in the Territory."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-1",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-10"
+      ]
+    },
+    {
+      "id": "right-2",
+      "action": "Increase fees",
+      "summary": "Provider may increase Exhibit A fees on 30 days’ prior written notice.",
+      "text": "Provider may increase the fees set out in Exhibit A upon thirty (30) days’ prior written notice to Reseller.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Provider may increase the fees set out in Exhibit A upon thirty (30) days’ prior written notice to Reseller."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-2",
+      "deadline": "upon thirty (30) days’ prior written notice to Reseller",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-11"
+      ]
+    },
+    {
+      "id": "right-3",
+      "action": "Audit sales records",
+      "summary": "Provider may audit Platform sales records once per calendar year with ten business days’ prior written notice.",
+      "text": "Provider may audit Reseller’s sales records relating to the Platform once in each calendar year, upon ten (10) business days’ prior written notice.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Provider may audit Reseller’s sales records relating to the Platform once in each calendar year, upon ten (10) business days’ prior written notice."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-6",
+      "deadline": "upon ten (10) business days’ prior written notice",
+      "frequency": "once in each calendar year",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-17"
+      ]
+    },
+    {
+      "id": "right-4",
+      "action": "Terminate for uncured breach",
+      "summary": "Provider may terminate for Reseller’s material breach left uncured during 30 days’ written notice.",
+      "text": "Either party may terminate this Agreement for a material breach by the other party upon thirty (30) days’ written notice, if the breach is not cured within that period.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Either party may terminate this Agreement for a material breach by the other party upon thirty (30) days’ written notice, if the breach is not cured within that period."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-8",
+      "deadline": "upon thirty (30) days’ written notice",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-19"
+      ]
+    },
+    {
+      "id": "right-5",
+      "action": "Terminate for uncured breach",
+      "summary": "Reseller may terminate for Provider’s material breach left uncured during 30 days’ written notice.",
+      "text": "Either party may terminate this Agreement for a material breach by the other party upon thirty (30) days’ written notice, if the breach is not cured within that period.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Either party may terminate this Agreement for a material breach by the other party upon thirty (30) days’ written notice, if the breach is not cured within that period."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-8",
+      "deadline": "upon thirty (30) days’ written notice",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-19"
+      ]
+    },
+    {
+      "id": "right-6",
+      "action": "Terminate for nonpayment",
+      "summary": "Provider may terminate immediately without notice when payment remains unpaid ten days after its due date.",
+      "text": "Notwithstanding Section 7.1, Provider may terminate this Agreement immediately and without notice if Reseller fails to pay any amount within ten (10) days after its due date.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Notwithstanding Section 7.1, Provider may terminate this Agreement immediately and without notice if Reseller fails to pay any amount within ten (10) days after its due date."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-9",
+      "deadline": "immediately and without notice",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-20"
+      ]
+    },
+    {
+      "id": "right-7",
+      "action": "Disclaim warranties",
+      "summary": "Provider supplies the Platform as is and disclaims all express and implied warranties notwithstanding its performance warranty.",
+      "text": "NOTWITHSTANDING SECTION 8.2, THE PLATFORM IS PROVIDED “AS IS” AND PROVIDER DISCLAIMS ALL WARRANTIES, WHETHER EXPRESS OR IMPLIED.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "NOTWITHSTANDING SECTION 8.2, THE PLATFORM IS PROVIDED “AS IS” AND PROVIDER DISCLAIMS ALL WARRANTIES, WHETHER EXPRESS OR IMPLIED."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-14",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-25"
+      ]
+    },
+    {
+      "id": "right-8",
+      "action": "Exclude consequential and indirect liability",
+      "summary": "Provider excludes liability for indirect, incidental and consequential damages.",
+      "text": "PROVIDER SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL OR CONSEQUENTIAL DAMAGES.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "PROVIDER SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL OR CONSEQUENTIAL DAMAGES."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-14",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-25"
+      ]
+    },
+    {
+      "id": "right-9",
+      "action": "Cap total liability",
+      "summary": "Provider caps total liability at the fees paid by Reseller during the three months preceding the claim.",
+      "text": "PROVIDER’S TOTAL LIABILITY UNDER THIS AGREEMENT SHALL NOT EXCEED THE FEES PAID BY RESELLER IN THE THREE (3) MONTHS BEFORE THE CLAIM.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "PROVIDER’S TOTAL LIABILITY UNDER THIS AGREEMENT SHALL NOT EXCEED THE FEES PAID BY RESELLER IN THE THREE (3) MONTHS BEFORE THE CLAIM."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-14",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-25"
+      ]
+    }
+  ],
+  "prohibitions": [
+    {
+      "id": "prohibition-1",
+      "action": "Restrict out-of-territory sales",
+      "summary": "Reseller must not market or resell outside the Territory without Provider’s prior written consent.",
+      "text": "Reseller shall not market or resell the Platform outside the Territory without Provider’s prior written consent.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Reseller shall not market or resell the Platform outside the Territory without Provider’s prior written consent."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-1",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-10"
+      ]
+    },
+    {
+      "id": "prohibition-2",
+      "action": "Avoid unapproved marketing materials",
+      "summary": "Reseller must not use materials not approved by Provider.",
+      "text": "Reseller shall not use any marketing materials that Provider has not approved.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Reseller shall not use any marketing materials that Provider has not approved."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-3",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-13"
+      ]
+    },
+    {
+      "id": "prohibition-3",
+      "action": "Avoid deceptive practices",
+      "summary": "Provider must not engage in deceptive, misleading or abusive Platform-related practices.",
+      "text": "Neither party shall engage in any deceptive, misleading or abusive practice in connection with the Platform.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Neither party shall engage in any deceptive, misleading or abusive practice in connection with the Platform."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-4",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-14"
+      ]
+    },
+    {
+      "id": "prohibition-4",
+      "action": "Avoid deceptive practices",
+      "summary": "Reseller must not engage in deceptive, misleading or abusive Platform-related practices.",
+      "text": "Neither party shall engage in any deceptive, misleading or abusive practice in connection with the Platform.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Neither party shall engage in any deceptive, misleading or abusive practice in connection with the Platform."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-4",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-14"
+      ]
+    },
+    {
+      "id": "prohibition-5",
+      "action": "Protect confidential information",
+      "summary": "Provider must not disclose the other party’s marked confidential information except as required by law.",
+      "text": "Each party (the “Receiving Party”) shall not disclose to any third party any information that the other party marks as confidential (“Confidential Information”), except as required by law.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Each party (the “Receiving Party”) shall not disclose to any third party any information that the other party marks as confidential (“Confidential Information”), except as required by law."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-15"
+      ]
+    },
+    {
+      "id": "prohibition-6",
+      "action": "Protect confidential information",
+      "summary": "Reseller must not disclose the other party’s marked confidential information except as required by law.",
+      "text": "Each party (the “Receiving Party”) shall not disclose to any third party any information that the other party marks as confidential (“Confidential Information”), except as required by law.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Each party (the “Receiving Party”) shall not disclose to any third party any information that the other party marks as confidential (“Confidential Information”), except as required by law."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-15"
+      ]
+    },
+    {
+      "id": "prohibition-7",
+      "action": "Limit customer-information use",
+      "summary": "Provider may use Reseller customer information only to deliver the Platform to those customers.",
+      "text": "Provider shall not use any information about Reseller’s customers for any purpose other than delivering the Platform to those customers.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Provider shall not use any information about Reseller’s customers for any purpose other than delivering the Platform to those customers."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-16"
+      ]
+    },
+    {
+      "id": "prohibition-8",
+      "action": "Avoid cross-selling to customers",
+      "summary": "Provider must not contact Reseller’s customers to offer other products during the Agreement term.",
+      "text": "Provider shall not contact Reseller’s customers to offer them other products during the term of this Agreement.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Provider shall not contact Reseller’s customers to offer them other products during the term of this Agreement."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-5",
+      "deadline": "during the term of this Agreement",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-16"
+      ]
+    },
+    {
+      "id": "prohibition-9",
+      "action": "Cease marketing and resale",
+      "summary": "Reseller must immediately stop marketing and reselling the Platform upon termination.",
+      "text": "Upon any termination of this Agreement, Reseller shall immediately cease marketing and reselling the Platform.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Upon any termination of this Agreement, Reseller shall immediately cease marketing and reselling the Platform."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-10",
+      "deadline": "immediately",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-21"
+      ]
+    },
+    {
+      "id": "prohibition-10",
+      "action": "Refrain from soliciting Provider customers",
+      "summary": "Reseller must not solicit Provider customers it did not introduce to the Platform during the term and for twelve months afterward.",
+      "text": "During the term of this Agreement and for twelve (12) months after it ends, Reseller shall not solicit any customer of Provider that Reseller did not introduce to the Platform.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "During the term of this Agreement and for twelve (12) months after it ends, Reseller shall not solicit any customer of Provider that Reseller did not introduce to the Platform."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-18",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-29"
+      ]
+    },
+    {
+      "id": "prohibition-11",
+      "action": "Refrain from unconsented assignment",
+      "summary": "Provider may not assign the Agreement without Reseller's prior written consent.",
+      "text": "Neither party may assign this Agreement without the prior written consent of the other party.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Neither party may assign this Agreement without the prior written consent of the other party."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-20",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-31"
+      ]
+    },
+    {
+      "id": "prohibition-12",
+      "action": "Refrain from unconsented assignment",
+      "summary": "Reseller may not assign the Agreement without Provider's prior written consent.",
+      "text": "Neither party may assign this Agreement without the prior written consent of the other party.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Neither party may assign this Agreement without the prior written consent of the other party."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-20",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-31"
+      ]
+    }
+  ],
+  "conditions": [
+    {
+      "id": "condition-1",
+      "trigger": "Any amount that is not paid when due",
+      "operator": "IF",
+      "gatesId": "obligation-4",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-12"
+      ]
+    },
+    {
+      "id": "condition-2",
+      "trigger": "each returned or dishonored payment",
+      "operator": "UPON",
+      "gatesId": "obligation-5",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-12"
+      ]
+    },
+    {
+      "id": "condition-3",
+      "trigger": "collecting past-due amounts",
+      "operator": "IF",
+      "gatesId": "obligation-6",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-12"
+      ]
+    },
+    {
+      "id": "condition-4",
+      "trigger": "a material breach by the other party upon thirty (30) days’ written notice, if the breach is not cured within that period",
+      "operator": "IF",
+      "gatesId": "right-4",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-19"
+      ]
+    },
+    {
+      "id": "condition-5",
+      "trigger": "a material breach by the other party upon thirty (30) days’ written notice, if the breach is not cured within that period",
+      "operator": "IF",
+      "gatesId": "right-5",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-19"
+      ]
+    },
+    {
+      "id": "condition-6",
+      "trigger": "Reseller fails to pay any amount within ten (10) days after its due date",
+      "operator": "IF",
+      "gatesId": "right-6",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-20"
+      ]
+    },
+    {
+      "id": "condition-7",
+      "trigger": "any termination of this Agreement",
+      "operator": "UPON",
+      "gatesId": "prohibition-9",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-21"
+      ]
+    },
+    {
+      "id": "condition-8",
+      "trigger": "termination",
+      "operator": "UPON",
+      "gatesId": "obligation-13",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-21"
+      ]
+    },
+    {
+      "id": "condition-9",
+      "trigger": "Provider’s prior written consent",
+      "operator": "UNLESS",
+      "gatesId": "prohibition-1",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-10"
+      ]
+    },
+    {
+      "id": "condition-10",
+      "trigger": "required by law",
+      "operator": "UNLESS",
+      "gatesId": "prohibition-5",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-15"
+      ]
+    },
+    {
+      "id": "condition-11",
+      "trigger": "required by law",
+      "operator": "UNLESS",
+      "gatesId": "prohibition-6",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-15"
+      ]
+    },
+    {
+      "id": "condition-12",
+      "trigger": "any claim arising out of Reseller’s marketing or resale of the Platform",
+      "operator": "UPON",
+      "gatesId": "obligation-16",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-26"
+      ]
+    },
+    {
+      "id": "condition-13",
+      "trigger": "claims that the Platform infringes a United States patent or copyright",
+      "operator": "UPON",
+      "gatesId": "obligation-17",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-26"
+      ]
+    },
+    {
+      "id": "condition-14",
+      "trigger": "Any dispute that is not resolved by negotiation",
+      "operator": "IF",
+      "gatesId": "obligation-20",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-27"
+      ]
+    },
+    {
+      "id": "condition-15",
+      "trigger": "Any dispute that is not resolved by negotiation",
+      "operator": "IF",
+      "gatesId": "obligation-21",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-27"
+      ]
+    },
+    {
+      "id": "condition-16",
+      "trigger": "the final hearing",
+      "operator": "UPON",
+      "gatesId": "obligation-22",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-27"
+      ]
+    },
+    {
+      "id": "condition-17",
+      "trigger": "the prior written consent of the other party",
+      "operator": "UNLESS",
+      "gatesId": "prohibition-11",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-31"
+      ]
+    },
+    {
+      "id": "condition-18",
+      "trigger": "the prior written consent of the other party",
+      "operator": "UNLESS",
+      "gatesId": "prohibition-12",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-31"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "id": "reference-1",
+      "name": "Exhibit A",
+      "citation": "",
+      "citedById": "obligation-1",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-11"
+      ]
+    },
+    {
+      "id": "reference-2",
+      "name": "Exhibit A",
+      "citation": "",
+      "citedById": "right-2",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-11"
+      ]
+    },
+    {
+      "id": "reference-3",
+      "name": "Fair Credit Reporting Act",
+      "citation": "",
+      "citedById": "obligation-10",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-14"
+      ]
+    },
+    {
+      "id": "reference-4",
+      "name": "Fair Credit Reporting Act",
+      "citation": "",
+      "citedById": "obligation-11",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-14"
+      ]
+    },
+    {
+      "id": "reference-5",
+      "name": "published documentation",
+      "citation": "",
+      "citedById": "obligation-15",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-24"
+      ]
+    }
+  ],
+  "values": [
+    {
+      "id": "value-1",
+      "valueType": "Duration",
+      "amount": "30",
+      "unit": "days",
+      "quantifiesId": "obligation-3",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-11"
+      ]
+    },
+    {
+      "id": "value-2",
+      "valueType": "Duration",
+      "amount": "30",
+      "unit": "days",
+      "quantifiesId": "right-2",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-11"
+      ]
+    },
+    {
+      "id": "value-3",
+      "valueType": "Percentage",
+      "amount": "1.5",
+      "unit": "% per month",
+      "quantifiesId": "obligation-4",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-12"
+      ]
+    },
+    {
+      "id": "value-4",
+      "valueType": "Currency",
+      "amount": "50.00",
+      "unit": "USD",
+      "quantifiesId": "obligation-5",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-12"
+      ]
+    },
+    {
+      "id": "value-5",
+      "valueType": "Duration",
+      "amount": "5",
+      "unit": "business days",
+      "quantifiesId": "obligation-9",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-13"
+      ]
+    },
+    {
+      "id": "value-6",
+      "valueType": "Duration",
+      "amount": "10",
+      "unit": "business days",
+      "quantifiesId": "right-3",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-17"
+      ]
+    },
+    {
+      "id": "value-7",
+      "valueType": "Quantity",
+      "amount": "1",
+      "unit": "audit per calendar year",
+      "quantifiesId": "right-3",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-17"
+      ]
+    },
+    {
+      "id": "value-8",
+      "valueType": "Duration",
+      "amount": "1",
+      "unit": "year",
+      "quantifiesId": "clause-8",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-19"
+      ]
+    },
+    {
+      "id": "value-9",
+      "valueType": "Duration",
+      "amount": "1",
+      "unit": "year per renewal term",
+      "quantifiesId": "clause-8",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-19"
+      ]
+    },
+    {
+      "id": "value-10",
+      "valueType": "Duration",
+      "amount": "30",
+      "unit": "days",
+      "quantifiesId": "right-4",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-19"
+      ]
+    },
+    {
+      "id": "value-11",
+      "valueType": "Duration",
+      "amount": "30",
+      "unit": "days",
+      "quantifiesId": "right-5",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-19"
+      ]
+    },
+    {
+      "id": "value-12",
+      "valueType": "Duration",
+      "amount": "10",
+      "unit": "days after due date",
+      "quantifiesId": "right-6",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-20"
+      ]
+    },
+    {
+      "id": "value-13",
+      "valueType": "Duration",
+      "amount": "15",
+      "unit": "days",
+      "quantifiesId": "obligation-13",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-21"
+      ]
+    },
+    {
+      "id": "value-14",
+      "valueType": "Duration",
+      "amount": "3",
+      "unit": "months",
+      "quantifiesId": "right-9",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-25"
+      ]
+    },
+    {
+      "id": "value-15",
+      "valueType": "Duration",
+      "amount": "15",
+      "unit": "days",
+      "quantifiesId": "obligation-18",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-27"
+      ]
+    },
+    {
+      "id": "value-16",
+      "valueType": "Duration",
+      "amount": "15",
+      "unit": "days",
+      "quantifiesId": "obligation-19",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-27"
+      ]
+    },
+    {
+      "id": "value-17",
+      "valueType": "Duration",
+      "amount": "30",
+      "unit": "days",
+      "quantifiesId": "obligation-22",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-27"
+      ]
+    },
+    {
+      "id": "value-18",
+      "valueType": "Duration",
+      "amount": "12",
+      "unit": "months",
+      "quantifiesId": "prohibition-10",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-29"
+      ]
+    },
+    {
+      "id": "value-19",
+      "valueType": "Currency",
+      "amount": "40.00",
+      "unit": "dollars per customer account per month",
+      "quantifiesId": "obligation-28",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-39"
+      ]
+    },
+    {
+      "id": "value-20",
+      "valueType": "Currency",
+      "amount": "95.00",
+      "unit": "dollars per customer account per month",
+      "quantifiesId": "obligation-29",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-40"
+      ]
+    },
+    {
+      "id": "value-21",
+      "valueType": "Currency",
+      "amount": "150.00",
+      "unit": "dollars per customer account",
+      "quantifiesId": "obligation-30",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-41"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "right-1",
+      "target": "clause-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-1",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-2",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-2",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-3",
+      "target": "clause-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-3",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-4",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-4",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-5",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-5",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-6",
+      "target": "clause-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-6",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-7",
+      "target": "clause-14",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-7",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-8",
+      "target": "clause-14",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-8",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-9",
+      "target": "clause-14",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-9",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-1",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-1",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-2",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-2",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-3",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-3",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-4",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-4",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-5",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-5",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-6",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-6",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-7",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-7",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-8",
+      "target": "clause-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-8",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-9",
+      "target": "clause-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-9",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-10",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-10",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-11",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-11",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-12",
+      "target": "clause-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-12",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-13",
+      "target": "clause-10",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-13",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-14",
+      "target": "clause-12",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-14",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-15",
+      "target": "clause-13",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-15",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-16",
+      "target": "clause-15",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-16",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-17",
+      "target": "clause-15",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-17",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-18",
+      "target": "clause-16",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-18",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-19",
+      "target": "clause-16",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-19",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-20",
+      "target": "clause-16",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-20",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-21",
+      "target": "clause-16",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-21",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-22",
+      "target": "clause-16",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-23",
+      "target": "clause-16",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-23",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-24",
+      "target": "clause-16",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-24",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-25",
+      "target": "clause-17",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-25",
+      "target": "party-3",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-26",
+      "target": "clause-21",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-26",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-27",
+      "target": "clause-21",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-27",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-28",
+      "target": "clause-22",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-28",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-29",
+      "target": "clause-22",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-29",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-30",
+      "target": "clause-22",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-30",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-1",
+      "target": "clause-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-1",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-2",
+      "target": "clause-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-2",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-3",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-3",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-4",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-4",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-5",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-5",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-6",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-6",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-7",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-7",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-8",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-8",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-9",
+      "target": "clause-10",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-9",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-10",
+      "target": "clause-18",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-10",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-11",
+      "target": "clause-20",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-11",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-12",
+      "target": "clause-20",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-12",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-1",
+      "target": "term-4",
+      "type": "defines",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-5",
+      "target": "term-5",
+      "type": "defines",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-1",
+      "target": "obligation-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-2",
+      "target": "obligation-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-3",
+      "target": "obligation-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-4",
+      "target": "right-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-5",
+      "target": "right-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-6",
+      "target": "right-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-7",
+      "target": "prohibition-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-8",
+      "target": "obligation-13",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-9",
+      "target": "prohibition-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-10",
+      "target": "prohibition-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-11",
+      "target": "prohibition-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-12",
+      "target": "obligation-16",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-13",
+      "target": "obligation-17",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-14",
+      "target": "obligation-20",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-15",
+      "target": "obligation-21",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-16",
+      "target": "obligation-22",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-17",
+      "target": "prohibition-11",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-18",
+      "target": "prohibition-12",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-1",
+      "target": "obligation-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-2",
+      "target": "right-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-3",
+      "target": "obligation-10",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-4",
+      "target": "obligation-11",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-5",
+      "target": "obligation-15",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-1",
+      "target": "obligation-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-2",
+      "target": "right-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-3",
+      "target": "obligation-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-4",
+      "target": "obligation-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-5",
+      "target": "obligation-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-6",
+      "target": "right-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-7",
+      "target": "right-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-8",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-9",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-10",
+      "target": "right-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-11",
+      "target": "right-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-12",
+      "target": "right-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-13",
+      "target": "obligation-13",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-14",
+      "target": "right-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-15",
+      "target": "obligation-18",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-16",
+      "target": "obligation-19",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-17",
+      "target": "obligation-22",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-18",
+      "target": "prohibition-10",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-19",
+      "target": "obligation-28",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-20",
+      "target": "obligation-29",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-21",
+      "target": "obligation-30",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-8",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-9",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-10",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-12",
+      "target": "clause-11",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-13",
+      "target": "clause-11",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-20",
+      "target": "clause-19",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-21",
+      "target": "clause-19",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-22",
+      "target": "clause-19",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-1",
+      "target": "term-3",
+      "type": "uses",
+      "evidence": "Platform",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-10"
+      ]
+    },
+    {
+      "source": "right-1",
+      "target": "term-4",
+      "type": "uses",
+      "evidence": "Territory",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-10"
+      ]
+    },
+    {
+      "source": "prohibition-1",
+      "target": "term-3",
+      "type": "uses",
+      "evidence": "Platform",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-10"
+      ]
+    },
+    {
+      "source": "prohibition-1",
+      "target": "term-4",
+      "type": "uses",
+      "evidence": "Territory",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-10"
+      ]
+    },
+    {
+      "source": "right-2",
+      "target": "clause-2",
+      "type": "modifies",
+      "evidence": "Provider may increase the fees set out in Exhibit A upon thirty (30) days’ prior written notice to Reseller.",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-11"
+      ]
+    },
+    {
+      "source": "obligation-8",
+      "target": "term-3",
+      "type": "uses",
+      "evidence": "Platform",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-13"
+      ]
+    },
+    {
+      "source": "obligation-10",
+      "target": "term-1",
+      "type": "uses",
+      "evidence": "Agreement",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-14"
+      ]
+    },
+    {
+      "source": "obligation-11",
+      "target": "term-1",
+      "type": "uses",
+      "evidence": "Agreement",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-14"
+      ]
+    },
+    {
+      "source": "prohibition-3",
+      "target": "term-3",
+      "type": "uses",
+      "evidence": "Platform",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-14"
+      ]
+    },
+    {
+      "source": "prohibition-4",
+      "target": "term-3",
+      "type": "uses",
+      "evidence": "Platform",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-14"
+      ]
+    },
+    {
+      "source": "prohibition-5",
+      "target": "term-5",
+      "type": "uses",
+      "evidence": "Confidential Information",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-15"
+      ]
+    },
+    {
+      "source": "prohibition-6",
+      "target": "term-5",
+      "type": "uses",
+      "evidence": "Confidential Information",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-15"
+      ]
+    },
+    {
+      "source": "prohibition-7",
+      "target": "term-3",
+      "type": "uses",
+      "evidence": "Platform",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-16"
+      ]
+    },
+    {
+      "source": "prohibition-8",
+      "target": "term-1",
+      "type": "uses",
+      "evidence": "Agreement",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-16"
+      ]
+    },
+    {
+      "source": "right-3",
+      "target": "term-3",
+      "type": "uses",
+      "evidence": "Platform",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-17"
+      ]
+    },
+    {
+      "source": "clause-8",
+      "target": "term-1",
+      "type": "uses",
+      "evidence": "Agreement",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-19"
+      ]
+    },
+    {
+      "source": "clause-8",
+      "target": "term-2",
+      "type": "uses",
+      "evidence": "Effective Date",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-19"
+      ]
+    },
+    {
+      "source": "right-6",
+      "target": "term-1",
+      "type": "uses",
+      "evidence": "Agreement",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-20"
+      ]
+    },
+    {
+      "source": "right-6",
+      "target": "clause-8",
+      "type": "depends_on",
+      "evidence": "Notwithstanding Section 7.1",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-20"
+      ]
+    },
+    {
+      "source": "right-6",
+      "target": "clause-8",
+      "type": "modifies",
+      "evidence": "Notwithstanding Section 7.1, Provider may terminate this Agreement immediately and without notice",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-20"
+      ]
+    },
+    {
+      "source": "prohibition-9",
+      "target": "term-1",
+      "type": "uses",
+      "evidence": "Agreement",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-21"
+      ]
+    },
+    {
+      "source": "prohibition-9",
+      "target": "term-3",
+      "type": "uses",
+      "evidence": "Platform",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-21"
+      ]
+    },
+    {
+      "source": "obligation-14",
+      "target": "term-3",
+      "type": "uses",
+      "evidence": "Platform",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-23"
+      ]
+    },
+    {
+      "source": "obligation-14",
+      "target": "term-4",
+      "type": "uses",
+      "evidence": "Territory",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-23"
+      ]
+    },
+    {
+      "source": "obligation-15",
+      "target": "term-3",
+      "type": "uses",
+      "evidence": "Platform",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-24"
+      ]
+    },
+    {
+      "source": "right-7",
+      "target": "clause-13",
+      "type": "depends_on",
+      "evidence": "NOTWITHSTANDING SECTION 8.2",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-25"
+      ]
+    },
+    {
+      "source": "right-7",
+      "target": "clause-13",
+      "type": "modifies",
+      "evidence": "NOTWITHSTANDING SECTION 8.2, THE PLATFORM IS PROVIDED “AS IS” AND PROVIDER DISCLAIMS ALL WARRANTIES, WHETHER EXPRESS OR IMPLIED.",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-25"
+      ]
+    },
+    {
+      "source": "right-8",
+      "target": "clause-13",
+      "type": "modifies",
+      "evidence": "PROVIDER SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL OR CONSEQUENTIAL DAMAGES.",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-25"
+      ]
+    },
+    {
+      "source": "right-9",
+      "target": "clause-13",
+      "type": "modifies",
+      "evidence": "PROVIDER’S TOTAL LIABILITY UNDER THIS AGREEMENT SHALL NOT EXCEED THE FEES PAID BY RESELLER IN THE THREE (3) MONTHS BEFORE THE CLAIM.",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-25"
+      ]
+    },
+    {
+      "source": "right-9",
+      "target": "clause-15",
+      "type": "modifies",
+      "evidence": "PROVIDER’S TOTAL LIABILITY UNDER THIS AGREEMENT SHALL NOT EXCEED THE FEES PAID BY RESELLER IN THE THREE (3) MONTHS BEFORE THE CLAIM.",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-25"
+      ]
+    },
+    {
+      "source": "right-7",
+      "target": "term-3",
+      "type": "uses",
+      "evidence": "THE PLATFORM",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-25"
+      ]
+    },
+    {
+      "source": "right-9",
+      "target": "term-1",
+      "type": "uses",
+      "evidence": "THIS AGREEMENT",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-25"
+      ]
+    },
+    {
+      "source": "obligation-16",
+      "target": "term-3",
+      "type": "uses",
+      "evidence": "the Platform",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-26"
+      ]
+    },
+    {
+      "source": "obligation-17",
+      "target": "term-3",
+      "type": "uses",
+      "evidence": "the Platform",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-26"
+      ]
+    },
+    {
+      "source": "obligation-25",
+      "target": "term-1",
+      "type": "uses",
+      "evidence": "this Agreement",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-28"
+      ]
+    },
+    {
+      "source": "prohibition-10",
+      "target": "term-1",
+      "type": "uses",
+      "evidence": "this Agreement",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-29"
+      ]
+    },
+    {
+      "source": "prohibition-10",
+      "target": "term-3",
+      "type": "uses",
+      "evidence": "the Platform",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-29"
+      ]
+    },
+    {
+      "source": "prohibition-11",
+      "target": "term-1",
+      "type": "uses",
+      "evidence": "this Agreement",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-31"
+      ]
+    },
+    {
+      "source": "prohibition-12",
+      "target": "term-1",
+      "type": "uses",
+      "evidence": "this Agreement",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-31"
+      ]
+    },
+    {
+      "source": "obligation-26",
+      "target": "term-1",
+      "type": "uses",
+      "evidence": "this Agreement",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-32"
+      ]
+    },
+    {
+      "source": "obligation-27",
+      "target": "term-1",
+      "type": "uses",
+      "evidence": "this Agreement",
+      "paragraphIds": [
+        "root::Synthetic_HalversonCorvin_Reseller Agreement-p-32"
+      ]
+    }
+  ]
+}

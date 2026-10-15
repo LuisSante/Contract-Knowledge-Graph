@@ -1,0 +1,192 @@
+GROUND TRUTH 2 DE 2 — LO QUE LA VISUALIZACIÓN DEBE CONCLUIR
+Contrato sintético: Reseller Agreement entre Halverson Data Systems y Corvin Outreach Group
+=====================================================================================
+
+Archivo del contrato: infra/contracts_docx/Synthetic_HalversonCorvin_Reseller Agreement.docx
+Se apoya en: infra/ground_truth/Synthetic_HalversonCorvin_1_grafo.txt (los enunciados S01–S39)
+Fecha: 15 de octubre de 2026
+
+En pantalla las partes aparecen con su primera palabra: HALVERSON (el proveedor, «Provider») y
+CORVIN (el revendedor, «Reseller»). En las tablas de abajo el orden es siempre CORVIN : HALVERSON.
+
+
+CÓMO SE CUENTA
+==============
+Es la regla que usan Table v1.1 y Table v2, sin pesos:
+- Solo cuentan los enunciados NÚCLEO del archivo 1. Los OPCIONALES, el del árbitro (NO-PARTE)
+  y el del garante no cuentan.
+- Cada enunciado cuenta 1 para la parte a la que favorece: un derecho, para su titular; una
+  obligación o una prohibición, para la otra parte.
+- Las cláusulas recíprocas cuentan 1 para cada parte.
+- Dentro de un tipo, gana la parte con más enunciados a su favor; con los mismos, es empate.
+- Con varios tipos a la vez, una parte gana la cláusula si gana en algún tipo y no pierde en
+  ninguno; si cada parte gana en un tipo distinto, la cláusula «depende del tipo».
+
+Todas las cifras de este archivo se pueden recontar a mano desde el archivo 1 con esta regla.
+
+
+1. EL CONTRATO ENTERO
+=====================
+                     CORVIN : HALVERSON   a favor de
+  Obligaciones          9   :   13        HALVERSON
+  Derechos              2   :    7        HALVERSON
+  Prohibiciones         5   :    6        HALVERSON
+
+Veredicto del contrato: favorece a HALVERSON, que va por delante en los tres tipos y no pierde
+en ninguno.
+
+Cláusulas con al menos un enunciado: 16 (1, 2, 3, 4, 5, 6, 7.1, 7.2, 7.3, 8.1, 8.2, 9, 10, 11,
+13 y 14.1). La 12 no cuenta porque su único enunciado es del garante.
+Con los tres tipos juntos: 7 a favor de HALVERSON, 2 a favor de CORVIN, 5 empatadas y 2 que
+dependen del tipo.
+
+
+2. TABLE V1.1 — UN TIPO A LA VEZ
+================================
+Lo que debería mostrar la tarjeta de arriba con cada opción del selector:
+
+Obligations
+  Tarjeta: HALVERSON, «More obligations in its favour.»
+  Cláusulas con obligaciones: 9 → 3 HALVERSON (2, 7.3, 8.1), 4 empatadas (3, 4, 10, 11),
+  2 CORVIN (6, 8.2).
+
+Rights
+  Tarjeta: HALVERSON, «More rights in its favour.»
+  Cláusulas con derechos: 6 → 4 HALVERSON (2, 6, 7.2, 9), 1 empatada (7.1), 1 CORVIN (1).
+
+Prohibitions
+  Tarjeta: HALVERSON, «More prohibitions in its favour.»
+  Cláusulas con prohibiciones: 6 → 3 HALVERSON (1, 3, 13), 2 empatadas (4, 14.1), 1 CORVIN (5).
+
+En la tabla, cada cuadrado tiene que estar en la columna de la parte a la que favorece. Por
+ejemplo, en la cláusula 2 con Obligations: 2 cuadrados en «In favour of Corvin» y 5 en «In
+favour of Halverson».
+
+
+3. CLÁUSULA POR CLÁUSULA
+========================
+Cuadrados esperados por tipo (CORVIN : HALVERSON; «—» = ningún enunciado de ese tipo) y
+veredicto con los tres tipos juntos (columna «Who it favours» de Table v2).
+
+  Cláusula                         Oblig.  Derech.  Prohib.  Veredicto (3 tipos)
+  1    Appointment                   —      1:0      0:1     depende del tipo
+  2    Fees and Payment             2:5     0:1       —      HALVERSON
+  3    Marketing Materials          1:1      —       0:1     HALVERSON
+  4    Compliance                   1:1      —       1:1     empate
+  5    Confidentiality and Cust.     —       —       3:1     CORVIN
+  6    Audit                        1:0     0:1       —      depende del tipo
+  7.1  (Term and Termination)        —      1:1       —      empate
+  7.2  (Term and Termination)        —      0:1       —      HALVERSON
+  7.3  (Term and Termination)       0:2      —        —      HALVERSON
+  8.1  (Warranties)                 0:1      —        —      HALVERSON
+  8.2  (Warranties)                 1:0      —        —      CORVIN (aparente; ver T4)
+  9    Limitation of Liability       —      0:3       —      HALVERSON (todo para él)
+  10   Indemnification              1:1      —        —      empate (por conteo; ver T6)
+  11   Disputes                     2:2      —        —      empate
+  12   Personal Guaranty             —       —        —      sin fila (ver T5)
+  13   Non-Solicitation              —       —       0:1     HALVERSON
+  14.1 (General)                     —       —       1:1     empate
+
+Detalle esperado al abrir una cláusula (Table v1.1 y Table v2):
+- Cláusula 2 con Obligations: «More obligations in favour of Halverson: 5 against 2.»
+  Lo que recibe CORVIN: S04 (invoice monthly) y S10 (apply payment to oldest invoice), ambas
+  etiquetadas como obligación de HALVERSON. Lo que recibe HALVERSON: S03, S05, S07, S08 y S09,
+  todas etiquetadas como obligación de CORVIN.
+- Cláusula 6 con Obligations: CORVIN recibe S20 (la auditoría la paga HALVERSON). Con Rights:
+  HALVERSON recibe S19 (puede auditar).
+- Los fragmentos de la cláusula 2 tienen que enlazar a «§2 ¶1» o «§2 ¶2», según el párrafo, y
+  los de la 5 a «§5 ¶1» o «§5 ¶2».
+
+
+4. TRAMPAS: QUÉ PRUEBA CADA UNA
+================================
+T1  Desequilibrio fuerte — cláusula 2.
+    Esperado: HALVERSON gana con claridad (obligaciones 2:5, derechos 0:1).
+    Si falla: la extracción perdió obligaciones de pago o las atribuyó a la parte equivocada.
+
+T2  Cláusulas recíprocas — 4, 5 ¶1, 7.1, 11 y 14.1.
+    Esperado: empate en cada tipo recíproco.
+    Si falla: la extracción creó la copia de una sola parte, y aparece un ganador falso.
+
+T3  Cláusulas mixtas — 1 y 6.
+    Esperado: «depende del tipo» con los tres tipos juntos. Con un tipo a la vez, la 6 sale
+    CORVIN en obligaciones y HALVERSON en derechos.
+
+T4  Garantía anulada por otra cláusula — 8.2 frente a 9.
+    Esperado del conteo: 8.2 a favor de CORVIN (HALVERSON le garantiza el rendimiento).
+    Lectura humana: la garantía no vale, porque la 9 dice «NOTWITHSTANDING SECTION 8.2… AS IS…
+    DISCLAIMS ALL WARRANTIES». El grafo debería unir S27 con la cláusula 8.2 (relación
+    «modifies»). Hoy la tabla no muestra esa unión: es un límite conocido, y este caso sirve
+    para comprobarlo.
+
+T5  Obligación de un garante — cláusula 12.
+    Lectura correcta: favorece a HALVERSON (el dueño de CORVIN responde con su patrimonio).
+    Lo que probablemente hará el sistema: no mostrar la cláusula, porque quien debe no es una
+    de las dos partes. Si no aparece, es el mismo límite que vimos en SteelVault con la
+    garantía personal.
+
+T6  Indemnidad asimétrica — cláusula 10.
+    Esperado del conteo: empate 1:1.
+    Lectura humana: favorece a HALVERSON. CORVIN cubre cualquier reclamo y HALVERSON solo
+    reclamos de patentes o derechos de autor de EE. UU. Contar enunciados no ve el alcance;
+    es un límite de la regla, no de la extracción.
+
+T7  Deberes de trámite — S04 («invoice Reseller monthly») y S10 («apply each payment … to the
+    oldest outstanding invoice»).
+    Esperado: cuentan a favor de CORVIN. Es discutible que sean beneficios, como «Equidata
+    factura» en SteelVault. Si el lector no está de acuerdo, el problema es la regla de
+    conteo, no la extracción.
+
+T8  Subcláusulas sin título y cláusulas de dos párrafos — 7.1–7.3, 8.1–8.2, 14.1–14.3; 2 y 5.
+    Esperado: cada subcláusula es su propia fila, nombrada con su número o con el título de
+    la cláusula madre («Term and Termination», «Warranties», «General»). Los enlaces de los
+    fragmentos indican el párrafo (¶1, ¶2).
+
+T9  Rescisión que se salta un plazo — 7.2 frente a 7.1.
+    Esperado: 7.1 empate (cualquiera puede rescindir con 30 días para subsanar); 7.2 a favor de
+    HALVERSON. Lectura humana: 7.2 deja a CORVIN sin los 30 días si se atrasa 10 días en un
+    pago. El grafo debería unir S22 con la cláusula 7.1 («modifies») y registrar la condición
+    C08.
+
+T10 Obligación de un tercero — el árbitro (S34).
+    Esperado: no cuenta para nadie. Si aparece como obligación de una de las partes, es un
+    error de atribución.
+
+T11 Sujeto implícito — S07 («Any amount that is not paid when due shall bear a late charge…»).
+    Esperado: obligación de CORVIN a favor de HALVERSON, aunque la frase no nombra a CORVIN.
+
+T12 Texto en mayúsculas — cláusula 9.
+    Esperado: se extraen igual los tres enunciados (S27, S28, S29).
+
+
+5. LECTURA HUMANA: QUÉ CONVIENE RENEGOCIAR
+==========================================
+Si soy CORVIN (la parte débil):
+- 2  Fees and Payment: recargo del 1.5 % al mes, 50 USD por pago devuelto, costos de cobro
+     con abogados, y HALVERSON puede subir los precios con solo 30 días de aviso.
+- 7.2: rescisión inmediata y sin aviso por un atraso de 10 días.
+- 9  Limitation of Liability: «as is» anula la garantía de 8.2, y la responsabilidad de
+     HALVERSON tiene un tope de 3 meses de tarifas.
+- 10 Indemnification: CORVIN cubre todo; HALVERSON solo patentes y derechos de autor.
+- 12 Personal Guaranty: el dueño responde con su patrimonio personal.
+- 13 Non-Solicitation: 12 meses sin captar clientes de HALVERSON tras terminar.
+
+Si soy HALVERSON:
+- 5  Confidentiality and Customer Data: no puede usar los datos de los clientes de CORVIN ni
+     ofrecerles otros productos.
+- 6  Audit: puede auditar, pero paga la auditoría.
+
+Veredicto humano del contrato: favorece claramente a HALVERSON. El conteo lo confirma, pero se
+queda corto en tres sitios: la garantía anulada (T4), el garante que no aparece (T5) y la
+indemnidad desigual (T6).
+
+
+6. CÓMO USAR ESTOS DOS ARCHIVOS
+===============================
+1. Generar el grafo del contrato con notebooks/build_kg.ipynb. Es una llamada de pago: pedir
+   antes el coste estimado.
+2. Comparar el grafo con el archivo 1: enunciados NÚCLEO encontrados, partes bien atribuidas,
+   condiciones, valores y relaciones «modifies».
+3. Abrir el contrato en Table v1.1 y en Table v2 y comparar con las secciones 1 a 3 de este
+   archivo.
+4. Revisar cada trampa de la sección 4 y anotar si el sistema la resuelve.

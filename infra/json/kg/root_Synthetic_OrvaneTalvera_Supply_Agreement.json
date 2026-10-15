@@ -1,0 +1,5953 @@
+{
+  "parties": [
+    {
+      "id": "party-1",
+      "name": "Orvane Bioprocess GmbH",
+      "role": "Supplier",
+      "address": "Lerchenweg 14, 79108 Freiburg im Breisgau, Germany",
+      "aliases": [
+        "Supplier"
+      ],
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-4",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-87"
+      ]
+    },
+    {
+      "id": "party-2",
+      "name": "Talvera Therapeutics, Inc.",
+      "role": "Buyer",
+      "address": "1450 Harbor Boulevard, Suite 300, Redwood City, California 94063",
+      "aliases": [
+        "Buyer"
+      ],
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-4",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-88"
+      ]
+    }
+  ],
+  "clauses": [
+    {
+      "id": "clause-1",
+      "ref": "1.1",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-11"
+      ]
+    },
+    {
+      "id": "clause-2",
+      "ref": "1.2",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-12"
+      ]
+    },
+    {
+      "id": "clause-3",
+      "ref": "1.3",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-13"
+      ]
+    },
+    {
+      "id": "clause-4",
+      "ref": "1.4",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-14"
+      ]
+    },
+    {
+      "id": "clause-5",
+      "ref": "1.5",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-15"
+      ]
+    },
+    {
+      "id": "clause-6",
+      "ref": "1.6",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-16"
+      ]
+    },
+    {
+      "id": "clause-7",
+      "ref": "1.7",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-17"
+      ]
+    },
+    {
+      "id": "clause-8",
+      "ref": "1.8",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-18",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-19"
+      ]
+    },
+    {
+      "id": "clause-9",
+      "ref": "2.1",
+      "heading": "Supply",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-20"
+      ]
+    },
+    {
+      "id": "clause-10",
+      "ref": "2.2",
+      "heading": "Exclusive Purchase",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-21"
+      ]
+    },
+    {
+      "id": "clause-11",
+      "ref": "2.3",
+      "heading": "Minimum Purchase",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-22"
+      ]
+    },
+    {
+      "id": "clause-12",
+      "ref": "2.4",
+      "heading": "Affiliates",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-23",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-24"
+      ]
+    },
+    {
+      "id": "clause-13",
+      "ref": "3.1",
+      "heading": "Forecasts",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-25"
+      ]
+    },
+    {
+      "id": "clause-14",
+      "ref": "3.2",
+      "heading": "Purchase Orders",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-26"
+      ]
+    },
+    {
+      "id": "clause-15",
+      "ref": "3.3",
+      "heading": "Acceptance of Orders",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-27",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-28"
+      ]
+    },
+    {
+      "id": "clause-16",
+      "ref": "4.1",
+      "heading": "Delivery",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-29"
+      ]
+    },
+    {
+      "id": "clause-17",
+      "ref": "4.2",
+      "heading": "Late Delivery",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-30"
+      ]
+    },
+    {
+      "id": "clause-18",
+      "ref": "4.3",
+      "heading": "Inspection",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-31"
+      ]
+    },
+    {
+      "id": "clause-19",
+      "ref": "4.4",
+      "heading": "Remedies",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-32"
+      ]
+    },
+    {
+      "id": "clause-20",
+      "ref": "4.5",
+      "heading": "Disputed Conformity",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-33",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-34"
+      ]
+    },
+    {
+      "id": "clause-21",
+      "ref": "5.1",
+      "heading": "Price",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-35"
+      ]
+    },
+    {
+      "id": "clause-22",
+      "ref": "5.2",
+      "heading": "Price Adjustment",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-36"
+      ]
+    },
+    {
+      "id": "clause-23",
+      "ref": "5.3",
+      "heading": "Invoicing and Payment",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-37"
+      ]
+    },
+    {
+      "id": "clause-24",
+      "ref": "5.4",
+      "heading": "Late Payment",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-38"
+      ]
+    },
+    {
+      "id": "clause-25",
+      "ref": "5.5",
+      "heading": "Taxes",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-39",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-40"
+      ]
+    },
+    {
+      "id": "clause-26",
+      "ref": "6.1",
+      "heading": "Quality Agreement",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-41"
+      ]
+    },
+    {
+      "id": "clause-27",
+      "ref": "6.2",
+      "heading": "Changes",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-42"
+      ]
+    },
+    {
+      "id": "clause-28",
+      "ref": "6.3",
+      "heading": "Regulatory Support",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-43"
+      ]
+    },
+    {
+      "id": "clause-29",
+      "ref": "6.4",
+      "heading": "Audits and Inspections",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-44"
+      ]
+    },
+    {
+      "id": "clause-30",
+      "ref": "6.5",
+      "heading": "Recalls",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-45",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-46"
+      ]
+    },
+    {
+      "id": "clause-31",
+      "ref": "7.1",
+      "heading": "Ownership",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-47"
+      ]
+    },
+    {
+      "id": "clause-32",
+      "ref": "7.2",
+      "heading": "License to Buyer",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-48",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-49"
+      ]
+    },
+    {
+      "id": "clause-33",
+      "ref": "8.1",
+      "heading": "Safety Stock",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-50"
+      ]
+    },
+    {
+      "id": "clause-34",
+      "ref": "8.2",
+      "heading": "Notice of Shortage",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-51"
+      ]
+    },
+    {
+      "id": "clause-35",
+      "ref": "8.3",
+      "heading": "Allocation",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-52"
+      ]
+    },
+    {
+      "id": "clause-36",
+      "ref": "8.4",
+      "heading": "Second Source",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-53",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-54"
+      ]
+    },
+    {
+      "id": "clause-37",
+      "ref": "9.1",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-55"
+      ]
+    },
+    {
+      "id": "clause-38",
+      "ref": "9.2",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-56"
+      ]
+    },
+    {
+      "id": "clause-39",
+      "ref": "9.3",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-57",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-58"
+      ]
+    },
+    {
+      "id": "clause-40",
+      "ref": "10.1",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-59"
+      ]
+    },
+    {
+      "id": "clause-41",
+      "ref": "10.2",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-60",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-61",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-62",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-63"
+      ]
+    },
+    {
+      "id": "clause-42",
+      "ref": "10.3",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-64",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-65"
+      ]
+    },
+    {
+      "id": "clause-43",
+      "ref": "11.1",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-66"
+      ]
+    },
+    {
+      "id": "clause-44",
+      "ref": "11.2",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-67",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-68"
+      ]
+    },
+    {
+      "id": "clause-45",
+      "ref": "12.1",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-69"
+      ]
+    },
+    {
+      "id": "clause-46",
+      "ref": "12.2",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-70"
+      ]
+    },
+    {
+      "id": "clause-47",
+      "ref": "12.3",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-71",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-72"
+      ]
+    },
+    {
+      "id": "clause-48",
+      "ref": "13.1",
+      "heading": "Term",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-73"
+      ]
+    },
+    {
+      "id": "clause-49",
+      "ref": "13.2",
+      "heading": "Termination for Breach",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-74"
+      ]
+    },
+    {
+      "id": "clause-50",
+      "ref": "13.3",
+      "heading": "Termination for Convenience",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-75"
+      ]
+    },
+    {
+      "id": "clause-51",
+      "ref": "13.4",
+      "heading": "Termination for Insolvency",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-76"
+      ]
+    },
+    {
+      "id": "clause-52",
+      "ref": "13.5",
+      "heading": "Effect of Termination",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-77",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-78"
+      ]
+    },
+    {
+      "id": "clause-53",
+      "ref": "14.1",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-79",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-80"
+      ]
+    },
+    {
+      "id": "clause-54",
+      "ref": "15.1",
+      "heading": "Assignment",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-81"
+      ]
+    },
+    {
+      "id": "clause-55",
+      "ref": "15.2",
+      "heading": "Governing Law",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-82"
+      ]
+    },
+    {
+      "id": "clause-56",
+      "ref": "15.3",
+      "heading": "Subcontracting",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-83"
+      ]
+    },
+    {
+      "id": "clause-57",
+      "ref": "15.4",
+      "heading": "Notices",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-84"
+      ]
+    },
+    {
+      "id": "clause-58",
+      "ref": "15.5",
+      "heading": "Entire Agreement",
+      "level": 2,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-85",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-86",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-87",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-88",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-89",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-90",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-91",
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-92"
+      ]
+    }
+  ],
+  "definedTerms": [
+    {
+      "id": "term-1",
+      "term": "Agreement",
+      "definition": "This Supply Agreement (this “Agreement”)",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-4"
+      ]
+    },
+    {
+      "id": "term-2",
+      "term": "Effective Date",
+      "definition": "May 6, 2024 (the “Effective Date”)",
+      "definedInClauseId": null,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-4"
+      ]
+    },
+    {
+      "id": "term-3",
+      "term": "Affiliate",
+      "definition": "“Affiliate” means any entity that controls, is controlled by or is under common control with a Party, where “control” means ownership of more than fifty percent (50%) of the voting shares of the entity.",
+      "definedInClauseId": "clause-1",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-11"
+      ]
+    },
+    {
+      "id": "term-4",
+      "term": "control",
+      "definition": "“control” means ownership of more than fifty percent (50%) of the voting shares of the entity.",
+      "definedInClauseId": "clause-1",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-11"
+      ]
+    },
+    {
+      "id": "term-5",
+      "term": "Applicable Law",
+      "definition": "“Applicable Law” means all laws, regulations and guidelines that apply to the manufacture, supply or use of the Product.",
+      "definedInClauseId": "clause-2",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-12"
+      ]
+    },
+    {
+      "id": "term-6",
+      "term": "Firm Order",
+      "definition": "“Firm Order” means a Purchase Order that Supplier has accepted under Section 3.3.",
+      "definedInClauseId": "clause-3",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-13"
+      ]
+    },
+    {
+      "id": "term-7",
+      "term": "Forecast",
+      "definition": "“Forecast” means the rolling forecast that Buyer provides under Section 3.1.",
+      "definedInClauseId": "clause-4",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-14"
+      ]
+    },
+    {
+      "id": "term-8",
+      "term": "Product",
+      "definition": "“Product” means the CliniSep reagent kits and buffers listed in Exhibit A.",
+      "definedInClauseId": "clause-5",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-15"
+      ]
+    },
+    {
+      "id": "term-9",
+      "term": "Quality Agreement",
+      "definition": "“Quality Agreement” means the quality agreement between the Parties dated as of the Effective Date, as amended from time to time.",
+      "definedInClauseId": "clause-6",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-16"
+      ]
+    },
+    {
+      "id": "term-10",
+      "term": "Specifications",
+      "definition": "“Specifications” means the specifications for the Product set out in the Quality Agreement.",
+      "definedInClauseId": "clause-7",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-17"
+      ]
+    },
+    {
+      "id": "term-11",
+      "term": "Supply Failure",
+      "definition": "“Supply Failure” means Supplier’s failure to deliver at least eighty percent (80%) of the quantity of Product ordered under Firm Orders in any two (2) consecutive calendar quarters.",
+      "definedInClauseId": "clause-8",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-18"
+      ]
+    },
+    {
+      "id": "term-12",
+      "term": "Confidential Information",
+      "definition": "“Confidential Information” means any non-public information that a Party discloses to the other Party under this Agreement.",
+      "definedInClauseId": "clause-45",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-69"
+      ]
+    },
+    {
+      "id": "term-13",
+      "term": "Term",
+      "definition": "This Agreement starts on the Effective Date and continues for five (5) years (the “Term”).",
+      "definedInClauseId": "clause-48",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-73"
+      ]
+    }
+  ],
+  "obligations": [
+    {
+      "id": "obligation-1",
+      "action": "Manufacture and supply",
+      "summary": "Supplier must supply Product in accordance with the Specifications and Quality Agreement.",
+      "text": "Supplier shall manufacture and supply the Product to Buyer in accordance with the Specifications and the Quality Agreement.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Supplier shall manufacture and supply the Product to Buyer in accordance with the Specifications and the Quality Agreement."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-9",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-20"
+      ]
+    },
+    {
+      "id": "obligation-2",
+      "action": "Purchase exclusively",
+      "summary": "Buyer must purchase all clinical Product requirements from Supplier during the Term, subject to Section 8.4.",
+      "text": "During the Term, Buyer shall purchase from Supplier all of its requirements of Product for clinical use, except as provided in Section 8.4.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "During the Term, Buyer shall purchase from Supplier all of its requirements of Product for clinical use, except as provided in Section 8.4."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-10",
+      "deadline": "During the Term",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-21"
+      ]
+    },
+    {
+      "id": "obligation-3",
+      "action": "Meet minimum purchases",
+      "summary": "Buyer must purchase at least €2,000,000 of Product each calendar year.",
+      "text": "Buyer shall purchase in each calendar year Product with an aggregate price of at least two million euros (€2,000,000).",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Buyer shall purchase in each calendar year Product with an aggregate price of at least two million euros (€2,000,000)."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-11",
+      "deadline": "",
+      "frequency": "each calendar year",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-22"
+      ]
+    },
+    {
+      "id": "obligation-4",
+      "action": "Pay purchase shortfall",
+      "summary": "Buyer must pay any annual minimum purchase shortfall within sixty days after year-end.",
+      "text": "If Buyer purchases less, Buyer shall pay Supplier the shortfall within sixty (60) days after the end of that year.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "If Buyer purchases less, Buyer shall pay Supplier the shortfall within sixty (60) days after the end of that year."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-11",
+      "deadline": "within sixty (60) days after the end of that year",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-22"
+      ]
+    },
+    {
+      "id": "obligation-5",
+      "action": "Remain responsible for affiliate orders",
+      "summary": "Buyer remains responsible for all orders placed by its Affiliates.",
+      "text": "Buyer shall remain responsible for every order placed by its Affiliates.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Buyer shall remain responsible for every order placed by its Affiliates."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-12",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-23"
+      ]
+    },
+    {
+      "id": "obligation-6",
+      "action": "Provide rolling forecast",
+      "summary": "Buyer must provide a rolling twelve-month forecast by the fifth business day of each quarter.",
+      "text": "Buyer shall provide Supplier, by the fifth (5th) business day of each calendar quarter, a rolling twelve (12) month forecast of its requirements.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Buyer shall provide Supplier, by the fifth (5th) business day of each calendar quarter, a rolling twelve (12) month forecast of its requirements."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-13",
+      "deadline": "by the fifth (5th) business day of each calendar quarter",
+      "frequency": "each calendar quarter",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-25"
+      ]
+    },
+    {
+      "id": "obligation-7",
+      "action": "Honor binding forecast",
+      "summary": "Buyer is bound by the first three months of each Forecast.",
+      "text": "The first three (3) months of each Forecast shall be binding on Buyer.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The first three (3) months of each Forecast shall be binding on Buyer."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-13",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-25"
+      ]
+    },
+    {
+      "id": "obligation-8",
+      "action": "Place orders in advance",
+      "summary": "Buyer must place Purchase Orders at least ninety days before requested delivery.",
+      "text": "Buyer shall place each Purchase Order at least ninety (90) days before the requested delivery date.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Buyer shall place each Purchase Order at least ninety (90) days before the requested delivery date."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-14",
+      "deadline": "at least ninety (90) days before the requested delivery date",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-26"
+      ]
+    },
+    {
+      "id": "obligation-9",
+      "action": "Accept conforming orders",
+      "summary": "Supplier must accept orders consistent with the binding Forecast.",
+      "text": "Supplier shall accept each Purchase Order that is consistent with the binding part of the Forecast.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Supplier shall accept each Purchase Order that is consistent with the binding part of the Forecast."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-15",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-27"
+      ]
+    },
+    {
+      "id": "obligation-10",
+      "action": "Respond to orders",
+      "summary": "Supplier must confirm or reject each Purchase Order within ten business days of receipt.",
+      "text": "Supplier shall confirm or reject each Purchase Order within ten (10) business days after receipt;",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Supplier shall confirm or reject each Purchase Order within ten (10) business days after receipt;"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-15",
+      "deadline": "within ten (10) business days after receipt",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-27"
+      ]
+    },
+    {
+      "id": "obligation-11",
+      "action": "Deliver FCA",
+      "summary": "Supplier must deliver Product FCA its Freiburg facility under Incoterms 2020.",
+      "text": "Supplier shall deliver the Product FCA (Incoterms 2020) Supplier’s facility in Freiburg, Germany.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Supplier shall deliver the Product FCA (Incoterms 2020) Supplier’s facility in Freiburg, Germany."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-16",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-29"
+      ]
+    },
+    {
+      "id": "obligation-12",
+      "action": "Pay delay damages",
+      "summary": "Supplier must pay weekly liquidated damages for Firm Orders delivered more than fourteen days late, capped at ten percent of the late Product price.",
+      "text": "Supplier shall pay Buyer, as liquidated damages, one percent (1%) of the price of the late Product for each full week of delay, up to a maximum of ten percent (10%) of that price.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Supplier shall pay Buyer, as liquidated damages, one percent (1%) of the price of the late Product for each full week of delay, up to a maximum of ten percent (10%) of that price."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-17",
+      "deadline": "",
+      "frequency": "each full week of delay",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-30"
+      ]
+    },
+    {
+      "id": "obligation-13",
+      "action": "Inspect shipments and notify defects",
+      "summary": "Buyer must inspect each shipment and give written notice of non-conformity within 30 days of receipt.",
+      "text": "Buyer shall inspect each shipment and notify Supplier in writing of any non-conformity within thirty (30) days after receipt.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Buyer shall inspect each shipment and notify Supplier in writing of any non-conformity within thirty (30) days after receipt."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-18",
+      "deadline": "within thirty (30) days after receipt",
+      "frequency": "each shipment",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-31"
+      ]
+    },
+    {
+      "id": "obligation-14",
+      "action": "Replace or refund defective Product",
+      "summary": "Supplier must choose replacement or refund for non-conforming Product within 45 days after confirmation.",
+      "text": "Supplier shall, at its option, replace non-conforming Product or refund the price paid for it within forty-five (45) days after confirming the non-conformity.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Supplier shall, at its option, replace non-conforming Product or refund the price paid for it within forty-five (45) days after confirming the non-conformity."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-19",
+      "deadline": "within forty-five (45) days after confirming the non-conformity",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-32"
+      ]
+    },
+    {
+      "id": "obligation-15",
+      "action": "Bear laboratory fees",
+      "summary": "The party whose position is rejected must pay the laboratory fees.",
+      "text": "The Party whose position the laboratory rejects shall bear the laboratory’s fees.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The Party whose position the laboratory rejects shall bear the laboratory’s fees."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": null,
+      "clauseId": "clause-20",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-33"
+      ]
+    },
+    {
+      "id": "obligation-16",
+      "action": "Pay Product prices",
+      "summary": "Buyer must pay the prices listed in Exhibit A.",
+      "text": "Buyer shall pay for the Product the prices set out in Exhibit A.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Buyer shall pay for the Product the prices set out in Exhibit A."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-21",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-35"
+      ]
+    },
+    {
+      "id": "obligation-17",
+      "action": "Invoice upon shipment",
+      "summary": "Supplier must invoice Buyer when shipment occurs.",
+      "text": "Supplier shall invoice Buyer upon shipment.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Supplier shall invoice Buyer upon shipment."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-23",
+      "deadline": "upon shipment",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-37"
+      ]
+    },
+    {
+      "id": "obligation-18",
+      "action": "Pay undisputed invoices",
+      "summary": "Buyer must pay undisputed invoices within 45 days of receipt.",
+      "text": "Buyer shall pay each undisputed invoice within forty-five (45) days after receipt.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Buyer shall pay each undisputed invoice within forty-five (45) days after receipt."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-23",
+      "deadline": "within forty-five (45) days after receipt",
+      "frequency": "each undisputed invoice",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-37"
+      ]
+    },
+    {
+      "id": "obligation-19",
+      "action": "Pay overdue interest",
+      "summary": "Buyer must pay interest on overdue undisputed amounts at nine percentage points above the ECB base rate.",
+      "text": "Overdue undisputed amounts shall bear interest at nine percentage points above the base rate of the European Central Bank.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Overdue undisputed amounts shall bear interest at nine percentage points above the base rate of the European Central Bank."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-24",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-38"
+      ]
+    },
+    {
+      "id": "obligation-20",
+      "action": "Bear own taxes",
+      "summary": "Supplier must bear its own taxes arising from the Agreement.",
+      "text": "Each Party shall bear its own taxes arising from this Agreement.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Each Party shall bear its own taxes arising from this Agreement."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-25",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-39"
+      ]
+    },
+    {
+      "id": "obligation-21",
+      "action": "Bear own taxes",
+      "summary": "Buyer must bear its own taxes arising from the Agreement.",
+      "text": "Each Party shall bear its own taxes arising from this Agreement.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Each Party shall bear its own taxes arising from this Agreement."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-25",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-39"
+      ]
+    },
+    {
+      "id": "obligation-22",
+      "action": "Comply with Quality Agreement",
+      "summary": "Supplier must comply with the Quality Agreement.",
+      "text": "The Parties shall comply with the Quality Agreement.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The Parties shall comply with the Quality Agreement."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-26",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-41"
+      ]
+    },
+    {
+      "id": "obligation-23",
+      "action": "Comply with Quality Agreement",
+      "summary": "Buyer must comply with the Quality Agreement.",
+      "text": "The Parties shall comply with the Quality Agreement.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The Parties shall comply with the Quality Agreement."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-26",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-41"
+      ]
+    },
+    {
+      "id": "obligation-24",
+      "action": "Provide regulatory data",
+      "summary": "Supplier must provide reasonably needed regulatory filing data and documentation at Buyer's request and expense.",
+      "text": "Supplier shall provide Buyer, at Buyer’s request and expense, with the data and documentation that Buyer reasonably needs for its regulatory filings.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Supplier shall provide Buyer, at Buyer’s request and expense, with the data and documentation that Buyer reasonably needs for its regulatory filings."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-28",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-43"
+      ]
+    },
+    {
+      "id": "obligation-25",
+      "action": "Bear regulatory support expense",
+      "summary": "Buyer bears the expense of requested regulatory support.",
+      "text": "at Buyer’s request and expense",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "at Buyer’s request and expense"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-28",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-43"
+      ]
+    },
+    {
+      "id": "obligation-26",
+      "action": "Permit regulatory inspections",
+      "summary": "Supplier must permit regulatory authorities to inspect its facility.",
+      "text": "Supplier shall permit regulatory authorities to inspect its facility.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Supplier shall permit regulatory authorities to inspect its facility."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-29",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-44"
+      ]
+    },
+    {
+      "id": "obligation-27",
+      "action": "Reimburse recall costs",
+      "summary": "Supplier must reimburse reasonable recall costs when its breach of Specifications causes the recall.",
+      "text": "If any recall of Product results from Supplier’s breach of the Specifications, Supplier shall reimburse Buyer for the reasonable costs of the recall",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "If any recall of Product results from Supplier’s breach of the Specifications, Supplier shall reimburse Buyer for the reasonable costs of the recall"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-30",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-45"
+      ]
+    },
+    {
+      "id": "obligation-28",
+      "action": "Bear other recall costs",
+      "summary": "Buyer must bear recall costs in all other cases.",
+      "text": "in all other cases Buyer shall bear those costs.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "in all other cases Buyer shall bear those costs."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-30",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-45"
+      ]
+    },
+    {
+      "id": "obligation-29",
+      "action": "Maintain safety stock",
+      "summary": "Supplier must maintain at least three months of Buyer's binding Forecast as safety stock.",
+      "text": "Supplier shall maintain a safety stock of Product equal to at least three (3) months of Buyer’s binding Forecast.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Supplier shall maintain a safety stock of Product equal to at least three (3) months of Buyer’s binding Forecast."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-33",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-50"
+      ]
+    },
+    {
+      "id": "obligation-30",
+      "action": "Notify likely shortage",
+      "summary": "Supplier must notify Buyer within five business days of learning of an event likely to delay deliveries more than 30 days.",
+      "text": "Supplier shall notify Buyer within five (5) business days after it becomes aware of any event that is likely to delay deliveries by more than thirty (30) days.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Supplier shall notify Buyer within five (5) business days after it becomes aware of any event that is likely to delay deliveries by more than thirty (30) days."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-34",
+      "deadline": "within five (5) business days",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-51"
+      ]
+    },
+    {
+      "id": "obligation-31",
+      "action": "Allocate scarce supply proportionately",
+      "summary": "Supplier must allocate insufficient supply proportionately to customer purchases over the preceding six months.",
+      "text": "If Supplier cannot meet all of its customers’ demand, Supplier shall allocate its available supply among its customers in proportion to their purchases in the preceding six (6) months.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "If Supplier cannot meet all of its customers’ demand, Supplier shall allocate its available supply among its customers in proportion to their purchases in the preceding six (6) months."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-35",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-52"
+      ]
+    },
+    {
+      "id": "obligation-32",
+      "action": "Transfer manufacturing know-how",
+      "summary": "Supplier must transfer reasonably necessary manufacturing know-how following Buyer's second sourcing.",
+      "text": "In that case Supplier shall transfer to Buyer or its designated manufacturer the know-how that is reasonably necessary to manufacture the Product, at Supplier’s cost.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "In that case Supplier shall transfer to Buyer or its designated manufacturer the know-how that is reasonably necessary to manufacture the Product, at Supplier’s cost."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-36",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-53"
+      ]
+    },
+    {
+      "id": "obligation-33",
+      "action": "Bear transfer costs",
+      "summary": "Supplier must bear the cost of transferring manufacturing know-how.",
+      "text": "at Supplier’s cost",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "at Supplier’s cost"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-36",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-53"
+      ]
+    },
+    {
+      "id": "obligation-34",
+      "action": "Warrant conformity",
+      "summary": "Supplier warrants that every shipment conforms to Specifications on delivery.",
+      "text": "Supplier warrants that each shipment of Product will conform to the Specifications at the time of delivery",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Supplier warrants that each shipment of Product will conform to the Specifications at the time of delivery"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-37",
+      "deadline": "at the time of delivery",
+      "frequency": "each shipment",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-55"
+      ]
+    },
+    {
+      "id": "obligation-35",
+      "action": "Warrant shelf life",
+      "summary": "Supplier warrants at least twelve months of remaining shelf life.",
+      "text": "will have a remaining shelf life of at least twelve (12) months",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "will have a remaining shelf life of at least twelve (12) months"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-37",
+      "deadline": "at the time of delivery",
+      "frequency": "each shipment",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-55"
+      ]
+    },
+    {
+      "id": "obligation-36",
+      "action": "Warrant permitted use",
+      "summary": "Buyer warrants use only for research and clinical development.",
+      "text": "Buyer warrants that it will use the Product only for research and clinical development",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Buyer warrants that it will use the Product only for research and clinical development"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-38",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-56"
+      ]
+    },
+    {
+      "id": "obligation-37",
+      "action": "Warrant lawful use",
+      "summary": "Buyer warrants use in accordance with Applicable Law.",
+      "text": "and in accordance with Applicable Law",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "and in accordance with Applicable Law"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-38",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-56"
+      ]
+    },
+    {
+      "id": "obligation-38",
+      "action": "Indemnify Buyer",
+      "summary": "Supplier must indemnify Buyer for third-party manufacturing-defect and patent-infringement claims.",
+      "text": "Supplier shall indemnify Buyer against any third-party claim arising from a manufacturing defect in the Product or from any allegation that the Product infringes a third party’s patent.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Supplier shall indemnify Buyer against any third-party claim arising from a manufacturing defect in the Product or from any allegation that the Product infringes a third party’s patent."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-40",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-59"
+      ]
+    },
+    {
+      "id": "obligation-39",
+      "action": "Indemnify Supplier for use",
+      "summary": "Buyer must indemnify Supplier for third-party claims arising from Buyer's Product use.",
+      "text": "(a) Buyer’s use of the Product;",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "(a) Buyer’s use of the Product;"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-41",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-61"
+      ]
+    },
+    {
+      "id": "obligation-40",
+      "action": "Indemnify Supplier for trials",
+      "summary": "Buyer must indemnify Supplier for third-party claims arising from clinical trials using Product.",
+      "text": "(b) the clinical trials in which Buyer uses the Product; or",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "(b) the clinical trials in which Buyer uses the Product; or"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-41",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-62"
+      ]
+    },
+    {
+      "id": "obligation-41",
+      "action": "Indemnify Supplier for breach",
+      "summary": "Buyer must indemnify Supplier for third-party claims arising from its breach of Section 9.2.",
+      "text": "(c) Buyer’s breach of Section 9.2.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "(c) Buyer’s breach of Section 9.2."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-41",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-63"
+      ]
+    },
+    {
+      "id": "obligation-42",
+      "action": "Notify claim",
+      "summary": "Supplier, when indemnified, must promptly notify Buyer of claims.",
+      "text": "The indemnified Party shall notify the indemnifying Party promptly of any claim",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The indemnified Party shall notify the indemnifying Party promptly of any claim"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-42",
+      "deadline": "promptly",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-64"
+      ]
+    },
+    {
+      "id": "obligation-43",
+      "action": "Notify claim",
+      "summary": "Buyer, when indemnified, must promptly notify Supplier of claims.",
+      "text": "The indemnified Party shall notify the indemnifying Party promptly of any claim",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The indemnified Party shall notify the indemnifying Party promptly of any claim"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-42",
+      "deadline": "promptly",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-64"
+      ]
+    },
+    {
+      "id": "obligation-44",
+      "action": "Allow defense control",
+      "summary": "Supplier, when indemnified, must allow Buyer to control the defense.",
+      "text": "shall allow the indemnifying Party to control the defense.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "shall allow the indemnifying Party to control the defense."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-42",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-64"
+      ]
+    },
+    {
+      "id": "obligation-45",
+      "action": "Allow defense control",
+      "summary": "Buyer, when indemnified, must allow Supplier to control the defense.",
+      "text": "shall allow the indemnifying Party to control the defense.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "shall allow the indemnifying Party to control the defense."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-42",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-64"
+      ]
+    },
+    {
+      "id": "obligation-46",
+      "action": "Keep information confidential",
+      "summary": "Supplier must keep Buyer's Confidential Information confidential.",
+      "text": "Each Party shall keep confidential all Confidential Information of the other Party",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Each Party shall keep confidential all Confidential Information of the other Party"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-45",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-69"
+      ]
+    },
+    {
+      "id": "obligation-47",
+      "action": "Keep information confidential",
+      "summary": "Buyer must keep Supplier's Confidential Information confidential.",
+      "text": "Each Party shall keep confidential all Confidential Information of the other Party",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Each Party shall keep confidential all Confidential Information of the other Party"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-45",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-69"
+      ]
+    },
+    {
+      "id": "obligation-48",
+      "action": "Limit information use",
+      "summary": "Supplier must use Buyer's information only to perform the Agreement.",
+      "text": "shall use it only to perform this Agreement.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "shall use it only to perform this Agreement."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-45",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-69"
+      ]
+    },
+    {
+      "id": "obligation-49",
+      "action": "Limit information use",
+      "summary": "Buyer must use Supplier's information only to perform the Agreement.",
+      "text": "shall use it only to perform this Agreement.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "shall use it only to perform this Agreement."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-45",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-69"
+      ]
+    },
+    {
+      "id": "obligation-50",
+      "action": "Continue confidentiality obligations",
+      "summary": "Supplier must continue confidentiality and restricted-use duties for seven years after the Term ends.",
+      "text": "These obligations shall continue for seven (7) years after the end of the Term.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "These obligations shall continue for seven (7) years after the end of the Term."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-46",
+      "deadline": "seven (7) years after the end of the Term",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-70"
+      ]
+    },
+    {
+      "id": "obligation-51",
+      "action": "Continue confidentiality obligations",
+      "summary": "Buyer must continue confidentiality and restricted-use duties for seven years after the Term ends.",
+      "text": "These obligations shall continue for seven (7) years after the end of the Term.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "These obligations shall continue for seven (7) years after the end of the Term."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-46",
+      "deadline": "seven (7) years after the end of the Term",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-70"
+      ]
+    },
+    {
+      "id": "obligation-52",
+      "action": "Pay early termination fee",
+      "summary": "Buyer must pay half the remaining full-calendar-year minimum purchases if it terminates for convenience before the third anniversary.",
+      "text": "Buyer shall pay Supplier a termination fee equal to fifty percent (50%) of the minimum purchase amount for the remaining full calendar years of the initial Term.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Buyer shall pay Supplier a termination fee equal to fifty percent (50%) of the minimum purchase amount for the remaining full calendar years of the initial Term."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-50",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-75"
+      ]
+    },
+    {
+      "id": "obligation-53",
+      "action": "Purchase manufactured orders",
+      "summary": "On expiry or termination Buyer must purchase Product manufactured under Firm Orders.",
+      "text": "Upon expiry or termination, Buyer shall purchase all Product that Supplier has manufactured under Firm Orders",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Upon expiry or termination, Buyer shall purchase all Product that Supplier has manufactured under Firm Orders"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-52",
+      "deadline": "Upon expiry or termination",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-77"
+      ]
+    },
+    {
+      "id": "obligation-54",
+      "action": "Deliver manufactured orders",
+      "summary": "Supplier must deliver the purchased Product in accordance with Article 4.",
+      "text": "Supplier shall deliver that Product in accordance with Article 4.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Supplier shall deliver that Product in accordance with Article 4."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-52",
+      "deadline": "Upon expiry or termination",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-77"
+      ]
+    },
+    {
+      "id": "obligation-55",
+      "action": "Remain responsible for subcontractors",
+      "summary": "Supplier remains responsible to Buyer for its subcontractors' performance.",
+      "text": "Supplier remains responsible for the performance of its subcontractors.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Supplier remains responsible for the performance of its subcontractors."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-56",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-83"
+      ]
+    },
+    {
+      "id": "obligation-56",
+      "action": "Send written notices",
+      "summary": "Supplier must send notices in writing to the addresses specified above.",
+      "text": "Notices under this Agreement shall be in writing and sent to the addresses set out above.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Notices under this Agreement shall be in writing and sent to the addresses set out above."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-57",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-84"
+      ]
+    },
+    {
+      "id": "obligation-57",
+      "action": "Send written notices",
+      "summary": "Buyer must send notices in writing to the addresses specified above.",
+      "text": "Notices under this Agreement shall be in writing and sent to the addresses set out above.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Notices under this Agreement shall be in writing and sent to the addresses set out above."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-57",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-84"
+      ]
+    }
+  ],
+  "rights": [
+    {
+      "id": "right-1",
+      "action": "Designate ordering affiliates",
+      "summary": "Buyer may designate Affiliates to place orders.",
+      "text": "Buyer may designate one or more of its Affiliates to place orders under this Agreement.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Buyer may designate one or more of its Affiliates to place orders under this Agreement."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-12",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-23"
+      ]
+    },
+    {
+      "id": "right-2",
+      "action": "Decline excess quantities",
+      "summary": "Supplier has discretion whether to accept quantities exceeding the Forecast by more than twenty percent.",
+      "text": "Supplier may, but is not obligated to, accept any quantity that exceeds the Forecast by more than twenty percent (20%).",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Supplier may, but is not obligated to, accept any quantity that exceeds the Forecast by more than twenty percent (20%)."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-15",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-27"
+      ]
+    },
+    {
+      "id": "right-3",
+      "action": "Limit non-conformity remedies",
+      "summary": "Supplier is protected against non-conformity remedies other than replacement or refund under Section 4.4.",
+      "text": "The remedies in this Section 4.4 are Buyer’s sole and exclusive remedies for non-conforming Product.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The remedies in this Section 4.4 are Buyer’s sole and exclusive remedies for non-conforming Product."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-19",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-32"
+      ]
+    },
+    {
+      "id": "right-4",
+      "action": "Submit disputed samples",
+      "summary": "Supplier may submit conformity disputes to a mutually chosen independent laboratory.",
+      "text": "If the Parties disagree whether a shipment conforms to the Specifications, either Party may submit samples to an independent laboratory chosen by mutual agreement.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "If the Parties disagree whether a shipment conforms to the Specifications, either Party may submit samples to an independent laboratory chosen by mutual agreement."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-20",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-33"
+      ]
+    },
+    {
+      "id": "right-5",
+      "action": "Submit disputed samples",
+      "summary": "Buyer may submit conformity disputes to a mutually chosen independent laboratory.",
+      "text": "If the Parties disagree whether a shipment conforms to the Specifications, either Party may submit samples to an independent laboratory chosen by mutual agreement.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "If the Parties disagree whether a shipment conforms to the Specifications, either Party may submit samples to an independent laboratory chosen by mutual agreement."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-20",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-33"
+      ]
+    },
+    {
+      "id": "right-6",
+      "action": "Adjust annual prices",
+      "summary": "Supplier may adjust prices annually effective January 1 on 90 days' written notice, within the specified increase cap.",
+      "text": "Supplier may adjust the prices once in each calendar year, effective January 1, by giving Buyer at least ninety (90) days’ written notice; however, no annual increase shall exceed the lesser of five percent (5%) or the change in the German consumer price index for the preceding twelve (12) months.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Supplier may adjust the prices once in each calendar year, effective January 1, by giving Buyer at least ninety (90) days’ written notice; however, no annual increase shall exceed the lesser of five percent (5%) or the change in the German consumer price index for the preceding twelve (12) months."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-22",
+      "deadline": "effective January 1",
+      "frequency": "once in each calendar year",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-36"
+      ]
+    },
+    {
+      "id": "right-7",
+      "action": "Withhold disputed payment",
+      "summary": "Buyer may withhold amounts disputed in good faith if it notifies Supplier before payment is due.",
+      "text": "Buyer may withhold payment of any amount that it disputes in good faith, provided that it notifies Supplier of the dispute before the payment is due.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Buyer may withhold payment of any amount that it disputes in good faith, provided that it notifies Supplier of the dispute before the payment is due."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-23",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-37"
+      ]
+    },
+    {
+      "id": "right-8",
+      "action": "Change Product or methods",
+      "summary": "Supplier may change the Product, manufacturing process, or testing methods after at least 180 days' written notice.",
+      "text": "Supplier may make changes to the Product, its manufacturing process or its testing methods only after giving Buyer at least one hundred eighty (180) days’ prior written notice.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Supplier may make changes to the Product, its manufacturing process or its testing methods only after giving Buyer at least one hundred eighty (180) days’ prior written notice."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-27",
+      "deadline": "only after giving Buyer at least one hundred eighty (180) days’ prior written notice",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-42"
+      ]
+    },
+    {
+      "id": "right-9",
+      "action": "Audit manufacturing facility",
+      "summary": "Buyer may audit annually on 30 days' notice and at any time after a Product recall.",
+      "text": "Buyer may audit Supplier’s manufacturing facility once in each calendar year on thirty (30) days’ notice, and at any time after a recall of the Product.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Buyer may audit Supplier’s manufacturing facility once in each calendar year on thirty (30) days’ notice, and at any time after a recall of the Product."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-29",
+      "deadline": "on thirty (30) days’ notice",
+      "frequency": "once in each calendar year",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-44"
+      ]
+    },
+    {
+      "id": "right-10",
+      "action": "Retain pre-existing intellectual property",
+      "summary": "Supplier retains all rights in its pre-existing intellectual property.",
+      "text": "Each Party shall retain all rights in its intellectual property existing before the Effective Date.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Each Party shall retain all rights in its intellectual property existing before the Effective Date."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-31",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-47"
+      ]
+    },
+    {
+      "id": "right-11",
+      "action": "Retain pre-existing intellectual property",
+      "summary": "Buyer retains all rights in its pre-existing intellectual property.",
+      "text": "Each Party shall retain all rights in its intellectual property existing before the Effective Date.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Each Party shall retain all rights in its intellectual property existing before the Effective Date."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-31",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-47"
+      ]
+    },
+    {
+      "id": "right-12",
+      "action": "Own process improvements",
+      "summary": "Supplier owns all manufacturing process improvements even when Buyer contributes.",
+      "text": "Supplier shall own all improvements to its manufacturing process, even if Buyer contributes to them.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Supplier shall own all improvements to its manufacturing process, even if Buyer contributes to them."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-31",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-47"
+      ]
+    },
+    {
+      "id": "right-13",
+      "action": "Use patented Product",
+      "summary": "Buyer has a non-exclusive, royalty-free patent license to use the Product in its cell therapy programs.",
+      "text": "Supplier grants Buyer a non-exclusive, royalty-free license under Supplier’s patents to use the Product in Buyer’s cell therapy programs.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Supplier grants Buyer a non-exclusive, royalty-free license under Supplier’s patents to use the Product in Buyer’s cell therapy programs."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-32",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-48"
+      ]
+    },
+    {
+      "id": "right-14",
+      "action": "Source from third parties",
+      "summary": "Buyer may second-source Product or equivalents upon a Supply Failure despite exclusivity.",
+      "text": "Upon a Supply Failure, and notwithstanding Section 2.2, Buyer may purchase Product or an equivalent from a third party.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Upon a Supply Failure, and notwithstanding Section 2.2, Buyer may purchase Product or an equivalent from a third party."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-36",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-53"
+      ]
+    },
+    {
+      "id": "right-15",
+      "action": "Disclaim other warranties",
+      "summary": "Supplier disclaims warranties other than those expressly in Section 9.1.",
+      "text": "EXCEPT AS EXPRESSLY SET FORTH IN SECTION 9.1, SUPPLIER MAKES NO OTHER WARRANTIES, EXPRESS OR IMPLIED, INCLUDING ANY WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "EXCEPT AS EXPRESSLY SET FORTH IN SECTION 9.1, SUPPLIER MAKES NO OTHER WARRANTIES, EXPRESS OR IMPLIED, INCLUDING ANY WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-39",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-57"
+      ]
+    },
+    {
+      "id": "right-16",
+      "action": "Exclude consequential damages",
+      "summary": "Supplier excludes indirect, incidental and consequential damages except for confidentiality breaches and indemnification.",
+      "text": "Except for breaches of Article 12 and the obligations under Article 10, neither Party shall be liable to the other for any indirect, incidental or consequential damages.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Except for breaches of Article 12 and the obligations under Article 10, neither Party shall be liable to the other for any indirect, incidental or consequential damages."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-43",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-66"
+      ]
+    },
+    {
+      "id": "right-17",
+      "action": "Exclude consequential damages",
+      "summary": "Buyer excludes indirect, incidental and consequential damages except for confidentiality breaches and indemnification.",
+      "text": "Except for breaches of Article 12 and the obligations under Article 10, neither Party shall be liable to the other for any indirect, incidental or consequential damages.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Except for breaches of Article 12 and the obligations under Article 10, neither Party shall be liable to the other for any indirect, incidental or consequential damages."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-43",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-66"
+      ]
+    },
+    {
+      "id": "right-18",
+      "action": "Cap annual liability",
+      "summary": "Supplier's total annual liability is capped at amounts Buyer paid in that year, overriding Sections 4.2 and 10.1.",
+      "text": "Notwithstanding Section 4.2 and Section 10.1, Supplier’s total liability under this Agreement in any calendar year shall not exceed the amounts paid by Buyer in that year.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Notwithstanding Section 4.2 and Section 10.1, Supplier’s total liability under this Agreement in any calendar year shall not exceed the amounts paid by Buyer in that year."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-44",
+      "deadline": "",
+      "frequency": "in any calendar year",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-67"
+      ]
+    },
+    {
+      "id": "right-19",
+      "action": "Disclose for regulatory filings",
+      "summary": "Buyer may disclose Supplier's Confidential Information as required for regulatory filings.",
+      "text": "Buyer may disclose Supplier’s Confidential Information to regulatory authorities to the extent required for its regulatory filings.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Buyer may disclose Supplier’s Confidential Information to regulatory authorities to the extent required for its regulatory filings."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-47",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-71"
+      ]
+    },
+    {
+      "id": "right-20",
+      "action": "Prevent renewal",
+      "summary": "Supplier may prevent renewal by timely notice.",
+      "text": "unless either Party gives notice of non-renewal at least twelve (12) months before the end of the then-current period.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "unless either Party gives notice of non-renewal at least twelve (12) months before the end of the then-current period."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-48",
+      "deadline": "at least twelve (12) months before the end of the then-current period",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-73"
+      ]
+    },
+    {
+      "id": "right-21",
+      "action": "Prevent renewal",
+      "summary": "Buyer may prevent renewal by timely notice.",
+      "text": "unless either Party gives notice of non-renewal at least twelve (12) months before the end of the then-current period.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "unless either Party gives notice of non-renewal at least twelve (12) months before the end of the then-current period."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-48",
+      "deadline": "at least twelve (12) months before the end of the then-current period",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-73"
+      ]
+    },
+    {
+      "id": "right-22",
+      "action": "Terminate for breach",
+      "summary": "Supplier may terminate for Buyer's material breach uncured sixty days after written notice.",
+      "text": "Either Party may terminate this Agreement if the other Party materially breaches it and does not cure the breach within sixty (60) days after written notice.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Either Party may terminate this Agreement if the other Party materially breaches it and does not cure the breach within sixty (60) days after written notice."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-49",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-74"
+      ]
+    },
+    {
+      "id": "right-23",
+      "action": "Terminate for breach",
+      "summary": "Buyer may terminate for Supplier's material breach uncured sixty days after written notice.",
+      "text": "Either Party may terminate this Agreement if the other Party materially breaches it and does not cure the breach within sixty (60) days after written notice.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Either Party may terminate this Agreement if the other Party materially breaches it and does not cure the breach within sixty (60) days after written notice."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-49",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-74"
+      ]
+    },
+    {
+      "id": "right-24",
+      "action": "Terminate for convenience",
+      "summary": "Buyer may terminate for convenience on 180 days' written notice.",
+      "text": "Buyer may terminate this Agreement for convenience on one hundred eighty (180) days’ written notice.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Buyer may terminate this Agreement for convenience on one hundred eighty (180) days’ written notice."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-50",
+      "deadline": "one hundred eighty (180) days’ written notice",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-75"
+      ]
+    },
+    {
+      "id": "right-25",
+      "action": "Terminate for insolvency",
+      "summary": "Supplier may immediately terminate if Buyer becomes insolvent or assigns for creditors' benefit.",
+      "text": "Supplier may terminate this Agreement immediately if Buyer becomes insolvent or makes an assignment for the benefit of its creditors.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Supplier may terminate this Agreement immediately if Buyer becomes insolvent or makes an assignment for the benefit of its creditors."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-51",
+      "deadline": "immediately",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-76"
+      ]
+    },
+    {
+      "id": "right-26",
+      "action": "Exclude force majeure liability",
+      "summary": "Supplier avoids liability for uncontrollable failure or delay if it promptly notifies Buyer.",
+      "text": "Neither Party shall be liable for any failure or delay caused by events beyond its reasonable control, provided that it notifies the other Party promptly.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Neither Party shall be liable for any failure or delay caused by events beyond its reasonable control, provided that it notifies the other Party promptly."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-53",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-79"
+      ]
+    },
+    {
+      "id": "right-27",
+      "action": "Exclude force majeure liability",
+      "summary": "Buyer avoids liability for uncontrollable failure or delay if it promptly notifies Supplier.",
+      "text": "Neither Party shall be liable for any failure or delay caused by events beyond its reasonable control, provided that it notifies the other Party promptly.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Neither Party shall be liable for any failure or delay caused by events beyond its reasonable control, provided that it notifies the other Party promptly."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-53",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-79"
+      ]
+    },
+    {
+      "id": "right-28",
+      "action": "Assign without consent",
+      "summary": "Supplier may assign to an Affiliate or reagent-business purchaser without consent.",
+      "text": "except that Supplier may assign it to an Affiliate or to a purchaser of its reagent business without consent.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "except that Supplier may assign it to an Affiliate or to a purchaser of its reagent business without consent."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-54",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-81"
+      ]
+    },
+    {
+      "id": "right-29",
+      "action": "Subcontract component manufacture",
+      "summary": "Supplier may subcontract component manufacture while remaining responsible for subcontractor performance.",
+      "text": "Supplier may subcontract the manufacture of components, provided that Supplier remains responsible for the performance of its subcontractors.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Supplier may subcontract the manufacture of components, provided that Supplier remains responsible for the performance of its subcontractors."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-56",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-83"
+      ]
+    }
+  ],
+  "prohibitions": [
+    {
+      "id": "prohibition-1",
+      "action": "Avoid unconsented regulatory changes",
+      "summary": "Supplier cannot make a change requiring Buyer's regulatory amendment without prior written consent.",
+      "text": "Supplier shall not make any change that requires Buyer to file a regulatory amendment without Buyer’s prior written consent",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Supplier shall not make any change that requires Buyer to file a regulatory amendment without Buyer’s prior written consent"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-27",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-42"
+      ]
+    },
+    {
+      "id": "prohibition-2",
+      "action": "Avoid unreasonable consent withholding",
+      "summary": "Buyer cannot unreasonably withhold consent to a change requiring a regulatory amendment.",
+      "text": "which Buyer shall not unreasonably withhold.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "which Buyer shall not unreasonably withhold."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-27",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-42"
+      ]
+    },
+    {
+      "id": "prohibition-3",
+      "action": "Do not reverse engineer or analyze",
+      "summary": "Buyer cannot reverse engineer Product or analyze its composition except as required by Applicable Law.",
+      "text": "Buyer shall not reverse engineer the Product or analyze its composition, except as required by Applicable Law.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Buyer shall not reverse engineer the Product or analyze its composition, except as required by Applicable Law."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-32",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-48"
+      ]
+    },
+    {
+      "id": "prohibition-4",
+      "action": "Restrict assignment",
+      "summary": "Supplier cannot assign without Buyer's prior written consent, subject to the express assignment exception.",
+      "text": "Neither Party may assign this Agreement without the other Party’s prior written consent",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Neither Party may assign this Agreement without the other Party’s prior written consent"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-54",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-81"
+      ]
+    },
+    {
+      "id": "prohibition-5",
+      "action": "Restrict assignment",
+      "summary": "Buyer cannot assign without Supplier's prior written consent.",
+      "text": "Neither Party may assign this Agreement without the other Party’s prior written consent",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Neither Party may assign this Agreement without the other Party’s prior written consent"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-54",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-81"
+      ]
+    }
+  ],
+  "conditions": [
+    {
+      "id": "condition-1",
+      "trigger": "If Buyer purchases less",
+      "operator": "IF",
+      "gatesId": "obligation-4",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-22"
+      ]
+    },
+    {
+      "id": "condition-2",
+      "trigger": "that is consistent with the binding part of the Forecast",
+      "operator": "IF",
+      "gatesId": "obligation-9",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-27"
+      ]
+    },
+    {
+      "id": "condition-3",
+      "trigger": "that exceeds the Forecast by more than twenty percent (20%)",
+      "operator": "IF",
+      "gatesId": "right-2",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-27"
+      ]
+    },
+    {
+      "id": "condition-4",
+      "trigger": "If Supplier delivers any Firm Order more than fourteen (14) days after the confirmed delivery date",
+      "operator": "IF",
+      "gatesId": "obligation-12",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-30"
+      ]
+    },
+    {
+      "id": "condition-5",
+      "trigger": "confirming the non-conformity",
+      "operator": "UPON",
+      "gatesId": "obligation-14",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-32"
+      ]
+    },
+    {
+      "id": "condition-6",
+      "trigger": "If the Parties disagree whether a shipment conforms to the Specifications",
+      "operator": "IF",
+      "gatesId": "right-4",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-33"
+      ]
+    },
+    {
+      "id": "condition-7",
+      "trigger": "If the Parties disagree whether a shipment conforms to the Specifications",
+      "operator": "IF",
+      "gatesId": "right-5",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-33"
+      ]
+    },
+    {
+      "id": "condition-8",
+      "trigger": "whose position the laboratory rejects",
+      "operator": "IF",
+      "gatesId": "obligation-15",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-33"
+      ]
+    },
+    {
+      "id": "condition-9",
+      "trigger": "provided that it notifies Supplier of the dispute before the payment is due",
+      "operator": "IF",
+      "gatesId": "right-7",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-37"
+      ]
+    },
+    {
+      "id": "condition-10",
+      "trigger": "Overdue undisputed amounts",
+      "operator": "IF",
+      "gatesId": "obligation-19",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-38"
+      ]
+    },
+    {
+      "id": "condition-11",
+      "trigger": "only after giving Buyer at least one hundred eighty (180) days’ prior written notice",
+      "operator": "UPON",
+      "gatesId": "right-8",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-42"
+      ]
+    },
+    {
+      "id": "condition-12",
+      "trigger": "any change that requires Buyer to file a regulatory amendment",
+      "operator": "IF",
+      "gatesId": "prohibition-1",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-42"
+      ]
+    },
+    {
+      "id": "condition-13",
+      "trigger": "Buyer’s prior written consent",
+      "operator": "UNLESS",
+      "gatesId": "prohibition-1",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-42"
+      ]
+    },
+    {
+      "id": "condition-14",
+      "trigger": "at Buyer’s request",
+      "operator": "UPON",
+      "gatesId": "obligation-24",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-43"
+      ]
+    },
+    {
+      "id": "condition-15",
+      "trigger": "at Buyer’s request",
+      "operator": "UPON",
+      "gatesId": "obligation-25",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-43"
+      ]
+    },
+    {
+      "id": "condition-16",
+      "trigger": "after a recall of the Product",
+      "operator": "UPON",
+      "gatesId": "right-9",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-44"
+      ]
+    },
+    {
+      "id": "condition-17",
+      "trigger": "If any recall of Product results from Supplier’s breach of the Specifications",
+      "operator": "IF",
+      "gatesId": "obligation-27",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-45"
+      ]
+    },
+    {
+      "id": "condition-18",
+      "trigger": "in all other cases",
+      "operator": "IF",
+      "gatesId": "obligation-28",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-45"
+      ]
+    },
+    {
+      "id": "condition-19",
+      "trigger": "except as required by Applicable Law",
+      "operator": "UNLESS",
+      "gatesId": "prohibition-3",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-48"
+      ]
+    },
+    {
+      "id": "condition-20",
+      "trigger": "it becomes aware of any event that is likely to delay deliveries by more than thirty (30) days",
+      "operator": "UPON",
+      "gatesId": "obligation-30",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-51"
+      ]
+    },
+    {
+      "id": "condition-21",
+      "trigger": "If Supplier cannot meet all of its customers’ demand",
+      "operator": "IF",
+      "gatesId": "obligation-31",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-52"
+      ]
+    },
+    {
+      "id": "condition-22",
+      "trigger": "Upon a Supply Failure",
+      "operator": "UPON",
+      "gatesId": "right-14",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-53"
+      ]
+    },
+    {
+      "id": "condition-23",
+      "trigger": "In that case",
+      "operator": "IF",
+      "gatesId": "obligation-32",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-53"
+      ]
+    },
+    {
+      "id": "condition-24",
+      "trigger": "In that case",
+      "operator": "IF",
+      "gatesId": "obligation-33",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-53"
+      ]
+    },
+    {
+      "id": "condition-25",
+      "trigger": "any third-party claim arising from a manufacturing defect in the Product or from any allegation that the Product infringes a third party’s patent",
+      "operator": "IF",
+      "gatesId": "obligation-38",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-59"
+      ]
+    },
+    {
+      "id": "condition-26",
+      "trigger": "(a) Buyer’s use of the Product;",
+      "operator": "IF",
+      "gatesId": "obligation-39",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-61"
+      ]
+    },
+    {
+      "id": "condition-27",
+      "trigger": "(b) the clinical trials in which Buyer uses the Product; or",
+      "operator": "IF",
+      "gatesId": "obligation-40",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-62"
+      ]
+    },
+    {
+      "id": "condition-28",
+      "trigger": "Buyer’s breach of Section 9.2.",
+      "operator": "IF",
+      "gatesId": "obligation-41",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-63"
+      ]
+    },
+    {
+      "id": "condition-29",
+      "trigger": "if the other Party materially breaches it and does not cure the breach within sixty (60) days after written notice",
+      "operator": "IF",
+      "gatesId": "right-22",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-74"
+      ]
+    },
+    {
+      "id": "condition-30",
+      "trigger": "if the other Party materially breaches it and does not cure the breach within sixty (60) days after written notice",
+      "operator": "IF",
+      "gatesId": "right-23",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-74"
+      ]
+    },
+    {
+      "id": "condition-31",
+      "trigger": "If Buyer terminates under this Section 13.3 before the third anniversary of the Effective Date",
+      "operator": "IF",
+      "gatesId": "obligation-52",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-75"
+      ]
+    },
+    {
+      "id": "condition-32",
+      "trigger": "if Buyer becomes insolvent or makes an assignment for the benefit of its creditors",
+      "operator": "IF",
+      "gatesId": "right-25",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-76"
+      ]
+    },
+    {
+      "id": "condition-33",
+      "trigger": "Upon expiry or termination",
+      "operator": "UPON",
+      "gatesId": "obligation-53",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-77"
+      ]
+    },
+    {
+      "id": "condition-34",
+      "trigger": "Upon expiry or termination",
+      "operator": "UPON",
+      "gatesId": "obligation-54",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-77"
+      ]
+    },
+    {
+      "id": "condition-35",
+      "trigger": "any failure or delay caused by events beyond its reasonable control, provided that it notifies the other Party promptly",
+      "operator": "IF",
+      "gatesId": "right-26",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-79"
+      ]
+    },
+    {
+      "id": "condition-36",
+      "trigger": "any failure or delay caused by events beyond its reasonable control, provided that it notifies the other Party promptly",
+      "operator": "IF",
+      "gatesId": "right-27",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-79"
+      ]
+    },
+    {
+      "id": "condition-37",
+      "trigger": "a force majeure event that affects Supplier for more than ninety (90) days",
+      "operator": "IF",
+      "gatesId": "right-14",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-79"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "id": "reference-1",
+      "name": "Exhibit A",
+      "citation": "",
+      "citedById": "clause-5",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-15"
+      ]
+    },
+    {
+      "id": "reference-2",
+      "name": "quality agreement between the Parties dated as of the Effective Date",
+      "citation": "",
+      "citedById": "clause-6",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-16"
+      ]
+    },
+    {
+      "id": "reference-3",
+      "name": "Incoterms 2020",
+      "citation": "FCA",
+      "citedById": "obligation-11",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-29"
+      ]
+    },
+    {
+      "id": "reference-4",
+      "name": "Exhibit A",
+      "citation": "",
+      "citedById": "obligation-16",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-35"
+      ]
+    },
+    {
+      "id": "reference-5",
+      "name": "German consumer price index",
+      "citation": "",
+      "citedById": "right-6",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-36"
+      ]
+    },
+    {
+      "id": "reference-6",
+      "name": "base rate of the European Central Bank",
+      "citation": "",
+      "citedById": "obligation-19",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-38"
+      ]
+    },
+    {
+      "id": "reference-7",
+      "name": "Quality Agreement",
+      "citation": "",
+      "citedById": "clause-26",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-41"
+      ]
+    }
+  ],
+  "values": [
+    {
+      "id": "value-1",
+      "valueType": "Percentage",
+      "amount": "50",
+      "unit": "%",
+      "quantifiesId": "clause-1",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-11"
+      ]
+    },
+    {
+      "id": "value-2",
+      "valueType": "Percentage",
+      "amount": "80",
+      "unit": "%",
+      "quantifiesId": "clause-8",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-18"
+      ]
+    },
+    {
+      "id": "value-3",
+      "valueType": "Duration",
+      "amount": "2",
+      "unit": "consecutive calendar quarters",
+      "quantifiesId": "clause-8",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-18"
+      ]
+    },
+    {
+      "id": "value-4",
+      "valueType": "Currency",
+      "amount": "2,000,000",
+      "unit": "EUR",
+      "quantifiesId": "obligation-3",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-22"
+      ]
+    },
+    {
+      "id": "value-5",
+      "valueType": "Duration",
+      "amount": "60",
+      "unit": "days",
+      "quantifiesId": "obligation-4",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-22"
+      ]
+    },
+    {
+      "id": "value-6",
+      "valueType": "Duration",
+      "amount": "5",
+      "unit": "business days",
+      "quantifiesId": "obligation-6",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-25"
+      ]
+    },
+    {
+      "id": "value-7",
+      "valueType": "Duration",
+      "amount": "12",
+      "unit": "months",
+      "quantifiesId": "obligation-6",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-25"
+      ]
+    },
+    {
+      "id": "value-8",
+      "valueType": "Duration",
+      "amount": "3",
+      "unit": "months",
+      "quantifiesId": "obligation-7",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-25"
+      ]
+    },
+    {
+      "id": "value-9",
+      "valueType": "Duration",
+      "amount": "90",
+      "unit": "days",
+      "quantifiesId": "obligation-8",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-26"
+      ]
+    },
+    {
+      "id": "value-10",
+      "valueType": "Percentage",
+      "amount": "20",
+      "unit": "%",
+      "quantifiesId": "right-2",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-27"
+      ]
+    },
+    {
+      "id": "value-11",
+      "valueType": "Duration",
+      "amount": "10",
+      "unit": "business days",
+      "quantifiesId": "obligation-10",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-27"
+      ]
+    },
+    {
+      "id": "value-12",
+      "valueType": "Duration",
+      "amount": "14",
+      "unit": "days",
+      "quantifiesId": "obligation-12",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-30"
+      ]
+    },
+    {
+      "id": "value-13",
+      "valueType": "Percentage",
+      "amount": "1",
+      "unit": "%",
+      "quantifiesId": "obligation-12",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-30"
+      ]
+    },
+    {
+      "id": "value-14",
+      "valueType": "Percentage",
+      "amount": "10",
+      "unit": "%",
+      "quantifiesId": "obligation-12",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-30"
+      ]
+    },
+    {
+      "id": "value-15",
+      "valueType": "Duration",
+      "amount": "30",
+      "unit": "days",
+      "quantifiesId": "obligation-13",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-31"
+      ]
+    },
+    {
+      "id": "value-16",
+      "valueType": "Duration",
+      "amount": "45",
+      "unit": "days",
+      "quantifiesId": "obligation-14",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-32"
+      ]
+    },
+    {
+      "id": "value-17",
+      "valueType": "Duration",
+      "amount": "30",
+      "unit": "days",
+      "quantifiesId": "clause-20",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-33"
+      ]
+    },
+    {
+      "id": "value-18",
+      "valueType": "Duration",
+      "amount": "90",
+      "unit": "days",
+      "quantifiesId": "right-6",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-36"
+      ]
+    },
+    {
+      "id": "value-19",
+      "valueType": "Percentage",
+      "amount": "5",
+      "unit": "%",
+      "quantifiesId": "right-6",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-36"
+      ]
+    },
+    {
+      "id": "value-20",
+      "valueType": "Duration",
+      "amount": "12",
+      "unit": "months",
+      "quantifiesId": "right-6",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-36"
+      ]
+    },
+    {
+      "id": "value-21",
+      "valueType": "Duration",
+      "amount": "45",
+      "unit": "days",
+      "quantifiesId": "obligation-18",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-37"
+      ]
+    },
+    {
+      "id": "value-22",
+      "valueType": "Percentage",
+      "amount": "9",
+      "unit": "percentage points above the base rate of the European Central Bank",
+      "quantifiesId": "obligation-19",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-38"
+      ]
+    },
+    {
+      "id": "value-23",
+      "valueType": "Duration",
+      "amount": "180",
+      "unit": "days",
+      "quantifiesId": "right-8",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-42"
+      ]
+    },
+    {
+      "id": "value-24",
+      "valueType": "Duration",
+      "amount": "30",
+      "unit": "days",
+      "quantifiesId": "right-9",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-44"
+      ]
+    },
+    {
+      "id": "value-25",
+      "valueType": "Duration",
+      "amount": "3",
+      "unit": "months",
+      "quantifiesId": "obligation-29",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-50"
+      ]
+    },
+    {
+      "id": "value-26",
+      "valueType": "Duration",
+      "amount": "5",
+      "unit": "business days",
+      "quantifiesId": "obligation-30",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-51"
+      ]
+    },
+    {
+      "id": "value-27",
+      "valueType": "Duration",
+      "amount": "30",
+      "unit": "days",
+      "quantifiesId": "obligation-30",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-51"
+      ]
+    },
+    {
+      "id": "value-28",
+      "valueType": "Duration",
+      "amount": "6",
+      "unit": "months",
+      "quantifiesId": "obligation-31",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-52"
+      ]
+    },
+    {
+      "id": "value-29",
+      "valueType": "Duration",
+      "amount": "12",
+      "unit": "months",
+      "quantifiesId": "obligation-35",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-55"
+      ]
+    },
+    {
+      "id": "value-30",
+      "valueType": "Duration",
+      "amount": "7",
+      "unit": "years",
+      "quantifiesId": "clause-46",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-70"
+      ]
+    },
+    {
+      "id": "value-31",
+      "valueType": "Duration",
+      "amount": "5",
+      "unit": "years",
+      "quantifiesId": "clause-48",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-73"
+      ]
+    },
+    {
+      "id": "value-32",
+      "valueType": "Duration",
+      "amount": "2",
+      "unit": "years",
+      "quantifiesId": "clause-48",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-73"
+      ]
+    },
+    {
+      "id": "value-33",
+      "valueType": "Duration",
+      "amount": "12",
+      "unit": "months",
+      "quantifiesId": "right-20",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-73"
+      ]
+    },
+    {
+      "id": "value-34",
+      "valueType": "Duration",
+      "amount": "12",
+      "unit": "months",
+      "quantifiesId": "right-21",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-73"
+      ]
+    },
+    {
+      "id": "value-35",
+      "valueType": "Duration",
+      "amount": "60",
+      "unit": "days",
+      "quantifiesId": "right-22",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-74"
+      ]
+    },
+    {
+      "id": "value-36",
+      "valueType": "Duration",
+      "amount": "60",
+      "unit": "days",
+      "quantifiesId": "right-23",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-74"
+      ]
+    },
+    {
+      "id": "value-37",
+      "valueType": "Duration",
+      "amount": "180",
+      "unit": "days",
+      "quantifiesId": "right-24",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-75"
+      ]
+    },
+    {
+      "id": "value-38",
+      "valueType": "Percentage",
+      "amount": "50",
+      "unit": "%",
+      "quantifiesId": "obligation-52",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-75"
+      ]
+    },
+    {
+      "id": "value-39",
+      "valueType": "Duration",
+      "amount": "3",
+      "unit": "years",
+      "quantifiesId": "obligation-52",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-75"
+      ]
+    },
+    {
+      "id": "value-40",
+      "valueType": "Duration",
+      "amount": "90",
+      "unit": "days",
+      "quantifiesId": "clause-53",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-79"
+      ]
+    },
+    {
+      "id": "value-41",
+      "valueType": "Quantity",
+      "amount": "10",
+      "unit": "separation runs per kit",
+      "quantifiesId": null,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-90"
+      ]
+    },
+    {
+      "id": "value-42",
+      "valueType": "Quantity",
+      "amount": "1",
+      "unit": "liter",
+      "quantifiesId": null,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-91"
+      ]
+    },
+    {
+      "id": "value-43",
+      "valueType": "Currency",
+      "amount": "120.00",
+      "unit": "EUR per bottle",
+      "quantifiesId": null,
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-91"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "right-1",
+      "target": "clause-12",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-1",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-2",
+      "target": "clause-15",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-2",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-3",
+      "target": "clause-19",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-3",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-4",
+      "target": "clause-20",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-4",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-5",
+      "target": "clause-20",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-5",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-6",
+      "target": "clause-22",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-6",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-7",
+      "target": "clause-23",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-7",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-8",
+      "target": "clause-27",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-8",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-9",
+      "target": "clause-29",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-9",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-10",
+      "target": "clause-31",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-10",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-11",
+      "target": "clause-31",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-11",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-12",
+      "target": "clause-31",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-12",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-13",
+      "target": "clause-32",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-13",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-14",
+      "target": "clause-36",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-14",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-15",
+      "target": "clause-39",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-15",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-16",
+      "target": "clause-43",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-16",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-17",
+      "target": "clause-43",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-17",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-18",
+      "target": "clause-44",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-18",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-19",
+      "target": "clause-47",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-19",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-20",
+      "target": "clause-48",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-20",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-21",
+      "target": "clause-48",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-21",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-22",
+      "target": "clause-49",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-22",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-23",
+      "target": "clause-49",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-23",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-24",
+      "target": "clause-50",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-24",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-25",
+      "target": "clause-51",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-25",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-26",
+      "target": "clause-53",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-26",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-27",
+      "target": "clause-53",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-27",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-28",
+      "target": "clause-54",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-28",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-29",
+      "target": "clause-56",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-29",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-1",
+      "target": "clause-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-1",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-2",
+      "target": "clause-10",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-2",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-3",
+      "target": "clause-11",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-3",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-4",
+      "target": "clause-11",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-4",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-5",
+      "target": "clause-12",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-5",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-6",
+      "target": "clause-13",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-6",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-7",
+      "target": "clause-13",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-7",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-8",
+      "target": "clause-14",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-8",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-9",
+      "target": "clause-15",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-9",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-10",
+      "target": "clause-15",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-10",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-11",
+      "target": "clause-16",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-11",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-12",
+      "target": "clause-17",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-12",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-13",
+      "target": "clause-18",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-13",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-14",
+      "target": "clause-19",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-14",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-15",
+      "target": "clause-20",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-16",
+      "target": "clause-21",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-16",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-17",
+      "target": "clause-23",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-17",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-18",
+      "target": "clause-23",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-18",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-19",
+      "target": "clause-24",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-19",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-20",
+      "target": "clause-25",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-20",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-21",
+      "target": "clause-25",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-21",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-22",
+      "target": "clause-26",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-22",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-23",
+      "target": "clause-26",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-23",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-24",
+      "target": "clause-28",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-24",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-25",
+      "target": "clause-28",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-25",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-26",
+      "target": "clause-29",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-26",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-27",
+      "target": "clause-30",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-27",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-28",
+      "target": "clause-30",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-28",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-29",
+      "target": "clause-33",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-29",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-30",
+      "target": "clause-34",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-30",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-31",
+      "target": "clause-35",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-31",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-32",
+      "target": "clause-36",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-32",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-33",
+      "target": "clause-36",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-33",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-34",
+      "target": "clause-37",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-34",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-35",
+      "target": "clause-37",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-35",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-36",
+      "target": "clause-38",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-36",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-37",
+      "target": "clause-38",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-37",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-38",
+      "target": "clause-40",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-38",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-39",
+      "target": "clause-41",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-39",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-40",
+      "target": "clause-41",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-40",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-41",
+      "target": "clause-41",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-41",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-42",
+      "target": "clause-42",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-42",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-43",
+      "target": "clause-42",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-43",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-44",
+      "target": "clause-42",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-44",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-45",
+      "target": "clause-42",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-45",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-46",
+      "target": "clause-45",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-46",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-47",
+      "target": "clause-45",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-47",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-48",
+      "target": "clause-45",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-48",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-49",
+      "target": "clause-45",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-49",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-50",
+      "target": "clause-46",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-50",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-51",
+      "target": "clause-46",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-51",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-52",
+      "target": "clause-50",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-52",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-53",
+      "target": "clause-52",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-53",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-54",
+      "target": "clause-52",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-54",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-55",
+      "target": "clause-56",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-55",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-56",
+      "target": "clause-57",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-56",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-57",
+      "target": "clause-57",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-57",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-1",
+      "target": "clause-27",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-1",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-2",
+      "target": "clause-27",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-2",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-3",
+      "target": "clause-32",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-3",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-4",
+      "target": "clause-54",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-4",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-5",
+      "target": "clause-54",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-5",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-1",
+      "target": "term-3",
+      "type": "defines",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-1",
+      "target": "term-4",
+      "type": "defines",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-2",
+      "target": "term-5",
+      "type": "defines",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-3",
+      "target": "term-6",
+      "type": "defines",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-4",
+      "target": "term-7",
+      "type": "defines",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-5",
+      "target": "term-8",
+      "type": "defines",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-6",
+      "target": "term-9",
+      "type": "defines",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-7",
+      "target": "term-10",
+      "type": "defines",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-8",
+      "target": "term-11",
+      "type": "defines",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-45",
+      "target": "term-12",
+      "type": "defines",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-48",
+      "target": "term-13",
+      "type": "defines",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-1",
+      "target": "obligation-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-2",
+      "target": "obligation-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-3",
+      "target": "right-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-4",
+      "target": "obligation-12",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-5",
+      "target": "obligation-14",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-6",
+      "target": "right-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-7",
+      "target": "right-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-8",
+      "target": "obligation-15",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-9",
+      "target": "right-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-10",
+      "target": "obligation-19",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-11",
+      "target": "right-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-12",
+      "target": "prohibition-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-13",
+      "target": "prohibition-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-14",
+      "target": "obligation-24",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-15",
+      "target": "obligation-25",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-16",
+      "target": "right-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-17",
+      "target": "obligation-27",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-18",
+      "target": "obligation-28",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-19",
+      "target": "prohibition-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-20",
+      "target": "obligation-30",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-21",
+      "target": "obligation-31",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-22",
+      "target": "right-14",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-23",
+      "target": "obligation-32",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-24",
+      "target": "obligation-33",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-25",
+      "target": "obligation-38",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-26",
+      "target": "obligation-39",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-27",
+      "target": "obligation-40",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-28",
+      "target": "obligation-41",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-29",
+      "target": "right-22",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-30",
+      "target": "right-23",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-31",
+      "target": "obligation-52",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-32",
+      "target": "right-25",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-33",
+      "target": "obligation-53",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-34",
+      "target": "obligation-54",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-35",
+      "target": "right-26",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-36",
+      "target": "right-27",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-37",
+      "target": "right-14",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-1",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-2",
+      "target": "clause-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-3",
+      "target": "obligation-11",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-4",
+      "target": "obligation-16",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-5",
+      "target": "right-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-6",
+      "target": "obligation-19",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-7",
+      "target": "clause-26",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-1",
+      "target": "clause-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-2",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-3",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-4",
+      "target": "obligation-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-5",
+      "target": "obligation-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-6",
+      "target": "obligation-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-7",
+      "target": "obligation-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-8",
+      "target": "obligation-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-9",
+      "target": "obligation-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-10",
+      "target": "right-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-11",
+      "target": "obligation-10",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-12",
+      "target": "obligation-12",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-13",
+      "target": "obligation-12",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-14",
+      "target": "obligation-12",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-15",
+      "target": "obligation-13",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-16",
+      "target": "obligation-14",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-17",
+      "target": "clause-20",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-18",
+      "target": "right-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-19",
+      "target": "right-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-20",
+      "target": "right-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-21",
+      "target": "obligation-18",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-22",
+      "target": "obligation-19",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-23",
+      "target": "right-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-24",
+      "target": "right-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-25",
+      "target": "obligation-29",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-26",
+      "target": "obligation-30",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-27",
+      "target": "obligation-30",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-28",
+      "target": "obligation-31",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-29",
+      "target": "obligation-35",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-30",
+      "target": "clause-46",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-31",
+      "target": "clause-48",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-32",
+      "target": "clause-48",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-33",
+      "target": "right-20",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-34",
+      "target": "right-21",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-35",
+      "target": "right-22",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-36",
+      "target": "right-23",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-37",
+      "target": "right-24",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-38",
+      "target": "obligation-52",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-39",
+      "target": "obligation-52",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-40",
+      "target": "clause-53",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-1",
+      "target": "term-4",
+      "type": "uses",
+      "evidence": "“control”",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-11"
+      ]
+    },
+    {
+      "source": "clause-2",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-12"
+      ]
+    },
+    {
+      "source": "clause-3",
+      "target": "clause-15",
+      "type": "references",
+      "evidence": "under Section 3.3",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-13"
+      ]
+    },
+    {
+      "source": "clause-4",
+      "target": "clause-13",
+      "type": "references",
+      "evidence": "under Section 3.1",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-14"
+      ]
+    },
+    {
+      "source": "clause-6",
+      "target": "term-2",
+      "type": "uses",
+      "evidence": "Effective Date",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-16"
+      ]
+    },
+    {
+      "source": "clause-7",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-17"
+      ]
+    },
+    {
+      "source": "clause-7",
+      "target": "term-9",
+      "type": "uses",
+      "evidence": "Quality Agreement",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-17"
+      ]
+    },
+    {
+      "source": "clause-8",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-18"
+      ]
+    },
+    {
+      "source": "clause-8",
+      "target": "term-6",
+      "type": "uses",
+      "evidence": "Firm Orders",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-18"
+      ]
+    },
+    {
+      "source": "obligation-1",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-20"
+      ]
+    },
+    {
+      "source": "obligation-1",
+      "target": "term-10",
+      "type": "uses",
+      "evidence": "Specifications",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-20"
+      ]
+    },
+    {
+      "source": "obligation-1",
+      "target": "term-9",
+      "type": "uses",
+      "evidence": "Quality Agreement",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-20"
+      ]
+    },
+    {
+      "source": "obligation-2",
+      "target": "term-13",
+      "type": "uses",
+      "evidence": "Term",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-21"
+      ]
+    },
+    {
+      "source": "obligation-2",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-21"
+      ]
+    },
+    {
+      "source": "obligation-2",
+      "target": "clause-36",
+      "type": "depends_on",
+      "evidence": "except as provided in Section 8.4",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-21"
+      ]
+    },
+    {
+      "source": "obligation-3",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-22"
+      ]
+    },
+    {
+      "source": "right-1",
+      "target": "term-3",
+      "type": "uses",
+      "evidence": "Affiliates",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-23"
+      ]
+    },
+    {
+      "source": "obligation-5",
+      "target": "term-3",
+      "type": "uses",
+      "evidence": "Affiliates",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-23"
+      ]
+    },
+    {
+      "source": "obligation-7",
+      "target": "term-7",
+      "type": "uses",
+      "evidence": "Forecast",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-25"
+      ]
+    },
+    {
+      "source": "obligation-9",
+      "target": "term-7",
+      "type": "uses",
+      "evidence": "Forecast",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-27"
+      ]
+    },
+    {
+      "source": "right-2",
+      "target": "term-7",
+      "type": "uses",
+      "evidence": "Forecast",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-27"
+      ]
+    },
+    {
+      "source": "obligation-11",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-29"
+      ]
+    },
+    {
+      "source": "obligation-12",
+      "target": "term-6",
+      "type": "uses",
+      "evidence": "Firm Order",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-30"
+      ]
+    },
+    {
+      "source": "obligation-12",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-30"
+      ]
+    },
+    {
+      "source": "obligation-12",
+      "target": "clause-17",
+      "type": "modifies",
+      "evidence": "up to a maximum of ten percent (10%) of that price",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-30"
+      ]
+    },
+    {
+      "source": "clause-18",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-31"
+      ]
+    },
+    {
+      "source": "clause-19",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-32"
+      ]
+    },
+    {
+      "source": "right-3",
+      "target": "clause-19",
+      "type": "modifies",
+      "evidence": "The remedies in this Section 4.4 are Buyer’s sole and exclusive remedies for non-conforming Product.",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-32"
+      ]
+    },
+    {
+      "source": "clause-20",
+      "target": "term-10",
+      "type": "uses",
+      "evidence": "Specifications",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-33"
+      ]
+    },
+    {
+      "source": "obligation-16",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-35"
+      ]
+    },
+    {
+      "source": "right-6",
+      "target": "clause-21",
+      "type": "modifies",
+      "evidence": "Supplier may adjust the prices once in each calendar year",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-36"
+      ]
+    },
+    {
+      "source": "right-7",
+      "target": "clause-23",
+      "type": "modifies",
+      "evidence": "Buyer may withhold payment of any amount that it disputes in good faith, provided that it notifies Supplier of the dispute before the payment is due.",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-37"
+      ]
+    },
+    {
+      "source": "clause-25",
+      "target": "term-1",
+      "type": "uses",
+      "evidence": "Agreement",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-39"
+      ]
+    },
+    {
+      "source": "clause-26",
+      "target": "term-9",
+      "type": "uses",
+      "evidence": "Quality Agreement",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-41"
+      ]
+    },
+    {
+      "source": "clause-26",
+      "target": "term-1",
+      "type": "uses",
+      "evidence": "this Agreement",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-41"
+      ]
+    },
+    {
+      "source": "right-8",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-42"
+      ]
+    },
+    {
+      "source": "right-9",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-44"
+      ]
+    },
+    {
+      "source": "obligation-27",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-45"
+      ]
+    },
+    {
+      "source": "obligation-27",
+      "target": "term-10",
+      "type": "uses",
+      "evidence": "Specifications",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-45"
+      ]
+    },
+    {
+      "source": "clause-31",
+      "target": "term-2",
+      "type": "uses",
+      "evidence": "Effective Date",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-47"
+      ]
+    },
+    {
+      "source": "right-13",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-48"
+      ]
+    },
+    {
+      "source": "prohibition-3",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-48"
+      ]
+    },
+    {
+      "source": "prohibition-3",
+      "target": "term-5",
+      "type": "uses",
+      "evidence": "Applicable Law",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-48"
+      ]
+    },
+    {
+      "source": "obligation-29",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-50"
+      ]
+    },
+    {
+      "source": "obligation-29",
+      "target": "term-7",
+      "type": "uses",
+      "evidence": "Forecast",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-50"
+      ]
+    },
+    {
+      "source": "right-14",
+      "target": "term-11",
+      "type": "uses",
+      "evidence": "Supply Failure",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-53"
+      ]
+    },
+    {
+      "source": "clause-36",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-53"
+      ]
+    },
+    {
+      "source": "right-14",
+      "target": "clause-10",
+      "type": "depends_on",
+      "evidence": "notwithstanding Section 2.2",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-53"
+      ]
+    },
+    {
+      "source": "right-14",
+      "target": "clause-10",
+      "type": "modifies",
+      "evidence": "notwithstanding Section 2.2, Buyer may purchase Product or an equivalent from a third party",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-53"
+      ]
+    },
+    {
+      "source": "obligation-34",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-55"
+      ]
+    },
+    {
+      "source": "obligation-34",
+      "target": "term-10",
+      "type": "uses",
+      "evidence": "Specifications",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-55"
+      ]
+    },
+    {
+      "source": "clause-38",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-56"
+      ]
+    },
+    {
+      "source": "obligation-37",
+      "target": "term-5",
+      "type": "uses",
+      "evidence": "Applicable Law",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-56"
+      ]
+    },
+    {
+      "source": "right-15",
+      "target": "clause-37",
+      "type": "depends_on",
+      "evidence": "EXCEPT AS EXPRESSLY SET FORTH IN SECTION 9.1",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-57"
+      ]
+    },
+    {
+      "source": "right-15",
+      "target": "clause-37",
+      "type": "modifies",
+      "evidence": "SUPPLIER MAKES NO OTHER WARRANTIES, EXPRESS OR IMPLIED",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-57"
+      ]
+    },
+    {
+      "source": "obligation-38",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-59"
+      ]
+    },
+    {
+      "source": "obligation-39",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-61"
+      ]
+    },
+    {
+      "source": "obligation-40",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-62"
+      ]
+    },
+    {
+      "source": "obligation-41",
+      "target": "clause-38",
+      "type": "depends_on",
+      "evidence": "Buyer’s breach of Section 9.2.",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-63"
+      ]
+    },
+    {
+      "source": "clause-43",
+      "target": "clause-45",
+      "type": "depends_on",
+      "evidence": "Except for breaches of Article 12",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-66"
+      ]
+    },
+    {
+      "source": "clause-43",
+      "target": "clause-46",
+      "type": "depends_on",
+      "evidence": "Except for breaches of Article 12",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-66"
+      ]
+    },
+    {
+      "source": "clause-43",
+      "target": "clause-47",
+      "type": "depends_on",
+      "evidence": "Except for breaches of Article 12",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-66"
+      ]
+    },
+    {
+      "source": "clause-43",
+      "target": "clause-40",
+      "type": "depends_on",
+      "evidence": "the obligations under Article 10",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-66"
+      ]
+    },
+    {
+      "source": "clause-43",
+      "target": "clause-41",
+      "type": "depends_on",
+      "evidence": "the obligations under Article 10",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-66"
+      ]
+    },
+    {
+      "source": "clause-43",
+      "target": "clause-42",
+      "type": "depends_on",
+      "evidence": "the obligations under Article 10",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-66"
+      ]
+    },
+    {
+      "source": "right-16",
+      "target": "clause-17",
+      "type": "modifies",
+      "evidence": "neither Party shall be liable to the other for any indirect, incidental or consequential damages",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-66"
+      ]
+    },
+    {
+      "source": "right-18",
+      "target": "clause-17",
+      "type": "depends_on",
+      "evidence": "Notwithstanding Section 4.2 and Section 10.1",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-67"
+      ]
+    },
+    {
+      "source": "right-18",
+      "target": "clause-40",
+      "type": "depends_on",
+      "evidence": "Notwithstanding Section 4.2 and Section 10.1",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-67"
+      ]
+    },
+    {
+      "source": "right-18",
+      "target": "clause-17",
+      "type": "modifies",
+      "evidence": "Supplier’s total liability under this Agreement in any calendar year shall not exceed the amounts paid by Buyer in that year",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-67"
+      ]
+    },
+    {
+      "source": "right-18",
+      "target": "clause-40",
+      "type": "modifies",
+      "evidence": "Supplier’s total liability under this Agreement in any calendar year shall not exceed the amounts paid by Buyer in that year",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-67"
+      ]
+    },
+    {
+      "source": "clause-45",
+      "target": "term-12",
+      "type": "uses",
+      "evidence": "Confidential Information",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-69"
+      ]
+    },
+    {
+      "source": "clause-46",
+      "target": "term-13",
+      "type": "uses",
+      "evidence": "Term",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-70"
+      ]
+    },
+    {
+      "source": "clause-46",
+      "target": "clause-45",
+      "type": "modifies",
+      "evidence": "These obligations shall continue for seven (7) years after the end of the Term.",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-70"
+      ]
+    },
+    {
+      "source": "right-19",
+      "target": "term-12",
+      "type": "uses",
+      "evidence": "Confidential Information",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-71"
+      ]
+    },
+    {
+      "source": "right-19",
+      "target": "clause-45",
+      "type": "modifies",
+      "evidence": "Buyer may disclose Supplier’s Confidential Information to regulatory authorities to the extent required for its regulatory filings.",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-71"
+      ]
+    },
+    {
+      "source": "clause-48",
+      "target": "term-2",
+      "type": "uses",
+      "evidence": "Effective Date",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-73"
+      ]
+    },
+    {
+      "source": "clause-48",
+      "target": "term-13",
+      "type": "uses",
+      "evidence": "Term",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-73"
+      ]
+    },
+    {
+      "source": "obligation-52",
+      "target": "clause-50",
+      "type": "depends_on",
+      "evidence": "If Buyer terminates under this Section 13.3",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-75"
+      ]
+    },
+    {
+      "source": "obligation-52",
+      "target": "term-13",
+      "type": "uses",
+      "evidence": "Term",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-75"
+      ]
+    },
+    {
+      "source": "clause-50",
+      "target": "term-2",
+      "type": "uses",
+      "evidence": "Effective Date",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-75"
+      ]
+    },
+    {
+      "source": "obligation-53",
+      "target": "term-6",
+      "type": "uses",
+      "evidence": "Firm Orders",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-77"
+      ]
+    },
+    {
+      "source": "clause-52",
+      "target": "term-8",
+      "type": "uses",
+      "evidence": "Product",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-77"
+      ]
+    },
+    {
+      "source": "obligation-54",
+      "target": "clause-16",
+      "type": "references",
+      "evidence": "in accordance with Article 4",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-77"
+      ]
+    },
+    {
+      "source": "obligation-54",
+      "target": "clause-17",
+      "type": "references",
+      "evidence": "in accordance with Article 4",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-77"
+      ]
+    },
+    {
+      "source": "obligation-54",
+      "target": "clause-18",
+      "type": "references",
+      "evidence": "in accordance with Article 4",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-77"
+      ]
+    },
+    {
+      "source": "obligation-54",
+      "target": "clause-19",
+      "type": "references",
+      "evidence": "in accordance with Article 4",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-77"
+      ]
+    },
+    {
+      "source": "obligation-54",
+      "target": "clause-20",
+      "type": "references",
+      "evidence": "in accordance with Article 4",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-77"
+      ]
+    },
+    {
+      "source": "clause-53",
+      "target": "term-11",
+      "type": "uses",
+      "evidence": "Supply Failure",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-79"
+      ]
+    },
+    {
+      "source": "clause-53",
+      "target": "clause-8",
+      "type": "modifies",
+      "evidence": "a force majeure event that affects Supplier for more than ninety (90) days shall constitute a Supply Failure",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-79"
+      ]
+    },
+    {
+      "source": "right-26",
+      "target": "clause-17",
+      "type": "modifies",
+      "evidence": "Neither Party shall be liable for any failure or delay caused by events beyond its reasonable control, provided that it notifies the other Party promptly.",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-79"
+      ]
+    },
+    {
+      "source": "right-28",
+      "target": "term-3",
+      "type": "uses",
+      "evidence": "Affiliate",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-81"
+      ]
+    },
+    {
+      "source": "right-28",
+      "target": "clause-54",
+      "type": "modifies",
+      "evidence": "except that Supplier may assign it to an Affiliate or to a purchaser of its reagent business without consent.",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-81"
+      ]
+    },
+    {
+      "source": "obligation-56",
+      "target": "term-1",
+      "type": "uses",
+      "evidence": "under this Agreement",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-84"
+      ]
+    },
+    {
+      "source": "obligation-57",
+      "target": "term-1",
+      "type": "uses",
+      "evidence": "under this Agreement",
+      "paragraphIds": [
+        "root::Synthetic_OrvaneTalvera_Supply Agreement-p-84"
+      ]
+    }
+  ]
+}

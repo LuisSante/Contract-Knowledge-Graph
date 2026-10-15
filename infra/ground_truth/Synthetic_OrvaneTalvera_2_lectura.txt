@@ -1,0 +1,248 @@
+GROUND TRUTH 2 DE 2 — LO QUE LA VISUALIZACIÓN DEBE CONCLUIR
+Contrato sintético: Supply Agreement entre Orvane Bioprocess y Talvera Therapeutics
+=====================================================================================
+
+Archivo del contrato: infra/contracts_docx/Synthetic_OrvaneTalvera_Supply Agreement.docx
+Se apoya en: infra/ground_truth/Synthetic_OrvaneTalvera_1_grafo.txt (los enunciados D01–D70)
+Fecha: 15 de octubre de 2026
+
+En pantalla las partes aparecen con su primera palabra: ORVANE (el proveedor, «Supplier») y
+TALVERA (el comprador, «Buyer»). En las tablas de abajo el orden es siempre TALVERA : ORVANE.
+
+
+CÓMO SE CUENTA
+==============
+Es la regla que usan Table v1.1 y Table v2, sin pesos:
+- Solo cuentan los enunciados NÚCLEO del archivo 1. Los OPCIONALES y el del laboratorio
+  (NO-PARTE) no cuentan.
+- Cada enunciado cuenta 1 para la parte a la que favorece: un derecho, para su titular; una
+  obligación o una prohibición, para la otra parte.
+- Las cláusulas recíprocas cuentan 1 para cada parte.
+- Dentro de un tipo, gana la parte con más enunciados a su favor; con los mismos, es empate.
+- Con varios tipos a la vez, una parte gana la sección si gana en algún tipo y no pierde en
+  ninguno; si cada parte gana en un tipo distinto, la sección «depende del tipo».
+
+Todas las cifras de este archivo se pueden recontar a mano desde el archivo 1 con esta regla.
+
+
+1. EL CONTRATO ENTERO
+=====================
+                     TALVERA : ORVANE   a favor de
+  Obligaciones          20   :   19     TALVERA
+  Derechos              12   :   15     ORVANE
+  Prohibiciones          3   :    3     empate
+
+Veredicto del contrato: DEPENDE DEL TIPO. TALVERA va por delante en obligaciones y ORVANE en
+derechos. La pantalla no debe declarar un ganador del contrato con los tres tipos juntos.
+
+Ojo: la ventaja de TALVERA en obligaciones es de un solo enunciado. Si la extracción pierde
+una obligación que favorece a TALVERA, las obligaciones quedan 19:19 y el veredicto del
+contrato pasa a ORVANE. Este contrato mide también lo frágil que es el veredicto cuando las
+cuentas están parejas.
+
+Secciones con al menos un enunciado: 44. Con los tres tipos juntos: 15 a favor de ORVANE,
+13 a favor de TALVERA, 9 empatadas y 7 que dependen del tipo.
+
+
+2. TABLE V1.1 — UN TIPO A LA VEZ
+================================
+Lo que debería mostrar la tarjeta de arriba con cada opción del selector:
+
+Obligations
+  Tarjeta: TALVERA, «More obligations in its favour.»
+  Secciones con obligaciones: 30 →
+    13 TALVERA (2.1, 3.3, 4.1, 4.2, 4.4, 6.3, 8.1, 8.2, 8.3, 8.4, 9.1, 10.1, 15.3)
+    11 ORVANE  (2.2, 2.3, 2.4, 3.1, 3.2, 4.3, 5.1, 5.4, 9.2, 10.2, 13.3)
+     6 empatadas (5.3, 5.5, 6.1, 6.5, 12.1, 13.5)
+
+Rights
+  Tarjeta: ORVANE, «More rights in its favour.»
+  Secciones con derechos: 21 →
+    10 ORVANE  (3.3, 4.4, 5.2, 6.2, 7.1, 9.3, 11.2, 13.4, 15.1, 15.3)
+     7 TALVERA (2.4, 5.3, 6.4, 7.2, 8.4, 12.3, 13.3)
+     4 empatadas (4.5, 11.1, 13.2, 14.1)
+
+Prohibitions
+  Tarjeta: empate (3:3); ninguna parte tiene más prohibiciones a su favor.
+  Secciones con prohibiciones: 4 → 1 TALVERA (5.2), 1 ORVANE (7.2), 2 empatadas (6.2, 15.1).
+
+En la tabla, cada cuadrado tiene que estar en la columna de la parte a la que favorece. Por
+ejemplo, en 6.2 con Prohibitions: 1 cuadrado en cada columna (D32 favorece a TALVERA, D33 a
+ORVANE).
+
+
+3. SECCIÓN POR SECCIÓN
+======================
+Cuadrados esperados por tipo (TALVERA : ORVANE; «—» = ningún enunciado de ese tipo) y
+veredicto con los tres tipos juntos (columna «Who it favours» de Table v2).
+
+  Sección                          Oblig.  Derech.  Prohib.  Veredicto (3 tipos)
+  2.1  Supply                       1:0      —        —      TALVERA
+  2.2  Exclusive Purchase           0:1      —        —      ORVANE
+  2.3  Minimum Purchase             0:2      —        —      ORVANE
+  2.4  Affiliates                   0:1     1:0       —      depende del tipo
+  3.1  Forecasts                    0:2      —        —      ORVANE
+  3.2  Purchase Orders              0:1      —        —      ORVANE
+  3.3  Acceptance of Orders         2:0     0:1       —      depende del tipo
+  4.1  Delivery                     1:0      —        —      TALVERA
+  4.2  Late Delivery                1:0      —        —      TALVERA
+  4.3  Inspection                   0:1      —        —      ORVANE
+  4.4  Remedies                     1:0     0:1       —      depende del tipo
+  4.5  Disputed Conformity           —      1:1       —      empate
+  5.1  Price                        0:1      —        —      ORVANE
+  5.2  Price Adjustment              —      0:1      1:0     depende del tipo
+  5.3  Invoicing and Payment        1:1     1:0       —      TALVERA
+  5.4  Late Payment                 0:1      —        —      ORVANE
+  5.5  Taxes                        1:1      —        —      empate
+  6.1  Quality Agreement            1:1      —        —      empate
+  6.2  Changes                       —      0:1      1:1     ORVANE
+  6.3  Regulatory Support           1:0      —        —      TALVERA
+  6.4  Audits and Inspections        —      1:0       —      TALVERA
+  6.5  Recalls                      1:1      —        —      empate
+  7.1  Ownership                     —      1:2       —      ORVANE
+  7.2  License to Buyer              —      1:0      0:1     depende del tipo
+  8.1  Safety Stock                 1:0      —        —      TALVERA
+  8.2  Notice of Shortage           1:0      —        —      TALVERA
+  8.3  Allocation                   1:0      —        —      TALVERA
+  8.4  Second Source                1:0     1:0       —      TALVERA
+  9.1  (warranty of ORVANE)         1:0      —        —      TALVERA
+  9.2  (warranty of TALVERA)        0:1      —        —      ORVANE
+  9.3  (disclaimer)                  —      0:1       —      ORVANE
+  10.1                              1:0      —        —      TALVERA
+  10.2 (con (a), (b) y (c))         0:1      —        —      ORVANE
+  11.1                               —      1:1       —      empate
+  11.2                               —      0:1       —      ORVANE
+  12.1                              1:1      —        —      empate
+  12.3                               —      1:0       —      TALVERA
+  13.2 Termination for Breach        —      1:1       —      empate
+  13.3 Termination for Convenience  0:1     1:0       —      depende del tipo
+  13.4 Termination for Insolvency    —      0:1       —      ORVANE
+  13.5 Effect of Termination        1:1      —        —      empate
+  14.1                               —      1:1       —      empate
+  15.1 Assignment                    —      0:1      1:1     ORVANE
+  15.3 Subcontracting               1:0     0:1       —      depende del tipo
+
+Sin fila: el Artículo 1 (definiciones), 10.3, 12.2, 13.1, 15.2, 15.4 y 15.5 no tienen
+enunciados NÚCLEO. Si alguna aparece con cuadrados, son OPCIONALES o ruido.
+
+Detalle esperado al abrir una sección:
+- 4.4 con Obligations: TALVERA recibe D16 (ORVANE repone o reembolsa). Con Rights: ORVANE
+  recibe D17 («sole and exclusive remedies»).
+- 6.5 con Obligations: 1:1. TALVERA recibe D37 (ORVANE paga la retirada si fue culpa suya);
+  ORVANE recibe D38 (en los demás casos la paga TALVERA).
+- 10.2: un solo enunciado; sus fragmentos enlazan al párrafo de 10.2 y a los de (a), (b) y
+  (c), no a otra sección.
+
+
+4. TRAMPAS: QUÉ PRUEBA CADA UNA
+================================
+U1  Artículo de definiciones (1.1–1.8).
+    Esperado: ningún enunciado, aunque 1.8 (Supply Failure) tenga cifras y condiciones.
+    Si falla: aparecen filas de definiciones con cuadrados.
+
+U2  Términos definidos fuera del Artículo 1.
+    Esperado: «Confidential Information» (12.1) y «Term» (13.1, usado ya en 2.2) entre los
+    términos definidos.
+
+U3  Sujetos implícitos y voz pasiva — D08, D24, D28.
+    Esperado: D08 y D28 son de TALVERA a favor de ORVANE; D24 (el tope de subida) es una
+    limitación de ORVANE a favor de TALVERA.
+    Si falla: el enunciado sale sin dueño y desaparece del conteo, o con el dueño al revés.
+
+U4  Dos partes en la misma oración — 6.2 (D32 y D33), 6.5 (D37 y D38), 13.5 (D63 y D64).
+    Esperado: dos enunciados, cada uno con su dueño.
+    Si falla: se extrae uno solo y la sección pierde su empate o su mezcla.
+
+U5  «may, but is not obligated to» — D11.
+    Esperado: derecho de ORVANE (discreción), no obligación.
+
+U6  Aceptación tácita en los dos sentidos — D12o (favorece a TALVERA) y D15o (favorece a
+    ORVANE).
+    Esperado: OPCIONALES; si aparecen, cada una del lado correcto.
+
+U7  «Sole and exclusive remedies» — D17.
+    Esperado: favorece a ORVANE, aunque la frase hable de los remedios de TALVERA.
+    Si falla: aparece como derecho de TALVERA, y 4.4 sale a favor de TALVERA en vez de
+    «depende del tipo».
+
+U8  Descargo de garantías que no anula la garantía — 9.3 frente a 9.1.
+    Esperado: 9.1 sigue a favor de TALVERA; 9.3 a favor de ORVANE. Ninguna relación debe decir
+    que 9.3 deja sin efecto a 9.1.
+
+U9  Tope que se impone a otras secciones — 11.2 frente a 4.2 y 10.1.
+    Esperado del conteo: 11.2 a favor de ORVANE; 4.2 y 10.1 a favor de TALVERA.
+    Lectura humana: las penalidades de 4.2 y la indemnidad de 10.1 quedan limitadas por el
+    tope anual. El grafo debería unir D55 con 4.2 y con 10.1 («modifies»).
+
+U10 Referencias por rol — 10.3 («the indemnified Party», «the indemnifying Party»).
+    Esperado: OPCIONAL; no debe atribuirse con certeza a una parte fija.
+
+U11 Un enunciado repartido en varios párrafos — 10.2 con (a), (b) y (c).
+    Esperado: un solo enunciado de TALVERA a favor de ORVANE, dentro de 10.2. Los párrafos
+    (a), (b) y (c) no son secciones nuevas.
+
+U12 Cadena de exposición — 1.8 (Supply Failure) y 14.1 (fuerza mayor de más de 90 días) →
+    8.4 (segunda fuente y transferencia de know-how a costa de ORVANE).
+    Esperado: C14 condiciona D46 y D47; D46 modifica 2.2. La relación de 14.1 con 1.8 / 8.4 es
+    OPCIONAL.
+
+U13 Valores censurados — Exhibit A («[***]»).
+    Esperado: el valor del Buffer (120.00 EUR) se extrae; los censurados no se inventan. Las
+    líneas del Exhibit A no son enunciados.
+
+U14 Excepciones de un solo lado dentro de cláusulas recíprocas — 15.1 (D66a/b + D67) y 11.1
+    (excepciones de los Artículos 10 y 12).
+    Esperado: 15.1 prohibiciones 1:1 y derechos 0:1 → ORVANE.
+
+U15 Terceros — el laboratorio (D19), las autoridades (D36, 12.3), las Affiliates (2.4), los
+    subcontratistas (15.3), el transportista (4.1).
+    Esperado: ningún tercero aparece como parte ni recibe conteo.
+
+U16 Quién paga depende del resultado — D21 («The Party whose position the laboratory rejects
+    shall bear the laboratory’s fees»).
+    Esperado: OPCIONAL; no debe fijarse a una parte.
+
+U17 Contrato parejo — sección 1 de este archivo.
+    Esperado: el contrato «depende del tipo» con los tres tipos juntos; con un tipo a la vez,
+    TALVERA en obligaciones, ORVANE en derechos y empate en prohibiciones.
+
+U18 Licencia redactada como acto del otro — D41 («Supplier grants Buyer a … license»).
+    Esperado: derecho de TALVERA.
+
+U19 El final del documento — firmas y Exhibit A después de 15.5.
+    Esperado: nada de eso produce enunciados ni se suma a la sección 15.5.
+
+
+5. LECTURA HUMANA: QUIÉN SALE MEJOR Y QUÉ RENEGOCIAR
+====================================================
+Veredicto humano: favorece a ORVANE, aunque el conteo diga «depende del tipo».
+- Los compromisos de TALVERA son pesados: compra exclusiva (2.2), mínimo de 2 millones de
+  euros al año con pago de la diferencia (2.3), previsiones vinculantes (3.1) y penalidad por
+  terminar antes de tiempo (13.3).
+- Las protecciones de ORVANE pesan más que su número: remedio único (4.4), tope anual que se
+  impone a las penalidades y a la indemnidad (11.2), descargo de otras garantías (9.3),
+  terminación por insolvencia solo a su favor (13.4), cesión libre a Affiliates o a un
+  comprador (15.1) y propiedad de las mejoras aunque TALVERA contribuya (7.1).
+- TALVERA tiene salvaguardas reales, pero limitadas: stock de seguridad (8.1), segunda fuente
+  con know-how ante un Supply Failure (8.4), penalidades por retraso con tope del 10 % (4.2) y
+  subida de precios limitada al 5 % (5.2).
+
+Si soy TALVERA, conviene renegociar: 2.2, 2.3, 3.1, 4.3 (aceptación tácita a los 30 días),
+4.4, 7.1, 11.2, 13.3, 13.4 y 15.1.
+Si soy ORVANE, conviene renegociar: 4.2, 5.2, 6.4, 6.5, 8.1 y 8.4.
+
+Lo que el conteo no ve en este contrato: que 11.2 recorta lo que 4.2 y 10.1 parecen dar (U9),
+que 4.4 cierra cualquier otro remedio (U7) y que una diferencia de 1 en obligaciones decide el
+veredicto (U17).
+
+
+6. CÓMO USAR ESTOS DOS ARCHIVOS
+===============================
+1. Generar el grafo del contrato con notebooks/build_kg.ipynb. Es una llamada de pago: pedir
+   antes el coste estimado.
+2. Comparar el grafo con el archivo 1: enunciados NÚCLEO encontrados, partes bien atribuidas,
+   condiciones, valores y relaciones.
+3. Abrir el contrato en Table v1.1 y en Table v2 y comparar con las secciones 1 a 3 de este
+   archivo.
+4. Revisar cada trampa de la sección 4 y anotar en la conversación si el sistema la resuelve.
+   No guardar el análisis: la próxima prueba tiene que ser a ciegas.

@@ -1,0 +1,284 @@
+GROUND TRUTH 1 DE 2 — LO QUE EL GRAFO DEBE CONTENER
+Contrato sintético: Reseller Agreement entre Halverson Data Systems y Corvin Outreach Group
+=====================================================================================
+
+Archivo del contrato: infra/contracts_docx/Synthetic_HalversonCorvin_Reseller Agreement.docx
+Fecha: 15 de octubre de 2026
+Autoría: contrato y referencia escritos por Claude a pedido del equipo, como prueba antes del
+contrato real que mandará el asesor. Las empresas y las personas son inventadas.
+
+Para qué sirve
+--------------
+Este archivo dice qué tiene que encontrar la extracción (el grafo de conocimiento). El archivo 2
+(Synthetic_HalversonCorvin_2_lectura.txt) dice qué tiene que concluir la visualización a partir
+de esto. Si algo falla, este archivo separa los dos casos: la extracción no lo encontró, o lo
+encontró y la pantalla lo leyó mal.
+
+Todas las frases citadas abajo están copiadas literalmente del contrato (se comprobó una por una
+contra el texto del .docx). Están en inglés porque así está el contrato.
+
+
+PARTES
+======
+- Halverson Data Systems, Inc. — en el contrato «Provider». Da el servicio (una plataforma de
+  verificación de identidad y detección de fraude). En el resto del archivo: HALVERSON.
+- Corvin Outreach Group, LLC — en el contrato «Reseller». Revende suscripciones de la
+  plataforma. En el resto del archivo: CORVIN.
+
+Personas y entidades que aparecen pero NO son partes del contrato:
+- El árbitro (cláusula 11).
+- «The undersigned principal of Reseller», Daniel Okafor, como garante personal (cláusula 12).
+- Los clientes de cada parte.
+
+
+CONVENCIONES
+============
+- Un enunciado = una obligación, un derecho o una prohibición de una parte.
+- «Debe / titular»: quien tiene que cumplir la obligación o la prohibición, o quien tiene el
+  derecho.
+- «Favorece a»: la parte que se beneficia. Un derecho favorece a su titular; una obligación o
+  una prohibición favorece a la otra parte (el deber de una es el derecho de la otra).
+- Las cláusulas recíprocas («Each party shall…», «Either party may…», «Neither party shall…»)
+  se cuentan como dos enunciados gemelos, uno por parte (sufijos «a» y «b»). Si la extracción
+  produce uno solo marcado como de ambas partes, también es correcto.
+- Estados:
+    NÚCLEO    → tiene que aparecer; si falta, es un fallo de la extracción.
+    OPCIONAL  → defendible de las dos maneras; aparecer o no, nunca es un fallo.
+    NO-PARTE  → lo debe alguien que no es parte; no cuenta para ninguna de las dos.
+    GARANTE   → lo debe una persona (el garante), no una de las partes; ver nota en S36.
+- Párrafo: posición dentro de la cláusula (¶1, ¶2). Solo las cláusulas 2 y 5 tienen dos
+  párrafos.
+
+
+ENUNCIADOS POR CLÁUSULA
+=======================
+Formato: ID | tipo | debe / titular | favorece a | estado
+         «frase exacta»
+
+Cláusula 1 — Appointment
+S01  | derecho     | CORVIN     | CORVIN     | NÚCLEO
+     «Reseller may resell subscriptions to the Platform to customers located in the Territory»
+S01o | derecho     | CORVIN     | CORVIN     | OPCIONAL (el nombramiento; puede salir también
+     como obligación de HALVERSON a favor de CORVIN)
+     «Provider appoints Reseller as a non-exclusive reseller of the Platform in the State of Florida»
+S02  | prohibición | CORVIN     | HALVERSON  | NÚCLEO
+     «Reseller shall not market or resell the Platform outside the Territory without Provider’s prior written consent»
+
+Cláusula 2 — Fees and Payment (¶1)
+S03  | obligación  | CORVIN     | HALVERSON  | NÚCLEO
+     «Reseller shall pay Provider the subscription fees set out in Exhibit A for each customer account that Reseller activates»
+S04  | obligación  | HALVERSON  | CORVIN     | NÚCLEO (deber de trámite; ver archivo 2, trampa T7)
+     «Provider shall invoice Reseller monthly»
+S05  | obligación  | CORVIN     | HALVERSON  | NÚCLEO
+     «Reseller shall pay each invoice in full within thirty (30) days of the invoice date»
+S06  | derecho     | HALVERSON  | HALVERSON  | NÚCLEO
+     «Provider may increase the fees set out in Exhibit A upon thirty (30) days’ prior written notice to Reseller»
+S06o | obligación  | HALVERSON  | CORVIN     | OPCIONAL (el aviso previo, si se extrae aparte)
+     «upon thirty (30) days’ prior written notice to Reseller»
+
+Cláusula 2 — Fees and Payment (¶2)
+S07  | obligación  | CORVIN     | HALVERSON  | NÚCLEO (el sujeto no se nombra: es quien no
+     pagó, CORVIN)
+     «Any amount that is not paid when due shall bear a late charge of one and one-half percent (1.5%) per month»
+S08  | obligación  | CORVIN     | HALVERSON  | NÚCLEO
+     «Reseller shall pay a fee of fifty dollars ($50.00) for each returned or dishonored payment»
+S09  | obligación  | CORVIN     | HALVERSON  | NÚCLEO
+     «Reseller shall reimburse Provider for all reasonable costs of collecting past-due amounts, including attorneys’ fees»
+S10  | obligación  | HALVERSON  | CORVIN     | NÚCLEO (deber de trámite; ver trampa T7)
+     «Provider shall apply each payment it receives first to the oldest outstanding invoice»
+
+Cláusula 3 — Marketing Materials
+S11  | obligación  | CORVIN     | HALVERSON  | NÚCLEO
+     «Reseller shall submit to Provider for approval all marketing materials that refer to the Platform before using them»
+S12  | obligación  | HALVERSON  | CORVIN     | NÚCLEO
+     «Provider shall approve or reject the submitted materials within five (5) business days of receipt»
+S13  | prohibición | CORVIN     | HALVERSON  | NÚCLEO
+     «Reseller shall not use any marketing materials that Provider has not approved»
+
+Cláusula 4 — Compliance (recíproca)
+S14a | obligación  | HALVERSON  | CORVIN     | NÚCLEO
+S14b | obligación  | CORVIN     | HALVERSON  | NÚCLEO
+     «Each party shall comply with all laws and regulations that apply to its activities under this Agreement»
+S15a | prohibición | HALVERSON  | CORVIN     | NÚCLEO
+S15b | prohibición | CORVIN     | HALVERSON  | NÚCLEO
+     «Neither party shall engage in any deceptive, misleading or abusive practice in connection with the Platform»
+
+Cláusula 5 — Confidentiality and Customer Data (¶1, recíproca)
+S16a | prohibición | HALVERSON  | CORVIN     | NÚCLEO
+S16b | prohibición | CORVIN     | HALVERSON  | NÚCLEO
+     «Each party (the “Receiving Party”) shall not disclose to any third party any information that the other party marks as confidential»
+
+Cláusula 5 — Confidentiality and Customer Data (¶2)
+S17  | prohibición | HALVERSON  | CORVIN     | NÚCLEO
+     «Provider shall not use any information about Reseller’s customers for any purpose other than delivering the Platform to those customers»
+S18  | prohibición | HALVERSON  | CORVIN     | NÚCLEO
+     «Provider shall not contact Reseller’s customers to offer them other products during the term of this Agreement»
+
+Cláusula 6 — Audit
+S19  | derecho     | HALVERSON  | HALVERSON  | NÚCLEO
+     «Provider may audit Reseller’s sales records relating to the Platform once in each calendar year»
+S20  | obligación  | HALVERSON  | CORVIN     | NÚCLEO (la auditoría la paga HALVERSON)
+     «Each audit shall be conducted at Provider’s expense»
+
+Cláusula 7 — Term and Termination (solo título; los enunciados están en 7.1, 7.2 y 7.3)
+
+Cláusula 7.1 (sin título propio; recíproca)
+S21a | derecho     | HALVERSON  | HALVERSON  | NÚCLEO
+S21b | derecho     | CORVIN     | CORVIN     | NÚCLEO
+     «Either party may terminate this Agreement for a material breach by the other party upon thirty (30) days’ written notice»
+
+Cláusula 7.2 (sin título propio)
+S22  | derecho     | HALVERSON  | HALVERSON  | NÚCLEO
+     «Provider may terminate this Agreement immediately and without notice if Reseller fails to pay any amount within ten (10) days after its due date»
+
+Cláusula 7.3 (sin título propio)
+S23  | obligación  | CORVIN     | HALVERSON  | NÚCLEO
+     «Reseller shall immediately cease marketing and reselling the Platform»
+S24  | obligación  | CORVIN     | HALVERSON  | NÚCLEO
+     «Reseller shall pay all outstanding invoices within fifteen (15) days after termination»
+
+Cláusula 8 — Warranties (solo título)
+
+Cláusula 8.1 (sin título propio)
+S25  | obligación  | CORVIN     | HALVERSON  | NÚCLEO (garantía de CORVIN)
+     «Reseller warrants that it holds every license and registration required to resell the Platform in the Territory»
+
+Cláusula 8.2 (sin título propio)
+S26  | obligación  | HALVERSON  | CORVIN     | NÚCLEO (garantía de HALVERSON; la anula la
+     cláusula 9, ver relaciones)
+     «Provider warrants that the Platform will perform substantially in accordance with its published documentation»
+
+Cláusula 9 — Limitation of Liability
+S27  | derecho     | HALVERSON  | HALVERSON  | NÚCLEO (rechazo de garantías; puede salir
+     también como prohibición o limitación; lo que importa es que favorece a HALVERSON)
+     «THE PLATFORM IS PROVIDED “AS IS” AND PROVIDER DISCLAIMS ALL WARRANTIES, WHETHER EXPRESS OR IMPLIED»
+S28  | derecho     | HALVERSON  | HALVERSON  | NÚCLEO (exclusión de daños indirectos)
+     «PROVIDER SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL OR CONSEQUENTIAL DAMAGES»
+S29  | derecho     | HALVERSON  | HALVERSON  | NÚCLEO (tope de responsabilidad)
+     «PROVIDER’S TOTAL LIABILITY UNDER THIS AGREEMENT SHALL NOT EXCEED THE FEES PAID BY RESELLER IN THE THREE (3) MONTHS BEFORE THE CLAIM»
+
+Cláusula 10 — Indemnification
+S30  | obligación  | CORVIN     | HALVERSON  | NÚCLEO (indemnidad amplia)
+     «Reseller shall defend, indemnify and hold harmless Provider from any claim arising out of Reseller’s marketing or resale of the Platform»
+S31  | obligación  | HALVERSON  | CORVIN     | NÚCLEO (indemnidad estrecha: solo patentes y
+     derechos de autor de EE. UU.; ver trampa T6)
+     «Provider shall indemnify Reseller only against claims that the Platform infringes a United States patent or copyright»
+
+Cláusula 11 — Disputes
+S32a | obligación  | HALVERSON  | CORVIN     | NÚCLEO
+S32b | obligación  | CORVIN     | HALVERSON  | NÚCLEO
+     «The parties shall first attempt to resolve any dispute through good-faith negotiation for fifteen (15) days»
+S33  | obligación  | ambas      | ambas      | OPCIONAL (regla de procedimiento compartida)
+     «Any dispute that is not resolved by negotiation shall be settled by binding arbitration in Wilmington, Delaware»
+S34  | obligación  | el árbitro | —          | NO-PARTE
+     «The arbitrator shall issue a written award within thirty (30) days after the final hearing»
+S35a | obligación  | HALVERSON  | CORVIN     | NÚCLEO
+S35b | obligación  | CORVIN     | HALVERSON  | NÚCLEO
+     «Each party shall bear its own attorneys’ fees in the arbitration»
+
+Cláusula 12 — Personal Guaranty
+S36  | obligación  | el garante | HALVERSON  | GARANTE
+     «The undersigned principal of Reseller personally guarantees the payment of all amounts that Reseller owes under this Agreement»
+     Nota: la debe una persona (el dueño de CORVIN), no CORVIN. Favorece claramente a
+     HALVERSON. Es correcto que la extracción la registre con «debe» vacío o con el garante;
+     también es aceptable atribuirla a CORVIN. Lo que no es correcto es que favorezca a CORVIN.
+
+Cláusula 13 — Non-Solicitation
+S37  | prohibición | CORVIN     | HALVERSON  | NÚCLEO
+     «Reseller shall not solicit any customer of Provider that Reseller did not introduce to the Platform»
+
+Cláusula 14 — General (solo título)
+
+Cláusula 14.1 (sin título propio; recíproca)
+S38a | prohibición | HALVERSON  | CORVIN     | NÚCLEO
+S38b | prohibición | CORVIN     | HALVERSON  | NÚCLEO
+     «Neither party may assign this Agreement without the prior written consent of the other party»
+
+Cláusula 14.2 (sin título propio)
+S39  | obligación  | ambas      | ambas      | OPCIONAL (regla de forma de las notificaciones)
+     «All notices under this Agreement shall be in writing and delivered to the addresses set out above»
+
+Resumen: 42 enunciados NÚCLEO (22 obligaciones, 9 derechos, 11 prohibiciones), 4 OPCIONALES
+(S01o, S06o, S33, S39), 1 NO-PARTE (S34) y 1 GARANTE (S36).
+
+
+TEXTO QUE NO DEBE PRODUCIR ENUNCIADOS
+=====================================
+Si la extracción crea un enunciado a partir de estos textos, es ruido:
+- El encabezado («Exhibit 10.7», «RESELLER AGREEMENT») y el párrafo de las partes.
+- Los tres considerandos (RECITALS 1–3) y «Now, therefore, … the parties agree as follows.»
+- 7.1, primera frase: «This Agreement begins on the Effective Date and continues for one (1)
+  year, and it renews automatically for successive one (1) year terms» (describe la duración;
+  nadie debe nada).
+- 14.3: «This Agreement, together with Exhibit A, is the entire agreement of the parties and
+  supersedes all prior agreements between them».
+- El bloque de firmas.
+- Exhibit A (las tarifas son valores, no enunciados; ver VALORES).
+
+
+CONDICIONES
+===========
+Formato: ID | operador | disparador | condiciona a
+C01 | UNLESS | «without Provider’s prior written consent»                         | S02
+C02 | UPON   | «upon thirty (30) days’ prior written notice to Reseller»           | S06
+C03 | IF     | «not paid when due»                                               | S07
+C04 | IF     | «returned or dishonored payment» (OPCIONAL)                       | S08
+C05 | IF     | «past-due amounts» (OPCIONAL)                                     | S09
+C06 | UPON   | «upon ten (10) business days’ prior written notice»               | S19
+C07 | IF     | «if the breach is not cured within that period»                   | S21a y S21b
+C08 | IF     | «if Reseller fails to pay any amount within ten (10) days after its due date» | S22
+C09 | UPON   | «Upon any termination of this Agreement»                          | S23 y S24
+C10 | UNLESS | «without the prior written consent of the other party»            | S38a y S38b
+C11 | IF     | «Any dispute that is not resolved by negotiation» (OPCIONAL)      | S33
+C12 | UNLESS | «except as required by law»                                       | S16a y S16b
+C13 | UPON   | «any claim arising out of Reseller’s marketing or resale of the Platform» (OPCIONAL: delimita el alcance de la indemnidad) | S30
+C14 | IF     | «claims that the Platform infringes a United States patent or copyright» (OPCIONAL: delimita el alcance de la indemnidad) | S31
+
+
+VALORES
+=======
+Formato: ID | valor | tipo | cuantifica a
+V01 | 30 días                         | plazo        | S05 (pagar cada factura)
+V02 | 30 días                         | plazo        | S06 (aviso antes de subir precios)
+V03 | 1.5 % al mes                    | porcentaje   | S07 (recargo por mora)
+V04 | 50.00 USD                       | importe      | S08 (pago devuelto)
+V05 | 5 días hábiles                  | plazo        | S12 (aprobar materiales)
+V06 | una vez por año calendario      | frecuencia   | S19 (auditoría)
+V07 | 10 días hábiles                 | plazo        | S19 / C06 (aviso de auditoría)
+V08 | 1 año, renovable por 1 año      | duración     | cláusula 7.1 (vigencia)
+V09 | 30 días                         | plazo        | S21a y S21b (aviso y subsanación)
+V10 | 10 días                         | plazo        | S22 / C08 (impago que permite rescindir)
+V11 | 15 días                         | plazo        | S24 (pagar tras la terminación)
+V12 | 3 meses de tarifas              | tope         | S29 (límite de responsabilidad)
+V13 | 15 días                         | plazo        | S32a y S32b (negociación)
+V14 | 30 días                         | plazo        | S34 (laudo del árbitro)
+V15 | 12 meses                        | plazo        | S37 (no captar clientes)
+V16 | 40.00 USD por cuenta al mes     | importe      | S03 (Exhibit A, suscripción estándar)
+V17 | 95.00 USD por cuenta al mes     | importe      | S03 (Exhibit A, suscripción premium)
+V18 | 150.00 USD por cuenta, una vez  | importe      | S03 (Exhibit A, alta)
+
+
+RELACIONES ENTRE CLÁUSULAS
+==========================
+Son las que el grafo debería registrar como aristas entre cláusulas o enunciados:
+- S22 (7.2) MODIFICA la cláusula 7.1: «Notwithstanding Section 7.1, Provider may terminate…
+  immediately and without notice». El plazo de 30 días de 7.1 no protege a CORVIN si se atrasa
+  en un pago.
+- S27 (9) MODIFICA la cláusula 8.2: «NOTWITHSTANDING SECTION 8.2, THE PLATFORM IS PROVIDED
+  “AS IS”…». La garantía de 8.2 queda vacía.
+- La cláusula 9 REFERENCIA a la 8.2; la 7.2 REFERENCIA a la 7.1; la 2 y la 14.3 REFERENCIAN al
+  Exhibit A.
+
+
+TÉRMINOS DEFINIDOS
+==================
+Agreement, Effective Date, Provider, Reseller, Platform, Territory, Receiving Party,
+Confidential Information.
+
+
+REVISIONES DE ESTA REFERENCIA
+=============================
+- 15 de octubre de 2026: primera versión.
+- 15 de octubre de 2026: se añaden C12 (la excepción «except as required by law» de la
+  cláusula 5, omitida en la primera versión) y C13–C14 como OPCIONALES (los disparadores que
+  delimitan cada indemnidad de la cláusula 10).

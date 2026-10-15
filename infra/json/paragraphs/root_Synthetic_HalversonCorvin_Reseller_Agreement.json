@@ -1,0 +1,398 @@
+{
+  "documentId": "root::Synthetic_HalversonCorvin_Reseller Agreement",
+  "tree": [
+    {
+      "ref": "1",
+      "heading": "Appointment. Provider appoints Reseller as a non-exclusive reseller of",
+      "level": 1,
+      "paragraphId": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-10",
+      "children": []
+    },
+    {
+      "ref": "2",
+      "heading": "Fees and Payment. Reseller shall pay Provider the subscription fees se",
+      "level": 1,
+      "paragraphId": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-11",
+      "children": []
+    },
+    {
+      "ref": "3",
+      "heading": "Marketing Materials. Reseller shall submit to Provider for approval al",
+      "level": 1,
+      "paragraphId": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-13",
+      "children": []
+    },
+    {
+      "ref": "4",
+      "heading": "Compliance. Each party shall comply with all laws and regulations that",
+      "level": 1,
+      "paragraphId": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-14",
+      "children": []
+    },
+    {
+      "ref": "5",
+      "heading": "Confidentiality and Customer Data. Each party (the “Receiving Party”)",
+      "level": 1,
+      "paragraphId": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-15",
+      "children": []
+    },
+    {
+      "ref": "6",
+      "heading": "Audit. Provider may audit Reseller’s sales records relating to the Pla",
+      "level": 1,
+      "paragraphId": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-17",
+      "children": []
+    },
+    {
+      "ref": "7",
+      "heading": "Term and Termination.",
+      "level": 1,
+      "paragraphId": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-18",
+      "children": [
+        {
+          "ref": "7.1",
+          "heading": "This Agreement begins on the Effective Date and continues for one (1)",
+          "level": 2,
+          "paragraphId": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-19",
+          "children": []
+        },
+        {
+          "ref": "7.2",
+          "heading": "Notwithstanding Section 7.1, Provider may terminate this Agreement imm",
+          "level": 2,
+          "paragraphId": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-20",
+          "children": []
+        },
+        {
+          "ref": "7.3",
+          "heading": "Upon any termination of this Agreement, Reseller shall immediately cea",
+          "level": 2,
+          "paragraphId": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-21",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "8",
+      "heading": "Warranties.",
+      "level": 1,
+      "paragraphId": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-22",
+      "children": [
+        {
+          "ref": "8.1",
+          "heading": "Reseller warrants that it holds every license and registration require",
+          "level": 2,
+          "paragraphId": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-23",
+          "children": []
+        },
+        {
+          "ref": "8.2",
+          "heading": "Provider warrants that the Platform will perform substantially in acco",
+          "level": 2,
+          "paragraphId": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-24",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "9",
+      "heading": "Limitation of Liability. NOTWITHSTANDING SECTION 8.2, THE PLATFORM IS",
+      "level": 1,
+      "paragraphId": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-25",
+      "children": []
+    },
+    {
+      "ref": "10",
+      "heading": "Indemnification. Reseller shall defend, indemnify and hold harmless Pr",
+      "level": 1,
+      "paragraphId": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-26",
+      "children": []
+    },
+    {
+      "ref": "11",
+      "heading": "Disputes. The parties shall first attempt to resolve any dispute throu",
+      "level": 1,
+      "paragraphId": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-27",
+      "children": []
+    },
+    {
+      "ref": "12",
+      "heading": "Personal Guaranty. The undersigned principal of Reseller personally gu",
+      "level": 1,
+      "paragraphId": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-28",
+      "children": []
+    },
+    {
+      "ref": "13",
+      "heading": "Non-Solicitation. During the term of this Agreement and for twelve (12",
+      "level": 1,
+      "paragraphId": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-29",
+      "children": []
+    },
+    {
+      "ref": "14",
+      "heading": "General.",
+      "level": 1,
+      "paragraphId": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-30",
+      "children": [
+        {
+          "ref": "14.1",
+          "heading": "Neither party may assign this Agreement without the prior written cons",
+          "level": 2,
+          "paragraphId": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-31",
+          "children": []
+        },
+        {
+          "ref": "14.2",
+          "heading": "All notices under this Agreement shall be in writing and delivered to",
+          "level": 2,
+          "paragraphId": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-32",
+          "children": []
+        },
+        {
+          "ref": "14.3",
+          "heading": "This Agreement, together with Exhibit A, is the entire agreement of th",
+          "level": 2,
+          "paragraphId": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-33",
+          "children": []
+        }
+      ]
+    }
+  ],
+  "paragraphs": [
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-3",
+      "text": "This Reseller Agreement (the “Agreement”) is made this 1st day of March 2024 (the “Effective Date”), by and between Halverson Data Systems, Inc., a Delaware corporation with its principal place of business at 410 Quarry Lane, Suite 200, Wilmington, Delaware 19801 (“Provider”), and Corvin Outreach Group, LLC, a Florida limited liability company with its principal place of business at 88 Palm Court, Suite 12, Tampa, Florida 33602 (“Reseller”).",
+      "paragraph_enum": 0,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-4",
+      "text": "RECITALS",
+      "paragraph_enum": 1,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-5",
+      "text": "1. Provider operates a cloud platform that delivers identity verification and fraud screening reports to businesses (the “Platform”).",
+      "paragraph_enum": 2,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-6",
+      "text": "2. Reseller wishes to market and resell subscriptions to the Platform to small businesses.",
+      "paragraph_enum": 3,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-7",
+      "text": "3. Provider is willing to appoint Reseller on the terms set out below.",
+      "paragraph_enum": 4,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-8",
+      "text": "Now, therefore, in consideration of the mutual promises below, the parties agree as follows.",
+      "paragraph_enum": 5,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-9",
+      "text": "TERMS AND CONDITIONS",
+      "paragraph_enum": 6,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-10",
+      "text": "1. Appointment. Provider appoints Reseller as a non-exclusive reseller of the Platform in the State of Florida (the “Territory”). Reseller may resell subscriptions to the Platform to customers located in the Territory. Reseller shall not market or resell the Platform outside the Territory without Provider’s prior written consent.",
+      "paragraph_enum": 7,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-11",
+      "text": "2. Fees and Payment. Reseller shall pay Provider the subscription fees set out in Exhibit A for each customer account that Reseller activates. Provider shall invoice Reseller monthly. Reseller shall pay each invoice in full within thirty (30) days of the invoice date. Provider may increase the fees set out in Exhibit A upon thirty (30) days’ prior written notice to Reseller.",
+      "paragraph_enum": 8,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-12",
+      "text": "Any amount that is not paid when due shall bear a late charge of one and one-half percent (1.5%) per month. Reseller shall pay a fee of fifty dollars ($50.00) for each returned or dishonored payment. Reseller shall reimburse Provider for all reasonable costs of collecting past-due amounts, including attorneys’ fees. Provider shall apply each payment it receives first to the oldest outstanding invoice.",
+      "paragraph_enum": 9,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-13",
+      "text": "3. Marketing Materials. Reseller shall submit to Provider for approval all marketing materials that refer to the Platform before using them. Provider shall approve or reject the submitted materials within five (5) business days of receipt. Reseller shall not use any marketing materials that Provider has not approved.",
+      "paragraph_enum": 10,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-14",
+      "text": "4. Compliance. Each party shall comply with all laws and regulations that apply to its activities under this Agreement, including the Fair Credit Reporting Act. Neither party shall engage in any deceptive, misleading or abusive practice in connection with the Platform.",
+      "paragraph_enum": 11,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-15",
+      "text": "5. Confidentiality and Customer Data. Each party (the “Receiving Party”) shall not disclose to any third party any information that the other party marks as confidential (“Confidential Information”), except as required by law.",
+      "paragraph_enum": 12,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-16",
+      "text": "Provider shall not use any information about Reseller’s customers for any purpose other than delivering the Platform to those customers. Provider shall not contact Reseller’s customers to offer them other products during the term of this Agreement.",
+      "paragraph_enum": 13,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-17",
+      "text": "6. Audit. Provider may audit Reseller’s sales records relating to the Platform once in each calendar year, upon ten (10) business days’ prior written notice. Each audit shall be conducted at Provider’s expense.",
+      "paragraph_enum": 14,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-18",
+      "text": "7. Term and Termination.",
+      "paragraph_enum": 15,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-19",
+      "text": "7.1. This Agreement begins on the Effective Date and continues for one (1) year, and it renews automatically for successive one (1) year terms. Either party may terminate this Agreement for a material breach by the other party upon thirty (30) days’ written notice, if the breach is not cured within that period.",
+      "paragraph_enum": 16,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-20",
+      "text": "7.2. Notwithstanding Section 7.1, Provider may terminate this Agreement immediately and without notice if Reseller fails to pay any amount within ten (10) days after its due date.",
+      "paragraph_enum": 17,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-21",
+      "text": "7.3. Upon any termination of this Agreement, Reseller shall immediately cease marketing and reselling the Platform. Reseller shall pay all outstanding invoices within fifteen (15) days after termination.",
+      "paragraph_enum": 18,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-22",
+      "text": "8. Warranties.",
+      "paragraph_enum": 19,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-23",
+      "text": "8.1. Reseller warrants that it holds every license and registration required to resell the Platform in the Territory.",
+      "paragraph_enum": 20,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-24",
+      "text": "8.2. Provider warrants that the Platform will perform substantially in accordance with its published documentation.",
+      "paragraph_enum": 21,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-25",
+      "text": "9. Limitation of Liability. NOTWITHSTANDING SECTION 8.2, THE PLATFORM IS PROVIDED “AS IS” AND PROVIDER DISCLAIMS ALL WARRANTIES, WHETHER EXPRESS OR IMPLIED. PROVIDER SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL OR CONSEQUENTIAL DAMAGES. PROVIDER’S TOTAL LIABILITY UNDER THIS AGREEMENT SHALL NOT EXCEED THE FEES PAID BY RESELLER IN THE THREE (3) MONTHS BEFORE THE CLAIM.",
+      "paragraph_enum": 22,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-26",
+      "text": "10. Indemnification. Reseller shall defend, indemnify and hold harmless Provider from any claim arising out of Reseller’s marketing or resale of the Platform. Provider shall indemnify Reseller only against claims that the Platform infringes a United States patent or copyright.",
+      "paragraph_enum": 23,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-27",
+      "text": "11. Disputes. The parties shall first attempt to resolve any dispute through good-faith negotiation for fifteen (15) days. Any dispute that is not resolved by negotiation shall be settled by binding arbitration in Wilmington, Delaware. The arbitrator shall issue a written award within thirty (30) days after the final hearing. Each party shall bear its own attorneys’ fees in the arbitration.",
+      "paragraph_enum": 24,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-28",
+      "text": "12. Personal Guaranty. The undersigned principal of Reseller personally guarantees the payment of all amounts that Reseller owes under this Agreement.",
+      "paragraph_enum": 25,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-29",
+      "text": "13. Non-Solicitation. During the term of this Agreement and for twelve (12) months after it ends, Reseller shall not solicit any customer of Provider that Reseller did not introduce to the Platform.",
+      "paragraph_enum": 26,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-30",
+      "text": "14. General.",
+      "paragraph_enum": 27,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-31",
+      "text": "14.1. Neither party may assign this Agreement without the prior written consent of the other party.",
+      "paragraph_enum": 28,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-32",
+      "text": "14.2. All notices under this Agreement shall be in writing and delivered to the addresses set out above.",
+      "paragraph_enum": 29,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-33",
+      "text": "14.3. This Agreement, together with Exhibit A, is the entire agreement of the parties and supersedes all prior agreements between them.",
+      "paragraph_enum": 30,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-34",
+      "text": "IN WITNESS WHEREOF, the parties have signed this Agreement as of the Effective Date.",
+      "paragraph_enum": 31,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-35",
+      "text": "HALVERSON DATA SYSTEMS, INC.By: ______________________Name: Margaret EllisonTitle: Chief Executive Officer",
+      "paragraph_enum": 32,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-36",
+      "text": "CORVIN OUTREACH GROUP, LLCBy: ______________________Name: Daniel OkaforTitle: Managing Member",
+      "paragraph_enum": 33,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-37",
+      "text": "PRINCIPAL (as personal guarantor under Section 12)______________________Daniel Okafor",
+      "paragraph_enum": 34,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-38",
+      "text": "EXHIBIT A — FEE SCHEDULE",
+      "paragraph_enum": 35,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-39",
+      "text": "Standard subscription: forty dollars ($40.00) per customer account per month.",
+      "paragraph_enum": 36,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-40",
+      "text": "Premium subscription: ninety-five dollars ($95.00) per customer account per month.",
+      "paragraph_enum": 37,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_HalversonCorvin_Reseller Agreement-p-41",
+      "text": "Setup fee: one hundred fifty dollars ($150.00) per customer account, charged once.",
+      "paragraph_enum": 38,
+      "page": 1
+    }
+  ]
+}

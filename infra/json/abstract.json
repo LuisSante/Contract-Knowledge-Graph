@@ -62,6 +62,33 @@
           "does": "Purchase and use Miltenyi products for development and manufacture of therapeutics."
         }
       ]
+    },
+    "root::Synthetic_HalversonCorvin_Reseller Agreement": {
+      "documentId": "root::Synthetic_HalversonCorvin_Reseller Agreement",
+      "documentName": "Synthetic_HalversonCorvin_Reseller Agreement.docx",
+      "title": "Halverson Data Systems, Inc. / Corvin Outreach Group, LLC Reseller Agreement",
+      "contractType": "Reseller Agreement",
+      "summary": "{{party-1|Halverson Data Systems}} appoints {{party-2|Corvin Outreach Group}} as a non-exclusive reseller of its cloud identity verification platform in Florida. {{party-2|Corvin Outreach Group}} pays subscription and setup fees per customer. The agreement lasts one year, renews automatically, and includes a personal guaranty by {{party-3|Daniel Okafor}}.",
+      "parties": [
+        {
+          "partyId": "party-1",
+          "name": "Halverson Data Systems, Inc.",
+          "role": "Provider",
+          "does": "Provide the platform, approve marketing, invoice fees, allow audits, and deliver customer services."
+        },
+        {
+          "partyId": "party-2",
+          "name": "Corvin Outreach Group, LLC",
+          "role": "Reseller",
+          "does": "Market and resell the platform in Florida, pay fees, use approved materials, comply with laws, and indemnify provider."
+        },
+        {
+          "partyId": "party-3",
+          "name": "Daniel Okafor",
+          "role": "Personal guarantor",
+          "does": "Personally guarantee all payment obligations of Corvin Outreach Group under the agreement."
+        }
+      ]
     }
   }
 }

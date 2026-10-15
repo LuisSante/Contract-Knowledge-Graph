@@ -1,0 +1,496 @@
+GROUND TRUTH 1 DE 2 — LO QUE EL GRAFO DEBE CONTENER
+Contrato sintético: Supply Agreement entre Orvane Bioprocess y Talvera Therapeutics
+=====================================================================================
+
+Archivo del contrato: infra/contracts_docx/Synthetic_OrvaneTalvera_Supply Agreement.docx
+Fecha: 15 de octubre de 2026
+Autoría: contrato y referencia escritos por Claude a pedido del equipo, como segunda prueba,
+más difícil que la primera, al estilo de los acuerdos de suministro como Bellicum. Las
+empresas y las personas son inventadas.
+
+Para qué sirve
+--------------
+Este archivo dice qué tiene que encontrar la extracción (el grafo de conocimiento). El archivo
+2 (Synthetic_OrvaneTalvera_2_lectura.txt) dice qué tiene que concluir la visualización a
+partir de esto.
+
+Todas las frases citadas abajo están copiadas literalmente del contrato (se comprobó una por
+una contra el texto del .docx). Están en inglés porque así está el contrato.
+
+
+PARTES
+======
+- Orvane Bioprocess GmbH — en el contrato «Supplier». Fabrica y suministra los reactivos
+  CliniSep. En el resto del archivo: ORVANE.
+- Talvera Therapeutics, Inc. — en el contrato «Buyer». Compra los reactivos para sus terapias
+  celulares. En el resto del archivo: TALVERA.
+
+Entidades que aparecen pero NO son partes del contrato:
+- El laboratorio independiente (sección 4.5).
+- Las autoridades regulatorias (secciones 6.4 y 12.3).
+- El transportista (sección 4.1).
+- Las Affiliates de TALVERA (sección 2.4) y de ORVANE (sección 15.1).
+- Los subcontratistas de ORVANE (sección 15.3).
+- El tercero o fabricante designado de la segunda fuente (sección 8.4).
+- Los demás clientes de ORVANE (sección 8.3).
+
+
+CONVENCIONES
+============
+- Un enunciado = una obligación, un derecho o una prohibición de una parte.
+- «Debe / titular»: quien tiene que cumplir la obligación o la prohibición, o quien tiene el
+  derecho.
+- «Favorece a»: la parte que se beneficia. Un derecho favorece a su titular; una obligación o
+  una prohibición favorece a la otra parte.
+- Las cláusulas recíprocas («Each Party shall…», «Either Party may…», «Neither Party…», «The
+  Parties shall…») se cuentan como dos enunciados gemelos, uno por parte (sufijos «a» y «b»).
+  Si la extracción produce uno solo marcado como de ambas partes, también es correcto.
+- Estados:
+    NÚCLEO    → tiene que aparecer; si falta, es un fallo de la extracción.
+    OPCIONAL  → defendible de las dos maneras; aparecer o no, nunca es un fallo.
+    NO-PARTE  → lo debe alguien que no es parte; no cuenta para ninguna de las dos.
+- Cuando el texto de un enunciado admite otro tipo (por ejemplo derecho o prohibición), la
+  nota lo dice. Lo que nunca puede cambiar es a quién favorece.
+- Las secciones se nombran con su número (2.1, 10.2…). Los artículos (ARTICLE 1 a 15) son
+  solo títulos.
+
+
+ENUNCIADOS POR SECCIÓN
+======================
+Formato: ID | tipo | debe / titular | favorece a | estado
+         «frase exacta»
+
+Artículo 1 (definiciones, 1.1 a 1.8): ningún enunciado. Ver «Texto que no debe producir
+enunciados».
+
+Sección 2.1 — Supply
+D01  | obligación  | ORVANE        | TALVERA   | NÚCLEO
+     «Supplier shall manufacture and supply the Product to Buyer in accordance with the Specifications and the Quality Agreement»
+
+Sección 2.2 — Exclusive Purchase
+D02  | obligación  | TALVERA       | ORVANE    | NÚCLEO
+     «Buyer shall purchase from Supplier all of its requirements of Product for clinical use»
+
+Sección 2.3 — Minimum Purchase
+D03  | obligación  | TALVERA       | ORVANE    | NÚCLEO
+     «Buyer shall purchase in each calendar year Product with an aggregate price of at least two million euros (€2,000,000)»
+D04  | obligación  | TALVERA       | ORVANE    | NÚCLEO
+     «Buyer shall pay Supplier the shortfall within sixty (60) days after the end of that year»
+
+Sección 2.4 — Affiliates
+D05  | derecho     | TALVERA       | TALVERA   | NÚCLEO
+     «Buyer may designate one or more of its Affiliates to place orders under this Agreement»
+D06  | obligación  | TALVERA       | ORVANE    | NÚCLEO
+     «Buyer shall remain responsible for every order placed by its Affiliates»
+
+Sección 3.1 — Forecasts
+D07  | obligación  | TALVERA       | ORVANE    | NÚCLEO
+     «Buyer shall provide Supplier, by the fifth (5th) business day of each calendar quarter, a rolling twelve (12) month forecast of its requirements»
+D08  | obligación  | TALVERA       | ORVANE    | NÚCLEO
+     «The first three (3) months of each Forecast shall be binding on Buyer»
+     Nota: voz pasiva: quien queda obligado es TALVERA.
+
+Sección 3.2 — Purchase Orders
+D09  | obligación  | TALVERA       | ORVANE    | NÚCLEO
+     «Buyer shall place each Purchase Order at least ninety (90) days before the requested delivery date»
+
+Sección 3.3 — Acceptance of Orders
+D10  | obligación  | ORVANE        | TALVERA   | NÚCLEO
+     «Supplier shall accept each Purchase Order that is consistent with the binding part of the Forecast»
+D11  | derecho     | ORVANE        | ORVANE    | NÚCLEO
+     «Supplier may, but is not obligated to, accept any quantity that exceeds the Forecast by more than twenty percent (20%)»
+     Nota: «may, but is not obligated to»: es un derecho (discreción), no una obligación.
+D12  | obligación  | ORVANE        | TALVERA   | NÚCLEO
+     «Supplier shall confirm or reject each Purchase Order within ten (10) business days after receipt»
+D12o | derecho     | TALVERA       | TALVERA   | OPCIONAL
+     «a Purchase Order that Supplier does not reject within that period shall be deemed accepted»
+     Nota: aceptación tácita a favor de TALVERA: si ORVANE no responde, el pedido queda aceptado.
+
+Sección 4.1 — Delivery
+D13  | obligación  | ORVANE        | TALVERA   | NÚCLEO
+     «Supplier shall deliver the Product FCA (Incoterms 2020) Supplier’s facility in Freiburg, Germany»
+
+Sección 4.2 — Late Delivery
+D14  | obligación  | ORVANE        | TALVERA   | NÚCLEO
+     «Supplier shall pay Buyer, as liquidated damages, one percent (1%) of the price of the late Product for each full week of delay»
+
+Sección 4.3 — Inspection
+D15  | obligación  | TALVERA       | ORVANE    | NÚCLEO
+     «Buyer shall inspect each shipment and notify Supplier in writing of any non-conformity within thirty (30) days after receipt»
+D15o | derecho     | ORVANE        | ORVANE    | OPCIONAL
+     «Product that Buyer does not reject within that period shall be deemed accepted»
+     Nota: aceptación tácita a favor de ORVANE; excepción para defectos ocultos (C05).
+
+Sección 4.4 — Remedies
+D16  | obligación  | ORVANE        | TALVERA   | NÚCLEO
+     «Supplier shall, at its option, replace non-conforming Product or refund the price paid for it within forty-five (45) days after confirming the non-conformity»
+     Nota: «at its option»: ORVANE elige entre reponer o reembolsar.
+D17  | derecho     | ORVANE        | ORVANE    | NÚCLEO
+     «The remedies in this Section 4.4 are Buyer’s sole and exclusive remedies for non-conforming Product»
+     Nota: parece un derecho de TALVERA, pero limita sus remedios: protege a ORVANE. Puede salir como derecho de ORVANE o como prohibición para TALVERA; lo que importa es que favorece a ORVANE.
+
+Sección 4.5 — Disputed Conformity
+D18a | derecho     | ORVANE        | ORVANE    | NÚCLEO
+     «either Party may submit samples to an independent laboratory chosen by mutual agreement»
+D18b | derecho     | TALVERA       | TALVERA   | NÚCLEO
+     «either Party may submit samples to an independent laboratory chosen by mutual agreement»
+D19  | obligación  | el laboratorio| —         | NO-PARTE
+     «The laboratory shall issue its findings within thirty (30) days»
+     Nota: lo debe el laboratorio, que no es parte.
+D20  | obligación  | ambas         | ambas     | OPCIONAL
+     «its findings shall be binding on both Parties»
+     Nota: regla que obliga a las dos partes por igual.
+D21  | obligación  | ambas         | ambas     | OPCIONAL
+     «The Party whose position the laboratory rejects shall bear the laboratory’s fees»
+     Nota: quién paga depende del resultado; no se puede fijar a una parte.
+
+Sección 5.1 — Price
+D22  | obligación  | TALVERA       | ORVANE    | NÚCLEO
+     «Buyer shall pay for the Product the prices set out in Exhibit A»
+
+Sección 5.2 — Price Adjustment
+D23  | derecho     | ORVANE        | ORVANE    | NÚCLEO
+     «Supplier may adjust the prices once in each calendar year, effective January 1, by giving Buyer at least ninety (90) days’ written notice»
+D24  | prohibición | ORVANE        | TALVERA   | NÚCLEO
+     «no annual increase shall exceed the lesser of five percent (5%) or the change in the German consumer price index for the preceding twelve (12) months»
+     Nota: sin sujeto explícito: el límite recae sobre ORVANE (la subida de precios es suya).
+
+Sección 5.3 — Invoicing and Payment
+D25  | obligación  | ORVANE        | TALVERA   | NÚCLEO
+     «Supplier shall invoice Buyer upon shipment»
+     Nota: deber de trámite.
+D26  | obligación  | TALVERA       | ORVANE    | NÚCLEO
+     «Buyer shall pay each undisputed invoice within forty-five (45) days after receipt»
+D27  | derecho     | TALVERA       | TALVERA   | NÚCLEO
+     «Buyer may withhold payment of any amount that it disputes in good faith»
+
+Sección 5.4 — Late Payment
+D28  | obligación  | TALVERA       | ORVANE    | NÚCLEO
+     «Overdue undisputed amounts shall bear interest at nine percentage points above the base rate of the European Central Bank»
+     Nota: sin sujeto explícito: los intereses los paga TALVERA.
+
+Sección 5.5 — Taxes
+D29a | obligación  | ORVANE        | TALVERA   | NÚCLEO
+     «Each Party shall bear its own taxes arising from this Agreement»
+D29b | obligación  | TALVERA       | ORVANE    | NÚCLEO
+     «Each Party shall bear its own taxes arising from this Agreement»
+
+Sección 6.1 — Quality Agreement
+D30a | obligación  | ORVANE        | TALVERA   | NÚCLEO
+     «The Parties shall comply with the Quality Agreement»
+D30b | obligación  | TALVERA       | ORVANE    | NÚCLEO
+     «The Parties shall comply with the Quality Agreement»
+
+Sección 6.2 — Changes
+D31  | derecho     | ORVANE        | ORVANE    | NÚCLEO
+     «Supplier may make changes to the Product, its manufacturing process or its testing methods only after giving Buyer at least one hundred eighty (180) days’ prior written notice»
+D32  | prohibición | ORVANE        | TALVERA   | NÚCLEO
+     «Supplier shall not make any change that requires Buyer to file a regulatory amendment without Buyer’s prior written consent»
+D33  | prohibición | TALVERA       | ORVANE    | NÚCLEO
+     «which Buyer shall not unreasonably withhold»
+     Nota: prohibición anidada de la otra parte dentro de la misma oración que D32.
+
+Sección 6.3 — Regulatory Support
+D34  | obligación  | ORVANE        | TALVERA   | NÚCLEO
+     «Supplier shall provide Buyer, at Buyer’s request and expense, with the data and documentation that Buyer reasonably needs for its regulatory filings»
+D34o | obligación  | TALVERA       | ORVANE    | OPCIONAL
+     «at Buyer’s request and expense»
+     Nota: el coste lo asume TALVERA.
+
+Sección 6.4 — Audits and Inspections
+D35  | derecho     | TALVERA       | TALVERA   | NÚCLEO
+     «Buyer may audit Supplier’s manufacturing facility once in each calendar year on thirty (30) days’ notice, and at any time after a recall of the Product»
+D36  | obligación  | ORVANE        | TALVERA   | OPCIONAL
+     «Supplier shall permit regulatory authorities to inspect its facility»
+     Nota: deber hacia las autoridades; si se extrae, puede favorecer a TALVERA o a nadie.
+
+Sección 6.5 — Recalls
+D37  | obligación  | ORVANE        | TALVERA   | NÚCLEO
+     «Supplier shall reimburse Buyer for the reasonable costs of the recall»
+D38  | obligación  | TALVERA       | ORVANE    | NÚCLEO
+     «in all other cases Buyer shall bear those costs»
+     Nota: «in all other cases»: el coste de la retirada lo asume TALVERA.
+
+Sección 7.1 — Ownership
+D39a | derecho     | ORVANE        | ORVANE    | NÚCLEO
+     «Each Party shall retain all rights in its intellectual property existing before the Effective Date»
+D39b | derecho     | TALVERA       | TALVERA   | NÚCLEO
+     «Each Party shall retain all rights in its intellectual property existing before the Effective Date»
+D40  | derecho     | ORVANE        | ORVANE    | NÚCLEO
+     «Supplier shall own all improvements to its manufacturing process, even if Buyer contributes to them»
+
+Sección 7.2 — License to Buyer
+D41  | derecho     | TALVERA       | TALVERA   | NÚCLEO
+     «Supplier grants Buyer a non-exclusive, royalty-free license under Supplier’s patents to use the Product in Buyer’s cell therapy programs»
+     Nota: redactado como acto de ORVANE («grants»), pero es un derecho de TALVERA.
+D42  | prohibición | TALVERA       | ORVANE    | NÚCLEO
+     «Buyer shall not reverse engineer the Product or analyze its composition»
+
+Sección 8.1 — Safety Stock
+D43  | obligación  | ORVANE        | TALVERA   | NÚCLEO
+     «Supplier shall maintain a safety stock of Product equal to at least three (3) months of Buyer’s binding Forecast»
+
+Sección 8.2 — Notice of Shortage
+D44  | obligación  | ORVANE        | TALVERA   | NÚCLEO
+     «Supplier shall notify Buyer within five (5) business days after it becomes aware of any event that is likely to delay deliveries by more than thirty (30) days»
+
+Sección 8.3 — Allocation
+D45  | obligación  | ORVANE        | TALVERA   | NÚCLEO
+     «Supplier shall allocate its available supply among its customers in proportion to their purchases in the preceding six (6) months»
+
+Sección 8.4 — Second Source
+D46  | derecho     | TALVERA       | TALVERA   | NÚCLEO
+     «Buyer may purchase Product or an equivalent from a third party»
+D47  | obligación  | ORVANE        | TALVERA   | NÚCLEO
+     «Supplier shall transfer to Buyer or its designated manufacturer the know-how that is reasonably necessary to manufacture the Product, at Supplier’s cost»
+     Nota: a costa de ORVANE.
+D47o | obligación  | ORVANE        | TALVERA   | OPCIONAL
+     «at Supplier’s cost»
+     Nota: el coste de la transferencia, si se extrae aparte (como D34o en 6.3).
+
+Sección 9.1 — (sin título; garantía de ORVANE)
+D48  | obligación  | ORVANE        | TALVERA   | NÚCLEO
+     «Supplier warrants that each shipment of Product will conform to the Specifications at the time of delivery and will have a remaining shelf life of at least twelve (12) months»
+D48o | obligación  | ORVANE        | TALVERA   | OPCIONAL
+     «will have a remaining shelf life of at least twelve (12) months»
+     Nota: segunda garantía dentro de la misma frase, si se extrae aparte.
+
+Sección 9.2 — (sin título; garantía de TALVERA)
+D49  | obligación  | TALVERA       | ORVANE    | NÚCLEO
+     «Buyer warrants that it will use the Product only for research and clinical development and in accordance with Applicable Law»
+
+Sección 9.3 — (sin título; descargo de garantías)
+D50  | derecho     | ORVANE        | ORVANE    | NÚCLEO
+     «SUPPLIER MAKES NO OTHER WARRANTIES, EXPRESS OR IMPLIED, INCLUDING ANY WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE»
+     Nota: descarga otras garantías, pero deja en pie la de 9.1 (C24).
+
+Sección 10.1 — (sin título)
+D51  | obligación  | ORVANE        | TALVERA   | NÚCLEO
+     «Supplier shall indemnify Buyer against any third-party claim arising from a manufacturing defect in the Product or from any allegation that the Product infringes a third party’s patent»
+
+Sección 10.2 — (sin título; sigue en los párrafos (a), (b) y (c))
+D52  | obligación  | TALVERA       | ORVANE    | NÚCLEO
+     «Buyer shall indemnify Supplier against any third-party claim arising from:»
+     Nota: la frase sigue en los párrafos (a), (b) y (c); es un solo enunciado.
+
+Sección 10.3 — (sin título)
+D53  | obligación  | ambas         | ambas     | OPCIONAL
+     «The indemnified Party shall notify the indemnifying Party promptly of any claim and shall allow the indemnifying Party to control the defense»
+     Nota: referencias por rol («indemnified / indemnifying Party»): no es una parte fija.
+
+Sección 11.1 — (sin título)
+D54a | derecho     | ORVANE        | ORVANE    | NÚCLEO
+     «neither Party shall be liable to the other for any indirect, incidental or consequential damages»
+D54b | derecho     | TALVERA       | TALVERA   | NÚCLEO
+     «neither Party shall be liable to the other for any indirect, incidental or consequential damages»
+
+Sección 11.2 — (sin título)
+D55  | derecho     | ORVANE        | ORVANE    | NÚCLEO
+     «Supplier’s total liability under this Agreement in any calendar year shall not exceed the amounts paid by Buyer in that year»
+     Nota: tope de responsabilidad que se impone a 4.2 y a 10.1 (ver relaciones).
+
+Sección 12.1 — (sin título)
+D56a | obligación  | ORVANE        | TALVERA   | NÚCLEO
+     «Each Party shall keep confidential all Confidential Information of the other Party and shall use it only to perform this Agreement»
+D56b | obligación  | TALVERA       | ORVANE    | NÚCLEO
+     «Each Party shall keep confidential all Confidential Information of the other Party and shall use it only to perform this Agreement»
+D56c | obligación  | ORVANE        | TALVERA   | OPCIONAL
+D56d | obligación  | TALVERA       | ORVANE    | OPCIONAL
+     «shall use it only to perform this Agreement»
+     Nota: segundo deber de la misma frase, en las dos copias, si se extrae aparte. También
+     puede salir como prohibición; favorece a la otra parte en cada copia.
+
+Sección 12.2 — (sin título)
+D56o | obligación  | ambas         | ambas     | OPCIONAL
+     «These obligations shall continue for seven (7) years after the end of the Term»
+     Nota: duración de la confidencialidad; no es un deber nuevo.
+
+Sección 12.3 — (sin título)
+D57  | derecho     | TALVERA       | TALVERA   | NÚCLEO
+     «Buyer may disclose Supplier’s Confidential Information to regulatory authorities to the extent required for its regulatory filings»
+
+Sección 13.1 — Term
+D58o | derecho     | ambas         | ambas     | OPCIONAL
+     «It renews for successive two (2) year periods unless either Party gives notice of non-renewal at least twelve (12) months before the end of the then-current period»
+     Nota: renovación salvo aviso de cualquiera de las partes.
+
+Sección 13.2 — Termination for Breach
+D59a | derecho     | ORVANE        | ORVANE    | NÚCLEO
+     «Either Party may terminate this Agreement if the other Party materially breaches it and does not cure the breach within sixty (60) days after written notice»
+D59b | derecho     | TALVERA       | TALVERA   | NÚCLEO
+     «Either Party may terminate this Agreement if the other Party materially breaches it and does not cure the breach within sixty (60) days after written notice»
+
+Sección 13.3 — Termination for Convenience
+D60  | derecho     | TALVERA       | TALVERA   | NÚCLEO
+     «Buyer may terminate this Agreement for convenience on one hundred eighty (180) days’ written notice»
+D61  | obligación  | TALVERA       | ORVANE    | NÚCLEO
+     «Buyer shall pay Supplier a termination fee equal to fifty percent (50%) of the minimum purchase amount for the remaining full calendar years of the initial Term»
+     Nota: condicionada a terminar antes del tercer aniversario (C17).
+
+Sección 13.4 — Termination for Insolvency
+D62  | derecho     | ORVANE        | ORVANE    | NÚCLEO
+     «Supplier may terminate this Agreement immediately if Buyer becomes insolvent or makes an assignment for the benefit of its creditors»
+
+Sección 13.5 — Effect of Termination
+D63  | obligación  | TALVERA       | ORVANE    | NÚCLEO
+     «Buyer shall purchase all Product that Supplier has manufactured under Firm Orders»
+D64  | obligación  | ORVANE        | TALVERA   | NÚCLEO
+     «Supplier shall deliver that Product in accordance with Article 4»
+
+Sección 14.1 — (sin título)
+D65a | derecho     | ORVANE        | ORVANE    | NÚCLEO
+     «Neither Party shall be liable for any failure or delay caused by events beyond its reasonable control»
+D65b | derecho     | TALVERA       | TALVERA   | NÚCLEO
+     «Neither Party shall be liable for any failure or delay caused by events beyond its reasonable control»
+
+Sección 15.1 — Assignment
+D66a | prohibición | ORVANE        | TALVERA   | NÚCLEO
+     «Neither Party may assign this Agreement without the other Party’s prior written consent»
+D66b | prohibición | TALVERA       | ORVANE    | NÚCLEO
+     «Neither Party may assign this Agreement without the other Party’s prior written consent»
+D67  | derecho     | ORVANE        | ORVANE    | NÚCLEO
+     «Supplier may assign it to an Affiliate or to a purchaser of its reagent business without consent»
+     Nota: excepción que favorece solo a ORVANE dentro de una cláusula recíproca.
+
+Sección 15.3 — Subcontracting
+D68  | derecho     | ORVANE        | ORVANE    | NÚCLEO
+     «Supplier may subcontract the manufacture of components»
+D69  | obligación  | ORVANE        | TALVERA   | NÚCLEO
+     «Supplier remains responsible for the performance of its subcontractors»
+     Nota: va dentro de «provided that»: es a la vez condición de D68 y obligación de ORVANE.
+
+Sección 15.4 — Notices
+D70  | obligación  | ambas         | ambas     | OPCIONAL
+     «Notices under this Agreement shall be in writing and sent to the addresses set out above»
+     Nota: regla de forma de las notificaciones.
+
+Resumen: 72 enunciados NÚCLEO (39 obligaciones, 27 derechos, 6 prohibiciones), 14 OPCIONALES
+(D12o, D15o, D20, D21, D34o, D36, D47o, D48o, D53, D56c, D56d, D56o, D58o, D70) y 1 NO-PARTE
+(D19).
+
+
+TEXTO QUE NO DEBE PRODUCIR ENUNCIADOS
+=====================================
+Si la extracción crea un enunciado a partir de estos textos, es ruido:
+- La advertencia de información excluida («CERTAIN IDENTIFIED INFORMATION, MARKED BY [***]…»).
+- El párrafo de las partes, los considerandos A, B y C y «The Parties therefore agree as
+  follows».
+- Todo el Artículo 1 (definiciones 1.1 a 1.8), aunque 1.8 tenga cifras y condiciones dentro.
+- 4.1, segunda frase: «Title and risk of loss shall pass to Buyer upon delivery to the
+  carrier» (transfiere riesgo; nadie debe nada).
+- 6.1, segunda frase: la regla de prevalencia entre este Agreement y el Quality Agreement.
+- 12.1, segunda frase: la definición de «Confidential Information».
+- 13.1, primera frase: «This Agreement starts on the Effective Date and continues for five (5)
+  years (the “Term”)».
+- 13.5, segunda frase: «Sections 4.4, 7.1, 10, 11 and 12 shall survive expiry or termination».
+- 14.1, segunda frase: «a force majeure event that affects Supplier for more than ninety (90)
+  days shall constitute a Supply Failure» (es una equivalencia; ver relaciones).
+- 15.2 (ley aplicable) y 15.5 (acuerdo completo).
+- El bloque de firmas y el Exhibit A (precios; ver VALORES). Nada de esto pertenece a la
+  sección 15.5 ni a ninguna otra.
+
+
+CONDICIONES
+===========
+Formato: ID | operador | disparador | condiciona a
+C01 | UNLESS   | «except as provided in Section 8.4»                                   | D02
+C02 | IF       | «If Buyer purchases less»                                             | D04
+C03 | IF       | «If Supplier delivers any Firm Order more than fourteen (14) days after the confirmed delivery date» | D14
+C04 | UNLESS   | «except for latent defects that could not be found by reasonable inspection» (OPCIONAL) | D15o
+C05 | IF       | «If the Parties disagree whether a shipment conforms to the Specifications» | D18a y D18b
+C06 | UPON     | «by giving Buyer at least ninety (90) days’ written notice»          | D23
+C07 | IF       | «provided that it notifies Supplier of the dispute before the payment is due» | D27
+C08 | UPON     | «only after giving Buyer at least one hundred eighty (180) days’ prior written notice» | D31
+C09 | UNLESS   | «without Buyer’s prior written consent»                              | D32
+C10 | IF       | «at any time after a recall of the Product»                          | D35
+C11 | IF       | «If any recall of Product results from Supplier’s breach of the Specifications» | D37 (y, en sentido contrario, D38)
+C12 | UNLESS   | «except as required by Applicable Law»                               | D42
+C13 | IF       | «If Supplier cannot meet all of its customers’ demand»              | D45
+C14 | UPON     | «Upon a Supply Failure»                                              | D46 y D47
+C15 | IF       | «if the other Party materially breaches it and does not cure the breach within sixty (60) days after written notice» | D59a y D59b
+C16 | IF       | «If Buyer terminates under this Section 13.3 before the third anniversary of the Effective Date» | D61
+C17 | IF       | «if Buyer becomes insolvent or makes an assignment for the benefit of its creditors» | D62
+C18 | UPON     | «Upon expiry or termination»                                         | D63 y D64
+C19 | IF       | «provided that it notifies the other Party promptly»                 | D65a y D65b
+C20 | UNLESS   | «without the other Party’s prior written consent»                    | D66a y D66b
+C21 | IF       | «provided that Supplier remains responsible for the performance of its subcontractors» (OPCIONAL: también es el enunciado D69) | D68
+C22 | UNLESS   | «Except for breaches of Article 12 and the obligations under Article 10» | D54a y D54b
+C23 | UNLESS   | «EXCEPT AS EXPRESSLY SET FORTH IN SECTION 9.1»                       | D50
+C24 | IF       | «Subject to the terms of this Agreement» (OPCIONAL: fórmula general)  | D01
+
+
+VALORES
+=======
+Formato: ID | valor | tipo | cuantifica a
+V01 | 50 % de las acciones con voto      | porcentaje | definición 1.1 (OPCIONAL)
+V02 | 80 % de la cantidad pedida         | porcentaje | definición 1.8
+V03 | 2 trimestres consecutivos          | plazo      | definición 1.8
+V04 | 2,000,000 EUR por año              | importe    | D03
+V05 | 60 días                            | plazo      | D04
+V06 | 5.º día hábil de cada trimestre    | plazo      | D07
+V07 | 12 meses de previsión              | duración   | D07
+V08 | 3 meses vinculantes                | duración   | D08
+V09 | 90 días                            | plazo      | D09
+V10 | 20 % por encima de la previsión    | porcentaje | D11
+V11 | 10 días hábiles                    | plazo      | D12
+V12 | 14 días de retraso                 | plazo      | D14 / C03
+V13 | 1 % por semana completa            | porcentaje | D14
+V14 | máximo 10 % del precio             | tope       | D14
+V15 | 30 días                            | plazo      | D15
+V16 | 45 días                            | plazo      | D16
+V17 | 30 días                            | plazo      | D19 (laboratorio)
+V18 | 90 días de aviso                   | plazo      | D23
+V19 | 5 % o el IPC alemán (el menor)     | tope       | D24
+V20 | 12 meses                           | período    | D24
+V21 | 45 días                            | plazo      | D26
+V22 | 9 puntos sobre el tipo base del BCE| tasa       | D28
+V23 | 180 días de aviso                  | plazo      | D31
+V24 | una vez por año calendario         | frecuencia | D35
+V25 | 30 días de aviso                   | plazo      | D35
+V26 | 3 meses de previsión vinculante    | cantidad   | D43
+V27 | 5 días hábiles                     | plazo      | D44
+V28 | 30 días de retraso previsto        | plazo      | D44
+V29 | 6 meses                            | período    | D45
+V30 | 12 meses de vida útil              | duración   | D48
+V31 | 7 años                             | duración   | D56a, D56b (sección 12.2)
+V32 | 5 años, renovable por 2 años       | duración   | sección 13.1
+V33 | 12 meses de aviso de no renovación | plazo      | D58o
+V34 | 60 días para subsanar              | plazo      | D59a y D59b
+V35 | 180 días de aviso                  | plazo      | D60
+V36 | 50 % de la compra mínima restante  | porcentaje | D61
+V37 | 90 días de fuerza mayor            | plazo      | sección 14.1 (equivalencia con Supply Failure)
+V38 | 120.00 EUR por botella             | importe    | Exhibit A (Wash Buffer), cuantifica D22
+Los precios del Reagent Kit y del recargo por envío urgente están censurados («[***]»). La
+extracción no debe inventarles un valor.
+
+
+RELACIONES ENTRE SECCIONES
+==========================
+Son las que el grafo debería registrar como aristas entre secciones o enunciados:
+- D46 (8.4) MODIFICA la sección 2.2: «notwithstanding Section 2.2». Ante un Supply Failure,
+  TALVERA deja de estar obligada a comprar solo a ORVANE.
+- D55 (11.2) MODIFICA las secciones 4.2 y 10.1: «Notwithstanding Section 4.2 and Section
+  10.1». Las penalidades por retraso y la indemnidad de ORVANE quedan bajo el tope anual.
+- 9.3 REFERENCIA a 9.1, pero NO la anula: «EXCEPT AS EXPRESSLY SET FORTH IN SECTION 9.1».
+  Una arista que diga que 9.3 deja sin efecto a 9.1 sería un error.
+- 14.1 (segunda frase) DEPENDE de 1.8 y activa 8.4: la fuerza mayor de ORVANE de más de 90
+  días cuenta como Supply Failure (OPCIONAL).
+- 2.2 REFERENCIA a 8.4; 1.3 a 3.3; 10.2(c) a 9.2; 11.1 a los Artículos 10 y 12; 13.5 a 4.4,
+  7.1, 10, 11 y 12 (todas OPCIONALES).
+
+
+TÉRMINOS DEFINIDOS
+==================
+En el Artículo 1: Affiliate, Applicable Law, Firm Order, Forecast, Product, Quality Agreement,
+Specifications, Supply Failure.
+Fuera del Artículo 1: Agreement, Effective Date, Supplier, Buyer, Party / Parties (párrafo
+inicial); Confidential Information (12.1); Term (13.1, aunque se usa desde 2.2).
+
+
+REVISIONES DE ESTA REFERENCIA
+=============================
+- 15 de octubre de 2026: primera versión.
+- 15 de octubre de 2026: se añaden como OPCIONALES D47o («at Supplier’s cost», por coherencia
+  con D34o), D48o (la segunda garantía de 9.1) y D56c y D56d (el segundo deber de 12.1).
+  Eran particiones defendibles que la primera versión no recogía. Los enunciados NÚCLEO y las
+  cifras del archivo 2 no cambian.

@@ -1,0 +1,959 @@
+{
+  "documentId": "root::Synthetic_OrvaneTalvera_Supply Agreement",
+  "tree": [
+    {
+      "ref": "1.1",
+      "heading": "“Affiliate” means any entity that controls, is controlled by or is und",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-11",
+      "children": []
+    },
+    {
+      "ref": "1.2",
+      "heading": "“Applicable Law” means all laws, regulations and guidelines that apply",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-12",
+      "children": []
+    },
+    {
+      "ref": "1.3",
+      "heading": "“Firm Order” means a Purchase Order that Supplier has accepted under S",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-13",
+      "children": []
+    },
+    {
+      "ref": "1.4",
+      "heading": "“Forecast” means the rolling forecast that Buyer provides under Sectio",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-14",
+      "children": []
+    },
+    {
+      "ref": "1.5",
+      "heading": "“Product” means the CliniSep reagent kits and buffers listed in Exhibi",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-15",
+      "children": []
+    },
+    {
+      "ref": "1.6",
+      "heading": "“Quality Agreement” means the quality agreement between the Parties da",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-16",
+      "children": []
+    },
+    {
+      "ref": "1.7",
+      "heading": "“Specifications” means the specifications for the Product set out in t",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-17",
+      "children": []
+    },
+    {
+      "ref": "1.8",
+      "heading": "“Supply Failure” means Supplier’s failure to deliver at least eighty p",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-18",
+      "children": []
+    },
+    {
+      "ref": "2.1",
+      "heading": "Supply. Subject to the terms of this Agreement, Supplier shall manufac",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-20",
+      "children": []
+    },
+    {
+      "ref": "2.2",
+      "heading": "Exclusive Purchase. During the Term, Buyer shall purchase from Supplie",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-21",
+      "children": []
+    },
+    {
+      "ref": "2.3",
+      "heading": "Minimum Purchase. Buyer shall purchase in each calendar year Product w",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-22",
+      "children": []
+    },
+    {
+      "ref": "2.4",
+      "heading": "Affiliates. Buyer may designate one or more of its Affiliates to place",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-23",
+      "children": []
+    },
+    {
+      "ref": "3.1",
+      "heading": "Forecasts. Buyer shall provide Supplier, by the fifth (5th) business d",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-25",
+      "children": []
+    },
+    {
+      "ref": "3.2",
+      "heading": "Purchase Orders. Buyer shall place each Purchase Order at least ninety",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-26",
+      "children": []
+    },
+    {
+      "ref": "3.3",
+      "heading": "Acceptance of Orders. Supplier shall accept each Purchase Order that i",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-27",
+      "children": []
+    },
+    {
+      "ref": "4.1",
+      "heading": "Delivery. Supplier shall deliver the Product FCA (Incoterms 2020) Supp",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-29",
+      "children": []
+    },
+    {
+      "ref": "4.2",
+      "heading": "Late Delivery. If Supplier delivers any Firm Order more than fourteen",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-30",
+      "children": []
+    },
+    {
+      "ref": "4.3",
+      "heading": "Inspection. Buyer shall inspect each shipment and notify Supplier in w",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-31",
+      "children": []
+    },
+    {
+      "ref": "4.4",
+      "heading": "Remedies. Supplier shall, at its option, replace non-conforming Produc",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-32",
+      "children": []
+    },
+    {
+      "ref": "4.5",
+      "heading": "Disputed Conformity. If the Parties disagree whether a shipment confor",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-33",
+      "children": []
+    },
+    {
+      "ref": "5.1",
+      "heading": "Price. Buyer shall pay for the Product the prices set out in Exhibit A",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-35",
+      "children": []
+    },
+    {
+      "ref": "5.2",
+      "heading": "Price Adjustment. Supplier may adjust the prices once in each calendar",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-36",
+      "children": []
+    },
+    {
+      "ref": "5.3",
+      "heading": "Invoicing and Payment. Supplier shall invoice Buyer upon shipment. Buy",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-37",
+      "children": []
+    },
+    {
+      "ref": "5.4",
+      "heading": "Late Payment. Overdue undisputed amounts shall bear interest at nine p",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-38",
+      "children": []
+    },
+    {
+      "ref": "5.5",
+      "heading": "Taxes. Each Party shall bear its own taxes arising from this Agreement",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-39",
+      "children": []
+    },
+    {
+      "ref": "6.1",
+      "heading": "Quality Agreement. The Parties shall comply with the Quality Agreement",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-41",
+      "children": []
+    },
+    {
+      "ref": "6.2",
+      "heading": "Changes. Supplier may make changes to the Product, its manufacturing p",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-42",
+      "children": []
+    },
+    {
+      "ref": "6.3",
+      "heading": "Regulatory Support. Supplier shall provide Buyer, at Buyer’s request a",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-43",
+      "children": []
+    },
+    {
+      "ref": "6.4",
+      "heading": "Audits and Inspections. Buyer may audit Supplier’s manufacturing facil",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-44",
+      "children": []
+    },
+    {
+      "ref": "6.5",
+      "heading": "Recalls. If any recall of Product results from Supplier’s breach of th",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-45",
+      "children": []
+    },
+    {
+      "ref": "7.1",
+      "heading": "Ownership. Each Party shall retain all rights in its intellectual prop",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-47",
+      "children": []
+    },
+    {
+      "ref": "7.2",
+      "heading": "License to Buyer. Supplier grants Buyer a non-exclusive, royalty-free",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-48",
+      "children": []
+    },
+    {
+      "ref": "8.1",
+      "heading": "Safety Stock. Supplier shall maintain a safety stock of Product equal",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-50",
+      "children": []
+    },
+    {
+      "ref": "8.2",
+      "heading": "Notice of Shortage. Supplier shall notify Buyer within five (5) busine",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-51",
+      "children": []
+    },
+    {
+      "ref": "8.3",
+      "heading": "Allocation. If Supplier cannot meet all of its customers’ demand, Supp",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-52",
+      "children": []
+    },
+    {
+      "ref": "8.4",
+      "heading": "Second Source. Upon a Supply Failure, and notwithstanding Section 2.2,",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-53",
+      "children": []
+    },
+    {
+      "ref": "9.1",
+      "heading": "Supplier warrants that each shipment of Product will conform to the Sp",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-55",
+      "children": []
+    },
+    {
+      "ref": "9.2",
+      "heading": "Buyer warrants that it will use the Product only for research and clin",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-56",
+      "children": []
+    },
+    {
+      "ref": "9.3",
+      "heading": "EXCEPT AS EXPRESSLY SET FORTH IN SECTION 9.1, SUPPLIER MAKES NO OTHER",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-57",
+      "children": []
+    },
+    {
+      "ref": "10.1",
+      "heading": "Supplier shall indemnify Buyer against any third-party claim arising f",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-59",
+      "children": []
+    },
+    {
+      "ref": "10.2",
+      "heading": "Buyer shall indemnify Supplier against any third-party claim arising f",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-60",
+      "children": []
+    },
+    {
+      "ref": "10.3",
+      "heading": "The indemnified Party shall notify the indemnifying Party promptly of",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-64",
+      "children": []
+    },
+    {
+      "ref": "11.1",
+      "heading": "Except for breaches of Article 12 and the obligations under Article 10",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-66",
+      "children": []
+    },
+    {
+      "ref": "11.2",
+      "heading": "Notwithstanding Section 4.2 and Section 10.1, Supplier’s total liabili",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-67",
+      "children": []
+    },
+    {
+      "ref": "12.1",
+      "heading": "Each Party shall keep confidential all Confidential Information of the",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-69",
+      "children": []
+    },
+    {
+      "ref": "12.2",
+      "heading": "These obligations shall continue for seven (7) years after the end of",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-70",
+      "children": []
+    },
+    {
+      "ref": "12.3",
+      "heading": "Buyer may disclose Supplier’s Confidential Information to regulatory a",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-71",
+      "children": []
+    },
+    {
+      "ref": "13.1",
+      "heading": "Term. This Agreement starts on the Effective Date and continues for fi",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-73",
+      "children": []
+    },
+    {
+      "ref": "13.2",
+      "heading": "Termination for Breach. Either Party may terminate this Agreement if t",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-74",
+      "children": []
+    },
+    {
+      "ref": "13.3",
+      "heading": "Termination for Convenience. Buyer may terminate this Agreement for co",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-75",
+      "children": []
+    },
+    {
+      "ref": "13.4",
+      "heading": "Termination for Insolvency. Supplier may terminate this Agreement imme",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-76",
+      "children": []
+    },
+    {
+      "ref": "13.5",
+      "heading": "Effect of Termination. Upon expiry or termination, Buyer shall purchas",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-77",
+      "children": []
+    },
+    {
+      "ref": "14.1",
+      "heading": "Neither Party shall be liable for any failure or delay caused by event",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-79",
+      "children": []
+    },
+    {
+      "ref": "15.1",
+      "heading": "Assignment. Neither Party may assign this Agreement without the other",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-81",
+      "children": []
+    },
+    {
+      "ref": "15.2",
+      "heading": "Governing Law. This Agreement is governed by the laws of the State of",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-82",
+      "children": []
+    },
+    {
+      "ref": "15.3",
+      "heading": "Subcontracting. Supplier may subcontract the manufacture of components",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-83",
+      "children": []
+    },
+    {
+      "ref": "15.4",
+      "heading": "Notices. Notices under this Agreement shall be in writing and sent to",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-84",
+      "children": []
+    },
+    {
+      "ref": "15.5",
+      "heading": "Entire Agreement. This Agreement, the Quality Agreement and Exhibit A",
+      "level": 2,
+      "paragraphId": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-85",
+      "children": []
+    }
+  ],
+  "paragraphs": [
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-2",
+      "text": "CERTAIN IDENTIFIED INFORMATION, MARKED BY [***], HAS BEEN EXCLUDED FROM THIS EXHIBIT BECAUSE IT IS BOTH (I) NOT MATERIAL AND (II) WOULD BE COMPETITIVELY HARMFUL IF PUBLICLY DISCLOSED.",
+      "paragraph_enum": 0,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-3",
+      "text": "SUPPLY AGREEMENT",
+      "paragraph_enum": 1,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-4",
+      "text": "This Supply Agreement (this “Agreement”) is entered into as of May 6, 2024 (the “Effective Date”) by and between Orvane Bioprocess GmbH, a company organized under the laws of Germany with its principal office at Lerchenweg 14, 79108 Freiburg im Breisgau, Germany (“Supplier”), and Talvera Therapeutics, Inc., a Delaware corporation with its principal office at 1450 Harbor Boulevard, Suite 300, Redwood City, California 94063 (“Buyer”). Supplier and Buyer are each a “Party” and together the “Parties”.",
+      "paragraph_enum": 2,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-5",
+      "text": "RECITALS",
+      "paragraph_enum": 3,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-6",
+      "text": "A. Supplier manufactures cell-separation reagents under the name CliniSep.",
+      "paragraph_enum": 4,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-7",
+      "text": "B. Buyer develops autologous cell therapies and wishes to use CliniSep reagents in its clinical programs.",
+      "paragraph_enum": 5,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-8",
+      "text": "C. The Parties wish to set out the terms on which Supplier will manufacture and supply those reagents to Buyer.",
+      "paragraph_enum": 6,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-9",
+      "text": "The Parties therefore agree as follows:",
+      "paragraph_enum": 7,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-10",
+      "text": "ARTICLE 1 — DEFINITIONS",
+      "paragraph_enum": 8,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-11",
+      "text": "1.1 “Affiliate” means any entity that controls, is controlled by or is under common control with a Party, where “control” means ownership of more than fifty percent (50%) of the voting shares of the entity.",
+      "paragraph_enum": 9,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-12",
+      "text": "1.2 “Applicable Law” means all laws, regulations and guidelines that apply to the manufacture, supply or use of the Product.",
+      "paragraph_enum": 10,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-13",
+      "text": "1.3 “Firm Order” means a Purchase Order that Supplier has accepted under Section 3.3.",
+      "paragraph_enum": 11,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-14",
+      "text": "1.4 “Forecast” means the rolling forecast that Buyer provides under Section 3.1.",
+      "paragraph_enum": 12,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-15",
+      "text": "1.5 “Product” means the CliniSep reagent kits and buffers listed in Exhibit A.",
+      "paragraph_enum": 13,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-16",
+      "text": "1.6 “Quality Agreement” means the quality agreement between the Parties dated as of the Effective Date, as amended from time to time.",
+      "paragraph_enum": 14,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-17",
+      "text": "1.7 “Specifications” means the specifications for the Product set out in the Quality Agreement.",
+      "paragraph_enum": 15,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-18",
+      "text": "1.8 “Supply Failure” means Supplier’s failure to deliver at least eighty percent (80%) of the quantity of Product ordered under Firm Orders in any two (2) consecutive calendar quarters.",
+      "paragraph_enum": 16,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-19",
+      "text": "ARTICLE 2 — SUPPLY AND PURCHASE",
+      "paragraph_enum": 17,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-20",
+      "text": "2.1 Supply. Subject to the terms of this Agreement, Supplier shall manufacture and supply the Product to Buyer in accordance with the Specifications and the Quality Agreement.",
+      "paragraph_enum": 18,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-21",
+      "text": "2.2 Exclusive Purchase. During the Term, Buyer shall purchase from Supplier all of its requirements of Product for clinical use, except as provided in Section 8.4.",
+      "paragraph_enum": 19,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-22",
+      "text": "2.3 Minimum Purchase. Buyer shall purchase in each calendar year Product with an aggregate price of at least two million euros (€2,000,000). If Buyer purchases less, Buyer shall pay Supplier the shortfall within sixty (60) days after the end of that year.",
+      "paragraph_enum": 20,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-23",
+      "text": "2.4 Affiliates. Buyer may designate one or more of its Affiliates to place orders under this Agreement. Buyer shall remain responsible for every order placed by its Affiliates.",
+      "paragraph_enum": 21,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-24",
+      "text": "ARTICLE 3 — FORECASTS AND ORDERS",
+      "paragraph_enum": 22,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-25",
+      "text": "3.1 Forecasts. Buyer shall provide Supplier, by the fifth (5th) business day of each calendar quarter, a rolling twelve (12) month forecast of its requirements. The first three (3) months of each Forecast shall be binding on Buyer.",
+      "paragraph_enum": 23,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-26",
+      "text": "3.2 Purchase Orders. Buyer shall place each Purchase Order at least ninety (90) days before the requested delivery date.",
+      "paragraph_enum": 24,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-27",
+      "text": "3.3 Acceptance of Orders. Supplier shall accept each Purchase Order that is consistent with the binding part of the Forecast. Supplier may, but is not obligated to, accept any quantity that exceeds the Forecast by more than twenty percent (20%). Supplier shall confirm or reject each Purchase Order within ten (10) business days after receipt; a Purchase Order that Supplier does not reject within that period shall be deemed accepted.",
+      "paragraph_enum": 25,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-28",
+      "text": "ARTICLE 4 — DELIVERY, INSPECTION AND REJECTION",
+      "paragraph_enum": 26,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-29",
+      "text": "4.1 Delivery. Supplier shall deliver the Product FCA (Incoterms 2020) Supplier’s facility in Freiburg, Germany. Title and risk of loss shall pass to Buyer upon delivery to the carrier.",
+      "paragraph_enum": 27,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-30",
+      "text": "4.2 Late Delivery. If Supplier delivers any Firm Order more than fourteen (14) days after the confirmed delivery date, Supplier shall pay Buyer, as liquidated damages, one percent (1%) of the price of the late Product for each full week of delay, up to a maximum of ten percent (10%) of that price.",
+      "paragraph_enum": 28,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-31",
+      "text": "4.3 Inspection. Buyer shall inspect each shipment and notify Supplier in writing of any non-conformity within thirty (30) days after receipt. Product that Buyer does not reject within that period shall be deemed accepted, except for latent defects that could not be found by reasonable inspection.",
+      "paragraph_enum": 29,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-32",
+      "text": "4.4 Remedies. Supplier shall, at its option, replace non-conforming Product or refund the price paid for it within forty-five (45) days after confirming the non-conformity. The remedies in this Section 4.4 are Buyer’s sole and exclusive remedies for non-conforming Product.",
+      "paragraph_enum": 30,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-33",
+      "text": "4.5 Disputed Conformity. If the Parties disagree whether a shipment conforms to the Specifications, either Party may submit samples to an independent laboratory chosen by mutual agreement. The laboratory shall issue its findings within thirty (30) days, and its findings shall be binding on both Parties. The Party whose position the laboratory rejects shall bear the laboratory’s fees.",
+      "paragraph_enum": 31,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-34",
+      "text": "ARTICLE 5 — PRICE AND PAYMENT",
+      "paragraph_enum": 32,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-35",
+      "text": "5.1 Price. Buyer shall pay for the Product the prices set out in Exhibit A.",
+      "paragraph_enum": 33,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-36",
+      "text": "5.2 Price Adjustment. Supplier may adjust the prices once in each calendar year, effective January 1, by giving Buyer at least ninety (90) days’ written notice; however, no annual increase shall exceed the lesser of five percent (5%) or the change in the German consumer price index for the preceding twelve (12) months.",
+      "paragraph_enum": 34,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-37",
+      "text": "5.3 Invoicing and Payment. Supplier shall invoice Buyer upon shipment. Buyer shall pay each undisputed invoice within forty-five (45) days after receipt. Buyer may withhold payment of any amount that it disputes in good faith, provided that it notifies Supplier of the dispute before the payment is due.",
+      "paragraph_enum": 35,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-38",
+      "text": "5.4 Late Payment. Overdue undisputed amounts shall bear interest at nine percentage points above the base rate of the European Central Bank.",
+      "paragraph_enum": 36,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-39",
+      "text": "5.5 Taxes. Each Party shall bear its own taxes arising from this Agreement.",
+      "paragraph_enum": 37,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-40",
+      "text": "ARTICLE 6 — QUALITY AND REGULATORY MATTERS",
+      "paragraph_enum": 38,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-41",
+      "text": "6.1 Quality Agreement. The Parties shall comply with the Quality Agreement. In the event of any conflict between this Agreement and the Quality Agreement, the Quality Agreement shall control with respect to quality matters, and this Agreement shall control with respect to all other matters.",
+      "paragraph_enum": 39,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-42",
+      "text": "6.2 Changes. Supplier may make changes to the Product, its manufacturing process or its testing methods only after giving Buyer at least one hundred eighty (180) days’ prior written notice. Supplier shall not make any change that requires Buyer to file a regulatory amendment without Buyer’s prior written consent, which Buyer shall not unreasonably withhold.",
+      "paragraph_enum": 40,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-43",
+      "text": "6.3 Regulatory Support. Supplier shall provide Buyer, at Buyer’s request and expense, with the data and documentation that Buyer reasonably needs for its regulatory filings.",
+      "paragraph_enum": 41,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-44",
+      "text": "6.4 Audits and Inspections. Buyer may audit Supplier’s manufacturing facility once in each calendar year on thirty (30) days’ notice, and at any time after a recall of the Product. Supplier shall permit regulatory authorities to inspect its facility.",
+      "paragraph_enum": 42,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-45",
+      "text": "6.5 Recalls. If any recall of Product results from Supplier’s breach of the Specifications, Supplier shall reimburse Buyer for the reasonable costs of the recall; in all other cases Buyer shall bear those costs.",
+      "paragraph_enum": 43,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-46",
+      "text": "ARTICLE 7 — INTELLECTUAL PROPERTY",
+      "paragraph_enum": 44,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-47",
+      "text": "7.1 Ownership. Each Party shall retain all rights in its intellectual property existing before the Effective Date. Supplier shall own all improvements to its manufacturing process, even if Buyer contributes to them.",
+      "paragraph_enum": 45,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-48",
+      "text": "7.2 License to Buyer. Supplier grants Buyer a non-exclusive, royalty-free license under Supplier’s patents to use the Product in Buyer’s cell therapy programs. Buyer shall not reverse engineer the Product or analyze its composition, except as required by Applicable Law.",
+      "paragraph_enum": 46,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-49",
+      "text": "ARTICLE 8 — SUPPLY ASSURANCE",
+      "paragraph_enum": 47,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-50",
+      "text": "8.1 Safety Stock. Supplier shall maintain a safety stock of Product equal to at least three (3) months of Buyer’s binding Forecast.",
+      "paragraph_enum": 48,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-51",
+      "text": "8.2 Notice of Shortage. Supplier shall notify Buyer within five (5) business days after it becomes aware of any event that is likely to delay deliveries by more than thirty (30) days.",
+      "paragraph_enum": 49,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-52",
+      "text": "8.3 Allocation. If Supplier cannot meet all of its customers’ demand, Supplier shall allocate its available supply among its customers in proportion to their purchases in the preceding six (6) months.",
+      "paragraph_enum": 50,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-53",
+      "text": "8.4 Second Source. Upon a Supply Failure, and notwithstanding Section 2.2, Buyer may purchase Product or an equivalent from a third party. In that case Supplier shall transfer to Buyer or its designated manufacturer the know-how that is reasonably necessary to manufacture the Product, at Supplier’s cost.",
+      "paragraph_enum": 51,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-54",
+      "text": "ARTICLE 9 — WARRANTIES",
+      "paragraph_enum": 52,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-55",
+      "text": "9.1 Supplier warrants that each shipment of Product will conform to the Specifications at the time of delivery and will have a remaining shelf life of at least twelve (12) months.",
+      "paragraph_enum": 53,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-56",
+      "text": "9.2 Buyer warrants that it will use the Product only for research and clinical development and in accordance with Applicable Law.",
+      "paragraph_enum": 54,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-57",
+      "text": "9.3 EXCEPT AS EXPRESSLY SET FORTH IN SECTION 9.1, SUPPLIER MAKES NO OTHER WARRANTIES, EXPRESS OR IMPLIED, INCLUDING ANY WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.",
+      "paragraph_enum": 55,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-58",
+      "text": "ARTICLE 10 — INDEMNIFICATION",
+      "paragraph_enum": 56,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-59",
+      "text": "10.1 Supplier shall indemnify Buyer against any third-party claim arising from a manufacturing defect in the Product or from any allegation that the Product infringes a third party’s patent.",
+      "paragraph_enum": 57,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-60",
+      "text": "10.2 Buyer shall indemnify Supplier against any third-party claim arising from:",
+      "paragraph_enum": 58,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-61",
+      "text": "(a) Buyer’s use of the Product;",
+      "paragraph_enum": 59,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-62",
+      "text": "(b) the clinical trials in which Buyer uses the Product; or",
+      "paragraph_enum": 60,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-63",
+      "text": "(c) Buyer’s breach of Section 9.2.",
+      "paragraph_enum": 61,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-64",
+      "text": "10.3 The indemnified Party shall notify the indemnifying Party promptly of any claim and shall allow the indemnifying Party to control the defense.",
+      "paragraph_enum": 62,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-65",
+      "text": "ARTICLE 11 — LIMITATION OF LIABILITY",
+      "paragraph_enum": 63,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-66",
+      "text": "11.1 Except for breaches of Article 12 and the obligations under Article 10, neither Party shall be liable to the other for any indirect, incidental or consequential damages.",
+      "paragraph_enum": 64,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-67",
+      "text": "11.2 Notwithstanding Section 4.2 and Section 10.1, Supplier’s total liability under this Agreement in any calendar year shall not exceed the amounts paid by Buyer in that year.",
+      "paragraph_enum": 65,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-68",
+      "text": "ARTICLE 12 — CONFIDENTIALITY",
+      "paragraph_enum": 66,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-69",
+      "text": "12.1 Each Party shall keep confidential all Confidential Information of the other Party and shall use it only to perform this Agreement. “Confidential Information” means any non-public information that a Party discloses to the other Party under this Agreement.",
+      "paragraph_enum": 67,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-70",
+      "text": "12.2 These obligations shall continue for seven (7) years after the end of the Term.",
+      "paragraph_enum": 68,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-71",
+      "text": "12.3 Buyer may disclose Supplier’s Confidential Information to regulatory authorities to the extent required for its regulatory filings.",
+      "paragraph_enum": 69,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-72",
+      "text": "ARTICLE 13 — TERM AND TERMINATION",
+      "paragraph_enum": 70,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-73",
+      "text": "13.1 Term. This Agreement starts on the Effective Date and continues for five (5) years (the “Term”). It renews for successive two (2) year periods unless either Party gives notice of non-renewal at least twelve (12) months before the end of the then-current period.",
+      "paragraph_enum": 71,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-74",
+      "text": "13.2 Termination for Breach. Either Party may terminate this Agreement if the other Party materially breaches it and does not cure the breach within sixty (60) days after written notice.",
+      "paragraph_enum": 72,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-75",
+      "text": "13.3 Termination for Convenience. Buyer may terminate this Agreement for convenience on one hundred eighty (180) days’ written notice. If Buyer terminates under this Section 13.3 before the third anniversary of the Effective Date, Buyer shall pay Supplier a termination fee equal to fifty percent (50%) of the minimum purchase amount for the remaining full calendar years of the initial Term.",
+      "paragraph_enum": 73,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-76",
+      "text": "13.4 Termination for Insolvency. Supplier may terminate this Agreement immediately if Buyer becomes insolvent or makes an assignment for the benefit of its creditors.",
+      "paragraph_enum": 74,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-77",
+      "text": "13.5 Effect of Termination. Upon expiry or termination, Buyer shall purchase all Product that Supplier has manufactured under Firm Orders, and Supplier shall deliver that Product in accordance with Article 4. Sections 4.4, 7.1, 10, 11 and 12 shall survive expiry or termination.",
+      "paragraph_enum": 75,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-78",
+      "text": "ARTICLE 14 — FORCE MAJEURE",
+      "paragraph_enum": 76,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-79",
+      "text": "14.1 Neither Party shall be liable for any failure or delay caused by events beyond its reasonable control, provided that it notifies the other Party promptly. However, a force majeure event that affects Supplier for more than ninety (90) days shall constitute a Supply Failure.",
+      "paragraph_enum": 77,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-80",
+      "text": "ARTICLE 15 — GENERAL PROVISIONS",
+      "paragraph_enum": 78,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-81",
+      "text": "15.1 Assignment. Neither Party may assign this Agreement without the other Party’s prior written consent, except that Supplier may assign it to an Affiliate or to a purchaser of its reagent business without consent.",
+      "paragraph_enum": 79,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-82",
+      "text": "15.2 Governing Law. This Agreement is governed by the laws of the State of New York, without regard to its conflict of laws rules.",
+      "paragraph_enum": 80,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-83",
+      "text": "15.3 Subcontracting. Supplier may subcontract the manufacture of components, provided that Supplier remains responsible for the performance of its subcontractors.",
+      "paragraph_enum": 81,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-84",
+      "text": "15.4 Notices. Notices under this Agreement shall be in writing and sent to the addresses set out above.",
+      "paragraph_enum": 82,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-85",
+      "text": "15.5 Entire Agreement. This Agreement, the Quality Agreement and Exhibit A are the entire agreement of the Parties on their subject matter.",
+      "paragraph_enum": 83,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-86",
+      "text": "IN WITNESS WHEREOF, the Parties have executed this Agreement as of the Effective Date.",
+      "paragraph_enum": 84,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-87",
+      "text": "ORVANE BIOPROCESS GMBHBy: ______________________Name: Henrike VosswinkelTitle: Managing Director",
+      "paragraph_enum": 85,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-88",
+      "text": "TALVERA THERAPEUTICS, INC.By: ______________________Name: Marcus Delacroix-HaleTitle: Chief Operating Officer",
+      "paragraph_enum": 86,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-89",
+      "text": "EXHIBIT A — PRODUCTS AND PRICES",
+      "paragraph_enum": 87,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-90",
+      "text": "CliniSep Reagent Kit (10 separation runs): [***] per kit.",
+      "paragraph_enum": 88,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-91",
+      "text": "CliniSep Wash Buffer (1 liter): one hundred twenty euros (€120.00) per bottle.",
+      "paragraph_enum": 89,
+      "page": 1
+    },
+    {
+      "id": "root::Synthetic_OrvaneTalvera_Supply Agreement-p-92",
+      "text": "Expedited shipping surcharge: [***] per shipment.",
+      "paragraph_enum": 90,
+      "page": 1
+    }
+  ]
+}

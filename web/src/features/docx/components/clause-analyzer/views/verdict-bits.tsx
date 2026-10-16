@@ -1,14 +1,12 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { XIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/views/bits';
 import {
 	Fragment,
 	GraphLink,
 	KIND_LABEL,
-	PLAIN_KIND_LABEL,
 	tint,
 	verdictColor,
 	verdictLabel,
@@ -415,72 +413,6 @@ export function WhatEachGets({
 	};
 
 	return <div className="grid grid-cols-2 gap-3">{SIDES.map(column)}</div>;
-}
-
-/**
- * One clause opened under the table: in the type on screen, how many statements favour each
- * party, and what each one gets, each fragment a click away from its paragraph.
- */
-export function ClauseDetail({
-	tally,
-	kind,
-	names,
-	conditions,
-	onOpen,
-	onClose,
-}: {
-	tally: ClauseTally;
-	kind: DeonticKind;
-	names: Record<Side, string>;
-	conditions: KgCondition[];
-	onOpen: (nodeId: string) => void;
-	onClose: () => void;
-}) {
-	const { a, b } = tally.count[kind];
-	const plural = PLAIN_KIND_LABEL[kind].toLowerCase();
-	const ahead: Side | null = a > b ? 'a' : b > a ? 'b' : null;
-	const sentence =
-		a + b === 0
-			? `No ${plural} in this clause.`
-			: ahead
-				? `More ${plural} in favour of ${short(names[ahead])}: ${tally.count[kind][ahead]} against ${tally.count[kind][ahead === 'a' ? 'b' : 'a']}.`
-				: `As many ${plural} in favour of each party: ${a} and ${b}.`;
-	return (
-		<section
-			aria-label={`${tally.heading}: what each party gets`}
-			className="max-h-[50%] shrink-0 overflow-auto border-t border-border bg-background px-4 py-3"
-		>
-			<div className="flex items-start justify-between gap-3">
-				<div className="min-w-0">
-					{tally.section && (
-						<p className="text-[10px] font-semibold tracking-wider text-foreground/70 uppercase">
-							{tally.section}
-						</p>
-					)}
-					<h3 className="text-base leading-tight font-semibold text-foreground">{tally.heading}</h3>
-					<p className="mt-1 text-sm text-foreground/90">{sentence}</p>
-				</div>
-				<button
-					type="button"
-					onClick={onClose}
-					aria-label="Close this clause"
-					title="Close this clause"
-					className="shrink-0 rounded p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
-				>
-					<XIcon className="size-4" />
-				</button>
-			</div>
-			<div className="mt-3">
-				<WhatEachGets
-					tally={tally}
-					kinds={[kind]}
-					names={names}
-					conditions={conditions}
-					onOpen={onOpen}
-				/>
-			</div>
-		</section>
-	);
 }
 
 /** Counts align with the named party columns without a second visual encoding. */

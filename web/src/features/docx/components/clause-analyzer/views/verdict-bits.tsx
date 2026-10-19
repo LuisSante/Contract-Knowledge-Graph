@@ -7,10 +7,12 @@ import {
 	Fragment,
 	GraphLink,
 	KIND_LABEL,
+	RankBadge,
+	SectionTag,
 	tint,
 	verdictColor,
 	verdictLabel,
-	rightsDirection,
+	favourLine,
 } from '@/features/docx/components/clause-analyzer/views/favour-bits';
 import {
 	listOf,
@@ -94,7 +96,7 @@ export function Scoreboard({
 				</div>
 				<div className="mt-3 space-y-1 text-xs text-foreground/80">
 					{SIDES.map((side) => (
-						<p key={side}>{rightsDirection(kind, side, names)}</p>
+						<p key={side}>{favourLine(kind, side, names)}</p>
 					))}
 				</div>
 			</div>
@@ -141,16 +143,16 @@ export function ContractCard({
 	/** Why, in one short line: where the favoured party is ahead; the rest are even, since a
 	 *  party that lost a type would not be favoured. */
 	const contractLine = () => {
-		if (!hasStatements) return 'No rights identified in the selected categories.';
-		if (contract.verdict === 'tie') return 'Same count in each selected category.';
+		if (!hasStatements) return 'Nothing in either party’s favour in the selected types.';
+		if (contract.verdict === 'tie') return 'Same count in each selected type.';
 		if (contract.verdict === 'mixed')
 			return scoredSentence(total, contract.verdict, contract.byKind, kinds, names);
 		const won = kinds.filter((kind) => contract.byKind[kind] === contract.verdict);
 		const even = kinds.filter((kind) => !won.includes(kind));
 		const label = (ks: DeonticKind[]) => listOf(ks.map(kindLabel));
-		if (even.length > 0) return `More ${label(won)}; equal counts in ${label(even)}.`;
-		if (kinds.length === 1) return `More ${label(kinds)}.`;
-		return `More rights in all ${kinds.length} selected categories.`;
+		if (even.length > 0) return `More ${label(won)} in its favour; equal counts in ${label(even)}.`;
+		if (kinds.length === 1) return `More ${label(kinds)} in its favour.`;
+		return `More in its favour in all ${kinds.length} selected types.`;
 	};
 
 	/** The clauses by verdict, the favoured party first, as a bar and four counts. */
@@ -198,7 +200,7 @@ export function ContractCard({
 				style={{ borderColor: tint(tone, 30) }}
 			>
 				<p className="text-[10px] font-semibold tracking-wider text-foreground/70 uppercase">
-					{clauseTotal} clauses in selected categories
+					{clauseTotal} clauses in selected types
 				</p>
 				<div className="mt-1.5 flex h-1.5 gap-0.5" aria-hidden>
 					{clauseGroups
@@ -313,8 +315,8 @@ export function VerdictBadge({
 
 /**
  * The start of a clause row: a bar in the verdict's colour, the clause's rank in importance,
- * its name and number, and the way to it in the graph. It sits over the row's accordion
- * trigger, so only the graph link takes clicks.
+ * its name and number, and the arrow to it in the graph right after the name. It sits over
+ * the row's accordion trigger, so only the arrow takes clicks.
  */
 export function ClauseLead({
 	tally,
@@ -333,19 +335,19 @@ export function ClauseLead({
 				className="pointer-events-none h-8 w-[3px] shrink-0 rounded-full"
 				style={{ backgroundColor: verdict === 'tie' ? 'var(--border)' : verdictColor(verdict) }}
 			/>
-			<span className="pointer-events-none flex size-6 shrink-0 items-center justify-center rounded-full bg-secondary text-2xs font-semibold tabular-nums">
-				{rank}
-			</span>
-			<span className="min-w-0 flex-1">
-				<span className="pointer-events-none block text-sm leading-snug font-semibold text-foreground">
-					{tally.section && (
-						<span className="font-normal text-foreground/70">{tally.section} </span>
-					)}
+			<RankBadge rank={rank} className="pointer-events-none" />
+			<span className="pointer-events-none min-w-0 flex-1 text-sm leading-snug">
+				<span className="font-semibold text-foreground">
+					{tally.section && <SectionTag section={tally.section} />}
 					{tally.heading}
 				</span>
-				<span className="flex items-center gap-2">
-					{onOpenGraph && <GraphLink onClick={() => onOpenGraph(tally.clauseId)} />}
-				</span>
+				{onOpenGraph && (
+					<GraphLink
+						onClick={() => onOpenGraph(tally.clauseId)}
+						heading={tally.heading}
+						className="pointer-events-auto"
+					/>
+				)}
 			</span>
 		</>
 	);
@@ -378,7 +380,7 @@ export function WhatEachGets({
 					style={{ backgroundColor: tint(SIDE_COLOR[side], 10), color: SIDE_COLOR[side] }}
 				>
 					<span className="size-2 rounded-full" style={{ backgroundColor: SIDE_COLOR[side] }} />
-					Rights for {short(names[side])}
+					In favour of {short(names[side])}
 					<span
 						className="rounded-full px-1.5 text-[10px] text-white tabular-nums"
 						style={{ backgroundColor: SIDE_COLOR[side] }}
@@ -388,7 +390,7 @@ export function WhatEachGets({
 				</div>
 				{gets.length === 0 ? (
 					<p className="px-3 py-3 text-2xs text-muted-foreground">
-						No rights identified for {short(names[side])} in the selected categories.
+						Nothing in favour of {short(names[side])} in the selected types.
 					</p>
 				) : (
 					<div className="divide-y divide-border/60 bg-card">

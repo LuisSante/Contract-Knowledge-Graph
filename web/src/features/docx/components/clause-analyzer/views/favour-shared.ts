@@ -82,14 +82,9 @@ export function originOf(
 ): { text: string; side: Side | null } {
 	const side = s.kind === 'right' ? s.to : s.by;
 	const shared = side !== 'a' && side !== 'b';
-	if (s.kind === 'right')
-		return {
-			text: shared ? 'Both parties’ own right' : `${short(names[side])}'s own right`,
-			side: shared ? null : side,
-		};
-	const recipient = s.to === 'both' ? 'both parties' : short(names[s.to]);
-	if (shared) return { text: `Shared ${s.kind} → rights for ${recipient}`, side: null };
-	return { text: `${short(names[side])}'s ${s.kind} → right for ${recipient}`, side };
+	// The column it sits in already says in whose favour it is; the tag says whose it is.
+	if (shared) return { text: `Both parties’ ${s.kind}`, side: null };
+	return { text: `${short(names[side])}'s ${s.kind}`, side };
 }
 
 /** How many clauses land on each verdict. */
@@ -145,16 +140,16 @@ export function verdictNote(
 	kinds: DeonticKind[],
 	names: Record<Side, string>
 ) {
-	if (verdict === 'tie') return 'Same count in each selected category';
-	if (verdict !== 'mixed' && kinds.length === 1) return 'More rights in this category';
-	if (verdict !== 'mixed') return 'More in at least one category; no fewer in the others';
+	if (verdict === 'tie') return 'Same count in each selected type';
+	if (verdict !== 'mixed' && kinds.length === 1) return 'More in its favour in this type';
+	if (verdict !== 'mixed') return 'More in at least one type; no fewer in the others';
 	return kinds
 		.filter((kind) => byKind[kind] && byKind[kind] !== 'tie')
-		.map((kind) => `${KIND_LABEL[kind].toLowerCase()} → ${short(names[byKind[kind] as Side])}`)
-		.join(' · ');
+		.map((kind) => `${KIND_LABEL[kind].toLowerCase()} favour ${short(names[byKind[kind] as Side])}`)
+		.join('; ');
 }
 
-/** Explains the count-based result using the same selected categories and tallies. */
+/** Explains the count-based result using the same selected types and tallies. */
 export function scoredSentence(
 	count: ClauseTally['count'],
 	verdict: TypeVerdict,
@@ -170,9 +165,8 @@ export function scoredSentence(
 				(k) => `${KIND_LABEL[k].toLowerCase()} (${count[k][side]} vs ${count[k][other(side)]})`
 			)
 		);
-	if (verdict === 'tie')
-		return 'Same number of rights in each selected category. Both parties may receive rights.';
+	if (verdict === 'tie') return 'Same count in each selected type: neither party is ahead.';
 	if (verdict === 'mixed')
-		return `${short(names.a)} has more ${scored('a')}; ${short(names.b)} has more ${scored('b')}. Each party leads in a different category.`;
-	return `${short(names[verdict])} has more ${scored(verdict)}, and no fewer rights in any selected category.`;
+		return `More ${scored('a')} in favour of ${short(names.a)}; more ${scored('b')} in favour of ${short(names.b)}. Each party leads in a different type.`;
+	return `More ${scored(verdict)} in favour of ${short(names[verdict])}, and no fewer in any selected type.`;
 }

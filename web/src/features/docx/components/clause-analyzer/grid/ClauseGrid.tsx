@@ -47,10 +47,17 @@ interface ClauseGridProps {
 	/** Names each row as Table v2 does; absent, rows show their plain heading. */
 	leadOf?: (row: GridRow) => ClauseRowLead;
 	labelWidth?: number;
+	/** Every other row in solid grey instead of a faint tint. */
+	boldStripes?: boolean;
 	/** The words after "CLAUSE" for each ordering. */
 	sortLabels?: { importance: string; order: string };
+	/** The columns hold what each party gains (a credited grid), not what it carries: the
+	 *  header reads "In favour of" over each name. */
+	favourSide?: boolean;
 	onSelectClause: (clauseId: string) => void;
 	onOpenGraph?: (clauseId: string) => void;
+	/** Opens a clause in Table v2; each row then ends in a «Details» link. */
+	onDetails?: (clauseId: string) => void;
 	onOpenMark: (nodeId: string) => void;
 	onFocusMark: (nodeId: string) => void;
 	onHoverMark: (event: ReactMouseEvent, mark: GridMark) => void;
@@ -76,9 +83,12 @@ export function ClauseGrid({
 	laneColumns = LANE_COLUMNS,
 	leadOf,
 	labelWidth = LABEL_WIDTH,
+	boldStripes = false,
 	sortLabels = { importance: 'most important first ↓', order: 'document order' },
+	favourSide = false,
 	onSelectClause,
 	onOpenGraph,
+	onDetails,
 	onOpenMark,
 	onFocusMark,
 	onHoverMark,
@@ -128,7 +138,11 @@ export function ClauseGrid({
 										width: laneWidth(laneColumns),
 										color: lane === 'a' ? PARTY_COLOR : PAIR_SECOND_COLOR,
 									}}
-									title={`Paint ${laneName(lane)}’s entities in the document`}
+									title={
+										favourSide
+											? `Paint what favours ${laneName(lane)} in the document`
+											: `Paint ${laneName(lane)}’s entities in the document`
+									}
 								>
 									{lane === 'b' && (
 										<Checkbox
@@ -140,7 +154,16 @@ export function ClauseGrid({
 											aria-label={`Paint ${laneName('b')}’s statements`}
 										/>
 									)}
-									<span className="truncate">{laneName(lane)}</span>
+									{favourSide ? (
+										<span
+											className={`flex min-w-0 flex-col ${lane === 'a' ? 'items-end' : 'items-start'}`}
+										>
+											<span className="font-normal text-muted-foreground">In favour of</span>
+											<span className="max-w-full truncate">{laneName(lane)}</span>
+										</span>
+									) : (
+										<span className="truncate">{laneName(lane)}</span>
+									)}
 									{lane === 'a' && (
 										<Checkbox
 											checked={paintLanes.a}
@@ -163,6 +186,8 @@ export function ClauseGrid({
 							</span>
 						)}
 					</div>
+					{/* As wide as the rows' «Details» link, so the columns stay under their names. */}
+					{onDetails && <span className="w-16 shrink-0" />}
 				</div>
 
 				{shownRows.map((row, index) => (
@@ -180,9 +205,11 @@ export function ClauseGrid({
 						laneColumns={laneColumns}
 						lead={leadOf?.(row)}
 						labelWidth={labelWidth}
+						boldStripes={boldStripes}
 						laneName={laneName}
 						onSelect={onSelectClause}
 						onOpenGraph={onOpenGraph}
+						onDetails={onDetails}
 						onOpenMark={onOpenMark}
 						onFocusMark={onFocusMark}
 						onHoverMark={onHoverMark}

@@ -16,29 +16,29 @@ import type { MarkKind, Side } from '@/features/docx/utils/knowledge/statement-g
 import type { DeonticKind } from '@/types/knowledge';
 
 /**
- * Each type named for the party it is counted for, which is what it gives that party: its own
- * rights, and the rights the other party's obligations and prohibitions give it. A duty of one
- * party is a right of the other, so "Equidata: 29 rights from obligations" reads the way it counts.
+ * The types by their plain names, as Table v1.1 shows them. Each is counted in favour of a
+ * party, as Table v1.1's columns say: a right for its holder, an obligation or prohibition for
+ * the party on its other end.
  */
 export const KIND_LABEL: Record<DeonticKind, string> = {
-	obligation: 'Rights from obligations',
-	right: 'Own rights',
-	prohibition: 'Rights from prohibitions',
+	obligation: 'Obligations',
+	right: 'Rights',
+	prohibition: 'Prohibitions',
 };
 
-/** What each type gives the party it is counted for, in a few words. */
+/** What each type is, and in whose favour it counts, in a few words. */
 export const KIND_GLOSS: Record<DeonticKind, string> = {
-	obligation: 'The other party’s obligations give the beneficiary rights',
-	right: 'Rights held directly by the named party',
-	prohibition: 'The other party’s prohibitions give the beneficiary rights',
+	obligation: 'what one party must do, counted in favour of the other',
+	right: 'what one party may do, counted in favour of that party',
+	prohibition: 'what one party must not do, counted in favour of the other',
 };
 
-/** Names both ends of the rule instead of leaving the beneficiary implicit. */
-export function rightsDirection(kind: DeonticKind, side: Side, names: Record<Side, string>) {
+/** What a side's count is made of, named the way Table v1.1 names its columns. */
+export function favourLine(kind: DeonticKind, side: Side, names: Record<Side, string>) {
 	const recipient = short(names[side]);
 	const other = short(names[side === 'a' ? 'b' : 'a']);
-	if (kind === 'right') return `${recipient}'s own rights`;
-	return `${other}'s ${kind === 'obligation' ? 'obligations' : 'prohibitions'} → ${recipient}'s rights`;
+	if (kind === 'right') return `In favour of ${recipient}: its own rights`;
+	return `In favour of ${recipient}: ${other}'s ${kind === 'obligation' ? 'obligations' : 'prohibitions'}`;
 }
 
 /** A verdict's colour: the side it favours, amber when it depends on the type. */
@@ -101,48 +101,71 @@ export function KindSquare({
 	);
 }
 
-/** The types by their plain names. */
-export const PLAIN_KIND_LABEL: Record<DeonticKind, string> = {
-	obligation: 'Obligations',
-	right: 'Rights',
-	prohibition: 'Prohibitions',
-};
-
-/** One deontic type on screen at a time: obligations, rights and prohibitions are never
- *  shown or counted together. */
-export function KindPicker({
+/** One deontic type on screen at a time, as tabs: obligations, rights and prohibitions are
+ *  never shown or counted together. Each tab carries its two counts, the first party's then
+ *  the second's, with the larger in bold, so who leads a type shows before opening it. */
+export function KindTabs({
 	kind,
 	onPick,
-	labels = PLAIN_KIND_LABEL,
+	counts,
+	names,
+	labels = KIND_LABEL,
 }: {
 	kind: DeonticKind;
 	onPick: (kind: DeonticKind) => void;
+	counts: Record<DeonticKind, Record<Side, number>> | null;
+	names: Record<Side, string>;
 	labels?: Record<DeonticKind, string>;
 }) {
 	return (
 		<div
-			role="radiogroup"
+			role="tablist"
 			aria-label="Type shown"
-			className="inline-flex rounded-lg border border-border bg-secondary p-[3px]"
+			className="flex gap-8 border-b border-border/60 px-6"
 		>
-			{DEONTIC_KINDS.map((k) => (
-				<button
-					key={k}
-					type="button"
-					role="radio"
-					aria-checked={kind === k}
-					onClick={() => onPick(k)}
-					className={cn(
-						'inline-flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-medium',
-						kind === k
-							? 'border border-border bg-card font-semibold text-foreground shadow-sm'
-							: 'text-muted-foreground hover:text-foreground'
-					)}
-				>
-					<span className="size-2.5 rounded-[2px]" style={{ backgroundColor: KIND_COLORS[k] }} />
-					{labels[k]}
-				</button>
-			))}
+			{DEONTIC_KINDS.map((k) => {
+				const active = kind === k;
+				const count = counts?.[k];
+				return (
+					<button
+						key={k}
+						type="button"
+						role="tab"
+						aria-selected={active}
+						onClick={() => onPick(k)}
+						title={
+							count
+								? `${count.a} in favour of ${names.a} and ${count.b} in favour of ${names.b}`
+								: undefined
+						}
+						className={cn(
+							'-mb-px inline-flex items-center gap-2 border-b-2 pt-3 pb-2.5 text-sm',
+							active
+								? 'font-semibold text-foreground'
+								: 'border-transparent font-medium text-muted-foreground hover:text-foreground'
+						)}
+						style={active ? { borderBottomColor: KIND_COLORS[k] } : undefined}
+					>
+						<span className="size-2.5 rounded-[2px]" style={{ backgroundColor: KIND_COLORS[k] }} />
+						{labels[k]}
+						{count && (
+							<span className="inline-flex gap-1.5 text-xs tabular-nums">
+								{(['a', 'b'] as const).map((side) => (
+									<span
+										key={side}
+										className={
+											count[side] > count[side === 'a' ? 'b' : 'a'] ? 'font-bold' : 'font-normal'
+										}
+										style={{ color: SIDE_COLOR[side] }}
+									>
+										{count[side]}
+									</span>
+								))}
+							</span>
+						)}
+					</button>
+				);
+			})}
 		</div>
 	);
 }
@@ -189,19 +212,57 @@ export function KindFilter({
 	);
 }
 
-/** Jumps to the clause in the knowledge graph tab. */
-export function GraphLink({ onClick, className }: { onClick: () => void; className?: string }) {
+/*
+ * A clause's place by relevance and its number in the contract, each with a shape of its own
+ * so the two are not read as one number: a ringed circle for the place, a tag for the number.
+ * Both on the card colour, so they show on grey rows too. Table v1.1 and Table v2 share them.
+ */
+
+export function RankBadge({ rank, className }: { rank: number | undefined; className?: string }) {
+	return (
+		<span
+			className={cn(
+				'flex size-6 shrink-0 items-center justify-center rounded-full border border-border bg-card text-2xs font-semibold tabular-nums',
+				className
+			)}
+		>
+			{rank}
+		</span>
+	);
+}
+
+export function SectionTag({ section }: { section: string }) {
+	return (
+		<span className="mr-1.5 inline-block rounded-[5px] border border-border bg-card px-1.5 align-[1px] text-2xs leading-4 font-medium text-muted-foreground tabular-nums">
+			{section}
+		</span>
+	);
+}
+
+/** Jumps to the clause in the knowledge graph tab: an arrow right after the clause's name,
+ *  inline, so it follows the name's last word when the name wraps. */
+export function GraphLink({
+	onClick,
+	heading,
+	className,
+}: {
+	onClick: () => void;
+	/** The clause's name, for screen readers. */
+	heading: string;
+	className?: string;
+}) {
 	return (
 		<button
 			type="button"
 			onClick={onClick}
 			className={cn(
-				'relative z-10 inline-flex items-center gap-0.5 text-2xs font-medium text-primary hover:underline',
+				'relative z-10 ml-1 inline-flex rounded p-0.5 align-[-3px] text-primary hover:bg-muted',
 				className
 			)}
+			title="See this clause in the knowledge graph"
+			aria-label={`See ${heading} in the knowledge graph`}
 		>
-			View in graph
-			<ArrowUpRightIcon className="size-3" />
+			<ArrowUpRightIcon className="size-3.5" />
 		</button>
 	);
 }

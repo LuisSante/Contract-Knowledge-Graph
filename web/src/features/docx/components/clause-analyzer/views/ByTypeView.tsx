@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
+import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
 import { Accordion as AccordionPrimitive, Popover as PopoverPrimitive } from 'radix-ui';
 import { ChevronDownIcon, InfoIcon, XIcon } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem } from '@/components/ui/accordion';
@@ -78,16 +79,16 @@ function ClassificationInfo({ names }: { names: ViewProps['names'] }) {
 								{short(names.a)} / {short(names.b)}
 							</dt>
 							<dd className="mt-1">
-								More rights in at least one selected category; equal or more in the others.
+								More in its favour in at least one selected type; no fewer in the others.
 							</dd>
 						</div>
 						<div>
 							<dt className="font-semibold">Equal counts</dt>
-							<dd className="mt-1">Same number of rights in each selected category.</dd>
+							<dd className="mt-1">Same count in each selected type.</dd>
 						</div>
 						<div>
 							<dt className="font-semibold">Depends on the type</dt>
-							<dd className="mt-1">Different parties lead in different selected categories.</dd>
+							<dd className="mt-1">Different parties lead in different selected types.</dd>
 						</div>
 					</dl>
 				</PopoverPrimitive.Content>
@@ -126,17 +127,35 @@ function VerdictInfo({ reason, clause }: { reason: string; clause: string }) {
 }
 
 export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenGraph }: ViewProps) {
-	const [limit, setLimit] = useState(PAGE);
 	const [kinds, toggleKind] = useKinds();
 	const [filter, setFilter] = useState<VerdictFilterValue>('all');
 	const [sortByImportance, setSortByImportance] = useState(true);
-	const [openId, setOpenId] = useState<string | null>(null);
 	const { reviews, review } = useReviews(docId);
 	const { tallies, total, rank } = useTallies(grid, kg, importance, sortByImportance);
 	const shown = tallies.filter((t) => hasKinds(t, kinds));
 	const counts = verdictCounts(shown, kinds);
 	const rows =
 		filter === 'all' ? shown : shown.filter((t) => typeVerdict(t.count, kinds).verdict === filter);
+
+	// A clause sent from Table v1.1's «Details»: it arrives open, with enough rows paged in to
+	// reach it, and scrolled into view.
+	const detailsClause = useClauseAnalyzerStore((s) => s.detailsClause);
+	const showDetails = useClauseAnalyzerStore((s) => s.showDetails);
+	const [arrival] = useState(() =>
+		detailsClause?.docId === docId ? detailsClause.clauseId : null
+	);
+	const [limit, setLimit] = useState(() => {
+		const at = arrival ? rows.findIndex((t) => t.clauseId === arrival) : -1;
+		return at >= PAGE ? Math.ceil((at + 1) / PAGE) * PAGE : PAGE;
+	});
+	const [openId, setOpenId] = useState<string | null>(arrival);
+	useEffect(() => {
+		if (!arrival) return;
+		showDetails(docId, null);
+		document
+			.querySelector(`[data-clause-id="${CSS.escape(arrival)}"]`)
+			?.scrollIntoView({ block: 'start' });
+	}, [arrival, docId, showDetails]);
 	const opened = rows.find((t) => t.clauseId === openId) ?? null;
 
 	const note = (verdict: TypeVerdict, byKind: Partial<Record<DeonticKind, Favour>>) =>
@@ -229,7 +248,8 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 								title={`${KIND_LABEL[kind]}: ${KIND_GLOSS[kind]}`}
 							>
 								<span>{KIND_LABEL[kind]}</span>
-								<span className="mt-1 flex w-full items-center gap-1 text-xs font-medium">
+								<span className="text-2xs font-normal text-muted-foreground">in favour of</span>
+								<span className="flex w-full items-center gap-1 text-xs font-medium">
 									<span className="flex-1" style={{ color: SIDE_COLOR.a }}>
 										{short(names.a)}
 									</span>
@@ -250,8 +270,8 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 					{rows.length === 0 && (
 						<p className="px-4 py-6 text-center text-xs text-muted-foreground">
 							{shown.length === 0
-								? 'No statements identified in the selected categories.'
-								: 'No clause has this verdict in the selected categories.'}
+								? 'No statements identified in the selected types.'
+								: 'No clause has this verdict in the selected types.'}
 						</p>
 					)}
 					<Accordion
@@ -269,6 +289,7 @@ export function ByTypeView({ docId, kg, grid, names, importance, onOpen, onOpenG
 								<AccordionItem
 									key={t.clauseId}
 									value={t.clauseId}
+									data-clause-id={t.clauseId}
 									className={cn('border-border/60', verdict === 'mixed' && 'bg-warning/10')}
 								>
 									{/* Counts and titles share the row trigger; graph and info stay separate. */}

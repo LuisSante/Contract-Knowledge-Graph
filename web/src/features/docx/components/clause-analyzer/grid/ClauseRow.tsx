@@ -10,7 +10,11 @@ import type {
 } from '@/features/docx/utils/knowledge/statement-grid';
 import { Mark } from '@/features/docx/components/clause-analyzer/grid/Mark';
 import { ShareBar } from '@/features/docx/components/clause-analyzer/grid/ShareBar';
-import { GraphLink } from '@/features/docx/components/clause-analyzer/views/favour-bits';
+import {
+	GraphLink,
+	RankBadge,
+	SectionTag,
+} from '@/features/docx/components/clause-analyzer/views/favour-bits';
 import {
 	LABEL_WIDTH,
 	LANE_COLUMNS,
@@ -41,14 +45,18 @@ interface ClauseRowProps {
 	centerLanes?: boolean;
 	/** How many marks a lane holds before it wraps to a new line. */
 	laneColumns?: number;
-	/** Names the row as Table v2 does, with a link to the graph under it, instead of the
-	 *  plain heading and arrow. */
+	/** Names the row as Table v2 does, with the graph icon right after the heading, instead
+	 *  of the plain heading and arrow. */
 	lead?: ClauseRowLead;
 	labelWidth?: number;
+	/** Every other row in solid grey, as Table v1.1 paints them, instead of a faint tint. */
+	boldStripes?: boolean;
 	laneName: (lane: GridLane) => string;
 	onSelect: (clauseId: string) => void;
 	/** Opens the clause in the knowledge graph tab; absent where there is no such tab. */
 	onOpenGraph?: (clauseId: string) => void;
+	/** Opens the clause in Table v2, for what each party gets in it; absent, no link. */
+	onDetails?: (clauseId: string) => void;
 	onOpenMark: (nodeId: string) => void;
 	onFocusMark: (nodeId: string) => void;
 	onHoverMark: (event: ReactMouseEvent, mark: GridMark) => void;
@@ -68,9 +76,11 @@ export function ClauseRow({
 	laneColumns = LANE_COLUMNS,
 	lead,
 	labelWidth = LABEL_WIDTH,
+	boldStripes = false,
 	laneName,
 	onSelect,
 	onOpenGraph,
+	onDetails,
 	onOpenMark,
 	onFocusMark,
 	onHoverMark,
@@ -84,7 +94,9 @@ export function ClauseRow({
 		: unfiled
 			? 'bg-destructive/5'
 			: striped
-				? 'bg-muted/30'
+				? boldStripes
+					? 'bg-muted'
+					: 'bg-muted/30'
 				: '';
 
 	const title = share
@@ -95,22 +107,28 @@ export function ClauseRow({
 		<div className={`flex items-start gap-2 px-3 py-1.5 ${background}`}>
 			{lead ? (
 				<div className="flex shrink-0 items-start gap-2" style={{ width: labelWidth }}>
-					<span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-secondary text-2xs font-semibold tabular-nums">
-						{lead.rank}
-					</span>
-					<div className="min-w-0 flex-1">
-						<button
-							type="button"
+					<RankBadge rank={lead.rank} />
+					{/* The heading is inline text, not a button box, so the icon follows its last
+					    word when it wraps instead of dropping to a line of its own. */}
+					<div className="min-w-0 flex-1 text-sm leading-snug">
+						<span
+							role="button"
+							tabIndex={unfiled ? -1 : 0}
+							aria-disabled={unfiled}
 							onClick={() => clauseId && onSelect(clauseId)}
-							disabled={unfiled}
-							className="block text-left text-sm leading-snug font-semibold text-foreground hover:underline disabled:cursor-default"
+							onKeyDown={(event) => {
+								if (!clauseId || (event.key !== 'Enter' && event.key !== ' ')) return;
+								event.preventDefault();
+								onSelect(clauseId);
+							}}
+							className={`font-semibold text-foreground ${unfiled ? '' : 'cursor-pointer hover:underline'}`}
 						>
-							{lead.section && (
-								<span className="font-normal text-foreground/70">{lead.section} </span>
-							)}
+							{lead.section && <SectionTag section={lead.section} />}
 							{lead.heading}
-						</button>
-						{clauseId && onOpenGraph && <GraphLink onClick={() => onOpenGraph(clauseId)} />}
+						</span>
+						{clauseId && onOpenGraph && (
+							<GraphLink onClick={() => onOpenGraph(clauseId)} heading={lead.heading} />
+						)}
 					</div>
 				</div>
 			) : (
@@ -186,6 +204,17 @@ export function ClauseRow({
 					</Fragment>
 				))}
 			</div>
+
+			{clauseId && onDetails && (
+				<button
+					type="button"
+					onClick={() => onDetails(clauseId)}
+					className="mt-0.5 w-16 shrink-0 text-right text-xs font-medium text-muted-foreground hover:text-primary"
+					title="What each party gets in this clause, in Table v2"
+				>
+					Details ›
+				</button>
+			)}
 		</div>
 	);
 }

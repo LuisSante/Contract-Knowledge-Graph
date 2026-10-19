@@ -1,6 +1,7 @@
 import type { DeonticKind, KgClause, KnowledgeGraph } from '@/types/knowledge';
 import {
 	DEONTIC_MARK_KINDS,
+	GRID_LANES,
 	type GridLane,
 	type GridMark,
 	type Side,
@@ -79,6 +80,54 @@ export function clauseTitle(
 }
 
 /**
+ * Who a statement in `lane` of the owner grid serves, and who has to honour it: a right
+ * serves its holder, an obligation or prohibition the party on its other end, a reciprocal
+ * statement both. Null when it serves neither of the two (owed to a third party, or to
+ * nobody the contract names).
+ */
+export function creditOf(mark: GridMark, lane: GridLane): Pick<Served, 'to' | 'by'> | null {
+	const other =
+		mark.counterpartLane === 'a' || mark.counterpartLane === 'b' ? mark.counterpartLane : null;
+	if (lane === 'shared') return { to: 'both', by: 'both' };
+	if (mark.kind === 'right') return { to: lane, by: other };
+	return other ? { to: other, by: lane } : null;
+}
+
+/**
+ * The grid with every obligation, right and prohibition moved to the column of the party
+ * it serves, by `creditOf`: a party's column fills with what it gains, not with what it has
+ * to do. A mark keeps who carries it (`ownerName`), and its `counterpartLane` becomes the
+ * lane it came from. What serves neither party has no column and drops out, as it does from
+ * the tally. Only the three types: a qualifier hangs off a statement's lane, and the view
+ * that uses this grid (Table v1.1) shows none.
+ */
+export function creditedGrid(grid: StatementGrid): StatementGrid {
+	const countByKind = { ...grid.countByKind };
+	const rows = grid.rows.map((row) => {
+		const marks: Record<GridLane, GridMark[]> = { a: [], b: [], shared: [] };
+		for (const lane of GRID_LANES) {
+			for (const mark of row.marks[lane]) {
+				if (!DEONTIC_MARK_KINDS.includes(mark.kind)) {
+					countByKind[mark.kind] -= 1;
+					continue;
+				}
+				const credit = creditOf(mark, lane);
+				if (!credit) {
+					countByKind[mark.kind] -= 1;
+					continue;
+				}
+				const to = credit.to === 'both' ? 'shared' : credit.to;
+				const from = credit.by === 'a' || credit.by === 'b' ? credit.by : null;
+				marks[to].push({ ...mark, lane: to, counterpartLane: from });
+			}
+		}
+		return { ...row, marks, total: marks.a.length + marks.b.length + marks.shared.length };
+	});
+	const unfiled = rows.find((row) => row.clauseId === null)?.total ?? 0;
+	return { rows: rows.filter((row) => row.total > 0), countByKind, unfiled };
+}
+
+/**
  * Every deontic statement in the given lanes, credited the way the share bar credits it:
  * a right to its holder, an obligation or prohibition to the party on its other end, a
  * reciprocal statement to both. Each one counts once; nothing is weighted. By default only
@@ -114,22 +163,9 @@ export function tallyClauses(
 			for (const mark of row.marks[lane]) {
 				if (!DEONTIC_MARK_KINDS.includes(mark.kind)) continue;
 				const kind = mark.kind as DeonticKind;
-				let to: Served['to'];
-				let by: Served['by'];
-				if (lane === 'shared') {
-					to = 'both';
-					by = 'both';
-				} else if (kind === 'right') {
-					to = lane;
-					by =
-						mark.counterpartLane === 'a' || mark.counterpartLane === 'b'
-							? mark.counterpartLane
-							: null;
-				} else {
-					if (mark.counterpartLane !== 'a' && mark.counterpartLane !== 'b') continue;
-					to = mark.counterpartLane;
-					by = lane;
-				}
+				const credit = creditOf(mark, lane);
+				if (!credit) continue;
+				const { to, by } = credit;
 				tally.served.push({
 					mark,
 					kind,

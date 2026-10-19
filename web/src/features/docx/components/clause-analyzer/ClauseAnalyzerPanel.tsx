@@ -14,6 +14,7 @@ import {
 	type GridMark,
 	type GridRow,
 	type MarkKind,
+	type Side,
 } from '@/features/docx/utils/knowledge/statement-grid';
 import { computePairScores } from '@/features/docx/utils/knowledge/pair';
 import { computeBenefitShare, shareOfClause } from '@/features/docx/utils/knowledge/benefit-share';
@@ -35,11 +36,13 @@ import {
 	PARTY_COLOR,
 } from '@/features/docx/components/clause-analyzer/constants';
 import { ByTypeView } from '@/features/docx/components/clause-analyzer/views/ByTypeView';
-import { KindPicker } from '@/features/docx/components/clause-analyzer/views/favour-bits';
+import { KindTabs } from '@/features/docx/components/clause-analyzer/views/favour-bits';
 import type { ClauseRowLead } from '@/features/docx/components/clause-analyzer/grid/ClauseRow';
 import {
 	byImportance,
 	clauseTitle,
+	creditedGrid,
+	DEONTIC_KINDS,
 	tallyClauses,
 } from '@/features/docx/utils/knowledge/clause-favour';
 import type { ViewProps } from '@/features/docx/components/clause-analyzer/views/types';
@@ -52,6 +55,8 @@ interface ClauseAnalyzerPanelProps {
 }
 
 const LANE_COLORS: [string, string] = [PARTY_COLOR, PAIR_SECOND_COLOR];
+/** No statements: the importance hook sends no request. */
+const NO_IDS: readonly string[] = [];
 
 export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelProps) {
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -63,6 +68,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 
 	const selectedClause = useClauseAnalyzerStore((s) => s.selectedClause);
 	const selectClause = useClauseAnalyzerStore((s) => s.selectClause);
+	const showDetails = useClauseAnalyzerStore((s) => s.showDetails);
 	const selectedClauseId = selectedClause?.docId === docId ? selectedClause.clauseId : null;
 
 	const [sortByImportance, setSortByImportance] = useState(true);
@@ -128,6 +134,27 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		() => (oneType ? new Set<MarkKind>([typeShown]) : visibleKinds),
 		[oneType, typeShown, visibleKinds]
 	);
+	// Table v1.1 puts each square in the column of the party it favours, by Table v2's rule:
+	// what one party has to do sits with the other. Table keeps the party that carries it.
+	const shownGrid = useMemo(() => (oneType && grid ? creditedGrid(grid) : grid), [oneType, grid]);
+	// Each type's squares on each side over the clause rows, for Table v1.1's tabs: the same
+	// counts Table v2 gives the contract.
+	const kindCounts = useMemo(() => {
+		if (!oneType || !shownGrid) return null;
+		const counts = Object.fromEntries(DEONTIC_KINDS.map((k) => [k, { a: 0, b: 0 }])) as Record<
+			DeonticKind,
+			Record<Side, number>
+		>;
+		for (const row of shownGrid.rows) {
+			if (!row.clauseId) continue;
+			for (const lane of ['a', 'b'] as const) {
+				for (const mark of row.marks[lane]) {
+					if (DEONTIC_MARK_KINDS.includes(mark.kind)) counts[mark.kind as DeonticKind][lane] += 1;
+				}
+			}
+		}
+		return counts;
+	}, [oneType, shownGrid]);
 
 	const shownLanes = useMemo<GridLane[]>(
 		() => (showShared ? GRID_LANES : GRID_LANES.filter((lane) => lane !== 'shared')),
@@ -156,6 +183,26 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 
 	const clauseImportance = useClauseImportance(docId, countedIds);
 
+	// Table v1.1 ranks clauses on every obligation, right and prohibition between the two
+	// parties, whatever Table's legend has on: the order is a clause's weight in the
+	// contract, the same in every type shown and the same as Table v2's.
+	const overviewIds = useMemo(() => {
+		const ids = new Set<string>();
+		for (const row of grid?.rows ?? []) {
+			for (const lane of ['a', 'b'] as const) {
+				for (const mark of row.marks[lane]) {
+					if (DEONTIC_MARK_KINDS.includes(mark.kind)) ids.add(mark.id);
+				}
+			}
+		}
+		return ids.size > 0 ? [...ids].sort() : null;
+	}, [grid]);
+	const overviewImportance = useClauseImportance(
+		docId,
+		oneType && overviewIds ? overviewIds : NO_IDS
+	);
+	const rowImportance = oneType ? overviewImportance : clauseImportance;
+
 	const pair = useMemo(
 		() =>
 			viewKg && isPartyFocus && focusNodeId && secondPartyId && secondPartyId !== focusNodeId
@@ -172,24 +219,24 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 	);
 
 	const visibleRows = useMemo(() => {
-		const rows = (grid?.rows ?? []).filter((row) =>
+		const rows = (shownGrid?.rows ?? []).filter((row) =>
 			shownLanes.some((lane) => row.marks[lane].some((mark) => kindsShown.has(mark.kind)))
 		);
-		if (!sortByImportance || !clauseImportance) return rows;
+		if (!sortByImportance || !rowImportance) return rows;
 		const weight = (row: GridRow) =>
-			row.clauseId ? (clauseImportance.byClause[row.clauseId] ?? 0) : -1;
+			row.clauseId ? (rowImportance.byClause[row.clauseId] ?? 0) : -1;
 		return rows.slice().sort((x, y) => weight(y) - weight(x));
-	}, [grid, kindsShown, shownLanes, sortByImportance, clauseImportance]);
+	}, [shownGrid, kindsShown, shownLanes, sortByImportance, rowImportance]);
 
 	const laneByStatement = useMemo(() => {
 		const byId = new Map<string, GridLane>();
-		for (const row of grid?.rows ?? []) {
+		for (const row of shownGrid?.rows ?? []) {
 			for (const lane of GRID_LANES) {
 				for (const mark of row.marks[lane]) byId.set(mark.id, lane);
 			}
 		}
 		return byId;
-	}, [grid]);
+	}, [shownGrid]);
 
 	const clauseRows = useMemo(
 		() => visibleRows.filter((row) => row.clauseId !== null),
@@ -249,17 +296,6 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 			onOpenGraph();
 		});
 
-	const detailsOf = useMemo(
-		() => (viewKg && grid ? markDetails(viewKg, grid) : null),
-		[viewKg, grid]
-	);
-
-	const showTooltip = (event: ReactMouseEvent, mark: GridMark) => {
-		const rect = containerRef.current?.getBoundingClientRect();
-		if (!rect || !detailsOf) return;
-		setHover({ x: event.clientX - rect.left, y: event.clientY - rect.top, ...detailsOf(mark) });
-	};
-
 	const laneName = (lane: GridLane) =>
 		lane === 'a'
 			? (focusedPartyName ?? 'Party A')
@@ -286,6 +322,27 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		}),
 		[viewKg, pairA, pairB]
 	);
+
+	// Table v1.1's «Details»: the clause, open in Table v2 and shown in the contract. It is not
+	// selected: back in Table v1.1 a selection would dim every other row.
+	const openDetails = (clauseId: string) => {
+		openInDocument(clauseId);
+		showDetails(docId, clauseId);
+		nav.setView('bytype');
+	};
+
+	const detailsOf = useMemo(
+		() =>
+			viewKg && shownGrid ? markDetails(viewKg, shownGrid, oneType ? names : undefined) : null,
+		[viewKg, shownGrid, oneType, names]
+	);
+
+	const showTooltip = (event: ReactMouseEvent, mark: GridMark) => {
+		const rect = containerRef.current?.getBoundingClientRect();
+		if (!rect || !detailsOf) return;
+		setHover({ x: event.clientX - rect.left, y: event.clientY - rect.top, ...detailsOf(mark) });
+	};
+
 	const viewProps: ViewProps | null =
 		pairIds && viewKg && grid
 			? {
@@ -303,8 +360,8 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 	const leadOf = useMemo(() => {
 		if (!oneType || !grid || !viewKg) return undefined;
 		const clauseOf = new Map(viewKg.clauses.map((c) => [c.id, c] as const));
-		const ranked = clauseImportance
-			? byImportance(tallyClauses(grid, viewKg), clauseImportance.byClause)
+		const ranked = overviewImportance
+			? byImportance(tallyClauses(grid, viewKg), overviewImportance.byClause)
 			: [];
 		const rank = new Map(ranked.map((t, i) => [t.clauseId, i + 1] as const));
 		return (row: GridRow): ClauseRowLead => {
@@ -313,7 +370,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 				: { heading: row.heading, section: null };
 			return { rank: row.clauseId ? rank.get(row.clauseId) : undefined, ...title };
 		};
-	}, [oneType, grid, viewKg, clauseImportance]);
+	}, [oneType, grid, viewKg, overviewImportance]);
 
 	// Table and Table v1.1 are the grid below; every other view takes its place.
 	const inView = viewProps !== null && nav.view !== 'table' && nav.view !== 'table11';
@@ -345,9 +402,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 			{inView && viewProps && nav.view === 'bytype' && <ByTypeView {...viewProps} />}
 
 			{oneType && pairIds && (
-				<div className="border-b border-border/60 px-4 py-3">
-					<KindPicker kind={typeShown} onPick={setTypeShown} />
-				</div>
+				<KindTabs kind={typeShown} onPick={setTypeShown} counts={kindCounts} names={names} />
 			)}
 
 			{/* The table fills the panel; the graph has a tab of its own. */}
@@ -393,7 +448,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 								shareOf={oneType ? () => null : shareOf}
 								laneName={laneName}
 								sortByImportance={sortByImportance}
-								sortable={Boolean(clauseImportance)}
+								sortable={Boolean(rowImportance)}
 								onToggleSort={() => setSortByImportance((on) => !on)}
 								paintLanes={paintLanes}
 								onPaintLane={setPaintLane}
@@ -402,15 +457,18 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 								centerLanes={oneType}
 								laneColumns={oneType ? 15 : undefined}
 								leadOf={leadOf}
-								labelWidth={oneType ? 220 : undefined}
+								labelWidth={oneType ? 320 : undefined}
+								boldStripes={oneType}
 								sortLabels={
 									oneType ? { importance: 'by relevance ↓', order: 'by order' } : undefined
 								}
+								favourSide={oneType}
 								onSelectClause={(clauseId) => {
 									selectClause(docId, selectedClauseId === clauseId ? null : clauseId);
 									openInDocument(clauseId);
 								}}
 								onOpenGraph={openClauseInGraph}
+								onDetails={oneType ? openDetails : undefined}
 								onOpenMark={openInDocument}
 								onFocusMark={focusNode}
 								onHoverMark={showTooltip}

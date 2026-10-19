@@ -29,7 +29,9 @@ export const KIND_LABEL: Record<MarkKind, string> = {
 export const LANE_COLUMNS = 10;
 export const MARK_SIZE = 14;
 export const MARK_GAP = 4;
-export const LANE_WIDTH = LANE_COLUMNS * MARK_SIZE + (LANE_COLUMNS - 1) * MARK_GAP;
+/** How wide a lane is that wraps its marks after `columns` of them. */
+export const laneWidth = (columns: number) => columns * MARK_SIZE + (columns - 1) * MARK_GAP;
+export const LANE_WIDTH = laneWidth(LANE_COLUMNS);
 export const LABEL_WIDTH = 176;
 
 export const ROW_PAGE = 10;

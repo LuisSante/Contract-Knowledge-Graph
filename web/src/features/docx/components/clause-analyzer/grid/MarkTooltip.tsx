@@ -3,7 +3,6 @@
 import { useCallback, useMemo, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react';
 import { deonticNodes, type KnowledgeGraph } from '@/types/knowledge';
 import {
-	DEONTIC_MARK_KINDS,
 	GRID_LANES,
 	type GridMark,
 	type MarkKind,
@@ -24,9 +23,6 @@ export interface HoverInfo {
 	kind: MarkKind;
 	/** The party the mark belongs to; null for a qualifier, which belongs to none. */
 	owner: { name: string; color: string } | null;
-	/** The party it favours, said only where marks are filed by benefit: there the column
-	 *  it sits in is not its owner's. */
-	favours: { name: string; color: string } | null;
 	/** The contract's own words, or the extracted detail when there are none. */
 	quote: string;
 	/** "§1 Compensation", when the mark sits in a clause. */
@@ -52,22 +48,14 @@ export function markDetails(
 		for (const lane of GRID_LANES)
 			for (const mark of row.marks[lane]) clauseByMark.set(mark.id, label);
 	}
-	const laneColor = (lane: 'a' | 'b') => (lane === 'a' ? PARTY_COLOR : PAIR_SECOND_COLOR);
 	const ownerOf = (mark: GridMark): HoverInfo['owner'] => {
-		if (mark.ownerLane === 'shared')
-			return { name: 'Both parties', color: 'var(--muted-foreground)' };
+		if (mark.lane === 'shared') return { name: 'Both parties', color: 'var(--muted-foreground)' };
 		if (!mark.ownerName) return null;
-		return { name: mark.ownerName, color: laneColor(mark.ownerLane) };
-	};
-	const favoursOf = (mark: GridMark): HoverInfo['favours'] => {
-		if (grid.side !== 'benefit' || !DEONTIC_MARK_KINDS.includes(mark.kind)) return null;
-		if (mark.lane === 'shared') return { name: 'Neither party', color: 'var(--muted-foreground)' };
-		return { name: grid.names[mark.lane] ?? 'the other party', color: laneColor(mark.lane) };
+		return { name: mark.ownerName, color: mark.lane === 'a' ? PARTY_COLOR : PAIR_SECOND_COLOR };
 	};
 	return (mark) => ({
 		kind: mark.kind,
 		owner: ownerOf(mark),
-		favours: favoursOf(mark),
 		quote: textOf.get(mark.id) || mark.detail,
 		clause: clauseByMark.get(mark.id) ?? null,
 	});
@@ -136,16 +124,6 @@ export function MarkTooltip({
 					</span>
 				)}
 			</div>
-			{hover.favours && (
-				<p className="mt-2 flex items-center gap-1.5 text-foreground">
-					<span className="text-muted-foreground">In favour of</span>
-					<span
-						className="size-2 shrink-0 rounded-full"
-						style={{ backgroundColor: hover.favours.color }}
-					/>
-					<span className="truncate font-medium">{hover.favours.name}</span>
-				</p>
-			)}
 			{hover.quote && (
 				<p className="mt-2.5 leading-relaxed text-muted-foreground italic">
 					«{trim(hover.quote, 220)}»

@@ -36,8 +36,14 @@ import {
 } from '@/features/docx/components/clause-analyzer/constants';
 import { ByTypeView } from '@/features/docx/components/clause-analyzer/views/ByTypeView';
 import { KindPicker } from '@/features/docx/components/clause-analyzer/views/favour-bits';
-import type { DeonticKind } from '@/types/knowledge';
+import type { ClauseRowLead } from '@/features/docx/components/clause-analyzer/grid/ClauseRow';
+import {
+	byImportance,
+	clauseTitle,
+	tallyClauses,
+} from '@/features/docx/utils/knowledge/clause-favour';
 import type { ViewProps } from '@/features/docx/components/clause-analyzer/views/types';
+import type { DeonticKind } from '@/types/knowledge';
 
 interface ClauseAnalyzerPanelProps {
 	docId: string;
@@ -113,30 +119,19 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		[viewKg, focusNodeId, secondPartyId]
 	);
 
-	// Table v1.1 files every mark under the party it favours; Table v2's counts and the
-	// importance request keep reading the grid by owner.
 	const nav = useAnalyzerView();
-	const byBenefit = nav.view === 'table11';
-	const benefitGrid = useMemo(
-		() =>
-			viewKg && focusNodeId && byBenefit
-				? buildStatementGrid(viewKg, focusNodeId, secondPartyId, 'benefit')
-				: null,
-		[viewKg, focusNodeId, secondPartyId, byBenefit]
-	);
-	const shownGrid = byBenefit ? benefitGrid : grid;
-	// Table v1.1 shows one type at a time and only the two parties: what favours neither of
-	// them has no side to sit on.
-	const [benefitKind, setBenefitKind] = useState<DeonticKind>('obligation');
+	// Table v1.1 shows one deontic type at a time, picked above the table, instead of
+	// toggling them in the legend; Table keeps its own choice.
+	const oneType = nav.view === 'table11';
+	const [typeShown, setTypeShown] = useState<DeonticKind>('obligation');
 	const kindsShown = useMemo(
-		() => (byBenefit ? new Set<MarkKind>([benefitKind]) : visibleKinds),
-		[byBenefit, benefitKind, visibleKinds]
+		() => (oneType ? new Set<MarkKind>([typeShown]) : visibleKinds),
+		[oneType, typeShown, visibleKinds]
 	);
-	const sharedShown = showShared && !byBenefit;
 
 	const shownLanes = useMemo<GridLane[]>(
-		() => (sharedShown ? GRID_LANES : GRID_LANES.filter((lane) => lane !== 'shared')),
-		[sharedShown]
+		() => (showShared ? GRID_LANES : GRID_LANES.filter((lane) => lane !== 'shared')),
+		[showShared]
 	);
 
 	const clauseBenefit = useMemo(
@@ -177,24 +172,24 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 	);
 
 	const visibleRows = useMemo(() => {
-		const rows = (shownGrid?.rows ?? []).filter((row) =>
+		const rows = (grid?.rows ?? []).filter((row) =>
 			shownLanes.some((lane) => row.marks[lane].some((mark) => kindsShown.has(mark.kind)))
 		);
 		if (!sortByImportance || !clauseImportance) return rows;
 		const weight = (row: GridRow) =>
 			row.clauseId ? (clauseImportance.byClause[row.clauseId] ?? 0) : -1;
 		return rows.slice().sort((x, y) => weight(y) - weight(x));
-	}, [shownGrid, kindsShown, shownLanes, sortByImportance, clauseImportance]);
+	}, [grid, kindsShown, shownLanes, sortByImportance, clauseImportance]);
 
 	const laneByStatement = useMemo(() => {
 		const byId = new Map<string, GridLane>();
-		for (const row of shownGrid?.rows ?? []) {
+		for (const row of grid?.rows ?? []) {
 			for (const lane of GRID_LANES) {
 				for (const mark of row.marks[lane]) byId.set(mark.id, lane);
 			}
 		}
 		return byId;
-	}, [shownGrid]);
+	}, [grid]);
 
 	const clauseRows = useMemo(
 		() => visibleRows.filter((row) => row.clauseId !== null),
@@ -220,7 +215,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		laneByStatement,
 		lanes: shownLanes,
 		paintLanes,
-		showShared: sharedShown,
+		showShared,
 		nodesById,
 		laneColors: LANE_COLORS,
 		hops,
@@ -255,8 +250,8 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		});
 
 	const detailsOf = useMemo(
-		() => (viewKg && shownGrid ? markDetails(viewKg, shownGrid) : null),
-		[viewKg, shownGrid]
+		() => (viewKg && grid ? markDetails(viewKg, grid) : null),
+		[viewKg, grid]
 	);
 
 	const showTooltip = (event: ReactMouseEvent, mark: GridMark) => {
@@ -303,8 +298,25 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 					onOpenGraph: openClauseInGraph,
 				}
 			: null;
+	// Table v1.1 names its rows as Table v2 does: the clause's place in importance, its number
+	// and heading (a numbered subclause borrows its section's), and a link to the graph.
+	const leadOf = useMemo(() => {
+		if (!oneType || !grid || !viewKg) return undefined;
+		const clauseOf = new Map(viewKg.clauses.map((c) => [c.id, c] as const));
+		const ranked = clauseImportance
+			? byImportance(tallyClauses(grid, viewKg), clauseImportance.byClause)
+			: [];
+		const rank = new Map(ranked.map((t, i) => [t.clauseId, i + 1] as const));
+		return (row: GridRow): ClauseRowLead => {
+			const title = row.clauseId
+				? clauseTitle(clauseOf.get(row.clauseId), row.heading, viewKg.clauses)
+				: { heading: row.heading, section: null };
+			return { rank: row.clauseId ? rank.get(row.clauseId) : undefined, ...title };
+		};
+	}, [oneType, grid, viewKg, clauseImportance]);
+
 	// Table and Table v1.1 are the grid below; every other view takes its place.
-	const inView = viewProps !== null && nav.view !== 'table' && !byBenefit;
+	const inView = viewProps !== null && nav.view !== 'table' && nav.view !== 'table11';
 
 	// The pair lives in the URL too: a shared link opens on the same comparison.
 	const { pair: urlPair, setPair } = nav;
@@ -332,10 +344,9 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		<div className="flex h-full flex-col">
 			{inView && viewProps && nav.view === 'bytype' && <ByTypeView {...viewProps} />}
 
-			{/* Table v1.1 shows one type at a time, picked above the table. */}
-			{byBenefit && pairIds && (
+			{oneType && pairIds && (
 				<div className="border-b border-border/60 px-4 py-3">
-					<KindPicker kind={benefitKind} onPick={setBenefitKind} />
+					<KindPicker kind={typeShown} onPick={setTypeShown} />
 				</div>
 			)}
 
@@ -371,7 +382,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 							onContinue={focusPair}
 						/>
 					)}
-					{status === 'ready' && shownGrid && (
+					{status === 'ready' && grid && (
 						<>
 							<ClauseGrid
 								clauseRows={clauseRows}
@@ -379,7 +390,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 								lanes={shownLanes}
 								visibleKinds={kindsShown}
 								activeClauseId={activeClause?.clauseId ?? null}
-								shareOf={byBenefit ? () => null : shareOf}
+								shareOf={oneType ? () => null : shareOf}
 								laneName={laneName}
 								sortByImportance={sortByImportance}
 								sortable={Boolean(clauseImportance)}
@@ -387,8 +398,14 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 								paintLanes={paintLanes}
 								onPaintLane={setPaintLane}
 								canPaintB={Boolean(secondPartyId)}
-								showShared={sharedShown}
-								byBenefit={byBenefit}
+								showShared={showShared}
+								centerLanes={oneType}
+								laneColumns={oneType ? 15 : undefined}
+								leadOf={leadOf}
+								labelWidth={oneType ? 220 : undefined}
+								sortLabels={
+									oneType ? { importance: 'by relevance ↓', order: 'by order' } : undefined
+								}
 								onSelectClause={(clauseId) => {
 									selectClause(docId, selectedClauseId === clauseId ? null : clauseId);
 									openInDocument(clauseId);
@@ -404,8 +421,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 					)}
 				</div>
 
-				{/* Table v1.1 picks its one type above the table, so it has no legend to toggle. */}
-				{status === 'ready' && grid && !byBenefit && (
+				{status === 'ready' && grid && !oneType && (
 					<Legend
 						countByKind={grid.countByKind}
 						visibleKinds={visibleKinds}

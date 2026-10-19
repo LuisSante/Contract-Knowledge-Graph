@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, type MouseEvent as ReactMouseEvent } from 'react';
+import { Fragment, useMemo, useState, type MouseEvent as ReactMouseEvent } from 'react';
 import type {
 	GridLane,
 	GridMark,
@@ -9,10 +9,14 @@ import type {
 } from '@/features/docx/utils/knowledge/statement-grid';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ClauseRow } from '@/features/docx/components/clause-analyzer/grid/ClauseRow';
+import {
+	ClauseRow,
+	type ClauseRowLead,
+} from '@/features/docx/components/clause-analyzer/grid/ClauseRow';
 import {
 	LABEL_WIDTH,
-	LANE_WIDTH,
+	LANE_COLUMNS,
+	laneWidth,
 	PAIR_SECOND_COLOR,
 	PARTY_COLOR,
 	ROW_PAGE,
@@ -35,8 +39,16 @@ interface ClauseGridProps {
 	onPaintLane: (lane: GridLane, on: boolean) => void;
 	canPaintB: boolean;
 	showShared: boolean;
-	/** The marks are filed under the party they favour, so each column is headed "In favour of". */
-	byBenefit?: boolean;
+	/** Centres the parties' columns in the room the clause names leave, instead of packing
+	 *  them to the left. */
+	centerLanes?: boolean;
+	/** How many marks a lane holds before it wraps to a new line. */
+	laneColumns?: number;
+	/** Names each row as Table v2 does; absent, rows show their plain heading. */
+	leadOf?: (row: GridRow) => ClauseRowLead;
+	labelWidth?: number;
+	/** The words after "CLAUSE" for each ordering. */
+	sortLabels?: { importance: string; order: string };
 	onSelectClause: (clauseId: string) => void;
 	onOpenGraph?: (clauseId: string) => void;
 	onOpenMark: (nodeId: string) => void;
@@ -60,7 +72,11 @@ export function ClauseGrid({
 	onPaintLane,
 	canPaintB,
 	showShared,
-	byBenefit = false,
+	centerLanes = false,
+	laneColumns = LANE_COLUMNS,
+	leadOf,
+	labelWidth = LABEL_WIDTH,
+	sortLabels = { importance: 'most important first ↓', order: 'document order' },
 	onSelectClause,
 	onOpenGraph,
 	onOpenMark,
@@ -86,70 +102,67 @@ export function ClauseGrid({
 						onClick={onToggleSort}
 						disabled={!sortable}
 						className="mr-2 shrink-0 truncate text-left font-medium text-muted-foreground/70 enabled:hover:text-foreground disabled:cursor-default"
-						style={{ width: LABEL_WIDTH }}
+						style={{ width: labelWidth }}
 						title="Order the rows by how much each clause weighs inside the contract (PageRank with a per-clause prior), or by its position in the document"
 					>
 						CLAUSE
 						{sortable && (
 							<span className="font-normal opacity-70">
-								{sortByImportance ? ' · most important first ↓' : ' · document order'}
+								{' · '}
+								{sortByImportance ? sortLabels.importance : sortLabels.order}
 							</span>
 						)}
 					</button>
-					{(['a', 'b'] as const).map((lane) => (
-						<label
-							key={lane}
-							className={`flex min-w-0 shrink-0 cursor-pointer items-center gap-1.5 font-semibold ${
-								lane === 'a' ? 'justify-end' : 'justify-start'
-							}`}
-							style={{
-								width: LANE_WIDTH,
-								color: lane === 'a' ? PARTY_COLOR : PAIR_SECOND_COLOR,
-							}}
-							title={
-								byBenefit
-									? `Paint what favours ${laneName(lane)} in the document`
-									: `Paint ${laneName(lane)}’s entities in the document`
-							}
-						>
-							{lane === 'b' && (
-								<Checkbox
-									checked={paintLanes.b}
-									disabled={!canPaintB}
-									onCheckedChange={(value) => onPaintLane('b', value === true)}
-									className="size-3.5 shrink-0 border-current"
-									style={{ backgroundColor: paintLanes.b ? PAIR_SECOND_COLOR : undefined }}
-									aria-label={`Paint ${laneName('b')}’s statements`}
-								/>
-							)}
+					<div
+						className={centerLanes ? 'flex flex-1 items-center justify-center gap-2' : 'contents'}
+					>
+						{(['a', 'b'] as const).map((lane) => (
+							<Fragment key={lane}>
+								{/* The rows put a rule between the two columns; the header keeps its width. */}
+								{centerLanes && lane === 'b' && <span className="w-px shrink-0" />}
+								<label
+									className={`flex min-w-0 shrink-0 cursor-pointer items-center gap-1.5 font-semibold ${
+										lane === 'a' ? 'justify-end' : 'justify-start'
+									}`}
+									style={{
+										width: laneWidth(laneColumns),
+										color: lane === 'a' ? PARTY_COLOR : PAIR_SECOND_COLOR,
+									}}
+									title={`Paint ${laneName(lane)}’s entities in the document`}
+								>
+									{lane === 'b' && (
+										<Checkbox
+											checked={paintLanes.b}
+											disabled={!canPaintB}
+											onCheckedChange={(value) => onPaintLane('b', value === true)}
+											className="size-3.5 shrink-0 border-current"
+											style={{ backgroundColor: paintLanes.b ? PAIR_SECOND_COLOR : undefined }}
+											aria-label={`Paint ${laneName('b')}’s statements`}
+										/>
+									)}
+									<span className="truncate">{laneName(lane)}</span>
+									{lane === 'a' && (
+										<Checkbox
+											checked={paintLanes.a}
+											onCheckedChange={(value) => onPaintLane('a', value === true)}
+											className="size-3.5 shrink-0 border-current"
+											style={{ backgroundColor: paintLanes.a ? PARTY_COLOR : undefined }}
+											aria-label={`Paint ${laneName('a')}’s statements`}
+										/>
+									)}
+								</label>
+							</Fragment>
+						))}
+						{showShared && (
 							<span
-								className={`flex min-w-0 flex-col leading-tight ${
-									lane === 'a' ? 'items-end text-right' : 'items-start'
-								}`}
+								className="shrink-0 truncate font-medium text-muted-foreground/70"
+								style={{ width: laneWidth(laneColumns) }}
+								title="Provisiones que el contrato dirige a las dos partes a la vez"
 							>
-								{byBenefit && <span className="font-normal opacity-80">In favour of</span>}
-								<span className="max-w-full truncate">{laneName(lane)}</span>
+								{laneName('shared')}
 							</span>
-							{lane === 'a' && (
-								<Checkbox
-									checked={paintLanes.a}
-									onCheckedChange={(value) => onPaintLane('a', value === true)}
-									className="size-3.5 shrink-0 border-current"
-									style={{ backgroundColor: paintLanes.a ? PARTY_COLOR : undefined }}
-									aria-label={`Paint ${laneName('a')}’s statements`}
-								/>
-							)}
-						</label>
-					))}
-					{showShared && (
-						<span
-							className="shrink-0 truncate font-medium text-muted-foreground/70"
-							style={{ width: LANE_WIDTH }}
-							title="Provisiones que el contrato dirige a las dos partes a la vez"
-						>
-							{laneName('shared')}
-						</span>
-					)}
+						)}
+					</div>
 				</div>
 
 				{shownRows.map((row, index) => (
@@ -163,6 +176,10 @@ export function ClauseGrid({
 						visibleKinds={visibleKinds}
 						paintLanes={paintLanes}
 						share={shareOf(row.clauseId)}
+						centerLanes={centerLanes}
+						laneColumns={laneColumns}
+						lead={leadOf?.(row)}
+						labelWidth={labelWidth}
 						laneName={laneName}
 						onSelect={onSelectClause}
 						onOpenGraph={onOpenGraph}

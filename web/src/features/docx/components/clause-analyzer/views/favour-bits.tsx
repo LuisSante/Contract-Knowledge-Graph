@@ -101,7 +101,7 @@ export function KindSquare({
 	);
 }
 
-/** The types by their plain names, for a view whose columns already say whom they favour. */
+/** The types by their plain names. */
 export const PLAIN_KIND_LABEL: Record<DeonticKind, string> = {
 	obligation: 'Obligations',
 	right: 'Rights',

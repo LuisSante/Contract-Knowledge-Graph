@@ -1,8 +1,6 @@
 'use client';
 
-import { Coins, Minus, Plus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
+import { Coins } from 'lucide-react';
 import {
 	Select,
 	SelectContent,
@@ -11,13 +9,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { MODEL_OPTIONS } from '@/constants/docx-viewer';
-import {
-	TOP_K_STEP_SIZE,
-	MAX_HOPS,
-	MAX_TOP_K,
-	MIN_TOP_K,
-	useClauseAnalyzerStore,
-} from '@/stores/clause-analyzer';
+import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
 import type { RightPanelTab } from '@/types/document';
 
 interface RightPanelHeaderActionsProps {
@@ -33,70 +25,9 @@ export function RightPanelHeaderActions({
 	model,
 	onModelChange,
 }: RightPanelHeaderActionsProps) {
+	// The Clause Analyzer tab has no header actions: its columns already name both parties.
 	const focusMeta = useClauseAnalyzerStore((state) => state.focusMeta);
-	const hops = useClauseAnalyzerStore((state) => state.hops);
-	const topK = useClauseAnalyzerStore((state) => state.topK);
-	const setHops = useClauseAnalyzerStore((state) => state.setHops);
-	const setTopK = useClauseAnalyzerStore((state) => state.setTopK);
-	const clearFocus = useClauseAnalyzerStore((state) => state.clearFocus);
 	const focusedPartyName = focusMeta?.kind === 'party' ? focusMeta.label : null;
-
-	if (activeTab === 'clause_analyzer') {
-		const partyFocus = focusMeta?.kind === 'party';
-		const step = (delta: number) =>
-			partyFocus ? setTopK((k) => k + delta * TOP_K_STEP_SIZE) : setHops((h) => h + delta);
-		const atMin = partyFocus ? topK <= MIN_TOP_K : hops <= 0;
-		const atMax = partyFocus ? topK >= MAX_TOP_K : hops >= MAX_HOPS;
-		const stepUnit = partyFocus ? 'statements' : 'hops';
-
-		return (
-			<div className="flex shrink-0 items-center gap-1.5">
-				{focusMeta && (
-					<div className="flex h-7 items-center rounded-md bg-card pl-2 pr-1 shadow-sm">
-						<span
-							className="max-w-[130px] truncate text-2xs font-medium text-primary"
-							title={focusMeta.label}
-						>
-							{focusMeta.label}
-						</span>
-						<Separator orientation="vertical" className="mx-1.5 h-3.5! bg-primary/20" />
-						<span className="whitespace-nowrap text-2xs tabular-nums text-primary/60">
-							{partyFocus ? `top ${topK}` : `${hops}-hop`}
-						</span>
-						<Button
-							variant="ghost"
-							size="icon-xs"
-							className="ml-0.5 size-5 text-primary hover:bg-primary/10 hover:text-primary"
-							aria-label={`Fewer ${stepUnit}`}
-							disabled={atMin}
-							onClick={() => step(-1)}
-						>
-							<Minus />
-						</Button>
-						<Button
-							variant="ghost"
-							size="icon-xs"
-							className="size-5 text-primary hover:bg-primary/10 hover:text-primary"
-							aria-label={`More ${stepUnit}`}
-							disabled={atMax}
-							onClick={() => step(1)}
-						>
-							<Plus />
-						</Button>
-						<Separator orientation="vertical" className="mx-1.5 h-3.5! bg-primary/20" />
-						<Button
-							variant="ghost"
-							size="xs"
-							className="h-5 px-1.5 text-2xs text-primary hover:bg-primary/10 hover:text-primary"
-							onClick={clearFocus}
-						>
-							Clear
-						</Button>
-					</div>
-				)}
-			</div>
-		);
-	}
 
 	if (activeTab === 'assistant') {
 		return (

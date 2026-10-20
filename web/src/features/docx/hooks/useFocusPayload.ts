@@ -7,7 +7,7 @@ import type { DeonticSeverity } from '@/features/docx/utils/knowledge/party-ledg
 import type { PairScores } from '@/features/docx/utils/knowledge/pair';
 import type { GridLane, GridRow } from '@/features/docx/utils/knowledge/statement-grid';
 import { buildFocusPayload, buildPairPayload } from '@/features/docx/utils/knowledge/graph-payload';
-import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
+import { useClauseAnalyzerStore, type GraphPayload } from '@/stores/clause-analyzer';
 
 interface FocusPayloadInput {
 	kg: KnowledgeGraph | null;
@@ -19,12 +19,21 @@ interface FocusPayloadInput {
 	paintLanes: Record<GridLane, boolean>;
 	showShared: boolean;
 	nodesById: Map<string, ParagraphNode>;
-	laneColors: [string, string];
 	hops: number;
 	topK: number;
 	severity: DeonticSeverity;
 	importanceByNode: Record<string, number> | null;
 }
+
+/** What paints the contract, emptied. */
+const UNPAINTED = {
+	anchorParagraphId: null,
+	relatedParagraphs: [],
+	entities: [],
+	paragraphIds: [],
+	scoreByParagraph: {},
+	toneByParagraph: {},
+} satisfies Partial<GraphPayload>;
 
 export function useFocusPayload({
 	kg,
@@ -36,7 +45,6 @@ export function useFocusPayload({
 	paintLanes,
 	showShared,
 	nodesById,
-	laneColors,
 	hops,
 	topK,
 	severity,
@@ -59,18 +67,30 @@ export function useFocusPayload({
 						const lane = laneByStatement.get(id);
 						return lane ? lanes.includes(lane) && paintLanes[lane] : true;
 					});
+		if (pair) {
+			const payload = buildPairPayload(
+				kg,
+				pair,
+				nodesById,
+				statementIds,
+				activeClause?.clauseId ?? null
+			);
+			// With a pair, the contract stays unpainted until a clause is picked in the table;
+			// then it shows that clause's statements and the clauses read with it. The graph
+			// keeps its focus either way.
+			setPayload(activeClause ? payload : { ...payload, ...UNPAINTED });
+			return;
+		}
 		setPayload(
-			pair
-				? buildPairPayload(kg, pair, nodesById, laneColors, statementIds)
-				: buildFocusPayload(
-						kg,
-						activeClause?.clauseId ?? focusNodeId,
-						activeClause ? 1 : hops,
-						topK,
-						nodesById,
-						severity,
-						importanceByNode
-					)
+			buildFocusPayload(
+				kg,
+				activeClause?.clauseId ?? focusNodeId,
+				activeClause ? 1 : hops,
+				topK,
+				nodesById,
+				severity,
+				importanceByNode
+			)
 		);
 	}, [
 		kg,
@@ -82,7 +102,6 @@ export function useFocusPayload({
 		showShared,
 		laneByStatement,
 		nodesById,
-		laneColors,
 		hops,
 		topK,
 		severity,

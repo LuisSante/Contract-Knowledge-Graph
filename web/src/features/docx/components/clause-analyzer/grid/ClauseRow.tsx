@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, type MouseEvent as ReactMouseEvent } from 'react';
+import { Fragment, useEffect, useRef, type MouseEvent as ReactMouseEvent } from 'react';
 import { Forward } from 'lucide-react';
 import type {
 	GridLane,
@@ -12,10 +12,13 @@ import { Mark } from '@/features/docx/components/clause-analyzer/grid/Mark';
 import { ShareBar } from '@/features/docx/components/clause-analyzer/grid/ShareBar';
 import {
 	GraphLink,
+	KIND_LABEL as TAB_NAME,
 	RankBadge,
 	SectionTag,
 } from '@/features/docx/components/clause-analyzer/views/favour-bits';
+import type { DeonticKind } from '@/types/knowledge';
 import {
+	KIND_COLORS,
 	LABEL_WIDTH,
 	LANE_COLUMNS,
 	laneWidth,
@@ -28,6 +31,9 @@ export interface ClauseRowLead {
 	rank: number | undefined;
 	section: string | null;
 	heading: string;
+	/** The clauses that modify this one (the graph's `modifies`): their number, and the type
+	 *  of the sentence that does it, for its colour; null when the graph gives none. */
+	modifiedBy?: Array<{ clauseId: string; label: string; kind: DeonticKind | null }>;
 }
 
 interface ClauseRowProps {
@@ -57,6 +63,8 @@ interface ClauseRowProps {
 	onOpenGraph?: (clauseId: string) => void;
 	/** Opens the clause in Table v2, for what each party gets in it; absent, no link. */
 	onDetails?: (clauseId: string) => void;
+	/** Goes to a clause that modifies this one, in the tab of its changing sentence's type. */
+	onGoToModifier?: (clauseId: string, kind: DeonticKind | null) => void;
 	onOpenMark: (nodeId: string) => void;
 	onFocusMark: (nodeId: string) => void;
 	onHoverMark: (event: ReactMouseEvent, mark: GridMark) => void;
@@ -81,12 +89,18 @@ export function ClauseRow({
 	onSelect,
 	onOpenGraph,
 	onDetails,
+	onGoToModifier,
 	onOpenMark,
 	onFocusMark,
 	onHoverMark,
 	onLeaveMark,
 }: ClauseRowProps) {
 	const clauseId = row.clauseId;
+	// A row picked from elsewhere (another row's «modified by») comes into view.
+	const rowRef = useRef<HTMLDivElement>(null);
+	useEffect(() => {
+		if (active) rowRef.current?.scrollIntoView({ block: 'nearest' });
+	}, [active]);
 	const unfiled = clauseId === null;
 	const pctA = share ? Math.round(share.a * 100) : 0;
 	const background = active
@@ -104,7 +118,7 @@ export function ClauseRow({
 		: row.heading;
 
 	return (
-		<div className={`flex items-start gap-2 px-3 py-1.5 ${background}`}>
+		<div ref={rowRef} className={`flex items-start gap-2 px-3 py-1.5 ${background}`}>
 			{lead ? (
 				<div className="flex shrink-0 items-start gap-2" style={{ width: labelWidth }}>
 					<RankBadge rank={lead.rank} />
@@ -129,6 +143,30 @@ export function ClauseRow({
 						{clauseId && onOpenGraph && (
 							<GraphLink onClick={() => onOpenGraph(clauseId)} heading={lead.heading} />
 						)}
+						{lead.modifiedBy?.length ? (
+							<span className="mt-0.5 block text-2xs text-muted-foreground">
+								modified by{' '}
+								{lead.modifiedBy.map((m, index) => (
+									<Fragment key={m.clauseId}>
+										{index > 0 && ', '}
+										<button
+											type="button"
+											onClick={() => onGoToModifier?.(m.clauseId, m.kind)}
+											disabled={!onGoToModifier}
+											className="font-semibold hover:underline disabled:cursor-default"
+											style={{ color: m.kind ? KIND_COLORS[m.kind] : undefined }}
+											title={
+												m.kind
+													? `Go to ${m.label}, in ${TAB_NAME[m.kind]}: the ${m.kind} there modifies this clause`
+													: `Go to ${m.label}: it modifies this clause`
+											}
+										>
+											{m.label}
+										</button>
+									</Fragment>
+								))}
+							</span>
+						) : null}
 					</div>
 				</div>
 			) : (

@@ -9,6 +9,7 @@ import {
 	type DeonticSeverity,
 	type DeonticTone,
 } from '@/features/docx/utils/knowledge/party-ledger';
+import { sectionOf } from '@/features/docx/utils/knowledge/clause-favour';
 
 type EntityKind = 'party' | 'clause' | 'definedTerm' | DeonticKind;
 
@@ -86,19 +87,6 @@ function makeEntityCollector() {
 		entities.push({ label, key, color: palette.color, softColor: palette.soft });
 	};
 	return { entities, add };
-}
-
-function addColored(
-	entities: EntityHighlight[],
-	rawLabel: string,
-	key: string,
-	color: string,
-	softColor: string
-) {
-	const label = rawLabel.trim();
-	if (label.length < 2) return;
-	if (entities.some((entity) => entity.label.toLowerCase() === label.toLowerCase())) return;
-	entities.push({ label, key, color, softColor });
 }
 
 function paragraphEnum(pid: string, nodesById: Map<string, ParagraphNode>): number {
@@ -222,28 +210,91 @@ export function buildParagraphTarget(
 	};
 }
 
+/** One `modifies` edge between two different clauses: `from` holds the changing statement
+ *  (or is the changing clause), `to` is the clause it changes. */
+interface ClauseModification {
+	from: string;
+	to: string;
+	statementId: string | null;
+	/** The changing sentence's type; null when a whole clause is the source. */
+	kind: DeonticKind | null;
+	/** Where the change is written: the edge's own evidence, else its source's paragraphs. */
+	paragraphIds: string[];
+}
+
+function clauseModifications(kg: KnowledgeGraph): ClauseModification[] {
+	const statementById = new Map(deonticNodes(kg).map((v) => [v.id, v] as const));
+	const clauseById = new Map(kg.clauses.map((c) => [c.id, c] as const));
+	const out: ClauseModification[] = [];
+	for (const edge of kg.edges) {
+		if (edge.type !== 'modifies' || !clauseById.has(edge.target)) continue;
+		const statement = statementById.get(edge.source);
+		const from = statement?.clauseId ?? (clauseById.has(edge.source) ? edge.source : null);
+		if (!from || from === edge.target) continue;
+		out.push({
+			from,
+			to: edge.target,
+			statementId: statement?.id ?? null,
+			kind: statement?.kind ?? null,
+			paragraphIds: edge.paragraphIds.length
+				? edge.paragraphIds
+				: (statement?.paragraphIds ?? clauseById.get(from)?.paragraphIds ?? []),
+		});
+	}
+	return out;
+}
+
+/** A clause that modifies another, with the type of its changing sentence. */
+export interface ClauseModifier {
+	clauseId: string;
+	kind: DeonticKind | null;
+}
+
+/** For each clause, the clauses that modify it: what could limit, except or cancel it. One
+ *  entry per modifying clause, typed by its first changing sentence. */
+export function clauseModifiedBy(kg: KnowledgeGraph): Map<string, ClauseModifier[]> {
+	const by = new Map<string, ClauseModifier[]>();
+	for (const m of clauseModifications(kg)) {
+		const list = by.get(m.to) ?? [];
+		if (!list.some((x) => x.clauseId === m.from)) list.push({ clauseId: m.from, kind: m.kind });
+		by.set(m.to, list);
+	}
+	return by;
+}
+
+interface ModifiesPartner {
+	paragraphId: string;
+	statementId: string | null;
+	from: string;
+	to: string;
+}
+
+/**
+ * What a clause is read with: the sentences in other clauses that modify it, where the edge
+ * says they are written. Only that direction, as the table says it ("modified by"); never
+ * itself, and never a chain.
+ */
+function modifiesPartners(kg: KnowledgeGraph, clauseId: string): ModifiesPartner[] {
+	return clauseModifications(kg)
+		.filter((m) => m.to === clauseId)
+		.flatMap((m) => m.paragraphIds.map((paragraphId) => ({ paragraphId, ...m })));
+}
+
 export function buildPairPayload(
 	kg: KnowledgeGraph,
 	pair: PairScores,
 	nodesById: Map<string, ParagraphNode>,
-	partyColors: readonly [string, string],
-	statementIds?: readonly string[]
+	statementIds?: readonly string[],
+	/** The clause picked in the table. The document links its paragraphs only to the sentences
+	 *  that modify it (`modifies`); with no clause picked, nothing is linked. */
+	clauseId?: string | null
 ): GraphPayload {
 	const byId = new Map(deonticNodes(kg).map((v) => [v.id, v] as const));
 	const clauseById = new Map(kg.clauses.map((c) => [c.id, c]));
-	const partyById = new Map(kg.parties.map((p) => [p.id, p]));
 	const spanOwners = countSpanOwners(kg);
+	// Only the statements are painted, not the parties' names: the table's columns already
+	// say whose side each one is on.
 	const { entities, add } = makeEntityCollector();
-
-	for (const [index, partyId] of [pair.partyAId, pair.partyBId].entries()) {
-		const party = partyById.get(partyId);
-		if (!party) continue;
-		const color = partyColors[index];
-		const soft = `${color}29`;
-		for (const label of [party.name, ...party.aliases]) {
-			addColored(entities, label, `kg-${party.id}`, color, soft);
-		}
-	}
 
 	const statements = [...new Set(statementIds ?? [...pair.topA, ...pair.topB])]
 		.map((id) => byId.get(id))
@@ -264,20 +315,43 @@ export function buildPairPayload(
 		}
 	}
 
+	const anchorParagraphId =
+		(statements[0]?.paragraphIds ?? []).find((pid) => nodesById.has(pid)) ??
+		[...paragraphSet].sort(
+			(a, b) => paragraphEnum(a, nodesById) - paragraphEnum(b, nodesById)
+		)[0] ??
+		null;
+
+	// The line in the margin means "read these together", so it only joins what the graph
+	// joins. Paragraphs that merely hold statements of the pair stay painted, unlinked.
+	const partners = clauseId ? modifiesPartners(kg, clauseId) : [];
+	for (const id of new Set(partners.flatMap((p) => (p.statementId ? [p.statementId] : [])))) {
+		const v = byId.get(id);
+		if (v) for (const span of evidenceLabels(v, spanOwners)) add(span, `kg-${v.id}`, v.kind);
+	}
+	const partnerAt = new Map<string, ModifiesPartner>();
+	for (const p of partners) {
+		if (!nodesById.has(p.paragraphId) || p.paragraphId === anchorParagraphId) continue;
+		if (!partnerAt.has(p.paragraphId)) partnerAt.set(p.paragraphId, p);
+	}
+	for (const pid of partnerAt.keys()) paragraphSet.add(pid);
+	const numberOf = (id: string) => {
+		const clause = clauseById.get(id);
+		return sectionOf(clause?.ref) ?? clause?.heading ?? id;
+	};
 	const present = [...paragraphSet].sort(
 		(a, b) => paragraphEnum(a, nodesById) - paragraphEnum(b, nodesById)
 	);
-	const anchorParagraphId =
-		(statements[0]?.paragraphIds ?? []).find((pid) => nodesById.has(pid)) ?? present[0] ?? null;
 
 	return {
 		anchorParagraphId,
-		relatedParagraphs: present
-			.filter((pid) => pid !== anchorParagraphId)
-			.map((pid) => ({
-				node: nodesById.get(pid) as ParagraphNode,
-				relationTypes: [],
-				references: [],
+		relatedParagraphs: [...partnerAt.values()]
+			.sort(
+				(a, b) => paragraphEnum(a.paragraphId, nodesById) - paragraphEnum(b.paragraphId, nodesById)
+			)
+			.map((p) => ({
+				node: nodesById.get(p.paragraphId) as ParagraphNode,
+				relation: { kind: 'modifies' as const, from: numberOf(p.from), to: numberOf(p.to) },
 			})),
 		entities,
 		paragraphIds: present,

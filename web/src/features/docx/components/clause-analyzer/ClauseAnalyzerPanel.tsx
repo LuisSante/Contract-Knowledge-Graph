@@ -4,7 +4,10 @@ import { useEffect, useMemo, useRef, useState, type MouseEvent as ReactMouseEven
 import { cn } from '@/lib/utils';
 import { useDocumentStore } from '@/stores/document';
 import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
-import { buildDocumentTarget } from '@/features/docx/utils/knowledge/graph-payload';
+import {
+	buildDocumentTarget,
+	clauseModifiedBy,
+} from '@/features/docx/utils/knowledge/graph-payload';
 import { applyPartyView } from '@/features/docx/utils/knowledge/party-view';
 import {
 	buildStatementGrid,
@@ -31,10 +34,6 @@ import {
 	type HoverInfo,
 } from '@/features/docx/components/clause-analyzer/grid/MarkTooltip';
 import { Legend } from '@/features/docx/components/clause-analyzer/legend/Legend';
-import {
-	PAIR_SECOND_COLOR,
-	PARTY_COLOR,
-} from '@/features/docx/components/clause-analyzer/constants';
 import { ByTypeView } from '@/features/docx/components/clause-analyzer/views/ByTypeView';
 import { KindTabs } from '@/features/docx/components/clause-analyzer/views/favour-bits';
 import type { ClauseRowLead } from '@/features/docx/components/clause-analyzer/grid/ClauseRow';
@@ -54,7 +53,6 @@ interface ClauseAnalyzerPanelProps {
 	onOpenGraph?: () => void;
 }
 
-const LANE_COLORS: [string, string] = [PARTY_COLOR, PAIR_SECOND_COLOR];
 /** No statements: the importance hook sends no request. */
 const NO_IDS: readonly string[] = [];
 
@@ -248,6 +246,20 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		() => visibleRows.find((row) => row.clauseId && row.clauseId === selectedClauseId) ?? null,
 		[visibleRows, selectedClauseId]
 	);
+	// Table v1.1 paints in the contract only the type its tab shows: a clause's obligations
+	// under Obligations, its rights under Rights. Table paints the whole clause.
+	const paintedClause = useMemo(() => {
+		if (!activeClause || !oneType) return activeClause;
+		const keep = (marks: GridMark[]) => marks.filter((mark) => kindsShown.has(mark.kind));
+		return {
+			...activeClause,
+			marks: {
+				a: keep(activeClause.marks.a),
+				b: keep(activeClause.marks.b),
+				shared: keep(activeClause.marks.shared),
+			},
+		};
+	}, [activeClause, oneType, kindsShown]);
 
 	const focusedPartyName = focusNodeId ? (partyNameById.get(focusNodeId) ?? null) : null;
 	useEffect(() => {
@@ -258,13 +270,12 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		kg: viewKg,
 		focusNodeId,
 		pair,
-		activeClause,
+		activeClause: paintedClause,
 		laneByStatement,
 		lanes: shownLanes,
 		paintLanes,
 		showShared,
 		nodesById,
-		laneColors: LANE_COLORS,
 		hops,
 		topK,
 		severity,
@@ -323,6 +334,14 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		[viewKg, pairA, pairB]
 	);
 
+	// Table v1.1's «modified by §11»: to §11, in the tab of the sentence that does the
+	// modifying (a right of §11 opens Rights), picked and shown in the contract.
+	const goToModifier = (clauseId: string, kind: DeonticKind | null) => {
+		if (kind) setTypeShown(kind);
+		selectClause(docId, clauseId);
+		openInDocument(clauseId);
+	};
+
 	// Table v1.1's «Details»: the clause, open in Table v2 and shown in the contract. It is not
 	// selected: back in Table v1.1 a selection would dim every other row.
 	const openDetails = (clauseId: string) => {
@@ -364,11 +383,25 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 			? byImportance(tallyClauses(grid, viewKg), overviewImportance.byClause)
 			: [];
 		const rank = new Map(ranked.map((t, i) => [t.clauseId, i + 1] as const));
+		const modifiedBy = clauseModifiedBy(viewKg);
+		const numberOf = (id: string) => {
+			const clause = clauseOf.get(id);
+			const title = clauseTitle(clause, clause?.heading || id, viewKg.clauses);
+			return title.section ?? title.heading;
+		};
 		return (row: GridRow): ClauseRowLead => {
 			const title = row.clauseId
 				? clauseTitle(clauseOf.get(row.clauseId), row.heading, viewKg.clauses)
 				: { heading: row.heading, section: null };
-			return { rank: row.clauseId ? rank.get(row.clauseId) : undefined, ...title };
+			return {
+				rank: row.clauseId ? rank.get(row.clauseId) : undefined,
+				...title,
+				modifiedBy: row.clauseId
+					? modifiedBy
+							.get(row.clauseId)
+							?.map((m) => ({ clauseId: m.clauseId, label: numberOf(m.clauseId), kind: m.kind }))
+					: undefined,
+			};
 		};
 	}, [oneType, grid, viewKg, overviewImportance]);
 
@@ -469,6 +502,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 								}}
 								onOpenGraph={openClauseInGraph}
 								onDetails={oneType ? openDetails : undefined}
+								onGoToModifier={oneType ? goToModifier : undefined}
 								onOpenMark={openInDocument}
 								onFocusMark={focusNode}
 								onHoverMark={showTooltip}

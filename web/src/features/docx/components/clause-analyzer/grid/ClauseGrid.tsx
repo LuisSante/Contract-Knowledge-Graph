@@ -7,6 +7,7 @@ import type {
 	GridRow,
 	MarkKind,
 } from '@/features/docx/utils/knowledge/statement-grid';
+import type { DeonticKind } from '@/types/knowledge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -58,6 +59,8 @@ interface ClauseGridProps {
 	onOpenGraph?: (clauseId: string) => void;
 	/** Opens a clause in Table v2; each row then ends in a «Details» link. */
 	onDetails?: (clauseId: string) => void;
+	/** Goes to a clause that modifies a row, from that row's «modified by». */
+	onGoToModifier?: (clauseId: string, kind: DeonticKind | null) => void;
 	onOpenMark: (nodeId: string) => void;
 	onFocusMark: (nodeId: string) => void;
 	onHoverMark: (event: ReactMouseEvent, mark: GridMark) => void;
@@ -89,6 +92,7 @@ export function ClauseGrid({
 	onSelectClause,
 	onOpenGraph,
 	onDetails,
+	onGoToModifier,
 	onOpenMark,
 	onFocusMark,
 	onHoverMark,
@@ -97,10 +101,13 @@ export function ClauseGrid({
 	const [rowLimit, setRowLimit] = useState(ROW_PAGE);
 	const [showUnfiled, setShowUnfiled] = useState(false);
 
-	const hiddenRows = Math.max(0, clauseRows.length - rowLimit);
+	// The picked row is always shown, even when it sits past «Show more».
+	const activeIndex = clauseRows.findIndex((row) => row.clauseId === activeClauseId);
+	const limit = Math.max(rowLimit, activeIndex + 1);
+	const hiddenRows = Math.max(0, clauseRows.length - limit);
 	const shownRows = useMemo(
-		() => [...clauseRows.slice(0, rowLimit), ...(showUnfiled && unfiledRow ? [unfiledRow] : [])],
-		[clauseRows, rowLimit, showUnfiled, unfiledRow]
+		() => [...clauseRows.slice(0, limit), ...(showUnfiled && unfiledRow ? [unfiledRow] : [])],
+		[clauseRows, limit, showUnfiled, unfiledRow]
 	);
 
 	return (
@@ -210,6 +217,7 @@ export function ClauseGrid({
 						onSelect={onSelectClause}
 						onOpenGraph={onOpenGraph}
 						onDetails={onDetails}
+						onGoToModifier={onGoToModifier}
 						onOpenMark={onOpenMark}
 						onFocusMark={onFocusMark}
 						onHoverMark={onHoverMark}

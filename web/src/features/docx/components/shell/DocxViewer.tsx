@@ -9,6 +9,7 @@ import { LlmEstimateDialog } from '@/features/docx/components/shell/LlmEstimateD
 import { RightPanelHeaderActions } from '@/features/docx/components/shell/RightPanelHeaderActions';
 import { RightPanelContent } from '@/features/docx/components/shell/RightPanelContent';
 import { ViewBar } from '@/features/docx/components/clause-analyzer/views/ViewBar';
+import { ModifiedByTag } from '@/features/docx/components/clause-analyzer/views/favour-bits';
 import { useRightDrawer } from '@/features/docx/hooks/useRightDrawer';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useLlmEstimate } from '@/features/docx/hooks/useLlmEstimate';
@@ -81,6 +82,16 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	const bridgeActive = clauseAnalyzerActive;
 	const bridgeSelectedParagraph = clauseAnalyzerActive ? kgAnchorParagraph : null;
 	const bridgeParagraphs = clauseAnalyzerActive ? kgRelatedParagraphs : [];
+	// Sentences linked by the graph's `modifies` say so beside the margin line: the picked
+	// clause is "modified by" them.
+	const relations = bridgeParagraphs.flatMap((p) => (p.relation ? [p.relation] : []));
+	const selectedLabel =
+		relations.length > 0 ? (
+			<ModifiedByTag
+				clause={relations[0].to}
+				by={[...new Set(relations.map((relation) => relation.from))]}
+			/>
+		) : undefined;
 
 	const documentEntities = kgEntities;
 	const entityTargetIds = useMemo(
@@ -216,6 +227,7 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 					evidenceParagraphs={bridgeParagraphs}
 					toneByParagraph={clauseAnalyzerActive ? kgToneByParagraphId : undefined}
 					scoreByParagraph={clauseAnalyzerActive ? kgScoreByParagraphId : undefined}
+					selectedLabel={selectedLabel}
 				/>
 			</div>
 

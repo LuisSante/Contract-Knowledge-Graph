@@ -1,7 +1,10 @@
 'use client';
 
-import type { MouseEvent } from 'react';
+import type { MouseEvent, ReactNode } from 'react';
 import type { EvidenceBridge } from '@/features/docx/utils/evidence/evidence-bridge';
+
+/** Room the label needs left of the margin line. */
+const LABEL_ROOM_PX = 88;
 
 interface EvidenceBridgeOverlayProps {
 	bridge: EvidenceBridge;
@@ -13,6 +16,8 @@ interface EvidenceBridgeOverlayProps {
 	 */
 	toneByParagraph?: Record<string, 'burden' | 'benefit'>;
 	scoreByParagraph?: Record<string, number>;
+	/** A label beside the line at the selected paragraph, saying why the others are linked. */
+	selectedLabel?: ReactNode;
 }
 
 export function EvidenceBridgeOverlay({
@@ -21,6 +26,7 @@ export function EvidenceBridgeOverlay({
 	onRailMouseDown,
 	toneByParagraph,
 	scoreByParagraph,
+	selectedLabel,
 }: EvidenceBridgeOverlayProps) {
 	const { connectors, primaryConnector, folds, collapsedCards, scrollMarkers } = bridge;
 	const deonticRail = toneByParagraph != null;
@@ -81,6 +87,21 @@ export function EvidenceBridgeOverlay({
 							}}
 						/>
 					))}
+
+					{primaryConnector && selectedLabel ? (
+						<span
+							className="pointer-events-auto absolute"
+							// In the page margin, left of the line; a narrow pane that scrolled the
+							// margin away keeps it in view, over the paragraph's first words.
+							style={{
+								left: Math.max(primaryConnector.leftPx - 6, LABEL_ROOM_PX),
+								top: primaryConnector.selectedCapTopPx,
+								transform: 'translate(-100%, -50%)',
+							}}
+						>
+							{selectedLabel}
+						</span>
+					) : null}
 
 					{folds.map((fold, index) => (
 						<svg

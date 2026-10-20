@@ -1,7 +1,8 @@
 'use client';
 
 import type { MouseEvent as ReactMouseEvent } from 'react';
-import { ArrowUpRightIcon, CheckIcon } from 'lucide-react';
+import { ArrowUpRightIcon, CheckIcon, InfoIcon } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import type { KgCondition } from '@/types/knowledge';
 import { cn } from '@/lib/utils';
 import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
@@ -235,6 +236,45 @@ export function SectionTag({ section }: { section: string }) {
 	return (
 		<span className="mr-1.5 inline-block rounded-[5px] border border-border bg-card px-1.5 align-[1px] text-2xs leading-4 font-medium text-muted-foreground tabular-nums">
 			{section}
+		</span>
+	);
+}
+
+/** What a `modifies` link means, for the ⓘ beside it. */
+const MODIFIES_NOTE =
+	'One clause changes what another says: it can limit it, add an exception or cancel it. Read them together.';
+
+/** The ⓘ that explains a `modifies` link; `about` names the two clauses when known. */
+export function ModifiesInfo({ about }: { about?: string }) {
+	return (
+		<Tooltip>
+			<TooltipTrigger asChild>
+				<button
+					type="button"
+					aria-label="What modifies means"
+					className="relative z-10 inline-flex shrink-0 rounded-full text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+				>
+					<InfoIcon className="size-3.5" aria-hidden="true" />
+				</button>
+			</TooltipTrigger>
+			<TooltipContent
+				side="top"
+				sideOffset={6}
+				className="max-w-64 border border-border bg-card text-card-foreground shadow-sm [&_svg]:bg-card [&_svg]:fill-card"
+			>
+				{about && <p className="mb-1 font-semibold">{about}</p>}
+				{MODIFIES_NOTE}
+			</TooltipContent>
+		</Tooltip>
+	);
+}
+
+/** On the contract's margin line, by the picked clause: the linked sentences modify it. */
+export function ModifiedByTag({ clause, by }: { clause: string; by: string[] }) {
+	return (
+		<span className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-1.5 py-0.5 text-2xs font-medium whitespace-nowrap text-primary shadow-sm">
+			modified by
+			<ModifiesInfo about={`${clause} is modified by ${by.join(', ')}`} />
 		</span>
 	);
 }

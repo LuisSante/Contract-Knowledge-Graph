@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, type MouseEvent as ReactMouseEvent, type RefObject } from 'react';
+import { useRef, type MouseEvent as ReactMouseEvent, type ReactNode, type RefObject } from 'react';
 
 const MANUAL_SCROLL_DRAG_SPEED = 100;
 import type { DocumentViewerStatus } from '@/features/docx/hooks/useDocumentViewer';
@@ -19,6 +19,8 @@ interface DocumentViewerProps {
 	evidenceParagraphs: EvidenceParagraph[];
 	toneByParagraph?: Record<string, 'burden' | 'benefit'>;
 	scoreByParagraph?: Record<string, number>;
+	/** Why the linked paragraphs are linked, beside the margin line at the selected one. */
+	selectedLabel?: ReactNode;
 }
 
 export function DocumentViewer({
@@ -32,6 +34,7 @@ export function DocumentViewer({
 	evidenceParagraphs,
 	toneByParagraph,
 	scoreByParagraph,
+	selectedLabel,
 }: DocumentViewerProps) {
 	const scrollHostRef = useRef<HTMLElement>(null);
 
@@ -110,6 +113,7 @@ export function DocumentViewer({
 					onRailMouseDown={startRailScrub}
 					toneByParagraph={toneByParagraph}
 					scoreByParagraph={scoreByParagraph}
+					selectedLabel={selectedLabel}
 				/>
 			)}
 		</div>

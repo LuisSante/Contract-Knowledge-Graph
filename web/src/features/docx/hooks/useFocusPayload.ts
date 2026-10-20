@@ -23,6 +23,8 @@ interface FocusPayloadInput {
 	topK: number;
 	severity: DeonticSeverity;
 	importanceByNode: Record<string, number> | null;
+	/** Paint each statement's conditions, and link those written apart (Table v1.1). */
+	paintConditions?: boolean;
 }
 
 /** What paints the contract, emptied. */
@@ -49,6 +51,7 @@ export function useFocusPayload({
 	topK,
 	severity,
 	importanceByNode,
+	paintConditions = false,
 }: FocusPayloadInput) {
 	const setPayload = useClauseAnalyzerStore((s) => s.setPayload);
 
@@ -73,7 +76,8 @@ export function useFocusPayload({
 				pair,
 				nodesById,
 				statementIds,
-				activeClause?.clauseId ?? null
+				activeClause?.clauseId ?? null,
+				paintConditions
 			);
 			// With a pair, the contract stays unpainted until a clause is picked in the table;
 			// then it shows that clause's statements and the clauses read with it. The graph
@@ -106,6 +110,7 @@ export function useFocusPayload({
 		topK,
 		severity,
 		importanceByNode,
+		paintConditions,
 		setPayload,
 	]);
 }

@@ -9,7 +9,7 @@ import {
 	type Side,
 	type StatementGrid,
 } from '@/features/docx/utils/knowledge/statement-grid';
-import { clauseTitle } from '@/features/docx/utils/knowledge/clause-favour';
+import { clauseTitle, conditionLead } from '@/features/docx/utils/knowledge/clause-favour';
 import {
 	KIND_COLORS,
 	KIND_LABEL,
@@ -29,6 +29,8 @@ export interface HoverInfo {
 	quote: string;
 	/** "§1 Compensation", when the mark sits in a clause. */
 	clause: string | null;
+	/** What the statement waits on, when a condition gates it: «Only if…», «Unless…». */
+	conditions?: Array<{ lead: string; trigger: string }>;
 }
 
 type MarkDetails = Omit<HoverInfo, 'x' | 'y'>;
@@ -42,8 +44,19 @@ type MarkDetails = Omit<HoverInfo, 'x' | 'y'>;
 export function markDetails(
 	kg: KnowledgeGraph,
 	grid: StatementGrid,
-	favoured?: Record<Side, string>
+	favoured?: Record<Side, string>,
+	/** Add the conditions that gate each statement, as Table v1.1's card shows them. */
+	withConditions = false
 ): (mark: GridMark) => MarkDetails {
+	const conditionsOf = new Map<string, Array<{ lead: string; trigger: string }>>();
+	if (withConditions) {
+		for (const condition of kg.conditions) {
+			if (!condition.gatesId || !condition.trigger) continue;
+			const list = conditionsOf.get(condition.gatesId) ?? [];
+			list.push({ lead: conditionLead(condition.operator), trigger: condition.trigger });
+			conditionsOf.set(condition.gatesId, list);
+		}
+	}
 	const textOf = new Map(deonticNodes(kg).map((s) => [s.id, s.text] as const));
 	const clauseOf = new Map(kg.clauses.map((c) => [c.id, c] as const));
 	const clauseByMark = new Map<string, string | null>();
@@ -65,6 +78,7 @@ export function markDetails(
 		owner: ownerOf(mark),
 		quote: textOf.get(mark.id) || mark.detail,
 		clause: clauseByMark.get(mark.id) ?? null,
+		conditions: conditionsOf.get(mark.id),
 	});
 }
 
@@ -139,6 +153,15 @@ export function MarkTooltip({
 					«{trim(hover.quote, 220)}»
 				</p>
 			)}
+			{hover.conditions?.map((condition, index) => (
+				<p key={index} className="mt-2 leading-relaxed text-foreground">
+					<span
+						className="mr-1.5 inline-block size-2 rounded-[2px] align-middle"
+						style={{ backgroundColor: KIND_COLORS.condition }}
+					/>
+					<span className="font-semibold">{condition.lead}</span> {trim(condition.trigger, 160)}
+				</p>
+			))}
 			<div className="mt-2.5 flex items-center justify-between gap-2 border-t border-border pt-2">
 				<span className="truncate text-muted-foreground/80">
 					{hover.clause ?? 'No clause assigned'}

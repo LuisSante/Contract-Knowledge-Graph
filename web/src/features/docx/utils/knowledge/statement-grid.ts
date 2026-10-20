@@ -52,6 +52,26 @@ interface Anchor {
 	lane: GridLane;
 }
 
+/** The grid without the given marks: counts and rows follow, and emptied rows go. */
+export function withoutMarks(grid: StatementGrid, ids: ReadonlySet<string>): StatementGrid {
+	const countByKind = { ...grid.countByKind };
+	const rows = grid.rows.map((row) => {
+		const marks: Record<GridLane, GridMark[]> = { a: [], b: [], shared: [] };
+		for (const lane of GRID_LANES) {
+			for (const mark of row.marks[lane]) {
+				if (ids.has(mark.id)) countByKind[mark.kind] -= 1;
+				else marks[lane].push(mark);
+			}
+		}
+		return { ...row, marks, total: marks.a.length + marks.b.length + marks.shared.length };
+	});
+	return {
+		rows: rows.filter((row) => row.total > 0),
+		countByKind,
+		unfiled: rows.find((row) => row.clauseId === null)?.total ?? 0,
+	};
+}
+
 export function buildStatementGrid(
 	kg: KnowledgeGraph,
 	partyAId: string,

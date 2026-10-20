@@ -50,6 +50,8 @@ interface ClauseGridProps {
 	labelWidth?: number;
 	/** Every other row in solid grey instead of a faint tint. */
 	boldStripes?: boolean;
+	/** Statements a condition gates; their squares are drawn as outlines. */
+	conditionalIds?: ReadonlySet<string>;
 	/** The words after "CLAUSE" for each ordering. */
 	sortLabels?: { importance: string; order: string };
 	/** The columns hold what each party gains (a credited grid), not what it carries: the
@@ -87,6 +89,7 @@ export function ClauseGrid({
 	leadOf,
 	labelWidth = LABEL_WIDTH,
 	boldStripes = false,
+	conditionalIds,
 	sortLabels = { importance: 'most important first ↓', order: 'document order' },
 	favourSide = false,
 	onSelectClause,
@@ -213,6 +216,7 @@ export function ClauseGrid({
 						lead={leadOf?.(row)}
 						labelWidth={labelWidth}
 						boldStripes={boldStripes}
+						conditionalIds={conditionalIds}
 						laneName={laneName}
 						onSelect={onSelectClause}
 						onOpenGraph={onOpenGraph}

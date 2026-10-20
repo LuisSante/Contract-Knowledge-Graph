@@ -9,7 +9,10 @@ import { LlmEstimateDialog } from '@/features/docx/components/shell/LlmEstimateD
 import { RightPanelHeaderActions } from '@/features/docx/components/shell/RightPanelHeaderActions';
 import { RightPanelContent } from '@/features/docx/components/shell/RightPanelContent';
 import { ViewBar } from '@/features/docx/components/clause-analyzer/views/ViewBar';
-import { ModifiedByTag } from '@/features/docx/components/clause-analyzer/views/favour-bits';
+import {
+	ConditionTag,
+	ModifiedByTag,
+} from '@/features/docx/components/clause-analyzer/views/favour-bits';
 import { useRightDrawer } from '@/features/docx/hooks/useRightDrawer';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useLlmEstimate } from '@/features/docx/hooks/useLlmEstimate';
@@ -83,15 +86,23 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	const bridgeSelectedParagraph = clauseAnalyzerActive ? kgAnchorParagraph : null;
 	const bridgeParagraphs = clauseAnalyzerActive ? kgRelatedParagraphs : [];
 	// Sentences linked by the graph's `modifies` say so beside the margin line: the picked
-	// clause is "modified by" them.
-	const relations = bridgeParagraphs.flatMap((p) => (p.relation ? [p.relation] : []));
+	// clause is "modified by" them. A condition written apart says so where the line reaches it.
+	const modifiers = bridgeParagraphs.flatMap((p) =>
+		p.relation?.kind === 'modifies' ? [p.relation] : []
+	);
 	const selectedLabel =
-		relations.length > 0 ? (
+		modifiers.length > 0 ? (
 			<ModifiedByTag
-				clause={relations[0].to}
-				by={[...new Set(relations.map((relation) => relation.from))]}
+				clause={modifiers[0].to}
+				by={[...new Set(modifiers.map((relation) => relation.from))]}
 			/>
 		) : undefined;
+	const connectorLabel = (paragraphId: string) => {
+		const relation = bridgeParagraphs.find((p) => p.node.id === paragraphId)?.relation;
+		return relation?.kind === 'condition' ? (
+			<ConditionTag lead={relation.lead} trigger={relation.trigger} />
+		) : null;
+	};
 
 	const documentEntities = kgEntities;
 	const entityTargetIds = useMemo(
@@ -228,6 +239,7 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 					toneByParagraph={clauseAnalyzerActive ? kgToneByParagraphId : undefined}
 					scoreByParagraph={clauseAnalyzerActive ? kgScoreByParagraphId : undefined}
 					selectedLabel={selectedLabel}
+					connectorLabel={connectorLabel}
 				/>
 			</div>
 

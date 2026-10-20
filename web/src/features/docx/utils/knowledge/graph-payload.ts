@@ -1,4 +1,4 @@
-import type { DeonticKind, KgDeonticNode, KnowledgeGraph } from '@/types/knowledge';
+import type { DeonticKind, KgCondition, KgDeonticNode, KnowledgeGraph } from '@/types/knowledge';
 import { deonticNodes } from '@/types/knowledge';
 import type { Node as ParagraphNode, EvidenceParagraph } from '@/types/document';
 import type { EntityHighlight } from '@/features/docx/utils/assistant/entity-marks';
@@ -9,9 +9,9 @@ import {
 	type DeonticSeverity,
 	type DeonticTone,
 } from '@/features/docx/utils/knowledge/party-ledger';
-import { sectionOf } from '@/features/docx/utils/knowledge/clause-favour';
+import { conditionLead, sectionOf } from '@/features/docx/utils/knowledge/clause-favour';
 
-type EntityKind = 'party' | 'clause' | 'definedTerm' | DeonticKind;
+type EntityKind = 'party' | 'clause' | 'definedTerm' | 'condition' | DeonticKind;
 
 const KIND_COLORS: Record<EntityKind, { color: string; soft: string }> = {
 	party: { color: '#7c3aed', soft: 'rgba(124, 58, 237, 0.16)' },
@@ -20,6 +20,7 @@ const KIND_COLORS: Record<EntityKind, { color: string; soft: string }> = {
 	obligation: { color: '#ef4444', soft: 'rgba(239, 68, 68, 0.16)' },
 	right: { color: '#22c55e', soft: 'rgba(34, 197, 94, 0.16)' },
 	prohibition: { color: '#f59e0b', soft: 'rgba(245, 158, 11, 0.16)' },
+	condition: { color: '#e7298a', soft: 'rgba(231, 41, 138, 0.14)' },
 };
 
 const EMPTY: GraphPayload = {
@@ -103,6 +104,73 @@ function evidenceLabels(statement: KgDeonticNode, spanOwners: Map<string, number
 		.slice(0, 1);
 }
 
+/** The conditions that gate each statement (their `gatesId`). */
+function conditionsByStatement(kg: KnowledgeGraph): Map<string, KgCondition[]> {
+	const byStatement = new Map<string, KgCondition[]>();
+	for (const condition of kg.conditions) {
+		if (!condition.gatesId || !condition.trigger) continue;
+		const list = byStatement.get(condition.gatesId) ?? [];
+		list.push(condition);
+		byStatement.set(condition.gatesId, list);
+	}
+	return byStatement;
+}
+
+/** Shorter pieces of a statement left beside its condition are dropped: a word or two
+ *  would match anywhere else in the paragraph. */
+const MIN_PIECE = 12;
+
+/**
+ * The parts of `span` outside the given phrases. The document's highlighter lets the
+ * longer match win where two overlap, so a condition written inside its statement's
+ * sentence only shows in its own colour if the statement is painted around it.
+ */
+function partsOutside(span: string, phrases: string[]): string[] {
+	let parts = [span];
+	for (const phrase of phrases) {
+		const needle = phrase.trim().toLowerCase();
+		if (needle.length < 2) continue;
+		parts = parts.flatMap((part) => {
+			const at = part.toLowerCase().indexOf(needle);
+			return at < 0 ? [part] : [part.slice(0, at), part.slice(at + needle.length)];
+		});
+	}
+	return parts.map((part) => part.trim()).filter((part) => part.length >= MIN_PIECE);
+}
+
+/** Paints a statement, and its conditions in their own colour inside or beside it. */
+function paintStatement(
+	add: (label: string, key: string, kind: EntityKind) => void,
+	statement: KgDeonticNode,
+	spanOwners: Map<string, number>,
+	conditions: KgCondition[]
+) {
+	const triggers = conditions.map((c) => c.trigger);
+	for (const span of evidenceLabels(statement, spanOwners)) {
+		for (const part of triggers.length ? partsOutside(span, triggers) : [span]) {
+			add(part, `kg-${statement.id}`, statement.kind);
+		}
+	}
+	for (const condition of conditions) add(condition.trigger, `kg-${condition.id}`, 'condition');
+}
+
+/** A statement's conditions written in other paragraphs than its own, to link them to it. */
+function conditionsElsewhere(
+	statement: KgDeonticNode,
+	conditions: KgCondition[]
+): Array<{ paragraphId: string; lead: string; trigger: string }> {
+	const own = new Set(statement.paragraphIds);
+	return conditions.flatMap((condition) =>
+		condition.paragraphIds.some((pid) => own.has(pid))
+			? []
+			: condition.paragraphIds.map((paragraphId) => ({
+					paragraphId,
+					lead: conditionLead(condition.operator),
+					trigger: condition.trigger,
+				}))
+	);
+}
+
 function countSpanOwners(kg: KnowledgeGraph): Map<string, number> {
 	const counts = new Map<string, number>();
 	for (const statement of deonticNodes(kg)) {
@@ -127,10 +195,13 @@ export type DocumentTarget = Pick<
 export function buildDocumentTarget(
 	kg: KnowledgeGraph,
 	nodeId: string,
-	nodesById: Map<string, ParagraphNode>
+	nodesById: Map<string, ParagraphNode>,
+	/** A statement also shows its conditions: painted, and linked when written apart. */
+	{ withConditions = false }: { withConditions?: boolean } = {}
 ): DocumentTarget {
 	const { entities, add } = makeEntityCollector();
 	let paragraphIds: string[] = [];
+	let apart: ReturnType<typeof conditionsElsewhere> = [];
 
 	const party = kg.parties.find((p) => p.id === nodeId);
 	const clause = kg.clauses.find((c) => c.id === nodeId);
@@ -145,10 +216,10 @@ export function buildDocumentTarget(
 		paragraphIds = clause.paragraphIds;
 		if (clause.ref) add(clause.ref, `kg-${clause.id}`, 'clause');
 	} else if (statement) {
-		paragraphIds = statement.paragraphIds;
-		for (const span of evidenceLabels(statement, countSpanOwners(kg))) {
-			add(span, `kg-${statement.id}`, statement.kind);
-		}
+		const conditions = withConditions ? (conditionsByStatement(kg).get(statement.id) ?? []) : [];
+		paintStatement(add, statement, countSpanOwners(kg), conditions);
+		apart = conditionsElsewhere(statement, conditions);
+		paragraphIds = [...statement.paragraphIds, ...apart.map((c) => c.paragraphId)];
 		const home = kg.clauses.find((c) => c.id === statement.clauseId);
 		if (home?.ref) add(home.ref, `kg-${home.id}`, 'clause');
 	} else if (term) {
@@ -165,17 +236,28 @@ export function buildDocumentTarget(
 	const ordered = [...new Set(paragraphIds)]
 		.filter((pid) => nodesById.has(pid))
 		.sort((a, b) => paragraphEnum(a, nodesById) - paragraphEnum(b, nodesById));
-	const anchorParagraphId = ordered[0] ?? null;
+	// A statement anchors on its own paragraph, so its condition written apart is the one linked.
+	const anchorParagraphId =
+		(statement?.paragraphIds ?? []).find((pid) => nodesById.has(pid)) ?? ordered[0] ?? null;
+	const conditionAt = new Map(apart.map((c) => [c.paragraphId, c] as const));
 
 	return {
 		anchorParagraphId,
 		relatedParagraphs: ordered
 			.filter((pid) => pid !== anchorParagraphId)
-			.map((pid) => ({
-				node: nodesById.get(pid) as ParagraphNode,
-				relationTypes: [],
-				references: [],
-			})),
+			.map((pid) => {
+				const condition = conditionAt.get(pid);
+				return {
+					node: nodesById.get(pid) as ParagraphNode,
+					...(condition && {
+						relation: {
+							kind: 'condition' as const,
+							lead: condition.lead,
+							trigger: condition.trigger,
+						},
+					}),
+				};
+			}),
 		entities,
 		paragraphIds: ordered,
 		focusNodeIds: [nodeId],
@@ -287,7 +369,9 @@ export function buildPairPayload(
 	statementIds?: readonly string[],
 	/** The clause picked in the table. The document links its paragraphs only to the sentences
 	 *  that modify it (`modifies`); with no clause picked, nothing is linked. */
-	clauseId?: string | null
+	clauseId?: string | null,
+	/** Paint each statement's conditions too, and link the ones written apart (Table v1.1). */
+	withConditions = false
 ): GraphPayload {
 	const byId = new Map(deonticNodes(kg).map((v) => [v.id, v] as const));
 	const clauseById = new Map(kg.clauses.map((c) => [c.id, c]));
@@ -303,9 +387,12 @@ export function buildPairPayload(
 
 	const paragraphSet = new Set<string>();
 	const scoreByParagraph: Record<string, number> = {};
+	const conditionsOf = withConditions
+		? conditionsByStatement(kg)
+		: new Map<string, KgCondition[]>();
 	for (const v of statements) {
 		const score = pair.nodeScores[v.id] ?? 0;
-		for (const span of evidenceLabels(v, spanOwners)) add(span, `kg-${v.id}`, v.kind);
+		paintStatement(add, v, spanOwners, conditionsOf.get(v.id) ?? []);
 		const clause = v.clauseId ? clauseById.get(v.clauseId) : undefined;
 		if (clause?.ref) add(clause.ref, `kg-${clause.id}`, 'clause');
 		for (const pid of v.paragraphIds) {
@@ -335,6 +422,17 @@ export function buildPairPayload(
 		if (!partnerAt.has(p.paragraphId)) partnerAt.set(p.paragraphId, p);
 	}
 	for (const pid of partnerAt.keys()) paragraphSet.add(pid);
+	// A condition written apart from its statement is linked to it as well.
+	const conditionAt = new Map<string, { lead: string; trigger: string }>();
+	for (const v of statements) {
+		for (const c of conditionsElsewhere(v, conditionsOf.get(v.id) ?? [])) {
+			const pid = c.paragraphId;
+			if (!nodesById.has(pid) || pid === anchorParagraphId) continue;
+			if (partnerAt.has(pid) || conditionAt.has(pid)) continue;
+			conditionAt.set(pid, c);
+		}
+	}
+	for (const pid of conditionAt.keys()) paragraphSet.add(pid);
 	const numberOf = (id: string) => {
 		const clause = clauseById.get(id);
 		return sectionOf(clause?.ref) ?? clause?.heading ?? id;
@@ -345,14 +443,16 @@ export function buildPairPayload(
 
 	return {
 		anchorParagraphId,
-		relatedParagraphs: [...partnerAt.values()]
-			.sort(
-				(a, b) => paragraphEnum(a.paragraphId, nodesById) - paragraphEnum(b.paragraphId, nodesById)
-			)
-			.map((p) => ({
+		relatedParagraphs: [
+			...[...partnerAt.values()].map((p) => ({
 				node: nodesById.get(p.paragraphId) as ParagraphNode,
 				relation: { kind: 'modifies' as const, from: numberOf(p.from), to: numberOf(p.to) },
 			})),
+			...[...conditionAt].map(([pid, c]) => ({
+				node: nodesById.get(pid) as ParagraphNode,
+				relation: { kind: 'condition' as const, lead: c.lead, trigger: c.trigger },
+			})),
+		].sort((a, b) => paragraphEnum(a.node.id, nodesById) - paragraphEnum(b.node.id, nodesById)),
 		entities,
 		paragraphIds: present,
 		focusNodeIds: statementIds

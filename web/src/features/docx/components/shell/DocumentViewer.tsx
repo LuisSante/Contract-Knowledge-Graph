@@ -21,6 +21,8 @@ interface DocumentViewerProps {
 	scoreByParagraph?: Record<string, number>;
 	/** Why the linked paragraphs are linked, beside the margin line at the selected one. */
 	selectedLabel?: ReactNode;
+	/** Why one linked paragraph is linked, beside the margin line where it reaches it. */
+	connectorLabel?: (paragraphId: string) => ReactNode;
 }
 
 export function DocumentViewer({
@@ -35,6 +37,7 @@ export function DocumentViewer({
 	toneByParagraph,
 	scoreByParagraph,
 	selectedLabel,
+	connectorLabel,
 }: DocumentViewerProps) {
 	const scrollHostRef = useRef<HTMLElement>(null);
 
@@ -114,6 +117,7 @@ export function DocumentViewer({
 					toneByParagraph={toneByParagraph}
 					scoreByParagraph={scoreByParagraph}
 					selectedLabel={selectedLabel}
+					connectorLabel={connectorLabel}
 				/>
 			)}
 		</div>

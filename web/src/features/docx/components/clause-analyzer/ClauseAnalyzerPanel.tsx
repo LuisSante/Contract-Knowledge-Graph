@@ -18,6 +18,7 @@ import {
 	type GridRow,
 	type MarkKind,
 	type Side,
+	withoutMarks,
 } from '@/features/docx/utils/knowledge/statement-grid';
 import { computePairScores } from '@/features/docx/utils/knowledge/pair';
 import { computeBenefitShare, shareOfClause } from '@/features/docx/utils/knowledge/benefit-share';
@@ -35,7 +36,13 @@ import {
 } from '@/features/docx/components/clause-analyzer/grid/MarkTooltip';
 import { Legend } from '@/features/docx/components/clause-analyzer/legend/Legend';
 import { ByTypeView } from '@/features/docx/components/clause-analyzer/views/ByTypeView';
-import { KindTabs } from '@/features/docx/components/clause-analyzer/views/favour-bits';
+import {
+	ConditionModePicker,
+	FirmKey,
+	KindTabs,
+	type ConditionMode,
+} from '@/features/docx/components/clause-analyzer/views/favour-bits';
+import { KIND_COLORS } from '@/features/docx/components/clause-analyzer/constants';
 import type { ClauseRowLead } from '@/features/docx/components/clause-analyzer/grid/ClauseRow';
 import {
 	byImportance,
@@ -132,9 +139,30 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		() => (oneType ? new Set<MarkKind>([typeShown]) : visibleKinds),
 		[oneType, typeShown, visibleKinds]
 	);
+	// Statements a condition gates (its `gatesId`). Table v1.1 shows them as the reader picks:
+	// drawn like the rest (All, the default), as outlines (Mark conditional), or left out (Only
+	// firm). The mode stays across type tabs; the relevance order never changes with it.
+	const [conditionMode, setConditionMode] = useState<ConditionMode>('all');
+	// Conditions are shown anywhere (outlines, the card, pink in the contract) only when the
+	// reader asks for them: under All the view is the one it always was.
+	const showConditions = oneType && conditionMode === 'mark';
+	const conditionalIds = useMemo(
+		() =>
+			oneType && viewKg
+				? new Set(viewKg.conditions.flatMap((c) => (c.gatesId ? [c.gatesId] : [])))
+				: undefined,
+		[oneType, viewKg]
+	);
 	// Table v1.1 puts each square in the column of the party it favours, by Table v2's rule:
 	// what one party has to do sits with the other. Table keeps the party that carries it.
-	const shownGrid = useMemo(() => (oneType && grid ? creditedGrid(grid) : grid), [oneType, grid]);
+	const shownGrid = useMemo(() => {
+		if (!oneType || !grid) return grid;
+		const credited = creditedGrid(grid);
+		return conditionMode === 'firm' && conditionalIds
+			? withoutMarks(credited, conditionalIds)
+			: credited;
+	}, [oneType, grid, conditionMode, conditionalIds]);
+
 	// Each type's squares on each side over the clause rows, for Table v1.1's tabs: the same
 	// counts Table v2 gives the contract.
 	const kindCounts = useMemo(() => {
@@ -280,6 +308,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		topK,
 		severity,
 		importanceByNode: clauseImportance?.byNode ?? null,
+		paintConditions: showConditions,
 	});
 
 	const toggleKind = (kind: MarkKind, on: boolean) => {
@@ -296,7 +325,9 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 
 	const openInDocument = (nodeId: string) => {
 		if (!viewKg) return;
-		setDocumentTarget(buildDocumentTarget(viewKg, nodeId, nodesById));
+		setDocumentTarget(
+			buildDocumentTarget(viewKg, nodeId, nodesById, { withConditions: showConditions })
+		);
 	};
 
 	const openClauseInGraph =
@@ -352,8 +383,10 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 
 	const detailsOf = useMemo(
 		() =>
-			viewKg && shownGrid ? markDetails(viewKg, shownGrid, oneType ? names : undefined) : null,
-		[viewKg, shownGrid, oneType, names]
+			viewKg && shownGrid
+				? markDetails(viewKg, shownGrid, oneType ? names : undefined, showConditions)
+				: null,
+		[viewKg, shownGrid, oneType, names, showConditions]
 	);
 
 	const showTooltip = (event: ReactMouseEvent, mark: GridMark) => {
@@ -435,7 +468,18 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 			{inView && viewProps && nav.view === 'bytype' && <ByTypeView {...viewProps} />}
 
 			{oneType && pairIds && (
-				<KindTabs kind={typeShown} onPick={setTypeShown} counts={kindCounts} names={names} />
+				<KindTabs
+					kind={typeShown}
+					onPick={setTypeShown}
+					counts={kindCounts}
+					names={names}
+					aside={
+						<div className="flex items-center gap-3">
+							{conditionMode === 'mark' && <FirmKey color={KIND_COLORS[typeShown]} />}
+							<ConditionModePicker mode={conditionMode} onPick={setConditionMode} />
+						</div>
+					}
+				/>
 			)}
 
 			{/* The table fills the panel; the graph has a tab of its own. */}
@@ -492,6 +536,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 								leadOf={leadOf}
 								labelWidth={oneType ? 320 : undefined}
 								boldStripes={oneType}
+								conditionalIds={showConditions ? conditionalIds : undefined}
 								sortLabels={
 									oneType ? { importance: 'by relevance ↓', order: 'by order' } : undefined
 								}

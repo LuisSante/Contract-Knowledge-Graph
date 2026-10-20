@@ -18,6 +18,8 @@ interface EvidenceBridgeOverlayProps {
 	scoreByParagraph?: Record<string, number>;
 	/** A label beside the line at the selected paragraph, saying why the others are linked. */
 	selectedLabel?: ReactNode;
+	/** A label beside the line where it reaches a linked paragraph, for links of their own kind. */
+	connectorLabel?: (paragraphId: string) => ReactNode;
 }
 
 export function EvidenceBridgeOverlay({
@@ -27,6 +29,7 @@ export function EvidenceBridgeOverlay({
 	toneByParagraph,
 	scoreByParagraph,
 	selectedLabel,
+	connectorLabel,
 }: EvidenceBridgeOverlayProps) {
 	const { connectors, primaryConnector, folds, collapsedCards, scrollMarkers } = bridge;
 	const deonticRail = toneByParagraph != null;
@@ -102,6 +105,24 @@ export function EvidenceBridgeOverlay({
 							{selectedLabel}
 						</span>
 					) : null}
+
+					{connectorLabel &&
+						connectors.map((connector, index) => {
+							const label = connectorLabel(connector.paragraphId);
+							return label ? (
+								<span
+									key={`connector-label-${connector.paragraphId}-${index}`}
+									className="pointer-events-auto absolute"
+									style={{
+										left: Math.max(connector.leftPx - 6, LABEL_ROOM_PX),
+										top: connector.relatedCapTopPx,
+										transform: 'translate(-100%, -50%)',
+									}}
+								>
+									{label}
+								</span>
+							) : null;
+						})}
 
 					{folds.map((fold, index) => (
 						<svg

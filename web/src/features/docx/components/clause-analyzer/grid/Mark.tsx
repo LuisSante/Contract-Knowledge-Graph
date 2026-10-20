@@ -12,14 +12,26 @@ import {
 interface MarkProps {
 	mark: GridMark;
 	muted: boolean;
+	/** A condition gates the statement: only its outline is drawn, so firm and conditional
+	 *  read apart at a glance. */
+	conditional?: boolean;
 	onHover: (event: ReactMouseEvent, mark: GridMark) => void;
 	onLeave: () => void;
 	onOpen: (nodeId: string) => void;
 	onFocus: (nodeId: string) => void;
 }
 
-export function Mark({ mark, muted, onHover, onLeave, onOpen, onFocus }: MarkProps) {
+export function Mark({
+	mark,
+	muted,
+	conditional = false,
+	onHover,
+	onLeave,
+	onOpen,
+	onFocus,
+}: MarkProps) {
 	const owner = mark.ownerName ?? (mark.lane === 'shared' ? 'both parties' : '');
+	const color = KIND_COLORS[mark.kind];
 	return (
 		<button
 			type="button"
@@ -27,10 +39,11 @@ export function Mark({ mark, muted, onHover, onLeave, onOpen, onFocus }: MarkPro
 			style={{
 				width: MARK_SIZE,
 				height: MARK_SIZE,
-				backgroundColor: KIND_COLORS[mark.kind],
+				backgroundColor: conditional ? 'transparent' : color,
+				boxShadow: conditional ? `inset 0 0 0 2px ${color}` : undefined,
 				opacity: muted ? MUTED_LANE_OPACITY : 1,
 			}}
-			title={`${KIND_LABEL[mark.kind]} — ${owner}`}
+			title={`${KIND_LABEL[mark.kind]} — ${owner}${conditional ? ' (conditional)' : ''}`}
 			onMouseEnter={(event) => onHover(event, mark)}
 			onMouseMove={(event) => onHover(event, mark)}
 			onMouseLeave={onLeave}

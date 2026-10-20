@@ -57,6 +57,8 @@ interface ClauseRowProps {
 	labelWidth?: number;
 	/** Every other row in solid grey, as Table v1.1 paints them, instead of a faint tint. */
 	boldStripes?: boolean;
+	/** Statements a condition gates; their squares are drawn as outlines. */
+	conditionalIds?: ReadonlySet<string>;
 	laneName: (lane: GridLane) => string;
 	onSelect: (clauseId: string) => void;
 	/** Opens the clause in the knowledge graph tab; absent where there is no such tab. */
@@ -85,6 +87,7 @@ export function ClauseRow({
 	lead,
 	labelWidth = LABEL_WIDTH,
 	boldStripes = false,
+	conditionalIds,
 	laneName,
 	onSelect,
 	onOpenGraph,
@@ -232,6 +235,7 @@ export function ClauseRow({
 										key={mark.id}
 										mark={mark}
 										muted={dimmed || !paintLanes[lane]}
+										conditional={conditionalIds?.has(mark.id)}
 										onHover={onHoverMark}
 										onLeave={onLeaveMark}
 										onOpen={onOpenMark}

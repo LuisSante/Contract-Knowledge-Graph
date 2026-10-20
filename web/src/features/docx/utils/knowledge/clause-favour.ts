@@ -46,6 +46,18 @@ const emptyCount = (): ClauseTally['count'] => ({
 	prohibition: { a: 0, b: 0 },
 });
 
+/** A condition's operator as a reader would say it: «Only if», «Unless»… */
+export function conditionLead(operator: string | null | undefined): string {
+	const op = (operator || 'IF').toUpperCase();
+	const lead: Record<string, string> = {
+		IF: 'Only if',
+		UPON: 'Only upon',
+		UNLESS: 'Unless',
+		UNTIL: 'Until',
+	};
+	return lead[op] ?? op;
+}
+
 export const sectionOf = (ref: string | null | undefined): string | null => {
 	const number = ref?.replace(/^(?:section|article)\s+/i, '').trim();
 	return number ? `§${number}` : null;

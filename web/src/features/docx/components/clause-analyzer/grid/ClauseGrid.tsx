@@ -57,6 +57,8 @@ interface ClauseGridProps {
 	/** The columns hold what each party gains (a credited grid), not what it carries: the
 	 *  header reads "In favour of" over each name. */
 	favourSide?: boolean;
+	/** Each row marks, on the rule between the columns, the party it favours. */
+	favourAxis?: boolean;
 	onSelectClause: (clauseId: string) => void;
 	onOpenGraph?: (clauseId: string) => void;
 	/** Opens a clause in Table v2; each row then ends in a «Details» link. */
@@ -92,6 +94,7 @@ export function ClauseGrid({
 	conditionalIds,
 	sortLabels = { importance: 'most important first ↓', order: 'document order' },
 	favourSide = false,
+	favourAxis = false,
 	onSelectClause,
 	onOpenGraph,
 	onDetails,
@@ -133,8 +136,13 @@ export function ClauseGrid({
 							</span>
 						)}
 					</button>
+					{/* The rows' gap, so each name stays over its column. */}
 					<div
-						className={centerLanes ? 'flex flex-1 items-center justify-center gap-2' : 'contents'}
+						className={
+							centerLanes
+								? `flex flex-1 items-center justify-center ${favourAxis ? 'gap-3.5' : 'gap-2'}`
+								: 'contents'
+						}
 					>
 						{(['a', 'b'] as const).map((lane) => (
 							<Fragment key={lane}>
@@ -217,6 +225,7 @@ export function ClauseGrid({
 						labelWidth={labelWidth}
 						boldStripes={boldStripes}
 						conditionalIds={conditionalIds}
+						favourAxis={favourAxis}
 						laneName={laneName}
 						onSelect={onSelectClause}
 						onOpenGraph={onOpenGraph}

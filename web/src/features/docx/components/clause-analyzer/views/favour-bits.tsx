@@ -1,15 +1,26 @@
 'use client';
 
 import type { MouseEvent as ReactMouseEvent, ReactNode } from 'react';
-import { ArrowUpRightIcon, CheckIcon, InfoIcon } from 'lucide-react';
+import {
+	ArrowUpRightIcon,
+	CheckIcon,
+	ChevronLeftIcon,
+	ChevronRightIcon,
+	EqualIcon,
+	InfoIcon,
+} from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import type { KgCondition } from '@/types/knowledge';
 import { cn } from '@/lib/utils';
 import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
-import { KIND_COLORS } from '@/features/docx/components/clause-analyzer/constants';
+import {
+	KIND_COLORS,
+	MUTED_LANE_OPACITY,
+} from '@/features/docx/components/clause-analyzer/constants';
 import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/views/bits';
 import {
 	DEONTIC_KINDS,
+	type Favour,
 	type Served,
 	type TypeVerdict,
 } from '@/features/docx/utils/knowledge/clause-favour';
@@ -122,8 +133,9 @@ export function KindTabs({
 	aside?: ReactNode;
 }) {
 	return (
-		<div className="flex items-center gap-8 border-b border-border/60 px-6">
-			<div role="tablist" aria-label="Type shown" className="flex gap-8">
+		// The tabs sit on the bottom rule even when the key beside them wraps to two lines.
+		<div className="flex items-end gap-8 border-b border-border/60 px-6">
+			<div role="tablist" aria-label="Type shown" className="flex shrink-0 gap-8">
 				{DEONTIC_KINDS.map((k) => {
 					const active = kind === k;
 					const count = counts?.[k];
@@ -171,7 +183,7 @@ export function KindTabs({
 					);
 				})}
 			</div>
-			{aside && <div className="ml-auto">{aside}</div>}
+			{aside && <div className="ml-auto self-center py-1.5">{aside}</div>}
 		</div>
 	);
 }
@@ -198,6 +210,60 @@ export function FirmKey({ color }: { color: string }) {
 				/>
 				conditional
 			</span>
+		</span>
+	);
+}
+
+/** Table v1.1's mark on the rule between the two columns: an arrow, in that party's colour,
+ *  towards the column of the party the row favours, or «=» when both have as many. */
+export function AxisMark({
+	favour,
+	title,
+	muted,
+	className,
+}: {
+	favour: Favour;
+	/** Said on hover and to screen readers; absent, the mark is only decoration (a key). */
+	title?: string;
+	muted?: boolean;
+	className?: string;
+}) {
+	const Icon = favour === 'a' ? ChevronLeftIcon : favour === 'b' ? ChevronRightIcon : EqualIcon;
+	return (
+		<span
+			role={title ? 'img' : undefined}
+			aria-label={title}
+			aria-hidden={title ? undefined : true}
+			title={title}
+			className={cn(
+				'flex size-4 shrink-0 items-center justify-center rounded-full transition-opacity',
+				favour === 'tie' && 'bg-muted ring-1 ring-border ring-inset',
+				className
+			)}
+			style={{
+				backgroundColor: favour === 'tie' ? undefined : SIDE_COLOR[favour],
+				opacity: muted ? MUTED_LANE_OPACITY : 1,
+			}}
+		>
+			<Icon
+				className={cn('size-3', favour === 'tie' ? 'text-muted-foreground' : 'text-white')}
+				strokeWidth={3}
+				aria-hidden="true"
+			/>
+		</span>
+	);
+}
+
+/** What the marks on Table v1.1's middle rule say. */
+export function AxisKey({ names }: { names: Record<Side, string> }) {
+	return (
+		<span className="flex items-center gap-3 text-2xs whitespace-nowrap text-muted-foreground">
+			{(['a', 'b', 'tie'] as const).map((favour) => (
+				<span key={favour} className="flex items-center gap-1.5">
+					<AxisMark favour={favour} />
+					{favour === 'tie' ? 'balanced' : `favours ${short(names[favour])}`}
+				</span>
+			))}
 		</span>
 	);
 }

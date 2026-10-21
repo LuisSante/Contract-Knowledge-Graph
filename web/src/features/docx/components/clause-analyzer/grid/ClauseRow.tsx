@@ -11,11 +11,13 @@ import type {
 import { Mark } from '@/features/docx/components/clause-analyzer/grid/Mark';
 import { ShareBar } from '@/features/docx/components/clause-analyzer/grid/ShareBar';
 import {
+	AxisMark,
 	GraphLink,
 	KIND_LABEL as TAB_NAME,
 	RankBadge,
 	SectionTag,
 } from '@/features/docx/components/clause-analyzer/views/favour-bits';
+import { favourOf } from '@/features/docx/utils/knowledge/clause-favour';
 import type { DeonticKind } from '@/types/knowledge';
 import {
 	KIND_COLORS,
@@ -59,6 +61,9 @@ interface ClauseRowProps {
 	boldStripes?: boolean;
 	/** Statements a condition gates; their squares are drawn as outlines. */
 	conditionalIds?: ReadonlySet<string>;
+	/** A mark on the rule between the parties' columns points to the one with more squares
+	 *  in this row, or says «=» when both have as many. Needs `centerLanes`. */
+	favourAxis?: boolean;
 	laneName: (lane: GridLane) => string;
 	onSelect: (clauseId: string) => void;
 	/** Opens the clause in the knowledge graph tab; absent where there is no such tab. */
@@ -88,6 +93,7 @@ export function ClauseRow({
 	labelWidth = LABEL_WIDTH,
 	boldStripes = false,
 	conditionalIds,
+	favourAxis = false,
 	laneName,
 	onSelect,
 	onOpenGraph,
@@ -119,6 +125,21 @@ export function ClauseRow({
 	const title = share
 		? `${row.heading} — del beneficio que reparte, ${pctA}% va a ${laneName('a')} y ${100 - pctA}% a ${laneName('b')}`
 		: row.heading;
+
+	// The squares shown on each side, so the mark on the rule says what the row shows.
+	const shownIn = (lane: 'a' | 'b') =>
+		row.marks[lane].filter((mark) => visibleKinds.has(mark.kind)).length;
+	const axis = (() => {
+		if (!favourAxis || !centerLanes || unfiled) return null;
+		const count = { a: shownIn('a'), b: shownIn('b') };
+		const favour = favourOf(count);
+		if (favour === 'tie') return { favour, title: `Balanced: ${count.a} on each side` };
+		const other = favour === 'a' ? 'b' : 'a';
+		return {
+			favour,
+			title: `Favours ${laneName(favour)}: ${count[favour]} against ${count[other]}`,
+		};
+	})();
 
 	return (
 		<div ref={rowRef} className={`flex items-start gap-2 px-3 py-1.5 ${background}`}>
@@ -215,10 +236,27 @@ export function ClauseRow({
 			)}
 
 			{/* Lane A fills right-to-left so it grows outward from the axis. */}
-			<div className={centerLanes ? 'flex flex-1 items-start justify-center gap-2' : 'contents'}>
+			<div
+				className={
+					centerLanes
+						? `flex flex-1 items-start justify-center ${favourAxis ? 'gap-3.5' : 'gap-2'}`
+						: 'contents'
+				}
+			>
 				{lanes.map((lane) => (
 					<Fragment key={lane}>
-						{lane === 'b' && <span className="w-px shrink-0 self-stretch bg-border" />}
+						{lane === 'b' && (
+							<span className="relative w-px shrink-0 self-stretch bg-border">
+								{axis && (
+									<AxisMark
+										favour={axis.favour}
+										title={axis.title}
+										muted={dimmed}
+										className="absolute top-[-1px] left-1/2 -translate-x-1/2"
+									/>
+								)}
+							</span>
+						)}
 						<div
 							dir={lane === 'a' ? 'rtl' : 'ltr'}
 							className="grid shrink-0 content-start"

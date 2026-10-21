@@ -19,7 +19,7 @@ const isView = (value: string | null): value is View => VIEWS.some((v) => v.id =
 export function useAnalyzerView() {
 	const params = useSearchParams();
 	const raw = params.get('view');
-	const view: View = isView(raw) ? raw : 'table';
+	const view: View = isView(raw) ? raw : 'table11';
 	const pairRaw = params.get('pair')?.split(',') ?? [];
 	const pair = pairRaw.length === 2 ? { a: pairRaw[0], b: pairRaw[1] } : null;
 

@@ -37,6 +37,7 @@ import {
 import { Legend } from '@/features/docx/components/clause-analyzer/legend/Legend';
 import { ByTypeView } from '@/features/docx/components/clause-analyzer/views/ByTypeView';
 import {
+	AxisKey,
 	ConditionModePicker,
 	FirmKey,
 	KindTabs,
@@ -474,7 +475,8 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 					counts={kindCounts}
 					names={names}
 					aside={
-						<div className="flex items-center gap-3">
+						<div className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1.5">
+							<AxisKey names={names} />
 							{conditionMode === 'mark' && <FirmKey color={KIND_COLORS[typeShown]} />}
 							<ConditionModePicker mode={conditionMode} onPick={setConditionMode} />
 						</div>
@@ -541,6 +543,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 									oneType ? { importance: 'by relevance ↓', order: 'by order' } : undefined
 								}
 								favourSide={oneType}
+								favourAxis={oneType}
 								onSelectClause={(clauseId) => {
 									selectClause(docId, selectedClauseId === clauseId ? null : clauseId);
 									openInDocument(clauseId);

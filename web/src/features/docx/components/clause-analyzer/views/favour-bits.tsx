@@ -9,6 +9,7 @@ import {
 	EqualIcon,
 	InfoIcon,
 } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import type { KgCondition } from '@/types/knowledge';
 import { cn } from '@/lib/utils';
@@ -254,20 +255,6 @@ export function AxisMark({
 	);
 }
 
-/** What the marks on Table v1.1's middle rule say. */
-export function AxisKey({ names }: { names: Record<Side, string> }) {
-	return (
-		<span className="flex items-center gap-3 text-2xs whitespace-nowrap text-muted-foreground">
-			{(['a', 'b', 'tie'] as const).map((favour) => (
-				<span key={favour} className="flex items-center gap-1.5">
-					<AxisMark favour={favour} />
-					{favour === 'tie' ? 'balanced' : `favours ${short(names[favour])}`}
-				</span>
-			))}
-		</span>
-	);
-}
-
 /** How Table v1.1 treats statements a condition gates. */
 export type ConditionMode = 'all' | 'mark' | 'firm';
 
@@ -311,6 +298,88 @@ export function ConditionModePicker({
 				</button>
 			))}
 		</div>
+	);
+}
+
+/** Table v1.2's «You are»: the reader says which party they are, so the table can say what
+ *  goes against them. Picking the chosen party again leaves nobody picked, the default. */
+export function YouArePicker({
+	names,
+	me,
+	onPick,
+}: {
+	names: Record<Side, string>;
+	me: Side | null;
+	onPick: (side: Side | null) => void;
+}) {
+	return (
+		<div className="flex items-center gap-2" role="group" aria-label="You are">
+			<span className="text-xs font-medium text-muted-foreground">You are</span>
+			<div className="inline-flex rounded-md border border-border bg-secondary p-0.5">
+				{(['a', 'b'] as const).map((side) => (
+					<button
+						key={side}
+						type="button"
+						aria-pressed={me === side}
+						onClick={() => onPick(me === side ? null : side)}
+						title={
+							me === side ? 'Pick again to leave it unset' : `Read the table as ${names[side]}`
+						}
+						className={cn(
+							'inline-flex items-center gap-1.5 rounded px-2 py-0.5 text-xs whitespace-nowrap',
+							me === side
+								? 'bg-card font-semibold text-foreground shadow-sm'
+								: 'font-medium text-muted-foreground hover:text-foreground'
+						)}
+					>
+						<span className="size-2 rounded-full" style={{ backgroundColor: SIDE_COLOR[side] }} />
+						{short(names[side])}
+					</button>
+				))}
+			</div>
+		</div>
+	);
+}
+
+/** Leaves only the rows that go against the reader, in the type shown; it needs «You are». */
+export function AgainstFilter({
+	on,
+	onChange,
+	count,
+	total,
+	disabled,
+}: {
+	on: boolean;
+	onChange: (on: boolean) => void;
+	count: number;
+	total: number;
+	disabled: boolean;
+}) {
+	return (
+		<label
+			className={cn(
+				'flex items-center gap-2 text-xs whitespace-nowrap',
+				disabled ? 'cursor-default text-muted-foreground/60' : 'cursor-pointer text-foreground'
+			)}
+			title={
+				disabled
+					? 'Pick which party you are first'
+					: 'Only the clauses where the other party has more in its favour than you'
+			}
+		>
+			<Checkbox
+				checked={on && !disabled}
+				disabled={disabled}
+				onCheckedChange={(value) => onChange(value === true)}
+				className="size-3.5"
+			/>
+			<span className="font-medium">Only against you</span>
+			{!disabled && (
+				<span className="text-muted-foreground tabular-nums">
+					{count} of {total}
+				</span>
+			)}
+		</label>
 	);
 }
 

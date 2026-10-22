@@ -66,6 +66,12 @@ interface ClauseGridProps {
 	favourSide?: boolean;
 	/** Each row marks, on the rule between the columns, the party it favours. */
 	favourAxis?: boolean;
+	/** The reader's party (Table v1.2's «You are»): its column reads «In favour of you». */
+	youLane?: GridLane | null;
+	/** Clauses where the other party has more squares than the reader in the type shown. */
+	againstIds?: ReadonlySet<string> | null;
+	/** Said in place of the rows when a filter leaves none. */
+	emptyNote?: string;
 	onSelectClause: (clauseId: string) => void;
 	onOpenGraph?: (clauseId: string) => void;
 	/** Opens a clause in Table v2; each row then ends in a «Details» link. */
@@ -104,6 +110,9 @@ export function ClauseGrid({
 	sortLabels = { importance: 'most important first ↓', order: 'document order' },
 	favourSide = false,
 	favourAxis = false,
+	youLane = null,
+	againstIds = null,
+	emptyNote,
 	onSelectClause,
 	onOpenGraph,
 	onDetails,
@@ -194,7 +203,11 @@ export function ClauseGrid({
 										<span
 											className={`flex min-w-0 flex-col ${lane === 'a' ? 'items-end' : 'items-start'}`}
 										>
-											<span className="font-normal text-muted-foreground">In favour of</span>
+											{youLane === lane ? (
+												<span className="font-semibold">In favour of you</span>
+											) : (
+												<span className="font-normal text-muted-foreground">In favour of</span>
+											)}
 											<span className="max-w-full truncate">{laneName(lane)}</span>
 										</span>
 									) : (
@@ -226,6 +239,10 @@ export function ClauseGrid({
 					{(onDetails || renderDetail) && <span className="w-16 shrink-0" />}
 				</div>
 
+				{shownRows.length === 0 && emptyNote && (
+					<p className="px-6 py-4 text-sm text-muted-foreground">{emptyNote}</p>
+				)}
+
 				{shownRows.map((row, index) => (
 					<ClauseRow
 						key={row.clauseId ?? 'unfiled'}
@@ -244,6 +261,7 @@ export function ClauseGrid({
 						boldStripes={boldStripes}
 						conditionalIds={conditionalIds}
 						favourAxis={favourAxis}
+						against={row.clauseId !== null && Boolean(againstIds?.has(row.clauseId))}
 						laneName={laneName}
 						onSelect={onSelectClause}
 						onOpenGraph={onOpenGraph}

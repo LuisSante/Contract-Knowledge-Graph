@@ -37,13 +37,16 @@ import {
 import { Legend } from '@/features/docx/components/clause-analyzer/legend/Legend';
 import { ByTypeView } from '@/features/docx/components/clause-analyzer/views/ByTypeView';
 import {
-	AxisKey,
+	AgainstFilter,
 	ConditionModePicker,
 	FirmKey,
+	KIND_LABEL,
 	KindTabs,
+	YouArePicker,
 	type ConditionMode,
 } from '@/features/docx/components/clause-analyzer/views/favour-bits';
 import { KIND_COLORS } from '@/features/docx/components/clause-analyzer/constants';
+import { short } from '@/features/docx/components/clause-analyzer/views/bits';
 import type { ClauseRowLead } from '@/features/docx/components/clause-analyzer/grid/ClauseRow';
 import {
 	byImportance,
@@ -374,6 +377,39 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		[viewKg, pairA, pairB]
 	);
 
+	// Table v1.2's «You are»: the reader's party, kept by id so another pair forgets it. Nobody
+	// is picked at first, and the table reads as it always did until someone is.
+	const [meId, setMeId] = useState<string | null>(null);
+	const me: Side | null =
+		accordion && meId ? (meId === pairA ? 'a' : meId === pairB ? 'b' : null) : null;
+	// A clause goes against the reader, in the type shown, when the other party has more squares
+	// in it: the same comparison the mark on the middle rule draws, so the two always agree.
+	const againstIds = useMemo(() => {
+		if (!me) return null;
+		const other: Side = me === 'a' ? 'b' : 'a';
+		const shown = (row: GridRow, side: Side) =>
+			row.marks[side].filter((mark) => kindsShown.has(mark.kind)).length;
+		return new Set(
+			clauseRows.flatMap((row) =>
+				row.clauseId && shown(row, other) > shown(row, me) ? [row.clauseId] : []
+			)
+		);
+	}, [me, clauseRows, kindsShown]);
+	const [onlyAgainst, setOnlyAgainst] = useState(false);
+	const filtering = onlyAgainst && againstIds !== null;
+	// The picked clause stays in the list even when it does not go against the reader: it is
+	// painted in the contract, and a painted clause with no row would have nothing to close it.
+	const activeId = activeClause?.clauseId ?? null;
+	const tableRows = useMemo(
+		() =>
+			filtering && againstIds
+				? clauseRows.filter(
+						(row) => row.clauseId && (againstIds.has(row.clauseId) || row.clauseId === activeId)
+					)
+				: clauseRows,
+		[filtering, againstIds, clauseRows, activeId]
+	);
+
 	// Table v1.1's «modified by §11»: to §11, in the tab of the sentence that does the
 	// modifying (a right of §11 opens Rights), picked and shown in the contract.
 	const goToModifier = (clauseId: string, kind: DeonticKind | null) => {
@@ -509,6 +545,23 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		<div className="flex h-full flex-col">
 			{inView && viewProps && nav.view === 'bytype' && <ByTypeView {...viewProps} />}
 
+			{accordion && pairIds && (
+				<div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-border/60 px-6 py-2">
+					<YouArePicker
+						names={names}
+						me={me}
+						onPick={(side) => setMeId(side ? pairIds[side] : null)}
+					/>
+					<AgainstFilter
+						on={onlyAgainst}
+						onChange={setOnlyAgainst}
+						count={againstIds?.size ?? 0}
+						total={clauseRows.length}
+						disabled={me === null}
+					/>
+				</div>
+			)}
+
 			{oneType && pairIds && (
 				<KindTabs
 					kind={typeShown}
@@ -517,7 +570,6 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 					names={names}
 					aside={
 						<div className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1.5">
-							<AxisKey names={names} />
 							{conditionMode === 'mark' && <FirmKey color={KIND_COLORS[typeShown]} />}
 							<ConditionModePicker mode={conditionMode} onPick={setConditionMode} />
 						</div>
@@ -561,8 +613,8 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 					{status === 'ready' && grid && (
 						<>
 							<ClauseGrid
-								clauseRows={clauseRows}
-								unfiledRow={unfiledRow}
+								clauseRows={tableRows}
+								unfiledRow={filtering ? null : unfiledRow}
 								lanes={shownLanes}
 								visibleKinds={kindsShown}
 								activeClauseId={activeClause?.clauseId ?? null}
@@ -586,6 +638,13 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 								}
 								favourSide={oneType}
 								favourAxis={oneType}
+								youLane={me}
+								againstIds={againstIds}
+								emptyNote={
+									filtering && me
+										? `Nothing goes against ${short(names[me])} in ${KIND_LABEL[typeShown].toLowerCase()}.`
+										: undefined
+								}
 								onSelectClause={(clauseId) => {
 									selectClause(docId, selectedClauseId === clauseId ? null : clauseId);
 									openInDocument(clauseId);

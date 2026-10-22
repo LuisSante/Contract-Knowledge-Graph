@@ -40,13 +40,19 @@ export function PartyEntry({
 	const { summary, status, generate } = useContractSummary(docId);
 
 	const parties = useMemo<PartyCardData[]>(() => {
+		// The abstract says what each party does; its role, when it gives one, reads better than
+		// the graph's. A merged entity has no line of its own there and keeps the graph's role.
+		const written = new Map(
+			(summary?.parties ?? []).flatMap((p) => (p.partyId ? [[p.partyId, p] as const] : []))
+		);
 		const tally = new Map<string, PartyCardData>(
 			kg.parties.map((p) => [
 				p.id,
 				{
 					id: p.id,
 					name: p.name,
-					role: p.role,
+					role: written.get(p.id)?.role || p.role,
+					does: written.get(p.id)?.does ?? '',
 					total: 0,
 				},
 			])
@@ -58,7 +64,7 @@ export function PartyEntry({
 			}
 		}
 		return [...tally.values()].sort((a, b) => b.total - a.total || a.name.localeCompare(b.name));
-	}, [kg]);
+	}, [kg, summary]);
 
 	const slots = useMemo<[string | null, string | null]>(() => {
 		const known = new Set(kg.parties.map((p) => p.id));
@@ -106,64 +112,57 @@ export function PartyEntry({
 		[colorByPartyId]
 	);
 
-	/** Already seated is a no-op; otherwise it takes an open chair, or the second
-	    one — that seat is the "compared against" side, and the pair usually
-	    arrives pre-filled by the suggestion. */
-	const seatFromAbstract = useCallback(
-		(partyId: string) => {
-			if (colorByPartyId.has(partyId)) return;
-			assign(partyId, slots[0] === null ? 0 : slots[1] === null ? 1 : 1);
-		},
-		[assign, colorByPartyId, slots]
-	);
-
 	return (
+		// Centred in the panel's height at a reading width: the space left over reads as a
+		// margin around one block, not as an empty half under it. A tall block scrolls.
 		<div className="flex h-full min-h-0 flex-col overflow-y-auto">
-			<ContractAbstract
-				status={status}
-				summary={summary}
-				onGenerate={generate}
-				colorOf={colorOf}
-				onSeatParty={seatFromAbstract}
-			/>
-			<PartySelection
-				parties={parties}
-				slots={slots}
-				slotColors={[PARTY_COLOR, PAIR_SECOND_COLOR]}
-				onAssign={assign}
-				onRelease={(side) => {
-					const next: [string | null, string | null] = [...slots];
-					next[side] = null;
-					setSlotOverride(next);
-				}}
-				groupIds={mergeGroups.map((group) => group.id)}
-				onMerge={(ids) => {
-					// Predict the group id so a seated party keeps its seat as
-					// the merged entity, instead of being pruned to an empty chair.
-					const groupById = new Map(mergeGroups.map((g) => [g.id, g]));
-					const members = new Set<string>();
-					for (const id of ids) {
-						const group = groupById.get(id);
-						if (group) group.members.forEach((m) => members.add(m));
-						else members.add(id);
-					}
-					if (members.size < 2) return;
-					const newId = mergeGroupId(members);
-					onMerge(ids);
-					setSlotOverride(() => {
-						const remap = (seat: string | null) =>
-							seat && (ids.includes(seat) || members.has(seat)) ? newId : seat;
-						const a = remap(slots[0]);
-						const b = remap(slots[1]);
-						return a !== null && a === b ? [a, null] : [a, b];
-					});
-				}}
-				onSplit={onSplit}
-				onDelete={onDelete}
-				onContinue={() => {
-					if (slots[0] && slots[1]) onContinue(slots[0], slots[1]);
-				}}
-			/>
+			<div className="mx-auto my-auto w-full max-w-[56rem] space-y-12 px-12 pt-8 pb-14">
+				<ContractAbstract
+					status={status}
+					summary={summary}
+					onGenerate={generate}
+					colorOf={colorOf}
+				/>
+				<PartySelection
+					parties={parties}
+					slots={slots}
+					slotColors={[PARTY_COLOR, PAIR_SECOND_COLOR]}
+					suggested={slotOverride === null}
+					onAssign={assign}
+					onRelease={(side) => {
+						const next: [string | null, string | null] = [...slots];
+						next[side] = null;
+						setSlotOverride(next);
+					}}
+					groupIds={mergeGroups.map((group) => group.id)}
+					onMerge={(ids) => {
+						// Predict the group id so a seated party keeps its seat as
+						// the merged entity, instead of being pruned to an empty chair.
+						const groupById = new Map(mergeGroups.map((g) => [g.id, g]));
+						const members = new Set<string>();
+						for (const id of ids) {
+							const group = groupById.get(id);
+							if (group) group.members.forEach((m) => members.add(m));
+							else members.add(id);
+						}
+						if (members.size < 2) return;
+						const newId = mergeGroupId(members);
+						onMerge(ids);
+						setSlotOverride(() => {
+							const remap = (seat: string | null) =>
+								seat && (ids.includes(seat) || members.has(seat)) ? newId : seat;
+							const a = remap(slots[0]);
+							const b = remap(slots[1]);
+							return a !== null && a === b ? [a, null] : [a, b];
+						});
+					}}
+					onSplit={onSplit}
+					onDelete={onDelete}
+					onContinue={() => {
+						if (slots[0] && slots[1]) onContinue(slots[0], slots[1]);
+					}}
+				/>
+			</div>
 		</div>
 	);
 }

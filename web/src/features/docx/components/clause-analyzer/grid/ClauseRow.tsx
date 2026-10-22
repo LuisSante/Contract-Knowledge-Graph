@@ -71,6 +71,8 @@ interface ClauseRowProps {
 	/** A mark on the rule between the parties' columns points to the one with more squares
 	 *  in this row, or says «=» when both have as many. Needs `centerLanes`. */
 	favourAxis?: boolean;
+	/** The other party has more squares here than the reader («You are»), in the type shown. */
+	against?: boolean;
 	laneName: (lane: GridLane) => string;
 	onSelect: (clauseId: string) => void;
 	/** Opens the clause in the knowledge graph tab; absent where there is no such tab. */
@@ -106,6 +108,7 @@ export function ClauseRow({
 	boldStripes = false,
 	conditionalIds,
 	favourAxis = false,
+	against = false,
 	laneName,
 	onSelect,
 	onOpenGraph,
@@ -187,6 +190,14 @@ export function ClauseRow({
 							</span>
 							{clauseId && onOpenGraph && (
 								<GraphLink onClick={() => onOpenGraph(clauseId)} heading={lead.heading} />
+							)}
+							{against && (
+								<span
+									className="ml-1.5 inline-block rounded-full bg-destructive/10 px-2 py-px align-[1px] text-2xs font-semibold whitespace-nowrap text-destructive"
+									title="The other party has more in its favour here than you, in this type"
+								>
+									Against you
+								</span>
 							)}
 							{lead.modifiedBy?.length ? (
 								<span className="mt-0.5 block text-2xs text-muted-foreground">

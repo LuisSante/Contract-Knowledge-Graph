@@ -390,7 +390,11 @@ export function WhatEachGets({
 				</div>
 				{gets.length === 0 ? (
 					<p className="px-3 py-3 text-2xs text-muted-foreground">
-						Nothing in favour of {short(names[side])} in the selected types.
+						Nothing in favour of {short(names[side])}{' '}
+						{kinds.length === 1
+							? `in ${KIND_LABEL[kinds[0]].toLowerCase()}`
+							: 'in the selected types'}
+						.
 					</p>
 				) : (
 					<div className="divide-y divide-border/60 bg-card">

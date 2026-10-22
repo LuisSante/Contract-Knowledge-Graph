@@ -165,6 +165,13 @@ export function scoredSentence(
 				(k) => `${KIND_LABEL[k].toLowerCase()} (${count[k][side]} vs ${count[k][other(side)]})`
 			)
 		);
+	// One type alone (Table v1.2's detail): nothing to say about the other types.
+	if (kinds.length === 1) {
+		const kind = KIND_LABEL[kinds[0]].toLowerCase();
+		if (verdict === 'a' || verdict === 'b')
+			return `More ${scored(verdict)} in favour of ${short(names[verdict])}.`;
+		return `As many ${kind} in favour of each party (${count[kinds[0]].a} each).`;
+	}
 	if (verdict === 'tie') return 'Same count in each selected type: neither party is ahead.';
 	if (verdict === 'mixed')
 		return `More ${scored('a')} in favour of ${short(names.a)}; more ${scored('b')} in favour of ${short(names.b)}. Each party leads in a different type.`;

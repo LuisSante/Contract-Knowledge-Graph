@@ -51,9 +51,13 @@ import {
 	creditedGrid,
 	DEONTIC_KINDS,
 	tallyClauses,
+	typeVerdict,
+	withoutServed,
 } from '@/features/docx/utils/knowledge/clause-favour';
+import { scoredSentence } from '@/features/docx/components/clause-analyzer/views/favour-shared';
+import { WhatEachGets } from '@/features/docx/components/clause-analyzer/views/verdict-bits';
 import type { ViewProps } from '@/features/docx/components/clause-analyzer/views/types';
-import type { DeonticKind } from '@/types/knowledge';
+import type { DeonticKind, KgCondition } from '@/types/knowledge';
 
 interface ClauseAnalyzerPanelProps {
 	docId: string;
@@ -61,6 +65,8 @@ interface ClauseAnalyzerPanelProps {
 	onOpenGraph?: () => void;
 }
 
+/** No conditions to show in the detail: under All and Only firm. */
+const NO_CONDITIONS: KgCondition[] = [];
 /** No statements: the importance hook sends no request. */
 const NO_IDS: readonly string[] = [];
 
@@ -134,7 +140,9 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 	const nav = useAnalyzerView();
 	// Table v1.1 shows one deontic type at a time, picked above the table, instead of
 	// toggling them in the legend; Table keeps its own choice.
-	const oneType = nav.view === 'table11';
+	// Table v1.2 is Table v1.1 with each row's detail unfolding under it instead of «Details ›».
+	const oneType = nav.view === 'table11' || nav.view === 'table12';
+	const accordion = nav.view === 'table12';
 	const [typeShown, setTypeShown] = useState<DeonticKind>('obligation');
 	const kindsShown = useMemo(
 		() => (oneType ? new Set<MarkKind>([typeShown]) : visibleKinds),
@@ -390,6 +398,39 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		[viewKg, shownGrid, oneType, names, showConditions]
 	);
 
+	// Table v1.2: the picked row unfolds Table v2's detail under it, for the open type only and
+	// in the condition mode the reader chose. The «Do you agree?» of Table v2 stays there: it
+	// asks about the whole clause, and its answers are kept per clause.
+	const talliesByClause = useMemo(
+		() =>
+			accordion && grid && viewKg
+				? new Map(tallyClauses(grid, viewKg).map((t) => [t.clauseId, t] as const))
+				: null,
+		[accordion, grid, viewKg]
+	);
+	const renderDetail = (row: GridRow) => {
+		const found = row.clauseId ? talliesByClause?.get(row.clauseId) : undefined;
+		if (!found || !viewKg) return null;
+		const tally =
+			conditionMode === 'firm' && conditionalIds ? withoutServed(found, conditionalIds) : found;
+		const kinds = [typeShown];
+		const { verdict, byKind } = typeVerdict(tally.count, kinds);
+		return (
+			<div className="space-y-3">
+				<p className="text-sm font-medium text-foreground">
+					{scoredSentence(tally.count, verdict, byKind, kinds, names)}
+				</p>
+				<WhatEachGets
+					tally={tally}
+					kinds={kinds}
+					names={names}
+					conditions={showConditions ? viewKg.conditions : NO_CONDITIONS}
+					onOpen={openInDocument}
+				/>
+			</div>
+		);
+	};
+
 	const showTooltip = (event: ReactMouseEvent, mark: GridMark) => {
 		const rect = containerRef.current?.getBoundingClientRect();
 		if (!rect || !detailsOf) return;
@@ -440,7 +481,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 	}, [oneType, grid, viewKg, overviewImportance]);
 
 	// Table and Table v1.1 are the grid below; every other view takes its place.
-	const inView = viewProps !== null && nav.view !== 'table' && nav.view !== 'table11';
+	const inView = viewProps !== null && nav.view !== 'table' && !oneType;
 
 	// The pair lives in the URL too: a shared link opens on the same comparison.
 	const { pair: urlPair, setPair } = nav;
@@ -486,7 +527,8 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 
 			{/* The table fills the panel; the graph has a tab of its own. */}
 			<div className={cn('flex', inView ? 'hidden' : 'min-h-0 flex-1')}>
-				<div ref={containerRef} className="relative min-h-0 flex-1">
+				{/* min-w-0: a table wider than the panel scrolls inside it instead of widening it. */}
+				<div ref={containerRef} className="relative min-h-0 min-w-0 flex-1">
 					{status === 'loading' && (
 						<div className="flex h-full items-center justify-center text-sm text-muted-foreground">
 							Loading knowledge graph…
@@ -549,7 +591,8 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 									openInDocument(clauseId);
 								}}
 								onOpenGraph={openClauseInGraph}
-								onDetails={oneType ? openDetails : undefined}
+								onDetails={oneType && !accordion ? openDetails : undefined}
+								renderDetail={accordion ? renderDetail : undefined}
 								onGoToModifier={oneType ? goToModifier : undefined}
 								onOpenMark={openInDocument}
 								onFocusMark={focusNode}

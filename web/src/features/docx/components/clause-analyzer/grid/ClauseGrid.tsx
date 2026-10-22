@@ -1,6 +1,12 @@
 'use client';
 
-import { Fragment, useMemo, useState, type MouseEvent as ReactMouseEvent } from 'react';
+import {
+	Fragment,
+	useMemo,
+	useState,
+	type MouseEvent as ReactMouseEvent,
+	type ReactNode,
+} from 'react';
 import type {
 	GridLane,
 	GridMark,
@@ -15,6 +21,7 @@ import {
 	type ClauseRowLead,
 } from '@/features/docx/components/clause-analyzer/grid/ClauseRow';
 import {
+	LABEL_MIN_WIDTH,
 	LABEL_WIDTH,
 	LANE_COLUMNS,
 	laneWidth,
@@ -63,6 +70,8 @@ interface ClauseGridProps {
 	onOpenGraph?: (clauseId: string) => void;
 	/** Opens a clause in Table v2; each row then ends in a «Details» link. */
 	onDetails?: (clauseId: string) => void;
+	/** Each row unfolds this under it while it is the picked one (Table v1.2). */
+	renderDetail?: (row: GridRow) => ReactNode;
 	/** Goes to a clause that modifies a row, from that row's «modified by». */
 	onGoToModifier?: (clauseId: string, kind: DeonticKind | null) => void;
 	onOpenMark: (nodeId: string) => void;
@@ -98,6 +107,7 @@ export function ClauseGrid({
 	onSelectClause,
 	onOpenGraph,
 	onDetails,
+	renderDetail,
 	onGoToModifier,
 	onOpenMark,
 	onFocusMark,
@@ -118,14 +128,22 @@ export function ClauseGrid({
 
 	return (
 		<div className="h-full overflow-auto">
-			<div className="min-w-[620px]">
+			{/* With centred lanes the clause column gives up width first; below its minimum the
+			    whole table scrolls sideways, so nothing at a row's end is cut off. */}
+			<div className={centerLanes ? 'min-w-min' : 'min-w-[620px]'}>
 				<div className="sticky top-0 z-10 flex items-center gap-2 border-b border-border/60 bg-background/95 px-3 py-1.5 text-2xs backdrop-blur">
 					<button
 						type="button"
 						onClick={onToggleSort}
 						disabled={!sortable}
-						className="mr-2 shrink-0 truncate text-left font-medium text-muted-foreground/70 enabled:hover:text-foreground disabled:cursor-default"
-						style={{ width: labelWidth }}
+						className={`mr-2 truncate text-left font-medium text-muted-foreground/70 enabled:hover:text-foreground disabled:cursor-default ${
+							centerLanes ? '' : 'shrink-0'
+						}`}
+						style={
+							centerLanes
+								? { flexBasis: labelWidth, minWidth: LABEL_MIN_WIDTH }
+								: { width: labelWidth }
+						}
 						title="Order the rows by how much each clause weighs inside the contract (PageRank with a per-clause prior), or by its position in the document"
 					>
 						CLAUSE
@@ -205,7 +223,7 @@ export function ClauseGrid({
 						)}
 					</div>
 					{/* As wide as the rows' «Details» link, so the columns stay under their names. */}
-					{onDetails && <span className="w-16 shrink-0" />}
+					{(onDetails || renderDetail) && <span className="w-16 shrink-0" />}
 				</div>
 
 				{shownRows.map((row, index) => (
@@ -230,6 +248,12 @@ export function ClauseGrid({
 						onSelect={onSelectClause}
 						onOpenGraph={onOpenGraph}
 						onDetails={onDetails}
+						expandable={Boolean(renderDetail)}
+						detail={
+							renderDetail && activeClauseId !== null && row.clauseId === activeClauseId
+								? renderDetail(row)
+								: null
+						}
 						onGoToModifier={onGoToModifier}
 						onOpenMark={onOpenMark}
 						onFocusMark={onFocusMark}

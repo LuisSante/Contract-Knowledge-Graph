@@ -33,6 +33,8 @@ export const MARK_GAP = 4;
 export const laneWidth = (columns: number) => columns * MARK_SIZE + (columns - 1) * MARK_GAP;
 export const LANE_WIDTH = laneWidth(LANE_COLUMNS);
 export const LABEL_WIDTH = 176;
+/** How narrow a centred-lane table's clause column may get before the table scrolls sideways. */
+export const LABEL_MIN_WIDTH = 200;
 
 export const ROW_PAGE = 10;
 

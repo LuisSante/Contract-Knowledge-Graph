@@ -7,6 +7,9 @@ export const VIEWS = [
 	{ id: 'table', label: 'Table' },
 	// A copy of Table, to rework the overview the advisor asked for (Oct 2026).
 	{ id: 'table11', label: 'Table v1.1' },
+	// Table v1.1 with each row's detail (Table v2's, for the open type) unfolding under it,
+	// instead of «Details ›» leaving for Table v2 (Oct 2026).
+	{ id: 'table12', label: 'Table v1.2' },
 	// Meant to replace Table; both stay while Table serves as the reference.
 	{ id: 'bytype', label: 'Table v2' },
 ] as const;

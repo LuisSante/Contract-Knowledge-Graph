@@ -195,6 +195,18 @@ export function tallyClauses(
 	return out;
 }
 
+/** A clause's tally without some statements, recounted: Table v1.2's detail under «Only
+ *  firm» leaves out the conditional ones, as its squares do. */
+export function withoutServed(tally: ClauseTally, ids: ReadonlySet<string>): ClauseTally {
+	const served = tally.served.filter((s) => !ids.has(s.mark.id));
+	const count = emptyCount();
+	for (const s of served) {
+		if (s.to === 'both' || s.to === 'a') count[s.kind].a += 1;
+		if (s.to === 'both' || s.to === 'b') count[s.kind].b += 1;
+	}
+	return { ...tally, served, count };
+}
+
 export const favourOf = ({ a, b }: Record<Side, number>): Favour =>
 	a > b ? 'a' : b > a ? 'b' : 'tie';
 

@@ -1,7 +1,13 @@
 'use client';
 
-import { Fragment, useEffect, useRef, type MouseEvent as ReactMouseEvent } from 'react';
-import { Forward } from 'lucide-react';
+import {
+	Fragment,
+	useEffect,
+	useRef,
+	type MouseEvent as ReactMouseEvent,
+	type ReactNode,
+} from 'react';
+import { ChevronDownIcon, Forward } from 'lucide-react';
 import type {
 	GridLane,
 	GridMark,
@@ -21,6 +27,7 @@ import { favourOf } from '@/features/docx/utils/knowledge/clause-favour';
 import type { DeonticKind } from '@/types/knowledge';
 import {
 	KIND_COLORS,
+	LABEL_MIN_WIDTH,
 	LABEL_WIDTH,
 	LANE_COLUMNS,
 	laneWidth,
@@ -70,6 +77,11 @@ interface ClauseRowProps {
 	onOpenGraph?: (clauseId: string) => void;
 	/** Opens the clause in Table v2, for what each party gets in it; absent, no link. */
 	onDetails?: (clauseId: string) => void;
+	/** The row unfolds its detail under it (Table v1.2): «Details» with a chevron ends the row,
+	 *  and picking the row opens or closes it. */
+	expandable?: boolean;
+	/** What unfolds under the row while it is the picked one. */
+	detail?: ReactNode;
 	/** Goes to a clause that modifies this one, in the tab of its changing sentence's type. */
 	onGoToModifier?: (clauseId: string, kind: DeonticKind | null) => void;
 	onOpenMark: (nodeId: string) => void;
@@ -98,6 +110,8 @@ export function ClauseRow({
 	onSelect,
 	onOpenGraph,
 	onDetails,
+	expandable = false,
+	detail,
 	onGoToModifier,
 	onOpenMark,
 	onFocusMark,
@@ -142,158 +156,188 @@ export function ClauseRow({
 	})();
 
 	return (
-		<div ref={rowRef} className={`flex items-start gap-2 px-3 py-1.5 ${background}`}>
-			{lead ? (
-				<div className="flex shrink-0 items-start gap-2" style={{ width: labelWidth }}>
-					<RankBadge rank={lead.rank} />
-					{/* The heading is inline text, not a button box, so the icon follows its last
+		// The table's header row is sticky: a row brought into view stops below it.
+		<div ref={rowRef} className="scroll-mt-14">
+			<div className={`flex items-start gap-2 px-3 py-1.5 ${background}`}>
+				{lead ? (
+					// It narrows before the row overflows: a tight panel wraps the heading rather than
+					// pushing the row's end past the edge.
+					<div
+						className="flex items-start gap-2"
+						style={{ flexBasis: labelWidth, minWidth: LABEL_MIN_WIDTH }}
+					>
+						<RankBadge rank={lead.rank} />
+						{/* The heading is inline text, not a button box, so the icon follows its last
 					    word when it wraps instead of dropping to a line of its own. */}
-					<div className="min-w-0 flex-1 text-sm leading-snug">
-						<span
-							role="button"
-							tabIndex={unfiled ? -1 : 0}
-							aria-disabled={unfiled}
-							onClick={() => clauseId && onSelect(clauseId)}
-							onKeyDown={(event) => {
-								if (!clauseId || (event.key !== 'Enter' && event.key !== ' ')) return;
-								event.preventDefault();
-								onSelect(clauseId);
-							}}
-							className={`font-semibold text-foreground ${unfiled ? '' : 'cursor-pointer hover:underline'}`}
-						>
-							{lead.section && <SectionTag section={lead.section} />}
-							{lead.heading}
-						</span>
-						{clauseId && onOpenGraph && (
-							<GraphLink onClick={() => onOpenGraph(clauseId)} heading={lead.heading} />
-						)}
-						{lead.modifiedBy?.length ? (
-							<span className="mt-0.5 block text-2xs text-muted-foreground">
-								modified by{' '}
-								{lead.modifiedBy.map((m, index) => (
-									<Fragment key={m.clauseId}>
-										{index > 0 && ', '}
-										<button
-											type="button"
-											onClick={() => onGoToModifier?.(m.clauseId, m.kind)}
-											disabled={!onGoToModifier}
-											className="font-semibold hover:underline disabled:cursor-default"
-											style={{ color: m.kind ? KIND_COLORS[m.kind] : undefined }}
-											title={
-												m.kind
-													? `Go to ${m.label}, in ${TAB_NAME[m.kind]}: the ${m.kind} there modifies this clause`
-													: `Go to ${m.label}: it modifies this clause`
-											}
-										>
-											{m.label}
-										</button>
-									</Fragment>
-								))}
+						<div className="min-w-0 flex-1 text-sm leading-snug">
+							<span
+								role="button"
+								tabIndex={unfiled ? -1 : 0}
+								aria-disabled={unfiled}
+								onClick={() => clauseId && onSelect(clauseId)}
+								onKeyDown={(event) => {
+									if (!clauseId || (event.key !== 'Enter' && event.key !== ' ')) return;
+									event.preventDefault();
+									onSelect(clauseId);
+								}}
+								className={`font-semibold text-foreground ${unfiled ? '' : 'cursor-pointer hover:underline'}`}
+							>
+								{lead.section && <SectionTag section={lead.section} />}
+								{lead.heading}
 							</span>
-						) : null}
+							{clauseId && onOpenGraph && (
+								<GraphLink onClick={() => onOpenGraph(clauseId)} heading={lead.heading} />
+							)}
+							{lead.modifiedBy?.length ? (
+								<span className="mt-0.5 block text-2xs text-muted-foreground">
+									modified by{' '}
+									{lead.modifiedBy.map((m, index) => (
+										<Fragment key={m.clauseId}>
+											{index > 0 && ', '}
+											<button
+												type="button"
+												onClick={() => onGoToModifier?.(m.clauseId, m.kind)}
+												disabled={!onGoToModifier}
+												className="font-semibold hover:underline disabled:cursor-default"
+												style={{ color: m.kind ? KIND_COLORS[m.kind] : undefined }}
+												title={
+													m.kind
+														? `Go to ${m.label}, in ${TAB_NAME[m.kind]}: the ${m.kind} there modifies this clause`
+														: `Go to ${m.label}: it modifies this clause`
+												}
+											>
+												{m.label}
+											</button>
+										</Fragment>
+									))}
+								</span>
+							) : null}
+						</div>
 					</div>
-				</div>
-			) : (
-				/* The name and the bar select the row; the arrow beside the name is its own
+				) : (
+					/* The name and the bar select the row; the arrow beside the name is its own
 			   button, so the two are siblings rather than one inside the other. */
-				<div className="mt-0.5 shrink-0 text-2xs" style={{ width: labelWidth }}>
-					<div className="flex items-center gap-1">
-						<button
-							type="button"
-							onClick={() => clauseId && onSelect(clauseId)}
-							disabled={unfiled}
-							className={`min-w-0 truncate text-left disabled:cursor-default ${
-								unfiled ? 'font-medium text-destructive/80' : 'text-foreground/80 hover:underline'
-							}`}
-							title={title}
-						>
-							{row.heading}
-						</button>
-						{clauseId && onOpenGraph && (
+					<div className="mt-0.5 shrink-0 text-2xs" style={{ width: labelWidth }}>
+						<div className="flex items-center gap-1">
 							<button
 								type="button"
-								onClick={() => onOpenGraph(clauseId)}
-								className="shrink-0 rounded p-0.5 text-muted-foreground/60 hover:bg-muted hover:text-primary"
-								title="See this clause in the knowledge graph"
-								aria-label={`See ${row.heading} in the knowledge graph`}
+								onClick={() => clauseId && onSelect(clauseId)}
+								disabled={unfiled}
+								className={`min-w-0 truncate text-left disabled:cursor-default ${
+									unfiled ? 'font-medium text-destructive/80' : 'text-foreground/80 hover:underline'
+								}`}
+								title={title}
 							>
-								<Forward className="size-3" />
+								{row.heading}
+							</button>
+							{clauseId && onOpenGraph && (
+								<button
+									type="button"
+									onClick={() => onOpenGraph(clauseId)}
+									className="shrink-0 rounded p-0.5 text-muted-foreground/60 hover:bg-muted hover:text-primary"
+									title="See this clause in the knowledge graph"
+									aria-label={`See ${row.heading} in the knowledge graph`}
+								>
+									<Forward className="size-3" />
+								</button>
+							)}
+						</div>
+						{share && clauseId && (
+							<button
+								type="button"
+								tabIndex={-1}
+								onClick={() => onSelect(clauseId)}
+								className="block w-full text-left"
+								title={title}
+							>
+								<ShareBar share={share} />
 							</button>
 						)}
 					</div>
-					{share && clauseId && (
-						<button
-							type="button"
-							tabIndex={-1}
-							onClick={() => onSelect(clauseId)}
-							className="block w-full text-left"
-							title={title}
-						>
-							<ShareBar share={share} />
-						</button>
-					)}
-				</div>
-			)}
+				)}
 
-			{/* Lane A fills right-to-left so it grows outward from the axis. */}
-			<div
-				className={
-					centerLanes
-						? `flex flex-1 items-start justify-center ${favourAxis ? 'gap-3.5' : 'gap-2'}`
-						: 'contents'
-				}
-			>
-				{lanes.map((lane) => (
-					<Fragment key={lane}>
-						{lane === 'b' && (
-							<span className="relative w-px shrink-0 self-stretch bg-border">
-								{axis && (
-									<AxisMark
-										favour={axis.favour}
-										title={axis.title}
-										muted={dimmed}
-										className="absolute top-[-1px] left-1/2 -translate-x-1/2"
-									/>
-								)}
-							</span>
-						)}
-						<div
-							dir={lane === 'a' ? 'rtl' : 'ltr'}
-							className="grid shrink-0 content-start"
-							style={{
-								width: laneWidth(laneColumns),
-								gap: MARK_GAP,
-								gridTemplateColumns: `repeat(${laneColumns}, ${MARK_SIZE}px)`,
-							}}
-						>
-							{row.marks[lane]
-								.filter((mark) => visibleKinds.has(mark.kind))
-								.map((mark) => (
-									<Mark
-										key={mark.id}
-										mark={mark}
-										muted={dimmed || !paintLanes[lane]}
-										conditional={conditionalIds?.has(mark.id)}
-										onHover={onHoverMark}
-										onLeave={onLeaveMark}
-										onOpen={onOpenMark}
-										onFocus={onFocusMark}
-									/>
-								))}
-						</div>
-					</Fragment>
-				))}
+				{/* Lane A fills right-to-left so it grows outward from the axis. */}
+				<div
+					className={
+						centerLanes
+							? `flex flex-1 items-start justify-center ${favourAxis ? 'gap-3.5' : 'gap-2'}`
+							: 'contents'
+					}
+				>
+					{lanes.map((lane) => (
+						<Fragment key={lane}>
+							{lane === 'b' && (
+								<span className="relative w-px shrink-0 self-stretch bg-border">
+									{axis && (
+										<AxisMark
+											favour={axis.favour}
+											title={axis.title}
+											muted={dimmed}
+											className="absolute top-[-1px] left-1/2 -translate-x-1/2"
+										/>
+									)}
+								</span>
+							)}
+							<div
+								dir={lane === 'a' ? 'rtl' : 'ltr'}
+								className="grid shrink-0 content-start"
+								style={{
+									width: laneWidth(laneColumns),
+									gap: MARK_GAP,
+									gridTemplateColumns: `repeat(${laneColumns}, ${MARK_SIZE}px)`,
+								}}
+							>
+								{row.marks[lane]
+									.filter((mark) => visibleKinds.has(mark.kind))
+									.map((mark) => (
+										<Mark
+											key={mark.id}
+											mark={mark}
+											muted={dimmed || !paintLanes[lane]}
+											conditional={conditionalIds?.has(mark.id)}
+											onHover={onHoverMark}
+											onLeave={onLeaveMark}
+											onOpen={onOpenMark}
+											onFocus={onFocusMark}
+										/>
+									))}
+							</div>
+						</Fragment>
+					))}
+				</div>
+
+				{clauseId && onDetails && (
+					<button
+						type="button"
+						onClick={() => onDetails(clauseId)}
+						className="mt-0.5 w-16 shrink-0 text-right text-xs font-medium text-muted-foreground hover:text-primary"
+						title="What each party gets in this clause, in Table v2"
+					>
+						Details ›
+					</button>
+				)}
+
+				{clauseId && expandable && (
+					<button
+						type="button"
+						onClick={() => onSelect(clauseId)}
+						aria-expanded={active}
+						aria-label={`Details of ${lead?.heading ?? row.heading}`}
+						title={active ? 'Hide the detail' : 'What each party gets in this clause'}
+						className={`mt-0.5 flex w-16 shrink-0 items-center justify-end gap-0.5 text-xs font-medium hover:text-primary ${
+							active ? 'text-primary' : 'text-muted-foreground'
+						}`}
+					>
+						Details
+						<ChevronDownIcon
+							className={`size-3.5 transition-transform ${active ? 'rotate-180' : ''}`}
+						/>
+					</button>
+				)}
 			</div>
 
-			{clauseId && onDetails && (
-				<button
-					type="button"
-					onClick={() => onDetails(clauseId)}
-					className="mt-0.5 w-16 shrink-0 text-right text-xs font-medium text-muted-foreground hover:text-primary"
-					title="What each party gets in this clause, in Table v2"
-				>
-					Details ›
-				</button>
+			{detail && (
+				<div className="border-y border-primary/20 bg-primary/5 px-12 pt-3 pb-4">{detail}</div>
 			)}
 		</div>
 	);

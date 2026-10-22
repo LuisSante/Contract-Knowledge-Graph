@@ -8,23 +8,16 @@ export interface PartyCardData {
 	id: string;
 	name: string;
 	role: string;
-	/** What the party does in the contract, from the abstract; empty until it is written. */
 	does: string;
-	/** How many statements name the party; it orders the parties, it is not shown. */
 	total: number;
 }
 
 interface PartySelectionProps {
 	parties: PartyCardData[];
-	/** The chosen pair, by side. Null means the slot is open. */
 	slots: [string | null, string | null];
 	slotColors: [string, string];
-	/** The pair is still the suggested one: nobody has changed a seat. */
-	suggested: boolean;
-	/** With a side, the drop was aimed; without one, the first open seat takes it. */
 	onAssign: (partyId: string, side?: 0 | 1) => void;
 	onRelease: (side: 0 | 1) => void;
-	/** Ids that are merge groups, so their cards can offer Split. */
 	groupIds: string[];
 	onMerge: (ids: string[]) => void;
 	onSplit: (groupId: string) => void;
@@ -36,7 +29,6 @@ export function PartySelection({
 	parties,
 	slots,
 	slotColors,
-	suggested,
 	onAssign,
 	onRelease,
 	groupIds,

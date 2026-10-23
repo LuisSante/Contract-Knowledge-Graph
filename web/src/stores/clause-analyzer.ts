@@ -10,17 +10,12 @@ import type {
 import { DEFAULT_SEVERITY } from '@/features/docx/utils/knowledge/party-ledger';
 import type { MergeGroup } from '@/features/docx/utils/knowledge/party-view';
 import type { DocumentTarget } from '@/features/docx/utils/knowledge/graph-payload';
-import type { DocNote } from '@/features/docx/hooks/useDocNotes';
 
 export function mergeGroupId(members: Iterable<string>): string {
 	return `merge:${[...members].sort().join('+')}`;
 }
 
-export const MAX_HOPS = 5;
 export const DEFAULT_TOP_K = 10;
-export const MIN_TOP_K = 5;
-export const MAX_TOP_K = 50;
-const TOP_K_STEP = 5;
 
 export interface GraphPayload {
 	anchorParagraphId: string | null;
@@ -61,9 +56,7 @@ interface ClauseAnalyzerState extends GraphPayload {
 	severity: DeonticSeverity;
 	mergeGroups: MergeGroup[];
 	hiddenParties: string[];
-	selectedPartyIds: string[];
 	secondPartyId: string | null;
-	notes: DocNote[];
 	/** Counts every jump to the contract, so asking for the same place again still lands there. */
 	documentTargetSeq: number;
 	/** The clause picked in the table or in the graph; both tabs show the same one. Keyed
@@ -72,20 +65,15 @@ interface ClauseAnalyzerState extends GraphPayload {
 
 	focusNode: (nodeId: string) => void;
 	setFocusMeta: (meta: FocusMeta | null) => void;
-	setHops: (updater: number | ((prev: number) => number)) => void;
-	setTopK: (updater: number | ((prev: number) => number)) => void;
 	mergeParties: (ids: string[]) => void;
 	splitGroup: (groupId: string) => void;
 	hideParty: (id: string) => void;
 	unhideParty: (id: string) => void;
 	clearPartyView: () => void;
-	toggleSelectedParty: (id: string) => void;
-	clearSelectedParties: () => void;
 	clearFocus: () => void;
 	setPayload: (payload: GraphPayload) => void;
 	setDocumentTarget: (target: DocumentTarget) => void;
 	focusPair: (anchorId: string, secondId: string) => void;
-	setNotes: (notes: DocNote[]) => void;
 	selectClause: (docId: string, clauseId: string | null) => void;
 }
 
@@ -97,9 +85,7 @@ export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
 	severity: DEFAULT_SEVERITY,
 	mergeGroups: [],
 	hiddenParties: [],
-	selectedPartyIds: [],
 	secondPartyId: null,
-	notes: [],
 	documentTargetSeq: 0,
 	selectedClause: null,
 	...EMPTY_PAYLOAD,
@@ -126,14 +112,12 @@ export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
 			return {
 				mergeGroups: [...kept, newGroup],
 				focusNodeId,
-				selectedPartyIds: [],
 				secondPartyId: secondPartyId === focusNodeId ? null : secondPartyId,
 			};
 		}),
 	splitGroup: (groupId) =>
 		set((state) => ({
 			mergeGroups: state.mergeGroups.filter((g) => g.id !== groupId),
-			selectedPartyIds: [],
 			...(state.secondPartyId === groupId ? { secondPartyId: null } : {}),
 			...(state.focusNodeId === groupId ? CLEARED_FOCUS : {}),
 		})),
@@ -148,19 +132,11 @@ export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
 				...(strandsSecond ? { secondPartyId: null } : {}),
 				hiddenParties: Array.from(new Set([...state.hiddenParties, ...toHide])),
 				mergeGroups: group ? state.mergeGroups.filter((g) => g.id !== id) : state.mergeGroups,
-				selectedPartyIds: state.selectedPartyIds.filter((s) => s !== id && !toHide.includes(s)),
 				...(clears ? CLEARED_FOCUS : {}),
 			};
 		}),
 	unhideParty: (id) =>
 		set((state) => ({ hiddenParties: state.hiddenParties.filter((h) => h !== id) })),
-	toggleSelectedParty: (id) =>
-		set((state) => ({
-			selectedPartyIds: state.selectedPartyIds.includes(id)
-				? state.selectedPartyIds.filter((x) => x !== id)
-				: [...state.selectedPartyIds, id],
-		})),
-	clearSelectedParties: () => set({ selectedPartyIds: [] }),
 	clearPartyView: () =>
 		set((state) => {
 			// Dissolving the groups strands a focus that points at a group id.
@@ -168,27 +144,14 @@ export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
 			return {
 				mergeGroups: [],
 				hiddenParties: [],
-				selectedPartyIds: [],
 				secondPartyId: null,
 				...(stranded ? CLEARED_FOCUS : {}),
 			};
-		}),
-	setHops: (updater) =>
-		set((state) => {
-			const next = typeof updater === 'function' ? updater(state.hops) : updater;
-			return { hops: Math.min(MAX_HOPS, Math.max(0, next)) };
-		}),
-	setTopK: (updater) =>
-		set((state) => {
-			const raw = typeof updater === 'function' ? updater(state.topK) : updater;
-			const snapped = Math.round(raw / TOP_K_STEP) * TOP_K_STEP;
-			return { topK: Math.min(MAX_TOP_K, Math.max(MIN_TOP_K, snapped)) };
 		}),
 	clearFocus: () => set({ ...CLEARED_FOCUS, hops: 1, secondPartyId: null }),
 	setPayload: (payload) => set(payload),
 	setDocumentTarget: (target) =>
 		set((state) => ({ ...target, documentTargetSeq: state.documentTargetSeq + 1 })),
 	focusPair: (focusNodeId, secondPartyId) => set({ focusNodeId, secondPartyId, hops: 1 }),
-	setNotes: (notes) => set({ notes }),
 	selectClause: (docId, clauseId) => set({ selectedClause: clauseId ? { docId, clauseId } : null }),
 }));

@@ -149,7 +149,7 @@ Reglas:
   the case of», «without», «as long as»).
 
 El código está en `graph-payload.ts` (`paintStatement`, `conditionsElsewhere`),
-`MarkTooltip.tsx`, `Mark.tsx`, `favour-bits.tsx` (`ConditionModePicker`, `FirmKey`,
+`MarkTooltip.tsx`, `Mark.tsx`, `table-bits.tsx` (`ConditionModePicker`, `FirmKey`,
 `ConditionTag`) y `statement-grid.ts` (`withoutMarks`).
 
 ### Lo que se dejó de hacer

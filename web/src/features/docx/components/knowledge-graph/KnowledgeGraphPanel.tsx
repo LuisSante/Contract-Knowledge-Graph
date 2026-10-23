@@ -7,11 +7,10 @@ import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useKnowledgeGraphData } from '@/features/docx/hooks/useKnowledgeGraphData';
 import { useClauseImportance } from '@/features/docx/hooks/useClauseImportance';
-import { applyPartyView } from '@/features/docx/utils/knowledge/party-view';
 import { buildKgViz, KG_NODE_KINDS } from '@/features/docx/utils/knowledge/kg-graph';
 import { clauseNeighbourhood, clauseRowIds } from '@/features/docx/utils/knowledge/clause-subgraph';
 import { buildStatementGrid, GRID_LANES } from '@/features/docx/utils/knowledge/statement-grid';
-import { useAnalyzerPair } from '@/features/docx/hooks/useAnalyzerPair';
+import { useComparedPair } from '@/features/docx/hooks/useAnalyzerPair';
 import { buildDocumentTarget } from '@/features/docx/utils/knowledge/graph-payload';
 import { GraphCanvas } from '@/features/docx/components/clause-analyzer/graph/GraphCanvas';
 import { SelectedRow } from '@/features/docx/components/knowledge-graph/SelectedRow';
@@ -25,7 +24,6 @@ import {
 import type { KgVizNode } from '@/features/docx/utils/knowledge/kg-graph';
 
 const ALL_KINDS = new Set<KgNodeKind>(KG_NODE_KINDS);
-const noReset = () => {};
 
 /**
  * The whole knowledge graph, every node and edge, sized by PageRank over every
@@ -38,24 +36,12 @@ export function KnowledgeGraphPanel({ docId }: { docId: string }) {
 	const selectedClause = useClauseAnalyzerStore((s) => s.selectedClause);
 	const selectClause = useClauseAnalyzerStore((s) => s.selectClause);
 	const selectedClauseId = selectedClause?.docId === docId ? selectedClause.clauseId : null;
-	const mergeGroups = useClauseAnalyzerStore((s) => s.mergeGroups);
-	const hiddenParties = useClauseAnalyzerStore((s) => s.hiddenParties);
 	const setDocumentTarget = useClauseAnalyzerStore((s) => s.setDocumentTarget);
-	const focusNodeId = useClauseAnalyzerStore((s) => s.focusNodeId);
-	const secondPartyId = useClauseAnalyzerStore((s) => s.secondPartyId);
-	// The pair chosen in the Clause Analyzer, or the one the link carries if the analyzer
-	// has not been opened in this visit.
-	const { pair } = useAnalyzerPair();
-	const aId = focusNodeId ?? pair?.a ?? null;
-	const bId = focusNodeId ? secondPartyId : (pair?.b ?? null);
 	const paragraphs = useDocumentStore((s) => s.paragraphs);
 	const nodesById = useMemo(() => new Map(paragraphs.map((n) => [n.id, n])), [paragraphs]);
 
-	const { kg, status } = useKnowledgeGraphData(docId, noReset);
-	const viewKg = useMemo(
-		() => (kg ? applyPartyView(kg, mergeGroups, new Set(hiddenParties)) : null),
-		[kg, mergeGroups, hiddenParties]
-	);
+	const { viewKg, status } = useKnowledgeGraphData(docId);
+	const { aId, bId } = useComparedPair(viewKg);
 	// null counts every statement: the document-wide reading, with no view filtering it.
 	const importance = useClauseImportance(docId, null);
 

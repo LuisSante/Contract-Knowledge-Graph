@@ -3,10 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ChevronDownIcon } from 'lucide-react';
 import { KIND_COLORS, KIND_LABEL } from '@/features/docx/components/clause-analyzer/constants';
-import {
-	RankBadge,
-	SectionTag,
-} from '@/features/docx/components/clause-analyzer/views/favour-bits';
+import { RankBadge, SectionTag } from '@/features/docx/components/clause-analyzer/parts/table-bits';
 import { cn } from '@/lib/utils';
 import { fetchRedFlags } from '@/services/red-flags';
 import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';

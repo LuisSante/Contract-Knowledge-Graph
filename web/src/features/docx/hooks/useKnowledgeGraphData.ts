@@ -1,14 +1,25 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { fetchKnowledgeGraph } from '@/services/knowledge';
 import type { KnowledgeGraph } from '@/types/knowledge';
+import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
+import { applyPartyView } from '@/features/docx/utils/knowledge/party-view';
 
 export type KnowledgeGraphStatus = 'loading' | 'ready' | 'missing' | 'error';
 
-export function useKnowledgeGraphData(docId: string, onReload: () => void) {
+const noReload = () => {};
+
+/**
+ * The contract's graph, as fetched (`kg`) and as the parties are set up in the Clause
+ * Analyzer (`viewKg`): merged parties drawn as one, hidden ones left out. Every tab reads
+ * the same view.
+ */
+export function useKnowledgeGraphData(docId: string, onReload: () => void = noReload) {
 	const [kg, setKg] = useState<KnowledgeGraph | null>(null);
 	const [status, setStatus] = useState<KnowledgeGraphStatus>('loading');
+	const mergeGroups = useClauseAnalyzerStore((s) => s.mergeGroups);
+	const hiddenParties = useClauseAnalyzerStore((s) => s.hiddenParties);
 
 	useEffect(() => {
 		if (!docId) return;
@@ -38,5 +49,10 @@ export function useKnowledgeGraphData(docId: string, onReload: () => void) {
 		};
 	}, [docId, onReload]);
 
-	return { kg, status };
+	const viewKg = useMemo(
+		() => (kg ? applyPartyView(kg, mergeGroups, new Set(hiddenParties)) : null),
+		[kg, mergeGroups, hiddenParties]
+	);
+
+	return { kg, viewKg, status };
 }

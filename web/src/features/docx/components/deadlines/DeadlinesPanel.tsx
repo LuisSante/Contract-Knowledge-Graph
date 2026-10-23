@@ -6,9 +6,7 @@ import { cn } from '@/lib/utils';
 import { useDocumentStore } from '@/stores/document';
 import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
 import { useKnowledgeGraphData } from '@/features/docx/hooks/useKnowledgeGraphData';
-import { useAnalyzerPair } from '@/features/docx/hooks/useAnalyzerPair';
-import { applyPartyView } from '@/features/docx/utils/knowledge/party-view';
-import { defaultPair } from '@/features/docx/utils/knowledge/pair';
+import { useComparedPair } from '@/features/docx/hooks/useAnalyzerPair';
 import {
 	buildDocumentTarget,
 	type DocumentTarget,
@@ -19,14 +17,13 @@ import {
 	type DeadlineKind,
 	type TimedDuty,
 } from '@/features/docx/utils/knowledge/deadlines';
-import { short } from '@/features/docx/components/clause-analyzer/views/bits';
+import { short } from '@/features/docx/components/clause-analyzer/parts/bits';
 import {
 	NEUTRAL_COLOR,
 	PAIR_SECOND_COLOR,
 	PARTY_COLOR,
 } from '@/features/docx/components/clause-analyzer/constants';
 
-const noReset = () => {};
 /** Nothing painted: what another tab left in the document is not about deadlines. */
 const NOTHING: DocumentTarget = {
 	anchorParagraphId: null,
@@ -73,25 +70,12 @@ const lower = (action: string) => action.charAt(0).toLowerCase() + action.slice(
  * holds; a line opens its sentence in the document.
  */
 export function DeadlinesPanel({ docId }: { docId: string }) {
-	const mergeGroups = useClauseAnalyzerStore((s) => s.mergeGroups);
-	const hiddenParties = useClauseAnalyzerStore((s) => s.hiddenParties);
 	const setDocumentTarget = useClauseAnalyzerStore((s) => s.setDocumentTarget);
-	const focusNodeId = useClauseAnalyzerStore((s) => s.focusNodeId);
-	const secondPartyId = useClauseAnalyzerStore((s) => s.secondPartyId);
-	const { pair } = useAnalyzerPair();
 	const paragraphs = useDocumentStore((s) => s.paragraphs);
 	const nodesById = useMemo(() => new Map(paragraphs.map((n) => [n.id, n])), [paragraphs]);
 
-	const { kg, status } = useKnowledgeGraphData(docId, noReset);
-	const viewKg = useMemo(
-		() => (kg ? applyPartyView(kg, mergeGroups, new Set(hiddenParties)) : null),
-		[kg, mergeGroups, hiddenParties]
-	);
-	// The pair chosen in the Clause Analyzer, else the one the link carries, else the one the
-	// analyzer's entry suggests: the parties keep their colours even before anyone compares.
-	const suggested = useMemo(() => (viewKg ? defaultPair(viewKg) : null), [viewKg]);
-	const aId = focusNodeId ?? pair?.a ?? suggested?.[0] ?? null;
-	const bId = focusNodeId ? secondPartyId : (pair?.b ?? suggested?.[1] ?? null);
+	const { viewKg, status } = useKnowledgeGraphData(docId);
+	const { aId, bId } = useComparedPair(viewKg, true);
 	const groups = useMemo(() => (viewKg ? deadlineGroups(viewKg) : []), [viewKg]);
 	const nameOf = useMemo(
 		() => new Map((viewKg?.parties ?? []).map((p) => [p.id, short(p.name)] as const)),

@@ -11,12 +11,11 @@ import { RightPanelContent } from '@/features/docx/components/shell/RightPanelCo
 import {
 	ConditionTag,
 	ModifiedByTag,
-} from '@/features/docx/components/clause-analyzer/views/favour-bits';
+} from '@/features/docx/components/clause-analyzer/parts/table-bits';
 import { useRightDrawer } from '@/features/docx/hooks/useRightDrawer';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
 import { useLlmEstimate } from '@/features/docx/hooks/useLlmEstimate';
 import { useEntityHighlights } from '@/features/docx/hooks/useEntityHighlights';
-import { useDocNotes } from '@/features/docx/hooks/useDocNotes';
 import { useDocumentViewer } from '@/features/docx/hooks/useDocumentViewer';
 import { useAssistantChat } from '@/features/docx/hooks/useAssistantChat';
 import { useLlmTotalCost } from '@/features/docx/hooks/useLlmTotalCost';
@@ -117,14 +116,6 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 		paragraphElementById: paragraphElementById.current,
 		targetIds: entityTargetIds,
 		entities: documentEntities,
-	});
-
-	const kgNotes = useClauseAnalyzerStore((s) => s.notes);
-	useDocNotes({
-		active: clauseAnalyzerActive,
-		renderEpoch: viewer.renderEpoch,
-		paragraphElementById: paragraphElementById.current,
-		notes: kgNotes,
 	});
 
 	const documentTargetSeq = useClauseAnalyzerStore((s) => s.documentTargetSeq);

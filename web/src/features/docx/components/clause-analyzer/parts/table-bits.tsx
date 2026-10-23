@@ -17,7 +17,7 @@ import {
 	KIND_COLORS,
 	MUTED_LANE_OPACITY,
 } from '@/features/docx/components/clause-analyzer/constants';
-import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/views/bits';
+import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/parts/bits';
 import {
 	DEONTIC_KINDS,
 	type Favour,

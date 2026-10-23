@@ -21,7 +21,7 @@ import {
 	KIND_LABEL as TAB_NAME,
 	RankBadge,
 	SectionTag,
-} from '@/features/docx/components/clause-analyzer/views/favour-bits';
+} from '@/features/docx/components/clause-analyzer/parts/table-bits';
 import { favourOf } from '@/features/docx/utils/knowledge/clause-favour';
 import type { DeonticKind } from '@/types/knowledge';
 import {

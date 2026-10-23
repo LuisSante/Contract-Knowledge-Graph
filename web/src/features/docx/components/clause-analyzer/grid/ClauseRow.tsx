@@ -15,7 +15,6 @@ import type {
 	MarkKind,
 } from '@/features/docx/utils/knowledge/statement-grid';
 import { Mark } from '@/features/docx/components/clause-analyzer/grid/Mark';
-import { ShareBar } from '@/features/docx/components/clause-analyzer/grid/ShareBar';
 import {
 	AxisMark,
 	GraphLink,
@@ -35,7 +34,7 @@ import {
 	MARK_SIZE,
 } from '@/features/docx/components/clause-analyzer/constants';
 
-/** A row named the way Table v2 names it: importance rank, number and heading. */
+/** A row named by its importance rank, number and heading. */
 export interface ClauseRowLead {
 	rank: number | undefined;
 	section: string | null;
@@ -55,31 +54,28 @@ interface ClauseRowProps {
 	lanes: GridLane[];
 	visibleKinds: Set<MarkKind>;
 	paintLanes: Record<GridLane, boolean>;
-	share: { a: number; b: number } | null;
 	/** Centres the parties' columns in the room the clause name leaves. */
 	centerLanes?: boolean;
 	/** How many marks a lane holds before it wraps to a new line. */
 	laneColumns?: number;
-	/** Names the row as Table v2 does, with the graph icon right after the heading, instead
+	/** Names the row by rank, number and heading, with the graph icon right after it, instead
 	 *  of the plain heading and arrow. */
 	lead?: ClauseRowLead;
 	labelWidth?: number;
-	/** Every other row in solid grey, as Table v1.1 paints them, instead of a faint tint. */
+	/** Every other row in solid grey, as the table paints them, instead of a faint tint. */
 	boldStripes?: boolean;
 	/** Statements a condition gates; their squares are drawn as outlines. */
 	conditionalIds?: ReadonlySet<string>;
 	/** A mark on the rule between the parties' columns points to the one with more squares
 	 *  in this row, or says «=» when both have as many. Needs `centerLanes`. */
-	favourAxis?: boolean;
-	/** The other party has more squares here than the reader («You are»), in the type shown. */
+	axisMark?: boolean;
+	/** The clause goes against the reader («You are») in the type shown. */
 	against?: boolean;
 	laneName: (lane: GridLane) => string;
 	onSelect: (clauseId: string) => void;
 	/** Opens the clause in the knowledge graph tab; absent where there is no such tab. */
 	onOpenGraph?: (clauseId: string) => void;
-	/** Opens the clause in Table v2, for what each party gets in it; absent, no link. */
-	onDetails?: (clauseId: string) => void;
-	/** The row unfolds its detail under it (Table v1.2): «Details» with a chevron ends the row,
+	/** The row unfolds its detail under it: «Details» with a chevron ends the row,
 	 *  and picking the row opens or closes it. */
 	expandable?: boolean;
 	/** What unfolds under the row while it is the picked one. */
@@ -100,19 +96,17 @@ export function ClauseRow({
 	lanes,
 	visibleKinds,
 	paintLanes,
-	share,
 	centerLanes = false,
 	laneColumns = LANE_COLUMNS,
 	lead,
 	labelWidth = LABEL_WIDTH,
 	boldStripes = false,
 	conditionalIds,
-	favourAxis = false,
+	axisMark = false,
 	against = false,
 	laneName,
 	onSelect,
 	onOpenGraph,
-	onDetails,
 	expandable = false,
 	detail,
 	onGoToModifier,
@@ -128,7 +122,6 @@ export function ClauseRow({
 		if (active) rowRef.current?.scrollIntoView({ block: 'nearest' });
 	}, [active]);
 	const unfiled = clauseId === null;
-	const pctA = share ? Math.round(share.a * 100) : 0;
 	const background = active
 		? 'bg-primary/10 ring-1 ring-inset ring-primary/30'
 		: unfiled
@@ -139,22 +132,20 @@ export function ClauseRow({
 					: 'bg-muted/30'
 				: '';
 
-	const title = share
-		? `${row.heading} — del beneficio que reparte, ${pctA}% va a ${laneName('a')} y ${100 - pctA}% a ${laneName('b')}`
-		: row.heading;
+	const title = row.heading;
 
 	// The squares shown on each side, so the mark on the rule says what the row shows.
 	const shownIn = (lane: 'a' | 'b') =>
 		row.marks[lane].filter((mark) => visibleKinds.has(mark.kind)).length;
 	const axis = (() => {
-		if (!favourAxis || !centerLanes || unfiled) return null;
+		if (!axisMark || !centerLanes || unfiled) return null;
 		const count = { a: shownIn('a'), b: shownIn('b') };
 		const favour = favourOf(count);
-		if (favour === 'tie') return { favour, title: `Balanced: ${count.a} on each side` };
+		if (favour === 'tie') return { favour, title: `As many on each side: ${count.a} each` };
 		const other = favour === 'a' ? 'b' : 'a';
 		return {
 			favour,
-			title: `Favours ${laneName(favour)}: ${count[favour]} against ${count[other]}`,
+			title: `${laneName(favour)} has more: ${count[favour]} against ${count[other]}`,
 		};
 	})();
 
@@ -194,7 +185,7 @@ export function ClauseRow({
 							{against && (
 								<span
 									className="ml-1.5 inline-block rounded-full bg-destructive/10 px-2 py-px align-[1px] text-2xs font-semibold whitespace-nowrap text-destructive"
-									title="The other party has more in its favour here than you, in this type"
+									title="Against you in this type: you carry more obligations or prohibitions here, or the other party holds more rights"
 								>
 									Against you
 								</span>
@@ -226,8 +217,8 @@ export function ClauseRow({
 						</div>
 					</div>
 				) : (
-					/* The name and the bar select the row; the arrow beside the name is its own
-			   button, so the two are siblings rather than one inside the other. */
+					/* The name selects the row; the arrow beside it is its own button, so the two are
+			   siblings rather than one inside the other. */
 					<div className="mt-0.5 shrink-0 text-2xs" style={{ width: labelWidth }}>
 						<div className="flex items-center gap-1">
 							<button
@@ -253,17 +244,6 @@ export function ClauseRow({
 								</button>
 							)}
 						</div>
-						{share && clauseId && (
-							<button
-								type="button"
-								tabIndex={-1}
-								onClick={() => onSelect(clauseId)}
-								className="block w-full text-left"
-								title={title}
-							>
-								<ShareBar share={share} />
-							</button>
-						)}
 					</div>
 				)}
 
@@ -271,7 +251,7 @@ export function ClauseRow({
 				<div
 					className={
 						centerLanes
-							? `flex flex-1 items-start justify-center ${favourAxis ? 'gap-3.5' : 'gap-2'}`
+							? `flex flex-1 items-start justify-center ${axisMark ? 'gap-3.5' : 'gap-2'}`
 							: 'contents'
 					}
 				>
@@ -317,24 +297,13 @@ export function ClauseRow({
 					))}
 				</div>
 
-				{clauseId && onDetails && (
-					<button
-						type="button"
-						onClick={() => onDetails(clauseId)}
-						className="mt-0.5 w-16 shrink-0 text-right text-xs font-medium text-muted-foreground hover:text-primary"
-						title="What each party gets in this clause, in Table v2"
-					>
-						Details ›
-					</button>
-				)}
-
 				{clauseId && expandable && (
 					<button
 						type="button"
 						onClick={() => onSelect(clauseId)}
 						aria-expanded={active}
 						aria-label={`Details of ${lead?.heading ?? row.heading}`}
-						title={active ? 'Hide the detail' : 'What each party gets in this clause'}
+						title={active ? 'Hide the detail' : 'Each party’s statements in this clause'}
 						className={`mt-0.5 flex w-16 shrink-0 items-center justify-end gap-0.5 text-xs font-medium hover:text-primary ${
 							active ? 'text-primary' : 'text-muted-foreground'
 						}`}

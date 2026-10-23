@@ -8,6 +8,15 @@ Qué aristas del grafo usa hoy la app, cómo las usa, y cómo se usarían las qu
 Nada de lo que sigue toca la ontología ni la extracción: todo **lee** aristas que ya
 existen.
 
+> **Cambios del 23 de octubre de 2026**, tras la reunión con el asesor:
+>
+> - Queda una sola vista, el **Clause Analyzer** (la antigua Table v1.2). Table, Table v1.1 y
+>   Table v2 se borraron, y con ellas la leyenda de Table y la barra de reparto.
+> - Cada frase va **del lado de la parte a la que pertenece**: una obligación o prohibición,
+>   con la parte que tiene que cumplirla; un derecho, con quien lo tiene. Ya no hay «In favour
+>   of». Lo pidió el asesor.
+> - Los valores de duración los usa la nueva pestaña **Deadlines**.
+
 ---
 
 ## Las aristas, en cifras
@@ -40,15 +49,46 @@ app lee el campo. En los grafos actuales los dos coinciden.
 
 | Arista | Dónde | Cómo |
 |---|---|---|
-| `assigns_obligation_to` / `grants_right_to` | Table v1.1, Table v2, pestañas | Es la base de «In favour of». Un derecho cuenta para quien lo tiene; una obligación o prohibición, para la otra parte. La regla está en `creditOf` y `creditedGrid` (`web/src/features/docx/utils/knowledge/clause-favour.ts`) y la comparten las dos tablas. |
-| `is_part_of` enunciado → cláusula | Las tres tablas y el documento | Agrupa los enunciados en filas (`statement-grid.ts`). Decide qué se pinta al seleccionar una cláusula: sus enunciados, solo los del tipo de la pestaña abierta (`useFocusPayload.ts`, `graph-payload.ts`). |
+| `assigns_obligation_to` / `grants_right_to` | Clause Analyzer, sus pestañas y «You are»; Deadlines | Deciden en qué columna va cada frase: una obligación o prohibición, con la parte que tiene que cumplirla; un derecho, con quien lo tiene (`statement-grid.ts`). Ver «Dónde va cada frase», abajo. En Deadlines, dicen quién tiene que actuar. |
+| `is_part_of` enunciado → cláusula | Clause Analyzer, Deadlines y el documento | Agrupa los enunciados en filas (`statement-grid.ts`) y los plazos por cláusula (`deadlines.ts`). Decide qué se pinta al seleccionar una cláusula: sus enunciados, solo los del tipo de la pestaña abierta (`useFocusPayload.ts`, `graph-payload.ts`). |
 | `is_part_of` cláusula → cláusula | Títulos de las filas | Una subcláusula sin título hereda el de su sección (`clauseTitle`). |
-| `modifies` | Table v1.1 y documento | Ver abajo. |
-| `is_part_of` condición → enunciado | Table v1.1, documento, Table v2 y Table | En Table v1.1, a pedido del lector: ver abajo. En el detalle de Table v2, cada frase muestra su condición («Condition: IF…»). En Table, cuadrados rosados si se activan en la leyenda. En ningún lugar cambia un conteo. |
-| `is_part_of` valor → enunciado | Table | Solo como cuadrados de la leyenda de Table. **Se deja fuera de Table v1.1 a propósito**: ver «Valores» más abajo. |
-| término definido, referencia | Table | Solo como cuadrados de la leyenda de Table. **No** en Table v1.1 ni en Table v2. |
+| `modifies` | Clause Analyzer y documento | Ver abajo. |
+| `is_part_of` condición → enunciado | Clause Analyzer, su detalle y el documento | A pedido del lector: ver abajo. Con «Mark conditional», en el detalle debajo de la fila cada frase muestra su condición («Condition: IF…»). Solo «Only firm» cambia un conteo, y porque el lector lo pide. |
+| `is_part_of` valor → enunciado | Deadlines | Una duración marca un plazo como «con número». **Se deja fuera del Clause Analyzer a propósito**: ver «Valores» más abajo. |
+| término definido, referencia | Pestaña del grafo | Solo se dibujan ahí. Con la leyenda de Table se fue el único otro lugar donde aparecían. |
 | todas | Orden «by relevance» | El PageRank personalizado recorre todas las aristas, sin dirección y sin peso por tipo. Las aristas influyen en el orden aunque no se vean. |
 | todas | Pestaña del grafo | Se dibujan todas (`kg-graph.ts`). «View in graph» muestra el subgrafo de una cláusula (`clause-subgraph.ts`). |
+
+### Dónde va cada frase, en detalle
+
+Desde el 23 de octubre de 2026, cada frase va en la columna de la parte a la que pertenece:
+
+- **Obligación o prohibición**: con la parte que tiene que cumplirla (`burdenPartyId`).
+- **Derecho**: con quien lo tiene (`benefitPartyId`).
+
+En §1 Compensation de SteelVault, las 11 obligaciones de National quedan en la columna de
+National y las 4 de Equidata en la de Equidata. Las columnas solo llevan el nombre de la
+parte, con «(you)» si es la del lector.
+
+Antes, entre el 15 y el 23 de octubre, cada frase iba del lado de quien favorecía
+(«In favour of»): un derecho, con quien lo tiene; una obligación o prohibición, con la otra
+parte. El asesor pidió volver a la parte a la que pertenece. Las funciones de esa regla
+(`creditOf`, `creditedGrid` en `clause-favour.ts`) siguen en el código, sin usarse.
+
+Lo que depende de esa posición:
+
+- **Las pestañas** cuentan las frases de cada parte en el tipo abierto: en SteelVault,
+  obligaciones 29 · 15, derechos 3 · 14 y prohibiciones 9 · 8 (National · Equidata).
+- **La marca del centro** apunta a la columna con más cuadrados.
+- **«Against you»**, con «You are», depende del tipo. En obligaciones y prohibiciones, una
+  cláusula va en tu contra si tú tienes más; en derechos, si la otra parte tiene más. Con
+  «You are National», en SteelVault: 8 de 13 en obligaciones, 6 de 8 en derechos y 1 de 8
+  en prohibiciones.
+- **El detalle debajo de la fila** muestra, en cada columna, las frases propias de esa
+  parte («National has more obligations (11 vs 4)»).
+
+El código está en `ClauseAnalyzerPanel.tsx`, `ClauseGrid.tsx`, `ClauseRow.tsx` y
+`party-statements.tsx`.
 
 ### `modifies`, en detalle
 
@@ -80,11 +120,11 @@ El código está en `graph-payload.ts` (`clauseModifications`, `clauseModifiedBy
 
 ### Condiciones, en detalle
 
-Responde a «¿cuánto de lo que me favorece es seguro?». Un enunciado es **firme** si
+Responde a «¿cuánto de esto vale siempre?». Un enunciado es **firme** si
 ninguna condición lo condiciona (ninguna lo tiene como `gatesId`), y **condicional** si al
 menos una lo hace.
 
-En Table v1.1, junto a las pestañas, el lector elige entre tres modos, como elige el tipo:
+En el Clause Analyzer, junto a las pestañas, el lector elige entre tres modos, como elige el tipo:
 
 | Modo | Cuadrados | Documento, al seleccionar | Tarjeta del cuadrado |
 |---|---|---|---|
@@ -128,8 +168,8 @@ El código está en `graph-payload.ts` (`paintStatement`, `conditionsElsewhere`)
 1. **Nada recalcula conteos ni introduce pesos.** Lo nuevo se señala; las cifras de las
    pestañas y los cuadrados siguen contando lo mismo.
 2. **Cada cosa en su lugar.** La tabla muestra lo que se entiende de un vistazo. El
-   documento muestra lo que se lee al seleccionar una cláusula. Table v2 muestra el
-   detalle. Lo que no cabe en la fila va al documento o al detalle.
+   documento muestra lo que se lee al seleccionar una cláusula. El detalle se abre debajo
+   de la fila. Lo que no cabe en la fila va al documento o al detalle.
 3. **En el documento, nada sin selección.**
 4. **Sin destino visible, no se muestra en la tabla.** Una condición o una cifra de la
    cláusula entera no tiene cuadrado al que pegarse: va al detalle o se deja fuera.
@@ -140,8 +180,8 @@ El código está en `graph-payload.ts` (`paintStatement`, `conditionsElsewhere`)
    contra un ground truth.
 7. **Lo nuevo empieza apagado.** La vista por defecto no cambia; lo que se agrega aparece
    cuando el lector lo pide, como «Mark conditional».
-8. **Solo lo que dice a quién favorece algo entra en la vista general.** Lo que solo
-   precisa el cómo (cifras, plazos) queda para el detalle.
+8. **En la vista general entra lo que dice de quién es cada cosa.** Lo que solo precisa el
+   cómo (cifras, plazos) queda para el detalle o para la pestaña Deadlines.
 
 ### Lo que queda de las condiciones
 
@@ -153,21 +193,20 @@ describe arriba; queda:
   Affiliate's default…»), es un derecho que la otra gana si esa parte falla. Es heurística
   sobre el texto: va aparte y se valida.
 - **Una marca «not a condition»** para que quien lee corrija las condiciones mal
-  extraídas, como el «Do you agree?» de Table v2. Las respuestas irían formando un ground
-  truth.
+  extraídas. Las respuestas irían formando un ground truth.
 
 **Qué no hacer:** marcar en la fila cuántas condiciones tiene cada cláusula. Repetiría lo
 que ya dicen los cuadrados con borde.
 
-### Valores — `is_part_of` valor → enunciado: se dejan fuera a propósito
+### Valores — `is_part_of` valor → enunciado: fuera del Clause Analyzer, dentro de Deadlines
 
-**Decisión:** Table v1.1 no usa los valores.
+**Decisión:** el Clause Analyzer no usa los valores. La pestaña Deadlines usa las duraciones.
 
-**Por qué:** un valor no dice a quién favorece una cláusula; dice cuánto o en qué plazo.
-«National paga cada factura en **30 días**» favorece a Equidata por la obligación, no por
-los 30 días: con 10 o con 60 seguiría favoreciendo a Equidata. Es información para
-después de saber a quién favorece la cláusula, y para eso ya está la cita del contrato en
-la tarjeta, en el documento y en el detalle de Table v2.
+**Por qué no en el Clause Analyzer:** un valor no dice de quién es una frase ni a quién
+favorece una cláusula; dice cuánto o en qué plazo. «National paga cada factura en
+**30 días**» es una obligación de National con 30 días o con 60. Es información para
+después, y para eso ya está la cita del contrato en la tarjeta, en el documento y en el
+detalle debajo de la fila.
 
 Usarlos para decir *cuánto* favorece algo (un plazo de 10 días frente a uno de 60, un
 recargo de 1.5 % frente a uno de 5 %) sería comparar magnitudes, es decir, volver a los
@@ -176,6 +215,23 @@ pesos. Por eso tampoco se compararán plazos entre las partes.
 Si alguna vez hacen falta en el detalle, son fáciles de comprobar: cada cifra se lee en la
 cita de su frase.
 
+**Deadlines** (desde el 23 de octubre de 2026) responde a «¿qué tengo que hacer, y para
+cuándo?». No usa aristas nuevas:
+
+- Lee dos campos que la extracción ya guarda en cada enunciado: `deadline` («30 days from
+  the invoice date», «promptly») y `frequency` («bi-monthly», «during the term»). En
+  SteelVault, 25 de 90 enunciados tienen uno de los dos; en Bellicum, 179 de 631.
+- Un plazo es **«con número»** si el enunciado tiene un valor de tipo `Duration`
+  (`quantifiesId`, la misma relación que `is_part_of` valor → enunciado) o si su texto
+  trae un número con unidad de tiempo («thirty (30) days»).
+- Si no, una regla de palabras separa los plazos **vagos** («promptly», «immediately»,
+  «in advance») de los que esperan **un hecho** («upon termination»).
+- Agrupa por cláusula, y al final pone lo que se repite y lo que dura todo el contrato.
+  Cada línea dice quién actúa: la parte obligada o quien tiene el derecho.
+- No compara plazos entre las partes ni los suma: solo los lista.
+
+El código está en `deadlines.ts` y `DeadlinesPanel.tsx`. El grafo no guarda fechas de
+calendario, así que todo es relativo: «30 días desde la factura».
 ### `depends_on` y `references`
 
 Solo pesan en contratos grandes: SteelVault no tiene ninguna.
@@ -192,14 +248,14 @@ Solo pesan en contratos grandes: SteelVault no tiene ninguna.
 
 - **Glosario en el documento**: al pasar el ratón por un término definido, su definición.
   Es lo que más ayuda a quien lee un contrato por primera vez.
-- **Definiciones palanca**, en el detalle (Table v2): el término que más enunciados usan. En
-  Bellicum, «Miltenyi Product» aparece en 25. No en la vista general.
+- **Definiciones palanca**, en el detalle debajo de la fila: el término que más enunciados
+  usan. En Bellicum, «Miltenyi Product» aparece en 25. No en la vista general.
 
 ### Lo que queda de `modifies`
 
-- **El verdadero objetivo de negociación**: si una cláusula a mi favor está «modified by»
-  un derecho de la otra parte, lo que hay que negociar es la que modifica. Iría en el
-  tooltip de «modified by», no como otra marca.
+- **El verdadero objetivo de negociación**: si una cláusula está «modified by» un derecho
+  de la otra parte, lo que hay que negociar es la que modifica. Iría en el tooltip de
+  «modified by», no como otra marca.
 - **Quién cambia las reglas**: cuántas modificaciones hace cada parte. En SteelVault,
   Equidata 5 y National 1. Iría en una línea del resumen del contrato, no en las filas.
 - **«Trae su propia excepción»**: las que se modifican a sí mismas (2 en SteelVault, 41 en
@@ -219,8 +275,9 @@ sentido comparar una regla simple, LegalBERT y el modelo de extracción.
 
 ### Orden propuesto
 
-Hecho: `modifies` («modified by») y condiciones (All / Mark conditional / Only firm).
-Valores: se dejan fuera.
+Hecho: cada frase con su dueño, `modifies` («modified by»), condiciones (All / Mark
+conditional / Only firm) y Deadlines. Valores: fuera del Clause Analyzer; las duraciones,
+en Deadlines.
 
 1. Lo que queda de `modifies`: el verdadero objetivo de negociación y quién cambia las
    reglas.

@@ -11,7 +11,7 @@ import { applyPartyView } from '@/features/docx/utils/knowledge/party-view';
 import { buildKgViz, KG_NODE_KINDS } from '@/features/docx/utils/knowledge/kg-graph';
 import { clauseNeighbourhood, clauseRowIds } from '@/features/docx/utils/knowledge/clause-subgraph';
 import { buildStatementGrid, GRID_LANES } from '@/features/docx/utils/knowledge/statement-grid';
-import { useAnalyzerView } from '@/features/docx/hooks/useAnalyzerView';
+import { useAnalyzerPair } from '@/features/docx/hooks/useAnalyzerPair';
 import { buildDocumentTarget } from '@/features/docx/utils/knowledge/graph-payload';
 import { GraphCanvas } from '@/features/docx/components/clause-analyzer/graph/GraphCanvas';
 import { SelectedRow } from '@/features/docx/components/knowledge-graph/SelectedRow';
@@ -45,7 +45,7 @@ export function KnowledgeGraphPanel({ docId }: { docId: string }) {
 	const secondPartyId = useClauseAnalyzerStore((s) => s.secondPartyId);
 	// The pair chosen in the Clause Analyzer, or the one the link carries if the analyzer
 	// has not been opened in this visit.
-	const { pair } = useAnalyzerView();
+	const { pair } = useAnalyzerPair();
 	const aId = focusNodeId ?? pair?.a ?? null;
 	const bId = focusNodeId ? secondPartyId : (pair?.b ?? null);
 	const paragraphs = useDocumentStore((s) => s.paragraphs);

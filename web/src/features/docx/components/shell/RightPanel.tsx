@@ -1,6 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
+import { Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { RIGHT_PANEL_TOOLS } from '@/constants/docx-viewer';
@@ -15,6 +16,7 @@ import {
 
 const HEADER_ICONS: Record<RightPanelTab, React.ComponentType<{ className?: string }>> = {
 	clause_analyzer: ClauseAnalyzerIcon,
+	deadlines: Clock,
 	knowledge_graph: KnowledgeGraphIcon,
 	assistant: ChatIcon,
 };

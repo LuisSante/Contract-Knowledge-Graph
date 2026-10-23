@@ -1,0 +1,612 @@
+{
+  "documentId": "root::lease_contract_10",
+  "tree": [
+    {
+      "ref": "1",
+      "heading": "",
+      "level": 1,
+      "paragraphId": "root::lease_contract_10-p-6",
+      "children": []
+    },
+    {
+      "ref": "2",
+      "heading": "Location of the Premises，Size, Decoration, Facilities and Utilization",
+      "level": 1,
+      "paragraphId": "root::lease_contract_10-p-8",
+      "children": []
+    },
+    {
+      "ref": "3",
+      "heading": "",
+      "level": 1,
+      "paragraphId": "root::lease_contract_10-p-12",
+      "children": []
+    },
+    {
+      "ref": "4",
+      "heading": "Lease Term",
+      "level": 1,
+      "paragraphId": "root::lease_contract_10-p-14",
+      "children": []
+    },
+    {
+      "ref": "5",
+      "heading": "Rental Payment",
+      "level": 1,
+      "paragraphId": "root::lease_contract_10-p-17",
+      "children": []
+    },
+    {
+      "ref": "6",
+      "heading": "Occurred Fees during the Period and Tax",
+      "level": 1,
+      "paragraphId": "root::lease_contract_10-p-23",
+      "children": []
+    },
+    {
+      "ref": "7",
+      "heading": "Maintaining and Repairing",
+      "level": 1,
+      "paragraphId": "root::lease_contract_10-p-26",
+      "children": []
+    },
+    {
+      "ref": "8",
+      "heading": "Transferring and Sublease of the Premises",
+      "level": 1,
+      "paragraphId": "root::lease_contract_10-p-29",
+      "children": []
+    },
+    {
+      "ref": "9",
+      "heading": "Modification, Termination and Dissolution of the Contract",
+      "level": 1,
+      "paragraphId": "root::lease_contract_10-p-32",
+      "children": [
+        {
+          "ref": "9.2.1",
+          "heading": "Changing the use of the house without the approval of Party A, which c",
+          "level": 3,
+          "paragraphId": "root::lease_contract_10-p-35",
+          "children": []
+        },
+        {
+          "ref": "9.2.2",
+          "heading": "There is principal structural damage to the house caused by Party B.",
+          "level": 3,
+          "paragraphId": "root::lease_contract_10-p-36",
+          "children": []
+        },
+        {
+          "ref": "9.2.3",
+          "heading": "Without approval from Party A, subleasing ,transferring the lease item",
+          "level": 3,
+          "paragraphId": "root::lease_contract_10-p-37",
+          "children": []
+        },
+        {
+          "ref": "9.2.4",
+          "heading": "Delaying in rent payment for more than 2 months.",
+          "level": 3,
+          "paragraphId": "root::lease_contract_10-p-38",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "10",
+      "heading": "Delivery and Acceptance",
+      "level": 1,
+      "paragraphId": "root::lease_contract_10-p-42",
+      "children": [
+        {
+          "ref": "10.1",
+          "heading": "Party A should guarantee that the premises and attached facilities and",
+          "level": 2,
+          "paragraphId": "root::lease_contract_10-p-43",
+          "children": []
+        },
+        {
+          "ref": "10.2",
+          "heading": "Party B should return the premises and attached facilities and equipme",
+          "level": 2,
+          "paragraphId": "root::lease_contract_10-p-44",
+          "children": []
+        },
+        {
+          "ref": "10.3",
+          "heading": "Party A should keep the house and attached facilities in sound conditi",
+          "level": 2,
+          "paragraphId": "root::lease_contract_10-p-45",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "11",
+      "heading": "Liabilities for Default of Party A and Remedies",
+      "level": 1,
+      "paragraphId": "root::lease_contract_10-p-46",
+      "children": [
+        {
+          "ref": "11.1",
+          "heading": "If Party A violates the contract and demands back the house in advance",
+          "level": 2,
+          "paragraphId": "root::lease_contract_10-p-47",
+          "children": []
+        },
+        {
+          "ref": "11.2",
+          "heading": "If the contract is caused by Party A to be ineffective due to flaws or",
+          "level": 2,
+          "paragraphId": "root::lease_contract_10-p-48",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "12",
+      "heading": "Liabilities for Default of Party B",
+      "level": 1,
+      "paragraphId": "root::lease_contract_10-p-49",
+      "children": [
+        {
+          "ref": "12.1",
+          "heading": "During the leasing period, if Party B terminates the lease in advance",
+          "level": 2,
+          "paragraphId": "root::lease_contract_10-p-50",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "13",
+      "heading": "Exemption Clause",
+      "level": 1,
+      "paragraphId": "root::lease_contract_10-p-51",
+      "children": [
+        {
+          "ref": "13.1",
+          "heading": "Neither Party is held responsible if, because of force majeure, it is",
+          "level": 2,
+          "paragraphId": "root::lease_contract_10-p-52",
+          "children": []
+        },
+        {
+          "ref": "13.2",
+          "heading": "If the contract is terminated for the foregoing reason, the rent will",
+          "level": 2,
+          "paragraphId": "root::lease_contract_10-p-53",
+          "children": []
+        },
+        {
+          "ref": "13.3",
+          "heading": "“Force majeure events” refer to objective situations that cannot be fo",
+          "level": 2,
+          "paragraphId": "root::lease_contract_10-p-54",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "14",
+      "heading": "",
+      "level": 1,
+      "paragraphId": "root::lease_contract_10-p-55",
+      "children": []
+    },
+    {
+      "ref": "15",
+      "heading": "Dispute Settlement",
+      "level": 1,
+      "paragraphId": "root::lease_contract_10-p-57",
+      "children": []
+    },
+    {
+      "ref": "16",
+      "heading": "",
+      "level": 1,
+      "paragraphId": "root::lease_contract_10-p-59",
+      "children": []
+    },
+    {
+      "ref": "17",
+      "heading": "",
+      "level": 1,
+      "paragraphId": "root::lease_contract_10-p-61",
+      "children": []
+    }
+  ],
+  "paragraphs": [
+    {
+      "id": "root::lease_contract_10-p-4",
+      "text": "Lessee (hereinafter referred to as Party B)：Shaanxi Tianren Organic Food Co., Ltd.",
+      "paragraph_enum": 0,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-5",
+      "text": "In accordance with relevant Chinese laws、decrees and pertinent rules and regulations, Party A and Party B have reached an agreement through friendly consultation to conclude the following contract:",
+      "paragraph_enum": 1,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-6",
+      "text": "Article 1.",
+      "paragraph_enum": 2,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-7",
+      "text": "Party A should guarantee that the lease of premises and facilities is legal according to regulations and there is no mortgage or dispute on the premises.",
+      "paragraph_enum": 3,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-8",
+      "text": "Article 2. Location of the Premises，Size, Decoration, Facilities and Utilization",
+      "paragraph_enum": 4,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-9",
+      "text": "Party A will lease to Party B the premises and attached facilities all owned by Party A itself, which is located at the 16th floor of National Development Bank Tower. The House Proprietary Certificate No: 107510607-12-1-12010.",
+      "paragraph_enum": 5,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-10",
+      "text": "Party A has informed the status of the ownership of the house, facilities, decoration etc. to Party B and Party B has agreed to rent the premises.",
+      "paragraph_enum": 6,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-11",
+      "text": "Party B guarantees that it is for work use only. Any change in the utilization of the premises is not allowed without the written consent of Party A and approval from related authority.",
+      "paragraph_enum": 7,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-12",
+      "text": "Article 3.",
+      "paragraph_enum": 8,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-13",
+      "text": "Party A should provide a copy of the House Proprietary Certificate and a copy of the business license as an attachment to the contract. Party B should provide its copy of the business license as an attachment to the contract.",
+      "paragraph_enum": 9,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-14",
+      "text": "Article 4. Lease Term",
+      "paragraph_enum": 10,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-15",
+      "text": "As the premises were still under the occupation of Bankrupcy Liquidation Group of Cambridge Stock Co., Ltd. during the signing, both Parties agreed that Party B could negotiate with the bankruptcy liquidation group directly after Party B made the payment of rent and deposit according to Article 5 below. Party B is responsible for negotiating the settlement of relative fees occurred by the Bankruptcy Liquidation Group, in which the occurred fees include: administration fees, water, electricity, gas etc. Party B agreed that the calculation of the rent term and the decoration term should not be effected if the interchange of the premises and facilities were delayed. Party A should use its best efforts to coordinate with Party B during the interchange.",
+      "paragraph_enum": 11,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-16",
+      "text": "The lease term should be one year effective from July 1, 2008 to June 30, 2009. Party A has the right to withdraw the house proprietary upon the expiration date and Party B should return the house to Party A. If the return is delayed by Party B, 200% of the lease fee per day and the incurred fee should be paid to party A as overdue fine.",
+      "paragraph_enum": 12,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-17",
+      "text": "Article 5. Rental Payment",
+      "paragraph_enum": 13,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-18",
+      "text": "1. Party A agrees to offer one month for decoration, effective from July 1, 2008 to July 31, 2008. During the term, Pary A offers free rental fee, while Party A should bear the fee of water, electricity, etc.",
+      "paragraph_enum": 14,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-19",
+      "text": "2. Rental fee should be ￥45.00 per month for each square meter starting from August 1, 2008.",
+      "paragraph_enum": 15,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-20",
+      "text": "3. Payment Method: Party A should pay ￥400,000.00 as rental fee and ￥100,000.00 as deposits within 3 working days after the contract is signed. Party A agrees that Party B can move into the premises after the rental fee and deposits are paid. Party A will deduct the rental fee per month from the total rental fee paid by Party B on the 5th of each month if the rental fee is paid off and Party B pays the rental fee to Party A on the 5th of each month without any delay.",
+      "paragraph_enum": 16,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-21",
+      "text": "4. If Party B to intends to purchase the premises and facilities of 16th and 23rd of National Development Bank Tower, and if the purchase agreement could be reached by both parties and the purchase payment made to Party A before December 31, 2008, the rental fee and deposit will be included in the total amount to purchase the premises aforementioned.",
+      "paragraph_enum": 17,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-22",
+      "text": "5. Party A should offer the invoice recognized by the relevant authority after receiving the payment.",
+      "paragraph_enum": 18,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-23",
+      "text": "Article 6. Occurred Fees during the Period and Tax",
+      "paragraph_enum": 19,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-24",
+      "text": "1. During the rental term, Party B should bear all the fees incurred for water, electricity, gas and premises administration.",
+      "paragraph_enum": 20,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-25",
+      "text": "2. Both Parties should bear the tax separately according to the regulation of authority.",
+      "paragraph_enum": 21,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-26",
+      "text": "Article 7. Maintaining and Repairing",
+      "paragraph_enum": 22,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-27",
+      "text": "1. In case the premise and attached facilities are damaged by quality problems, natural damages or disasters, Party A will be responsible for repair and must pay the relevant expenses.",
+      "paragraph_enum": 23,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-28",
+      "text": "2. Party B will not transfer the lease of the premises or sublet it without Party A's approval and should take good care of the premises. Otherwise, Party B will be responsible to compensate any damages of the premises and attached facilities caused by its fault and negligence.",
+      "paragraph_enum": 24,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-29",
+      "text": ".Article 8. Transferring and Sublease of the Premises",
+      "paragraph_enum": 25,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-30",
+      "text": "1. Within two months before the contract expires, Party A will notify Party B if it intends to sell the premises. In this situation, Party B should have priority to buy the premises.",
+      "paragraph_enum": 26,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-31",
+      "text": "2. During the rental, Party B is not allowed to lease all or part of the premises to a third party without the written consent of Party A.",
+      "paragraph_enum": 27,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-32",
+      "text": "Article 9. Modification, Termination and Dissolution of the Contract",
+      "paragraph_enum": 28,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-33",
+      "text": "1. If both parties mutually agree through negotiations, the contract can be changed or cancelled.",
+      "paragraph_enum": 29,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-34",
+      "text": "2. If Party B does any of the following, Party A can break the contract and has the right to take back the premises and get twice the rent as liquidated damages by the month. In case the default fine is not sufficient to cover the loss suffered by the faultless Party, the Party in breach should pay additional compensation to the other Party:",
+      "paragraph_enum": 30,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-35",
+      "text": "9.2.1 Changing the use of the house without the approval of Party A, which causes damages to the house",
+      "paragraph_enum": 31,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-36",
+      "text": "9.2.2 There is principal structural damage to the house caused by Party B.",
+      "paragraph_enum": 32,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-37",
+      "text": "9.2.3 Without approval from Party A, subleasing ,transferring the lease items or making subtenancy, transpose.",
+      "paragraph_enum": 33,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-38",
+      "text": "9.2.4 Delaying in rent payment for more than 2 months.",
+      "paragraph_enum": 34,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-39",
+      "text": "3. If Party B intends to continue to rent, it shall inform party A in written form one months in advance. After confirmation by party A, the contract can be renewed. Under the same condition, Party B has the priority to continue the contract to other civil parties.",
+      "paragraph_enum": 35,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-40",
+      "text": "4. When the lease term comes to an end, the contract naturally terminates.",
+      "paragraph_enum": 36,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-41",
+      "text": "5. The lease contract comes to an end in the case of force majeure.",
+      "paragraph_enum": 37,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-42",
+      "text": "Article 10. Delivery and Acceptance",
+      "paragraph_enum": 38,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-43",
+      "text": "10.1 Party A should guarantee that the premises and attached facilities and equipment are in good condition.",
+      "paragraph_enum": 39,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-44",
+      "text": "10.2 Party B should return the premises and attached facilities and equipment to Party A when the lease contract comes to an end.",
+      "paragraph_enum": 40,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-45",
+      "text": "10.3 Party A should keep the house and attached facilities in sound condition, without any items retained, or impact the normal use of the house. The items retained will be regarded as disposed of by Party B, and Party A will have the right to handle them.",
+      "paragraph_enum": 41,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-46",
+      "text": "Article 11. Liabilities for Default of Party A and Remedies",
+      "paragraph_enum": 42,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-47",
+      "text": "11.1 If Party A violates the contract and demands back the house in advance, Party A should pay twice the rental as penalty based on the days remaining in the contract. If the penalty is not sufficient to cover such items, Party A shall bear additional compensation.",
+      "paragraph_enum": 43,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-48",
+      "text": "11.2 If the contract is caused by Party A to be ineffective due to flaws or illegality of the house, Party A should compensate for the loss of Party B.",
+      "paragraph_enum": 44,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-49",
+      "text": "Article 12. Liabilities for Default of Party B",
+      "paragraph_enum": 45,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-50",
+      "text": "12.1 During the leasing period, if Party B terminates the lease in advance without the consent of Party A，Party B should pay a penalty of twice the rent based on the days remaining in the contract. If the penalty is not sufficient to cover such items, Party A shall bear additional compensation, which can be withheld from the deposit by Party A. If the deposit is insufficient，Party B should pay the remainder in other ways.",
+      "paragraph_enum": 46,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-51",
+      "text": "Article 13. Exemption Clause",
+      "paragraph_enum": 47,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-52",
+      "text": "13.1 Neither Party is held responsible if, because of force majeure, it is unable to carry out the contract in whole or part.",
+      "paragraph_enum": 48,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-53",
+      "text": "13.2 If the contract is terminated for the foregoing reason, the rent will be calculated in accordance with the actual usage time. If it is less than one month，the rent will be charged based on the days according to the principle of returning the overcharge and demand payment of the shortage.",
+      "paragraph_enum": 49,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-54",
+      "text": "13.3 “Force majeure events” refer to objective situations that cannot be foreseen and avoided.",
+      "paragraph_enum": 50,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-55",
+      "text": "Article 14.",
+      "paragraph_enum": 51,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-56",
+      "text": "As for any unsettled matter, Party A and Party B can consult with each other to reach agreement and add in complementary items. Complementary items and any annex are an integral part of this contract and equally valid.",
+      "paragraph_enum": 52,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-57",
+      "text": "Article 15. Dispute Settlement",
+      "paragraph_enum": 53,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-58",
+      "text": "If any dispute comes out during the execution of this contract, Party A and Party B should negotiate to solve the dispute. In case an agreement cannot be reached, any Party may summit the dispute to the court that has the jurisdiction over the matter.",
+      "paragraph_enum": 54,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-59",
+      "text": "Article 16.",
+      "paragraph_enum": 55,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-60",
+      "text": "This contract and its enclosure come into effect upon both parties’ signature.",
+      "paragraph_enum": 56,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-61",
+      "text": "Article 17.",
+      "paragraph_enum": 57,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-62",
+      "text": "This contract has 4 copies; each party is to keep two copies.",
+      "paragraph_enum": 58,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-63",
+      "text": "Lessor ：Zhonghai Trust Co.,Ltd",
+      "paragraph_enum": 59,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-64",
+      "text": "Signature:",
+      "paragraph_enum": 60,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-65",
+      "text": "Date: June 23, 2008",
+      "paragraph_enum": 61,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-66",
+      "text": "Lessee：Shaanxi Tianren Organic Food Co., Ltd.",
+      "paragraph_enum": 62,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-67",
+      "text": "Signature:",
+      "paragraph_enum": 63,
+      "page": 1
+    },
+    {
+      "id": "root::lease_contract_10-p-68",
+      "text": "Date: June 23, 2008",
+      "paragraph_enum": 64,
+      "page": 1
+    }
+  ]
+}

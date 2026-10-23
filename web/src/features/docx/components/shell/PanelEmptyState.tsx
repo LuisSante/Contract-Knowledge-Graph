@@ -23,7 +23,3 @@ export function PanelEmptyState({ icon, title, description, action }: PanelEmpty
 		</div>
 	);
 }
-
-export function EmptyStateKey({ children }: { children: ReactNode }) {
-	return <span className="text-foreground font-medium">{children}</span>;
-}

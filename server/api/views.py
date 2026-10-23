@@ -1,4 +1,6 @@
+import json
 import logging
+from pathlib import Path
 
 from django.http import FileResponse
 from rest_framework.exceptions import NotFound, ValidationError
@@ -132,3 +134,32 @@ class ClauseImportanceView(APIView):
             }
         )
         return Response(response.data)
+
+
+def load_red_flags(doc_id: str, path: Path) -> list[dict]:
+    """The dataset's red flags for one document; an empty list when it has none."""
+    if not path.exists():
+        return []
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        logger.exception("Could not read red flags at %s", path)
+        return []
+    contracts = payload.get("contracts") if isinstance(payload, dict) else None
+    flags = contracts.get(doc_id) if isinstance(contracts, dict) else None
+    return flags if isinstance(flags, list) else []
+
+
+class RedFlagsView(APIView):
+    def get(self, request, doc_id: str):
+        document_store.ensure_initialized()
+        canonical_id = document_store.get_canonical_id(doc_id) or doc_id
+
+        # A contract without red flags is the usual case, not an error: 200 with an empty list.
+        return Response(
+            {
+                "status": "success",
+                "documentId": canonical_id,
+                "redFlags": load_red_flags(canonical_id, settings.RED_FLAGS_PATH),
+            }
+        )

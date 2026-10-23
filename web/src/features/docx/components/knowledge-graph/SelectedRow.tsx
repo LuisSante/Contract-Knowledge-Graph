@@ -12,7 +12,6 @@ import {
 	type Side,
 	type StatementGrid,
 } from '@/features/docx/utils/knowledge/statement-grid';
-import { computeBenefitShare, shareOfClause } from '@/features/docx/utils/knowledge/benefit-share';
 import { ClauseRow } from '@/features/docx/components/clause-analyzer/grid/ClauseRow';
 import {
 	MarkTooltip,
@@ -114,10 +113,6 @@ export function SelectedRow({
 	const row = clauseId ? (grid.rows.find((r) => r.clauseId === clauseId) ?? null) : null;
 	const withShared = Boolean(row && row.marks.shared.length > 0);
 	const lanes = useMemo<GridLane[]>(() => (withShared ? GRID_LANES : ['a', 'b']), [withShared]);
-	const share = useMemo(
-		() => (row ? shareOfClause(computeBenefitShare(grid, lanes), row.clauseId) : null),
-		[grid, lanes, row]
-	);
 	const laneName = (lane: GridLane) => (lane === 'shared' ? 'Both parties' : names[lane]);
 
 	return (
@@ -166,7 +161,6 @@ export function SelectedRow({
 						lanes={lanes}
 						visibleKinds={ALL_KINDS}
 						paintLanes={PAINT_ALL}
-						share={share}
 						laneName={laneName}
 						onSelect={onSelect}
 						onOpenMark={onOpenMark}

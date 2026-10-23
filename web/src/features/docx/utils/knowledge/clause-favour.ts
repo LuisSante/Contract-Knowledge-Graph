@@ -1,7 +1,6 @@
 import type { DeonticKind, KgClause, KnowledgeGraph } from '@/types/knowledge';
 import {
 	DEONTIC_MARK_KINDS,
-	GRID_LANES,
 	type GridLane,
 	type GridMark,
 	type Side,
@@ -36,9 +35,6 @@ export interface ClauseTally {
 
 /** Who a count favours: the larger side, or a tie. */
 export type Favour = Side | 'tie';
-
-/** Per type, without weights: a side wins only if it loses in no type. */
-export type TypeVerdict = Favour | 'mixed';
 
 const emptyCount = (): ClauseTally['count'] => ({
 	obligation: { a: 0, b: 0 },
@@ -106,41 +102,7 @@ export function creditOf(mark: GridMark, lane: GridLane): Pick<Served, 'to' | 'b
 }
 
 /**
- * The grid with every obligation, right and prohibition moved to the column of the party
- * it serves, by `creditOf`: a party's column fills with what it gains, not with what it has
- * to do. A mark keeps who carries it (`ownerName`), and its `counterpartLane` becomes the
- * lane it came from. What serves neither party has no column and drops out, as it does from
- * the tally. Only the three types: a qualifier hangs off a statement's lane, and the view
- * that uses this grid (Table v1.1) shows none.
- */
-export function creditedGrid(grid: StatementGrid): StatementGrid {
-	const countByKind = { ...grid.countByKind };
-	const rows = grid.rows.map((row) => {
-		const marks: Record<GridLane, GridMark[]> = { a: [], b: [], shared: [] };
-		for (const lane of GRID_LANES) {
-			for (const mark of row.marks[lane]) {
-				if (!DEONTIC_MARK_KINDS.includes(mark.kind)) {
-					countByKind[mark.kind] -= 1;
-					continue;
-				}
-				const credit = creditOf(mark, lane);
-				if (!credit) {
-					countByKind[mark.kind] -= 1;
-					continue;
-				}
-				const to = credit.to === 'both' ? 'shared' : credit.to;
-				const from = credit.by === 'a' || credit.by === 'b' ? credit.by : null;
-				marks[to].push({ ...mark, lane: to, counterpartLane: from });
-			}
-		}
-		return { ...row, marks, total: marks.a.length + marks.b.length + marks.shared.length };
-	});
-	const unfiled = rows.find((row) => row.clauseId === null)?.total ?? 0;
-	return { rows: rows.filter((row) => row.total > 0), countByKind, unfiled };
-}
-
-/**
- * Every deontic statement in the given lanes, credited the way the share bar credits it:
+ * Every deontic statement in the given lanes, credited to the party it favours:
  * a right to its holder, an obligation or prohibition to the party on its other end, a
  * reciprocal statement to both. Each one counts once; nothing is weighted. By default only
  * the two parties' lanes: the extraction writes a reciprocal provision as one copy per
@@ -195,7 +157,7 @@ export function tallyClauses(
 	return out;
 }
 
-/** A clause's tally without some statements, recounted: Table v1.2's detail under «Only
+/** A clause's tally without some statements, recounted: the table's detail under «Only
  *  firm» leaves out the conditional ones, as its squares do. */
 export function withoutServed(tally: ClauseTally, ids: ReadonlySet<string>): ClauseTally {
 	const served = tally.served.filter((s) => !ids.has(s.mark.id));
@@ -209,38 +171,6 @@ export function withoutServed(tally: ClauseTally, ids: ReadonlySet<string>): Cla
 
 export const favourOf = ({ a, b }: Record<Side, number>): Favour =>
 	a > b ? 'a' : b > a ? 'b' : 'tie';
-
-/** Adds every clause's counts into one, for the whole contract. */
-export function totalOf(tallies: ClauseTally[]): ClauseTally['count'] {
-	const total = emptyCount();
-	for (const t of tallies)
-		for (const kind of DEONTIC_KINDS) {
-			total[kind].a += t.count[kind].a;
-			total[kind].b += t.count[kind].b;
-		}
-	return total;
-}
-
-/**
- * The verdict that holds whatever weight each type is given: a side wins if it wins in
- * some type and loses in none. Winning one type and losing another is "mixed" — choosing
- * between them would mean weighting them.
- */
-export function typeVerdict(
-	count: ClauseTally['count'],
-	kinds: DeonticKind[] = DEONTIC_KINDS
-): {
-	verdict: TypeVerdict;
-	/** Only the kinds asked about: a kind left out cannot win or lose. */
-	byKind: Partial<Record<DeonticKind, Favour>>;
-} {
-	const byKind: Partial<Record<DeonticKind, Favour>> = Object.fromEntries(
-		kinds.map((kind) => [kind, favourOf(count[kind])])
-	);
-	const won = new Set(Object.values(byKind).filter((f) => f !== 'tie'));
-	const verdict: TypeVerdict = won.size === 0 ? 'tie' : won.size === 2 ? 'mixed' : [...won][0];
-	return { verdict, byKind };
-}
 
 /** Most important first when the importance has landed; document order until then. */
 export function byImportance<T extends { clauseId: string }>(

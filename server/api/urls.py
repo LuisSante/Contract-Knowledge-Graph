@@ -12,6 +12,7 @@ urlpatterns = [
         views.ClauseImportanceView.as_view(),
     ),
     path("contract_summary/<str:doc_id>", views_summary.ContractSummaryView.as_view()),
+    path("red_flags/<str:doc_id>", views.RedFlagsView.as_view()),
     path("assistant/chat", views_assistant.AssistantChatView.as_view()),
     path("llm/estimate", views_llm.LlmEstimateView.as_view()),
     path("llm/cost/total", views_llm.LlmTotalCostView.as_view()),

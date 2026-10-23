@@ -266,32 +266,6 @@ export function buildDocumentTarget(
 	};
 }
 
-/** For evidence the graph holds no node for, such as a span CUAD marked. */
-export function buildParagraphTarget(
-	paragraphIds: string[],
-	nodesById: Map<string, ParagraphNode>
-): DocumentTarget {
-	const ordered = [...new Set(paragraphIds)]
-		.filter((pid) => nodesById.has(pid))
-		.sort((a, b) => paragraphEnum(a, nodesById) - paragraphEnum(b, nodesById));
-	const anchorParagraphId = ordered[0] ?? null;
-	return {
-		anchorParagraphId,
-		relatedParagraphs: ordered
-			.filter((pid) => pid !== anchorParagraphId)
-			.map((pid) => ({
-				node: nodesById.get(pid) as ParagraphNode,
-				relationTypes: [],
-				references: [],
-			})),
-		entities: [],
-		paragraphIds: ordered,
-		focusNodeIds: [],
-		scoreByParagraph: Object.fromEntries(ordered.map((pid) => [pid, 1] as const)),
-		toneByParagraph: {},
-	};
-}
-
 /** One `modifies` edge between two different clauses: `from` holds the changing statement
  *  (or is the changing clause), `to` is the clause it changes. */
 interface ClauseModification {
@@ -370,7 +344,7 @@ export function buildPairPayload(
 	/** The clause picked in the table. The document links its paragraphs only to the sentences
 	 *  that modify it (`modifies`); with no clause picked, nothing is linked. */
 	clauseId?: string | null,
-	/** Paint each statement's conditions too, and link the ones written apart (Table v1.1). */
+	/** Paint each statement's conditions too, and link the ones written apart. */
 	withConditions = false
 ): GraphPayload {
 	const byId = new Map(deonticNodes(kg).map((v) => [v.id, v] as const));

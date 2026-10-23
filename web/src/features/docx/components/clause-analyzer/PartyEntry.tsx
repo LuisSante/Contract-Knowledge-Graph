@@ -127,7 +127,6 @@ export function PartyEntry({
 					parties={parties}
 					slots={slots}
 					slotColors={[PARTY_COLOR, PAIR_SECOND_COLOR]}
-					suggested={slotOverride === null}
 					onAssign={assign}
 					onRelease={(side) => {
 						const next: [string | null, string | null] = [...slots];

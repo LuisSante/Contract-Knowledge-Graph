@@ -1,9 +1,8 @@
 'use client';
 
-import type { MouseEvent as ReactMouseEvent, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import {
 	ArrowUpRightIcon,
-	CheckIcon,
 	ChevronLeftIcon,
 	ChevronRightIcon,
 	EqualIcon,
@@ -23,15 +22,13 @@ import {
 	DEONTIC_KINDS,
 	type Favour,
 	type Served,
-	type TypeVerdict,
 } from '@/features/docx/utils/knowledge/clause-favour';
-import type { MarkKind, Side } from '@/features/docx/utils/knowledge/statement-grid';
+import type { Side } from '@/features/docx/utils/knowledge/statement-grid';
 import type { DeonticKind } from '@/types/knowledge';
 
 /**
- * The types by their plain names, as Table v1.1 shows them. Each is counted in favour of a
- * party, as Table v1.1's columns say: a right for its holder, an obligation or prohibition for
- * the party on its other end.
+ * The types by their plain names, as the table shows them. Each sits with the party it
+ * belongs to: a right with its holder, an obligation or prohibition with the party it binds.
  */
 export const KIND_LABEL: Record<DeonticKind, string> = {
 	obligation: 'Obligations',
@@ -39,80 +36,9 @@ export const KIND_LABEL: Record<DeonticKind, string> = {
 	prohibition: 'Prohibitions',
 };
 
-/** What each type is, and in whose favour it counts, in a few words. */
-export const KIND_GLOSS: Record<DeonticKind, string> = {
-	obligation: 'what one party must do, counted in favour of the other',
-	right: 'what one party may do, counted in favour of that party',
-	prohibition: 'what one party must not do, counted in favour of the other',
-};
-
-/** What a side's count is made of, named the way Table v1.1 names its columns. */
-export function favourLine(kind: DeonticKind, side: Side, names: Record<Side, string>) {
-	const recipient = short(names[side]);
-	const other = short(names[side === 'a' ? 'b' : 'a']);
-	if (kind === 'right') return `In favour of ${recipient}: its own rights`;
-	return `In favour of ${recipient}: ${other}'s ${kind === 'obligation' ? 'obligations' : 'prohibitions'}`;
-}
-
-/** A verdict's colour: the side it favours, amber when it depends on the type. */
-export const verdictColor = (verdict: TypeVerdict) =>
-	verdict === 'a' || verdict === 'b'
-		? SIDE_COLOR[verdict]
-		: verdict === 'mixed'
-			? 'var(--warning)'
-			: 'var(--foreground)';
-
-export const verdictLabel = (verdict: TypeVerdict, names: Record<Side, string>) =>
-	verdict === 'a' || verdict === 'b'
-		? short(names[verdict])
-		: verdict === 'mixed'
-			? 'Depends on the type'
-			: 'Equal counts';
-
 /** A colour washed out to a background, for hex and CSS variables alike. */
 export const tint = (color: string, percent: number) =>
 	`color-mix(in oklab, ${color} ${percent}%, transparent)`;
-
-export function KindSquare({
-	kind,
-	size = 12,
-	dim,
-	ring,
-	title,
-	onClick,
-	onEnter,
-	onLeave,
-}: {
-	kind: MarkKind;
-	size?: number;
-	dim?: boolean;
-	ring?: boolean;
-	title?: string;
-	onClick?: () => void;
-	onEnter?: (event: ReactMouseEvent) => void;
-	onLeave?: () => void;
-}) {
-	return (
-		<button
-			type="button"
-			title={title}
-			onClick={onClick}
-			onMouseEnter={onEnter}
-			onMouseMove={onEnter}
-			onMouseLeave={onLeave}
-			className={cn(
-				'shrink-0 rounded-[3px] transition-opacity hover:ring-2 hover:ring-foreground/30',
-				ring && 'ring-2 ring-foreground/70 ring-offset-1'
-			)}
-			style={{
-				width: size,
-				height: size,
-				backgroundColor: KIND_COLORS[kind],
-				opacity: dim ? 0.22 : 1,
-			}}
-		/>
-	);
-}
 
 /** One deontic type on screen at a time, as tabs: obligations, rights and prohibitions are
  *  never shown or counted together. Each tab carries its two counts, the first party's then
@@ -147,11 +73,7 @@ export function KindTabs({
 							role="tab"
 							aria-selected={active}
 							onClick={() => onPick(k)}
-							title={
-								count
-									? `${count.a} in favour of ${names.a} and ${count.b} in favour of ${names.b}`
-									: undefined
-							}
+							title={count ? `${count.a} for ${names.a} and ${count.b} for ${names.b}` : undefined}
 							className={cn(
 								'-mb-px inline-flex items-center gap-2 border-b-2 pt-3 pb-2.5 text-sm',
 								active
@@ -192,7 +114,7 @@ export function KindTabs({
 /** What firm and conditional mean, said wherever the words appear. */
 const FIRM_NOTE = 'Firm: applies always. Conditional: only if something happens.';
 
-/** The key for Table v1.1's squares when conditional ones are marked: filled when the
+/** The key for the table's squares when conditional ones are marked: filled when the
  *  statement is firm, only an outline when a condition gates it. */
 export function FirmKey({ color }: { color: string }) {
 	return (
@@ -215,8 +137,8 @@ export function FirmKey({ color }: { color: string }) {
 	);
 }
 
-/** Table v1.1's mark on the rule between the two columns: an arrow, in that party's colour,
- *  towards the column of the party the row favours, or «=» when both have as many. */
+/** The mark on the rule between the two columns: an arrow, in that party's colour,
+ *  towards the column with more squares, or «=» when both have as many. */
 export function AxisMark({
 	favour,
 	title,
@@ -255,7 +177,7 @@ export function AxisMark({
 	);
 }
 
-/** How Table v1.1 treats statements a condition gates. */
+/** How the table treats statements a condition gates. */
 export type ConditionMode = 'all' | 'mark' | 'firm';
 
 const CONDITION_MODES: Array<{ mode: ConditionMode; label: string; hint: string }> = [
@@ -301,7 +223,7 @@ export function ConditionModePicker({
 	);
 }
 
-/** Table v1.2's «You are»: the reader says which party they are, so the table can say what
+/** «You are»: the reader says which party they are, so the table can say what
  *  goes against them. Picking the chosen party again leaves nobody picked, the default. */
 export function YouArePicker({
 	names,
@@ -364,7 +286,7 @@ export function AgainstFilter({
 			title={
 				disabled
 					? 'Pick which party you are first'
-					: 'Only the clauses where the other party has more in its favour than you'
+					: 'Only the clauses that go against you in this type: you carry more obligations or prohibitions, or the other party holds more rights'
 			}
 		>
 			<Checkbox
@@ -382,54 +304,6 @@ export function AgainstFilter({
 		</label>
 	);
 }
-
-/** Which deontic types are on screen. */
-export function KindFilter({
-	kinds,
-	onToggle,
-	label = 'Show',
-	compact,
-}: {
-	kinds: DeonticKind[];
-	onToggle: (kind: DeonticKind) => void;
-	label?: string;
-	compact?: boolean;
-}) {
-	return (
-		<div className="flex flex-wrap items-center gap-2 text-2xs text-muted-foreground">
-			{label}
-			{DEONTIC_KINDS.map((kind) => {
-				const on = kinds.includes(kind);
-				// The last type on stays on: with none, there is nothing to compare.
-				const last = on && kinds.length === 1;
-				return (
-					<button
-						type="button"
-						key={kind}
-						onClick={() => onToggle(kind)}
-						disabled={last}
-						aria-pressed={on}
-						title={last ? 'At least one type stays on' : undefined}
-						className={cn(
-							'inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 disabled:cursor-default',
-							compact ? 'text-2xs' : 'text-xs',
-							on ? 'border-foreground/30 text-foreground' : 'border-border opacity-50'
-						)}
-					>
-						{KIND_LABEL[kind]}
-						{on && !compact && <CheckIcon className="size-3" />}
-					</button>
-				);
-			})}
-		</div>
-	);
-}
-
-/*
- * A clause's place by relevance and its number in the contract, each with a shape of its own
- * so the two are not read as one number: a ringed circle for the place, a tag for the number.
- * Both on the card colour, so they show on grey rows too. Table v1.1 and Table v2 share them.
- */
 
 export function RankBadge({ rank, className }: { rank: number | undefined; className?: string }) {
 	return (

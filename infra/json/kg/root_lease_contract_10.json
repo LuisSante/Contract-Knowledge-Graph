@@ -1,0 +1,3600 @@
+{
+  "parties": [
+    {
+      "id": "party-1",
+      "name": "Zhonghai Trust Co.,Ltd",
+      "role": "Lessor",
+      "address": "",
+      "aliases": [
+        "Lessor",
+        "Party A",
+        "Pary A",
+        "party A"
+      ],
+      "paragraphIds": [
+        "root::lease_contract_10-p-63"
+      ]
+    },
+    {
+      "id": "party-2",
+      "name": "Shaanxi Tianren Organic Food Co., Ltd.",
+      "role": "Lessee",
+      "address": "",
+      "aliases": [
+        "Lessee",
+        "Party B"
+      ],
+      "paragraphIds": [
+        "root::lease_contract_10-p-4",
+        "root::lease_contract_10-p-66"
+      ]
+    }
+  ],
+  "clauses": [
+    {
+      "id": "clause-1",
+      "ref": "1",
+      "heading": "",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_10-p-6",
+        "root::lease_contract_10-p-7"
+      ]
+    },
+    {
+      "id": "clause-2",
+      "ref": "2",
+      "heading": "Location of the Premises，Size, Decoration, Facilities and Utilization",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_10-p-8",
+        "root::lease_contract_10-p-9",
+        "root::lease_contract_10-p-10",
+        "root::lease_contract_10-p-11"
+      ]
+    },
+    {
+      "id": "clause-3",
+      "ref": "3",
+      "heading": "",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_10-p-12",
+        "root::lease_contract_10-p-13"
+      ]
+    },
+    {
+      "id": "clause-4",
+      "ref": "4",
+      "heading": "Lease Term",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_10-p-14",
+        "root::lease_contract_10-p-15",
+        "root::lease_contract_10-p-16"
+      ]
+    },
+    {
+      "id": "clause-5",
+      "ref": "5",
+      "heading": "Rental Payment",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_10-p-17",
+        "root::lease_contract_10-p-18",
+        "root::lease_contract_10-p-19",
+        "root::lease_contract_10-p-20",
+        "root::lease_contract_10-p-21",
+        "root::lease_contract_10-p-22"
+      ]
+    },
+    {
+      "id": "clause-6",
+      "ref": "6",
+      "heading": "Occurred Fees during the Period and Tax",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_10-p-23",
+        "root::lease_contract_10-p-24",
+        "root::lease_contract_10-p-25"
+      ]
+    },
+    {
+      "id": "clause-7",
+      "ref": "7",
+      "heading": "Maintaining and Repairing",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_10-p-26",
+        "root::lease_contract_10-p-27",
+        "root::lease_contract_10-p-28"
+      ]
+    },
+    {
+      "id": "clause-8",
+      "ref": "8",
+      "heading": "Transferring and Sublease of the Premises",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_10-p-29",
+        "root::lease_contract_10-p-30",
+        "root::lease_contract_10-p-31"
+      ]
+    },
+    {
+      "id": "clause-9",
+      "ref": "9",
+      "heading": "Modification, Termination and Dissolution of the Contract",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_10-p-32",
+        "root::lease_contract_10-p-33",
+        "root::lease_contract_10-p-34"
+      ]
+    },
+    {
+      "id": "clause-10",
+      "ref": "9.2.1",
+      "heading": "",
+      "level": 3,
+      "paragraphIds": [
+        "root::lease_contract_10-p-35"
+      ]
+    },
+    {
+      "id": "clause-11",
+      "ref": "9.2.2",
+      "heading": "",
+      "level": 3,
+      "paragraphIds": [
+        "root::lease_contract_10-p-36"
+      ]
+    },
+    {
+      "id": "clause-12",
+      "ref": "9.2.3",
+      "heading": "",
+      "level": 3,
+      "paragraphIds": [
+        "root::lease_contract_10-p-37"
+      ]
+    },
+    {
+      "id": "clause-13",
+      "ref": "9.2.4",
+      "heading": "",
+      "level": 3,
+      "paragraphIds": [
+        "root::lease_contract_10-p-38",
+        "root::lease_contract_10-p-39",
+        "root::lease_contract_10-p-40",
+        "root::lease_contract_10-p-41"
+      ]
+    },
+    {
+      "id": "clause-14",
+      "ref": "10",
+      "heading": "Delivery and Acceptance",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_10-p-42"
+      ]
+    },
+    {
+      "id": "clause-15",
+      "ref": "10.1",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::lease_contract_10-p-43"
+      ]
+    },
+    {
+      "id": "clause-16",
+      "ref": "10.2",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::lease_contract_10-p-44"
+      ]
+    },
+    {
+      "id": "clause-17",
+      "ref": "10.3",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::lease_contract_10-p-45"
+      ]
+    },
+    {
+      "id": "clause-18",
+      "ref": "11",
+      "heading": "Liabilities for Default of Party A and Remedies",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_10-p-46"
+      ]
+    },
+    {
+      "id": "clause-19",
+      "ref": "11.1",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::lease_contract_10-p-47"
+      ]
+    },
+    {
+      "id": "clause-20",
+      "ref": "11.2",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::lease_contract_10-p-48"
+      ]
+    },
+    {
+      "id": "clause-21",
+      "ref": "12",
+      "heading": "Liabilities for Default of Party B",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_10-p-49"
+      ]
+    },
+    {
+      "id": "clause-22",
+      "ref": "12.1",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::lease_contract_10-p-50"
+      ]
+    },
+    {
+      "id": "clause-23",
+      "ref": "13",
+      "heading": "Exemption Clause",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_10-p-51"
+      ]
+    },
+    {
+      "id": "clause-24",
+      "ref": "13.1",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::lease_contract_10-p-52"
+      ]
+    },
+    {
+      "id": "clause-25",
+      "ref": "13.2",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::lease_contract_10-p-53"
+      ]
+    },
+    {
+      "id": "clause-26",
+      "ref": "13.3",
+      "heading": "",
+      "level": 2,
+      "paragraphIds": [
+        "root::lease_contract_10-p-54"
+      ]
+    },
+    {
+      "id": "clause-27",
+      "ref": "14",
+      "heading": "",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_10-p-55",
+        "root::lease_contract_10-p-56"
+      ]
+    },
+    {
+      "id": "clause-28",
+      "ref": "15",
+      "heading": "Dispute Settlement",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_10-p-57",
+        "root::lease_contract_10-p-58"
+      ]
+    },
+    {
+      "id": "clause-29",
+      "ref": "16",
+      "heading": "",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_10-p-59",
+        "root::lease_contract_10-p-60"
+      ]
+    },
+    {
+      "id": "clause-30",
+      "ref": "17",
+      "heading": "",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_10-p-61",
+        "root::lease_contract_10-p-62",
+        "root::lease_contract_10-p-63",
+        "root::lease_contract_10-p-64",
+        "root::lease_contract_10-p-65",
+        "root::lease_contract_10-p-66",
+        "root::lease_contract_10-p-67",
+        "root::lease_contract_10-p-68"
+      ]
+    }
+  ],
+  "definedTerms": [
+    {
+      "id": "term-1",
+      "term": "Force majeure events",
+      "definition": "“Force majeure events” refer to objective situations that cannot be foreseen and avoided.",
+      "definedInClauseId": "clause-26",
+      "paragraphIds": [
+        "root::lease_contract_10-p-54"
+      ]
+    }
+  ],
+  "obligations": [
+    {
+      "id": "obligation-1",
+      "action": "Guarantee lawful lease",
+      "summary": "Party A guarantees the legality of the lease.",
+      "text": "Party A should guarantee that the lease of premises and facilities is legal according to regulations and there is no mortgage or dispute on the premises.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party A should guarantee that the lease of premises and facilities is legal according to regulations and there is no mortgage or dispute on the premises."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-1",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-7"
+      ]
+    },
+    {
+      "id": "obligation-2",
+      "action": "Guarantee no mortgage",
+      "summary": "Party A guarantees that the premises are not mortgaged.",
+      "text": "there is no mortgage or dispute on the premises.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "there is no mortgage or dispute on the premises."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-1",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-7"
+      ]
+    },
+    {
+      "id": "obligation-3",
+      "action": "Guarantee no dispute",
+      "summary": "Party A guarantees that the premises are not disputed.",
+      "text": "there is no mortgage or dispute on the premises.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "there is no mortgage or dispute on the premises."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-1",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-7"
+      ]
+    },
+    {
+      "id": "obligation-4",
+      "action": "Lease premises and facilities",
+      "summary": "Party A will lease its premises and attached facilities at the specified location to Party B.",
+      "text": "Party A will lease to Party B the premises and attached facilities all owned by Party A itself, which is located at the 16th floor of National Development Bank Tower.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party A will lease to Party B the premises and attached facilities all owned by Party A itself, which is located at the 16th floor of National Development Bank Tower."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-2",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-9"
+      ]
+    },
+    {
+      "id": "obligation-5",
+      "action": "Rent premises",
+      "summary": "Party B agrees to rent the premises.",
+      "text": "Party B has agreed to rent the premises.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party B has agreed to rent the premises."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-2",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-10"
+      ]
+    },
+    {
+      "id": "obligation-6",
+      "action": "Guarantee work use",
+      "summary": "Party B guarantees that the premises will be used only for work.",
+      "text": "Party B guarantees that it is for work use only.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party B guarantees that it is for work use only."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-2",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-11"
+      ]
+    },
+    {
+      "id": "obligation-7",
+      "action": "Provide certificate and license",
+      "summary": "Party A must attach copies of the ownership certificate and its business license.",
+      "text": "Party A should provide a copy of the House Proprietary Certificate and a copy of the business license as an attachment to the contract.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party A should provide a copy of the House Proprietary Certificate and a copy of the business license as an attachment to the contract."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-3",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-13"
+      ]
+    },
+    {
+      "id": "obligation-8",
+      "action": "Provide business license",
+      "summary": "Party B must attach a copy of its business license.",
+      "text": "Party B should provide its copy of the business license as an attachment to the contract.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party B should provide its copy of the business license as an attachment to the contract."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-3",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-13"
+      ]
+    },
+    {
+      "id": "obligation-9",
+      "action": "Negotiate fee settlement",
+      "summary": "Party B must negotiate settlement of the liquidation group's administration and utility fees.",
+      "text": "Party B is responsible for negotiating the settlement of relative fees occurred by the Bankruptcy Liquidation Group, in which the occurred fees include: administration fees, water, electricity, gas etc.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party B is responsible for negotiating the settlement of relative fees occurred by the Bankruptcy Liquidation Group, in which the occurred fees include: administration fees, water, electricity, gas etc."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-4",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-15"
+      ]
+    },
+    {
+      "id": "obligation-10",
+      "action": "Coordinate handover",
+      "summary": "Party A must use its best efforts to coordinate the handover with Party B.",
+      "text": "Party A should use its best efforts to coordinate with Party B during the interchange.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party A should use its best efforts to coordinate with Party B during the interchange."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-4",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-15"
+      ]
+    },
+    {
+      "id": "obligation-11",
+      "action": "Return premises",
+      "summary": "Party B must return the premises at lease expiry.",
+      "text": "Party B should return the house to Party A.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party B should return the house to Party A."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-4",
+      "deadline": "June 30, 2009",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-16"
+      ]
+    },
+    {
+      "id": "obligation-12",
+      "action": "Pay overdue return fine",
+      "summary": "Party B must pay a daily fine of 200% of the lease fee and incurred fees for delayed return.",
+      "text": "If the return is delayed by Party B, 200% of the lease fee per day and the incurred fee should be paid to party A as overdue fine.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "If the return is delayed by Party B, 200% of the lease fee per day and the incurred fee should be paid to party A as overdue fine."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-4",
+      "deadline": "",
+      "frequency": "per day",
+      "paragraphIds": [
+        "root::lease_contract_10-p-16"
+      ]
+    },
+    {
+      "id": "obligation-13",
+      "action": "Provide decoration period",
+      "summary": "Party A must provide the specified month for decoration.",
+      "text": "Party A agrees to offer one month for decoration, effective from July 1, 2008 to July 31, 2008.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party A agrees to offer one month for decoration, effective from July 1, 2008 to July 31, 2008."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-18"
+      ]
+    },
+    {
+      "id": "obligation-14",
+      "action": "Bear decoration utilities",
+      "summary": "Party A must bear water, electricity and similar fees during the decoration period.",
+      "text": "while Party A should bear the fee of water, electricity, etc.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "while Party A should bear the fee of water, electricity, etc."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-18"
+      ]
+    },
+    {
+      "id": "obligation-15",
+      "action": "Pay rental rate",
+      "summary": "Party B must pay monthly rent at the specified per-square-meter rate from August 1, 2008.",
+      "text": "Rental fee should be ￥45.00 per month for each square meter starting from August 1, 2008.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Rental fee should be ￥45.00 per month for each square meter starting from August 1, 2008."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "per month",
+      "paragraphIds": [
+        "root::lease_contract_10-p-19"
+      ]
+    },
+    {
+      "id": "obligation-16",
+      "action": "Pay initial rent and deposit",
+      "summary": "As written, Party A must pay the specified rent and deposit within three working days of signing.",
+      "text": "Party A should pay ￥400,000.00 as rental fee and ￥100,000.00 as deposits within 3 working days after the contract is signed.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party A should pay ￥400,000.00 as rental fee and ￥100,000.00 as deposits within 3 working days after the contract is signed."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-5",
+      "deadline": "within 3 working days after the contract is signed",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-20"
+      ]
+    },
+    {
+      "id": "obligation-17",
+      "action": "Deduct monthly rent",
+      "summary": "Party A must deduct monthly rent from Party B's prepaid rent on the fifth, subject to the stated payment condition.",
+      "text": "Party A will deduct the rental fee per month from the total rental fee paid by Party B on the 5th of each month if the rental fee is paid off",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party A will deduct the rental fee per month from the total rental fee paid by Party B on the 5th of each month if the rental fee is paid off"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-5",
+      "deadline": "on the 5th of each month",
+      "frequency": "each month",
+      "paragraphIds": [
+        "root::lease_contract_10-p-20"
+      ]
+    },
+    {
+      "id": "obligation-18",
+      "action": "Pay monthly rent promptly",
+      "summary": "Party B must pay Party A rent on the fifth of each month without delay.",
+      "text": "Party B pays the rental fee to Party A on the 5th of each month without any delay.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party B pays the rental fee to Party A on the 5th of each month without any delay."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-5",
+      "deadline": "on the 5th of each month",
+      "frequency": "each month",
+      "paragraphIds": [
+        "root::lease_contract_10-p-20"
+      ]
+    },
+    {
+      "id": "obligation-19",
+      "action": "Credit rent and deposit to purchase",
+      "summary": "Party A must credit rent and deposit toward the purchase if the stated purchase conditions are met.",
+      "text": "the rental fee and deposit will be included in the total amount to purchase the premises aforementioned.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "the rental fee and deposit will be included in the total amount to purchase the premises aforementioned."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-21"
+      ]
+    },
+    {
+      "id": "obligation-20",
+      "action": "Issue invoice",
+      "summary": "Party A must issue an authority-recognized invoice after payment.",
+      "text": "Party A should offer the invoice recognized by the relevant authority after receiving the payment.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party A should offer the invoice recognized by the relevant authority after receiving the payment."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-5",
+      "deadline": "after receiving the payment",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-22"
+      ]
+    },
+    {
+      "id": "obligation-21",
+      "action": "Bear utilities and administration fees",
+      "summary": "Party B must pay all water, electricity, gas and premises administration fees during the rental term.",
+      "text": "During the rental term, Party B should bear all the fees incurred for water, electricity, gas and premises administration.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "During the rental term, Party B should bear all the fees incurred for water, electricity, gas and premises administration."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-6",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-24"
+      ]
+    },
+    {
+      "id": "obligation-22",
+      "action": "Bear own taxes",
+      "summary": "Party A must separately bear its taxes under authority regulations.",
+      "text": "Both Parties should bear the tax separately according to the regulation of authority.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Both Parties should bear the tax separately according to the regulation of authority."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-6",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-25"
+      ]
+    },
+    {
+      "id": "obligation-23",
+      "action": "Bear own taxes",
+      "summary": "Party B must separately bear its taxes under authority regulations.",
+      "text": "Both Parties should bear the tax separately according to the regulation of authority.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Both Parties should bear the tax separately according to the regulation of authority."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-6",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-25"
+      ]
+    },
+    {
+      "id": "obligation-24",
+      "action": "Repair damaged premises and facilities",
+      "summary": "Party A must repair damage arising from quality problems, natural damage or disasters.",
+      "text": "In case the premise and attached facilities are damaged by quality problems, natural damages or disasters, Party A will be responsible for repair and must pay the relevant expenses.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "In case the premise and attached facilities are damaged by quality problems, natural damages or disasters, Party A will be responsible for repair and must pay the relevant expenses."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-7",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-27"
+      ]
+    },
+    {
+      "id": "obligation-25",
+      "action": "Pay repair expenses",
+      "summary": "Party A must pay the repair expenses for the specified damage.",
+      "text": "Party A will be responsible for repair and must pay the relevant expenses.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party A will be responsible for repair and must pay the relevant expenses."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-7",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-27"
+      ]
+    },
+    {
+      "id": "obligation-26",
+      "action": "Care for premises",
+      "summary": "Party B must take good care of the premises.",
+      "text": "should take good care of the premises.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "should take good care of the premises."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-7",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-28"
+      ]
+    },
+    {
+      "id": "obligation-27",
+      "action": "Compensate damage",
+      "summary": "Party B must compensate damage to the premises and facilities caused by its fault or negligence on failure to comply.",
+      "text": "Otherwise, Party B will be responsible to compensate any damages of the premises and attached facilities caused by its fault and negligence.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Otherwise, Party B will be responsible to compensate any damages of the premises and attached facilities caused by its fault and negligence."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-7",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-28"
+      ]
+    },
+    {
+      "id": "obligation-28",
+      "action": "Notify intended sale",
+      "summary": "Party A must notify Party B of an intended sale within two months before expiry.",
+      "text": "Within two months before the contract expires, Party A will notify Party B if it intends to sell the premises.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Within two months before the contract expires, Party A will notify Party B if it intends to sell the premises."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-8",
+      "deadline": "Within two months before the contract expires",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-30"
+      ]
+    },
+    {
+      "id": "obligation-29",
+      "action": "Pay additional compensation",
+      "summary": "The breaching party must compensate losses not covered by the default fine.",
+      "text": "In case the default fine is not sufficient to cover the loss suffered by the faultless Party, the Party in breach should pay additional compensation to the other Party:",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "In case the default fine is not sufficient to cover the loss suffered by the faultless Party, the Party in breach should pay additional compensation to the other Party:"
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": null,
+      "clauseId": "clause-9",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-34"
+      ]
+    },
+    {
+      "id": "obligation-30",
+      "action": "Notify renewal intention",
+      "summary": "Party B must give written notice one month in advance if it intends to continue renting.",
+      "text": "If Party B intends to continue to rent, it shall inform party A in written form one months in advance.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "If Party B intends to continue to rent, it shall inform party A in written form one months in advance."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-13",
+      "deadline": "one months in advance",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-39"
+      ]
+    },
+    {
+      "id": "obligation-31",
+      "action": "Guarantee premises condition",
+      "summary": "Party A guarantees the good condition of the premises, facilities and equipment.",
+      "text": "Party A should guarantee that the premises and attached facilities and equipment are in good condition.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party A should guarantee that the premises and attached facilities and equipment are in good condition."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-15",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-43"
+      ]
+    },
+    {
+      "id": "obligation-32",
+      "action": "Return premises",
+      "summary": "Party B must return the premises, facilities and equipment at the end of the lease.",
+      "text": "Party B should return the premises and attached facilities and equipment to Party A when the lease contract comes to an end.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party B should return the premises and attached facilities and equipment to Party A when the lease contract comes to an end."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-16",
+      "deadline": "when the lease contract comes to an end",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-44"
+      ]
+    },
+    {
+      "id": "obligation-33",
+      "action": "Maintain clear premises",
+      "summary": "Party A must keep the premises and facilities sound and free of retained items or interference with normal use.",
+      "text": "Party A should keep the house and attached facilities in sound condition, without any items retained, or impact the normal use of the house.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party A should keep the house and attached facilities in sound condition, without any items retained, or impact the normal use of the house."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-17",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-45"
+      ]
+    },
+    {
+      "id": "obligation-34",
+      "action": "Pay early repossession penalty",
+      "summary": "Party A must pay twice the rental for the remaining days if it breaches the contract by demanding the house back early.",
+      "text": "If Party A violates the contract and demands back the house in advance, Party A should pay twice the rental as penalty based on the days remaining in the contract.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "If Party A violates the contract and demands back the house in advance, Party A should pay twice the rental as penalty based on the days remaining in the contract."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-19",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-47"
+      ]
+    },
+    {
+      "id": "obligation-35",
+      "action": "Pay additional compensation",
+      "summary": "Party A must pay additional compensation if its penalty is insufficient.",
+      "text": "If the penalty is not sufficient to cover such items, Party A shall bear additional compensation.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "If the penalty is not sufficient to cover such items, Party A shall bear additional compensation."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-19",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-47"
+      ]
+    },
+    {
+      "id": "obligation-36",
+      "action": "Compensate invalidity losses",
+      "summary": "Party A must compensate Party B if flaws or illegality of the house attributable to Party A make the contract ineffective.",
+      "text": "If the contract is caused by Party A to be ineffective due to flaws or illegality of the house, Party A should compensate for the loss of Party B.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "If the contract is caused by Party A to be ineffective due to flaws or illegality of the house, Party A should compensate for the loss of Party B."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-20",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-48"
+      ]
+    },
+    {
+      "id": "obligation-37",
+      "action": "Pay early termination penalty",
+      "summary": "Party B must pay twice the rent for the remaining days if it terminates early without consent.",
+      "text": "During the leasing period, if Party B terminates the lease in advance without the consent of Party A，Party B should pay a penalty of twice the rent based on the days remaining in the contract.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "During the leasing period, if Party B terminates the lease in advance without the consent of Party A，Party B should pay a penalty of twice the rent based on the days remaining in the contract."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-22",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-50"
+      ]
+    },
+    {
+      "id": "obligation-38",
+      "action": "Bear additional compensation",
+      "summary": "The text assigns Party A additional compensation where the early termination penalty is insufficient.",
+      "text": "If the penalty is not sufficient to cover such items, Party A shall bear additional compensation",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "If the penalty is not sufficient to cover such items, Party A shall bear additional compensation"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-19",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-47"
+      ]
+    },
+    {
+      "id": "obligation-39",
+      "action": "Pay deposit shortfall",
+      "summary": "Party B must pay any amount not covered by the deposit through other means.",
+      "text": "If the deposit is insufficient，Party B should pay the remainder in other ways.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "If the deposit is insufficient，Party B should pay the remainder in other ways."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-22",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-50"
+      ]
+    },
+    {
+      "id": "obligation-40",
+      "action": "Refund excess rent",
+      "summary": "Party A must refund overpaid rent upon force majeure termination, using actual usage and daily proration for less than one month.",
+      "text": "If the contract is terminated for the foregoing reason, the rent will be calculated in accordance with the actual usage time. If it is less than one month，the rent will be charged based on the days according to the principle of returning the overcharge and demand payment of the shortage.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "If the contract is terminated for the foregoing reason, the rent will be calculated in accordance with the actual usage time. If it is less than one month，the rent will be charged based on the days according to the principle of returning the overcharge and demand payment of the shortage."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-25",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-53"
+      ]
+    },
+    {
+      "id": "obligation-41",
+      "action": "Pay actual usage rent",
+      "summary": "Party B must pay rent shortfalls based on actual usage, prorated daily for less than one month, upon force majeure termination.",
+      "text": "If the contract is terminated for the foregoing reason, the rent will be calculated in accordance with the actual usage time. If it is less than one month，the rent will be charged based on the days according to the principle of returning the overcharge and demand payment of the shortage.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "If the contract is terminated for the foregoing reason, the rent will be calculated in accordance with the actual usage time. If it is less than one month，the rent will be charged based on the days according to the principle of returning the overcharge and demand payment of the shortage."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-25",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-53"
+      ]
+    },
+    {
+      "id": "obligation-42",
+      "action": "Negotiate disputes",
+      "summary": "Party A must negotiate disputes arising during performance.",
+      "text": "If any dispute comes out during the execution of this contract, Party A and Party B should negotiate to solve the dispute.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "If any dispute comes out during the execution of this contract, Party A and Party B should negotiate to solve the dispute."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-28",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-58"
+      ]
+    },
+    {
+      "id": "obligation-43",
+      "action": "Negotiate disputes",
+      "summary": "Party B must negotiate disputes arising during performance.",
+      "text": "If any dispute comes out during the execution of this contract, Party A and Party B should negotiate to solve the dispute.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "If any dispute comes out during the execution of this contract, Party A and Party B should negotiate to solve the dispute."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-28",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-58"
+      ]
+    },
+    {
+      "id": "obligation-44",
+      "action": "Keep contract copies",
+      "summary": "The lessor must keep two copies of the contract.",
+      "text": "each party is to keep two copies.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "each party is to keep two copies."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-30",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-62"
+      ]
+    },
+    {
+      "id": "obligation-45",
+      "action": "Keep contract copies",
+      "summary": "The lessee must keep two copies of the contract.",
+      "text": "each party is to keep two copies.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "each party is to keep two copies."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-30",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-62"
+      ]
+    }
+  ],
+  "rights": [
+    {
+      "id": "right-1",
+      "action": "Negotiate directly with occupier",
+      "summary": "Party B may negotiate directly with the liquidation group after paying Article 5 rent and deposit.",
+      "text": "both Parties agreed that Party B could negotiate with the bankruptcy liquidation group directly after Party B made the payment of rent and deposit according to Article 5 below.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "both Parties agreed that Party B could negotiate with the bankruptcy liquidation group directly after Party B made the payment of rent and deposit according to Article 5 below."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-4",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-15"
+      ]
+    },
+    {
+      "id": "right-2",
+      "action": "Retain term calculation despite delay",
+      "summary": "Party A is entitled to unchanged rent and decoration term calculations despite delayed handover.",
+      "text": "Party B agreed that the calculation of the rent term and the decoration term should not be effected if the interchange of the premises and facilities were delayed.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party B agreed that the calculation of the rent term and the decoration term should not be effected if the interchange of the premises and facilities were delayed."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-4",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-15"
+      ]
+    },
+    {
+      "id": "right-3",
+      "action": "Recover premises at expiry",
+      "summary": "Party A may recover the premises at lease expiry.",
+      "text": "Party A has the right to withdraw the house proprietary upon the expiration date",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party A has the right to withdraw the house proprietary upon the expiration date"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-4",
+      "deadline": "upon the expiration date",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-16"
+      ]
+    },
+    {
+      "id": "right-4",
+      "action": "Enjoy rent-free decoration period",
+      "summary": "Party B is freed from rent during the decoration period.",
+      "text": "During the term, Pary A offers free rental fee",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "During the term, Pary A offers free rental fee"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-18"
+      ]
+    },
+    {
+      "id": "right-5",
+      "action": "Move into premises",
+      "summary": "Party B may move in after paying rent and deposit.",
+      "text": "Party A agrees that Party B can move into the premises after the rental fee and deposits are paid.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party A agrees that Party B can move into the premises after the rental fee and deposits are paid."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-20"
+      ]
+    },
+    {
+      "id": "right-6",
+      "action": "Exercise purchase priority",
+      "summary": "Party B has priority to buy if Party A intends to sell.",
+      "text": "In this situation, Party B should have priority to buy the premises.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "In this situation, Party B should have priority to buy the premises."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-8",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-30"
+      ]
+    },
+    {
+      "id": "right-7",
+      "action": "Terminate and recover premises",
+      "summary": "Party A may terminate and recover the premises for any listed Party B default.",
+      "text": "If Party B does any of the following, Party A can break the contract and has the right to take back the premises",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "If Party B does any of the following, Party A can break the contract and has the right to take back the premises"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-9",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-34"
+      ]
+    },
+    {
+      "id": "right-8",
+      "action": "Claim liquidated damages",
+      "summary": "Party A may claim twice the monthly rent for a listed Party B default.",
+      "text": "get twice the rent as liquidated damages by the month.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "get twice the rent as liquidated damages by the month."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-9",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-34"
+      ]
+    },
+    {
+      "id": "right-9",
+      "action": "Exercise renewal priority",
+      "summary": "Party B has priority over other prospective tenants on equal conditions.",
+      "text": "Under the same condition, Party B has the priority to continue the contract to other civil parties.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Under the same condition, Party B has the priority to continue the contract to other civil parties."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-13",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-39"
+      ]
+    },
+    {
+      "id": "right-10",
+      "action": "Dispose of retained items",
+      "summary": "Party A may handle items retained in the house as disposed of by Party B.",
+      "text": "The items retained will be regarded as disposed of by Party B, and Party A will have the right to handle them.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The items retained will be regarded as disposed of by Party B, and Party A will have the right to handle them."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-17",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-45"
+      ]
+    },
+    {
+      "id": "right-11",
+      "action": "Withhold compensation from deposit",
+      "summary": "Party A may withhold the stated additional compensation from the deposit.",
+      "text": "which can be withheld from the deposit by Party A.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "which can be withheld from the deposit by Party A."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-22",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-50"
+      ]
+    },
+    {
+      "id": "right-12",
+      "action": "Exclude force majeure liability",
+      "summary": "Party A is exempt from responsibility for inability to perform due to force majeure.",
+      "text": "Neither Party is held responsible if, because of force majeure, it is unable to carry out the contract in whole or part.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Neither Party is held responsible if, because of force majeure, it is unable to carry out the contract in whole or part."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-24",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-52"
+      ]
+    },
+    {
+      "id": "right-13",
+      "action": "Exclude force majeure liability",
+      "summary": "Party B is exempt from responsibility for inability to perform due to force majeure.",
+      "text": "Neither Party is held responsible if, because of force majeure, it is unable to carry out the contract in whole or part.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Neither Party is held responsible if, because of force majeure, it is unable to carry out the contract in whole or part."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-24",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-52"
+      ]
+    },
+    {
+      "id": "right-14",
+      "action": "Submit dispute to court",
+      "summary": "Party A may submit an unresolved dispute to a competent court.",
+      "text": "In case an agreement cannot be reached, any Party may summit the dispute to the court that has the jurisdiction over the matter.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "In case an agreement cannot be reached, any Party may summit the dispute to the court that has the jurisdiction over the matter."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-28",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-58"
+      ]
+    },
+    {
+      "id": "right-15",
+      "action": "Submit dispute to court",
+      "summary": "Party B may submit an unresolved dispute to a competent court.",
+      "text": "In case an agreement cannot be reached, any Party may summit the dispute to the court that has the jurisdiction over the matter.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "In case an agreement cannot be reached, any Party may summit the dispute to the court that has the jurisdiction over the matter."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-28",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-58"
+      ]
+    }
+  ],
+  "prohibitions": [
+    {
+      "id": "prohibition-1",
+      "action": "Change use without approvals",
+      "summary": "Party B must not change use without Party A's written consent and relevant authority approval.",
+      "text": "Any change in the utilization of the premises is not allowed without the written consent of Party A and approval from related authority.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Any change in the utilization of the premises is not allowed without the written consent of Party A and approval from related authority."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-2",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-11"
+      ]
+    },
+    {
+      "id": "prohibition-2",
+      "action": "Transfer or sublet without approval",
+      "summary": "Party B must not transfer the lease or sublet without Party A's approval.",
+      "text": "Party B will not transfer the lease of the premises or sublet it without Party A's approval",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party B will not transfer the lease of the premises or sublet it without Party A's approval"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-7",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-28"
+      ]
+    },
+    {
+      "id": "prohibition-3",
+      "action": "Sublease without written consent",
+      "summary": "Party B cannot lease any part of the premises to a third party without Party A's written consent.",
+      "text": "During the rental, Party B is not allowed to lease all or part of the premises to a third party without the written consent of Party A.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "During the rental, Party B is not allowed to lease all or part of the premises to a third party without the written consent of Party A."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-8",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_10-p-31"
+      ]
+    }
+  ],
+  "conditions": [
+    {
+      "id": "condition-1",
+      "trigger": "Party B made the payment of rent and deposit according to Article 5 below",
+      "operator": "UPON",
+      "gatesId": "right-1",
+      "paragraphIds": [
+        "root::lease_contract_10-p-15"
+      ]
+    },
+    {
+      "id": "condition-2",
+      "trigger": "if the interchange of the premises and facilities were delayed",
+      "operator": "IF",
+      "gatesId": "right-2",
+      "paragraphIds": [
+        "root::lease_contract_10-p-15"
+      ]
+    },
+    {
+      "id": "condition-3",
+      "trigger": "upon the expiration date",
+      "operator": "UPON",
+      "gatesId": "right-3",
+      "paragraphIds": [
+        "root::lease_contract_10-p-16"
+      ]
+    },
+    {
+      "id": "condition-4",
+      "trigger": "upon the expiration date",
+      "operator": "UPON",
+      "gatesId": "obligation-11",
+      "paragraphIds": [
+        "root::lease_contract_10-p-16"
+      ]
+    },
+    {
+      "id": "condition-5",
+      "trigger": "If the return is delayed by Party B",
+      "operator": "IF",
+      "gatesId": "obligation-12",
+      "paragraphIds": [
+        "root::lease_contract_10-p-16"
+      ]
+    },
+    {
+      "id": "condition-6",
+      "trigger": "after the rental fee and deposits are paid",
+      "operator": "UPON",
+      "gatesId": "right-5",
+      "paragraphIds": [
+        "root::lease_contract_10-p-20"
+      ]
+    },
+    {
+      "id": "condition-7",
+      "trigger": "if the rental fee is paid off",
+      "operator": "IF",
+      "gatesId": "obligation-17",
+      "paragraphIds": [
+        "root::lease_contract_10-p-20"
+      ]
+    },
+    {
+      "id": "condition-8",
+      "trigger": "If Party B to intends to purchase the premises and facilities of 16th and 23rd of National Development Bank Tower, and if the purchase agreement could be reached by both parties and the purchase payment made to Party A before December 31, 2008",
+      "operator": "IF",
+      "gatesId": "obligation-19",
+      "paragraphIds": [
+        "root::lease_contract_10-p-21"
+      ]
+    },
+    {
+      "id": "condition-9",
+      "trigger": "after receiving the payment",
+      "operator": "UPON",
+      "gatesId": "obligation-20",
+      "paragraphIds": [
+        "root::lease_contract_10-p-22"
+      ]
+    },
+    {
+      "id": "condition-10",
+      "trigger": "In case the premise and attached facilities are damaged by quality problems, natural damages or disasters",
+      "operator": "IF",
+      "gatesId": "obligation-24",
+      "paragraphIds": [
+        "root::lease_contract_10-p-27"
+      ]
+    },
+    {
+      "id": "condition-11",
+      "trigger": "In case the premise and attached facilities are damaged by quality problems, natural damages or disasters",
+      "operator": "IF",
+      "gatesId": "obligation-25",
+      "paragraphIds": [
+        "root::lease_contract_10-p-27"
+      ]
+    },
+    {
+      "id": "condition-12",
+      "trigger": "Party B will not transfer the lease of the premises or sublet it without Party A's approval and should take good care of the premises. Otherwise,",
+      "operator": "IF",
+      "gatesId": "obligation-27",
+      "paragraphIds": [
+        "root::lease_contract_10-p-28"
+      ]
+    },
+    {
+      "id": "condition-13",
+      "trigger": "without the written consent of Party A and approval from related authority",
+      "operator": "UNLESS",
+      "gatesId": "prohibition-1",
+      "paragraphIds": [
+        "root::lease_contract_10-p-11"
+      ]
+    },
+    {
+      "id": "condition-14",
+      "trigger": "Party A's approval",
+      "operator": "UNLESS",
+      "gatesId": "prohibition-2",
+      "paragraphIds": [
+        "root::lease_contract_10-p-28"
+      ]
+    },
+    {
+      "id": "condition-15",
+      "trigger": "if it intends to sell the premises",
+      "operator": "IF",
+      "gatesId": "obligation-28",
+      "paragraphIds": [
+        "root::lease_contract_10-p-30"
+      ]
+    },
+    {
+      "id": "condition-16",
+      "trigger": "if it intends to sell the premises",
+      "operator": "IF",
+      "gatesId": "right-6",
+      "paragraphIds": [
+        "root::lease_contract_10-p-30"
+      ]
+    },
+    {
+      "id": "condition-17",
+      "trigger": "Changing the use of the house without the approval of Party A, which causes damages to the house",
+      "operator": "IF",
+      "gatesId": "right-7",
+      "paragraphIds": [
+        "root::lease_contract_10-p-35"
+      ]
+    },
+    {
+      "id": "condition-18",
+      "trigger": "There is principal structural damage to the house caused by Party B.",
+      "operator": "IF",
+      "gatesId": "right-7",
+      "paragraphIds": [
+        "root::lease_contract_10-p-36"
+      ]
+    },
+    {
+      "id": "condition-19",
+      "trigger": "Without approval from Party A, subleasing ,transferring the lease items or making subtenancy, transpose.",
+      "operator": "IF",
+      "gatesId": "right-7",
+      "paragraphIds": [
+        "root::lease_contract_10-p-37"
+      ]
+    },
+    {
+      "id": "condition-20",
+      "trigger": "Delaying in rent payment for more than 2 months.",
+      "operator": "IF",
+      "gatesId": "right-7",
+      "paragraphIds": [
+        "root::lease_contract_10-p-38"
+      ]
+    },
+    {
+      "id": "condition-21",
+      "trigger": "Changing the use of the house without the approval of Party A, which causes damages to the house",
+      "operator": "IF",
+      "gatesId": "right-8",
+      "paragraphIds": [
+        "root::lease_contract_10-p-35"
+      ]
+    },
+    {
+      "id": "condition-22",
+      "trigger": "There is principal structural damage to the house caused by Party B.",
+      "operator": "IF",
+      "gatesId": "right-8",
+      "paragraphIds": [
+        "root::lease_contract_10-p-36"
+      ]
+    },
+    {
+      "id": "condition-23",
+      "trigger": "Without approval from Party A, subleasing ,transferring the lease items or making subtenancy, transpose.",
+      "operator": "IF",
+      "gatesId": "right-8",
+      "paragraphIds": [
+        "root::lease_contract_10-p-37"
+      ]
+    },
+    {
+      "id": "condition-24",
+      "trigger": "Delaying in rent payment for more than 2 months.",
+      "operator": "IF",
+      "gatesId": "right-8",
+      "paragraphIds": [
+        "root::lease_contract_10-p-38"
+      ]
+    },
+    {
+      "id": "condition-25",
+      "trigger": "the default fine is not sufficient to cover the loss suffered by the faultless Party",
+      "operator": "IF",
+      "gatesId": "obligation-29",
+      "paragraphIds": [
+        "root::lease_contract_10-p-34"
+      ]
+    },
+    {
+      "id": "condition-26",
+      "trigger": "If Party B intends to continue to rent",
+      "operator": "IF",
+      "gatesId": "obligation-30",
+      "paragraphIds": [
+        "root::lease_contract_10-p-39"
+      ]
+    },
+    {
+      "id": "condition-27",
+      "trigger": "Under the same condition",
+      "operator": "IF",
+      "gatesId": "right-9",
+      "paragraphIds": [
+        "root::lease_contract_10-p-39"
+      ]
+    },
+    {
+      "id": "condition-28",
+      "trigger": "when the lease contract comes to an end",
+      "operator": "UPON",
+      "gatesId": "obligation-32",
+      "paragraphIds": [
+        "root::lease_contract_10-p-44"
+      ]
+    },
+    {
+      "id": "condition-29",
+      "trigger": "If Party A violates the contract and demands back the house in advance",
+      "operator": "IF",
+      "gatesId": "obligation-34",
+      "paragraphIds": [
+        "root::lease_contract_10-p-47"
+      ]
+    },
+    {
+      "id": "condition-30",
+      "trigger": "If the penalty is not sufficient to cover such items",
+      "operator": "IF",
+      "gatesId": "obligation-35",
+      "paragraphIds": [
+        "root::lease_contract_10-p-47"
+      ]
+    },
+    {
+      "id": "condition-31",
+      "trigger": "If the contract is caused by Party A to be ineffective due to flaws or illegality of the house",
+      "operator": "IF",
+      "gatesId": "obligation-36",
+      "paragraphIds": [
+        "root::lease_contract_10-p-48"
+      ]
+    },
+    {
+      "id": "condition-32",
+      "trigger": "if Party B terminates the lease in advance without the consent of Party A",
+      "operator": "IF",
+      "gatesId": "obligation-37",
+      "paragraphIds": [
+        "root::lease_contract_10-p-50"
+      ]
+    },
+    {
+      "id": "condition-33",
+      "trigger": "If the penalty is not sufficient to cover such items",
+      "operator": "IF",
+      "gatesId": "obligation-38",
+      "paragraphIds": [
+        "root::lease_contract_10-p-47"
+      ]
+    },
+    {
+      "id": "condition-34",
+      "trigger": "If the penalty is not sufficient to cover such items",
+      "operator": "IF",
+      "gatesId": "right-11",
+      "paragraphIds": [
+        "root::lease_contract_10-p-47"
+      ]
+    },
+    {
+      "id": "condition-35",
+      "trigger": "If the deposit is insufficient",
+      "operator": "IF",
+      "gatesId": "obligation-39",
+      "paragraphIds": [
+        "root::lease_contract_10-p-50"
+      ]
+    },
+    {
+      "id": "condition-36",
+      "trigger": "if, because of force majeure, it is unable to carry out the contract in whole or part",
+      "operator": "IF",
+      "gatesId": "right-12",
+      "paragraphIds": [
+        "root::lease_contract_10-p-52"
+      ]
+    },
+    {
+      "id": "condition-37",
+      "trigger": "if, because of force majeure, it is unable to carry out the contract in whole or part",
+      "operator": "IF",
+      "gatesId": "right-13",
+      "paragraphIds": [
+        "root::lease_contract_10-p-52"
+      ]
+    },
+    {
+      "id": "condition-38",
+      "trigger": "If the contract is terminated for the foregoing reason",
+      "operator": "IF",
+      "gatesId": "obligation-40",
+      "paragraphIds": [
+        "root::lease_contract_10-p-53"
+      ]
+    },
+    {
+      "id": "condition-39",
+      "trigger": "If the contract is terminated for the foregoing reason",
+      "operator": "IF",
+      "gatesId": "obligation-41",
+      "paragraphIds": [
+        "root::lease_contract_10-p-53"
+      ]
+    },
+    {
+      "id": "condition-40",
+      "trigger": "If any dispute comes out during the execution of this contract",
+      "operator": "IF",
+      "gatesId": "obligation-42",
+      "paragraphIds": [
+        "root::lease_contract_10-p-58"
+      ]
+    },
+    {
+      "id": "condition-41",
+      "trigger": "If any dispute comes out during the execution of this contract",
+      "operator": "IF",
+      "gatesId": "obligation-43",
+      "paragraphIds": [
+        "root::lease_contract_10-p-58"
+      ]
+    },
+    {
+      "id": "condition-42",
+      "trigger": "In case an agreement cannot be reached",
+      "operator": "IF",
+      "gatesId": "right-14",
+      "paragraphIds": [
+        "root::lease_contract_10-p-58"
+      ]
+    },
+    {
+      "id": "condition-43",
+      "trigger": "In case an agreement cannot be reached",
+      "operator": "IF",
+      "gatesId": "right-15",
+      "paragraphIds": [
+        "root::lease_contract_10-p-58"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "id": "reference-1",
+      "name": "House Proprietary Certificate",
+      "citation": "107510607-12-1-12010",
+      "citedById": "clause-2",
+      "paragraphIds": [
+        "root::lease_contract_10-p-9"
+      ]
+    },
+    {
+      "id": "reference-2",
+      "name": "House Proprietary Certificate",
+      "citation": "",
+      "citedById": "obligation-7",
+      "paragraphIds": [
+        "root::lease_contract_10-p-13"
+      ]
+    },
+    {
+      "id": "reference-3",
+      "name": "business license",
+      "citation": "",
+      "citedById": "obligation-7",
+      "paragraphIds": [
+        "root::lease_contract_10-p-13"
+      ]
+    },
+    {
+      "id": "reference-4",
+      "name": "business license",
+      "citation": "",
+      "citedById": "obligation-8",
+      "paragraphIds": [
+        "root::lease_contract_10-p-13"
+      ]
+    },
+    {
+      "id": "reference-5",
+      "name": "regulation of authority",
+      "citation": "",
+      "citedById": "clause-6",
+      "paragraphIds": [
+        "root::lease_contract_10-p-25"
+      ]
+    }
+  ],
+  "values": [
+    {
+      "id": "value-1",
+      "valueType": "Duration",
+      "amount": "1",
+      "unit": "year",
+      "quantifiesId": "clause-4",
+      "paragraphIds": [
+        "root::lease_contract_10-p-16"
+      ]
+    },
+    {
+      "id": "value-2",
+      "valueType": "Percentage",
+      "amount": "200",
+      "unit": "% of the lease fee per day",
+      "quantifiesId": "obligation-12",
+      "paragraphIds": [
+        "root::lease_contract_10-p-16"
+      ]
+    },
+    {
+      "id": "value-3",
+      "valueType": "Duration",
+      "amount": "1",
+      "unit": "month",
+      "quantifiesId": "obligation-13",
+      "paragraphIds": [
+        "root::lease_contract_10-p-18"
+      ]
+    },
+    {
+      "id": "value-4",
+      "valueType": "Currency",
+      "amount": "45.00",
+      "unit": "CNY per square meter per month",
+      "quantifiesId": "obligation-15",
+      "paragraphIds": [
+        "root::lease_contract_10-p-19"
+      ]
+    },
+    {
+      "id": "value-5",
+      "valueType": "Currency",
+      "amount": "400,000.00",
+      "unit": "CNY",
+      "quantifiesId": "obligation-16",
+      "paragraphIds": [
+        "root::lease_contract_10-p-20"
+      ]
+    },
+    {
+      "id": "value-6",
+      "valueType": "Currency",
+      "amount": "100,000.00",
+      "unit": "CNY",
+      "quantifiesId": "obligation-16",
+      "paragraphIds": [
+        "root::lease_contract_10-p-20"
+      ]
+    },
+    {
+      "id": "value-7",
+      "valueType": "Duration",
+      "amount": "3",
+      "unit": "working days",
+      "quantifiesId": "obligation-16",
+      "paragraphIds": [
+        "root::lease_contract_10-p-20"
+      ]
+    },
+    {
+      "id": "value-8",
+      "valueType": "Duration",
+      "amount": "2",
+      "unit": "months",
+      "quantifiesId": "obligation-28",
+      "paragraphIds": [
+        "root::lease_contract_10-p-30"
+      ]
+    },
+    {
+      "id": "value-9",
+      "valueType": "Quantity",
+      "amount": "2",
+      "unit": "times monthly rent",
+      "quantifiesId": "right-8",
+      "paragraphIds": [
+        "root::lease_contract_10-p-34"
+      ]
+    },
+    {
+      "id": "value-10",
+      "valueType": "Duration",
+      "amount": "2",
+      "unit": "months",
+      "quantifiesId": "clause-13",
+      "paragraphIds": [
+        "root::lease_contract_10-p-38"
+      ]
+    },
+    {
+      "id": "value-11",
+      "valueType": "Duration",
+      "amount": "1",
+      "unit": "month",
+      "quantifiesId": "obligation-30",
+      "paragraphIds": [
+        "root::lease_contract_10-p-39"
+      ]
+    },
+    {
+      "id": "value-12",
+      "valueType": "Quantity",
+      "amount": "2",
+      "unit": "times rental for remaining days",
+      "quantifiesId": "obligation-34",
+      "paragraphIds": [
+        "root::lease_contract_10-p-47"
+      ]
+    },
+    {
+      "id": "value-13",
+      "valueType": "Quantity",
+      "amount": "2",
+      "unit": "times rent for remaining days",
+      "quantifiesId": "obligation-37",
+      "paragraphIds": [
+        "root::lease_contract_10-p-50"
+      ]
+    },
+    {
+      "id": "value-14",
+      "valueType": "Duration",
+      "amount": "1",
+      "unit": "month",
+      "quantifiesId": "clause-25",
+      "paragraphIds": [
+        "root::lease_contract_10-p-53"
+      ]
+    },
+    {
+      "id": "value-15",
+      "valueType": "Quantity",
+      "amount": "2",
+      "unit": "copies",
+      "quantifiesId": "obligation-44",
+      "paragraphIds": [
+        "root::lease_contract_10-p-62"
+      ]
+    },
+    {
+      "id": "value-16",
+      "valueType": "Quantity",
+      "amount": "2",
+      "unit": "copies",
+      "quantifiesId": "obligation-45",
+      "paragraphIds": [
+        "root::lease_contract_10-p-62"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "right-1",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-1",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-2",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-2",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-3",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-3",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-4",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-4",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-5",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-5",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-6",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-6",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-7",
+      "target": "clause-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-7",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-8",
+      "target": "clause-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-8",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-9",
+      "target": "clause-13",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-9",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-10",
+      "target": "clause-17",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-10",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-11",
+      "target": "clause-22",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-11",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-12",
+      "target": "clause-24",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-12",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-13",
+      "target": "clause-24",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-13",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-14",
+      "target": "clause-28",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-14",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-15",
+      "target": "clause-28",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-15",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-1",
+      "target": "clause-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-1",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-2",
+      "target": "clause-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-2",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-3",
+      "target": "clause-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-3",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-4",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-4",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-5",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-5",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-6",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-6",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-7",
+      "target": "clause-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-7",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-8",
+      "target": "clause-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-8",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-9",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-9",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-10",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-10",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-11",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-11",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-12",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-12",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-13",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-13",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-14",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-14",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-15",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-15",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-16",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-16",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-17",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-17",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-18",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-18",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-19",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-19",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-20",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-20",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-21",
+      "target": "clause-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-21",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-22",
+      "target": "clause-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-22",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-23",
+      "target": "clause-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-23",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-24",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-24",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-25",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-25",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-26",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-26",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-27",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-27",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-28",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-28",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-29",
+      "target": "clause-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-30",
+      "target": "clause-13",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-30",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-31",
+      "target": "clause-15",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-31",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-32",
+      "target": "clause-16",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-32",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-33",
+      "target": "clause-17",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-33",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-34",
+      "target": "clause-19",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-34",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-35",
+      "target": "clause-19",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-35",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-36",
+      "target": "clause-20",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-36",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-37",
+      "target": "clause-22",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-37",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-38",
+      "target": "clause-19",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-38",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-39",
+      "target": "clause-22",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-39",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-40",
+      "target": "clause-25",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-40",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-41",
+      "target": "clause-25",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-41",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-42",
+      "target": "clause-28",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-42",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-43",
+      "target": "clause-28",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-43",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-44",
+      "target": "clause-30",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-44",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-45",
+      "target": "clause-30",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-45",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-1",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-1",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-2",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-2",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-3",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-3",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-26",
+      "target": "term-1",
+      "type": "defines",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-1",
+      "target": "right-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-2",
+      "target": "right-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-3",
+      "target": "right-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-4",
+      "target": "obligation-11",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-5",
+      "target": "obligation-12",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-6",
+      "target": "right-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-7",
+      "target": "obligation-17",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-8",
+      "target": "obligation-19",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-9",
+      "target": "obligation-20",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-10",
+      "target": "obligation-24",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-11",
+      "target": "obligation-25",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-12",
+      "target": "obligation-27",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-13",
+      "target": "prohibition-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-14",
+      "target": "prohibition-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-15",
+      "target": "obligation-28",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-16",
+      "target": "right-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-17",
+      "target": "right-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-18",
+      "target": "right-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-19",
+      "target": "right-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-20",
+      "target": "right-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-21",
+      "target": "right-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-22",
+      "target": "right-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-23",
+      "target": "right-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-24",
+      "target": "right-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-25",
+      "target": "obligation-29",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-26",
+      "target": "obligation-30",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-27",
+      "target": "right-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-28",
+      "target": "obligation-32",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-29",
+      "target": "obligation-34",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-30",
+      "target": "obligation-35",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-31",
+      "target": "obligation-36",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-32",
+      "target": "obligation-37",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-33",
+      "target": "obligation-38",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-34",
+      "target": "right-11",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-35",
+      "target": "obligation-39",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-36",
+      "target": "right-12",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-37",
+      "target": "right-13",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-38",
+      "target": "obligation-40",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-39",
+      "target": "obligation-41",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-40",
+      "target": "obligation-42",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-41",
+      "target": "obligation-43",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-42",
+      "target": "right-14",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-43",
+      "target": "right-15",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-1",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-2",
+      "target": "obligation-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-3",
+      "target": "obligation-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-4",
+      "target": "obligation-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-5",
+      "target": "clause-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-1",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-2",
+      "target": "obligation-12",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-3",
+      "target": "obligation-13",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-4",
+      "target": "obligation-15",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-5",
+      "target": "obligation-16",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-6",
+      "target": "obligation-16",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-7",
+      "target": "obligation-16",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-8",
+      "target": "obligation-28",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-9",
+      "target": "right-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-10",
+      "target": "clause-13",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-11",
+      "target": "obligation-30",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-12",
+      "target": "obligation-34",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-13",
+      "target": "obligation-37",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-14",
+      "target": "clause-25",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-15",
+      "target": "obligation-44",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-16",
+      "target": "obligation-45",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-10",
+      "target": "clause-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-11",
+      "target": "clause-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-12",
+      "target": "clause-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-13",
+      "target": "clause-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-15",
+      "target": "clause-14",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-16",
+      "target": "clause-14",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-17",
+      "target": "clause-14",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-19",
+      "target": "clause-18",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-20",
+      "target": "clause-18",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-22",
+      "target": "clause-21",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-24",
+      "target": "clause-23",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-25",
+      "target": "clause-23",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "clause-26",
+      "target": "clause-23",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-1",
+      "target": "clause-5",
+      "type": "depends_on",
+      "evidence": "after Party B made the payment of rent and deposit according to Article 5 below",
+      "paragraphIds": [
+        "root::lease_contract_10-p-15"
+      ]
+    },
+    {
+      "source": "right-2",
+      "target": "clause-4",
+      "type": "modifies",
+      "evidence": "Party B agreed that the calculation of the rent term and the decoration term should not be effected if the interchange of the premises and facilities were delayed.",
+      "paragraphIds": [
+        "root::lease_contract_10-p-15"
+      ]
+    },
+    {
+      "source": "right-2",
+      "target": "clause-5",
+      "type": "modifies",
+      "evidence": "Party B agreed that the calculation of the rent term and the decoration term should not be effected if the interchange of the premises and facilities were delayed.",
+      "paragraphIds": [
+        "root::lease_contract_10-p-15"
+      ]
+    },
+    {
+      "source": "right-4",
+      "target": "clause-5",
+      "type": "modifies",
+      "evidence": "During the term, Pary A offers free rental fee",
+      "paragraphIds": [
+        "root::lease_contract_10-p-18"
+      ]
+    },
+    {
+      "source": "right-12",
+      "target": "clause-18",
+      "type": "modifies",
+      "evidence": "Neither Party is held responsible if, because of force majeure, it is unable to carry out the contract in whole or part.",
+      "paragraphIds": [
+        "root::lease_contract_10-p-52"
+      ]
+    },
+    {
+      "source": "right-13",
+      "target": "clause-21",
+      "type": "modifies",
+      "evidence": "Neither Party is held responsible if, because of force majeure, it is unable to carry out the contract in whole or part.",
+      "paragraphIds": [
+        "root::lease_contract_10-p-52"
+      ]
+    },
+    {
+      "source": "obligation-40",
+      "target": "clause-5",
+      "type": "modifies",
+      "evidence": "the rent will be calculated in accordance with the actual usage time",
+      "paragraphIds": [
+        "root::lease_contract_10-p-53"
+      ]
+    },
+    {
+      "source": "obligation-41",
+      "target": "clause-5",
+      "type": "modifies",
+      "evidence": "the rent will be calculated in accordance with the actual usage time",
+      "paragraphIds": [
+        "root::lease_contract_10-p-53"
+      ]
+    },
+    {
+      "source": "clause-25",
+      "target": "clause-24",
+      "type": "depends_on",
+      "evidence": "If the contract is terminated for the foregoing reason",
+      "paragraphIds": [
+        "root::lease_contract_10-p-53"
+      ]
+    },
+    {
+      "source": "clause-26",
+      "target": "term-1",
+      "type": "uses",
+      "evidence": "“Force majeure events”",
+      "paragraphIds": [
+        "root::lease_contract_10-p-54"
+      ]
+    }
+  ]
+}

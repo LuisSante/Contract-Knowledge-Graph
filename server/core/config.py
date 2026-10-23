@@ -11,6 +11,9 @@ class Settings(BaseSettings):
     KNOWLEDGE_GRAPH_DIR: Path = Path("../infra/json/kg")
     # A file, not a directory: every contract abstract lives in this one map.
     CONTRACT_SUMMARY_PATH: Path = Path("../infra/json/abstract.json")
+    # Red flags annotated in the ALeaseBERT dataset, keyed by document id; written by
+    # notebooks/red_flags.ipynb, never by the system.
+    RED_FLAGS_PATH: Path = Path("../infra/json/red_flags.json")
 
     # this extract paragraphs from a document
     EXTRACT_PARAGRAPHS: bool = True

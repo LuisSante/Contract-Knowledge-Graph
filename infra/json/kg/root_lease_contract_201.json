@@ -1,0 +1,1901 @@
+{
+  "parties": [
+    {
+      "id": "party-1",
+      "name": "Bozhou Fengyi Chinese Medicine Development and Research Institute",
+      "role": "Lessor",
+      "address": "",
+      "aliases": [
+        "Lessor",
+        "Party A"
+      ],
+      "paragraphIds": [
+        "root::lease_contract_201-p-3",
+        "root::lease_contract_201-p-38"
+      ]
+    },
+    {
+      "id": "party-2",
+      "name": "Anhui Xuelingxian Pharmaceutical Co., Ltd.",
+      "role": "Lessee",
+      "address": "",
+      "aliases": [
+        "Lessee",
+        "Party B"
+      ],
+      "paragraphIds": [
+        "root::lease_contract_201-p-4",
+        "root::lease_contract_201-p-40"
+      ]
+    }
+  ],
+  "clauses": [
+    {
+      "id": "clause-1",
+      "ref": "1",
+      "heading": "",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_201-p-6"
+      ]
+    },
+    {
+      "id": "clause-2",
+      "ref": "2",
+      "heading": "Lease term",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_201-p-7",
+        "root::lease_contract_201-p-8",
+        "root::lease_contract_201-p-9",
+        "root::lease_contract_201-p-10",
+        "root::lease_contract_201-p-11",
+        "root::lease_contract_201-p-12"
+      ]
+    },
+    {
+      "id": "clause-3",
+      "ref": "3",
+      "heading": "Rent and rent paying agreement",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_201-p-13",
+        "root::lease_contract_201-p-14"
+      ]
+    },
+    {
+      "id": "clause-4",
+      "ref": "4",
+      "heading": "Repairing and decoration of house",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_201-p-15",
+        "root::lease_contract_201-p-16",
+        "root::lease_contract_201-p-17",
+        "root::lease_contract_201-p-18",
+        "root::lease_contract_201-p-19",
+        "root::lease_contract_201-p-20"
+      ]
+    },
+    {
+      "id": "clause-5",
+      "ref": "5",
+      "heading": "Change of two parties",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_201-p-21",
+        "root::lease_contract_201-p-22",
+        "root::lease_contract_201-p-23",
+        "root::lease_contract_201-p-24"
+      ]
+    },
+    {
+      "id": "clause-6",
+      "ref": "6",
+      "heading": "Responsibility for breach of contract",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_201-p-25",
+        "root::lease_contract_201-p-26",
+        "root::lease_contract_201-p-27",
+        "root::lease_contract_201-p-28",
+        "root::lease_contract_201-p-29"
+      ]
+    },
+    {
+      "id": "clause-7",
+      "ref": "7",
+      "heading": "Conditions of disclaimer",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_201-p-30",
+        "root::lease_contract_201-p-31",
+        "root::lease_contract_201-p-32",
+        "root::lease_contract_201-p-33"
+      ]
+    },
+    {
+      "id": "clause-8",
+      "ref": "8",
+      "heading": "Disputes settlement",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_201-p-34",
+        "root::lease_contract_201-p-35"
+      ]
+    },
+    {
+      "id": "clause-9",
+      "ref": "9",
+      "heading": "",
+      "level": 1,
+      "paragraphIds": [
+        "root::lease_contract_201-p-36",
+        "root::lease_contract_201-p-37",
+        "root::lease_contract_201-p-38",
+        "root::lease_contract_201-p-39",
+        "root::lease_contract_201-p-40",
+        "root::lease_contract_201-p-41"
+      ]
+    }
+  ],
+  "definedTerms": [],
+  "obligations": [
+    {
+      "id": "obligation-1",
+      "action": "Lease workshop",
+      "summary": "Party A leases the specified workshop to Party B.",
+      "text": "Party A leases the workshop (located at East Liuge Village, Weiwu Road, Bozhou, with the building area of 10000 square meters and usable area of 3000 square meters) to Party B.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party A leases the workshop (located at East Liuge Village, Weiwu Road, Bozhou, with the building area of 10000 square meters and usable area of 3000 square meters) to Party B."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-1",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-6"
+      ]
+    },
+    {
+      "id": "obligation-2",
+      "action": "Pay monthly rent",
+      "summary": "Party B must pay Party A 100000 Yuan monthly before the 15th.",
+      "text": "Party B shall pay 100000 Yuan to Party A before 15 of each month as the monthly rent.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party B shall pay 100000 Yuan to Party A before 15 of each month as the monthly rent."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-3",
+      "deadline": "before 15 of each month",
+      "frequency": "monthly",
+      "paragraphIds": [
+        "root::lease_contract_201-p-14"
+      ]
+    },
+    {
+      "id": "obligation-3",
+      "action": "Settle utilities separately",
+      "summary": "Water and electricity fees must be settled separately; the responsible party is not specified.",
+      "text": "The water & electricity fees shall be settled separately.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The water & electricity fees shall be settled separately."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": null,
+      "clauseId": "clause-3",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-14"
+      ]
+    },
+    {
+      "id": "obligation-4",
+      "action": "Repair house",
+      "summary": "Party A is responsible for repairing the house.",
+      "text": "Party A takes charge of repairing of the house.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party A takes charge of repairing of the house."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-4",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-16"
+      ]
+    },
+    {
+      "id": "obligation-5",
+      "action": "Examine facilities",
+      "summary": "Party A must inspect the facilities.",
+      "text": "Party A shall take the examination of the facilities",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party A shall take the examination of the facilities"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-4",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-16"
+      ]
+    },
+    {
+      "id": "obligation-6",
+      "action": "Guarantee no leakage",
+      "summary": "Party A must guarantee that the house has no leakage.",
+      "text": "it shall guarantee that there is no leakage",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "it shall guarantee that there is no leakage"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-4",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-16"
+      ]
+    },
+    {
+      "id": "obligation-7",
+      "action": "Maintain facilities in good condition",
+      "summary": "Party A must guarantee good condition of the listed facilities for Party B's normal and safe use.",
+      "text": "and the tap water, sewage and lighting, doors& windows are in good conditions, so as to ensure the normal and safe use of Party B.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "and the tap water, sewage and lighting, doors& windows are in good conditions, so as to ensure the normal and safe use of Party B."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-4",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-16"
+      ]
+    },
+    {
+      "id": "obligation-8",
+      "action": "Follow repair standard",
+      "summary": "Party A's repair scope and standard must follow the cited notice.",
+      "text": "The repair scope and standard shall be performed by Urban Construction Department (87) C.Z.G.Z.No. 13 Notice.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The repair scope and standard shall be performed by Urban Construction Department (87) C.Z.G.Z.No. 13 Notice."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-4",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-17"
+      ]
+    },
+    {
+      "id": "obligation-9",
+      "action": "Assist repairs",
+      "summary": "Party B must assist Party A during house repairs.",
+      "text": "Party B shall positively assist when Party A repairing the house.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party B shall positively assist when Party A repairing the house."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-4",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-18"
+      ]
+    },
+    {
+      "id": "obligation-10",
+      "action": "Fund and organize repairs",
+      "summary": "Following negotiation, Party A will fund repairs and organize construction within the maintenance scope.",
+      "text": "Through the negotiation of the two parties, Party A will contribute for the repairing work and organize the construction according to the maintenance scope.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Through the negotiation of the two parties, Party A will contribute for the repairing work and organize the construction according to the maintenance scope."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-4",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-19"
+      ]
+    },
+    {
+      "id": "obligation-11",
+      "action": "Obtain decoration approval",
+      "summary": "Party B must obtain Party A's approval of decoration details before construction.",
+      "text": "the scale, scope, process and materials shall be approved by Party A, and then the construction work can be carried out.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "the scale, scope, process and materials shall be approved by Party A, and then the construction work can be carried out."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-4",
+      "deadline": "before construction work",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-20"
+      ]
+    },
+    {
+      "id": "obligation-12",
+      "action": "Discuss decoration costs and ownership",
+      "summary": "Party A must discuss decoration material fees and ownership after contract expiry.",
+      "text": "The two parties shall discuss about the materials fees and ownership of the decoration objects after the contract expiring.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The two parties shall discuss about the materials fees and ownership of the decoration objects after the contract expiring."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-4",
+      "deadline": "after the contract expiring",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-20"
+      ]
+    },
+    {
+      "id": "obligation-13",
+      "action": "Discuss decoration costs and ownership",
+      "summary": "Party B must discuss decoration material fees and ownership after contract expiry.",
+      "text": "The two parties shall discuss about the materials fees and ownership of the decoration objects after the contract expiring.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The two parties shall discuss about the materials fees and ownership of the decoration objects after the contract expiring."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-4",
+      "deadline": "after the contract expiring",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-20"
+      ]
+    },
+    {
+      "id": "obligation-14",
+      "action": "Notify proposed sale",
+      "summary": "Party A must give Party B written notice three months before selling the house.",
+      "text": "Party A shall notify Party B three months in advance of selling the house in the written form",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party A shall notify Party B three months in advance of selling the house in the written form"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-5",
+      "deadline": "three months in advance of selling the house",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-23"
+      ]
+    },
+    {
+      "id": "obligation-15",
+      "action": "Obtain exchange approval",
+      "summary": "Party B must obtain Party A's approval if it intends to exchange the house.",
+      "text": "Party B shall get the approval of Party A if it intends to exchange the house with others",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party B shall get the approval of Party A if it intends to exchange the house with others"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-24"
+      ]
+    },
+    {
+      "id": "obligation-16",
+      "action": "Support reasonable demand",
+      "summary": "Party A must support Party B's reasonable demand in connection with an exchange.",
+      "text": "Party A shall support the reasonable demand of Party B.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party A shall support the reasonable demand of Party B."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-24"
+      ]
+    },
+    {
+      "id": "obligation-17",
+      "action": "Compensate for repair-clause breach",
+      "summary": "The party failing to comply with Article 4 must pay the other party 50000 Yuan; the breaching party is unspecified.",
+      "text": "If one party doesn’t comply with the terms of Article 4, the party shall compensate 50000 Yuan for another party.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "If one party doesn’t comply with the terms of Article 4, the party shall compensate 50000 Yuan for another party."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": null,
+      "clauseId": "clause-6",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-26"
+      ]
+    },
+    {
+      "id": "obligation-18",
+      "action": "Handle economic claims under supervision",
+      "summary": "Party A must handle the specified economic claims under the issuing organ's supervision.",
+      "text": "The two parties agree to handle the economic claim issues of above matters under the supervision of the issuing organ of the contract.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The two parties agree to handle the economic claim issues of above matters under the supervision of the issuing organ of the contract."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-6",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-29"
+      ]
+    },
+    {
+      "id": "obligation-19",
+      "action": "Handle economic claims under supervision",
+      "summary": "Party B must handle the specified economic claims under the issuing organ's supervision.",
+      "text": "The two parties agree to handle the economic claim issues of above matters under the supervision of the issuing organ of the contract.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The two parties agree to handle the economic claim issues of above matters under the supervision of the issuing organ of the contract."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-6",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-29"
+      ]
+    },
+    {
+      "id": "obligation-20",
+      "action": "Recalculate rent and refund difference",
+      "summary": "If termination results from the stated external causes, rent must reflect actual use and Party A must refund the difference.",
+      "text": "If the contract is terminated owing to the above reasons, the rent will be calculated by the actual using time, and it will refund the difference.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "If the contract is terminated owing to the above reasons, the rent will be calculated by the actual using time, and it will refund the difference."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-7",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-33"
+      ]
+    },
+    {
+      "id": "obligation-21",
+      "action": "Negotiate disputes",
+      "summary": "Party A must negotiate disputes arising from the contract.",
+      "text": "Any disputes resulted from the contract shall be negotiated by the two parties",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Any disputes resulted from the contract shall be negotiated by the two parties"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-8",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-35"
+      ]
+    },
+    {
+      "id": "obligation-22",
+      "action": "Negotiate disputes",
+      "summary": "Party B must negotiate disputes arising from the contract.",
+      "text": "Any disputes resulted from the contract shall be negotiated by the two parties",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Any disputes resulted from the contract shall be negotiated by the two parties"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-8",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-35"
+      ]
+    }
+  ],
+  "rights": [
+    {
+      "id": "right-1",
+      "action": "Terminate and recover house",
+      "summary": "Party A may terminate and recover the house upon either listed misuse by Party B.",
+      "text": "Party A has right to terminate the contract and takes back the house if one of the following situations occurred:",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party A has right to terminate the contract and takes back the house if one of the following situations occurred:"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-2",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-9"
+      ]
+    },
+    {
+      "id": "right-2",
+      "action": "Receive leasing priority",
+      "summary": "Party B has priority to lease the house after expiry.",
+      "text": "Party B has the priority to lease the house after the contract expires",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party B has the priority to lease the house after the contract expires"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-2",
+      "deadline": "after the contract expires",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-12"
+      ]
+    },
+    {
+      "id": "right-3",
+      "action": "Extend lease by negotiation",
+      "summary": "Party B may extend the lease through negotiation with Party A if it cannot promptly find a house after expiry.",
+      "text": "it can extend the lease term with negotiation of Party A if it cannot find the house promptly after the contract expires.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "it can extend the lease term with negotiation of Party A if it cannot find the house promptly after the contract expires."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-2",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-12"
+      ]
+    },
+    {
+      "id": "right-4",
+      "action": "Decorate house",
+      "summary": "Party B may decorate without affecting the structure, subject to Party A's approval of the specified details.",
+      "text": "Party B can decorate the house without affecting the house structure, but the scale, scope, process and materials shall be approved by Party A, and then the construction work can be carried out.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party B can decorate the house without affecting the house structure, but the scale, scope, process and materials shall be approved by Party A, and then the construction work can be carried out."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-4",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-20"
+      ]
+    },
+    {
+      "id": "right-5",
+      "action": "Receive purchase priority",
+      "summary": "Party B has priority to purchase the house on equal conditions.",
+      "text": "Party B has the priority to purchase the house under same conditions.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party B has the priority to purchase the house under same conditions."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-23"
+      ]
+    },
+    {
+      "id": "right-6",
+      "action": "Refuse additional fees",
+      "summary": "Party B may refuse additional fees beyond rent if Party A receives them.",
+      "text": "If Party A receives the additional fees except for the rent, Party B has right to refuse.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "If Party A receives the additional fees except for the rent, Party B has right to refuse."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-6",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-27"
+      ]
+    },
+    {
+      "id": "right-7",
+      "action": "Stop unauthorized transfer",
+      "summary": "Party A may stop Party B's independent transfer of the house to others.",
+      "text": "Party A has right to stop transferring if Party B transfers the house to other people independently.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Party A has right to stop transferring if Party B transfers the house to other people independently."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-6",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-28"
+      ]
+    },
+    {
+      "id": "right-8",
+      "action": "Exclude force majeure liability",
+      "summary": "Party A is exempt from responsibility for the specified force majeure damage or loss.",
+      "text": "The two parties take no responsibilities if the house is damaged or Party B has loss owing to the force majeure.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The two parties take no responsibilities if the house is damaged or Party B has loss owing to the force majeure."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-7",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-31"
+      ]
+    },
+    {
+      "id": "right-9",
+      "action": "Exclude force majeure liability",
+      "summary": "Party B is exempt from responsibility for the specified force majeure damage or loss.",
+      "text": "The two parties take no responsibilities if the house is damaged or Party B has loss owing to the force majeure.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The two parties take no responsibilities if the house is damaged or Party B has loss owing to the force majeure."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-7",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-31"
+      ]
+    },
+    {
+      "id": "right-10",
+      "action": "Exclude municipal construction liability",
+      "summary": "Party A owes no responsibility to Party B for losses from removal or rebuilding required by municipal construction.",
+      "text": "The two parties shall not take the responsibility for each other if they have the loss that the house is removed or rebuilt owing to the demand of municipal construction.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The two parties shall not take the responsibility for each other if they have the loss that the house is removed or rebuilt owing to the demand of municipal construction."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-7",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-32"
+      ]
+    },
+    {
+      "id": "right-11",
+      "action": "Exclude municipal construction liability",
+      "summary": "Party B owes no responsibility to Party A for losses from removal or rebuilding required by municipal construction.",
+      "text": "The two parties shall not take the responsibility for each other if they have the loss that the house is removed or rebuilt owing to the demand of municipal construction.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "The two parties shall not take the responsibility for each other if they have the loss that the house is removed or rebuilt owing to the demand of municipal construction."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-7",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-32"
+      ]
+    },
+    {
+      "id": "right-12",
+      "action": "Apply for mediation",
+      "summary": "Party A may seek mediation at the house lease management organ if negotiation fails.",
+      "text": "if it fails to be solved in this way, any party can apply for mediation in the house lease management organ",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "if it fails to be solved in this way, any party can apply for mediation in the house lease management organ"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-8",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-35"
+      ]
+    },
+    {
+      "id": "right-13",
+      "action": "Apply for mediation",
+      "summary": "Party B may seek mediation at the house lease management organ if negotiation fails.",
+      "text": "if it fails to be solved in this way, any party can apply for mediation in the house lease management organ",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "if it fails to be solved in this way, any party can apply for mediation in the house lease management organ"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-8",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-35"
+      ]
+    },
+    {
+      "id": "right-14",
+      "action": "Apply for arbitration",
+      "summary": "Party A may apply to the specified arbitration committee if mediation fails.",
+      "text": "it can apply for arbitration to the Arbitration Committee of Economic Contract of the Municipal Administration of Industry and Commerce if the mediation is failed",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "it can apply for arbitration to the Arbitration Committee of Economic Contract of the Municipal Administration of Industry and Commerce if the mediation is failed"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-8",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-35"
+      ]
+    },
+    {
+      "id": "right-15",
+      "action": "Apply for arbitration",
+      "summary": "Party B may apply to the specified arbitration committee if mediation fails.",
+      "text": "it can apply for arbitration to the Arbitration Committee of Economic Contract of the Municipal Administration of Industry and Commerce if the mediation is failed",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "it can apply for arbitration to the Arbitration Committee of Economic Contract of the Municipal Administration of Industry and Commerce if the mediation is failed"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-8",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-35"
+      ]
+    },
+    {
+      "id": "right-16",
+      "action": "Bring legal action",
+      "summary": "Party A may also bring legal action in the People's Court.",
+      "text": "it can also take the legal action to the People’s Court.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "it can also take the legal action to the People’s Court."
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-8",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-35"
+      ]
+    },
+    {
+      "id": "right-17",
+      "action": "Bring legal action",
+      "summary": "Party B may also bring legal action in the People's Court.",
+      "text": "it can also take the legal action to the People’s Court.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "it can also take the legal action to the People’s Court."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-8",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::lease_contract_201-p-35"
+      ]
+    }
+  ],
+  "prohibitions": [],
+  "conditions": [
+    {
+      "id": "condition-1",
+      "trigger": "Party B transfers, subleases, lends, jointly operates, buys share or exchanges the house with others;",
+      "operator": "IF",
+      "gatesId": "right-1",
+      "paragraphIds": [
+        "root::lease_contract_201-p-10"
+      ]
+    },
+    {
+      "id": "condition-2",
+      "trigger": "Party B uses the house to take illegal activities, which damages the public interests;",
+      "operator": "IF",
+      "gatesId": "right-1",
+      "paragraphIds": [
+        "root::lease_contract_201-p-11"
+      ]
+    },
+    {
+      "id": "condition-3",
+      "trigger": "if it cannot find the house promptly after the contract expires",
+      "operator": "IF",
+      "gatesId": "right-3",
+      "paragraphIds": [
+        "root::lease_contract_201-p-12"
+      ]
+    },
+    {
+      "id": "condition-4",
+      "trigger": "when Party A repairing the house",
+      "operator": "UPON",
+      "gatesId": "obligation-9",
+      "paragraphIds": [
+        "root::lease_contract_201-p-18"
+      ]
+    },
+    {
+      "id": "condition-5",
+      "trigger": "the scale, scope, process and materials shall be approved by Party A",
+      "operator": "IF",
+      "gatesId": "right-4",
+      "paragraphIds": [
+        "root::lease_contract_201-p-20"
+      ]
+    },
+    {
+      "id": "condition-6",
+      "trigger": "if it intends to exchange the house with others",
+      "operator": "IF",
+      "gatesId": "obligation-15",
+      "paragraphIds": [
+        "root::lease_contract_201-p-24"
+      ]
+    },
+    {
+      "id": "condition-7",
+      "trigger": "If one party doesn’t comply with the terms of Article 4",
+      "operator": "IF",
+      "gatesId": "obligation-17",
+      "paragraphIds": [
+        "root::lease_contract_201-p-26"
+      ]
+    },
+    {
+      "id": "condition-8",
+      "trigger": "If Party A receives the additional fees except for the rent",
+      "operator": "IF",
+      "gatesId": "right-6",
+      "paragraphIds": [
+        "root::lease_contract_201-p-27"
+      ]
+    },
+    {
+      "id": "condition-9",
+      "trigger": "if Party B transfers the house to other people independently",
+      "operator": "IF",
+      "gatesId": "right-7",
+      "paragraphIds": [
+        "root::lease_contract_201-p-28"
+      ]
+    },
+    {
+      "id": "condition-10",
+      "trigger": "if the house is damaged or Party B has loss owing to the force majeure",
+      "operator": "IF",
+      "gatesId": "right-8",
+      "paragraphIds": [
+        "root::lease_contract_201-p-31"
+      ]
+    },
+    {
+      "id": "condition-11",
+      "trigger": "if the house is damaged or Party B has loss owing to the force majeure",
+      "operator": "IF",
+      "gatesId": "right-9",
+      "paragraphIds": [
+        "root::lease_contract_201-p-31"
+      ]
+    },
+    {
+      "id": "condition-12",
+      "trigger": "if they have the loss that the house is removed or rebuilt owing to the demand of municipal construction",
+      "operator": "IF",
+      "gatesId": "right-10",
+      "paragraphIds": [
+        "root::lease_contract_201-p-32"
+      ]
+    },
+    {
+      "id": "condition-13",
+      "trigger": "if they have the loss that the house is removed or rebuilt owing to the demand of municipal construction",
+      "operator": "IF",
+      "gatesId": "right-11",
+      "paragraphIds": [
+        "root::lease_contract_201-p-32"
+      ]
+    },
+    {
+      "id": "condition-14",
+      "trigger": "If the contract is terminated owing to the above reasons",
+      "operator": "IF",
+      "gatesId": "obligation-20",
+      "paragraphIds": [
+        "root::lease_contract_201-p-33"
+      ]
+    },
+    {
+      "id": "condition-15",
+      "trigger": "if it fails to be solved in this way",
+      "operator": "IF",
+      "gatesId": "right-12",
+      "paragraphIds": [
+        "root::lease_contract_201-p-35"
+      ]
+    },
+    {
+      "id": "condition-16",
+      "trigger": "if it fails to be solved in this way",
+      "operator": "IF",
+      "gatesId": "right-13",
+      "paragraphIds": [
+        "root::lease_contract_201-p-35"
+      ]
+    },
+    {
+      "id": "condition-17",
+      "trigger": "if the mediation is failed",
+      "operator": "IF",
+      "gatesId": "right-14",
+      "paragraphIds": [
+        "root::lease_contract_201-p-35"
+      ]
+    },
+    {
+      "id": "condition-18",
+      "trigger": "if the mediation is failed",
+      "operator": "IF",
+      "gatesId": "right-15",
+      "paragraphIds": [
+        "root::lease_contract_201-p-35"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "id": "reference-1",
+      "name": "Contract Law of the People’s Republic of China",
+      "citation": "",
+      "citedById": "clause-1",
+      "paragraphIds": [
+        "root::lease_contract_201-p-5"
+      ]
+    },
+    {
+      "id": "reference-2",
+      "name": "Urban Construction Department (87) C.Z.G.Z.No. 13 Notice",
+      "citation": "(87) C.Z.G.Z.No. 13",
+      "citedById": "obligation-8",
+      "paragraphIds": [
+        "root::lease_contract_201-p-17"
+      ]
+    }
+  ],
+  "values": [
+    {
+      "id": "value-1",
+      "valueType": "Quantity",
+      "amount": "10000",
+      "unit": "square meters",
+      "quantifiesId": "obligation-1",
+      "paragraphIds": [
+        "root::lease_contract_201-p-6"
+      ]
+    },
+    {
+      "id": "value-2",
+      "valueType": "Quantity",
+      "amount": "3000",
+      "unit": "square meters",
+      "quantifiesId": "obligation-1",
+      "paragraphIds": [
+        "root::lease_contract_201-p-6"
+      ]
+    },
+    {
+      "id": "value-3",
+      "valueType": "Duration",
+      "amount": "15",
+      "unit": "years",
+      "quantifiesId": "clause-2",
+      "paragraphIds": [
+        "root::lease_contract_201-p-8"
+      ]
+    },
+    {
+      "id": "value-4",
+      "valueType": "Currency",
+      "amount": "1.2 million",
+      "unit": "Yuan",
+      "quantifiesId": "clause-3",
+      "paragraphIds": [
+        "root::lease_contract_201-p-14"
+      ]
+    },
+    {
+      "id": "value-5",
+      "valueType": "Currency",
+      "amount": "100000",
+      "unit": "Yuan",
+      "quantifiesId": "obligation-2",
+      "paragraphIds": [
+        "root::lease_contract_201-p-14"
+      ]
+    },
+    {
+      "id": "value-6",
+      "valueType": "Duration",
+      "amount": "three",
+      "unit": "months",
+      "quantifiesId": "obligation-14",
+      "paragraphIds": [
+        "root::lease_contract_201-p-23"
+      ]
+    },
+    {
+      "id": "value-7",
+      "valueType": "Currency",
+      "amount": "50000",
+      "unit": "Yuan",
+      "quantifiesId": "obligation-17",
+      "paragraphIds": [
+        "root::lease_contract_201-p-26"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "right-1",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-1",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-2",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-2",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-3",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-3",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-4",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-4",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-5",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-5",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-6",
+      "target": "clause-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-6",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-7",
+      "target": "clause-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-7",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-8",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-8",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-9",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-9",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-10",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-10",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-11",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-11",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-12",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-12",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-13",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-13",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-14",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-14",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-15",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-15",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-16",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-16",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-17",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-17",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-1",
+      "target": "clause-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-1",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-2",
+      "target": "clause-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-2",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-3",
+      "target": "clause-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-4",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-4",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-5",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-5",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-6",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-6",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-7",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-7",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-8",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-8",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-9",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-9",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-10",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-10",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-11",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-11",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-12",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-12",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-13",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-13",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-14",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-14",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-15",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-15",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-16",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-16",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-17",
+      "target": "clause-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-18",
+      "target": "clause-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-18",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-19",
+      "target": "clause-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-19",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-20",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-20",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-21",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-21",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-22",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-22",
+      "target": "party-2",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-1",
+      "target": "right-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-2",
+      "target": "right-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-3",
+      "target": "right-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-4",
+      "target": "obligation-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-5",
+      "target": "right-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-6",
+      "target": "obligation-15",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-7",
+      "target": "obligation-17",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-8",
+      "target": "right-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-9",
+      "target": "right-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-10",
+      "target": "right-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-11",
+      "target": "right-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-12",
+      "target": "right-10",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-13",
+      "target": "right-11",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-14",
+      "target": "obligation-20",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-15",
+      "target": "right-12",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-16",
+      "target": "right-13",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-17",
+      "target": "right-14",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-18",
+      "target": "right-15",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-1",
+      "target": "clause-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-2",
+      "target": "obligation-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-1",
+      "target": "obligation-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-2",
+      "target": "obligation-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-3",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-4",
+      "target": "clause-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-5",
+      "target": "obligation-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-6",
+      "target": "obligation-14",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-7",
+      "target": "obligation-17",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-1",
+      "target": "clause-1",
+      "type": "modifies",
+      "evidence": "Party A has right to terminate the contract and takes back the house",
+      "paragraphIds": [
+        "root::lease_contract_201-p-9"
+      ]
+    },
+    {
+      "source": "right-1",
+      "target": "clause-2",
+      "type": "modifies",
+      "evidence": "Party A has right to terminate the contract and takes back the house",
+      "paragraphIds": [
+        "root::lease_contract_201-p-9"
+      ]
+    },
+    {
+      "source": "obligation-17",
+      "target": "clause-4",
+      "type": "depends_on",
+      "evidence": "If one party doesn’t comply with the terms of Article 4",
+      "paragraphIds": [
+        "root::lease_contract_201-p-26"
+      ]
+    },
+    {
+      "source": "right-8",
+      "target": "clause-6",
+      "type": "modifies",
+      "evidence": "The two parties take no responsibilities if the house is damaged or Party B has loss owing to the force majeure.",
+      "paragraphIds": [
+        "root::lease_contract_201-p-31"
+      ]
+    },
+    {
+      "source": "right-9",
+      "target": "clause-6",
+      "type": "modifies",
+      "evidence": "The two parties take no responsibilities if the house is damaged or Party B has loss owing to the force majeure.",
+      "paragraphIds": [
+        "root::lease_contract_201-p-31"
+      ]
+    },
+    {
+      "source": "right-10",
+      "target": "clause-6",
+      "type": "modifies",
+      "evidence": "The two parties shall not take the responsibility for each other if they have the loss that the house is removed or rebuilt owing to the demand of municipal construction.",
+      "paragraphIds": [
+        "root::lease_contract_201-p-32"
+      ]
+    },
+    {
+      "source": "right-11",
+      "target": "clause-6",
+      "type": "modifies",
+      "evidence": "The two parties shall not take the responsibility for each other if they have the loss that the house is removed or rebuilt owing to the demand of municipal construction.",
+      "paragraphIds": [
+        "root::lease_contract_201-p-32"
+      ]
+    },
+    {
+      "source": "obligation-20",
+      "target": "clause-3",
+      "type": "modifies",
+      "evidence": "the rent will be calculated by the actual using time, and it will refund the difference.",
+      "paragraphIds": [
+        "root::lease_contract_201-p-33"
+      ]
+    }
+  ]
+}

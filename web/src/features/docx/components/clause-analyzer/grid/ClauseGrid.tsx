@@ -22,13 +22,18 @@ import {
 } from '@/features/docx/components/clause-analyzer/grid/ClauseRow';
 import {
 	LABEL_MIN_WIDTH,
-	LABEL_WIDTH,
-	LANE_COLUMNS,
 	laneWidth,
 	PAIR_SECOND_COLOR,
 	PARTY_COLOR,
 	ROW_PAGE,
 } from '@/features/docx/components/clause-analyzer/constants';
+
+/** The Clause Analyzer's layout: room for a long clause name on one line, and 15 marks to a
+ *  column before it wraps. */
+const NAME_WIDTH = 320;
+const COLUMN_MARKS = 15;
+/** The words after "CLAUSE" for each ordering. */
+const SORT_LABELS = { importance: 'by relevance ↓', order: 'by order' };
 
 interface ClauseGridProps {
 	clauseRows: GridRow[];
@@ -37,7 +42,6 @@ interface ClauseGridProps {
 	lanes: GridLane[];
 	visibleKinds: Set<MarkKind>;
 	activeClauseId: string | null;
-	shareOf: (clauseId: string | null) => { a: number; b: number } | null;
 	laneName: (lane: GridLane) => string;
 	sortByImportance: boolean;
 	/** The importance is fetched, so the ordering cannot be offered before it lands. */
@@ -46,27 +50,11 @@ interface ClauseGridProps {
 	paintLanes: Record<GridLane, boolean>;
 	onPaintLane: (lane: GridLane, on: boolean) => void;
 	canPaintB: boolean;
-	showShared: boolean;
-	/** Centres the parties' columns in the room the clause names leave, instead of packing
-	 *  them to the left. */
-	centerLanes?: boolean;
-	/** How many marks a lane holds before it wraps to a new line. */
-	laneColumns?: number;
-	/** Names each row as Table v2 does; absent, rows show their plain heading. */
+	/** Names each row by rank, number and heading; absent, rows show their plain heading. */
 	leadOf?: (row: GridRow) => ClauseRowLead;
-	labelWidth?: number;
-	/** Every other row in solid grey instead of a faint tint. */
-	boldStripes?: boolean;
 	/** Statements a condition gates; their squares are drawn as outlines. */
 	conditionalIds?: ReadonlySet<string>;
-	/** The words after "CLAUSE" for each ordering. */
-	sortLabels?: { importance: string; order: string };
-	/** The columns hold what each party gains (a credited grid), not what it carries: the
-	 *  header reads "In favour of" over each name. */
-	favourSide?: boolean;
-	/** Each row marks, on the rule between the columns, the party it favours. */
-	favourAxis?: boolean;
-	/** The reader's party (Table v1.2's «You are»): its column reads «In favour of you». */
+	/** The reader's party («You are»): its column's name is marked «(you)». */
 	youLane?: GridLane | null;
 	/** Clauses where the other party has more squares than the reader in the type shown. */
 	againstIds?: ReadonlySet<string> | null;
@@ -74,9 +62,7 @@ interface ClauseGridProps {
 	emptyNote?: string;
 	onSelectClause: (clauseId: string) => void;
 	onOpenGraph?: (clauseId: string) => void;
-	/** Opens a clause in Table v2; each row then ends in a «Details» link. */
-	onDetails?: (clauseId: string) => void;
-	/** Each row unfolds this under it while it is the picked one (Table v1.2). */
+	/** Each row unfolds this under it while it is the picked one. */
 	renderDetail?: (row: GridRow) => ReactNode;
 	/** Goes to a clause that modifies a row, from that row's «modified by». */
 	onGoToModifier?: (clauseId: string, kind: DeonticKind | null) => void;
@@ -92,7 +78,6 @@ export function ClauseGrid({
 	lanes,
 	visibleKinds,
 	activeClauseId,
-	shareOf,
 	laneName,
 	sortByImportance,
 	sortable,
@@ -100,22 +85,13 @@ export function ClauseGrid({
 	paintLanes,
 	onPaintLane,
 	canPaintB,
-	showShared,
-	centerLanes = false,
-	laneColumns = LANE_COLUMNS,
 	leadOf,
-	labelWidth = LABEL_WIDTH,
-	boldStripes = false,
 	conditionalIds,
-	sortLabels = { importance: 'most important first ↓', order: 'document order' },
-	favourSide = false,
-	favourAxis = false,
 	youLane = null,
 	againstIds = null,
 	emptyNote,
 	onSelectClause,
 	onOpenGraph,
-	onDetails,
 	renderDetail,
 	onGoToModifier,
 	onOpenMark,
@@ -137,57 +113,41 @@ export function ClauseGrid({
 
 	return (
 		<div className="h-full overflow-auto">
-			{/* With centred lanes the clause column gives up width first; below its minimum the
-			    whole table scrolls sideways, so nothing at a row's end is cut off. */}
-			<div className={centerLanes ? 'min-w-min' : 'min-w-[620px]'}>
+			{/* The clause column gives up width first; below its minimum the whole table scrolls
+			    sideways, so nothing at a row's end is cut off. */}
+			<div className="min-w-min">
 				<div className="sticky top-0 z-10 flex items-center gap-2 border-b border-border/60 bg-background/95 px-3 py-1.5 text-2xs backdrop-blur">
 					<button
 						type="button"
 						onClick={onToggleSort}
 						disabled={!sortable}
-						className={`mr-2 truncate text-left font-medium text-muted-foreground/70 enabled:hover:text-foreground disabled:cursor-default ${
-							centerLanes ? '' : 'shrink-0'
-						}`}
-						style={
-							centerLanes
-								? { flexBasis: labelWidth, minWidth: LABEL_MIN_WIDTH }
-								: { width: labelWidth }
-						}
+						className="mr-2 truncate text-left font-medium text-muted-foreground/70 enabled:hover:text-foreground disabled:cursor-default"
+						style={{ flexBasis: NAME_WIDTH, minWidth: LABEL_MIN_WIDTH }}
 						title="Order the rows by how much each clause weighs inside the contract (PageRank with a per-clause prior), or by its position in the document"
 					>
 						CLAUSE
 						{sortable && (
 							<span className="font-normal opacity-70">
 								{' · '}
-								{sortByImportance ? sortLabels.importance : sortLabels.order}
+								{sortByImportance ? SORT_LABELS.importance : SORT_LABELS.order}
 							</span>
 						)}
 					</button>
 					{/* The rows' gap, so each name stays over its column. */}
-					<div
-						className={
-							centerLanes
-								? `flex flex-1 items-center justify-center ${favourAxis ? 'gap-3.5' : 'gap-2'}`
-								: 'contents'
-						}
-					>
+					<div className="flex flex-1 items-center justify-center gap-3.5">
 						{(['a', 'b'] as const).map((lane) => (
 							<Fragment key={lane}>
 								{/* The rows put a rule between the two columns; the header keeps its width. */}
-								{centerLanes && lane === 'b' && <span className="w-px shrink-0" />}
+								{lane === 'b' && <span className="w-px shrink-0" />}
 								<label
 									className={`flex min-w-0 shrink-0 cursor-pointer items-center gap-1.5 font-semibold ${
 										lane === 'a' ? 'justify-end' : 'justify-start'
 									}`}
 									style={{
-										width: laneWidth(laneColumns),
+										width: laneWidth(COLUMN_MARKS),
 										color: lane === 'a' ? PARTY_COLOR : PAIR_SECOND_COLOR,
 									}}
-									title={
-										favourSide
-											? `Paint what favours ${laneName(lane)} in the document`
-											: `Paint ${laneName(lane)}’s entities in the document`
-									}
+									title={`Paint ${laneName(lane)}’s statements in the document`}
 								>
 									{lane === 'b' && (
 										<Checkbox
@@ -199,20 +159,10 @@ export function ClauseGrid({
 											aria-label={`Paint ${laneName('b')}’s statements`}
 										/>
 									)}
-									{favourSide ? (
-										<span
-											className={`flex min-w-0 flex-col ${lane === 'a' ? 'items-end' : 'items-start'}`}
-										>
-											{youLane === lane ? (
-												<span className="font-semibold">In favour of you</span>
-											) : (
-												<span className="font-normal text-muted-foreground">In favour of</span>
-											)}
-											<span className="max-w-full truncate">{laneName(lane)}</span>
-										</span>
-									) : (
-										<span className="truncate">{laneName(lane)}</span>
-									)}
+									<span className="truncate">
+										{laneName(lane)}
+										{youLane === lane && <span className="font-normal"> (you)</span>}
+									</span>
 									{lane === 'a' && (
 										<Checkbox
 											checked={paintLanes.a}
@@ -225,18 +175,9 @@ export function ClauseGrid({
 								</label>
 							</Fragment>
 						))}
-						{showShared && (
-							<span
-								className="shrink-0 truncate font-medium text-muted-foreground/70"
-								style={{ width: laneWidth(laneColumns) }}
-								title="Provisiones que el contrato dirige a las dos partes a la vez"
-							>
-								{laneName('shared')}
-							</span>
-						)}
 					</div>
-					{/* As wide as the rows' «Details» link, so the columns stay under their names. */}
-					{(onDetails || renderDetail) && <span className="w-16 shrink-0" />}
+					{/* As wide as the rows' «Details» button, so the columns stay under their names. */}
+					{renderDetail && <span className="w-16 shrink-0" />}
 				</div>
 
 				{shownRows.length === 0 && emptyNote && (
@@ -253,19 +194,17 @@ export function ClauseGrid({
 						lanes={lanes}
 						visibleKinds={visibleKinds}
 						paintLanes={paintLanes}
-						share={shareOf(row.clauseId)}
-						centerLanes={centerLanes}
-						laneColumns={laneColumns}
+						centerLanes
+						laneColumns={COLUMN_MARKS}
 						lead={leadOf?.(row)}
-						labelWidth={labelWidth}
-						boldStripes={boldStripes}
+						labelWidth={NAME_WIDTH}
+						boldStripes
 						conditionalIds={conditionalIds}
-						favourAxis={favourAxis}
+						axisMark
 						against={row.clauseId !== null && Boolean(againstIds?.has(row.clauseId))}
 						laneName={laneName}
 						onSelect={onSelectClause}
 						onOpenGraph={onOpenGraph}
-						onDetails={onDetails}
 						expandable={Boolean(renderDetail)}
 						detail={
 							renderDetail && activeClauseId !== null && row.clauseId === activeClauseId

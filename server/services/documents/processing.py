@@ -105,7 +105,11 @@ def build_paragraphs(pages: list[dict], doc_id: str) -> list[dict]:
 
 
 SECTION_HEADING_RE = re.compile(r"^\s*(?:(?:ARTICLE|Article|SECTION|Section)\s+)?(\d+(?:\.\d+){0,3})\s*([.)])?\s+(\S.*)$")
+# A stray dot before the word is a copying slip (".Article 8. Transferring ..."), not punctuation.
+KEYWORD_HEADING_RE = re.compile(r"^[\s.]*(?:ARTICLE|Article|SECTION|Section)\s+(\d+(?:\.\d+){0,3})\s*[.:]?\s*(.*)$")
 HEADING_PREVIEW_CHARS = 70
+# From this many "Article N" headings on, they are the contract's sections; see build_clause_tree.
+KEYWORD_SECTIONS_MIN = 3
 
 
 def _accept_heading(text: str) -> tuple[str, str] | None:
@@ -124,6 +128,20 @@ def _accept_heading(text: str) -> tuple[str, str] | None:
         return None
     # "13.1 , Bellicum shall ..." is a reference split by a page break, not a heading.
     if not rest[:1].isalnum() and rest[:1] not in "\"“'‘(":
+        return None
+    return ref, rest[:HEADING_PREVIEW_CHARS].strip()
+
+
+def _accept_keyword_heading(text: str) -> tuple[str, str] | None:
+    """A heading such as "Article 3: Rent", or "Article 1." alone with its text in the next
+    paragraph. The word is what makes the number a heading, so the colon and the missing
+    title that `_accept_heading` turns down are taken here."""
+    match = KEYWORD_HEADING_RE.match(text)
+    if not match:
+        return None
+    ref, rest = match.group(1), match.group(2)
+    # "Section 5.4, the Seller shall ..." opens a sentence that cites a section.
+    if rest and not rest[:1].isalnum() and rest[:1] not in "\"“'‘(":
         return None
     return ref, rest[:HEADING_PREVIEW_CHARS].strip()
 
@@ -155,9 +173,11 @@ def build_clause_tree(paragraphs: list[dict]) -> list[dict]:
     can rely on it being the same every time.
     """
     headings: list[dict] = []
+    worded: list[bool] = []
     for row in paragraphs:
         text = normalize_text(str(row.get("text") or ""))
-        accepted = _accept_heading(text)
+        keyword = _accept_keyword_heading(text)
+        accepted = _accept_heading(text) or keyword
         if accepted:
             ref, preview = accepted
             headings.append(
@@ -169,6 +189,15 @@ def build_clause_tree(paragraphs: list[dict]) -> list[dict]:
                     "children": [],
                 }
             )
+            worded.append(keyword is not None)
+
+    # A contract whose sections say "Article N" numbers the lists inside them from 1 again
+    # ("Article 5" / "1. If Party A ..."), and those restarts beat the articles to the longest
+    # run. There the articles and their dotted subsections are the tree; the plain "1." is an item.
+    sections = {h["ref"] for h, w in zip(headings, worded) if w and "." not in h["ref"]}
+    by_word = len(sections) >= KEYWORD_SECTIONS_MIN
+    if by_word:
+        headings = [h for h, w in zip(headings, worded) if w or ("." in h["ref"] and h["ref"].split(".")[0] in sections)]
 
     body = _longest_numbering_run(headings)
     by_ref = {node["ref"]: node for node in body}
@@ -176,6 +205,10 @@ def build_clause_tree(paragraphs: list[dict]) -> list[dict]:
     for node in body:
         parent_ref = node["ref"].rsplit(".", 1)[0] if "." in node["ref"] else None
         parent = by_ref.get(parent_ref) if parent_ref else None
+        # "9.2.1" under "Article 9", whose "2." is a list item and not a heading.
+        while by_word and parent is None and parent_ref and "." in parent_ref:
+            parent_ref = parent_ref.rsplit(".", 1)[0]
+            parent = by_ref.get(parent_ref)
         (parent["children"] if parent else roots).append(node)
     return roots
 

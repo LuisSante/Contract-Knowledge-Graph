@@ -6,6 +6,7 @@ import type { RightPanelTab } from '@/types/document';
 
 import { RightPanelAssistant } from '@/features/docx/components/assistant/RightPanelAssistant';
 import { ClauseAnalyzerPanel } from '@/features/docx/components/clause-analyzer/ClauseAnalyzerPanel';
+import { DeadlinesPanel } from '@/features/docx/components/deadlines/DeadlinesPanel';
 import { KnowledgeGraphPanel } from '@/features/docx/components/knowledge-graph/KnowledgeGraphPanel';
 
 interface RightPanelContentProps {
@@ -27,6 +28,10 @@ export function RightPanelContent({
 		return (
 			<ClauseAnalyzerPanel docId={docId} onOpenGraph={() => onSelectTool('knowledge_graph')} />
 		);
+	}
+
+	if (activeTab === 'deadlines') {
+		return <DeadlinesPanel docId={docId} />;
 	}
 
 	if (activeTab === 'knowledge_graph') {

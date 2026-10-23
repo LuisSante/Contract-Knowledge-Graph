@@ -277,5 +277,3 @@ export function useDocumentViewer(
 		},
 	};
 }
-
-export type DocumentViewerMaps = ReturnType<typeof useDocumentViewer>['maps'];

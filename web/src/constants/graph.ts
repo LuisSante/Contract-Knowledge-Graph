@@ -5,5 +5,3 @@ export const EMPTY_CHANGE_LOG: ChangeLogState = {
 	oldSegments: [],
 	newSegments: [],
 };
-
-export const MAX_RELATED_PARAGRAPHS = 0;

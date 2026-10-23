@@ -23,7 +23,7 @@ interface FocusPayloadInput {
 	topK: number;
 	severity: DeonticSeverity;
 	importanceByNode: Record<string, number> | null;
-	/** Paint each statement's conditions, and link those written apart (Table v1.1). */
+	/** Paint each statement's conditions, and link those written apart. */
 	paintConditions?: boolean;
 }
 

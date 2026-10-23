@@ -66,11 +66,9 @@ interface ClauseAnalyzerState extends GraphPayload {
 	notes: DocNote[];
 	/** Counts every jump to the contract, so asking for the same place again still lands there. */
 	documentTargetSeq: number;
-	/** The clause picked in the Table or in the graph; both tabs show the same one. Keyed
+	/** The clause picked in the table or in the graph; both tabs show the same one. Keyed
 	 *  by document, since every contract has a clause-1. */
 	selectedClause: { docId: string; clauseId: string } | null;
-	/** A clause Table v1.1 sent to Table v2 for its details; v2 opens it on arrival and clears it. */
-	detailsClause: { docId: string; clauseId: string } | null;
 
 	focusNode: (nodeId: string) => void;
 	setFocusMeta: (meta: FocusMeta | null) => void;
@@ -89,7 +87,6 @@ interface ClauseAnalyzerState extends GraphPayload {
 	focusPair: (anchorId: string, secondId: string) => void;
 	setNotes: (notes: DocNote[]) => void;
 	selectClause: (docId: string, clauseId: string | null) => void;
-	showDetails: (docId: string, clauseId: string | null) => void;
 }
 
 export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
@@ -105,7 +102,6 @@ export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
 	notes: [],
 	documentTargetSeq: 0,
 	selectedClause: null,
-	detailsClause: null,
 	...EMPTY_PAYLOAD,
 
 	focusNode: (focusNodeId) => set({ focusNodeId, hops: 1, secondPartyId: null }),
@@ -195,7 +191,4 @@ export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
 	focusPair: (focusNodeId, secondPartyId) => set({ focusNodeId, secondPartyId, hops: 1 }),
 	setNotes: (notes) => set({ notes }),
 	selectClause: (docId, clauseId) => set({ selectedClause: clauseId ? { docId, clauseId } : null }),
-	showDetails: (docId, clauseId) => set({ detailsClause: clauseId ? { docId, clauseId } : null }),
 }));
-
-export const TOP_K_STEP_SIZE = TOP_K_STEP;

@@ -89,6 +89,69 @@
           "does": "Personally guarantee all payment obligations of Corvin Outreach Group under the agreement."
         }
       ]
+    },
+    "root::lease_contract_10": {
+      "documentId": "root::lease_contract_10",
+      "documentName": "lease_contract_10.docx",
+      "title": "Premises Lease Contract for National Development Bank Tower",
+      "contractType": "Lease Agreement",
+      "summary": "Under this one-year lease, {{party-2|Zhonghai Trust Co.,Ltd}} leases premises and facilities at the 16th floor of National Development Bank Tower to {{party-1|Shaanxi Tianren Organic Food Co., Ltd.}} for work use, with specified rent, deposit, and terms for payment, maintenance, and possible purchase.",
+      "parties": [
+        {
+          "partyId": "party-2",
+          "name": "Zhonghai Trust Co.,Ltd",
+          "role": "Lessor",
+          "does": "Lease premises, maintain property, provide documentation, coordinate delivery, issue invoices, notify of sale, repair damages."
+        },
+        {
+          "partyId": "party-1",
+          "name": "Shaanxi Tianren Organic Food Co., Ltd.",
+          "role": "Lessee",
+          "does": "Pay rent and deposit, use premises for work, bear utilities, maintain premises, avoid unauthorized sublease, return property at term end."
+        }
+      ]
+    },
+    "root::lease_contract_166": {
+      "documentId": "root::lease_contract_166",
+      "documentName": "lease_contract_166.docx",
+      "title": "Lease Contract for Warehouse at No. 6 West Chengfou Road",
+      "contractType": "Lease Agreement",
+      "summary": "Under this two-year lease, {{party-1|the Lessor}} leases a 2520 m2 warehouse to {{party-2|the Lessee}} for residence, with annual rent, safety insurance, and utility fees payable as specified. Both parties share maintenance responsibilities. The contract covers subletting, transfer of ownership, and dispute resolution.",
+      "parties": [
+        {
+          "partyId": "party-1",
+          "name": "CEEG (Nanjing) Special Transformers Co., Ltd.",
+          "role": "Lessor",
+          "does": "Lease warehouse, inform of ownership transfer, share maintenance, bear certain utility expenses."
+        },
+        {
+          "partyId": "party-2",
+          "name": "CEEG (Nanjing) PV-Tech Co., Ltd.",
+          "role": "Lessee",
+          "does": "Pay rent, insurance, utilities; manage premises; obtain consent for subletting; maintain property; restore damages."
+        }
+      ]
+    },
+    "root::lease_contract_201": {
+      "documentId": "root::lease_contract_201",
+      "documentName": "lease_contract_201.docx",
+      "title": "Workshop Lease Contract between Bozhou Fengyi Chinese Medicine Development and Research Institute and Anhui Xuelingxian ",
+      "contractType": "Lease Agreement",
+      "summary": "{{party-1|Lessor}} leases a 10,000 sqm workshop to {{party-2|Lessee}} at East Liuge Village for 15 years (Aug 1, 2008–July 31, 2023) at 1.2 million Yuan annual rent, with monthly payments and separate utility fees, under specified repair, use, and renewal terms.",
+      "parties": [
+        {
+          "partyId": "party-1",
+          "name": "Bozhou Fengyi Chinese Medicine Development and Research Institute",
+          "role": "Lessor",
+          "does": "Lease workshop, maintain property, approve decorations, notify of sale, allow priority purchase, enforce contract terms."
+        },
+        {
+          "partyId": "party-2",
+          "name": "Anhui Xuelingxian Pharmaceutical Co., Ltd.",
+          "role": "Lessee",
+          "does": "Pay rent monthly, use premises lawfully, assist repairs, seek approval for decorations and exchanges, exercise renewal and purchase rights."
+        }
+      ]
     }
   }
 }

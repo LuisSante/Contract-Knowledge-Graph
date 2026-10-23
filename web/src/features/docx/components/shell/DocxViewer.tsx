@@ -8,7 +8,6 @@ import { ToolRail } from '@/features/docx/components/shell/ToolRail';
 import { LlmEstimateDialog } from '@/features/docx/components/shell/LlmEstimateDialog';
 import { RightPanelHeaderActions } from '@/features/docx/components/shell/RightPanelHeaderActions';
 import { RightPanelContent } from '@/features/docx/components/shell/RightPanelContent';
-import { ViewBar } from '@/features/docx/components/clause-analyzer/views/ViewBar';
 import {
 	ConditionTag,
 	ModifiedByTag,
@@ -61,6 +60,9 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	const clauseAnalyzerActive = drawer.isOpen && drawer.activeTab === 'clause_analyzer';
 	// The graph tab opens clauses on the left too, without the analyzer's highlights.
 	const graphActive = drawer.isOpen && drawer.activeTab === 'knowledge_graph';
+	// The deadlines tab opens a sentence and paints it, as the analyzer does.
+	const deadlinesActive = drawer.isOpen && drawer.activeTab === 'deadlines';
+	const paintsTarget = clauseAnalyzerActive || deadlinesActive;
 
 	const kgAnchorParagraphId = useClauseAnalyzerStore((s) => s.anchorParagraphId);
 	const kgRelatedParagraphs = useClauseAnalyzerStore((s) => s.relatedParagraphs);
@@ -106,11 +108,11 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 
 	const documentEntities = kgEntities;
 	const entityTargetIds = useMemo(
-		() => (clauseAnalyzerActive ? kgParagraphIds : []),
-		[clauseAnalyzerActive, kgParagraphIds]
+		() => (paintsTarget ? kgParagraphIds : []),
+		[paintsTarget, kgParagraphIds]
 	);
 	useEntityHighlights({
-		active: documentEntities.length > 0 && clauseAnalyzerActive,
+		active: documentEntities.length > 0 && paintsTarget,
 		renderEpoch: viewer.renderEpoch,
 		paragraphElementById: paragraphElementById.current,
 		targetIds: entityTargetIds,
@@ -127,7 +129,11 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 
 	const documentTargetSeq = useClauseAnalyzerStore((s) => s.documentTargetSeq);
 	useEffect(() => {
-		if (!(clauseAnalyzerActive || graphActive) || !kgAnchorParagraphId || viewer.renderEpoch === 0)
+		if (
+			!(clauseAnalyzerActive || graphActive || deadlinesActive) ||
+			!kgAnchorParagraphId ||
+			viewer.renderEpoch === 0
+		)
 			return;
 		const paragraph = paragraphElementById.current.get(kgAnchorParagraphId);
 		if (!paragraph) return;
@@ -147,6 +153,7 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	}, [
 		clauseAnalyzerActive,
 		graphActive,
+		deadlinesActive,
 		kgAnchorParagraphId,
 		documentTargetSeq,
 		viewer.renderEpoch,
@@ -248,7 +255,6 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 				isOpen={drawer.isOpen}
 				width={drawer.width}
 				sidebarWidth={drawer.sidebarWidth}
-				titleAddon={drawer.activeTab === 'clause_analyzer' ? <ViewBar /> : undefined}
 				headerActions={
 					<RightPanelHeaderActions
 						activeTab={drawer.activeTab}

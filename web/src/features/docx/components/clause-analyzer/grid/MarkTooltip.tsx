@@ -6,7 +6,6 @@ import {
 	GRID_LANES,
 	type GridMark,
 	type MarkKind,
-	type Side,
 	type StatementGrid,
 } from '@/features/docx/utils/knowledge/statement-grid';
 import { clauseTitle, conditionLead } from '@/features/docx/utils/knowledge/clause-favour';
@@ -22,9 +21,8 @@ export interface HoverInfo {
 	x: number;
 	y: number;
 	kind: MarkKind;
-	/** The party the mark belongs to, or on a credited grid the one it favours (then with
-	 *  `lead` before the name); null for a qualifier, which belongs to none. */
-	owner: { name: string; color: string; lead?: string } | null;
+	/** The party the mark belongs to; null for a qualifier, which belongs to none. */
+	owner: { name: string; color: string } | null;
 	/** The contract's own words, or the extracted detail when there are none. */
 	quote: string;
 	/** "§1 Compensation", when the mark sits in a clause. */
@@ -37,15 +35,12 @@ type MarkDetails = Omit<HoverInfo, 'x' | 'y'>;
 
 /**
  * What the card says about a mark, from what the mark does not carry itself: the
- * contract's own words and the clause it sits in. Built once per graph and grid. On a
- * credited grid (`creditedGrid`) pass the pair's names as `favoured`: the card then names
- * the party the mark's column serves, not the one that carries it.
+ * contract's own words and the clause it sits in. Built once per graph and grid.
  */
 export function markDetails(
 	kg: KnowledgeGraph,
 	grid: StatementGrid,
-	favoured?: Record<Side, string>,
-	/** Add the conditions that gate each statement, as Table v1.1's card shows them. */
+	/** Add the conditions that gate each statement, as the mark's card shows them. */
 	withConditions = false
 ): (mark: GridMark) => MarkDetails {
 	const conditionsOf = new Map<string, Array<{ lead: string; trigger: string }>>();
@@ -69,7 +64,6 @@ export function markDetails(
 	const ownerOf = (mark: GridMark): HoverInfo['owner'] => {
 		if (mark.lane === 'shared') return { name: 'Both parties', color: 'var(--muted-foreground)' };
 		const color = mark.lane === 'a' ? PARTY_COLOR : PAIR_SECOND_COLOR;
-		if (favoured) return { name: favoured[mark.lane], color, lead: 'In favour of' };
 		if (!mark.ownerName) return null;
 		return { name: mark.ownerName, color };
 	};
@@ -141,9 +135,6 @@ export function MarkTooltip({
 							className="size-2 shrink-0 rounded-full"
 							style={{ backgroundColor: hover.owner.color }}
 						/>
-						{hover.owner.lead && (
-							<span className="shrink-0 text-muted-foreground">{hover.owner.lead}</span>
-						)}
 						<span className="truncate">{hover.owner.name}</span>
 					</span>
 				)}

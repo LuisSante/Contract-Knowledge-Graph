@@ -44,14 +44,6 @@ export const KG_NODE_KINDS: KgNodeKind[] = [
 	'reference',
 ];
 
-export const DEFAULT_NODE_KINDS: KgNodeKind[] = [
-	'party',
-	'clause',
-	'obligation',
-	'right',
-	'prohibition',
-];
-
 function truncate(text: string, max = 42): string {
 	const clean = text.replace(/\s+/g, ' ').trim();
 	return clean.length > max ? `${clean.slice(0, max - 1)}…` : clean;

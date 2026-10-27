@@ -54,6 +54,7 @@ app lee el campo. En los grafos actuales los dos coinciden.
 | `is_part_of` cláusula → cláusula | Títulos de las filas | Una subcláusula sin título hereda el de su sección (`clauseTitle`). |
 | `modifies` | Clause Analyzer y documento | Ver abajo. |
 | `depends_on` | Clause Analyzer y documento | Igual que `modifies`, en la otra dirección: ver abajo. |
+| `references` | Clause Analyzer y documento | Igual que `depends_on`: ver abajo. |
 | `is_part_of` condición → enunciado | Clause Analyzer, su detalle y el documento | A pedido del lector: ver abajo. Con «Mark conditional», en el detalle debajo de la fila cada frase muestra su condición («Condition: IF…»). Solo «Only firm» cambia un conteo, y porque el lector lo pide. |
 | `is_part_of` valor → enunciado | Deadlines | Una duración marca un plazo como «con número». **Se deja fuera del Clause Analyzer a propósito**: ver «Valores» más abajo. |
 | término definido, referencia | Pestaña del grafo | Solo se dibujan ahí. Con la leyenda de Table se fue el único otro lugar donde aparecían. |
@@ -101,8 +102,18 @@ Responde a «¿qué podría deshacer esta cláusula?».
   Al hacer clic, la tabla pasa a la pestaña de ese tipo y selecciona la cláusula que
   modifica.
 - **En el documento**, al seleccionar la cláusula: una línea en el margen la une con las
-  frases que la modifican, con una etiqueta «modified by ⓘ». El ⓘ dice qué la modifica y
-  qué significa la relación. La frase que modifica se pinta en el color de su tipo, aunque
+  frases que la modifican, con una etiqueta «modified by §X ⓘ». El ⓘ dice qué la modifica y
+  qué significa la relación. Cada etiqueta va a mitad de su propia conexión, entre el
+  párrafo elegido y el más cercano de los que nombra: una conexión que viene de arriba se
+  nombra arriba, y una de abajo, abajo (desde el 27 de octubre de 2026; antes todas iban
+  apiladas junto al párrafo elegido).
+  El párrafo elegido lleva una pastilla azul rellena con su número («§6») a su derecha, en
+  el margen opuesto a la línea, para que no se mezcle con las etiquetas de las conexiones.
+  Ese párrafo tiene borde grueso y fondo azul suave; los párrafos conectados, solo un borde
+  fino. Así se distingue el origen de los destinos.
+  Las etiquetas de las conexiones van rellenas, una por color y sin leyenda: «modified by»
+  violeta, «depends on» cian oscuro y «refers to» gris pizarra. Ninguno es el color de un tipo
+  de enunciado ni el azul de la cláusula elegida. La frase que modifica se pinta en el color de su tipo, aunque
   no sea el de la pestaña: se lee «esta obligación está modificada por un derecho».
   Con Shift + rueda, los párrafos unidos se acercan.
 
@@ -129,9 +140,8 @@ es ahí donde está escrito «según el artículo 5», «si no se cumple el art�
   a una cláusula entera y no a una frase con tipo. Al hacer clic, la tabla selecciona §5 sin
   cambiar de pestaña.
 - **En el documento**, al seleccionar la cláusula: la línea del margen la une con el primer
-  párrafo de la cláusula de la que depende, con una etiqueta «depends on ⓘ». Si la cláusula
-  además está modificada, las dos etiquetas van una encima de la otra. Con Shift + rueda, los
-  párrafos unidos se acercan.
+  párrafo de la cláusula de la que depende, con una etiqueta «depends on §X ⓘ» a mitad de esa
+  conexión, como «modified by». Con Shift + rueda, los párrafos unidos se acercan.
 
 Reglas: las mismas que `modifies`. Solo entre cláusulas distintas, solo la dirección «depends
 on», un solo paso y nunca recalcula conteos. Si un párrafo ya está unido por `modifies`, la
@@ -264,12 +274,32 @@ cuándo?». No usa aristas nuevas:
 
 El código está en `deadlines.ts` y `DeadlinesPanel.tsx`. El grafo no guarda fechas de
 calendario, así que todo es relativo: «30 días desde la factura».
-### `references`
+### `references`, en detalle
 
-Solo pesa en contratos grandes: SteelVault no tiene ninguna.
+Desde el 27 de octubre de 2026, a pedido del usuario, igual que `depends_on`. Es la remisión
+cruzada **entre cláusulas** de la ontología («A breach of Section 3.1 shall be considered a
+material breach»), no el nodo `Reference`, que es una cita fuera del contrato (una ley, un
+certificado) y no se muestra.
 
-- **Documento, al seleccionar**: la misma línea que `modifies` y `depends_on`, con su propia
-  etiqueta («refers to»). **No en las filas**, para no volver a llenar la tabla.
+- **En la fila** de la cláusula que remite: «refers to §X», en gris; el clic selecciona §X sin
+  cambiar de pestaña.
+- **En el documento**, al seleccionar la cláusula: la línea del margen hasta el primer párrafo
+  de §X, con la etiqueta «refers to §X ⓘ» a mitad de esa conexión.
+
+Mismas reglas que `depends_on`: solo entre cláusulas distintas, un paso, sin recalcular
+conteos; si un párrafo ya está unido por `modifies` o `depends_on`, la línea es esa.
+
+Solo aparece en contratos grandes: 41 entre cláusulas distintas en Bellicum, 7 en Orvane y
+ninguna en SteelVault, Halverson ni los tres arrendamientos. En Bellicum, 16 de las 41 salen
+de §1.1 Definitions («shall have the meaning set forth in Section 2.3»), así que esa fila lleva
+una lista larga. En Orvane, una sola cita («in accordance with Article 4») sale repartida entre
+§4.1 y §4.5.
+
+El código está en `graph-payload.ts` (`clauseRefersTo`, `linkPartners`), `ClauseRow.tsx`
+(`LinkedClauses`), `DocxViewer.tsx` y `table-bits.tsx` (`RefersToTag`).
+
+Lo que queda:
+
 - **Cláusulas eje**: una cláusula de la que dependen o a la que remiten muchas es una
   palanca. En Bellicum, §3.2 Change Control recibe 15. Iría como una marca pequeña en la fila
   **solo** por encima de un umbral, para que se vean pocas.
@@ -305,14 +335,14 @@ sentido comparar una regla simple, LegalBERT y el modelo de extracción.
 
 ### Orden propuesto
 
-Hecho: cada frase con su dueño, `modifies` («modified by»), `depends_on` («depends on»), condiciones (All / Mark
+Hecho: cada frase con su dueño, `modifies` («modified by»), `depends_on` («depends on»), `references` («refers to»), condiciones (All / Mark
 conditional / Only firm) y Deadlines. Valores: fuera del Clause Analyzer; las duraciones,
 en Deadlines.
 
 1. Lo que queda de `modifies`: el verdadero objetivo de negociación y quién cambia las
    reglas.
 2. Glosario.
-3. `references`, al probar contratos grandes.
+3. Cláusulas eje, al probar contratos grandes.
 4. Quién activa la condición, y la marca «not a condition».
 5. «Si no cumples…», con su ground truth.
 

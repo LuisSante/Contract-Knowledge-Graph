@@ -18,7 +18,11 @@ import {
 	DEONTIC_KINDS,
 	tallyClauses,
 } from '@/features/docx/utils/knowledge/clause-favour';
-import { clauseDependsOn, clauseModifiedBy } from '@/features/docx/utils/knowledge/graph-payload';
+import {
+	clauseDependsOn,
+	clauseModifiedBy,
+	clauseRefersTo,
+} from '@/features/docx/utils/knowledge/graph-payload';
 import { useClauseImportance } from '@/features/docx/hooks/useClauseImportance';
 import type { ClauseRowLead } from '@/features/docx/components/clause-analyzer/grid/ClauseRow';
 
@@ -158,6 +162,7 @@ export function useClauseRows({
 		const rank = rankByClause ?? new Map<string, number>();
 		const modifiedBy = clauseModifiedBy(viewKg);
 		const dependsOn = clauseDependsOn(viewKg);
+		const refersTo = clauseRefersTo(viewKg);
 		const numberOf = (id: string) => {
 			const clause = clauseOf.get(id);
 			const title = clauseTitle(clause, clause?.heading || id, viewKg.clauses);
@@ -177,6 +182,9 @@ export function useClauseRows({
 					: undefined,
 				dependsOn: row.clauseId
 					? dependsOn.get(row.clauseId)?.map((id) => ({ clauseId: id, label: numberOf(id) }))
+					: undefined,
+				refersTo: row.clauseId
+					? refersTo.get(row.clauseId)?.map((id) => ({ clauseId: id, label: numberOf(id) }))
 					: undefined,
 			};
 		};

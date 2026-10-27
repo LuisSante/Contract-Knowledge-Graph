@@ -54,9 +54,12 @@
 	background: #09993e;
 }
 
+/* The picked paragraph carries the weight: thicker, full-strength outline and a soft fill, so
+   it stands apart from the paragraphs linked to it. */
 .docx-paragraph-explanation-selected {
-	outline: 2.5px solid rgba(37, 99, 235, 0.82) !important;
-	box-shadow: inset 0 0 0 1px rgba(147, 197, 253, 0.48) !important;
+	outline: 3px solid rgb(37, 99, 235) !important;
+	box-shadow: inset 0 0 0 1px rgba(147, 197, 253, 0.6) !important;
+	background: rgba(37, 99, 235, 0.07) !important;
 }
 
 .docx-paragraph-explanation-selected:focus,
@@ -66,12 +69,13 @@
 	box-shadow: 0 0 0 2px rgba(147, 197, 253, 0.3) !important;
 }
 
+/* The linked paragraphs stay light: a thin outline and no fill. */
 .docx-paragraph-explanation-related {
-	outline: 2px solid rgba(96, 165, 250, 0.6) !important;
+	outline: 1px solid rgba(96, 165, 250, 0.7) !important;
 	outline-offset: 1px !important;
 	border-left: 1px solid rgba(96, 165, 250, 0.5) !important;
 	background: transparent !important;
-	box-shadow: inset 0 0 0 1px rgba(147, 197, 253, 0.3) !important;
+	box-shadow: none !important;
 }
 
 .docx-paragraph-explanation-source-hidden {

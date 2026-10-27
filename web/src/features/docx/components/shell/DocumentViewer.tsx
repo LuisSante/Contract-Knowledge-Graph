@@ -5,7 +5,10 @@ import { useRef, type MouseEvent as ReactMouseEvent, type ReactNode, type RefObj
 const MANUAL_SCROLL_DRAG_SPEED = 100;
 import type { DocumentViewerStatus } from '@/features/docx/hooks/useDocumentViewer';
 import { useEvidenceBridge } from '@/features/docx/hooks/useEvidenceBridge';
-import { EvidenceBridgeOverlay } from '@/features/docx/components/evidence/EvidenceBridgeOverlay';
+import {
+	EvidenceBridgeOverlay,
+	type LinkLabel,
+} from '@/features/docx/components/evidence/EvidenceBridgeOverlay';
 import type { Node as ParagraphNode, EvidenceParagraph } from '@/types/document';
 
 interface DocumentViewerProps {
@@ -19,8 +22,10 @@ interface DocumentViewerProps {
 	evidenceParagraphs: EvidenceParagraph[];
 	toneByParagraph?: Record<string, 'burden' | 'benefit'>;
 	scoreByParagraph?: Record<string, number>;
-	/** Why the linked paragraphs are linked, beside the margin line at the selected one. */
-	selectedLabel?: ReactNode;
+	/** Why the linked paragraphs are linked, each halfway along its own link. */
+	linkLabels?: LinkLabel[];
+	/** Names the selected paragraph where the margin line leaves it. */
+	anchorTag?: ReactNode;
 	/** Why one linked paragraph is linked, beside the margin line where it reaches it. */
 	connectorLabel?: (paragraphId: string) => ReactNode;
 }
@@ -36,7 +41,8 @@ export function DocumentViewer({
 	evidenceParagraphs,
 	toneByParagraph,
 	scoreByParagraph,
-	selectedLabel,
+	linkLabels,
+	anchorTag,
 	connectorLabel,
 }: DocumentViewerProps) {
 	const scrollHostRef = useRef<HTMLElement>(null);
@@ -116,7 +122,8 @@ export function DocumentViewer({
 					onRailMouseDown={startRailScrub}
 					toneByParagraph={toneByParagraph}
 					scoreByParagraph={scoreByParagraph}
-					selectedLabel={selectedLabel}
+					linkLabels={linkLabels}
+					anchorTag={anchorTag}
 					connectorLabel={connectorLabel}
 				/>
 			)}

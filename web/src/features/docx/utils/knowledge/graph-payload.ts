@@ -25,6 +25,7 @@ const KIND_COLORS: Record<EntityKind, { color: string; soft: string }> = {
 
 const EMPTY: GraphPayload = {
 	anchorParagraphId: null,
+	anchorLabel: null,
 	relatedParagraphs: [],
 	entities: [],
 	paragraphIds: [],
@@ -184,6 +185,7 @@ function countSpanOwners(kg: KnowledgeGraph): Map<string, number> {
 export type DocumentTarget = Pick<
 	GraphPayload,
 	| 'anchorParagraphId'
+	| 'anchorLabel'
 	| 'relatedParagraphs'
 	| 'entities'
 	| 'paragraphIds'
@@ -243,6 +245,7 @@ export function buildDocumentTarget(
 
 	return {
 		anchorParagraphId,
+		anchorLabel: null,
 		relatedParagraphs: ordered
 			.filter((pid) => pid !== anchorParagraphId)
 			.map((pid) => {
@@ -266,8 +269,9 @@ export function buildDocumentTarget(
 	};
 }
 
-/** One `modifies` or `depends_on` edge between two different clauses: `from` holds the
- *  statement that changes or depends (or is that clause), `to` is the clause it points to. */
+/** A `modifies`, `depends_on` or `references` edge between two different clauses: `from` holds
+ *  the statement that changes, depends or refers (or is that clause), `to` is the clause it
+ *  points to. */
 interface ClauseLink {
 	from: string;
 	to: string;
@@ -278,7 +282,9 @@ interface ClauseLink {
 	paragraphIds: string[];
 }
 
-function clauseLinks(kg: KnowledgeGraph, type: 'modifies' | 'depends_on'): ClauseLink[] {
+type ClauseLinkType = 'modifies' | 'depends_on' | 'references';
+
+function clauseLinks(kg: KnowledgeGraph, type: ClauseLinkType): ClauseLink[] {
 	const statementById = new Map(deonticNodes(kg).map((v) => [v.id, v] as const));
 	const clauseById = new Map(kg.clauses.map((c) => [c.id, c] as const));
 	const out: ClauseLink[] = [];
@@ -321,8 +327,18 @@ export function clauseModifiedBy(kg: KnowledgeGraph): Map<string, ClauseModifier
 /** For each clause, the clauses it depends on: what has to be read to know whether it applies.
  *  The edge points to a whole clause, never to one of its sentences, so there is no type. */
 export function clauseDependsOn(kg: KnowledgeGraph): Map<string, string[]> {
+	return clauseTargets(kg, 'depends_on');
+}
+
+/** For each clause, the clauses it refers to (`references`): a neutral cross-reference, such as
+ *  «as described in Section 1.4», that makes nothing conditional. */
+export function clauseRefersTo(kg: KnowledgeGraph): Map<string, string[]> {
+	return clauseTargets(kg, 'references');
+}
+
+function clauseTargets(kg: KnowledgeGraph, type: 'depends_on' | 'references') {
 	const on = new Map<string, string[]>();
-	for (const d of clauseLinks(kg, 'depends_on')) {
+	for (const d of clauseLinks(kg, type)) {
 		const list = on.get(d.from) ?? [];
 		if (!list.includes(d.to)) list.push(d.to);
 		on.set(d.from, list);
@@ -335,13 +351,14 @@ interface LinkPartner {
 	statementId: string | null;
 	from: string;
 	to: string;
-	kind: 'modifies' | 'depends_on';
+	kind: ClauseLinkType;
 }
 
 /**
  * What a clause is read with: the sentences in other clauses that modify it, where the edge
- * says they are written, and the start of each clause it depends on. Only those directions,
- * as the table says them («modified by», «depends on»); never itself, and never a chain.
+ * says they are written, and the start of each clause it depends on or refers to. Only those
+ * directions, as the table says them («modified by», «depends on», «refers to»); never
+ * itself, and never a chain.
  */
 function linkPartners(
 	kg: KnowledgeGraph,
@@ -353,28 +370,21 @@ function linkPartners(
 		.flatMap((m) =>
 			m.paragraphIds.map((paragraphId) => ({ paragraphId, ...m, kind: 'modifies' as const }))
 		);
-	// The edge is written in the picked clause; what it leans on is the other clause, whole,
-	// so the line reaches that clause's first paragraph.
+	// The edge is written in the picked clause; what it leans on or points at is the other
+	// clause, whole, so the line reaches that clause's first paragraph.
 	const clauseById = new Map(kg.clauses.map((c) => [c.id, c] as const));
-	const dependencies = clauseLinks(kg, 'depends_on')
-		.filter((d) => d.from === clauseId)
-		.flatMap((d) => {
-			const first = (clauseById.get(d.to)?.paragraphIds ?? [])
-				.filter((pid) => nodesById.has(pid))
-				.sort((a, b) => paragraphEnum(a, nodesById) - paragraphEnum(b, nodesById))[0];
-			return first
-				? [
-						{
-							paragraphId: first,
-							statementId: null,
-							from: d.from,
-							to: d.to,
-							kind: 'depends_on' as const,
-						},
-					]
-				: [];
-		});
-	return [...modifiers, ...dependencies];
+	const outgoing = (type: 'depends_on' | 'references') =>
+		clauseLinks(kg, type)
+			.filter((d) => d.from === clauseId)
+			.flatMap((d) => {
+				const first = (clauseById.get(d.to)?.paragraphIds ?? [])
+					.filter((pid) => nodesById.has(pid))
+					.sort((a, b) => paragraphEnum(a, nodesById) - paragraphEnum(b, nodesById))[0];
+				return first
+					? [{ paragraphId: first, statementId: null, from: d.from, to: d.to, kind: type }]
+					: [];
+			});
+	return [...modifiers, ...outgoing('depends_on'), ...outgoing('references')];
 }
 
 export function buildPairPayload(
@@ -459,6 +469,7 @@ export function buildPairPayload(
 
 	return {
 		anchorParagraphId,
+		anchorLabel: clauseId ? numberOf(clauseId) : null,
 		relatedParagraphs: [
 			...[...partnerAt.values()].map((p) => ({
 				node: nodesById.get(p.paragraphId) as ParagraphNode,
@@ -565,6 +576,7 @@ export function buildFocusPayload(
 
 		return {
 			anchorParagraphId,
+			anchorLabel: null,
 			relatedParagraphs: toRelated(presentParagraphIds, anchorParagraphId),
 			entities,
 			paragraphIds: presentParagraphIds,

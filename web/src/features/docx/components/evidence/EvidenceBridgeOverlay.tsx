@@ -5,6 +5,16 @@ import type { EvidenceBridge } from '@/features/docx/utils/evidence/evidence-bri
 
 /** Room the label needs left of the margin line. */
 const LABEL_ROOM_PX = 88;
+/** Least vertical room between two link labels, so they never overlap. */
+const LABEL_GAP_PX = 22;
+
+/** Says why the selected paragraph is linked to some of the others («modified by §7»). */
+export interface LinkLabel {
+	key: string;
+	/** The linked paragraphs it speaks for. */
+	paragraphIds: string[];
+	node: ReactNode;
+}
 
 interface EvidenceBridgeOverlayProps {
 	bridge: EvidenceBridge;
@@ -16,8 +26,11 @@ interface EvidenceBridgeOverlayProps {
 	 */
 	toneByParagraph?: Record<string, 'burden' | 'benefit'>;
 	scoreByParagraph?: Record<string, number>;
-	/** A label beside the line at the selected paragraph, saying why the others are linked. */
-	selectedLabel?: ReactNode;
+	/** Labels beside the line, each halfway along its own link: between the selected paragraph
+	 *  and the nearest paragraph it speaks for. */
+	linkLabels?: LinkLabel[];
+	/** Names the selected paragraph («§6») on its right, away from the line and its labels. */
+	anchorTag?: ReactNode;
 	/** A label beside the line where it reaches a linked paragraph, for links of their own kind. */
 	connectorLabel?: (paragraphId: string) => ReactNode;
 }
@@ -28,11 +41,35 @@ export function EvidenceBridgeOverlay({
 	onRailMouseDown,
 	toneByParagraph,
 	scoreByParagraph,
-	selectedLabel,
+	linkLabels,
+	anchorTag,
 	connectorLabel,
 }: EvidenceBridgeOverlayProps) {
-	const { connectors, primaryConnector, folds, collapsedCards, scrollMarkers } = bridge;
+	const { connectors, primaryConnector, selectedRightPx, folds, collapsedCards, scrollMarkers } =
+		bridge;
 	const deonticRail = toneByParagraph != null;
+
+	// Each label sits halfway between the selected paragraph and the nearest paragraph of its
+	// link, so a link from above is named above and one from below, below.
+	const placedLabels = (linkLabels ?? [])
+		.flatMap((label) => {
+			const own = connectors.filter((c) => label.paragraphIds.includes(c.paragraphId));
+			if (own.length === 0) return [];
+			const span = (c: (typeof own)[number]) => Math.abs(c.relatedCapTopPx - c.selectedCapTopPx);
+			const nearest = own.reduce((best, c) => (span(c) < span(best) ? c : best));
+			return [
+				{
+					...label,
+					leftPx: nearest.leftPx,
+					topPx: (nearest.selectedCapTopPx + nearest.relatedCapTopPx) / 2,
+				},
+			];
+		})
+		.sort((a, b) => a.topPx - b.topPx);
+	for (let i = 1; i < placedLabels.length; i++) {
+		const floor = placedLabels[i - 1].topPx + LABEL_GAP_PX;
+		if (placedLabels[i].topPx < floor) placedLabels[i].topPx = floor;
+	}
 
 	return (
 		<>
@@ -91,20 +128,36 @@ export function EvidenceBridgeOverlay({
 						/>
 					))}
 
-					{primaryConnector && selectedLabel ? (
+					{primaryConnector && anchorTag ? (
 						<span
+							className="pointer-events-auto absolute"
+							// In the page's right margin, beside the selected paragraph: the other side
+							// from the line, so it never mixes with the link labels.
+							style={{
+								left: selectedRightPx + 10,
+								top: primaryConnector.selectedCapTopPx,
+								transform: 'translateY(-50%)',
+							}}
+						>
+							{anchorTag}
+						</span>
+					) : null}
+
+					{placedLabels.map((label) => (
+						<span
+							key={label.key}
 							className="pointer-events-auto absolute"
 							// In the page margin, left of the line; a narrow pane that scrolled the
 							// margin away keeps it in view, over the paragraph's first words.
 							style={{
-								left: Math.max(primaryConnector.leftPx - 6, LABEL_ROOM_PX),
-								top: primaryConnector.selectedCapTopPx,
+								left: Math.max(label.leftPx - 6, LABEL_ROOM_PX),
+								top: label.topPx,
 								transform: 'translate(-100%, -50%)',
 							}}
 						>
-							{selectedLabel}
+							{label.node}
 						</span>
-					) : null}
+					))}
 
 					{connectorLabel &&
 						connectors.map((connector, index) => {

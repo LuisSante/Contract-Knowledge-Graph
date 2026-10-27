@@ -3,15 +3,18 @@
 import { use, useEffect, useMemo, useRef, useState } from 'react';
 import { DocxPageHeader } from '@/features/docx/components/shell/DocxPageHeader';
 import { DocumentViewer } from '@/features/docx/components/shell/DocumentViewer';
+import type { LinkLabel } from '@/features/docx/components/evidence/EvidenceBridgeOverlay';
 import { RightPanel } from '@/features/docx/components/shell/RightPanel';
 import { ToolRail } from '@/features/docx/components/shell/ToolRail';
 import { LlmEstimateDialog } from '@/features/docx/components/shell/LlmEstimateDialog';
 import { RightPanelHeaderActions } from '@/features/docx/components/shell/RightPanelHeaderActions';
 import { RightPanelContent } from '@/features/docx/components/shell/RightPanelContent';
 import {
+	ClauseAnchorTag,
 	ConditionTag,
 	DependsOnTag,
 	ModifiedByTag,
+	RefersToTag,
 } from '@/features/docx/components/clause-analyzer/parts/table-bits';
 import { useRightDrawer } from '@/features/docx/hooks/useRightDrawer';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
@@ -65,6 +68,7 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	const paintsTarget = clauseAnalyzerActive || deadlinesActive;
 
 	const kgAnchorParagraphId = useClauseAnalyzerStore((s) => s.anchorParagraphId);
+	const kgAnchorLabel = useClauseAnalyzerStore((s) => s.anchorLabel);
 	const kgRelatedParagraphs = useClauseAnalyzerStore((s) => s.relatedParagraphs);
 	const kgEntities = useClauseAnalyzerStore((s) => s.entities);
 	const kgParagraphIds = useClauseAnalyzerStore((s) => s.paragraphIds);
@@ -87,29 +91,39 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	const bridgeActive = clauseAnalyzerActive;
 	const bridgeSelectedParagraph = clauseAnalyzerActive ? kgAnchorParagraph : null;
 	const bridgeParagraphs = clauseAnalyzerActive ? kgRelatedParagraphs : [];
-	// Sentences linked by the graph's `modifies` say so beside the margin line: the picked
-	// clause is "modified by" them; the clauses it leans on (`depends_on`), that it "depends on"
-	// them. A condition written apart says so where the line reaches it.
-	const linksOf = (kind: 'modifies' | 'depends_on') =>
-		bridgeParagraphs.flatMap((p) => (p.relation?.kind === kind ? [p.relation] : []));
-	const modifiers = linksOf('modifies');
-	const dependencies = linksOf('depends_on');
-	const selectedLabel =
-		modifiers.length > 0 || dependencies.length > 0 ? (
-			<span className="flex flex-col items-end gap-1">
-				{modifiers.length > 0 && (
-					<ModifiedByTag
-						clause={modifiers[0].to}
-						by={[...new Set(modifiers.map((relation) => relation.from))]}
-					/>
-				)}
-				{dependencies.length > 0 && (
-					<DependsOnTag
-						clause={dependencies[0].from}
-						on={[...new Set(dependencies.map((relation) => relation.to))]}
-					/>
-				)}
-			</span>
+	// Each link says why beside the margin line, halfway along it: the picked clause is
+	// "modified by" the sentences of another (`modifies`), "depends on" another (`depends_on`)
+	// or "refers to" it (`references`). One label per linked clause, so a link from above is
+	// named above and one from below, below. A condition written apart says so where the line
+	// reaches it.
+	const linkLabels: LinkLabel[] = [];
+	for (const p of bridgeParagraphs) {
+		const relation = p.relation;
+		if (!relation || relation.kind === 'condition') continue;
+		const other = relation.kind === 'modifies' ? relation.from : relation.to;
+		const key = `${relation.kind}:${other}`;
+		const found = linkLabels.find((label) => label.key === key);
+		if (found) {
+			found.paragraphIds.push(p.node.id);
+			continue;
+		}
+		linkLabels.push({
+			key,
+			paragraphIds: [p.node.id],
+			node:
+				relation.kind === 'modifies' ? (
+					<ModifiedByTag clause={relation.to} by={[relation.from]} />
+				) : relation.kind === 'depends_on' ? (
+					<DependsOnTag clause={relation.from} on={[relation.to]} />
+				) : (
+					<RefersToTag clause={relation.from} to={[relation.to]} />
+				),
+		});
+	}
+	// The picked clause's number where the line leaves it, only when something is linked.
+	const anchorTag =
+		kgAnchorLabel && bridgeParagraphs.length > 0 ? (
+			<ClauseAnchorTag label={kgAnchorLabel} />
 		) : undefined;
 	const connectorLabel = (paragraphId: string) => {
 		const relation = bridgeParagraphs.find((p) => p.node.id === paragraphId)?.relation;
@@ -249,7 +263,8 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 					evidenceParagraphs={bridgeParagraphs}
 					toneByParagraph={clauseAnalyzerActive ? kgToneByParagraphId : undefined}
 					scoreByParagraph={clauseAnalyzerActive ? kgScoreByParagraphId : undefined}
-					selectedLabel={selectedLabel}
+					linkLabels={linkLabels}
+					anchorTag={anchorTag}
 					connectorLabel={connectorLabel}
 				/>
 			</div>

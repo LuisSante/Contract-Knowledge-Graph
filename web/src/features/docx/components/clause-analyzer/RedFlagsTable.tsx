@@ -230,6 +230,7 @@ export function RedFlagsTable({
 		const key = `red-flag-${index}`;
 		setDocumentTarget({
 			anchorParagraphId: paragraph.id,
+			anchorLabel: null,
 			relatedParagraphs: [],
 			entities: [{ label: flag.text, key: `kg-${key}`, color: FLAG_COLOR, softColor: FLAG_SOFT }],
 			paragraphIds: [paragraph.id],

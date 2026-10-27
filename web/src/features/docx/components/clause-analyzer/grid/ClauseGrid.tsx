@@ -64,8 +64,8 @@ interface ClauseGridProps {
 	onOpenGraph?: (clauseId: string) => void;
 	/** Each row unfolds this under it while it is the picked one. */
 	renderDetail?: (row: GridRow) => ReactNode;
-	/** Goes to a clause that modifies a row, or that it depends on, from that row's «modified by»
-	 *  or «depends on». */
+	/** Goes to a clause that modifies a row, or that it depends on or refers to, from that row's
+	 *  «modified by», «depends on» or «refers to». */
 	onGoToModifier?: (clauseId: string, kind: DeonticKind | null) => void;
 	onOpenMark: (nodeId: string) => void;
 	onFocusMark: (nodeId: string) => void;

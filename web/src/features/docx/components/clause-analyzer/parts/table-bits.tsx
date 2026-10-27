@@ -334,29 +334,75 @@ const MODIFIES_NOTE =
 const DEPENDS_ON_NOTE =
 	'Whether this clause applies is subject to another one: what that one says decides it. Read them together.';
 
+/** What a `references` link means, for the ⓘ beside it. */
+const REFERS_TO_NOTE =
+	'This clause points to another one, without making anything depend on it: what that one says helps to read this one.';
+
 /** What a condition written apart from its statement means, for the ⓘ beside it. */
 const CONDITION_NOTE =
 	'The condition is written in this paragraph, apart from the statement it gates: that statement only applies under it.';
 
 /** The ⓘ that explains a `modifies` link; `about` names the two clauses when known. */
-export function ModifiesInfo({ about }: { about?: string }) {
-	return <RelationInfo about={about} note={MODIFIES_NOTE} label="What modifies means" />;
+export function ModifiesInfo({ about, inverse }: { about?: string; inverse?: boolean }) {
+	return (
+		<RelationInfo
+			about={about}
+			note={MODIFIES_NOTE}
+			label="What modifies means"
+			inverse={inverse}
+		/>
+	);
 }
 
 /** The ⓘ that explains a `depends_on` link; `about` names the two clauses when known. */
-export function DependsOnInfo({ about }: { about?: string }) {
-	return <RelationInfo about={about} note={DEPENDS_ON_NOTE} label="What depends on means" />;
+export function DependsOnInfo({ about, inverse }: { about?: string; inverse?: boolean }) {
+	return (
+		<RelationInfo
+			about={about}
+			note={DEPENDS_ON_NOTE}
+			label="What depends on means"
+			inverse={inverse}
+		/>
+	);
+}
+
+/** The ⓘ that explains a `references` link; `about` names the two clauses when known. */
+export function RefersToInfo({ about, inverse }: { about?: string; inverse?: boolean }) {
+	return (
+		<RelationInfo
+			about={about}
+			note={REFERS_TO_NOTE}
+			label="What refers to means"
+			inverse={inverse}
+		/>
+	);
 }
 
 /** An ⓘ with a short explanation, and what it is about in bold above it. */
-function RelationInfo({ about, note, label }: { about?: string; note: string; label: string }) {
+function RelationInfo({
+	about,
+	note,
+	label,
+	inverse = false,
+}: {
+	about?: string;
+	note: string;
+	label: string;
+	/** On a filled tag: light, so it reads on the colour. */
+	inverse?: boolean;
+}) {
 	return (
 		<Tooltip>
 			<TooltipTrigger asChild>
 				<button
 					type="button"
 					aria-label={label}
-					className="relative z-10 inline-flex shrink-0 rounded-full text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+					className={cn(
+						'relative z-10 inline-flex shrink-0 rounded-full focus-visible:ring-2 focus-visible:ring-ring',
+						inverse
+							? 'text-white/80 hover:text-white'
+							: 'text-muted-foreground hover:text-foreground'
+					)}
 				>
 					<InfoIcon className="size-3.5" aria-hidden="true" />
 				</button>
@@ -389,23 +435,63 @@ export function ConditionTag({ lead, trigger }: { lead: string; trigger: string 
 	);
 }
 
+/** On the contract's margin line, where it leaves the picked clause: its number, filled, so the
+ *  start of every link stands apart from the white labels along them. */
+export function ClauseAnchorTag({ label }: { label: string }) {
+	return (
+		<span className="inline-flex items-center rounded-full bg-primary px-2 py-0.5 text-2xs font-semibold whitespace-nowrap text-primary-foreground shadow-sm">
+			{label}
+		</span>
+	);
+}
+
+/** Each kind of link between clauses has its own fill, so the three tell apart on the margin
+ *  line without a legend. None is a statement type's colour, nor the picked clause's blue. */
+const LINK_COLOR = {
+	modifies: '#6d28d9',
+	dependsOn: '#0e7490',
+	refersTo: '#475569',
+} as const;
+
+/** A filled tag on the contract's margin line, halfway along its link. */
+function LinkTag({ color, children }: { color: string; children: ReactNode }) {
+	return (
+		<span
+			className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-2xs font-semibold whitespace-nowrap text-white shadow-sm"
+			style={{ backgroundColor: color }}
+		>
+			{children}
+		</span>
+	);
+}
+
 /** On the contract's margin line, by the picked clause: the linked sentences modify it. */
 export function ModifiedByTag({ clause, by }: { clause: string; by: string[] }) {
 	return (
-		<span className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-1.5 py-0.5 text-2xs font-medium whitespace-nowrap text-primary shadow-sm">
-			modified by
-			<ModifiesInfo about={`${clause} is modified by ${by.join(', ')}`} />
-		</span>
+		<LinkTag color={LINK_COLOR.modifies}>
+			modified by {by.join(', ')}
+			<ModifiesInfo about={`${clause} is modified by ${by.join(', ')}`} inverse />
+		</LinkTag>
 	);
 }
 
 /** On the contract's margin line, by the picked clause: it depends on the linked clauses. */
 export function DependsOnTag({ clause, on }: { clause: string; on: string[] }) {
 	return (
-		<span className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-1.5 py-0.5 text-2xs font-medium whitespace-nowrap text-primary shadow-sm">
-			depends on
-			<DependsOnInfo about={`${clause} depends on ${on.join(', ')}`} />
-		</span>
+		<LinkTag color={LINK_COLOR.dependsOn}>
+			depends on {on.join(', ')}
+			<DependsOnInfo about={`${clause} depends on ${on.join(', ')}`} inverse />
+		</LinkTag>
+	);
+}
+
+/** On the contract's margin line, by the picked clause: it refers to the linked clauses. */
+export function RefersToTag({ clause, to }: { clause: string; to: string[] }) {
+	return (
+		<LinkTag color={LINK_COLOR.refersTo}>
+			refers to {to.join(', ')}
+			<RefersToInfo about={`${clause} refers to ${to.join(', ')}`} inverse />
+		</LinkTag>
 	);
 }
 

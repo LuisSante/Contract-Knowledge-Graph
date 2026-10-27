@@ -38,6 +38,8 @@ export interface EvidenceScrollMarker {
 export interface EvidenceBridge {
 	connectors: EvidenceConnector[];
 	primaryConnector: EvidenceConnector | null;
+	/** The selected paragraph's right edge, to name it on the side away from the line. */
+	selectedRightPx: number;
 	folds: EvidenceFold[];
 	collapsedCards: EvidenceCollapsedCard[];
 	scrollMarkers: EvidenceScrollMarker[];
@@ -47,6 +49,7 @@ export interface EvidenceBridge {
 export const EMPTY_EVIDENCE_BRIDGE: EvidenceBridge = {
 	connectors: [],
 	primaryConnector: null,
+	selectedRightPx: 0,
 	folds: [],
 	collapsedCards: [],
 	scrollMarkers: [],
@@ -283,6 +286,7 @@ export function computeEvidenceBridge({
 	return {
 		connectors,
 		primaryConnector: connectors[0] ?? null,
+		selectedRightPx: selectedRect.right - hostRect.left,
 		folds,
 		collapsedCards,
 		scrollMarkers,

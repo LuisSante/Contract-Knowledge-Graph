@@ -45,6 +45,8 @@ export interface ClauseRowLead {
 	/** The clauses this one depends on (the graph's `depends_on`): their number. The edge
 	 *  points to a whole clause, so there is no sentence type to colour it by. */
 	dependsOn?: Array<{ clauseId: string; label: string }>;
+	/** The clauses this one refers to (the graph's `references`): their number. */
+	refersTo?: Array<{ clauseId: string; label: string }>;
 }
 
 interface ClauseRowProps {
@@ -84,7 +86,7 @@ interface ClauseRowProps {
 	/** What unfolds under the row while it is the picked one. */
 	detail?: ReactNode;
 	/** Goes to a clause that modifies this one, in the tab of its changing sentence's type, or
-	 *  to one it depends on (no type: the tab stays). */
+	 *  to one it depends on or refers to (no type: the tab stays). */
 	onGoToModifier?: (clauseId: string, kind: DeonticKind | null) => void;
 	onOpenMark: (nodeId: string) => void;
 	onFocusMark: (nodeId: string) => void;
@@ -218,25 +220,18 @@ export function ClauseRow({
 									))}
 								</span>
 							) : null}
-							{lead.dependsOn?.length ? (
-								<span className="mt-0.5 block text-2xs text-muted-foreground">
-									depends on{' '}
-									{lead.dependsOn.map((d, index) => (
-										<Fragment key={d.clauseId}>
-											{index > 0 && ', '}
-											<button
-												type="button"
-												onClick={() => onGoToModifier?.(d.clauseId, null)}
-												disabled={!onGoToModifier}
-												className="font-semibold hover:underline disabled:cursor-default"
-												title={`Go to ${d.label}: whether this clause applies is subject to it`}
-											>
-												{d.label}
-											</button>
-										</Fragment>
-									))}
-								</span>
-							) : null}
+							<LinkedClauses
+								verb="depends on"
+								clauses={lead.dependsOn}
+								why="whether this clause applies is subject to it"
+								onGo={onGoToModifier}
+							/>
+							<LinkedClauses
+								verb="refers to"
+								clauses={lead.refersTo}
+								why="this clause points to it"
+								onGo={onGoToModifier}
+							/>
 						</div>
 					</div>
 				) : (
@@ -343,5 +338,40 @@ export function ClauseRow({
 				<div className="border-y border-primary/20 bg-primary/5 px-12 pt-3 pb-4">{detail}</div>
 			)}
 		</div>
+	);
+}
+
+/** «depends on §5», «refers to §1.4»: the clauses a row's clause points to, each a button
+ *  that goes to it. Grey, since the edge names a whole clause and no sentence type. */
+function LinkedClauses({
+	verb,
+	clauses,
+	why,
+	onGo,
+}: {
+	verb: string;
+	clauses: Array<{ clauseId: string; label: string }> | undefined;
+	why: string;
+	onGo?: (clauseId: string, kind: DeonticKind | null) => void;
+}) {
+	if (!clauses?.length) return null;
+	return (
+		<span className="mt-0.5 block text-2xs text-muted-foreground">
+			{verb}{' '}
+			{clauses.map((c, index) => (
+				<Fragment key={c.clauseId}>
+					{index > 0 && ', '}
+					<button
+						type="button"
+						onClick={() => onGo?.(c.clauseId, null)}
+						disabled={!onGo}
+						className="font-semibold hover:underline disabled:cursor-default"
+						title={`Go to ${c.label}: ${why}`}
+					>
+						{c.label}
+					</button>
+				</Fragment>
+			))}
+		</span>
 	);
 }

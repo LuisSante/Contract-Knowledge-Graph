@@ -19,6 +19,8 @@ export const DEFAULT_TOP_K = 10;
 
 export interface GraphPayload {
 	anchorParagraphId: string | null;
+	/** The picked clause's number («§6»), shown where the margin line leaves it. */
+	anchorLabel: string | null;
 	relatedParagraphs: EvidenceParagraph[];
 	entities: EntityHighlight[];
 	paragraphIds: string[];
@@ -31,6 +33,7 @@ export interface GraphPayload {
 
 const EMPTY_PAYLOAD: GraphPayload = {
 	anchorParagraphId: null,
+	anchorLabel: null,
 	relatedParagraphs: [],
 	entities: [],
 	paragraphIds: [],

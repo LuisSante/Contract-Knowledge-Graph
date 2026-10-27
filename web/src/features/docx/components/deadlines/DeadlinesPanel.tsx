@@ -28,6 +28,7 @@ import {
 /** Nothing painted: what another tab left in the document is not about deadlines. */
 const NOTHING: DocumentTarget = {
 	anchorParagraphId: null,
+	anchorLabel: null,
 	relatedParagraphs: [],
 	entities: [],
 	paragraphIds: [],

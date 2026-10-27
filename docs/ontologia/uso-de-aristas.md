@@ -53,6 +53,7 @@ app lee el campo. En los grafos actuales los dos coinciden.
 | `is_part_of` enunciado → cláusula | Clause Analyzer, Deadlines y el documento | Agrupa los enunciados en filas (`statement-grid.ts`) y los plazos por cláusula (`deadlines.ts`). Decide qué se pinta al seleccionar una cláusula: sus enunciados, solo los del tipo de la pestaña abierta (`useFocusPayload.ts`, `graph-payload.ts`). |
 | `is_part_of` cláusula → cláusula | Títulos de las filas | Una subcláusula sin título hereda el de su sección (`clauseTitle`). |
 | `modifies` | Clause Analyzer y documento | Ver abajo. |
+| `depends_on` | Clause Analyzer y documento | Igual que `modifies`, en la otra dirección: ver abajo. |
 | `is_part_of` condición → enunciado | Clause Analyzer, su detalle y el documento | A pedido del lector: ver abajo. Con «Mark conditional», en el detalle debajo de la fila cada frase muestra su condición («Condition: IF…»). Solo «Only firm» cambia un conteo, y porque el lector lo pide. |
 | `is_part_of` valor → enunciado | Deadlines | Una duración marca un plazo como «con número». **Se deja fuera del Clause Analyzer a propósito**: ver «Valores» más abajo. |
 | término definido, referencia | Pestaña del grafo | Solo se dibujan ahí. Con la leyenda de Table se fue el único otro lugar donde aparecían. |
@@ -117,6 +118,30 @@ Reglas:
 
 El código está en `graph-payload.ts` (`clauseModifications`, `clauseModifiedBy`,
 `modifiesPartners`), `ClauseRow.tsx` y `EvidenceBridgeOverlay.tsx`.
+
+### `depends_on`, en detalle
+
+Desde el 27 de octubre de 2026. Responde a «¿de qué depende que esta cláusula se aplique?».
+Funciona como `modifies`, pero se muestra en la cláusula **de la que sale** la arista, porque
+es ahí donde está escrito «según el artículo 5», «si no se cumple el artículo 4».
+
+- **En la fila** de la cláusula que depende: «depends on §5», en gris, porque la arista apunta
+  a una cláusula entera y no a una frase con tipo. Al hacer clic, la tabla selecciona §5 sin
+  cambiar de pestaña.
+- **En el documento**, al seleccionar la cláusula: la línea del margen la une con el primer
+  párrafo de la cláusula de la que depende, con una etiqueta «depends on ⓘ». Si la cláusula
+  además está modificada, las dos etiquetas van una encima de la otra. Con Shift + rueda, los
+  párrafos unidos se acercan.
+
+Reglas: las mismas que `modifies`. Solo entre cláusulas distintas, solo la dirección «depends
+on», un solo paso y nunca recalcula conteos. Si un párrafo ya está unido por `modifies`, la
+línea es la de `modifies`.
+
+Hay pocas: 2, 0 y 1 entre cláusulas distintas en lease_contract_10, 166 y 201. Varias repiten
+una pareja que ya une `modifies`: en lease_contract_10, §4 depende de §5 y §4 modifica §5.
+
+El código está en `graph-payload.ts` (`clauseLinks`, `clauseDependsOn`, `linkPartners`),
+`useClauseRows.ts`, `ClauseRow.tsx`, `DocxViewer.tsx` y `table-bits.tsx` (`DependsOnTag`).
 
 ### Condiciones, en detalle
 
@@ -226,23 +251,28 @@ cuándo?». No usa aristas nuevas:
   trae un número con unidad de tiempo («thirty (30) days»).
 - Si no, una regla de palabras separa los plazos **vagos** («promptly», «immediately»,
   «in advance») de los que esperan **un hecho** («upon termination»).
-- Agrupa por cláusula, y al final pone lo que se repite y lo que dura todo el contrato.
-  Cada línea dice quién actúa: la parte obligada o quien tiene el derecho.
+- Entra todo enunciado con `deadline` o con `frequency`, cada uno bajo su cláusula. Desde el
+  27 de octubre de 2026 ya no hay grupos «Again and again» ni «While the contract lasts»:
+  separarlos pedía una regla de palabras.
+- Los dos campos se dibujan distintos, con su leyenda arriba: `deadline` en un chip de color
+  según su clase; `frequency` en un chip de borde punteado, con el texto tal cual. El campo
+  `frequency` mezcla repeticiones («per month»), vigencias («during the term») y tarifas
+  («per returned item»), así que no se clasifica.
+- Agrupa por cláusula. Cada línea dice quién actúa: la parte obligada o quien tiene el
+  derecho.
 - No compara plazos entre las partes ni los suma: solo los lista.
 
 El código está en `deadlines.ts` y `DeadlinesPanel.tsx`. El grafo no guarda fechas de
 calendario, así que todo es relativo: «30 días desde la factura».
-### `depends_on` y `references`
+### `references`
 
-Solo pesan en contratos grandes: SteelVault no tiene ninguna.
+Solo pesa en contratos grandes: SteelVault no tiene ninguna.
 
-- **Documento, al seleccionar**: la misma línea que `modifies`, con su propia etiqueta
-  («depends on», «refers to»). **No en las filas**, para no volver a llenar la tabla.
-- **Cláusulas eje**: una cláusula de la que dependen muchas es una palanca. En Bellicum,
-  §3.2 Change Control recibe 15. Iría como una marca pequeña en la fila **solo** por encima
-  de un umbral, para que se vean pocas.
-- **Antes, comprobar cuánto aportan**: en Orvane, varias `depends_on` repiten las mismas
-  parejas que `modifies`.
+- **Documento, al seleccionar**: la misma línea que `modifies` y `depends_on`, con su propia
+  etiqueta («refers to»). **No en las filas**, para no volver a llenar la tabla.
+- **Cláusulas eje**: una cláusula de la que dependen o a la que remiten muchas es una
+  palanca. En Bellicum, §3.2 Change Control recibe 15. Iría como una marca pequeña en la fila
+  **solo** por encima de un umbral, para que se vean pocas.
 
 ### `defines` / `uses`
 
@@ -275,14 +305,14 @@ sentido comparar una regla simple, LegalBERT y el modelo de extracción.
 
 ### Orden propuesto
 
-Hecho: cada frase con su dueño, `modifies` («modified by»), condiciones (All / Mark
+Hecho: cada frase con su dueño, `modifies` («modified by»), `depends_on` («depends on»), condiciones (All / Mark
 conditional / Only firm) y Deadlines. Valores: fuera del Clause Analyzer; las duraciones,
 en Deadlines.
 
 1. Lo que queda de `modifies`: el verdadero objetivo de negociación y quién cambia las
    reglas.
 2. Glosario.
-3. `depends_on` y `references`, al probar contratos grandes.
+3. `references`, al probar contratos grandes.
 4. Quién activa la condición, y la marca «not a condition».
 5. «Si no cumples…», con su ground truth.
 

@@ -10,6 +10,7 @@ import { RightPanelHeaderActions } from '@/features/docx/components/shell/RightP
 import { RightPanelContent } from '@/features/docx/components/shell/RightPanelContent';
 import {
 	ConditionTag,
+	DependsOnTag,
 	ModifiedByTag,
 } from '@/features/docx/components/clause-analyzer/parts/table-bits';
 import { useRightDrawer } from '@/features/docx/hooks/useRightDrawer';
@@ -87,16 +88,28 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	const bridgeSelectedParagraph = clauseAnalyzerActive ? kgAnchorParagraph : null;
 	const bridgeParagraphs = clauseAnalyzerActive ? kgRelatedParagraphs : [];
 	// Sentences linked by the graph's `modifies` say so beside the margin line: the picked
-	// clause is "modified by" them. A condition written apart says so where the line reaches it.
-	const modifiers = bridgeParagraphs.flatMap((p) =>
-		p.relation?.kind === 'modifies' ? [p.relation] : []
-	);
+	// clause is "modified by" them; the clauses it leans on (`depends_on`), that it "depends on"
+	// them. A condition written apart says so where the line reaches it.
+	const linksOf = (kind: 'modifies' | 'depends_on') =>
+		bridgeParagraphs.flatMap((p) => (p.relation?.kind === kind ? [p.relation] : []));
+	const modifiers = linksOf('modifies');
+	const dependencies = linksOf('depends_on');
 	const selectedLabel =
-		modifiers.length > 0 ? (
-			<ModifiedByTag
-				clause={modifiers[0].to}
-				by={[...new Set(modifiers.map((relation) => relation.from))]}
-			/>
+		modifiers.length > 0 || dependencies.length > 0 ? (
+			<span className="flex flex-col items-end gap-1">
+				{modifiers.length > 0 && (
+					<ModifiedByTag
+						clause={modifiers[0].to}
+						by={[...new Set(modifiers.map((relation) => relation.from))]}
+					/>
+				)}
+				{dependencies.length > 0 && (
+					<DependsOnTag
+						clause={dependencies[0].from}
+						on={[...new Set(dependencies.map((relation) => relation.to))]}
+					/>
+				)}
+			</span>
 		) : undefined;
 	const connectorLabel = (paragraphId: string) => {
 		const relation = bridgeParagraphs.find((p) => p.node.id === paragraphId)?.relation;

@@ -330,6 +330,10 @@ export function SectionTag({ section }: { section: string }) {
 const MODIFIES_NOTE =
 	'One clause changes what another says: it can limit it, add an exception or cancel it. Read them together.';
 
+/** What a `depends_on` link means, for the ⓘ beside it. */
+const DEPENDS_ON_NOTE =
+	'Whether this clause applies is subject to another one: what that one says decides it. Read them together.';
+
 /** What a condition written apart from its statement means, for the ⓘ beside it. */
 const CONDITION_NOTE =
 	'The condition is written in this paragraph, apart from the statement it gates: that statement only applies under it.';
@@ -337,6 +341,11 @@ const CONDITION_NOTE =
 /** The ⓘ that explains a `modifies` link; `about` names the two clauses when known. */
 export function ModifiesInfo({ about }: { about?: string }) {
 	return <RelationInfo about={about} note={MODIFIES_NOTE} label="What modifies means" />;
+}
+
+/** The ⓘ that explains a `depends_on` link; `about` names the two clauses when known. */
+export function DependsOnInfo({ about }: { about?: string }) {
+	return <RelationInfo about={about} note={DEPENDS_ON_NOTE} label="What depends on means" />;
 }
 
 /** An ⓘ with a short explanation, and what it is about in bold above it. */
@@ -386,6 +395,16 @@ export function ModifiedByTag({ clause, by }: { clause: string; by: string[] }) 
 		<span className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-1.5 py-0.5 text-2xs font-medium whitespace-nowrap text-primary shadow-sm">
 			modified by
 			<ModifiesInfo about={`${clause} is modified by ${by.join(', ')}`} />
+		</span>
+	);
+}
+
+/** On the contract's margin line, by the picked clause: it depends on the linked clauses. */
+export function DependsOnTag({ clause, on }: { clause: string; on: string[] }) {
+	return (
+		<span className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-1.5 py-0.5 text-2xs font-medium whitespace-nowrap text-primary shadow-sm">
+			depends on
+			<DependsOnInfo about={`${clause} depends on ${on.join(', ')}`} />
 		</span>
 	);
 }

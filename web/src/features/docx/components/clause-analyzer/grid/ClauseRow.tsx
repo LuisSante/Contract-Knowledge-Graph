@@ -42,6 +42,9 @@ export interface ClauseRowLead {
 	/** The clauses that modify this one (the graph's `modifies`): their number, and the type
 	 *  of the sentence that does it, for its colour; null when the graph gives none. */
 	modifiedBy?: Array<{ clauseId: string; label: string; kind: DeonticKind | null }>;
+	/** The clauses this one depends on (the graph's `depends_on`): their number. The edge
+	 *  points to a whole clause, so there is no sentence type to colour it by. */
+	dependsOn?: Array<{ clauseId: string; label: string }>;
 }
 
 interface ClauseRowProps {
@@ -80,7 +83,8 @@ interface ClauseRowProps {
 	expandable?: boolean;
 	/** What unfolds under the row while it is the picked one. */
 	detail?: ReactNode;
-	/** Goes to a clause that modifies this one, in the tab of its changing sentence's type. */
+	/** Goes to a clause that modifies this one, in the tab of its changing sentence's type, or
+	 *  to one it depends on (no type: the tab stays). */
 	onGoToModifier?: (clauseId: string, kind: DeonticKind | null) => void;
 	onOpenMark: (nodeId: string) => void;
 	onFocusMark: (nodeId: string) => void;
@@ -209,6 +213,25 @@ export function ClauseRow({
 												}
 											>
 												{m.label}
+											</button>
+										</Fragment>
+									))}
+								</span>
+							) : null}
+							{lead.dependsOn?.length ? (
+								<span className="mt-0.5 block text-2xs text-muted-foreground">
+									depends on{' '}
+									{lead.dependsOn.map((d, index) => (
+										<Fragment key={d.clauseId}>
+											{index > 0 && ', '}
+											<button
+												type="button"
+												onClick={() => onGoToModifier?.(d.clauseId, null)}
+												disabled={!onGoToModifier}
+												className="font-semibold hover:underline disabled:cursor-default"
+												title={`Go to ${d.label}: whether this clause applies is subject to it`}
+											>
+												{d.label}
 											</button>
 										</Fragment>
 									))}

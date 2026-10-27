@@ -15,18 +15,17 @@ export interface TimedDuty {
 	action: string;
 	/** Who has to act: the party an obligation or prohibition binds, or a right's holder. */
 	actors: string[];
+	/** The graph's `deadline` field; empty when the statement only has a frequency. */
 	deadline: string;
+	/** The graph's `frequency` field: how often or for how long, never a deadline. */
 	frequency: string;
-	/** Null when the duty has a frequency and no deadline. */
+	/** Null when the statement has no deadline, only a frequency. */
 	deadlineKind: DeadlineKind | null;
 	section: string | null;
 }
 
-export type DeadlineGroupKind = 'clause' | 'repeated' | 'term';
-
 export interface DeadlineGroup {
 	id: string;
-	kind: DeadlineGroupKind;
 	title: string;
 	section: string | null;
 	duties: TimedDuty[];
@@ -37,8 +36,6 @@ const COUNT =
 	/\b(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty|thirty|forty|forty-five|sixty|ninety)\s*(?:\(\d+\)\s*)?(?:business\s+|calendar\s+|working\s+|consecutive\s+)?(hours?|days?|weeks?|months?|years?|quarters?)\b/i;
 const VAGUE =
 	/\b(promptly|immediately|as soon as|forthwith|without (?:undue )?delay|reasonabl[ey]|in advance|timely|without notice)\b/i;
-// A frequency that holds for as long as the contract does, rather than one that repeats.
-const WHOLE_TERM = /\b(term|agreement|in effect|at all times|throughout|as long as)\b/i;
 
 export function deadlineKind(deadline: string, hasDuration: boolean): DeadlineKind {
 	if (hasDuration || COUNT.test(deadline)) return 'exact';
@@ -54,10 +51,8 @@ const paragraphOrder = (s: KgDeontic) => Number(s.paragraphIds[0]?.match(/-p-(\d
 
 /**
  * The contract's timed duties, read from what the graph already holds: each statement's
- * `deadline` and `frequency`, and the `Duration` values that quantify it. Duties with a
- * deadline are grouped by their top-level clause, in document order; those with only a
- * frequency go to «Again and again» or, when they last the whole contract, «While the
- * contract lasts».
+ * `deadline` and `frequency`, and the `Duration` values that quantify it. A statement with
+ * either field counts, and all are grouped by their top-level clause, in document order.
  */
 export function deadlineGroups(kg: KnowledgeGraph): DeadlineGroup[] {
 	const timed = new Set(
@@ -108,24 +103,6 @@ export function deadlineGroups(kg: KnowledgeGraph): DeadlineGroup[] {
 	};
 	const sorted = [...duties.values()].sort((x, y) => x.order - y.order);
 	for (const { clauseId, ...duty } of sorted) {
-		if (!duty.deadline) {
-			const term = WHOLE_TERM.test(duty.frequency);
-			const id = term ? 'term' : 'repeated';
-			put(
-				id,
-				() => ({
-					id,
-					kind: term ? 'term' : 'repeated',
-					title: term ? 'While the contract lasts' : 'Again and again',
-					section: null,
-					duties: [],
-					// After every clause: what repeats, then what lasts the whole contract.
-					order: term ? 1e9 + 1 : 1e9,
-				}),
-				duty
-			);
-			continue;
-		}
 		// A subclause's duty goes under its top-level section: §7.2 and §7.4 under §7.
 		const clause = clauseId ? clauseById.get(clauseId) : undefined;
 		const topRef = clause?.ref?.replace(/^(?:section|article)\s+/i, '').split('.')[0] ?? null;
@@ -135,7 +112,6 @@ export function deadlineGroups(kg: KnowledgeGraph): DeadlineGroup[] {
 			id,
 			() => ({
 				id,
-				kind: 'clause',
 				title: top
 					? clauseTitle(top, top.heading || 'Clause', kg.clauses).heading
 					: 'Not in a clause',
@@ -148,5 +124,5 @@ export function deadlineGroups(kg: KnowledgeGraph): DeadlineGroup[] {
 	}
 	return [...groups.values()]
 		.sort((x, y) => x.order - y.order)
-		.map(({ id, kind, title, section, duties }) => ({ id, kind, title, section, duties }));
+		.map(({ id, title, section, duties }) => ({ id, title, section, duties }));
 }

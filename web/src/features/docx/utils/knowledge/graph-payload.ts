@@ -266,24 +266,24 @@ export function buildDocumentTarget(
 	};
 }
 
-/** One `modifies` edge between two different clauses: `from` holds the changing statement
- *  (or is the changing clause), `to` is the clause it changes. */
-interface ClauseModification {
+/** One `modifies` or `depends_on` edge between two different clauses: `from` holds the
+ *  statement that changes or depends (or is that clause), `to` is the clause it points to. */
+interface ClauseLink {
 	from: string;
 	to: string;
 	statementId: string | null;
-	/** The changing sentence's type; null when a whole clause is the source. */
+	/** The sentence's type at `from`; null when a whole clause is the source. */
 	kind: DeonticKind | null;
-	/** Where the change is written: the edge's own evidence, else its source's paragraphs. */
+	/** Where the link is written: the edge's own evidence, else its source's paragraphs. */
 	paragraphIds: string[];
 }
 
-function clauseModifications(kg: KnowledgeGraph): ClauseModification[] {
+function clauseLinks(kg: KnowledgeGraph, type: 'modifies' | 'depends_on'): ClauseLink[] {
 	const statementById = new Map(deonticNodes(kg).map((v) => [v.id, v] as const));
 	const clauseById = new Map(kg.clauses.map((c) => [c.id, c] as const));
-	const out: ClauseModification[] = [];
+	const out: ClauseLink[] = [];
 	for (const edge of kg.edges) {
-		if (edge.type !== 'modifies' || !clauseById.has(edge.target)) continue;
+		if (edge.type !== type || !clauseById.has(edge.target)) continue;
 		const statement = statementById.get(edge.source);
 		const from = statement?.clauseId ?? (clauseById.has(edge.source) ? edge.source : null);
 		if (!from || from === edge.target) continue;
@@ -310,7 +310,7 @@ export interface ClauseModifier {
  *  entry per modifying clause, typed by its first changing sentence. */
 export function clauseModifiedBy(kg: KnowledgeGraph): Map<string, ClauseModifier[]> {
 	const by = new Map<string, ClauseModifier[]>();
-	for (const m of clauseModifications(kg)) {
+	for (const m of clauseLinks(kg, 'modifies')) {
 		const list = by.get(m.to) ?? [];
 		if (!list.some((x) => x.clauseId === m.from)) list.push({ clauseId: m.from, kind: m.kind });
 		by.set(m.to, list);
@@ -318,22 +318,63 @@ export function clauseModifiedBy(kg: KnowledgeGraph): Map<string, ClauseModifier
 	return by;
 }
 
-interface ModifiesPartner {
+/** For each clause, the clauses it depends on: what has to be read to know whether it applies.
+ *  The edge points to a whole clause, never to one of its sentences, so there is no type. */
+export function clauseDependsOn(kg: KnowledgeGraph): Map<string, string[]> {
+	const on = new Map<string, string[]>();
+	for (const d of clauseLinks(kg, 'depends_on')) {
+		const list = on.get(d.from) ?? [];
+		if (!list.includes(d.to)) list.push(d.to);
+		on.set(d.from, list);
+	}
+	return on;
+}
+
+interface LinkPartner {
 	paragraphId: string;
 	statementId: string | null;
 	from: string;
 	to: string;
+	kind: 'modifies' | 'depends_on';
 }
 
 /**
  * What a clause is read with: the sentences in other clauses that modify it, where the edge
- * says they are written. Only that direction, as the table says it ("modified by"); never
- * itself, and never a chain.
+ * says they are written, and the start of each clause it depends on. Only those directions,
+ * as the table says them («modified by», «depends on»); never itself, and never a chain.
  */
-function modifiesPartners(kg: KnowledgeGraph, clauseId: string): ModifiesPartner[] {
-	return clauseModifications(kg)
+function linkPartners(
+	kg: KnowledgeGraph,
+	clauseId: string,
+	nodesById: Map<string, ParagraphNode>
+): LinkPartner[] {
+	const modifiers = clauseLinks(kg, 'modifies')
 		.filter((m) => m.to === clauseId)
-		.flatMap((m) => m.paragraphIds.map((paragraphId) => ({ paragraphId, ...m })));
+		.flatMap((m) =>
+			m.paragraphIds.map((paragraphId) => ({ paragraphId, ...m, kind: 'modifies' as const }))
+		);
+	// The edge is written in the picked clause; what it leans on is the other clause, whole,
+	// so the line reaches that clause's first paragraph.
+	const clauseById = new Map(kg.clauses.map((c) => [c.id, c] as const));
+	const dependencies = clauseLinks(kg, 'depends_on')
+		.filter((d) => d.from === clauseId)
+		.flatMap((d) => {
+			const first = (clauseById.get(d.to)?.paragraphIds ?? [])
+				.filter((pid) => nodesById.has(pid))
+				.sort((a, b) => paragraphEnum(a, nodesById) - paragraphEnum(b, nodesById))[0];
+			return first
+				? [
+						{
+							paragraphId: first,
+							statementId: null,
+							from: d.from,
+							to: d.to,
+							kind: 'depends_on' as const,
+						},
+					]
+				: [];
+		});
+	return [...modifiers, ...dependencies];
 }
 
 export function buildPairPayload(
@@ -342,7 +383,8 @@ export function buildPairPayload(
 	nodesById: Map<string, ParagraphNode>,
 	statementIds?: readonly string[],
 	/** The clause picked in the table. The document links its paragraphs only to the sentences
-	 *  that modify it (`modifies`); with no clause picked, nothing is linked. */
+	 *  that modify it (`modifies`) and the clauses it depends on (`depends_on`); with no clause
+	 *  picked, nothing is linked. */
 	clauseId?: string | null,
 	/** Paint each statement's conditions too, and link the ones written apart. */
 	withConditions = false
@@ -385,12 +427,12 @@ export function buildPairPayload(
 
 	// The line in the margin means "read these together", so it only joins what the graph
 	// joins. Paragraphs that merely hold statements of the pair stay painted, unlinked.
-	const partners = clauseId ? modifiesPartners(kg, clauseId) : [];
+	const partners = clauseId ? linkPartners(kg, clauseId, nodesById) : [];
 	for (const id of new Set(partners.flatMap((p) => (p.statementId ? [p.statementId] : [])))) {
 		const v = byId.get(id);
 		if (v) for (const span of evidenceLabels(v, spanOwners)) add(span, `kg-${v.id}`, v.kind);
 	}
-	const partnerAt = new Map<string, ModifiesPartner>();
+	const partnerAt = new Map<string, LinkPartner>();
 	for (const p of partners) {
 		if (!nodesById.has(p.paragraphId) || p.paragraphId === anchorParagraphId) continue;
 		if (!partnerAt.has(p.paragraphId)) partnerAt.set(p.paragraphId, p);
@@ -420,7 +462,7 @@ export function buildPairPayload(
 		relatedParagraphs: [
 			...[...partnerAt.values()].map((p) => ({
 				node: nodesById.get(p.paragraphId) as ParagraphNode,
-				relation: { kind: 'modifies' as const, from: numberOf(p.from), to: numberOf(p.to) },
+				relation: { kind: p.kind, from: numberOf(p.from), to: numberOf(p.to) },
 			})),
 			...[...conditionAt].map(([pid, c]) => ({
 				node: nodesById.get(pid) as ParagraphNode,

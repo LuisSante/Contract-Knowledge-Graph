@@ -241,6 +241,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 
 	// «modified by §11»: to §11, in the tab of the sentence that does the
 	// modifying (a right of §11 opens Rights), picked and shown in the contract.
+	// «depends on §5»: to §5 in the same tab, since the edge names no sentence.
 	const goToModifier = (clauseId: string, kind: DeonticKind | null) => {
 		if (kind) setTypeShown(kind);
 		selectClause(docId, clauseId);

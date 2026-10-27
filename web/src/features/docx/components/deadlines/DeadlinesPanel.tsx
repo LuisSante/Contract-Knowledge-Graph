@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { CalendarRange, ChevronDown, Repeat } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useDocumentStore } from '@/stores/document';
 import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
@@ -19,6 +19,7 @@ import {
 } from '@/features/docx/utils/knowledge/deadlines';
 import { short } from '@/features/docx/components/clause-analyzer/parts/bits';
 import {
+	KIND_COLORS,
 	NEUTRAL_COLOR,
 	PAIR_SECOND_COLOR,
 	PARTY_COLOR,
@@ -54,20 +55,25 @@ const KIND_STYLE: Record<DeadlineKind, { chip: string; key: string; title: strin
 	},
 };
 
+/** The `frequency` field, drawn apart from any deadline: it says how often or for how long. */
+const FREQUENCY_STYLE = {
+	chip: 'border border-dashed border-foreground/30 bg-card text-foreground/70',
+	key: 'frequency',
+	title: 'How often or for how long («per month», «during the term»): not a deadline',
+};
+
 type Who = 'all' | 'a' | 'b';
 
-/** Said before each action, so a prohibition does not read as a duty to do it. */
-const VERB: Record<TimedDuty['kind'], string> = {
-	obligation: 'must',
-	right: 'may',
-	prohibition: 'must not',
+/** Said before each action in its type's colour, so a prohibition does not read as a duty. */
+const TYPE_NAME: Record<TimedDuty['kind'], string> = {
+	obligation: 'obligation',
+	right: 'right',
+	prohibition: 'prohibition',
 };
-const lower = (action: string) => action.charAt(0).toLowerCase() + action.slice(1);
 
 /**
- * The contract's deadlines, grouped by the clause they belong to, with what repeats and
- * what lasts the whole contract at the end. Everything comes from what the graph already
- * holds; a line opens its sentence in the document.
+ * The contract's deadlines, grouped by the clause they belong to. Everything comes from what
+ * the graph already holds; a line opens its sentence in the document.
  */
 export function DeadlinesPanel({ docId }: { docId: string }) {
 	const setDocumentTarget = useClauseAnalyzerStore((s) => s.setDocumentTarget);
@@ -83,8 +89,7 @@ export function DeadlinesPanel({ docId }: { docId: string }) {
 	);
 
 	const [who, setWho] = useState<Who>('all');
-	// What repeats and what lasts the whole contract start folded: they are not deadlines.
-	const [folded, setFolded] = useState<Record<string, boolean>>({ repeated: true, term: true });
+	const [folded, setFolded] = useState<Record<string, boolean>>({});
 	const [picked, setPicked] = useState<string | null>(null);
 	useEffect(() => setDocumentTarget(NOTHING), [setDocumentTarget]);
 
@@ -157,6 +162,7 @@ export function DeadlinesPanel({ docId }: { docId: string }) {
 					</div>
 				)}
 				<div className="ml-auto flex items-center gap-1.5">
+					<span className="text-2xs font-medium text-muted-foreground">Deadline</span>
 					{(Object.keys(KIND_STYLE) as DeadlineKind[]).map((kind) => (
 						<span
 							key={kind}
@@ -169,6 +175,13 @@ export function DeadlinesPanel({ docId }: { docId: string }) {
 							{KIND_STYLE[kind].key}
 						</span>
 					))}
+					<span className="ml-2 text-2xs font-medium text-muted-foreground">Frequency</span>
+					<span
+						title={FREQUENCY_STYLE.title}
+						className={cn('rounded-full px-2 py-0.5 text-2xs font-semibold', FREQUENCY_STYLE.chip)}
+					>
+						{FREQUENCY_STYLE.key}
+					</span>
 				</div>
 			</div>
 
@@ -211,7 +224,6 @@ function Group({
 	onOpen: (duty: TimedDuty) => void;
 	renderActor: (duty: TimedDuty) => React.ReactNode;
 }) {
-	const Icon = group.kind === 'repeated' ? Repeat : group.kind === 'term' ? CalendarRange : null;
 	return (
 		<section className="rounded-lg bg-muted/60 p-2.5">
 			<button
@@ -220,7 +232,6 @@ function Group({
 				aria-expanded={!folded}
 				className="flex w-full items-center gap-2 px-1.5 py-1 text-left"
 			>
-				{Icon && <Icon className="size-4 shrink-0 text-foreground/70" />}
 				{group.section && (
 					<span className="rounded bg-card px-1.5 py-px text-2xs font-medium text-foreground/70">
 						{group.section}
@@ -230,7 +241,7 @@ function Group({
 				<span className="text-xs text-muted-foreground tabular-nums">{group.duties.length}</span>
 				{folded && (
 					<span className="min-w-0 flex-1 truncate text-xs text-muted-foreground">
-						{group.duties.map((d) => `${VERB[d.kind]} ${lower(d.action)}`).join(', ')}
+						{group.duties.map((d) => d.action).join(', ')}
 					</span>
 				)}
 				<ChevronDown
@@ -259,24 +270,36 @@ function Group({
 										{renderActor(duty)}
 									</span>
 									<span className="min-w-0 flex-1 text-sm font-medium text-foreground">
-										<span className="mr-1.5 text-xs font-normal text-muted-foreground">
-											{VERB[duty.kind]}
+										<span
+											className="mr-1.5 text-xs font-semibold"
+											style={{ color: KIND_COLORS[duty.kind] }}
+										>
+											{TYPE_NAME[duty.kind]}
 										</span>
 										{duty.action}
-										{duty.deadline && duty.frequency && (
-											<span className="ml-1.5 text-xs font-normal text-muted-foreground">
-												{duty.frequency}
-											</span>
-										)}
 									</span>
-									<span
-										className={cn(
-											'max-w-[45%] shrink-0 rounded-full px-2 py-0.5 text-right text-2xs leading-snug font-semibold',
-											duty.deadlineKind ? KIND_STYLE[duty.deadlineKind].chip : KIND_STYLE.event.chip
-										)}
-									>
-										{duty.deadline || duty.frequency}
-									</span>
+									{duty.frequency && (
+										<span
+											title={FREQUENCY_STYLE.title}
+											className={cn(
+												'max-w-[30%] shrink-0 rounded-full px-2 py-0.5 text-right text-2xs leading-snug font-semibold',
+												FREQUENCY_STYLE.chip
+											)}
+										>
+											{duty.frequency}
+										</span>
+									)}
+									{duty.deadline && duty.deadlineKind && (
+										<span
+											title={KIND_STYLE[duty.deadlineKind].title}
+											className={cn(
+												'max-w-[40%] shrink-0 rounded-full px-2 py-0.5 text-right text-2xs leading-snug font-semibold',
+												KIND_STYLE[duty.deadlineKind].chip
+											)}
+										>
+											{duty.deadline}
+										</span>
+									)}
 									{duty.section && (
 										<span className="shrink-0 rounded bg-muted px-1.5 py-px text-2xs font-medium text-foreground/70">
 											{duty.section}

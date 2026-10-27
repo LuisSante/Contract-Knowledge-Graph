@@ -9,3 +9,4 @@ __pycache__/
 .impeccable/
 server_old
 graphify-out
+.vscode

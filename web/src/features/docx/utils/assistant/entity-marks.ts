@@ -5,6 +5,8 @@ export type EntityHighlight = {
 	key: string;
 	color: string;
 	softColor: string;
+	/** Said on hover, as the mark's title. */
+	note?: string;
 };
 
 export function clearEntityMarks(element: HTMLElement) {
@@ -81,6 +83,7 @@ export function highlightEntitiesInElement(element: HTMLElement, entities: Entit
 				marker.dataset.entityKey = slice.meta.key;
 				marker.style.setProperty('--entity-color', slice.meta.color);
 				marker.style.setProperty('--entity-color-soft', slice.meta.softColor);
+				if (slice.meta.note) marker.title = slice.meta.note;
 			}
 			marker.textContent = originalText.slice(slice.start, slice.end);
 			fragment.appendChild(marker);

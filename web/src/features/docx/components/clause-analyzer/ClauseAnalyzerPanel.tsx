@@ -3,13 +3,19 @@
 import { useEffect, useMemo, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react';
 import { useDocumentStore } from '@/stores/document';
 import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
-import { buildDocumentTarget } from '@/features/docx/utils/knowledge/graph-payload';
+import {
+	buildDocumentTarget,
+	conditionParty,
+	reciprocalStatements,
+	sameParagraphCounterparts,
+} from '@/features/docx/utils/knowledge/graph-payload';
 import {
 	buildStatementGrid,
 	type GridLane,
 	type GridMark,
 	type GridRow,
 	type MarkKind,
+	type Side,
 	withoutMarks,
 } from '@/features/docx/utils/knowledge/statement-grid';
 import { computePairScores } from '@/features/docx/utils/knowledge/pair';
@@ -39,7 +45,10 @@ import {
 import { KIND_COLORS } from '@/features/docx/components/clause-analyzer/constants';
 import { short } from '@/features/docx/components/clause-analyzer/parts/bits';
 import { withoutServed } from '@/features/docx/utils/knowledge/clause-favour';
-import { ClauseDetail } from '@/features/docx/components/clause-analyzer/parts/party-statements';
+import {
+	ClauseDetail,
+	type StatementHints,
+} from '@/features/docx/components/clause-analyzer/parts/party-statements';
 import type { DeonticKind, KgCondition } from '@/types/knowledge';
 
 interface ClauseAnalyzerPanelProps {
@@ -254,6 +263,30 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		[viewKg, shownGrid, showConditions]
 	);
 
+	// What the detail says beside each statement: a twin the other party has word for word, the
+	// other party's statements in the same paragraph, and which party a condition names.
+	const hints = useMemo((): StatementHints | undefined => {
+		if (!viewKg || !pairA || !pairB) return undefined;
+		const sideOf = (id: string | null): Side | null =>
+			id === pairA ? 'a' : id === pairB ? 'b' : null;
+		const counterparts: StatementHints['counterparts'] = new Map();
+		for (const [id, others] of sameParagraphCounterparts(viewKg)) {
+			const list = others.flatMap((o) => {
+				const side = sideOf(o.kind === 'right' ? o.benefitPartyId : o.burdenPartyId);
+				return side
+					? [{ id: o.id, kind: o.kind, label: o.action || o.summary || o.text, side }]
+					: [];
+			});
+			if (list.length > 0) counterparts.set(id, list);
+		}
+		const conditionSide: StatementHints['conditionSide'] = new Map();
+		for (const [conditionId, partyId] of conditionParty(viewKg)) {
+			const side = sideOf(partyId);
+			if (side) conditionSide.set(conditionId, side);
+		}
+		return { reciprocal: reciprocalStatements(viewKg), counterparts, conditionSide };
+	}, [viewKg, pairA, pairB]);
+
 	// The picked row unfolds each party's own statements in it, for the open type only and in the
 	// condition mode the reader chose.
 	const renderDetail = (row: GridRow) => {
@@ -268,6 +301,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 				kind={typeShown}
 				names={names}
 				conditions={showConditions ? viewKg.conditions : NO_CONDITIONS}
+				hints={hints}
 				onOpen={openInDocument}
 			/>
 		);

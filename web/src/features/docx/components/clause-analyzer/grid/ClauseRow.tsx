@@ -47,6 +47,11 @@ export interface ClauseRowLead {
 	dependsOn?: Array<{ clauseId: string; label: string }>;
 	/** The clauses this one refers to (the graph's `references`): their number. */
 	refersTo?: Array<{ clauseId: string; label: string }>;
+	/** The clauses that define words this one uses (`uses` → `defines`): their number, and
+	 *  the words, said on hover. */
+	usesFrom?: Array<{ clauseId: string; label: string; note: string }>;
+	/** The terms this clause defines (the graph's `defines`), in the graph's order. */
+	defines?: string[];
 }
 
 interface ClauseRowProps {
@@ -80,10 +85,13 @@ interface ClauseRowProps {
 	onSelect: (clauseId: string) => void;
 	/** Opens the clause in the knowledge graph tab; absent where there is no such tab. */
 	onOpenGraph?: (clauseId: string) => void;
-	/** The row unfolds its detail under it: «Details» with a chevron ends the row,
-	 *  and picking the row opens or closes it. */
+	/** The row can unfold its detail under it: «Details» with a chevron ends the row and opens
+	 *  or closes it. Picking the row itself does not. */
 	expandable?: boolean;
-	/** What unfolds under the row while it is the picked one. */
+	/** The detail is unfolded under the row. */
+	detailOpen?: boolean;
+	onToggleDetail?: () => void;
+	/** What unfolds under the row while it is the picked one and «Details» is open. */
 	detail?: ReactNode;
 	/** Goes to a clause that modifies this one, in the tab of its changing sentence's type, or
 	 *  to one it depends on or refers to (no type: the tab stays). */
@@ -114,6 +122,8 @@ export function ClauseRow({
 	onSelect,
 	onOpenGraph,
 	expandable = false,
+	detailOpen = false,
+	onToggleDetail,
 	detail,
 	onGoToModifier,
 	onOpenMark,
@@ -232,6 +242,13 @@ export function ClauseRow({
 								why="this clause points to it"
 								onGo={onGoToModifier}
 							/>
+							<DefinedTerms terms={lead.defines} />
+							<LinkedClauses
+								verb="uses terms from"
+								clauses={lead.usesFrom}
+								why="it defines words this clause uses"
+								onGo={onGoToModifier}
+							/>
 						</div>
 					</div>
 				) : (
@@ -318,17 +335,17 @@ export function ClauseRow({
 				{clauseId && expandable && (
 					<button
 						type="button"
-						onClick={() => onSelect(clauseId)}
-						aria-expanded={active}
+						onClick={() => (onToggleDetail ? onToggleDetail() : onSelect(clauseId))}
+						aria-expanded={detailOpen}
 						aria-label={`Details of ${lead?.heading ?? row.heading}`}
-						title={active ? 'Hide the detail' : 'Each party’s statements in this clause'}
+						title={detailOpen ? 'Hide the detail' : 'Each party’s statements in this clause'}
 						className={`mt-0.5 flex w-16 shrink-0 items-center justify-end gap-0.5 text-xs font-medium hover:text-primary ${
-							active ? 'text-primary' : 'text-muted-foreground'
+							detailOpen ? 'text-primary' : 'text-muted-foreground'
 						}`}
 					>
 						Details
 						<ChevronDownIcon
-							className={`size-3.5 transition-transform ${active ? 'rotate-180' : ''}`}
+							className={`size-3.5 transition-transform ${detailOpen ? 'rotate-180' : ''}`}
 						/>
 					</button>
 				)}
@@ -350,7 +367,7 @@ function LinkedClauses({
 	onGo,
 }: {
 	verb: string;
-	clauses: Array<{ clauseId: string; label: string }> | undefined;
+	clauses: Array<{ clauseId: string; label: string; note?: string }> | undefined;
 	why: string;
 	onGo?: (clauseId: string, kind: DeonticKind | null) => void;
 }) {
@@ -366,12 +383,31 @@ function LinkedClauses({
 						onClick={() => onGo?.(c.clauseId, null)}
 						disabled={!onGo}
 						className="font-semibold hover:underline disabled:cursor-default"
-						title={`Go to ${c.label}: ${why}`}
+						title={`Go to ${c.label}: ${c.note ?? why}`}
 					>
 						{c.label}
 					</button>
 				</Fragment>
 			))}
+		</span>
+	);
+}
+
+/** Most terms a row names after «defines»; the rest are counted. */
+const DEFINES_SHOWN = 3;
+
+/** «defines "FATURA", "IOF" +2 more»: the terms the row's clause defines, all on hover. */
+function DefinedTerms({ terms }: { terms: string[] | undefined }) {
+	if (!terms?.length) return null;
+	const shown = terms.slice(0, DEFINES_SHOWN).map((t) => `“${t}”`);
+	const rest = terms.length - shown.length;
+	return (
+		<span
+			className="mt-0.5 block text-2xs text-muted-foreground"
+			title={`Defines ${terms.map((t) => `“${t}”`).join(', ')}`}
+		>
+			defines <span className="font-semibold">{shown.join(', ')}</span>
+			{rest > 0 && ` +${rest} more`}
 		</span>
 	);
 }

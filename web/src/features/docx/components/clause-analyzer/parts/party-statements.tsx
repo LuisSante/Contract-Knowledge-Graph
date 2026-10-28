@@ -5,6 +5,7 @@ import {
 	Fragment,
 	KIND_LABEL,
 	tint,
+	type StatementAside,
 } from '@/features/docx/components/clause-analyzer/parts/table-bits';
 import {
 	DEONTIC_KINDS,
@@ -15,6 +16,16 @@ import type { GridRow, Side } from '@/features/docx/utils/knowledge/statement-gr
 import type { DeonticKind, KgCondition } from '@/types/knowledge';
 
 const SIDES: Side[] = ['a', 'b'];
+
+/** What the detail adds to each statement from the graph, without changing any count. */
+export interface StatementHints {
+	/** Statements the other party has word for word. */
+	reciprocal: ReadonlySet<string>;
+	/** The other party's statements of the other type in the same paragraph. */
+	counterparts: Map<string, Array<{ id: string; kind: DeonticKind; label: string; side: Side }>>;
+	/** The side a condition's trigger names, when it names just one of the two. */
+	conditionSide: Map<string, Side>;
+}
 
 /** A clause's statements that belong to one party in the types shown: the obligations and
  *  prohibitions that bind it and the rights it holds, a type at a time. */
@@ -40,14 +51,27 @@ export function PartyStatements({
 	kinds,
 	names,
 	conditions,
+	hints,
 	onOpen,
 }: {
 	tally: ClauseTally;
 	kinds: DeonticKind[];
 	names: Record<Side, string>;
 	conditions: KgCondition[];
+	hints?: StatementHints;
 	onOpen: (nodeId: string) => void;
 }) {
+	const asides = (id: string): StatementAside[] =>
+		(hints?.counterparts.get(id) ?? []).map((other) => ({
+			id: other.id,
+			tag: `${short(names[other.side])}'s ${other.kind}`,
+			color: SIDE_COLOR[other.side],
+			label: other.label,
+		}));
+	const conditionParty = (condition: KgCondition) => {
+		const side = hints?.conditionSide.get(condition.id);
+		return side ? { name: short(names[side]), color: SIDE_COLOR[side] } : null;
+	};
 	const column = (side: Side) => {
 		const gets = ownedBy(tally, side, kinds);
 		return (
@@ -87,6 +111,9 @@ export function PartyStatements({
 									tag={origin.text}
 									tagColor={SIDE_COLOR[side]}
 									conditions={conditions.filter((c) => c.gatesId === s.mark.id)}
+									reciprocal={hints?.reciprocal.has(s.mark.id) ?? false}
+									counterparts={asides(s.mark.id)}
+									conditionParty={conditionParty}
 									onOpen={onOpen}
 								/>
 							);
@@ -108,6 +135,7 @@ export function ClauseDetail({
 	kind,
 	names,
 	conditions,
+	hints,
 	onOpen,
 }: {
 	row: GridRow;
@@ -115,6 +143,7 @@ export function ClauseDetail({
 	kind: DeonticKind;
 	names: Record<Side, string>;
 	conditions: KgCondition[];
+	hints?: StatementHints;
 	onOpen: (nodeId: string) => void;
 }) {
 	const count = (side: Side) => row.marks[side].filter((mark) => mark.kind === kind).length;
@@ -134,6 +163,7 @@ export function ClauseDetail({
 				kinds={[kind]}
 				names={names}
 				conditions={conditions}
+				hints={hints}
 				onOpen={onOpen}
 			/>
 		</div>

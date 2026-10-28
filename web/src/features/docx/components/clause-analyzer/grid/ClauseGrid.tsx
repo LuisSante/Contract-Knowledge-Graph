@@ -62,7 +62,7 @@ interface ClauseGridProps {
 	emptyNote?: string;
 	onSelectClause: (clauseId: string) => void;
 	onOpenGraph?: (clauseId: string) => void;
-	/** Each row unfolds this under it while it is the picked one. */
+	/** Each row unfolds this under it while it is the picked one and «Details» is open. */
 	renderDetail?: (row: GridRow) => ReactNode;
 	/** Goes to a clause that modifies a row, or that it depends on or refers to, from that row's
 	 *  «modified by», «depends on» or «refers to». */
@@ -101,6 +101,8 @@ export function ClauseGrid({
 	onLeaveMark,
 }: ClauseGridProps) {
 	const [rowLimit, setRowLimit] = useState(ROW_PAGE);
+	// Picking a row paints it in the contract; its detail opens only from «Details».
+	const [detailOf, setDetailOf] = useState<string | null>(null);
 	const [showUnfiled, setShowUnfiled] = useState(false);
 
 	// The picked row is always shown, even when it sits past «Show more».
@@ -207,8 +209,20 @@ export function ClauseGrid({
 						onSelect={onSelectClause}
 						onOpenGraph={onOpenGraph}
 						expandable={Boolean(renderDetail)}
+						detailOpen={
+							row.clauseId !== null && row.clauseId === activeClauseId && detailOf === row.clauseId
+						}
+						onToggleDetail={() => {
+							const id = row.clauseId;
+							if (!id) return;
+							if (id !== activeClauseId) onSelectClause(id);
+							setDetailOf(detailOf === id && id === activeClauseId ? null : id);
+						}}
 						detail={
-							renderDetail && activeClauseId !== null && row.clauseId === activeClauseId
+							renderDetail &&
+							activeClauseId !== null &&
+							row.clauseId === activeClauseId &&
+							detailOf === row.clauseId
 								? renderDetail(row)
 								: null
 						}

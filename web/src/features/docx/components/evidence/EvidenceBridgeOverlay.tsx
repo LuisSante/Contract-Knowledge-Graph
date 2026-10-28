@@ -149,9 +149,11 @@ export function EvidenceBridgeOverlay({
 							className="pointer-events-auto absolute"
 							// In the page margin, left of the line; a narrow pane that scrolled the
 							// margin away keeps it in view, over the paragraph's first words.
+							// It never runs past the page's left edge: at most the room left of the line.
 							style={{
 								left: Math.max(label.leftPx - 6, LABEL_ROOM_PX),
 								top: label.topPx,
+								maxWidth: Math.max(label.leftPx - 6, LABEL_ROOM_PX) - 4,
 								transform: 'translate(-100%, -50%)',
 							}}
 						>

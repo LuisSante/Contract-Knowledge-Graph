@@ -21,7 +21,9 @@ import {
 import {
 	clauseDependsOn,
 	clauseModifiedBy,
+	clauseDefines,
 	clauseRefersTo,
+	clauseUsesFrom,
 } from '@/features/docx/utils/knowledge/graph-payload';
 import { useClauseImportance } from '@/features/docx/hooks/useClauseImportance';
 import type { ClauseRowLead } from '@/features/docx/components/clause-analyzer/grid/ClauseRow';
@@ -163,6 +165,8 @@ export function useClauseRows({
 		const modifiedBy = clauseModifiedBy(viewKg);
 		const dependsOn = clauseDependsOn(viewKg);
 		const refersTo = clauseRefersTo(viewKg);
+		const usesFrom = clauseUsesFrom(viewKg);
+		const defines = clauseDefines(viewKg);
 		const numberOf = (id: string) => {
 			const clause = clauseOf.get(id);
 			const title = clauseTitle(clause, clause?.heading || id, viewKg.clauses);
@@ -185,6 +189,14 @@ export function useClauseRows({
 					: undefined,
 				refersTo: row.clauseId
 					? refersTo.get(row.clauseId)?.map((id) => ({ clauseId: id, label: numberOf(id) }))
+					: undefined,
+				defines: row.clauseId ? defines.get(row.clauseId) : undefined,
+				usesFrom: row.clauseId
+					? usesFrom.get(row.clauseId)?.map((u) => ({
+							clauseId: u.clauseId,
+							label: numberOf(u.clauseId),
+							note: `it defines ${u.terms.map((t) => `“${t}”`).join(', ')}`,
+						}))
 					: undefined,
 			};
 		};

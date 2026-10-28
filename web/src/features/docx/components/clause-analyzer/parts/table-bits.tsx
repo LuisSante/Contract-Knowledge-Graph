@@ -338,6 +338,14 @@ const DEPENDS_ON_NOTE =
 const REFERS_TO_NOTE =
 	'This clause points to another one, without making anything depend on it: what that one says helps to read this one.';
 
+/** What a `uses` link means, for the ⓘ beside it. */
+const USES_NOTE =
+	'This clause uses a word whose meaning is written in another clause, in the linked paragraph.';
+
+/** What a `defines` link means, for the ⓘ beside it. */
+const DEFINES_NOTE =
+	'This clause defines a word that the linked clause uses: its meaning is written here.';
+
 /** What a condition written apart from its statement means, for the ⓘ beside it. */
 const CONDITION_NOTE =
 	'The condition is written in this paragraph, apart from the statement it gates: that statement only applies under it.';
@@ -375,6 +383,18 @@ export function RefersToInfo({ about, inverse }: { about?: string; inverse?: boo
 			label="What refers to means"
 			inverse={inverse}
 		/>
+	);
+}
+
+/** The ⓘ that explains a `uses` link; `about` names the words and where they are defined. */
+export function UsesInfo({ about, inverse }: { about?: string; inverse?: boolean }) {
+	return <RelationInfo about={about} note={USES_NOTE} label="What uses means" inverse={inverse} />;
+}
+
+/** The ⓘ that explains a `defines` link; `about` names the words and where they are used. */
+export function DefinesInfo({ about, inverse }: { about?: string; inverse?: boolean }) {
+	return (
+		<RelationInfo about={about} note={DEFINES_NOTE} label="What defines means" inverse={inverse} />
 	);
 }
 
@@ -451,15 +471,34 @@ const LINK_COLOR = {
 	modifies: '#6d28d9',
 	dependsOn: '#0e7490',
 	refersTo: '#475569',
+	uses: '#a65628',
+	defines: '#facc15',
 } as const;
 
-/** A filled tag on the contract's margin line, halfway along its link. */
-function LinkTag({ color, children }: { color: string; children: ReactNode }) {
+/** A filled tag on the contract's margin line, halfway along its link. It never grows past
+ *  the room its holder gives it: a long label is cut with «…» and said whole on hover. */
+function LinkTag({
+	color,
+	label,
+	dark = false,
+	children,
+}: {
+	color: string;
+	label: string;
+	/** Dark text, for a light fill. */
+	dark?: boolean;
+	children: ReactNode;
+}) {
 	return (
 		<span
-			className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-2xs font-semibold whitespace-nowrap text-white shadow-sm"
+			title={label}
+			className={cn(
+				'inline-flex max-w-full items-center gap-1 rounded-full px-2 py-0.5 text-2xs font-semibold whitespace-nowrap shadow-sm',
+				dark ? 'text-foreground' : 'text-white'
+			)}
 			style={{ backgroundColor: color }}
 		>
+			<span className="min-w-0 truncate">{label}</span>
 			{children}
 		</span>
 	);
@@ -468,8 +507,7 @@ function LinkTag({ color, children }: { color: string; children: ReactNode }) {
 /** On the contract's margin line, by the picked clause: the linked sentences modify it. */
 export function ModifiedByTag({ clause, by }: { clause: string; by: string[] }) {
 	return (
-		<LinkTag color={LINK_COLOR.modifies}>
-			modified by {by.join(', ')}
+		<LinkTag color={LINK_COLOR.modifies} label={`modified by ${by.join(', ')}`}>
 			<ModifiesInfo about={`${clause} is modified by ${by.join(', ')}`} inverse />
 		</LinkTag>
 	);
@@ -478,8 +516,7 @@ export function ModifiedByTag({ clause, by }: { clause: string; by: string[] }) 
 /** On the contract's margin line, by the picked clause: it depends on the linked clauses. */
 export function DependsOnTag({ clause, on }: { clause: string; on: string[] }) {
 	return (
-		<LinkTag color={LINK_COLOR.dependsOn}>
-			depends on {on.join(', ')}
+		<LinkTag color={LINK_COLOR.dependsOn} label={`depends on ${on.join(', ')}`}>
 			<DependsOnInfo about={`${clause} depends on ${on.join(', ')}`} inverse />
 		</LinkTag>
 	);
@@ -488,9 +525,51 @@ export function DependsOnTag({ clause, on }: { clause: string; on: string[] }) {
 /** On the contract's margin line, by the picked clause: it refers to the linked clauses. */
 export function RefersToTag({ clause, to }: { clause: string; to: string[] }) {
 	return (
-		<LinkTag color={LINK_COLOR.refersTo}>
-			refers to {to.join(', ')}
+		<LinkTag color={LINK_COLOR.refersTo} label={`refers to ${to.join(', ')}`}>
 			<RefersToInfo about={`${clause} refers to ${to.join(', ')}`} inverse />
+		</LinkTag>
+	);
+}
+
+/** On the contract's margin line, halfway to a paragraph that defines words the picked clause
+ *  uses: «uses "Licensee"»; the last such tag also says how many more have no line. */
+export function UsesTag({
+	terms,
+	definedIn,
+	more,
+}: {
+	terms: string[];
+	definedIn: string;
+	more: number;
+}) {
+	const words = terms.map((t) => `“${t}”`).join(', ');
+	return (
+		<LinkTag color={LINK_COLOR.uses} label={`uses ${words}${more > 0 ? ` +${more} more` : ''}`}>
+			<UsesInfo about={`${words}: defined in ${definedIn}`} inverse />
+		</LinkTag>
+	);
+}
+
+/** On the contract's margin line, halfway to a clause that uses words the picked clause
+ *  defines: «defines "IOF" → §11.1», since one word may reach several clauses; the last such
+ *  tag also says how many more have no line. */
+export function DefinesTag({
+	terms,
+	usedIn,
+	more,
+}: {
+	terms: string[];
+	usedIn: string;
+	more: number;
+}) {
+	const words = terms.map((t) => `“${t}”`).join(', ');
+	return (
+		<LinkTag
+			color={LINK_COLOR.defines}
+			label={`defines ${words} → ${usedIn}${more > 0 ? ` +${more} more` : ''}`}
+			dark
+		>
+			<DefinesInfo about={`${words}: used in ${usedIn}`} />
 		</LinkTag>
 	);
 }
@@ -525,12 +604,23 @@ export function GraphLink({
 
 /** One statement in the contract's own words; a click underlines it in the contract, and
  *  the one underlined there stays marked here. */
+/** Another party's statement shown beside one: its tag («Anhui's right»), colour and words. */
+export interface StatementAside {
+	id: string;
+	tag: string;
+	color: string;
+	label: string;
+}
+
 export function Fragment({
 	served,
 	section,
 	tag,
 	tagColor,
 	conditions = [],
+	reciprocal = false,
+	counterparts = [],
+	conditionParty,
 	onOpen,
 }: {
 	served: Served;
@@ -540,6 +630,12 @@ export function Fragment({
 	/** The colour of the party the tag names. */
 	tagColor?: string;
 	conditions?: KgCondition[];
+	/** The other party has the same statement, word for word. */
+	reciprocal?: boolean;
+	/** The other party's statements of the other type written in the same paragraph. */
+	counterparts?: StatementAside[];
+	/** The party a condition's trigger names, when it names just one. */
+	conditionParty?: (condition: KgCondition) => { name: string; color: string } | null;
 	onOpen: (nodeId: string) => void;
 }) {
 	const shown = useClauseAnalyzerStore(
@@ -561,6 +657,14 @@ export function Fragment({
 							style={tagColor ? { color: tagColor } : undefined}
 						>
 							{tag}
+							{reciprocal && (
+								<span
+									className="ml-1.5 rounded-full bg-muted px-1.5 py-px text-2xs font-medium text-foreground/70"
+									title={`The other party has the same ${served.kind}, word for word: it binds or entitles both alike.`}
+								>
+									reciprocal
+								</span>
+							)}
 						</p>
 					)}
 					<p className="text-sm font-medium text-foreground">{served.mark.label}</p>
@@ -576,10 +680,39 @@ export function Fragment({
 					<ArrowUpRightIcon className="size-3" />
 				</button>
 			</div>
-			{conditions.map((condition) => (
-				<p key={condition.id} className="text-xs text-foreground/90">
-					<span className="font-medium">Condition: </span>
-					{condition.operator || 'IF'} {condition.trigger}
+			{conditions.map((condition) => {
+				const party = conditionParty?.(condition) ?? null;
+				return (
+					<p key={condition.id} className="text-xs text-foreground/90">
+						<span className="font-medium">Condition: </span>
+						{condition.operator || 'IF'} {condition.trigger}
+						{party && (
+							<span
+								className="ml-1.5 inline-flex items-center gap-1 align-[1px] font-medium whitespace-nowrap"
+								style={{ color: party.color }}
+								title={`The condition names ${party.name}: it turns on what ${party.name} does or what happens to it.`}
+							>
+								<span className="size-1.5 rounded-full" style={{ backgroundColor: party.color }} />
+								{party.name}
+							</span>
+						)}
+					</p>
+				);
+			})}
+			{counterparts.map((other) => (
+				<p key={other.id} className="text-xs text-muted-foreground">
+					<span className="font-medium">Same paragraph: </span>
+					<button
+						type="button"
+						onClick={() => onOpen(other.id)}
+						className="text-left hover:underline"
+						title="Written in the same paragraph. The graph does not say one is the price of the other."
+					>
+						<span className="font-medium" style={{ color: other.color }}>
+							{other.tag}
+						</span>{' '}
+						· {other.label}
+					</button>
 				</p>
 			))}
 			<details className="text-xs">

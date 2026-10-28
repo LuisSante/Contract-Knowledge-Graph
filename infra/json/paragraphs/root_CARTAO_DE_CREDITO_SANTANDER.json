@@ -1,0 +1,1756 @@
+{
+  "documentId": "root::CARTAO DE CREDITO SANTANDER",
+  "tree": [
+    {
+      "ref": "1",
+      "heading": "CARTÃO DE CRÉDITO. O cartão de crédito é um meio de pagamento para tra",
+      "level": 1,
+      "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-2",
+      "children": [
+        {
+          "ref": "1.1",
+          "heading": "As regras de funcionamento do sistema de cartões de crédito no Brasil",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-3",
+          "children": []
+        },
+        {
+          "ref": "1.2",
+          "heading": "O cartão pode ser básico ou diferenciado e de uso nacional e/ou intern",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-4",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "2",
+      "heading": "TITULAR DO CARTÃO E ADICIONAIS. Você é o titular do cartão e pode, se",
+      "level": 1,
+      "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-5",
+      "children": []
+    },
+    {
+      "ref": "3",
+      "heading": "EMISSÃO DO CARTÃO E LIMITE DE CRÉDITO. Ao solicitar o cartão você auto",
+      "level": 1,
+      "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-6",
+      "children": [
+        {
+          "ref": "3.1",
+          "heading": "Aprovado o crédito, você recebe o seu cartão e o dos adicionais, se in",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-7",
+          "children": []
+        },
+        {
+          "ref": "3.2",
+          "heading": "No aplicativo Way ou, quando disponível, nos demais canais de atendime",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-8",
+          "children": []
+        },
+        {
+          "ref": "3.3",
+          "heading": "Você autoriza que o SANTANDER aumente, a qualquer tempo, o limite máxi",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-9",
+          "children": []
+        },
+        {
+          "ref": "3.4",
+          "heading": "De acordo com as análises periódicas de crédito do SANTANDER, o limite",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-10",
+          "children": []
+        },
+        {
+          "ref": "3.5",
+          "heading": "O limite de crédito disponível é reduzido pelo valor total das transaç",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-11",
+          "children": []
+        },
+        {
+          "ref": "3.6",
+          "heading": "Se você for correntista do SANTANDER, pode optar por contratar o cartã",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-12",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "4",
+      "heading": "DESBLOQUEIO DO CARTÃO E ADESÃO ÀS REGRAS. Ao ter o seu cartão aprovado",
+      "level": 1,
+      "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-13",
+      "children": [
+        {
+          "ref": "4.1",
+          "heading": "Ao receber o seu cartão físico confira os dados. Se estiverem corretos",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-14",
+          "children": []
+        },
+        {
+          "ref": "4.2",
+          "heading": "ATENÇÃO: GERANDO O CARTÃO ONLINE OU DESBLOQUEANDO O CARTÃO FÍSICO OU,",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-15",
+          "children": []
+        },
+        {
+          "ref": "4.3",
+          "heading": "FIQUE ATENTO: O SANTANDER FORNECE SENHA E, PARA CARTÃO MÚLTIPLO, TAMBÉ",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-16",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "5",
+      "heading": "USO DO CARTÃO. Você e os adicionais devem conferir os dados de todas a",
+      "level": 1,
+      "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-17",
+      "children": [
+        {
+          "ref": "5.1",
+          "heading": "Se disponível a tecnologia “Contactless” (pagamento por aproximação),",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-18",
+          "children": []
+        },
+        {
+          "ref": "5.2",
+          "heading": "FIQUE ATENTO: VOCÊ É O ÚNICO RESPONSÁVEL PELAS SUAS TRANSAÇÕES E DE SE",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-19",
+          "children": []
+        },
+        {
+          "ref": "5.3",
+          "heading": "É expressamente vedada a utilização do cartão em transações não permit",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-20",
+          "children": []
+        },
+        {
+          "ref": "5.4",
+          "heading": "Por segurança, o SANTANDER pode restringir os saques em dinheiro e out",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-21",
+          "children": []
+        },
+        {
+          "ref": "5.5",
+          "heading": "O cartão pode ser retido no estabelecimento se estiver cancelado, venc",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-22",
+          "children": []
+        },
+        {
+          "ref": "5.6",
+          "heading": "O CARTÃO PODE SER BLOQUEADO SE VOCÊ ESTIVER EM ATRASO COM AS OBRIGAÇÕE",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-23",
+          "children": []
+        },
+        {
+          "ref": "5.7",
+          "heading": "Regularizado o motivo que ocasionou o bloqueio do seu cartão, o SANTAN",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-24",
+          "children": []
+        },
+        {
+          "ref": "5.8",
+          "heading": "O cartão pode ser utilizado para pagamento de compras à vista ou parce",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-25",
+          "children": []
+        },
+        {
+          "ref": "5.9",
+          "heading": "Você pode consultar o Custo Efetivo Total (CET) nas faturas mensais e,",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-26",
+          "children": []
+        },
+        {
+          "ref": "5.10",
+          "heading": "Na hipótese de saldo credor em seu cartão, o SANTANDER pode, a seu cri",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-27",
+          "children": []
+        },
+        {
+          "ref": "5.11",
+          "heading": "Caso você use seu cartão para transações recorrentes, como, por exempl",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-28",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "6",
+      "heading": "SERVIÇO DE AVALIAÇÃO EMERGENCIAL DE CRÉDITO. Se disponível em seu cart",
+      "level": 1,
+      "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-29",
+      "children": [
+        {
+          "ref": "6.1",
+          "heading": "IMPORTANTE: A AUTORIZAÇÃO DA TRANSAÇÃO ACIMA DO LIMITE DEPENDE DE ANÁL",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-30",
+          "children": []
+        },
+        {
+          "ref": "6.2",
+          "heading": "Esse serviço é realizado no momento em que você utilizar o cartão acim",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-31",
+          "children": []
+        },
+        {
+          "ref": "6.3",
+          "heading": "ATENÇÃO: A autorização emergencial não significa aumento do limite do",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-32",
+          "children": []
+        },
+        {
+          "ref": "6.4",
+          "heading": "VOCÊ PODE CANCELAR ESSE SERVIÇO A QUALQUER MOMENTO.",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-33",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "7",
+      "heading": "PAGAMENTO DE CONTAS. Caso disponível, você pode utilizar o cartão para",
+      "level": 1,
+      "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-34",
+      "children": [
+        {
+          "ref": "7.1",
+          "heading": "O limite de crédito do cartão não pode ser ultrapassado para o pagamen",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-35",
+          "children": []
+        },
+        {
+          "ref": "7.2",
+          "heading": "IMPORTANTE: o SANTANDER pode estipular valor máximo diário de contas e",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-36",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "8",
+      "heading": "SAQUE E EMPRÉSTIMO PESSOAL. Com o cartão você pode realizar saques e c",
+      "level": 1,
+      "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-37",
+      "children": [
+        {
+          "ref": "8.1",
+          "heading": "SAQUES. Em dinheiro e até o valor autorizado especificamente para essa",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-38",
+          "children": [
+            {
+              "ref": "8.1.1",
+              "heading": "O valor total do saque e respectivos encargos devem ser pagos no venci",
+              "level": 3,
+              "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-39",
+              "children": []
+            }
+          ]
+        },
+        {
+          "ref": "8.2",
+          "heading": "EMPRÉSTIMO PESSOAL. Limite de crédito adicional para a contratação de",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-40",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "9",
+      "heading": "UTILIZAÇÃO DO CARTÃO EM TRANSAÇÕES INTERNACIONAIS. Se o seu cartão for",
+      "level": 1,
+      "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-41",
+      "children": [
+        {
+          "ref": "9.1",
+          "heading": "ANTES DE USAR O CARTÃO EM VIAGENS AO EXTERIOR, É IMPORTANTE QUE A FUNÇ",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-42",
+          "children": []
+        },
+        {
+          "ref": "9.2",
+          "heading": "As transações internacionais devem ser realizadas na respectiva moeda",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-43",
+          "children": []
+        },
+        {
+          "ref": "9.3",
+          "heading": "As transações em moeda estrangeira, inclusive saques, sempre tem refer",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-44",
+          "children": []
+        },
+        {
+          "ref": "9.4",
+          "heading": "A taxa de câmbio do dólar norte americano utilizada pelo SANTANDER, em",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-45",
+          "children": []
+        },
+        {
+          "ref": "9.5",
+          "heading": "Em caso de cancelamento ou estorno de uma transação em moeda estrangei",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-46",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "10",
+      "heading": "FATURA. É a prestação de contas disponibilizada pelo SANTANDER a você",
+      "level": 1,
+      "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-47",
+      "children": [
+        {
+          "ref": "10.1",
+          "heading": "Se por qualquer motivo a fatura não for disponibilizada, entre em cont",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-48",
+          "children": []
+        },
+        {
+          "ref": "10.2",
+          "heading": "IMPORTANTE: confira todas as transações lançadas na sua fatura. Reclam",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-49",
+          "children": [
+            {
+              "ref": "10.2.1",
+              "heading": "Se constatada a regularidade da transação reclamada, essa transação se",
+              "level": 3,
+              "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-50",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ref": "11",
+      "heading": "FORMAS DE PAGAMENTO. VOCÊ DEVE PAGAR O VALOR TOTAL DA SUA FATURA MENSA",
+      "level": 1,
+      "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-51",
+      "children": [
+        {
+          "ref": "11.1",
+          "heading": "SE VOCÊ NÃO POSSUIR CRÉDITO ROTATIVO VIGENTE NO MÊS, você pode:",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-52",
+          "children": []
+        },
+        {
+          "ref": "11.2",
+          "heading": "SE VOCÊ JÁ POSSUIR UM CRÉDITO ROTATIVO VIGENTE NO MÊS, você pode:",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-55",
+          "children": []
+        },
+        {
+          "ref": "11.3",
+          "heading": "Se disponível, você ainda pode PARCELAR O VALOR DA FATURA. Você pode c",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-62",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "12",
+      "heading": "FALTA DE PAGAMENTO OU ATRASO. NA FALTA, INSUFICIÊNCIA OU ATRASO NO PAG",
+      "level": 1,
+      "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-63",
+      "children": [
+        {
+          "ref": "12.1",
+          "heading": "Nessas hipóteses, você deve pagar o saldo devedor total, inclusive as",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-64",
+          "children": []
+        },
+        {
+          "ref": "12.2",
+          "heading": "Se você efetuar o pagamento da fatura após o vencimento, deve consulta",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-65",
+          "children": []
+        },
+        {
+          "ref": "12.3",
+          "heading": "Todas as despesas incorridas pelo SANTANDER para a cobrança do débito,",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-66",
+          "children": []
+        },
+        {
+          "ref": "12.4",
+          "heading": "No atraso, todas as suas obrigações poderão ser consideradas vencidas",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-67",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "13",
+      "heading": "AUTORIZAÇÃO PARA DÉBITO EM CONTA CORRENTE. SE VOCÊ FOR CORRENTISTA DO",
+      "level": 1,
+      "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-68",
+      "children": [
+        {
+          "ref": "13.1",
+          "heading": "Você pode cancelar essa autorização na Central de Atendimento Santande",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-69",
+          "children": []
+        },
+        {
+          "ref": "13.2",
+          "heading": "ATENÇÃO: LEMBRE-SE QUE O SALDO REMANESCENTE SERÁ FINANCIADO DE ACORDO",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-70",
+          "children": []
+        },
+        {
+          "ref": "13.3",
+          "heading": "Se sua conta corrente não apresentar saldo suficiente para o débito do",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-71",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "14",
+      "heading": "TARIFAS. AO ADERIR A ESTE CONTRATO VOCÊ ESTÁ SUJEITO À COBRANÇA DAS TA",
+      "level": 1,
+      "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-72",
+      "children": [
+        {
+          "ref": "14.1",
+          "heading": "O pagamento da anuidade pode ser parcelado, conforme opções oferecidas",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-82",
+          "children": []
+        },
+        {
+          "ref": "14.2",
+          "heading": "O SANTANDER pode alterar os valores das tarifas, mediante prévia comun",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-83",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "15",
+      "heading": "PERDA, FURTO, ROUBO OU EXTRAVIO DO CARTÃO. EM RAZÃO DO SEU DEVER DE BO",
+      "level": 1,
+      "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-84",
+      "children": [
+        {
+          "ref": "15.1",
+          "heading": "SE VOCÊ CUMPRIR O DISPOSTO NO ITEM 15, O SANTANDER EFETUARÁ O BLOQUEIO",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-85",
+          "children": []
+        },
+        {
+          "ref": "15.2",
+          "heading": "SE VOCÊ NÃO CUMPRIR O DISPOSTO NO ITEM 15, VOCÊ SERÁ O ÚNICO E EXCLUSI",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-86",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "16",
+      "heading": "COMUNICAÇÃO. O SANTANDER pode realizar quaisquer comunicações relacion",
+      "level": 1,
+      "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-87",
+      "children": []
+    },
+    {
+      "ref": "17",
+      "heading": "RESCISÃO CONTRATUAL. O contrato vigorará por prazo indeterminado, pode",
+      "level": 1,
+      "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-88",
+      "children": [
+        {
+          "ref": "17.1",
+          "heading": "No caso de rescisão você poderá solicitar o reembolso proporcional da",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-89",
+          "children": []
+        },
+        {
+          "ref": "17.2",
+          "heading": "A utilização do seu cartão ou adicionais em estabelecimentos de sua pr",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-90",
+          "children": []
+        }
+      ]
+    },
+    {
+      "ref": "18",
+      "heading": "DISPOSIÇÕES GERAIS. Aplicam-se ainda a este contrato as seguintes cond",
+      "level": 1,
+      "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-91",
+      "children": [
+        {
+          "ref": "18.1",
+          "heading": "O SANTANDER RESERVA-SE O DIREITO DE REVISAR ESTE CONTRATO A QUALQUER M",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-92",
+          "children": []
+        },
+        {
+          "ref": "18.2",
+          "heading": "O uso do cartão pode ser ampliado e agregados novos serviços e produto",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-93",
+          "children": []
+        },
+        {
+          "ref": "18.3",
+          "heading": "Você autoriza o Conglomerado Financeiro Santander:",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-94",
+          "children": [
+            {
+              "ref": "18.3.1",
+              "heading": "A consultar informações, bem como ratifica a autorização a qualquer co",
+              "level": 3,
+              "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-95",
+              "children": [
+                {
+                  "ref": "18.3.1.1",
+                  "heading": "Você concorda em estender essa autorização às instituições que podem c",
+                  "level": 4,
+                  "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-96",
+                  "children": []
+                },
+                {
+                  "ref": "18.3.1.2",
+                  "heading": "Você está ciente de que as informações sobre as suas operações de créd",
+                  "level": 4,
+                  "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-97",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ref": "18.4",
+          "heading": "Nos termos da Lei Geral de Proteção de Dados (Lei nº 13.709/18), você",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-98",
+          "children": [
+            {
+              "ref": "18.4.1",
+              "heading": "Você reconhece e concorda que o SANTANDER, na condição de controlador",
+              "level": 3,
+              "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-99",
+              "children": []
+            },
+            {
+              "ref": "18.4.2",
+              "heading": "O SANTANDER poderá compartilhar seus dados pessoais estritamente neces",
+              "level": 3,
+              "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-100",
+              "children": []
+            },
+            {
+              "ref": "18.4.3",
+              "heading": "O SANTANDER poderá fornecer os seus dados pessoais sempre que estiver",
+              "level": 3,
+              "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-101",
+              "children": []
+            },
+            {
+              "ref": "18.4.4",
+              "heading": "A informar aos órgãos de proteção ao crédito, tais como SERASA e SPC,",
+              "level": 3,
+              "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-102",
+              "children": []
+            },
+            {
+              "ref": "18.4.5",
+              "heading": "Você, na condição de titular dos dados pessoais, tem direito a obter,",
+              "level": 3,
+              "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-103",
+              "children": []
+            },
+            {
+              "ref": "18.4.6",
+              "heading": "Mesmo após o término deste contrato, os dados pessoais e outras inform",
+              "level": 3,
+              "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-104",
+              "children": []
+            }
+          ]
+        },
+        {
+          "ref": "18.5",
+          "heading": "Ao aderir a este contrato você se obriga a: (i) não utilizar o limite",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-105",
+          "children": []
+        },
+        {
+          "ref": "18.6",
+          "heading": "Para ter direito aos benefícios e recompensas do programa de seu cartã",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-106",
+          "children": []
+        },
+        {
+          "ref": "18.7",
+          "heading": "A sua adesão a este contrato obriga as partes, seus herdeiros e sucess",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-107",
+          "children": []
+        },
+        {
+          "ref": "18.8",
+          "heading": "Fica eleito o foro da Comarca da Capital do Estado de São Paulo ou do",
+          "level": 2,
+          "paragraphId": "root::CARTAO DE CREDITO SANTANDER-p-108",
+          "children": []
+        }
+      ]
+    }
+  ],
+  "paragraphs": [
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-1",
+      "text": "O BANCO SANTANDER (BRASIL) S.A., com sede na Avenida Presidente Juscelino Kubitschek, 2041 e 2235, Bloco A, Vila Olímpia, São Paulo/SP, CEP 04543-011, CNPJ nº 90.400.888/0001-42, emite e administra os CARTÕES DE CRÉDITO SANTANDER e apresenta a você as condições de uso do cartão que você solicitou. VEJA O QUE DIZ O CONTRATO. LEIA-O COM MUITA ATENÇÃO, ENTENDA AS REGRAS DE USO E UTILIZE O CARTÃO SOMENTE SE ESTIVER DE ACORDO. Em caso de dúvidas, entre em contato por meio dos canais de atendimento disponíveis.",
+      "paragraph_enum": 0,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-2",
+      "text": "1. CARTÃO DE CRÉDITO. O cartão de crédito é um meio de pagamento para transações de aquisição de produtos e serviços em estabelecimentos credenciados e para outras transações aqui informadas, cuja disponibilidade será indicada em sua fatura.",
+      "paragraph_enum": 1,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-3",
+      "text": "1.1. As regras de funcionamento do sistema de cartões de crédito no Brasil e no exterior são definidas por Bandeiras, como, por exemplo, a Mastercard e a Visa.",
+      "paragraph_enum": 2,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-4",
+      "text": "1.2. O cartão pode ser básico ou diferenciado e de uso nacional e/ou internacional. Somente o cartão diferenciado oferece os benefícios e/ou recompensas relacionados no Anexo.",
+      "paragraph_enum": 3,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-5",
+      "text": "2. TITULAR DO CARTÃO E ADICIONAIS. Você é o titular do cartão e pode, se desejar, solicitar cartão adicional, inclusive em formato personalizado se disponível, para uso próprio ou para pessoas do seu relacionamento, desde que maiores de 16 anos, sob sua exclusiva responsabilidade, inclusive pelas transações por elas realizadas e respectivo pagamento. Você pode excluí-las sempre que desejar.",
+      "paragraph_enum": 4,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-6",
+      "text": "3. EMISSÃO DO CARTÃO E LIMITE DE CRÉDITO. Ao solicitar o cartão você autoriza o SANTANDER a analisar os seus dados e dos seus adicionais, de acordo com a política de crédito e cadastro vigentes.",
+      "paragraph_enum": 5,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-7",
+      "text": "3.1. Aprovado o crédito, você recebe o seu cartão e o dos adicionais, se indicados, e tem o limite máximo de crédito informado na sua fatura mensal.",
+      "paragraph_enum": 6,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-8",
+      "text": "3.2. No aplicativo Way ou, quando disponível, nos demais canais de atendimento, você poderá, a seu critério e a qualquer tempo, fazer a gestão dos limites de crédito do seu cartão e dos seus adicionais, reduzindo ou aumentando até o valor do limite máximo de crédito aprovado. Saiba que o limite máximo de crédito é único para você e seus adicionais.",
+      "paragraph_enum": 7,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-9",
+      "text": "3.3. Você autoriza que o SANTANDER aumente, a qualquer tempo, o limite máximo de crédito do cartão se for verificado nas análises periódicas de crédito que você pode ter um limite maior. Você será comunicado sobre esse aumento do limite máximo de crédito e poderá cancelar esta autorização a qualquer momento nos canais de atendimento do SANTANDER.",
+      "paragraph_enum": 8,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-10",
+      "text": "3.4. De acordo com as análises periódicas de crédito do SANTANDER, o limite máximo de crédito aprovado do cartão poderá ser reduzido mediante comunicação prévia.",
+      "paragraph_enum": 9,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-11",
+      "text": "3.5. O limite de crédito disponível é reduzido pelo valor total das transações realizadas, das tarifas e encargos e restabelecido, automaticamente, na proporção do valor pago, em até 72 horas do pagamento, ou, se em cheque, no prazo da compensação e liberação, não ultrapassando o limite máximo de crédito aprovado do cartão ou limite de crédito estabelecido por você no aplicativo Way, o que for menor.",
+      "paragraph_enum": 10,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-12",
+      "text": "3.6. Se você for correntista do SANTANDER, pode optar por contratar o cartão múltiplo, que contém as funções de crédito e de débito em um único plástico.",
+      "paragraph_enum": 11,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-13",
+      "text": "4. DESBLOQUEIO DO CARTÃO E ADESÃO ÀS REGRAS. Ao ter o seu cartão aprovado, você poderá gerar o cartão online no aplicativo Way para realizar compras em sites, aplicativos e pagamentos de serviços de assinatura, antes mesmo do cartão físico chegar.",
+      "paragraph_enum": 12,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-14",
+      "text": "4.1. Ao receber o seu cartão físico confira os dados. Se estiverem corretos, efetue o desbloqueio conforme orientação do SANTANDER constante da comunicação de envio do cartão.",
+      "paragraph_enum": 13,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-15",
+      "text": "4.2. ATENÇÃO: GERANDO O CARTÃO ONLINE OU DESBLOQUEANDO O CARTÃO FÍSICO OU, AINDA, REALIZANDO A PRIMEIRA COMPRA, VOCÊ MANIFESTA A SUA CONCORDÂNCIA COM TODAS AS CONDIÇÕES DESTE CONTRATO E DEMAIS REGRAS DE USO DO CARTÃO COMUNICADAS A VOCÊ.",
+      "paragraph_enum": 14,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-16",
+      "text": "4.3. FIQUE ATENTO: O SANTANDER FORNECE SENHA E, PARA CARTÃO MÚLTIPLO, TAMBÉM A CHAVE DE SEGURANÇA, QUE SÃO DADOS SIGILOSOS, DE USO PESSOAL E INTRANSFERÍVEL, NECESSÁRIOS PARA O USO DO CARTÃO. EQUIVALEM À SUA ASSINATURA DE FORMA ELETRÔNICA E DEVEM SER MEMORIZADAS E NUNCA ANOTADAS JUNTO AO CARTÃO.",
+      "paragraph_enum": 15,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-17",
+      "text": "5. USO DO CARTÃO. Você e os adicionais devem conferir os dados de todas as transações realizadas no cartão. A assinatura no comprovante de venda, a digitação da senha ou a confirmação da operação por meio dos canais eletrônicos (internet ou telefone) demonstram sua concordância e formalizam a transação realizada.",
+      "paragraph_enum": 16,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-18",
+      "text": "5.1. Se disponível a tecnologia “Contactless” (pagamento por aproximação), você pode usar o cartão (ou o cartão adicional emitido em formato personalizado de dispositivo vestível) sem a digitação da senha em estabelecimentos credenciados. Basta aproximá-lo da maquininha do estabelecimento credenciado e a operação de pagamento é realizada, sem a necessidade de entregar o cartão ou realizar qualquer outro ato. O SANTANDER pode limitar o valor e/ou a quantidade de transações sem a digitação da senha com essa tecnologia.",
+      "paragraph_enum": 17,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-19",
+      "text": "5.2. FIQUE ATENTO: VOCÊ É O ÚNICO RESPONSÁVEL PELAS SUAS TRANSAÇÕES E DE SEUS ADICIONAIS REALIZADAS COM O CARTÃO JUNTO AOS ESTABELECIMENTOS. O SANTANDER NÃO RESPONDE PELO PREÇO, QUANTIDADE, QUALIDADE DO BEM OU SERVIÇO QUE VOCÊ ADQUIRIR E NEM POR EVENTUAL RESTRIÇÃO AO USO DO CARTÃO OU POR EVENTUAL DESACORDO COMERCIAL ENTRE VOCÊ E O ESTABELECIMENTO.",
+      "paragraph_enum": 18,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-20",
+      "text": "5.3. É expressamente vedada a utilização do cartão em transações não permitidas pela legislação. O descumprimento ensejará o imediato cancelamento do cartão.",
+      "paragraph_enum": 19,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-21",
+      "text": "5.4. Por segurança, o SANTANDER pode restringir os saques em dinheiro e outras transações ou bloquear transação com o cartão em determinadas horas do dia e locais ou, ainda, cidades e/ou países considerados de risco.",
+      "paragraph_enum": 20,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-22",
+      "text": "5.5. O cartão pode ser retido no estabelecimento se estiver cancelado, vencido ou for constatada irregularidade.",
+      "paragraph_enum": 21,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-23",
+      "text": "5.6. O CARTÃO PODE SER BLOQUEADO SE VOCÊ ESTIVER EM ATRASO COM AS OBRIGAÇÕES DESTE CONTRATO OU OUTRA OBRIGAÇÃO DECORRENTE DE QUALQUER OPERAÇÃO MANTIDA COM O SANTANDER. TAMBÉM PODE SER BLOQUEADO ATÉ O PAGAMENTO INTEGRAL DE DÍVIDA REFINANCIADA OU, AINDA, POR MEDIDA DE SEGURANÇA PARA PREVINIR FRAUDE NA UTILIZAÇÃO DO CARTÃO.",
+      "paragraph_enum": 22,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-24",
+      "text": "5.7. Regularizado o motivo que ocasionou o bloqueio do seu cartão, o SANTANDER pode restabelecer o uso. Não havendo regularização, o cartão pode ser cancelado.",
+      "paragraph_enum": 23,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-25",
+      "text": "5.8. O cartão pode ser utilizado para pagamento de compras à vista ou parceladas, caso disponível. Nas compras parceladas pelo SANTANDER há cobrança de juros à taxa informada e Imposto sobre Operações Financeiras (“IOF”). As parcelas são cobradas por meio da sua fatura.",
+      "paragraph_enum": 24,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-26",
+      "text": "5.9. Você pode consultar o Custo Efetivo Total (CET) nas faturas mensais e, previamente à contratação das operações de crédito, nos respectivos canais de atendimento. O CET, expresso na forma de taxa percentual anual e calculado conforme as normas aplicáveis, corresponde aos encargos, tributos, tarifas e outras despesas incidentes sobre as operações de crédito especificadas neste contrato.",
+      "paragraph_enum": 25,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-27",
+      "text": "5.10. Na hipótese de saldo credor em seu cartão, o SANTANDER pode, a seu critério, efetuar o crédito do respectivo valor em sua conta mantida no SANTANDER, liberá-lo por meio de ordem de pagamento ou mantê-lo no cartão para compensação com o saldo de sua fatura.",
+      "paragraph_enum": 26,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-28",
+      "text": "5.11. Caso você use seu cartão para transações recorrentes, como, por exemplo, assinaturas de jornais ou revistas e serviços de áudio ou vídeo, e por qualquer motivo precise trocar a via do cartão, o novo número poderá ser atualizado automaticamente para estabelecimentos habilitados. Para estabelecimentos não habilitados, você deverá fornecer o novo número do cartão ao respectivo estabelecimento para evitar a suspensão da assinatura/serviço.",
+      "paragraph_enum": 27,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-29",
+      "text": "6. SERVIÇO DE AVALIAÇÃO EMERGENCIAL DE CRÉDITO. Se disponível em seu cartão, você pode contar com o Serviço de Avaliação Emergencial de Crédito, que consiste na avaliação, pelo SANTANDER, em caráter emergencial, da viabilidade de autorizar transação acima do seu limite de crédito.",
+      "paragraph_enum": 28,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-30",
+      "text": "6.1. IMPORTANTE: A AUTORIZAÇÃO DA TRANSAÇÃO ACIMA DO LIMITE DEPENDE DE ANÁLISE DE CRÉDITO DE ACORDO COM A POLÍTICA DO SANTANDER E PODE SER OU NÃO CONCEDIDA.",
+      "paragraph_enum": 29,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-31",
+      "text": "6.2. Esse serviço é realizado no momento em que você utilizar o cartão acima do seu limite de crédito disponível e, se autorizado, será cobrada TARIFA.",
+      "paragraph_enum": 30,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-32",
+      "text": "6.3. ATENÇÃO: A autorização emergencial não significa aumento do limite do seu cartão.",
+      "paragraph_enum": 31,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-33",
+      "text": "6.4. VOCÊ PODE CANCELAR ESSE SERVIÇO A QUALQUER MOMENTO.",
+      "paragraph_enum": 32,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-34",
+      "text": "7. PAGAMENTO DE CONTAS. Caso disponível, você pode utilizar o cartão para o pagamento avulso de boletos e outras contas, EXCETO FATURAS DE CARTÕES SANTANDER, sujeito à cobrança de TARIFA, JUROS e IOF. Essas outras contas, que podem ser de luz, água, telefone, por exemplo, podem ser pagas em débito automático no cartão. Consulte os limites vigentes no ato da contratação.",
+      "paragraph_enum": 33,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-35",
+      "text": "7.1. O limite de crédito do cartão não pode ser ultrapassado para o pagamento de contas, ainda que ocorra a recomposição no mês. Se isso ocorrer, essa transação pode ficar indisponível ou o cartão ser cancelado.",
+      "paragraph_enum": 34,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-36",
+      "text": "7.2. IMPORTANTE: o SANTANDER pode estipular valor máximo diário de contas e/ou quantidade máxima de contas que podem ser pagas com o cartão. Consulte no site os limites diários vigentes por canal de contratação e respectivos horários de disponibilidade.",
+      "paragraph_enum": 35,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-37",
+      "text": "8. SAQUE E EMPRÉSTIMO PESSOAL. Com o cartão você pode realizar saques e contratar empréstimo pessoal, desde que essas transações estejam disponíveis para você. Os encargos são informados na fatura.",
+      "paragraph_enum": 36,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-38",
+      "text": "8.1. SAQUES. Em dinheiro e até o valor autorizado especificamente para essa transação. Incidem JUROS, calculados desde a data do saque até a data de vencimento da fatura, IOF e TARIFA, para os saques realizados no país. Para saques no exterior incide TARIFA e IOF.",
+      "paragraph_enum": 37,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-39",
+      "text": "8.1.1. O valor total do saque e respectivos encargos devem ser pagos no vencimento da fatura ou, se disponível em seu cartão, de forma parcelada, nas condições contratadas por você.",
+      "paragraph_enum": 38,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-40",
+      "text": "8.2. EMPRÉSTIMO PESSOAL. Limite de crédito adicional para a contratação de empréstimo, nas condições que vierem a ser previamente informadas a você. Incidem JUROS e IOF. As parcelas do empréstimo contratado são cobradas por meio da sua fatura.",
+      "paragraph_enum": 39,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-41",
+      "text": "9. UTILIZAÇÃO DO CARTÃO EM TRANSAÇÕES INTERNACIONAIS. Se o seu cartão for internacional, você também pode utilizá-lo no exterior e sites internacionais em transações à vista. Conforme legislação vigente, as transações internacionais estão sujeitas à incidência de IOF e são informadas ao Banco Central e à Receita Federal.",
+      "paragraph_enum": 40,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-42",
+      "text": "9.1. ANTES DE USAR O CARTÃO EM VIAGENS AO EXTERIOR, É IMPORTANTE QUE A FUNÇÃO INTERNACIONAL SEJA HABILITADA EM UM DOS CANAIS DE ATENDIMENTO PARA EVITAR EVENTUAIS TRANSAÇÕES NEGADAS E/OU BLOQUEIOS PREVENTIVOS POR MEDIDAS DE SEGURANÇA.",
+      "paragraph_enum": 41,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-43",
+      "text": "9.2. As transações internacionais devem ser realizadas na respectiva moeda estrangeira do local do estabelecimento ou do site. Transações realizadas em reais em lojas no exterior ou em sites internacionais não serão aprovadas.",
+      "paragraph_enum": 42,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-44",
+      "text": "9.3. As transações em moeda estrangeira, inclusive saques, sempre tem referência no dólar norte americano e são convertidas, para o equivalente em reais de acordo com a taxa de câmbio utilizada pelo SANTANDER na data da transação. As taxas praticadas pelo SANTANDER poderão ser consultadas em nosso site.",
+      "paragraph_enum": 43,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-45",
+      "text": "9.4. A taxa de câmbio do dólar norte americano utilizada pelo SANTANDER, em qualquer hipótese, é compatível com a taxa média de mercado, para operações de varejo com pessoas físicas, divulgada pelo Banco Central.",
+      "paragraph_enum": 44,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-46",
+      "text": "9.5. Em caso de cancelamento ou estorno de uma transação em moeda estrangeira, será creditado em sua fatura o valor da transação convertido em reais, utilizando a taxa de câmbio do dia em que o cancelamento ou o estorno da transação for lançado na fatura, acrescido do valor do IOF.",
+      "paragraph_enum": 45,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-47",
+      "text": "10. FATURA. É a prestação de contas disponibilizada pelo SANTANDER a você e contém os limites de crédito, os dados das transações realizadas com o seu cartão, a data de vencimento escolhida, as operações de crédito disponíveis, os JUROS, o IOF, as TARIFAS, os demais encargos devidos, as formas de pagamento da fatura, o VALOR TOTAL, opção de PARCELAMENTO DE FATURA ou TOTAL PARCELADO, bem como o valor que, necessariamente deverá ser pago no vencimento para não ficar em atraso, podendo ser o VALOR MÍNIMO ou o VALOR DA ENTRADA MINIMA PARA PARCELAMENTO AUTOMÁTICO, conforme o caso, além de AVISOS IMPORTANTES, dentre outras informações.",
+      "paragraph_enum": 46,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-48",
+      "text": "10.1. Se por qualquer motivo a fatura não for disponibilizada, entre em contato com o SANTANDER, pois você sempre deverá efetuar o pagamento até a data de vencimento.",
+      "paragraph_enum": 47,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-49",
+      "text": "10.2. IMPORTANTE: confira todas as transações lançadas na sua fatura. Reclamações devem ser feitas em até 45 dias contados do vencimento da fatura e serão analisadas pelo SANTANDER, que poderá solicitar a você a apresentação de documentos. A análise não o exime do pagamento dos demais valores lançados na fatura. Após esse prazo as transações serão consideradas reconhecidas por você.",
+      "paragraph_enum": 48,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-50",
+      "text": "10.2.1. Se constatada a regularidade da transação reclamada, essa transação será lançada em fatura posterior, com encargos.",
+      "paragraph_enum": 49,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-51",
+      "text": "11. FORMAS DE PAGAMENTO. VOCÊ DEVE PAGAR O VALOR TOTAL DA SUA FATURA MENSAL ATÉ A DATA DE VENCIMENTO, OU, SE PREFERIR, PODE ESCOLHER POR UMA DAS OPÇÕES A SEGUIR.",
+      "paragraph_enum": 50,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-52",
+      "text": "11.1. SE VOCÊ NÃO POSSUIR CRÉDITO ROTATIVO VIGENTE NO MÊS, você pode:",
+      "paragraph_enum": 51,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-53",
+      "text": "a) pagar qualquer valor entre o Pagamento Mínimo e o Valor Total da fatura. Quando você opta por esse pagamento, a diferença entre o que foi pago por você e o Valor Total da fatura é financiada até o vencimento da próxima fatura com a cobrança de IOF e dos juros informados na fatura para o Crédito Rotativo.",
+      "paragraph_enum": 52,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-54",
+      "text": "Regra de amortização: o valor pago será utilizado para liquidar os eventuais encargos de mora e as eventuais parcelas de operações de crédito já contratadas e, ainda, para amortizar novas transações e/ou compras lançadas na sua fatura.",
+      "paragraph_enum": 53,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-55",
+      "text": "11.2. SE VOCÊ JÁ POSSUIR UM CRÉDITO ROTATIVO VIGENTE NO MÊS, você pode:",
+      "paragraph_enum": 54,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-56",
+      "text": "a) pagar qualquer valor entre a Entrada Mínima para Parcelamento Automático e o Pagamento Mínimo da fatura. Quando você faz essa opção, ocorre o seguinte:",
+      "paragraph_enum": 55,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-57",
+      "text": "(i) a diferença entre o valor pago e o valor do Pagamento Mínimo é parcelada automaticamente com a incidência de IOF e dos juros informados na fatura para o Parcelamento Automático. A quantidade de parcelas é definida conforme o valor parcelado e demais critérios estabelecidos pelo SANTANDER e a primeira parcela é lançada apenas na próxima fatura;",
+      "paragraph_enum": 56,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-58",
+      "text": "(ii) a diferença entre o valor do Pagamento Mínimo e o Valor Total da fatura será financiada até o vencimento da próxima fatura com a cobrança de IOF e dos juros informados na fatura para o Crédito Rotativo.",
+      "paragraph_enum": 57,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-59",
+      "text": "Regra de amortização: o valor pago será utilizado para liquidar os eventuais encargos de mora e as eventuais parcelas de operações de crédito já contratadas e, ainda, para amortizar o Crédito Rotativo vigente naquele mês e novas transações e/ou compras lançadas na sua fatura.",
+      "paragraph_enum": 58,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-60",
+      "text": "b) pagar qualquer valor entre o Pagamento Mínimo e o Valor Total da fatura. Quando você faz isso, a diferença entre o valor pago por você e o Valor Total da fatura é financiada até o vencimento da próxima fatura com a cobrança de IOF e dos juros informados na fatura para o Crédito Rotativo.",
+      "paragraph_enum": 59,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-61",
+      "text": "Regra de amortização: o valor pago será utilizado para liquidar os eventuais encargos de mora, as eventuais parcelas de operações de crédito já contratadas e o Crédito Rotativo vigente naquele mês e, ainda, para amortizar novas transações e/ou compras lançadas na sua fatura.",
+      "paragraph_enum": 60,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-62",
+      "text": "11.3. Se disponível, você ainda pode PARCELAR O VALOR DA FATURA. Você pode contratar o parcelamento do valor total ou parcial da sua fatura, conforme os planos oferecidos pelo SANTANDER. Para essa contratação você deve pagar o valor da primeira parcela na data de vencimento da sua fatura, em um único pagamento, sendo que o saldo em aberto é distribuído em parcelas, que são lançadas automaticamente nas próximas faturas, com incidência dos juros do plano de parcelamento escolhido e IOF.",
+      "paragraph_enum": 61,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-63",
+      "text": "12. FALTA DE PAGAMENTO OU ATRASO. NA FALTA, INSUFICIÊNCIA OU ATRASO NO PAGAMENTO DE, PELO MENOS, O VALOR DO PAGAMENTO MÍNIMO OU, QUANDO ESTIVER DISPONÍVEL NA FATURA, O VALOR DA ENTRADA MÍNIMA PARA PARCELAMENTO AUTOMÁTICO, O CARTÃO E SEUS RESPECTIVOS ADICIONAIS PODEM SER BLOQUEADOS E/OU CANCELADOS.",
+      "paragraph_enum": 62,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-64",
+      "text": "12.1. Nessas hipóteses, você deve pagar o saldo devedor total, inclusive as transações a vencer e/ou em processamento, sobre o qual incidem, desde o vencimento até a data do efetivo pagamento, (i) juros remuneratórios (ii) IOF, (iii) multa de 2% e (iv) juros moratórios de 1% ao mês, estes calculados sobre o valor da obrigação vencida acrescido da multa. Os juros remuneratórios serão cobrados à taxa praticada para o “Crédito Rotativo” indicada na fatura, exceto para eventual parcela do Parcelamento Automático para a qual será aplicada a taxa do Parcelamento Automático contratado. A capitalização dos juros, remuneratórios e moratórios, será mensal.",
+      "paragraph_enum": 63,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-65",
+      "text": "12.2. Se você efetuar o pagamento da fatura após o vencimento, deve consultar os canais de atendimento para obter o valor atualizado do saldo devedor (valor da fatura mais encargos de mora) na data do pagamento. Se você optar por pagar valor inferior ao saldo devedor total atualizado, a diferença é financiada com a incidência dos encargos devidos.",
+      "paragraph_enum": 64,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-66",
+      "text": "12.3. Todas as despesas incorridas pelo SANTANDER para a cobrança do débito, tais como, postagem, órgãos de proteção ao crédito, ligações telefônicas, custas extrajudiciais e judiciais, honorários advocatícios e outras serão cobradas de você. Da mesma forma, você será ressarcido das despesas que incorrer caso tenha que recorrer a procedimento extrajudicial ou judicial para que o SANTANDER cumpra as obrigações assumidas neste contrato.",
+      "paragraph_enum": 65,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-67",
+      "text": "12.4. No atraso, todas as suas obrigações poderão ser consideradas vencidas antecipadamente e exigido o saldo devedor total e os encargos.",
+      "paragraph_enum": 66,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-68",
+      "text": "13. AUTORIZAÇÃO PARA DÉBITO EM CONTA CORRENTE. SE VOCÊ FOR CORRENTISTA DO SANTANDER E CASO NÃO OCORRA O PAGAMENTO DA SUA FATURA NO VENCIMENTO, VOCÊ AUTORIZA O DÉBITO EM SUA CONTA CORRENTE, DESDE QUE HAJA SALDO DISPONÍVEL SUFICIENTE, DO VALOR DO PAGAMENTO MÍNIMO OU DO VALOR DA ENTRADA MÍNIMA PARA O PARCELAMENTO AUTOMÁTICO, CONFORME O CASO.",
+      "paragraph_enum": 67,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-69",
+      "text": "13.1. Você pode cancelar essa autorização na Central de Atendimento Santander.",
+      "paragraph_enum": 68,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-70",
+      "text": "13.2. ATENÇÃO: LEMBRE-SE QUE O SALDO REMANESCENTE SERÁ FINANCIADO DE ACORDO COM AS REGRAS PREVISTAS NO ITEM 11. Saiba que durante o período em que você permanecer em atraso incidirão os encargos previstos neste contrato.",
+      "paragraph_enum": 69,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-71",
+      "text": "13.3. Se sua conta corrente não apresentar saldo suficiente para o débito do Pagamento Mínimo ou, quando disponível na fatura, do Valor da Entrada Mínima para o Parcelamento Automático, indicado na fatura, o seu cartão é bloqueado e/ou cancelado e você autoriza o SANTANDER a efetuar débitos na sua conta corrente até que seja atingido o valor total devido.",
+      "paragraph_enum": 70,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-72",
+      "text": "14. TARIFAS. AO ADERIR A ESTE CONTRATO VOCÊ ESTÁ SUJEITO À COBRANÇA DAS TARIFAS A SEGUIR INDICADAS:",
+      "paragraph_enum": 71,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-73",
+      "text": "a) pelo período de 12 meses de uso, TARIFA DE ANUIDADE DIFERENCIADA no CARTÃO DIFERENCIADO, que oferece programas de benefício e/ou recompensas vinculadas ao cartão ou, TARIFA DE ANUIDADE no CARTÃO BÁSICO, que não oferece benefícios e/ou recompensas. Essas tarifas são cobradas por cada cartão (titular e adicionais);",
+      "paragraph_enum": 72,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-74",
+      "text": "b) AVALIAÇÃO EMERGENCIAL DE CRÉDITO, conforme disposto neste contrato.",
+      "paragraph_enum": 73,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-75",
+      "text": "c) FORNECIMENTO DE 2ª VIA DE CARTÃO, em razão de perda, roubo, furto, dano ou outros motivos que não sejam de responsabilidade do SANTANDER.",
+      "paragraph_enum": 74,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-76",
+      "text": "d) FORNECIMENTO EMERGENCIAL DE 2ª VIA DE CARTÃO, caso você solicite esse serviço.",
+      "paragraph_enum": 75,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-77",
+      "text": "e) FORNECIMENTO DE CARTÃO EM FORMATO PERSONALIZADO, caso você solicite esse serviço.",
+      "paragraph_enum": 76,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-78",
+      "text": "f) UTILIZAÇÃO DE CANAIS DE ATENDIMENTO PARA SAQUE EM ESPÉCIE, caso você solicite esse serviço.",
+      "paragraph_enum": 77,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-79",
+      "text": "g) PAGAMENTO DE CONTAS NA FUNÇÃO CRÉDITO, caso você utilize esse serviço.",
+      "paragraph_enum": 78,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-80",
+      "text": "h) ENVIO DE MENSAGEM AUTOMÁTICA RELATIVA A LANÇAMENTOS NO CARTÃO DE CRÉDITO, caso você solicite esse serviço.",
+      "paragraph_enum": 79,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-81",
+      "text": "i) ENTREGA DE CARTÃO EM DOMICÍLIO, caso você solicite esse serviço.",
+      "paragraph_enum": 80,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-82",
+      "text": "14.1. O pagamento da anuidade pode ser parcelado, conforme opções oferecidas pelo SANTANDER. Se disponível em seu cartão e você for correntista do SANTANDER, a anuidade pode ser paga por meio de débito em conta.",
+      "paragraph_enum": 81,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-83",
+      "text": "14.2. O SANTANDER pode alterar os valores das tarifas, mediante prévia comunicação por meio da tabela de serviços afixada nas agências do SANTANDER e divulgada no site e/ou por outros canais de atendimento disponibilizados, ou, ainda, estabelecer preços diferenciados temporariamente em razão de negociações específicas.",
+      "paragraph_enum": 82,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-84",
+      "text": "15. PERDA, FURTO, ROUBO OU EXTRAVIO DO CARTÃO. EM RAZÃO DO SEU DEVER DE BOA-FÉ E COOPERAÇÃO, VOCÊ E OS ADICIONAIS OBRIGAM-SE A FORNECER E MANTER ATUALIZADOS SEUS DADOS CADASTRAIS PARA O ENVIO DE AVISO DE ALERTA PELO SANTANDER OU CONFIRMAÇÃO DE TRANSAÇÃO E, EM CASO DE PERDA, FURTO, ROUBO OU EXTRAVIO DO CARTÃO, ESTÁ OBRIGADO A COMUNICAR IMEDIATAMENTE A CENTRAL DE ATENDIMENTO SANTANDER E, SE NO EXTERIOR, TAMBÉM O SERVIÇO INTERNACIONAL DA RESPECTIVA BANDEIRA.",
+      "paragraph_enum": 83,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-85",
+      "text": "15.1. SE VOCÊ CUMPRIR O DISPOSTO NO ITEM 15, O SANTANDER EFETUARÁ O BLOQUEIO DO CARTÃO E RESPONDERÁ PELAS COMPRAS DE PRODUTOS E/OU SERVIÇOS E PELOS SAQUES REALIZADOS POR TERCEIROS SEM AUTENTICAÇÃO DE SENHA PESSOAL PELO PRAZO DE 48 HORAS ANTES DA SUA COMUNICAÇÃO.",
+      "paragraph_enum": 84,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-86",
+      "text": "15.2. SE VOCÊ NÃO CUMPRIR O DISPOSTO NO ITEM 15, VOCÊ SERÁ O ÚNICO E EXCLUSIVO RESPONSÁVEL POR TODA E QUALQUER TRANSAÇÃO E SAQUES REALIZADOS NO CARTÃO.",
+      "paragraph_enum": 85,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-87",
+      "text": "16. COMUNICAÇÃO. O SANTANDER pode realizar quaisquer comunicações relacionadas com este contrato e realizar a oferta de produtos e serviços por meio dos canais de comunicação disponibilizados, inclusive, por e-mail e/ou mensagens/notificações eletrônicas automáticas em dispositivos móveis (tais como SMS, MMS ou PUSH). Também por essa razão, você se obriga a manter o seu cadastro sempre atualizado, inclusive o número de seu celular e endereço de e-mail, sendo de sua exclusiva e integral responsabilidade todas as consequências decorrentes da omissão dessa obrigação. Você receberá as mensagens/notificações em seus dispositivos móveis desde que estejam ligados em área de cobertura da sua operadora de telefonia móvel e/ou conectados à internet e desde que estejam habilitados para receber tais mensagens/notificações. O SANTANDER não se responsabiliza por eventuais atrasos, falhas ou indisponibilidades da rede sem fio, da internet ou dos serviços prestados pelas operadoras de telefonia móvel que venham a prejudicar a transmissão das informações.",
+      "paragraph_enum": 86,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-88",
+      "text": "17. RESCISÃO CONTRATUAL. O contrato vigorará por prazo indeterminado, podendo ser rescindido e, consequentemente, o cartão cancelado, a qualquer momento, pelo SANTANDER ou por você, mediante prévio aviso ou, pelo SANTANDER, independentemente de aviso, nos casos de atraso ou falta de pagamento, morte, interdição ou insolvência, restrições cadastrais ou creditícias e não utilização do cartão por 6 meses consecutivos. O cancelamento do cartão acarreta, automaticamente, o cancelamento dos adicionais.",
+      "paragraph_enum": 87,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-89",
+      "text": "17.1. No caso de rescisão você poderá solicitar o reembolso proporcional da TARIFA de anuidade paga e o SANTANDER poderá compensar esse valor com eventual saldo devedor de seu cartão.",
+      "paragraph_enum": 88,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-90",
+      "text": "17.2. A utilização do seu cartão ou adicionais em estabelecimentos de sua propriedade ensejará o imediato cancelamento do cartão.",
+      "paragraph_enum": 89,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-91",
+      "text": "18. DISPOSIÇÕES GERAIS. Aplicam-se ainda a este contrato as seguintes condições:",
+      "paragraph_enum": 90,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-92",
+      "text": "18.1. O SANTANDER RESERVA-SE O DIREITO DE REVISAR ESTE CONTRATO A QUALQUER MOMENTO E A MODIFICA-LO, TOTAL OU PARCIALMENTE. TAIS ALTERAÇÕES SERÃO COMUNICADAS COM ANTECEDÊNCIA DE 30 DIAS. SE VOCÊ NÃO CONCORDAR, DEVERÁ RESCINDIR ESTE CONTRATO. AO UTILIZAR O CARTÃO APÓS A COMUNICAÇÃO VOCÊ MANIFESTA A SUA CONCORDÂNCIA COM AS ALTERAÇÕES REALIZADAS.",
+      "paragraph_enum": 91,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-93",
+      "text": "18.2. O uso do cartão pode ser ampliado e agregados novos serviços e produtos, bem como interrompido o fornecimento de determinados produtos e/ou serviços vigentes.",
+      "paragraph_enum": 92,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-94",
+      "text": "18.3. Você autoriza o Conglomerado Financeiro Santander:",
+      "paragraph_enum": 93,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-95",
+      "text": "18.3.1. A consultar informações, bem como ratifica a autorização a qualquer consulta feita anteriormente, sobre operações de crédito de sua responsabilidade no Sistema de Informações de Crédito (SCR), que tem por finalidade prover informações ao Banco Central, para fins de monitoramento do crédito no sistema financeiro e para o exercício de suas atividades de fiscalização, bem como propiciar o intercâmbio de informações entre instituições financeiras sobre o montante de responsabilidade de clientes em operações de crédito.",
+      "paragraph_enum": 94,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-96",
+      "text": "18.3.1.1. Você concorda em estender essa autorização às instituições que podem consultar o SCR nos termos da regulamentação vigente e que adquiram ou recebem em garantia, ou manifestem interesse de adquirir ou de receber em garantia, total ou parcialmente, operações de crédito de sua responsabilidade.",
+      "paragraph_enum": 95,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-97",
+      "text": "18.3.1.2. Você está ciente de que as informações sobre as suas operações de crédito serão registradas no SCR e que poderá consultar as informações do sistema por meio do Registrato (Extrato do Registro de Informações no Banco Central), disponível na página do Banco Central na internet, ou pelas Centrais de Atendimento ao Público do Banco Central, sendo que eventuais pedidos de correção ou exclusão e de registro de medida judicial ou de manifestação de discordância quanto às informações inseridas no sistema, pelo SANTANDER, deverão ser efetuados por escrito, acompanhados, se necessário, de documentos.",
+      "paragraph_enum": 96,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-98",
+      "text": "18.4. Nos termos da Lei Geral de Proteção de Dados (Lei nº 13.709/18), você reconhece que o SANTANDER realiza o tratamento de dados pessoais com finalidades específicas e de acordo com as bases legais previstas na respectiva Lei, tais como: para o devido cumprimento das obrigações legais e regulatórias, para o exercício regular de direitos e para a proteção do crédito, bem como, sempre que necessário, para a execução dos contratos firmados com seus clientes ou para atender aos interesses legítimos do SANTANDER, de seus clientes ou de terceiros. Para qualquer outra finalidade, para a qual a lei não dispense a exigência do consentimento do titular, o tratamento estará condicionado à manifestação livre, informada e inequívoca do titular concordando com o tratamento de seus dados pessoais para aquela determinada finalidade.",
+      "paragraph_enum": 97,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-99",
+      "text": "18.4.1. Você reconhece e concorda que o SANTANDER, na condição de controlador de dados nos termos da legislação aplicável, poderá tratar, coletar, armazenar e compartilhar com as sociedades sob controle direto ou indireto do SANTANDER, bem como sociedades controladoras, coligadas ou sob controle comum (“Sociedades do Conglomerado Santander”), sempre com a estrita observância à Lei, seus dados pessoais e informações cadastrais, financeiras e de operações ativas e passivas e serviços contratados para: (i) garantir maior segurança e prevenir fraudes; (ii) assegurar sua adequada identificação, qualificação e autenticação; (iii) prevenir atos relacionados à lavagem de dinheiro e outros atos ilícitos; (iv) realizar análises de risco de crédito; (v) aperfeiçoar o atendimento e os produtos e serviços prestados; (vi) fazer ofertas de produtos e serviços adequados e relevantes aos seus interesses e necessidades de acordo com o seu perfil e (vii) outras hipóteses baseadas em finalidades legítimas como apoio e promoção de atividades do SANTANDER e das Sociedades do Conglomerado Santander ou para a prestação de serviços em seus benefício.",
+      "paragraph_enum": 98,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-100",
+      "text": "18.4.2. O SANTANDER poderá compartilhar seus dados pessoais estritamente necessários para as respectivas finalidades específicas, com fornecedores e prestadores de serviços, incluindo empresas de telemarketing, de processamento de dados, de tecnologia voltada à prevenção a fraudes, correspondentes bancários e empresas ou escritórios especializados em cobrança de dívidas ou para fins de cessão de seus créditos e, ainda, com a Bandeira do seu cartão e com o parceiro indicado no seu cartão (quando emitido em decorrência de parceria comercial) para concessão de benefícios e ofertas de produtos e serviços que possam ser de seu interesse.",
+      "paragraph_enum": 99,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-101",
+      "text": "18.4.3. O SANTANDER poderá fornecer os seus dados pessoais sempre que estiver obrigado, seja em virtude de disposição legal, ato de autoridade competente ou ordem judicial.",
+      "paragraph_enum": 100,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-102",
+      "text": "18.4.4. A informar aos órgãos de proteção ao crédito, tais como SERASA e SPC, os dados relativos à falta de pagamento de obrigações assumidas junto ao SANTANDER.",
+      "paragraph_enum": 101,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-103",
+      "text": "18.4.5. Você, na condição de titular dos dados pessoais, tem direito a obter, em relação aos seus dados tratados pelo SANTANDER, a qualquer momento e mediante requisição, nos termos da regulamentação, dentre outros: (i) a confirmação da existência de tratamento; (ii) o acesso aos dados; (iii) a correção de dados incompletos, inexatos ou desatualizados; (iv) a anonimização, bloqueio ou eliminação de dados pessoais desnecessários, excessivos ou tratados em desconformidade com a Lei; (v) a portabilidade dos dados a outro fornecedor de serviço ou produto, observados os segredos comercial e industrial.",
+      "paragraph_enum": 102,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-104",
+      "text": "18.4.6. Mesmo após o término deste contrato, os dados pessoais e outras informações a ele relacionadas poderão ser conservados pelo SANTANDER para cumprimento de obrigações legais e regulatórias pelos prazos previstos na legislação vigente.",
+      "paragraph_enum": 103,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-105",
+      "text": "18.5. Ao aderir a este contrato você se obriga a: (i) não utilizar o limite de crédito concedido para finalidades que possam causar danos sociais e em projetos que não atendam rigorosamente a Política Nacional de Meio Ambiente e as normas legais e regulamentares que regem tal política; (ii) pagar todos os tributos relativos a este contrato, inclusive aqueles que no futuro venham a ser exigidos, e arcar com eventuais aumentos de alíquotas e (iii) manter atualizados, perante o SANTANDER, seus dados cadastrais e econômicos.",
+      "paragraph_enum": 104,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-106",
+      "text": "18.6. Para ter direito aos benefícios e recompensas do programa de seu cartão, como por exemplo pontos, bônus ou milhas, você deve pagar, pelo menos, o valor mínimo das faturas até a data de vencimento, bem como é necessário que não haja nenhum inadimplemento das obrigações estabelecidas neste contrato ou no regulamento do respectivo programa.",
+      "paragraph_enum": 105,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-107",
+      "text": "18.7. A sua adesão a este contrato obriga as partes, seus herdeiros e sucessores.",
+      "paragraph_enum": 106,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-108",
+      "text": "18.8. Fica eleito o foro da Comarca da Capital do Estado de São Paulo ou do domicílio do titular para dirimir quaisquer questões relativas a este contrato.",
+      "paragraph_enum": 107,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-109",
+      "text": "O SANTANDER disponibiliza os seguintes canais de atendimento, que também atendem deficientes auditivos e de fala:",
+      "paragraph_enum": 108,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-110",
+      "text": "CENTRAL DE ATENDIMENTO SANTANDER: 4004 3535 (capitais e regiões metropolitanas) ou 0800 702 3535 (demais localidades) ou 0800 723 5007 (atende deficientes auditivos e de fala), 24 horas por dia, 7 dias por semana, para informações, solicitações ou consultas.",
+      "paragraph_enum": 109,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-111",
+      "text": "SAC - SERVIÇO DE ATENDIMENTO AO CONSUMIDOR: 0800 762 7777 ou 0800 771 0401 (atende deficientes auditivos e de fala), 24 horas por dia, 7 dias por semana, para reclamações, elogios ou cancelamentos.",
+      "paragraph_enum": 110,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-112",
+      "text": "Se você não ficar satisfeito com a solução apresentada, poderá utilizar a OUVIDORIA: 0800 726 0322 ou 0800 771 0301 (atende deficientes auditivos e de fala), de segunda a sexta-feira, das 8h às 22h e aos sábados das 9h às 14h, exceto feriados.",
+      "paragraph_enum": 111,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-113",
+      "text": "Este contrato está registrado no 3º Oficial de Registro de Títulos e Documentos e Civil de Pessoas Jurídicas de São Paulo/SP sob o nº 9.048.900 em 09/07/2020, revogando e substituindo todas as versões anteriores, inclusive a versão registrada em 13/02/2020 no 3º Oficial de Registro de Títulos e Documentos e Civil de Pessoas Jurídicas de São Paulo/SP sob o nº 9.044.264.",
+      "paragraph_enum": 112,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-114",
+      "text": "São Paulo, 07 de julho de 2020.",
+      "paragraph_enum": 113,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-115",
+      "text": "BANCO SANTANDER (BRASIL) S.A.",
+      "paragraph_enum": 114,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-116",
+      "text": "ANEXO - RELAÇÃO DE BENEFÍCIOS E/OU RECOMPENSAS POR CARTÃO",
+      "paragraph_enum": 115,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-117",
+      "text": "Cartão",
+      "paragraph_enum": 116,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-118",
+      "text": "Benefícios e/ou recompensas",
+      "paragraph_enum": 117,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-119",
+      "text": "Forma de utilização",
+      "paragraph_enum": 118,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-120",
+      "text": "- Santander AAdvantage",
+      "paragraph_enum": 119,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-121",
+      "text": "Milhas no Programa AAdvantage.",
+      "paragraph_enum": 120,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-122",
+      "text": "Realizar compras na função crédito com o cartão.",
+      "paragraph_enum": 121,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-123",
+      "text": "- Santander Flex",
+      "paragraph_enum": 122,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-124",
+      "text": "5 dias a mais para pagar a fatura todo mês.",
+      "paragraph_enum": 123,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-125",
+      "text": "Pagamento da fatura entre o 1º e o 5º dia após o vencimento, sem acréscimo de juros.",
+      "paragraph_enum": 124,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-127",
+      "text": "1 mês a mais para pagar a fatura a cada 12 meses.",
+      "paragraph_enum": 125,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-128",
+      "text": "Solicitação de prorrogação de pagamento de uma fatura a cada 12 meses.",
+      "paragraph_enum": 126,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-130",
+      "text": "Pontos e descontos no Programa Esfera.",
+      "paragraph_enum": 127,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-131",
+      "text": "Realizar compras na função crédito com o cartão.",
+      "paragraph_enum": 128,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-132",
+      "text": "- Santander Fit",
+      "paragraph_enum": 129,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-133",
+      "text": "Pontos e descontos no Programa Esfera.",
+      "paragraph_enum": 130,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-134",
+      "text": "Realizar compras na função crédito com o cartão.",
+      "paragraph_enum": 131,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-136",
+      "text": "Livre de anuidade se lançada uma nova compra na função crédito a cada fatura mensal.",
+      "paragraph_enum": 132,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-137",
+      "text": "Na fatura em que não for lançada uma nova compra, será cobrado o valor proporcional da anuidade, correspondente a 1/12 da anuidade informada na Tabela de Serviços. Nas compras parceladas será considerado apenas o lançamento da primeira parcela na fatura, ou seja, as demais parcelas não serão consideradas uma nova compra.",
+      "paragraph_enum": 133,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-138",
+      "text": "- Play",
+      "paragraph_enum": 134,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-139",
+      "text": "Pontos extras no Programa Mastercard Surpreenda.",
+      "paragraph_enum": 135,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-140",
+      "text": "Ter ao menos 1 nova compra no mês.",
+      "paragraph_enum": 136,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-142",
+      "text": "Livre de anuidade, se acumulados R$50,00 em compras na função crédito a cada fatura mensal.",
+      "paragraph_enum": 137,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-143",
+      "text": "Na fatura em que não forem acumulados R$50,00 em compras será cobrado o valor proporcional da anuidade de cada cartão (titular e adicionais, se houver), correspondente a 1/12 da anuidade informada na Tabela de Serviços.",
+      "paragraph_enum": 138,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-144",
+      "text": "- Santander Free",
+      "paragraph_enum": 139,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-145",
+      "text": "(emitidos e aprovados até 30/09/2018)",
+      "paragraph_enum": 140,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-146",
+      "text": "Pontos e descontos no Programa Esfera.",
+      "paragraph_enum": 141,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-147",
+      "text": "Realizar compras na função crédito com o cartão.",
+      "paragraph_enum": 142,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-149",
+      "text": "Livre de anuidade, se acumulados R$100,00 em compras na função crédito a cada fatura mensal.",
+      "paragraph_enum": 143,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-150",
+      "text": "Na fatura em que não forem acumulados R$100,00 em compras será cobrado o valor proporcional da anuidade de cada cartão (titular e adicionais, se houver), correspondente a 1/12 da anuidade informada na Tabela de Serviços.",
+      "paragraph_enum": 144,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-151",
+      "text": "- Santander Free",
+      "paragraph_enum": 145,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-152",
+      "text": "(emitidos e aprovados a partir de 01/10/2018)",
+      "paragraph_enum": 146,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-153",
+      "text": "Descontos no Programa Esfera.",
+      "paragraph_enum": 147,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-154",
+      "text": "Realizar compras na função crédito com o cartão em estabelecimentos parceiros.",
+      "paragraph_enum": 148,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-156",
+      "text": "Livre de anuidade, se acumulados R$100,00 em compras na função crédito a cada fatura mensal.",
+      "paragraph_enum": 149,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-157",
+      "text": "Na fatura em que não forem acumulados R$100,00 em compras será cobrado o valor proporcional da anuidade de cada cartão (titular e adicionais, se houver), correspondente a 1/12 da anuidade informada na Tabela de Serviços.",
+      "paragraph_enum": 150,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-158",
+      "text": "- 1|2|3",
+      "paragraph_enum": 151,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-159",
+      "text": "- Santander Light",
+      "paragraph_enum": 152,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-160",
+      "text": "- Santander Style Platinum",
+      "paragraph_enum": 153,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-161",
+      "text": "- Santander Elite Platinum",
+      "paragraph_enum": 154,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-162",
+      "text": "- Santander OAB/SP Gold",
+      "paragraph_enum": 155,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-163",
+      "text": "- Santander Unique",
+      "paragraph_enum": 156,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-164",
+      "text": "- Santander Unlimited",
+      "paragraph_enum": 157,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-165",
+      "text": "Pontos e descontos no Programa Esfera.",
+      "paragraph_enum": 158,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-166",
+      "text": "Realizar compras na função crédito com o cartão.",
+      "paragraph_enum": 159,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-167",
+      "text": "- Santander Dufry Platinum",
+      "paragraph_enum": 160,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-168",
+      "text": "Condições diferenciadas nas lojas Dufry.",
+      "paragraph_enum": 161,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-169",
+      "text": "Utilização do cartão nas lojas Dufry.",
+      "paragraph_enum": 162,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-171",
+      "text": "Pontos e descontos no Programa Esfera.",
+      "paragraph_enum": 163,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-172",
+      "text": "Realizar compras na função crédito com o cartão.",
+      "paragraph_enum": 164,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-173",
+      "text": "- Decolar Santander",
+      "paragraph_enum": 165,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-174",
+      "text": "Pontos no Programa Passaporte Decolar.",
+      "paragraph_enum": 166,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-175",
+      "text": "Realizar compras na função crédito com o cartão.",
+      "paragraph_enum": 167,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-176",
+      "text": "- Smiles Santander",
+      "paragraph_enum": 168,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-177",
+      "text": "Milhas no Programa Smiles.",
+      "paragraph_enum": 169,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-178",
+      "text": "Realizar compras na função crédito com o cartão.",
+      "paragraph_enum": 170,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-179",
+      "text": "- Shell Santander",
+      "paragraph_enum": 171,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-180",
+      "text": "Créditos na fatura.",
+      "paragraph_enum": 172,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-181",
+      "text": "Realizar compras na função crédito com o cartão nos postos de combustível da rede Shell.",
+      "paragraph_enum": 173,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-182",
+      "text": "- Santander Reward",
+      "paragraph_enum": 174,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-183",
+      "text": "Créditos progressivos para resgate em fatura ou por meio de saque em dinheiro.",
+      "paragraph_enum": 175,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-184",
+      "text": "Realizar compras na função crédito com o cartão.",
+      "paragraph_enum": 176,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-185",
+      "text": "- Vivo Santander",
+      "paragraph_enum": 177,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-186",
+      "text": "Bônus em recargas de celulares Vivo Pré.",
+      "paragraph_enum": 178,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-187",
+      "text": "Realizar recarga na função crédito com o cartão (celulares Vivo Pré).",
+      "paragraph_enum": 179,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-189",
+      "text": "Benefícios no Programa Vivo Valoriza.",
+      "paragraph_enum": 180,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-190",
+      "text": "Realizar compras na função crédito com o cartão (celulares Vivo Pós).",
+      "paragraph_enum": 181,
+      "page": 1
+    },
+    {
+      "id": "root::CARTAO DE CREDITO SANTANDER-p-191",
+      "text": "Os programas de pontos ou milhas possuem regulamentos específicos com regras próprias. Leia com atenção as regras estabelecidas em cada regulamento.",
+      "paragraph_enum": 182,
+      "page": 1
+    }
+  ]
+}

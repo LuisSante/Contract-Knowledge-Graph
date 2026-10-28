@@ -112,8 +112,11 @@ Responde a «¿qué podría deshacer esta cláusula?».
   Ese párrafo tiene borde grueso y fondo azul suave; los párrafos conectados, solo un borde
   fino. Así se distingue el origen de los destinos.
   Las etiquetas de las conexiones van rellenas, una por color y sin leyenda: «modified by»
-  violeta, «depends on» cian oscuro y «refers to» gris pizarra. Ninguno es el color de un tipo
-  de enunciado ni el azul de la cláusula elegida. La frase que modifica se pinta en el color de su tipo, aunque
+  violeta, «depends on» cian oscuro, «refers to» gris pizarra, «uses» café y «defines»
+  amarillo con texto oscuro. Ninguno es el color de un tipo de enunciado ni el azul de la
+  cláusula elegida. Ninguna etiqueta pasa del borde izquierdo de la página: su ancho máximo es
+  el espacio a la izquierda de la línea, y si no cabe se corta con «…» y se lee entera al pasar
+  el ratón. La frase que modifica se pinta en el color de su tipo, aunque
   no sea el de la pestaña: se lee «esta obligación está modificada por un derecho».
   Con Shift + rueda, los párrafos unidos se acercan.
 
@@ -224,9 +227,12 @@ Entre un tercio y la mitad de los enunciados entre las dos partes dependen de un
 condición (en SteelVault, 29 de 84; en Bellicum, 275 de 616). Lo que ya está hecho se
 describe arriba; queda:
 
-- **Quién activa la condición**: si el disparador nombra a una parte («UPON Marketing
-  Affiliate's default…»), es un derecho que la otra gana si esa parte falla. Es heurística
-  sobre el texto: va aparte y se valida.
+- **Quién activa la condición: hecho el 28 de octubre de 2026.** Con «Mark conditional», en
+  el detalle debajo de la fila, la condición lleva un punto con el nombre y el color de la
+  parte que nombra su disparador («UPON when Party A repairing the house ● Bozhou»). Solo
+  cuando nombra a una sola de las dos, por su nombre o un alias. Es una lectura del texto, no
+  una arista: está a la vista y no cambia ningún conteo. En los arrendamientos, 13, 5 y 8
+  disparadores nombran a una sola parte (`conditionParty` en `graph-payload.ts`).
 - **Una marca «not a condition»** para que quien lee corrija las condiciones mal
   extraídas. Las respuestas irían formando un ground truth.
 
@@ -298,18 +304,57 @@ una lista larga. En Orvane, una sola cita («in accordance with Article 4») sal
 El código está en `graph-payload.ts` (`clauseRefersTo`, `linkPartners`), `ClauseRow.tsx`
 (`LinkedClauses`), `DocxViewer.tsx` y `table-bits.tsx` (`RefersToTag`).
 
-Lo que queda:
-
-- **Cláusulas eje**: una cláusula de la que dependen o a la que remiten muchas es una
-  palanca. En Bellicum, §3.2 Change Control recibe 15. Iría como una marca pequeña en la fila
-  **solo** por encima de un umbral, para que se vean pocas.
+**Cláusulas eje: probado y quitado el 28 de octubre de 2026.** Una fila «cited by §…» en las
+cláusulas a las que llegan 3 o más `depends_on` o `references` era la misma arista leída al
+revés, difícil de justificar, y esas cláusulas ya muestran su «depends on» o «refers to»
+hacia ella.
 
 ### `defines` / `uses`
 
-- **Glosario en el documento**: al pasar el ratón por un término definido, su definición.
-  Es lo que más ayuda a quien lee un contrato por primera vez.
+- **Glosario en el documento (hecho el 28 de octubre de 2026):** al elegir una cláusula, los
+  términos que usa (`uses`) y que están definidos en **otra** cláusula se marcan en café
+  dentro de sus frases; al pasar el ratón, su definición y dónde está («defined in §1.1»).
+  Un «término» sin ninguna letra no cuenta: en Bellicum, las partes tachadas («[...***...]»)
+  se extrajeron como términos definidos (`termsDefinedElsewhere` en `graph-payload.ts`).
+- **Línea hasta la definición (hecho el 28 de octubre de 2026):** como «depends on», una línea
+  en el margen va de la cláusula elegida al párrafo donde se define cada uno de esos términos,
+  con la etiqueta café «uses "IOF"» a mitad de la conexión y el acercamiento. Los términos
+  definidos en un mismo párrafo comparten línea. Como mucho 5 líneas, por orden de los
+  párrafos de definición; la última dice cuántos quedaron sin línea («+17 more»), y el
+  glosario sigue mostrando todos. En el contrato del banco (Santander) salen 1 o 2 por
+  cláusula; en Orvane, 1 a 3; en Bellicum, hasta 23 (§3.2), recortadas a 5. En SteelVault y
+  los tres arrendamientos, ninguna.
+- **Las dos aristas se leen como aristas:** `uses` (cláusula o frase → término) dice qué
+  términos usa la cláusula, y `defines` (cláusula → término) dice dónde se define cada uno.
+  Hasta el 28 de octubre de 2026 la segunda se leía del campo `definedInClauseId`; en los ocho
+  grafos las aristas `defines` coinciden una por una con ese campo, así que nada cambió en
+  pantalla.
+- **DEFINES, del otro lado (28 de octubre de 2026):** en la fila de la cláusula que define,
+  «defines "IOF"», leído directo de la arista (hasta 3 términos y «+N more»; todos al pasar el
+  ratón). En el documento, al elegir esa cláusula, una línea hasta el primer párrafo de cada
+  cláusula que usa sus términos (`defines` y luego `uses`), con la etiqueta amarilla
+  «defines "IOF" → §11.1»; como mucho 5, la última con «+N more». En el contrato del banco,
+  §5.8 define «IOF», que usan 9 cláusulas (`clauseDefines`, `termsUsedElsewhere`).
+- **En la fila:** «uses terms from §5.8, §10», una vez por cláusula que define, con cada
+  número como botón; al pasar el ratón dice qué términos define («it defines "IOF"»)
+  (`clauseUsesFrom`).
 - **Definiciones palanca**, en el detalle debajo de la fila: el término que más enunciados
   usan. En Bellicum, «Miltenyi Product» aparece en 25. No en la vista general.
+
+### Frases gemelas y contrapartida en el mismo párrafo
+
+Desde el 28 de octubre de 2026, en el detalle debajo de la fila, sin cambiar ningún conteo:
+
+- **«reciprocal»**: junto a la etiqueta de la frase cuando la otra parte tiene la misma frase,
+  del mismo tipo, con las mismas palabras y en la misma cláusula. Dice que la cláusula obliga
+  (o da derecho) a las dos igual (`reciprocalStatements`). En los arrendamientos, 6, 6 y 8.
+- **«Same paragraph: Anhui's right · Decorate house»**: debajo de una obligación, los derechos
+  de la otra parte escritos en el mismo párrafo, y al revés. Al hacer clic se abre esa frase.
+  Solo dice que están juntas: el grafo no tiene una arista que diga que una es el precio de
+  la otra (`sameParagraphCounterparts`).
+
+El código del detalle está en `ClauseAnalyzerPanel.tsx` (`hints`), `party-statements.tsx`
+(`StatementHints`) y `table-bits.tsx` (`Fragment`).
 
 ### Lo que queda de `modifies`
 
@@ -335,16 +380,14 @@ sentido comparar una regla simple, LegalBERT y el modelo de extracción.
 
 ### Orden propuesto
 
-Hecho: cada frase con su dueño, `modifies` («modified by»), `depends_on` («depends on»), `references` («refers to»), condiciones (All / Mark
+Hecho: cada frase con su dueño, `modifies` («modified by»), `depends_on` («depends on»), `references` («refers to»), glosario, quién activa la condición, frases gemelas, contrapartida en el mismo párrafo, condiciones (All / Mark
 conditional / Only firm) y Deadlines. Valores: fuera del Clause Analyzer; las duraciones,
 en Deadlines.
 
 1. Lo que queda de `modifies`: el verdadero objetivo de negociación y quién cambia las
    reglas.
-2. Glosario.
-3. Cláusulas eje, al probar contratos grandes.
-4. Quién activa la condición, y la marca «not a condition».
-5. «Si no cumples…», con su ground truth.
+2. La marca «not a condition».
+3. «Si no cumples…», con su ground truth.
 
 ---
 

@@ -12,9 +12,11 @@ import { RightPanelContent } from '@/features/docx/components/shell/RightPanelCo
 import {
 	ClauseAnchorTag,
 	ConditionTag,
+	DefinesTag,
 	DependsOnTag,
 	ModifiedByTag,
 	RefersToTag,
+	UsesTag,
 } from '@/features/docx/components/clause-analyzer/parts/table-bits';
 import { useRightDrawer } from '@/features/docx/hooks/useRightDrawer';
 import { useIsDesktop } from '@/hooks/useMediaQuery';
@@ -93,13 +95,32 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 	const bridgeParagraphs = clauseAnalyzerActive ? kgRelatedParagraphs : [];
 	// Each link says why beside the margin line, halfway along it: the picked clause is
 	// "modified by" the sentences of another (`modifies`), "depends on" another (`depends_on`)
-	// or "refers to" it (`references`). One label per linked clause, so a link from above is
+	// or "refers to" it (`references`), and it "uses" words another paragraph defines (`uses`).
+	// One label per linked clause (per defining paragraph for `uses`), so a link from above is
 	// named above and one from below, below. A condition written apart says so where the line
 	// reaches it.
 	const linkLabels: LinkLabel[] = [];
 	for (const p of bridgeParagraphs) {
 		const relation = p.relation;
 		if (!relation || relation.kind === 'condition') continue;
+		if (relation.kind === 'uses') {
+			linkLabels.push({
+				key: `uses:${p.node.id}`,
+				paragraphIds: [p.node.id],
+				node: (
+					<UsesTag terms={relation.terms} definedIn={relation.definedIn} more={relation.more} />
+				),
+			});
+			continue;
+		}
+		if (relation.kind === 'defines') {
+			linkLabels.push({
+				key: `defines:${p.node.id}`,
+				paragraphIds: [p.node.id],
+				node: <DefinesTag terms={relation.terms} usedIn={relation.usedIn} more={relation.more} />,
+			});
+			continue;
+		}
 		const other = relation.kind === 'modifies' ? relation.from : relation.to;
 		const key = `${relation.kind}:${other}`;
 		const found = linkLabels.find((label) => label.key === key);

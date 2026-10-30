@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import type { KgNodeKind } from '@/types/knowledge';
 import { useDocumentStore } from '@/stores/document';
 import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
+import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useKnowledgeGraphData } from '@/features/docx/hooks/useKnowledgeGraphData';
 import { useClauseImportance } from '@/features/docx/hooks/useClauseImportance';
@@ -40,7 +41,7 @@ export function KnowledgeGraphPanel({ docId }: { docId: string }) {
 	const paragraphs = useDocumentStore((s) => s.paragraphs);
 	const nodesById = useMemo(() => new Map(paragraphs.map((n) => [n.id, n])), [paragraphs]);
 
-	const { viewKg, status } = useKnowledgeGraphData(docId);
+	const { viewKg, status, retry } = useKnowledgeGraphData(docId);
 	const { aId, bId } = useComparedPair(viewKg);
 	// null counts every statement: the document-wide reading, with no view filtering it.
 	const importance = useClauseImportance(docId, null);
@@ -93,14 +94,28 @@ export function KnowledgeGraphPanel({ docId }: { docId: string }) {
 		if (viewKg) setDocumentTarget(buildDocumentTarget(viewKg, nodeId, nodesById));
 	};
 
-	if (status === 'missing' || status === 'error' || !graph) {
+	if (status === 'error') {
 		return (
-			<div className="flex h-full items-center justify-center px-6 text-center text-sm text-muted-foreground">
+			<div
+				role="alert"
+				className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center text-sm text-muted-foreground"
+			>
+				<p>The knowledge graph of this contract could not be loaded: the server did not answer.</p>
+				<Button variant="outline" size="sm" onClick={retry}>
+					Try again
+				</Button>
+			</div>
+		);
+	}
+	if (status === 'missing' || !graph) {
+		return (
+			<div
+				role="status"
+				className="flex h-full items-center justify-center px-6 text-center text-sm text-muted-foreground"
+			>
 				{status === 'missing'
 					? 'No knowledge graph generated for this document yet.'
-					: status === 'error'
-						? 'Failed to load the knowledge graph.'
-						: 'Loading the knowledge graph…'}
+					: 'Loading the knowledge graph…'}
 			</div>
 		);
 	}
@@ -128,7 +143,7 @@ export function KnowledgeGraphPanel({ docId }: { docId: string }) {
 								style={{ backgroundColor: NODE_COLORS[kind] }}
 							/>
 							{NODE_LABEL[kind]}
-							<span className="tabular-nums opacity-70">{graph.countByKind[kind]}</span>
+							<span className="tabular-nums">{graph.countByKind[kind]}</span>
 						</span>
 					))}
 				</span>

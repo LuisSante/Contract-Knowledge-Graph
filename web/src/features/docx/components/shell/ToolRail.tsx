@@ -36,13 +36,13 @@ export function ToolRail({
 }: ToolRailProps) {
 	return (
 		<aside
-			className="absolute top-0 right-0 bottom-0 z-50 flex items-stretch justify-end transition-[width] duration-200 ease-out"
+			className="absolute top-0 right-0 bottom-0 z-50 flex items-stretch justify-end transition-[width] duration-200 ease-out motion-reduce:transition-none"
 			style={{ width }}
 			aria-label="Tools sidebar"
 		>
 			<div
 				className={cn(
-					'relative flex h-full flex-col border-l border-header-foreground/10 bg-header py-2 transition-[width,padding] duration-200 ease-out',
+					'relative flex h-full flex-col border-l border-header-foreground/10 bg-header py-2 transition-[width,padding] duration-200 ease-out motion-reduce:transition-none',
 					labelsPinned ? 'ml-auto w-[calc(100%-6px)] px-1.5' : 'w-9 items-center px-[2px]'
 				)}
 			>
@@ -62,7 +62,8 @@ export function ToolRail({
 						size="icon-sm"
 						className="border border-transparent bg-transparent text-header-foreground/70 hover:bg-header-foreground/15 hover:text-header-foreground"
 						onClick={onToggleLabels}
-						aria-label={labelsPinned ? 'Collapse tool names' : 'Expand tool names'}
+						aria-label="Tool names"
+						aria-expanded={labelsPinned}
 						title={labelsPinned ? 'Hide names' : 'Show names'}
 					>
 						<svg
@@ -111,6 +112,8 @@ export function ToolRail({
 								onClick={() => onSelectTool(item.id)}
 								disabled={disabled}
 								aria-label={item.label}
+								// Picking the open tool again keeps it open, so it is the current view, not a toggle.
+								aria-current={isActive ? 'page' : undefined}
 								title={labelsPinned ? undefined : item.label}
 							>
 								<Icon className="h-[17px] w-[17px]" />

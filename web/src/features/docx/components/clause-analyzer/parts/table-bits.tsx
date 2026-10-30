@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import type { KeyboardEvent, ReactNode } from 'react';
 import {
 	ArrowUpRightIcon,
 	ChevronLeftIcon,
@@ -16,6 +16,7 @@ import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
 import {
 	KIND_COLORS,
 	MUTED_LANE_OPACITY,
+	textColorOf,
 } from '@/features/docx/components/clause-analyzer/constants';
 import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/parts/bits';
 import {
@@ -40,10 +41,38 @@ export const KIND_LABEL: Record<DeonticKind, string> = {
 export const tint = (color: string, percent: number) =>
 	`color-mix(in oklab, ${color} ${percent}%, transparent)`;
 
+/**
+ * Arrow keys, Home and End over a row of options where only the picked one is a tab stop
+ * (tabs, radios): picks the next one and moves focus to it.
+ */
+function roveOptions<T extends string>(
+	event: KeyboardEvent<HTMLElement>,
+	options: readonly T[],
+	current: T,
+	onPick: (option: T) => void
+) {
+	const at = options.indexOf(current);
+	const next =
+		event.key === 'ArrowRight' || event.key === 'ArrowDown'
+			? options[(at + 1) % options.length]
+			: event.key === 'ArrowLeft' || event.key === 'ArrowUp'
+				? options[(at - 1 + options.length) % options.length]
+				: event.key === 'Home'
+					? options[0]
+					: event.key === 'End'
+						? options[options.length - 1]
+						: null;
+	if (next === null) return;
+	event.preventDefault();
+	onPick(next);
+	event.currentTarget.querySelector<HTMLElement>(`[data-option="${next}"]`)?.focus();
+}
+
 /** One deontic type on screen at a time, as tabs: obligations, rights and prohibitions are
  *  never shown or counted together. Each tab carries its two counts, the first party's then
  *  the second's, with the larger in bold, so who leads a type shows before opening it. */
 export function KindTabs({
+	id,
 	kind,
 	onPick,
 	counts,
@@ -51,6 +80,8 @@ export function KindTabs({
 	labels = KIND_LABEL,
 	aside,
 }: {
+	/** Names the tabs and their panel: `${id}-tab-<type>` controls `${id}-panel`. */
+	id: string;
 	kind: DeonticKind;
 	onPick: (kind: DeonticKind) => void;
 	counts: Record<DeonticKind, Record<Side, number>> | null;
@@ -60,20 +91,32 @@ export function KindTabs({
 	aside?: ReactNode;
 }) {
 	return (
-		// The tabs sit on the bottom rule even when the key beside them wraps to two lines.
-		<div className="flex items-end gap-8 border-b border-border/60 px-6">
-			<div role="tablist" aria-label="Type shown" className="flex shrink-0 gap-8">
+		// The tabs sit on the bottom rule even when the key beside them wraps to two lines; a
+		// narrow panel wraps the key, then the tabs, instead of cutting them off.
+		<div className="flex flex-wrap items-end gap-x-8 border-b border-border/60 px-6">
+			<div
+				role="tablist"
+				aria-label="Type shown"
+				className="flex flex-wrap gap-x-8"
+				onKeyDown={(event) => roveOptions(event, DEONTIC_KINDS, kind, onPick)}
+			>
 				{DEONTIC_KINDS.map((k) => {
 					const active = kind === k;
 					const count = counts?.[k];
+					const said = count ? `${count.a} for ${names.a} and ${count.b} for ${names.b}` : '';
 					return (
 						<button
 							key={k}
+							id={`${id}-tab-${k}`}
 							type="button"
 							role="tab"
+							data-option={k}
 							aria-selected={active}
+							aria-controls={`${id}-panel`}
+							aria-label={count ? `${labels[k]}, ${said}` : undefined}
+							tabIndex={active ? 0 : -1}
 							onClick={() => onPick(k)}
-							title={count ? `${count.a} for ${names.a} and ${count.b} for ${names.b}` : undefined}
+							title={said || undefined}
 							className={cn(
 								'-mb-px inline-flex items-center gap-2 border-b-2 pt-3 pb-2.5 text-sm',
 								active
@@ -95,7 +138,7 @@ export function KindTabs({
 											className={
 												count[side] > count[side === 'a' ? 'b' : 'a'] ? 'font-bold' : 'font-normal'
 											}
-											style={{ color: SIDE_COLOR[side] }}
+											style={{ color: textColorOf(SIDE_COLOR[side]) }}
 										>
 											{count[side]}
 										</span>
@@ -186,6 +229,8 @@ const CONDITION_MODES: Array<{ mode: ConditionMode; label: string; hint: string 
 	{ mode: 'firm', label: 'Only firm', hint: 'Only the statements that apply always' },
 ];
 
+const MODE_ORDER = CONDITION_MODES.map((option) => option.mode);
+
 /** One of three views, like the type tabs: nothing is weighted, the reader picks. */
 export function ConditionModePicker({
 	mode,
@@ -200,13 +245,16 @@ export function ConditionModePicker({
 			aria-label="Conditional statements"
 			title={FIRM_NOTE}
 			className="inline-flex rounded-md border border-border bg-secondary p-0.5"
+			onKeyDown={(event) => roveOptions(event, MODE_ORDER, mode, onPick)}
 		>
 			{CONDITION_MODES.map((option) => (
 				<button
 					key={option.mode}
 					type="button"
 					role="radio"
+					data-option={option.mode}
 					aria-checked={mode === option.mode}
+					tabIndex={mode === option.mode ? 0 : -1}
 					onClick={() => onPick(option.mode)}
 					title={option.hint}
 					className={cn(
@@ -280,8 +328,8 @@ export function AgainstFilter({
 	return (
 		<label
 			className={cn(
-				'flex items-center gap-2 text-xs whitespace-nowrap',
-				disabled ? 'cursor-default text-muted-foreground/60' : 'cursor-pointer text-foreground'
+				'flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs',
+				disabled ? 'cursor-default' : 'cursor-pointer text-foreground'
 			)}
 			title={
 				disabled
@@ -295,9 +343,14 @@ export function AgainstFilter({
 				onCheckedChange={(value) => onChange(value === true)}
 				className="size-3.5"
 			/>
-			<span className="font-medium">Only against you</span>
-			{!disabled && (
-				<span className="text-muted-foreground tabular-nums">
+			<span className={cn('font-medium whitespace-nowrap', disabled && 'text-muted-foreground/60')}>
+				Only against you
+			</span>
+			{/* Said, not only on hover: why it is off and how to turn it on. */}
+			{disabled ? (
+				<span className="text-muted-foreground">Pick which party you are first</span>
+			) : (
+				<span className="whitespace-nowrap text-muted-foreground tabular-nums">
 					{count} of {total}
 				</span>
 			)}
@@ -439,6 +492,15 @@ function RelationInfo({
 	);
 }
 
+/** The trigger after its lead, without the word the lead already says: «Only upon» + «upon
+ *  the expiration date» reads «Only upon the expiration date». */
+export function afterLead(lead: string, trigger: string): string {
+	const word = lead.trim().split(/\s+/).pop()?.toLowerCase() ?? '';
+	return word && trigger.toLowerCase().startsWith(`${word} `)
+		? trigger.slice(word.length + 1)
+		: trigger;
+}
+
 /** On the contract's margin line, by a paragraph that holds the condition of a statement
  *  written apart from it: «only if ⓘ», «unless ⓘ». */
 export function ConditionTag({ lead, trigger }: { lead: string; trigger: string }) {
@@ -447,7 +509,7 @@ export function ConditionTag({ lead, trigger }: { lead: string; trigger: string 
 			<span className="size-2 rounded-[2px]" style={{ backgroundColor: KIND_COLORS.condition }} />
 			{lead.toLowerCase()}
 			<RelationInfo
-				about={`${lead} ${trigger}`}
+				about={`${lead} ${afterLead(lead, trigger)}`}
 				note={CONDITION_NOTE}
 				label="What this condition means"
 			/>
@@ -602,6 +664,14 @@ export function GraphLink({
 	);
 }
 
+/** «upon the expiration date»: the operator once, in lower case, and not at all when the
+ *  trigger already opens with it. */
+function conditionText(condition: KgCondition): string {
+	const operator = (condition.operator || 'IF').toLowerCase();
+	const trigger = condition.trigger;
+	return trigger.toLowerCase().startsWith(`${operator} `) ? trigger : `${operator} ${trigger}`;
+}
+
 /** One statement in the contract's own words; a click underlines it in the contract, and
  *  the one underlined there stays marked here. */
 /** Another party's statement shown beside one: its tag («Anhui's right»), colour and words. */
@@ -654,7 +724,7 @@ export function Fragment({
 					{tag && (
 						<p
 							className={cn('text-xs font-medium', !tagColor && 'text-foreground/80')}
-							style={tagColor ? { color: tagColor } : undefined}
+							style={tagColor ? { color: textColorOf(tagColor) } : undefined}
 						>
 							{tag}
 							{reciprocal && (
@@ -685,11 +755,11 @@ export function Fragment({
 				return (
 					<p key={condition.id} className="text-xs text-foreground/90">
 						<span className="font-medium">Condition: </span>
-						{condition.operator || 'IF'} {condition.trigger}
+						{conditionText(condition)}
 						{party && (
 							<span
 								className="ml-1.5 inline-flex items-center gap-1 align-[1px] font-medium whitespace-nowrap"
-								style={{ color: party.color }}
+								style={{ color: textColorOf(party.color) }}
 								title={`The condition names ${party.name}: it turns on what ${party.name} does or what happens to it.`}
 							>
 								<span className="size-1.5 rounded-full" style={{ backgroundColor: party.color }} />
@@ -708,7 +778,7 @@ export function Fragment({
 						className="text-left hover:underline"
 						title="Written in the same paragraph. The graph does not say one is the price of the other."
 					>
-						<span className="font-medium" style={{ color: other.color }}>
+						<span className="font-medium" style={{ color: textColorOf(other.color) }}>
 							{other.tag}
 						</span>{' '}
 						· {other.label}

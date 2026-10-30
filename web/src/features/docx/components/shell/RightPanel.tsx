@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import { Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -22,6 +22,10 @@ const HEADER_ICONS: Record<RightPanelTab, React.ComponentType<{ className?: stri
 };
 
 interface RightPanelProps {
+	id?: string;
+	/** Over the contract (small screens) the open panel is a modal dialog: focus moves in,
+	 *  Escape closes it and focus goes back where it was. */
+	modal?: boolean;
 	activeTab: RightPanelTab;
 	isOpen: boolean;
 	width: number;
@@ -35,6 +39,8 @@ interface RightPanelProps {
 }
 
 export function RightPanel({
+	id,
+	modal = false,
 	activeTab,
 	isOpen,
 	width,
@@ -47,11 +53,42 @@ export function RightPanel({
 }: RightPanelProps) {
 	const Icon = HEADER_ICONS[activeTab];
 	const label = RIGHT_PANEL_TOOLS.find((tool) => tool.id === activeTab)?.label ?? '';
+	const panelRef = useRef<HTMLElement>(null);
+	const isDialog = modal && isOpen;
+	const closeRef = useRef(onClose);
+	const closeDisabledRef = useRef(closeDisabled);
+	useEffect(() => {
+		closeRef.current = onClose;
+		closeDisabledRef.current = closeDisabled;
+	});
+
+	useEffect(() => {
+		if (!isDialog) return;
+		const returnTo = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+		panelRef.current?.focus({ preventScroll: true });
+		const onKeyDown = (event: KeyboardEvent) => {
+			// A menu inside the panel takes its own Escape first (it prevents the default).
+			if (event.key !== 'Escape' || event.defaultPrevented || closeDisabledRef.current) return;
+			event.preventDefault();
+			closeRef.current();
+		};
+		window.addEventListener('keydown', onKeyDown);
+		return () => {
+			window.removeEventListener('keydown', onKeyDown);
+			if (returnTo?.isConnected) returnTo.focus({ preventScroll: true });
+		};
+	}, [isDialog]);
 
 	return (
 		<aside
+			ref={panelRef}
+			id={id}
+			role={isDialog ? 'dialog' : undefined}
+			aria-modal={isDialog || undefined}
+			aria-label={isDialog ? label : undefined}
+			tabIndex={isDialog ? -1 : undefined}
 			className={cn(
-				'absolute top-0 bottom-0 z-40 flex min-h-0 flex-col overflow-hidden border-l border-border bg-card transition-[transform,opacity,box-shadow] duration-300',
+				'absolute top-0 bottom-0 z-40 flex min-h-0 flex-col overflow-hidden border-l border-border bg-card transition-[transform,opacity,box-shadow] duration-300 outline-none motion-reduce:transition-opacity',
 				isOpen
 					? 'pointer-events-auto visible opacity-100 shadow-2xl'
 					: 'pointer-events-none invisible opacity-0 shadow-none'

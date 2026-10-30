@@ -48,7 +48,7 @@ export function RightPanelAssistant({
 			/>
 
 			{error ? (
-				<div className="border-t border-red-100 bg-red-50 px-3 py-1.5 text-2xs text-destructive">
+				<div className="border-t border-red-100 bg-red-50 px-3 py-1.5 text-2xs text-destructive dark:border-red-900/60 dark:bg-red-950/40">
 					{error}
 				</div>
 			) : null}

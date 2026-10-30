@@ -1,12 +1,6 @@
 'use client';
 
-import {
-	Fragment,
-	useMemo,
-	useState,
-	type MouseEvent as ReactMouseEvent,
-	type ReactNode,
-} from 'react';
+import { Fragment, useCallback, useMemo, useState, type ReactNode } from 'react';
 import type {
 	GridLane,
 	GridMark,
@@ -20,11 +14,14 @@ import {
 	ClauseRow,
 	type ClauseRowLead,
 } from '@/features/docx/components/clause-analyzer/grid/ClauseRow';
+import type { HoverPoint } from '@/features/docx/components/clause-analyzer/grid/Mark';
 import {
 	LABEL_MIN_WIDTH,
 	laneWidth,
 	PAIR_SECOND_COLOR,
+	PAIR_SECOND_TEXT_COLOR,
 	PARTY_COLOR,
+	PARTY_TEXT_COLOR,
 	ROW_PAGE,
 } from '@/features/docx/components/clause-analyzer/constants';
 
@@ -69,7 +66,7 @@ interface ClauseGridProps {
 	onGoToModifier?: (clauseId: string, kind: DeonticKind | null) => void;
 	onOpenMark: (nodeId: string) => void;
 	onFocusMark: (nodeId: string) => void;
-	onHoverMark: (event: ReactMouseEvent, mark: GridMark) => void;
+	onHoverMark: (point: HoverPoint, mark: GridMark) => void;
 	onLeaveMark: () => void;
 }
 
@@ -113,6 +110,18 @@ export function ClauseGrid({
 		() => [...clauseRows.slice(0, limit), ...(showUnfiled && unfiledRow ? [unfiledRow] : [])],
 		[clauseRows, limit, showUnfiled, unfiledRow]
 	);
+	// Each row's name, made once per list so a row redraws only when it changes.
+	const leads = useMemo(
+		() => new Map(shownRows.map((row) => [row, leadOf?.(row)] as const)),
+		[shownRows, leadOf]
+	);
+	const toggleDetail = useCallback(
+		(id: string) => {
+			if (id !== activeClauseId) onSelectClause(id);
+			setDetailOf((open) => (open === id && id === activeClauseId ? null : id));
+		},
+		[activeClauseId, onSelectClause]
+	);
 
 	return (
 		<div className="h-full overflow-auto">
@@ -124,13 +133,13 @@ export function ClauseGrid({
 						type="button"
 						onClick={onToggleSort}
 						disabled={!sortable}
-						className="mr-2 truncate text-left font-medium text-muted-foreground/70 enabled:hover:text-foreground disabled:cursor-default"
+						className="mr-2 truncate text-left font-medium text-muted-foreground enabled:hover:text-foreground disabled:cursor-default"
 						style={{ flexBasis: NAME_WIDTH, minWidth: LABEL_MIN_WIDTH }}
 						title="Order the rows by how much each clause weighs inside the contract (PageRank with a per-clause prior), or by its position in the document"
 					>
 						CLAUSE
 						{sortable && (
-							<span className="font-normal opacity-70">
+							<span className="font-normal">
 								{' · '}
 								{sortByImportance ? SORT_LABELS.importance : SORT_LABELS.order}
 							</span>
@@ -148,7 +157,7 @@ export function ClauseGrid({
 									}`}
 									style={{
 										width: laneWidth(COLUMN_MARKS),
-										color: lane === 'a' ? PARTY_COLOR : PAIR_SECOND_COLOR,
+										color: lane === 'a' ? PARTY_TEXT_COLOR : PAIR_SECOND_TEXT_COLOR,
 									}}
 									title={`Paint ${laneName(lane)}’s statements in the document`}
 								>
@@ -199,7 +208,7 @@ export function ClauseGrid({
 						paintLanes={paintLanes}
 						centerLanes
 						laneColumns={COLUMN_MARKS}
-						lead={leadOf?.(row)}
+						lead={leads.get(row)}
 						labelWidth={NAME_WIDTH}
 						boldStripes
 						conditionalIds={conditionalIds}
@@ -212,12 +221,7 @@ export function ClauseGrid({
 						detailOpen={
 							row.clauseId !== null && row.clauseId === activeClauseId && detailOf === row.clauseId
 						}
-						onToggleDetail={() => {
-							const id = row.clauseId;
-							if (!id) return;
-							if (id !== activeClauseId) onSelectClause(id);
-							setDetailOf(detailOf === id && id === activeClauseId ? null : id);
-						}}
+						onToggleDetail={toggleDetail}
 						detail={
 							renderDetail &&
 							activeClauseId !== null &&
@@ -247,6 +251,16 @@ export function ClauseGrid({
 							↓ Show {Math.min(ROW_PAGE, hiddenRows)} more · {hiddenRows} left
 						</Button>
 					)}
+					{hiddenRows > ROW_PAGE && (
+						<Button
+							variant="ghost"
+							size="xs"
+							className="h-6 px-1.5 text-2xs"
+							onClick={() => setRowLimit(clauseRows.length)}
+						>
+							Show all
+						</Button>
+					)}
 					{rowLimit > ROW_PAGE && (
 						<Button
 							variant="ghost"
@@ -269,7 +283,7 @@ export function ClauseGrid({
 								aria-label="Show the No clause assigned band"
 							/>
 							Show “No clause assigned”
-							<span className="tabular-nums opacity-60">{unfiledRow.total}</span>
+							<span className="tabular-nums">{unfiledRow.total}</span>
 						</label>
 					)}
 				</div>

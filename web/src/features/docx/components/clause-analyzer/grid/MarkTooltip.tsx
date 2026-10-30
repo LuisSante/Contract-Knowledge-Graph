@@ -1,6 +1,7 @@
 'use client';
 
-import { useCallback, useMemo, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { createStore, useStore, type StoreApi } from 'zustand';
 import { deonticNodes, type KnowledgeGraph } from '@/types/knowledge';
 import {
 	GRID_LANES,
@@ -15,6 +16,8 @@ import {
 	PAIR_SECOND_COLOR,
 	PARTY_COLOR,
 } from '@/features/docx/components/clause-analyzer/constants';
+import type { HoverPoint } from '@/features/docx/components/clause-analyzer/grid/Mark';
+import { afterLead } from '@/features/docx/components/clause-analyzer/parts/table-bits';
 
 /** Where the pointer is, relative to the panel, plus what it is over. */
 export interface HoverInfo {
@@ -48,7 +51,8 @@ export function markDetails(
 		for (const condition of kg.conditions) {
 			if (!condition.gatesId || !condition.trigger) continue;
 			const list = conditionsOf.get(condition.gatesId) ?? [];
-			list.push({ lead: conditionLead(condition.operator), trigger: condition.trigger });
+			const lead = conditionLead(condition.operator);
+			list.push({ lead, trigger: afterLead(lead, condition.trigger) });
 			conditionsOf.set(condition.gatesId, list);
 		}
 	}
@@ -82,7 +86,7 @@ export function useMarkHover(kg: KnowledgeGraph, grid: StatementGrid) {
 	const [hover, setHover] = useState<HoverInfo | null>(null);
 	const detailsOf = useMemo(() => markDetails(kg, grid), [kg, grid]);
 	const show = useCallback(
-		(event: ReactMouseEvent, mark: GridMark) => {
+		(event: HoverPoint, mark: GridMark) => {
 			const element = containerRef.current;
 			const rect = element?.getBoundingClientRect();
 			if (!element || !rect) return;
@@ -96,6 +100,19 @@ export function useMarkHover(kg: KnowledgeGraph, grid: StatementGrid) {
 	);
 	const hide = useCallback(() => setHover(null), []);
 	return { containerRef, hover, show, hide };
+}
+
+/** The card's state kept outside the view that draws the marks, so a mouse move redraws the
+ *  card alone and not every row. One store per view. */
+export type MarkHoverStore = StoreApi<{ hover: HoverInfo | null }>;
+
+export const createMarkHoverStore = (): MarkHoverStore =>
+	createStore<{ hover: HoverInfo | null }>()(() => ({ hover: null }));
+
+/** The mark card, read from a hover store. */
+export function LiveMarkTooltip({ store, above }: { store: MarkHoverStore; above?: boolean }) {
+	const hover = useStore(store, (s) => s.hover);
+	return <MarkTooltip hover={hover} above={above} />;
 }
 
 const trim = (text: string, max: number) =>
@@ -114,6 +131,7 @@ export function MarkTooltip({
 	const color = KIND_COLORS[hover.kind];
 	return (
 		<div
+			role="tooltip"
 			className="pointer-events-none absolute z-30 w-[22rem] rounded-xl border border-border bg-card px-3.5 py-3 text-xs shadow-lg"
 			style={{
 				left: Math.max(8, hover.x - 362),
@@ -154,7 +172,7 @@ export function MarkTooltip({
 				</p>
 			))}
 			<div className="mt-2.5 flex items-center justify-between gap-2 border-t border-border pt-2">
-				<span className="truncate text-muted-foreground/80">
+				<span className="truncate text-muted-foreground">
 					{hover.clause ?? 'No clause assigned'}
 				</span>
 				<span className="shrink-0 font-medium text-primary">Open in contract ↗</span>

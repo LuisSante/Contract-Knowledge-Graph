@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { fetchKnowledgeGraph } from '@/services/knowledge';
 import type { KnowledgeGraph } from '@/types/knowledge';
 import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
@@ -13,11 +13,13 @@ const noReload = () => {};
 /**
  * The contract's graph, as fetched (`kg`) and as the parties are set up in the Clause
  * Analyzer (`viewKg`): merged parties drawn as one, hidden ones left out. Every tab reads
- * the same view.
+ * the same view. `retry` fetches it again after an error.
  */
 export function useKnowledgeGraphData(docId: string, onReload: () => void = noReload) {
 	const [kg, setKg] = useState<KnowledgeGraph | null>(null);
 	const [status, setStatus] = useState<KnowledgeGraphStatus>('loading');
+	const [attempt, setAttempt] = useState(0);
+	const retry = useCallback(() => setAttempt((n) => n + 1), []);
 	const mergeGroups = useClauseAnalyzerStore((s) => s.mergeGroups);
 	const hiddenParties = useClauseAnalyzerStore((s) => s.hiddenParties);
 
@@ -47,12 +49,12 @@ export function useKnowledgeGraphData(docId: string, onReload: () => void = noRe
 		return () => {
 			cancelled = true;
 		};
-	}, [docId, onReload]);
+	}, [docId, onReload, attempt]);
 
 	const viewKg = useMemo(
 		() => (kg ? applyPartyView(kg, mergeGroups, new Set(hiddenParties)) : null),
 		[kg, mergeGroups, hiddenParties]
 	);
 
-	return { kg, viewKg, status };
+	return { kg, viewKg, status, retry };
 }

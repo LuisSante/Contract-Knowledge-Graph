@@ -45,7 +45,7 @@ export function AssistantInputBox({
 							type="button"
 							variant="outline"
 							size="sm"
-							className="h-7 w-auto shrink-0 rounded-full border-blue-200 bg-blue-50/60 px-3 text-2xs text-blue-700 hover:bg-indigo-600 hover:text-white dark:border-blue-900 dark:bg-blue-950/40 dark:text-blue-300"
+							className="h-7 w-auto shrink-0 rounded-full border-blue-200 bg-blue-50/60 px-3 text-2xs text-blue-700 hover:bg-indigo-600 hover:text-white dark:border-blue-900 dark:bg-blue-950/40 dark:text-blue-300 dark:hover:bg-indigo-500 dark:hover:text-white"
 							onClick={() => onSuggestionClick?.(suggestion)}
 						>
 							{suggestion}
@@ -58,6 +58,7 @@ export function AssistantInputBox({
 				<Textarea
 					rows={2}
 					placeholder="Ask about this contract or paragraph…"
+					aria-label="Question for the assistant"
 					className="min-h-[50px] rounded-lg text-2xs"
 					value={input}
 					onChange={(event) => onInputChange(event.target.value)}
@@ -68,7 +69,7 @@ export function AssistantInputBox({
 					type="submit"
 					size="icon"
 					disabled={loading}
-					className="size-8 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"
+					className="size-8 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400"
 					aria-label="Send chat message"
 					title="Send"
 				>

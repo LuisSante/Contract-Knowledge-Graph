@@ -4,6 +4,7 @@ import { useEffect, useState, type RefObject } from 'react';
 import {
 	computeEvidenceBridge,
 	EMPTY_EVIDENCE_BRIDGE,
+	sameEvidenceBridge,
 	type EvidenceBridge,
 } from '@/features/docx/utils/evidence/evidence-bridge';
 import { attachShiftWheelCompression } from '@/features/docx/utils/docx-engine/shift-wheel-compression';
@@ -43,26 +44,40 @@ export function useEvidenceBridge({
 		}
 	};
 
-	const applyNodeClasses = (movedNodeIds: Set<string>, compression: number) => {
-		clearNodeClasses();
-		if (!selectedParagraph?.id) return;
+	/** The classes each paragraph should carry for this state: the selected one, the linked
+	 *  ones (hidden at their place once moved), and the rest muted while they are moved. */
+	const nodeClassesFor = (movedNodeIds: Set<string>, compression: number) => {
+		const classesById = new Map<string, string[]>();
+		if (!selectedParagraph?.id) return classesById;
 		const shouldMute = compression > 0.02 && movedNodeIds.size > 0;
 		if (shouldMute) {
-			for (const element of paragraphElementById.values()) {
-				element.classList.add('docx-paragraph-explanation-muted');
+			for (const id of paragraphElementById.keys()) {
+				classesById.set(id, ['docx-paragraph-explanation-muted']);
 			}
 		}
-
-		const selectedElement = paragraphElementById.get(selectedParagraph.id);
-		selectedElement?.classList.remove('docx-paragraph-explanation-muted');
-		selectedElement?.classList.add('docx-paragraph-explanation-selected');
-
 		for (const item of evidence) {
-			const relatedElement = paragraphElementById.get(item.node.id);
-			relatedElement?.classList.remove('docx-paragraph-explanation-muted');
-			relatedElement?.classList.add('docx-paragraph-explanation-related');
+			const classes = ['docx-paragraph-explanation-related'];
 			if (compression > 0.02 && movedNodeIds.has(item.node.id)) {
-				relatedElement?.classList.add('docx-paragraph-explanation-source-hidden');
+				classes.push('docx-paragraph-explanation-source-hidden');
+			}
+			classesById.set(item.node.id, classes);
+		}
+		const selectedClasses = classesById.get(selectedParagraph.id) ?? [];
+		classesById.set(selectedParagraph.id, [
+			...selectedClasses.filter((name) => name !== 'docx-paragraph-explanation-muted'),
+			'docx-paragraph-explanation-selected',
+		]);
+		return classesById;
+	};
+
+	// Runs every frame while scrolling: touch only the classes that change.
+	const applyNodeClasses = (movedNodeIds: Set<string>, compression: number) => {
+		const classesById = nodeClassesFor(movedNodeIds, compression);
+		for (const [id, element] of paragraphElementById) {
+			const wanted = classesById.get(id);
+			for (const name of NODE_CLASSES) {
+				const want = wanted?.includes(name) ?? false;
+				if (element.classList.contains(name) !== want) element.classList.toggle(name, want);
 			}
 		}
 	};
@@ -75,6 +90,7 @@ export function useEvidenceBridge({
 			return;
 		}
 
+		let lastBridge: EvidenceBridge | null = null;
 		const refresh = (compression: number) => {
 			const currentHost = scrollHostRef.current;
 			if (!currentHost || !selectedParagraph) return;
@@ -86,6 +102,8 @@ export function useEvidenceBridge({
 				compression,
 			});
 			applyNodeClasses(result.movedNodeIds, compression);
+			if (lastBridge && sameEvidenceBridge(lastBridge, result)) return;
+			lastBridge = result;
 			setBridge(result);
 		};
 

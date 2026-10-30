@@ -40,7 +40,9 @@ export function RightPanelHeaderActions({
 							: 'Focus a party in the Clause Analyzer'
 					}
 				>
-					<span className="text-2xs font-medium text-header-foreground/50">Party</span>
+					<span className="text-2xs font-medium text-header-foreground/50 dark:text-header-foreground/65">
+						Party
+					</span>
 					<span className="truncate text-2xs font-medium text-header-foreground/80">
 						{focusedPartyName ?? 'none focused'}
 					</span>
@@ -57,7 +59,7 @@ export function RightPanelHeaderActions({
 				<Select value={model} onValueChange={onModelChange}>
 					<SelectTrigger
 						size="sm"
-						className="h-7 w-[88px] shrink-0 border-transparent bg-card px-2 text-2xs text-primary shadow-sm hover:bg-card/90 focus-visible:ring-header-foreground/40 [&_svg]:text-primary"
+						className="h-7 w-[88px] shrink-0 border-transparent bg-card px-2 text-2xs text-primary shadow-sm hover:bg-card/90 focus-visible:ring-header-foreground/40 dark:bg-card dark:hover:bg-card/90 [&_svg]:text-primary"
 						title="Global model for the assistant and knowledge-graph extraction"
 					>
 						<SelectValue />

@@ -3,6 +3,7 @@
 import { useState, type DragEvent } from 'react';
 import { EyeOff, Merge, Split as SplitIcon, X, type LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { textColorOf } from '@/features/docx/components/clause-analyzer/constants';
 
 export interface PartyCardData {
 	id: string;
@@ -86,32 +87,26 @@ export function PartySelection({
 	/** Amber, deliberately outside every other palette in the view: split is the one
 	    action that undoes instead of composing, so its handle should never blend in. */
 	const splitBadge = (partyId: string, size = 'size-3.5') => (
-		<span
-			role="button"
-			tabIndex={0}
+		<button
+			type="button"
 			title="Split this merged entity back into its members"
-			onClick={(event) => {
-				event.stopPropagation();
-				onSplit(partyId);
-			}}
-			className="shrink-0 cursor-pointer rounded p-0.5 text-amber-600 hover:bg-amber-500/15 hover:text-amber-700"
+			aria-label="Split this merged entity back into its members"
+			onClick={() => onSplit(partyId)}
+			className="relative z-10 shrink-0 cursor-pointer rounded p-0.5 text-amber-600 hover:bg-amber-500/15 hover:text-amber-700 dark:hover:text-amber-500"
 		>
 			<SplitIcon className={size} />
-		</span>
+		</button>
 	);
 
-	/** A seated card's own action. The card is itself a button that frees the seat, so the
-	    icon's click stops there. */
+	/** A seated card's own action. The card's own button lies under the whole card, so the
+	    icons sit above it as its siblings, not inside it. */
 	const cardAction = (label: string, Icon: LucideIcon, run: () => void) => (
 		<button
 			type="button"
 			title={label}
 			aria-label={label}
-			onClick={(event) => {
-				event.stopPropagation();
-				run();
-			}}
-			className="shrink-0 rounded p-0.5 text-muted-foreground transition hover:bg-muted hover:text-foreground"
+			onClick={run}
+			className="relative z-10 shrink-0 rounded p-0.5 text-muted-foreground transition hover:bg-muted hover:text-foreground"
 		>
 			<Icon className="size-4" />
 		</button>
@@ -128,7 +123,7 @@ export function PartySelection({
 				<div
 					className={`flex min-h-[140px] min-w-0 flex-1 flex-col items-center justify-center rounded-xl border-2 border-dashed px-3 text-center text-sm transition ${
 						dropZone === zone
-							? 'border-primary bg-primary/5 text-primary'
+							? 'border-primary bg-primary/5 text-primary dark:text-foreground'
 							: 'border-border text-muted-foreground'
 					}`}
 					onDragOver={acceptOver(zone)}
@@ -147,17 +142,21 @@ export function PartySelection({
 		return (
 			<div className="relative flex min-w-0 flex-1">
 				<div
-					role="button"
-					tabIndex={0}
 					{...dragProps(party.id)}
-					onClick={() => onRelease(side)}
 					title="Click to choose another party; drag it onto the other card to merge them"
-					className="flex w-full min-w-0 cursor-grab flex-col gap-2.5 rounded-xl border-2 bg-card px-5 py-4 text-left transition hover:bg-muted/40 active:cursor-grabbing"
+					className="relative flex w-full min-w-0 cursor-grab flex-col gap-2.5 rounded-xl border-2 bg-card px-5 py-4 text-left transition hover:bg-muted/40 active:cursor-grabbing"
 					style={{
 						borderColor: color,
 						opacity: draggingId === party.id ? 0.4 : undefined,
 					}}
 				>
+					{/* The whole card frees the seat; its icons are buttons of their own above it. */}
+					<button
+						type="button"
+						onClick={() => onRelease(side)}
+						aria-label={`${party.name}: choose another party for this seat`}
+						className="absolute inset-0 cursor-grab rounded-[10px] active:cursor-grabbing"
+					/>
 					<span className="flex items-start gap-2">
 						<span
 							className="mt-[7px] inline-block size-2.5 shrink-0 rounded-full"
@@ -178,7 +177,10 @@ export function PartySelection({
 					{party.role && (
 						<span
 							className="w-fit rounded-full px-2 py-0.5 text-xs font-medium"
-							style={{ color, backgroundColor: `color-mix(in oklab, ${color} 12%, transparent)` }}
+							style={{
+								color: textColorOf(color),
+								backgroundColor: `color-mix(in oklab, ${color} 12%, transparent)`,
+							}}
 						>
 							{party.role}
 						</span>
@@ -194,7 +196,7 @@ export function PartySelection({
 						<div
 							className={`flex flex-1 items-center justify-center text-xs font-medium transition ${
 								dropZone === `swap-${side}`
-									? 'bg-primary/20 text-primary'
+									? 'bg-primary/20 text-primary dark:text-foreground'
 									: 'bg-background/75 text-muted-foreground'
 							}`}
 							onDragOver={acceptOver(`swap-${side}`)}
@@ -206,7 +208,7 @@ export function PartySelection({
 						<div
 							className={`flex flex-1 items-center justify-center gap-1 text-xs font-medium transition ${
 								dropZone === `merge-${side}`
-									? 'bg-emerald-500/20 text-emerald-700'
+									? 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-300'
 									: 'bg-background/75 text-muted-foreground'
 							}`}
 							onDragOver={acceptOver(`merge-${side}`)}
@@ -250,12 +252,7 @@ export function PartySelection({
 							return (
 								<div
 									key={party.id}
-									role="button"
-									tabIndex={0}
 									{...dragProps(party.id)}
-									onClick={() => {
-										if (!full) onAssign(party.id);
-									}}
 									onDragOver={draggingId && draggingId !== party.id ? acceptOver(zone) : undefined}
 									onDragLeave={leaveZone(zone)}
 									onDrop={(event) =>
@@ -268,27 +265,38 @@ export function PartySelection({
 											? 'Drag onto a seat to swap it in; drop another card here to merge'
 											: 'Click to seat it; drag onto a card to merge'
 									}
-									className={`group flex max-w-full cursor-grab items-center gap-1.5 rounded-full border px-3 py-1 text-xs transition active:cursor-grabbing ${
+									className={`group relative flex max-w-full cursor-grab items-center gap-1.5 rounded-full border px-3 py-1 text-xs transition active:cursor-grabbing ${
 										targeted
 											? 'border-emerald-500 bg-emerald-500/10 text-foreground ring-1 ring-emerald-400'
 											: 'border-border text-muted-foreground hover:bg-muted/60'
 									}`}
 									style={{ opacity: draggingId === party.id ? 0.4 : undefined }}
 								>
+									{/* The chip seats the party; its icons are buttons of their own above it. */}
+									<button
+										type="button"
+										onClick={() => {
+											if (!full) onAssign(party.id);
+										}}
+										aria-disabled={full}
+										aria-label={
+											full
+												? `${party.name}: free a seat above first, then pick it to seat it`
+												: `Seat ${party.name}`
+										}
+										className="absolute inset-0 cursor-grab rounded-full active:cursor-grabbing"
+									/>
 									<span className="truncate">{party.name}</span>
 									{groups.has(party.id) && splitBadge(party.id)}
-									<span
-										role="button"
-										tabIndex={0}
+									<button
+										type="button"
 										title="Remove this party from the view (restorable below)"
-										onClick={(event) => {
-											event.stopPropagation();
-											onDelete(party.id);
-										}}
-										className="shrink-0 cursor-pointer rounded p-0.5 opacity-0 transition-opacity hover:bg-muted hover:text-destructive group-hover:opacity-100"
+										aria-label={`Remove ${party.name} from the view (restorable below)`}
+										onClick={() => onDelete(party.id)}
+										className="relative z-10 shrink-0 cursor-pointer rounded p-0.5 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100 hover:bg-muted hover:text-destructive focus-visible:opacity-100"
 									>
 										<X className="size-3" />
-									</span>
+									</button>
 								</div>
 							);
 						})}

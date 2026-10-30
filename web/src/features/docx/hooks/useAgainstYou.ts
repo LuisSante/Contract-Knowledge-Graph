@@ -1,21 +1,26 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
 import type { DeonticKind } from '@/types/knowledge';
 import type { GridRow, Side } from '@/features/docx/utils/knowledge/statement-grid';
 
 /**
  * «You are» and «Only against you». The reader's party is kept by id, so another pair forgets
- * it; nobody is picked at first, and the table reads as it always did until someone is.
+ * it; nobody is picked at first, and the table reads as it always did until someone is. It lives
+ * in the store, per document, so the Deadlines tab can start from the same party.
  */
 export function useAgainstYou(
+	docId: string,
 	pairIds: Record<Side, string> | null,
 	clauseRows: GridRow[],
 	typeShown: DeonticKind,
 	/** The picked clause, kept in the list even when it does not go against the reader. */
 	activeId: string | null
 ) {
-	const [meId, setMeId] = useState<string | null>(null);
+	const stored = useClauseAnalyzerStore((s) => s.me);
+	const setMe = useClauseAnalyzerStore((s) => s.setMe);
+	const meId = stored?.docId === docId ? stored.partyId : null;
 	const me: Side | null = meId
 		? meId === pairIds?.a
 			? 'a'
@@ -23,7 +28,7 @@ export function useAgainstYou(
 				? 'b'
 				: null
 		: null;
-	const pickMe = (side: Side | null) => setMeId(side && pairIds ? pairIds[side] : null);
+	const pickMe = (side: Side | null) => setMe(docId, side && pairIds ? pairIds[side] : null);
 
 	// A clause goes against the reader, in the type shown, when the reader has more obligations
 	// or prohibitions in it than the other party, or the other party holds more rights.

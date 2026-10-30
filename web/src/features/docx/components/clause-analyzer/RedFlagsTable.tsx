@@ -9,7 +9,7 @@ import { fetchRedFlags } from '@/services/red-flags';
 import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
 import { useDocumentStore } from '@/stores/document';
 import type { Node } from '@/types/document';
-import { deonticNodes, type KnowledgeGraph } from '@/types/knowledge';
+import { deonticNodes, type DeonticKind, type KnowledgeGraph } from '@/types/knowledge';
 import type { RedFlag } from '@/types/red-flags';
 
 // Blue, so a flag in the contract never reads as one of the deontic types' colours.
@@ -40,6 +40,8 @@ type FoundAs = (typeof FOUND_AS)[number];
 type Detection = Partial<Record<FoundAs, Array<string | null>>> | null | 'short';
 
 /** A clause as the table shows it: the place in its row's circle and the tag beside it. */
+export type PlaceOf = (clauseId: string, kind?: DeonticKind) => ClausePlace | null;
+
 export interface ClausePlace {
 	rank: number | undefined;
 	section: string | null;
@@ -88,12 +90,15 @@ function typeLabel(type: string | null): string {
 /** The rows of the table a type's matches sit in: each clause once, with its place and number. */
 function Places({
 	clauseIds,
+	kind,
 	placeOf,
 }: {
 	clauseIds: Array<string | null>;
-	placeOf?: (clauseId: string) => ClausePlace | null;
+	/** The tab whose numbers the places take; none for a condition. */
+	kind?: DeonticKind;
+	placeOf?: PlaceOf;
 }) {
-	const places = [...new Set(clauseIds)].map((id) => (id && placeOf ? placeOf(id) : null));
+	const places = [...new Set(clauseIds)].map((id) => (id && placeOf ? placeOf(id, kind) : null));
 	if (places.every((place) => place === null)) {
 		return <span className="text-muted-foreground">No clause assigned</span>;
 	}
@@ -121,13 +126,7 @@ function Places({
 
 /** «Detected» and «Found as» for one flag: each type the graph holds it as, with the analyzer's
  *  square, and the rows of the table it is in. */
-function DetectionCells({
-	detection,
-	placeOf,
-}: {
-	detection: Detection;
-	placeOf?: (clauseId: string) => ClausePlace | null;
-}) {
+function DetectionCells({ detection, placeOf }: { detection: Detection; placeOf?: PlaceOf }) {
 	if (detection === 'short') {
 		return (
 			<>
@@ -168,7 +167,11 @@ function DetectionCells({
 									)}
 								</span>
 								<span className="pl-4">
-									<Places clauseIds={clauseIds} placeOf={placeOf} />
+									<Places
+										clauseIds={clauseIds}
+										kind={kind === 'condition' ? undefined : kind}
+										placeOf={placeOf}
+									/>
 								</span>
 							</span>
 						) : null
@@ -188,7 +191,7 @@ export function RedFlagsTable({
 	docId: string;
 	kg: KnowledgeGraph | null;
 	/** A clause's place and number in the table. */
-	placeOf?: (clauseId: string) => ClausePlace | null;
+	placeOf?: PlaceOf;
 }) {
 	// Kept with the document they belong to, so another contract never shows them while it loads.
 	const [loaded, setLoaded] = useState<{ docId: string; flags: RedFlag[] } | null>(null);
@@ -260,10 +263,10 @@ export function RedFlagsTable({
 				title={expanded ? 'Hide the red flags' : 'Show the red flags'}
 				className="sticky top-0 z-10 flex h-8 w-full items-center gap-2 border-b border-border/60 bg-background/95 px-3 text-left text-2xs backdrop-blur hover:bg-muted/60"
 			>
-				<span className="font-medium text-muted-foreground/70">
-					RED FLAGS <span className="font-normal opacity-70">· {flags.length}</span>
+				<span className="font-medium text-muted-foreground">
+					RED FLAGS <span className="font-normal">· {flags.length}</span>
 					{detectedCount !== null && (
-						<span className="font-normal opacity-70"> · {detectedCount} detected</span>
+						<span className="font-normal"> · {detectedCount} detected</span>
 					)}
 				</span>
 				<ChevronDownIcon
@@ -274,7 +277,7 @@ export function RedFlagsTable({
 				/>
 			</button>
 			<table className="w-full table-fixed text-xs">
-				<thead className="text-2xs text-muted-foreground/70">
+				<thead className="text-2xs text-muted-foreground">
 					<tr className="border-b border-border/40">
 						<th className="w-[20%] px-3 py-1 text-left font-medium">Article</th>
 						<th className="w-[14%] px-3 py-1 text-left font-medium">Type</th>

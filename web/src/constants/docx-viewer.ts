@@ -24,4 +24,8 @@ export const RIGHT_TOOLBAR_EXPANDED_WIDTH = 162;
 export const RIGHT_DRAWER_MIN_WIDTH = 360;
 export const RIGHT_DRAWER_DEFAULT_WIDTH = 980;
 export const RIGHT_DRAWER_MAX_RATIO = 0.68;
+/** The contract keeps at least this much beside the open panel. */
+export const DOCUMENT_MIN_WIDTH = 440;
+/** From this viewport width the panel sits beside the contract; below it, it overlays it. */
+export const DESKTOP_MIN_VIEWPORT = 1024;
 export const RIGHT_DRAWER_KEYBOARD_STEP = 24;

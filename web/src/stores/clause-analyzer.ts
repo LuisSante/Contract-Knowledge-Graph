@@ -65,6 +65,8 @@ interface ClauseAnalyzerState extends GraphPayload {
 	/** The clause picked in the table or in the graph; both tabs show the same one. Keyed
 	 *  by document, since every contract has a clause-1. */
 	selectedClause: { docId: string; clauseId: string } | null;
+	/** «You are»: the reader's party, per document, so Deadlines can start from it too. */
+	me: { docId: string; partyId: string } | null;
 
 	focusNode: (nodeId: string) => void;
 	setFocusMeta: (meta: FocusMeta | null) => void;
@@ -78,6 +80,7 @@ interface ClauseAnalyzerState extends GraphPayload {
 	setDocumentTarget: (target: DocumentTarget) => void;
 	focusPair: (anchorId: string, secondId: string) => void;
 	selectClause: (docId: string, clauseId: string | null) => void;
+	setMe: (docId: string, partyId: string | null) => void;
 }
 
 export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
@@ -91,6 +94,7 @@ export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
 	secondPartyId: null,
 	documentTargetSeq: 0,
 	selectedClause: null,
+	me: null,
 	...EMPTY_PAYLOAD,
 
 	focusNode: (focusNodeId) => set({ focusNodeId, hops: 1, secondPartyId: null }),
@@ -157,4 +161,5 @@ export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
 		set((state) => ({ ...target, documentTargetSeq: state.documentTargetSeq + 1 })),
 	focusPair: (focusNodeId, secondPartyId) => set({ focusNodeId, secondPartyId, hops: 1 }),
 	selectClause: (docId, clauseId) => set({ selectedClause: clauseId ? { docId, clauseId } : null }),
+	setMe: (docId, partyId) => set({ me: partyId ? { docId, partyId } : null }),
 }));

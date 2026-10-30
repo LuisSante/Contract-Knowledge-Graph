@@ -72,10 +72,10 @@ export function AssistantMessageList({
 					<MessageScrollerContent className="flex min-h-full flex-col gap-3 p-2">
 						{messages.length > 0 ? (
 							<>
-								<div className="rounded-md border border-blue-100 bg-blue-50/60 px-2 py-1 text-2xs text-blue-800">
+								<div className="rounded-md border border-blue-100 bg-blue-50/60 px-2 py-1 text-2xs text-blue-800 dark:border-blue-900 dark:bg-blue-950/40 dark:text-blue-300">
 									Tip: click an assistant message to toggle entity highlights.
 								</div>
-								<div className="rounded-md border border-indigo-100 bg-indigo-50/60 px-2 py-1 text-2xs text-indigo-800">
+								<div className="rounded-md border border-indigo-100 bg-indigo-50/60 px-2 py-1 text-2xs text-indigo-800 dark:border-indigo-900 dark:bg-indigo-950/40 dark:text-indigo-300">
 									Tip: hold <span className="font-semibold">Shift + Scroll</span> to bring
 									related/evidence blocks closer.
 								</div>

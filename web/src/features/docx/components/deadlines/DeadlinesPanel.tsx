@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import { useDocumentStore } from '@/stores/document';
 import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
 import { useKnowledgeGraphData } from '@/features/docx/hooks/useKnowledgeGraphData';
@@ -19,10 +20,11 @@ import {
 } from '@/features/docx/utils/knowledge/deadlines';
 import { short } from '@/features/docx/components/clause-analyzer/parts/bits';
 import {
-	KIND_COLORS,
+	KIND_TEXT_COLORS,
 	NEUTRAL_COLOR,
 	PAIR_SECOND_COLOR,
 	PARTY_COLOR,
+	textColorOf,
 } from '@/features/docx/components/clause-analyzer/constants';
 
 /** Nothing painted: what another tab left in the document is not about deadlines. */
@@ -40,30 +42,37 @@ const NOTHING: DocumentTarget = {
 /** How each kind of deadline is drawn, and what its key says. */
 const KIND_STYLE: Record<DeadlineKind, { chip: string; key: string; title: string }> = {
 	exact: {
-		chip: 'bg-primary/10 text-primary',
-		key: 'with a number',
+		chip: 'bg-primary/10 text-primary dark:bg-primary/20 dark:text-indigo-300',
+		key: 'a number of days',
 		title: 'A count of hours, days or months',
 	},
 	vague: {
-		chip: 'bg-amber-100 text-amber-800',
+		chip: 'bg-amber-100 text-amber-800 dark:bg-amber-400/15 dark:text-amber-300',
 		key: 'vague',
 		title: 'A word that fixes no day, such as «promptly» or «in advance»',
 	},
 	event: {
 		chip: 'bg-muted text-foreground/80',
-		key: 'at an event',
-		title: 'Waits for something to happen, such as «upon termination»',
+		key: 'a date or an event',
+		title: 'A date, or something that has to happen first, such as «upon termination»',
 	},
 };
 
 /** The `frequency` field, drawn apart from any deadline: it says how often or for how long. */
 const FREQUENCY_STYLE = {
-	chip: 'border border-dashed border-foreground/30 bg-card text-foreground/70',
-	key: 'frequency',
+	chip: 'border border-dashed border-foreground/30 bg-card text-foreground/70 dark:border-foreground/40',
+	key: 'how often or how long',
 	title: 'How often or for how long («per month», «during the term»): not a deadline',
 };
 
 type Who = 'all' | 'a' | 'b';
+const WHO_OPTIONS: Who[] = ['all', 'a', 'b'];
+const ARROW_STEP: Record<string, number> = {
+	ArrowRight: 1,
+	ArrowDown: 1,
+	ArrowLeft: -1,
+	ArrowUp: -1,
+};
 
 /** Said before each action in its type's colour, so a prohibition does not read as a duty. */
 const TYPE_NAME: Record<TimedDuty['kind'], string> = {
@@ -81,7 +90,7 @@ export function DeadlinesPanel({ docId }: { docId: string }) {
 	const paragraphs = useDocumentStore((s) => s.paragraphs);
 	const nodesById = useMemo(() => new Map(paragraphs.map((n) => [n.id, n])), [paragraphs]);
 
-	const { viewKg, status } = useKnowledgeGraphData(docId);
+	const { viewKg, status, retry } = useKnowledgeGraphData(docId);
 	const { aId, bId } = useComparedPair(viewKg, true);
 	const groups = useMemo(() => (viewKg ? deadlineGroups(viewKg) : []), [viewKg]);
 	const nameOf = useMemo(
@@ -89,7 +98,10 @@ export function DeadlinesPanel({ docId }: { docId: string }) {
 		[viewKg]
 	);
 
-	const [who, setWho] = useState<Who>('all');
+	// Until the reader picks here, start from the party they said they are in the Clause Analyzer.
+	const me = useClauseAnalyzerStore((s) => (s.me?.docId === docId ? s.me.partyId : null));
+	const [picks, setWho] = useState<Who | null>(null);
+	const who: Who = picks ?? (me && me === aId ? 'a' : me && me === bId ? 'b' : 'all');
 	const [folded, setFolded] = useState<Record<string, boolean>>({});
 	const [picked, setPicked] = useState<string | null>(null);
 	useEffect(() => setDocumentTarget(NOTHING), [setDocumentTarget]);
@@ -102,6 +114,25 @@ export function DeadlinesPanel({ docId }: { docId: string }) {
 		.map((g) => ({ ...g, duties: g.duties.filter(shown) }))
 		.filter((g) => g.duties.length > 0);
 
+	// A radio group: one stop on Tab, and the arrows move the choice, as native radios do.
+	const onWhoKey = (event: React.KeyboardEvent<HTMLDivElement>) => {
+		const step = ARROW_STEP[event.key];
+		const last = WHO_OPTIONS.length - 1;
+		const at = WHO_OPTIONS.indexOf(who);
+		const next =
+			event.key === 'Home'
+				? 0
+				: event.key === 'End'
+					? last
+					: step !== undefined
+						? (at + step + WHO_OPTIONS.length) % WHO_OPTIONS.length
+						: null;
+		if (next === null) return;
+		event.preventDefault();
+		setWho(WHO_OPTIONS[next]);
+		event.currentTarget.querySelectorAll<HTMLElement>('[role="radio"]')[next]?.focus();
+	};
+
 	const open = (duty: TimedDuty) => {
 		setPicked(duty.ids[0]);
 		if (viewKg) setDocumentTarget(buildDocumentTarget(viewKg, duty.ids[0], nodesById));
@@ -109,16 +140,29 @@ export function DeadlinesPanel({ docId }: { docId: string }) {
 
 	if (status === 'loading')
 		return (
-			<p className="flex h-full items-center justify-center text-sm text-muted-foreground">
+			<p
+				role="status"
+				className="flex h-full items-center justify-center text-sm text-muted-foreground"
+			>
 				Loading knowledge graph…
 			</p>
+		);
+	if (status === 'error')
+		return (
+			<div
+				role="alert"
+				className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center text-sm text-muted-foreground"
+			>
+				<p>The knowledge graph of this contract could not be loaded: the server did not answer.</p>
+				<Button variant="outline" size="sm" onClick={retry}>
+					Try again
+				</Button>
+			</div>
 		);
 	if (status !== 'ready' || !viewKg)
 		return (
 			<p className="flex h-full items-center justify-center px-6 text-center text-sm text-muted-foreground">
-				{status === 'error'
-					? 'Failed to load the knowledge graph.'
-					: 'No knowledge graph generated for this document yet.'}
+				No knowledge graph generated for this document yet.
 			</p>
 		);
 
@@ -131,9 +175,10 @@ export function DeadlinesPanel({ docId }: { docId: string }) {
 						<div
 							role="radiogroup"
 							aria-label="Who acts"
+							onKeyDown={onWhoKey}
 							className="inline-flex rounded-md border border-border bg-secondary p-0.5"
 						>
-							{(['all', 'a', 'b'] as const).map((option) => {
+							{WHO_OPTIONS.map((option) => {
 								const id = option === 'a' ? aId : option === 'b' ? bId : null;
 								return (
 									<button
@@ -141,6 +186,7 @@ export function DeadlinesPanel({ docId }: { docId: string }) {
 										type="button"
 										role="radio"
 										aria-checked={who === option}
+										tabIndex={who === option ? 0 : -1}
 										onClick={() => setWho(option)}
 										className={cn(
 											'inline-flex items-center gap-1.5 rounded px-2 py-0.5 text-xs whitespace-nowrap',
@@ -273,7 +319,7 @@ function Group({
 									<span className="min-w-0 flex-1 text-sm font-medium text-foreground">
 										<span
 											className="mr-1.5 text-xs font-semibold"
-											style={{ color: KIND_COLORS[duty.kind] }}
+											style={{ color: KIND_TEXT_COLORS[duty.kind] }}
 										>
 											{TYPE_NAME[duty.kind]}
 										</span>
@@ -347,7 +393,7 @@ function Actor({
 	return (
 		<>
 			<span className="size-2 shrink-0 rounded-full" style={{ backgroundColor: colorOf(id) }} />
-			<span className="truncate text-xs font-semibold" style={{ color: colorOf(id) }}>
+			<span className="truncate text-xs font-semibold" style={{ color: textColorOf(colorOf(id)) }}>
 				{nameOf.get(id) ?? 'Party'}
 			</span>
 		</>

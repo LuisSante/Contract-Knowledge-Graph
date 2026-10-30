@@ -11,8 +11,14 @@ export function LoginForm() {
 				<CardDescription>Access to {BRAND_NAME} (backend pending).</CardDescription>
 			</CardHeader>
 			<CardContent className="space-y-4">
-				<Input type="email" placeholder="Email" disabled />
-				<Input type="password" placeholder="Password" disabled />
+				<label className="block">
+					<span className="sr-only">Email</span>
+					<Input type="email" placeholder="Email" autoComplete="email" disabled />
+				</label>
+				<label className="block">
+					<span className="sr-only">Password</span>
+					<Input type="password" placeholder="Password" autoComplete="current-password" disabled />
+				</label>
 				<Button className="w-full" disabled>
 					Sign in
 				</Button>

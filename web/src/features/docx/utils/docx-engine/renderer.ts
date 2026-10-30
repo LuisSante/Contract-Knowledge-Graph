@@ -89,7 +89,8 @@ export function createRenderer(
 		'-mx-[2px]',
 		'px-[2px]',
 		'outline-none',
-		'transition-all',
+		// What hover, focus and the analyzer's marks change: the ring, fill, outline and fade.
+		'transition-[background-color,box-shadow,opacity,outline-color]',
 		'hover:ring-1',
 		'hover:ring-blue-300',
 		'focus:ring-2',
@@ -790,14 +791,19 @@ export function createRenderer(
 				}
 				case 'document': {
 					const root = document.createElement('div');
-					root.className = 'mx-auto flex w-full max-w-max flex-col items-center gap-4';
+					// Safe centring: a page wider than the pane starts at its left edge and scrolls,
+					// instead of overflowing to the left where it can't be reached.
+					root.className = 'mx-auto flex w-full max-w-max flex-col items-center-safe gap-4';
 					appendChildren(root, children);
 					return root;
 				}
 				case 'section': {
 					const section = document.createElement('section');
+					// White paper in either theme: `theme-light` keeps the light tokens on it and on all
+					// that is drawn there. On the dark canvas the soft shadow is lost, so a hairline
+					// and a deeper shadow lift the page instead.
 					section.className =
-						'overflow-hidden bg-white text-gray-900 shadow-[0_8px_24px_rgba(17,24,39,0.1)]';
+						'theme-light overflow-hidden bg-white text-gray-900 shadow-[0_8px_24px_rgba(17,24,39,0.1)] dark:shadow-[0_0_0_1px_rgba(255,255,255,0.08),0_10px_30px_rgba(0,0,0,0.55)]';
 					const layout = getSectionLayout((safeProps.node as XmlNode) ?? null);
 					const currentHeaders = getPartMap(safeProps.headers);
 					const currentFooters = getPartMap(safeProps.footers);

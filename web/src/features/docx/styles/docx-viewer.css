@@ -302,178 +302,48 @@
 		0 0 0 2px rgba(124, 58, 237, 0.35);
 }
 
-/* .docx-contradiction-highlight {
-		background: transparent;
-		box-shadow: inset 3px 0 0 #dc2626;
-	} */
-
-.docx-contradiction-highlight {
-	background: transparent;
-	border-left: 3px solid #dc2626 !important;
-	padding-left: 10px !important;
+/* Dark theme. The paper and all that is drawn on it stay light (`.theme-light`); what sits on
+   the dark canvas beside it is retuned: the rail markers part from the canvas with a dark
+   rim instead of a white one, and the collapsed cards, white paper lifted off the page,
+   cast a shadow deep enough to read on the canvas. */
+.dark .docx-evidence-scroll-marker {
+	background: #4f86f7;
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6);
 }
 
-.docx-contradiction-highlight[data-contradiction-confidence-band='medium'] {
-	background: transparent;
-	box-shadow: inset 3px 0 0 #ef4444;
-}
-
-.docx-contradiction-highlight[data-contradiction-confidence-band='low'] {
-	background: transparent;
-	box-shadow: inset 3px 0 0 #f97316;
-}
-
-.docx-contradiction-selected {
-	outline: none;
-}
-
-mark.docx-contradiction-snippet {
-	background: transparent;
-	color: #7f1d1d;
-	padding: 0 1px;
-	border-radius: 1px;
-	text-decoration: none;
-}
-
-mark.docx-contradiction-snippet[data-contradiction-role='a'] {
-	color: inherit; /* color: #991b1b; */
-	background: var(--contradiction-bg, rgba(232, 0, 0, 0.18));
-}
-
-mark.docx-contradiction-snippet[data-contradiction-role='b'] {
-	color: inherit;
-	background: var(--contradiction-bg, rgba(132, 204, 22, 0.22));
-}
-mark.docx-contradiction-snippet.docx-contradiction-snippet--active {
-	box-shadow: 0 0 0 1px rgba(30, 41, 59, 0.28);
-}
-
-mark.docx-contradiction-snippet.docx-contradiction-snippet--active[data-contradiction-role='a'] {
-	background: var(--contradiction-bg-active, rgba(251, 44, 44, 0.45));
-	box-shadow: 0 0 0 1px var(--contradiction-ring, rgba(191, 0, 0, 0.85));
-}
-
-mark.docx-contradiction-snippet.docx-contradiction-snippet--active[data-contradiction-role='b'] {
-	color: inherit;
-	background: var(--contradiction-bg-active, rgba(132, 204, 22, 0.34));
-	box-shadow: 0 0 0 1px var(--contradiction-ring, #84cc16);
-}
-
-.docx-contradiction-scroll-marker {
-	position: absolute;
-	left: 0;
-	right: 0;
-	height: 2px;
-	transform: translateY(-50%);
-	border-radius: 9999px;
-	background: #dc2626;
-	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.85);
-	opacity: 0.92;
-	cursor: pointer;
-	transition:
-		transform 120ms ease,
-		opacity 120ms ease,
-		box-shadow 120ms ease;
-}
-
-.docx-contradiction-scroll-marker:hover {
-	opacity: 1;
-	transform: translateY(-50%) scaleY(1.4);
+.dark .docx-evidence-scroll-marker:hover,
+.dark .docx-evidence-scroll-marker:focus-visible {
 	box-shadow:
-		0 0 0 1px rgba(255, 255, 255, 0.95),
-		0 0 0 2px rgba(239, 68, 68, 0.35);
+		0 0 0 1px rgba(0, 0, 0, 0.7),
+		0 0 0 2px rgba(96, 165, 250, 0.45);
 }
 
-.docx-contradiction-scroll-marker:focus-visible {
-	outline: none;
-	opacity: 1;
-	transform: translateY(-50%) scaleY(1.4);
+.dark .docx-kg-scroll-marker {
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6);
+}
+
+.dark .docx-kg-scroll-marker:hover,
+.dark .docx-kg-scroll-marker:focus-visible {
 	box-shadow:
-		0 0 0 1px rgba(255, 255, 255, 0.95),
-		0 0 0 2px rgba(239, 68, 68, 0.45);
+		0 0 0 1px rgba(0, 0, 0, 0.7),
+		0 0 0 2px rgba(167, 139, 250, 0.45);
 }
 
-.docx-contradiction-scroll-marker--medium {
-	background: #ef4444;
+.dark .docx-paragraph-explanation-collapsed-card {
+	box-shadow:
+		0 0 0 1px rgba(219, 234, 254, 0.92),
+		0 10px 24px rgba(0, 0, 0, 0.55),
+		0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
-.docx-contradiction-scroll-marker--low {
-	background: #f87171;
-}
-
-.docx-contradiction-evidence-bracket {
-	position: absolute;
-	width: 2px;
-	border-radius: 0;
-	background: linear-gradient(
-		to bottom,
-		var(--contradiction-a-color, #dc2626) 0%,
-		var(--contradiction-b-color, #84cc16) 100%
-	);
-	transform: translateX(-50%);
-	opacity: 0.92;
-}
-
-.docx-contradiction-evidence-cap {
-	position: absolute;
-	width: 12px;
-	height: 2px;
-	border-radius: 0;
-	background: linear-gradient(
-		to right,
-		var(--contradiction-a-color, #dc2626) 0%,
-		var(--contradiction-b-color, #84cc16) 100%
-	);
-	transform: translate(-100%, -50%);
-	opacity: 0.92;
-}
-
-.docx-contradiction-evidence-dot {
-	position: absolute;
-	height: 8px;
-	width: 8px;
-	transform: translate(-50%, -50%);
-	border-radius: 9999px;
-	border: 1px solid rgba(255, 255, 255, 0.9);
-	box-shadow: 0 0 0 1px rgba(100, 116, 139, 0.28);
-}
-
-.docx-contradiction-evidence-dot--a {
-	background: var(--contradiction-a-color, #dc2626);
-}
-
-.docx-contradiction-evidence-dot--b {
-	background: var(--contradiction-b-color, #84cc16);
-}
-
-.docx-contradiction-evidence-label {
-	position: absolute;
-	transform: translate(9px, -50%);
-	font-size: 10px;
-	font-weight: 700;
-	line-height: 1;
-}
-
-.docx-contradiction-evidence-label--a {
-	color: var(--contradiction-a-color, #b91c1c);
-}
-
-.docx-contradiction-evidence-label--b {
-	color: var(--contradiction-b-color, #84cc16);
-}
-
-@keyframes bounce {
-	0%,
-	100% {
-		transform: translateY(0);
-	}
-	50% {
-		transform: translateY(-3px);
-	}
-}
-
-.animate-bounce {
-	animation: bounce 2s infinite;
+/* Keyboard focus on the margin line, its ends and the rail markers: the app's ring, drawn
+   beside the thin mark rather than as a faint glow on it. */
+.docx-paragraph-explanation-bracket--interactive:focus-visible,
+.docx-paragraph-explanation-cap--interactive:focus-visible,
+.docx-evidence-scroll-marker:focus-visible,
+.docx-kg-scroll-marker:focus-visible {
+	outline: 2px solid var(--ring);
+	outline-offset: 2px;
 }
 
 @keyframes citation-flash {
@@ -520,5 +390,12 @@ mark.docx-contradiction-snippet.docx-contradiction-snippet--active[data-contradi
 	}
 	50% {
 		opacity: 1;
+	}
+}
+
+/* Less motion: the jump to a paragraph lands without the flash. */
+@media (prefers-reduced-motion: reduce) {
+	.docx-citation-flash {
+		animation: none;
 	}
 }

@@ -95,16 +95,16 @@
       "documentName": "lease_contract_10.docx",
       "title": "Premises Lease Contract for National Development Bank Tower",
       "contractType": "Lease Agreement",
-      "summary": "Under this one-year lease, {{party-2|Zhonghai Trust Co.,Ltd}} leases premises and facilities at the 16th floor of National Development Bank Tower to {{party-1|Shaanxi Tianren Organic Food Co., Ltd.}} for work use, with specified rent, deposit, and terms for payment, maintenance, and possible purchase.",
+      "summary": "Under this one-year lease, {{party-1|Zhonghai Trust Co.,Ltd}} leases premises and facilities at the 16th floor of National Development Bank Tower to {{party-2|Shaanxi Tianren Organic Food Co., Ltd.}} for work use, with specified rent, deposit, and terms for payment, maintenance, and possible purchase.",
       "parties": [
         {
-          "partyId": "party-2",
+          "partyId": "party-1",
           "name": "Zhonghai Trust Co.,Ltd",
           "role": "Lessor",
           "does": "Lease premises, maintain property, provide documentation, coordinate delivery, issue invoices, notify of sale, repair damages."
         },
         {
-          "partyId": "party-1",
+          "partyId": "party-2",
           "name": "Shaanxi Tianren Organic Food Co., Ltd.",
           "role": "Lessee",
           "does": "Pay rent and deposit, use premises for work, bear utilities, maintain premises, avoid unauthorized sublease, return property at term end."

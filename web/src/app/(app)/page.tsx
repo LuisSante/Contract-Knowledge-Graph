@@ -8,7 +8,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { BRAND_NAME } from '@/constants/brand';
 import { useDocuments } from '@/hooks/useDocuments';
+import { ThemeToggle } from '@/components/common/ThemeToggle';
 import type { DocumentMeta } from '@/types/document';
 
 function agreementTitle(name: string): string {
@@ -19,34 +21,45 @@ function agreementTitle(name: string): string {
 }
 
 function companyHint(name: string): string {
-	const head = name.split(/_\d/)[0]?.replace(/_/g, ' ').trim() ?? '';
+	const base = name.replace(/\.docx$/i, '');
+	const head = base.split(/_\d/)[0]?.replace(/_/g, ' ').trim() ?? '';
 	return head
 		.replace(/([a-z])([A-Z])/g, '$1 $2')
 		.toLowerCase()
 		.replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
+// Letters and digits only, so "HalversonCorvin" and "Halverson Corvin" compare equal.
+function squash(value: string): string {
+	return value.toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
+}
+
+// Groups that only say "no folder": a badge with them tells the reader nothing.
+const DEFAULT_GROUPS = new Set(['root', 'other']);
+
 function titleCase(value: string): string {
 	return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
-function DocumentCard({ doc }: { doc: DocumentMeta }) {
+function DocumentCard({ doc, showGroup }: { doc: DocumentMeta; showGroup: boolean }) {
 	const group = doc.group_label || 'other';
+	const title = agreementTitle(doc.name);
+	const hint = companyHint(doc.name);
+	const showHint = hint !== '' && !squash(title).includes(squash(hint));
 	return (
 		<Link href={`/docx?id=${encodeURIComponent(doc.id)}`} title={doc.name} className="group block">
-			<Card className="flex-row items-start gap-3 rounded-xl p-3 shadow-none transition-colors group-hover:border-primary/40 group-hover:bg-accent">
+			<Card className="h-full flex-row items-center gap-3 rounded-xl p-3 shadow-none transition-colors group-hover:border-primary/40 group-hover:bg-accent">
 				<span className="flex size-9 flex-none items-center justify-center rounded-lg bg-primary/10 text-primary">
 					<FileText className="size-[18px]" />
 				</span>
 				<div className="min-w-0 flex-1">
-					<p className="truncate text-sm font-medium">{agreementTitle(doc.name)}</p>
-					<p className="truncate text-xs text-muted-foreground">{companyHint(doc.name)}</p>
-					<div className="mt-2 flex items-center gap-2">
-						<Badge variant="secondary" className="rounded-full font-normal">
-							{group}
+					<p className="line-clamp-2 text-sm font-medium break-words">{title}</p>
+					{showHint && <p className="truncate text-xs text-muted-foreground">{hint}</p>}
+					{showGroup && !DEFAULT_GROUPS.has(group) && (
+						<Badge variant="secondary" className="mt-2 rounded-full font-normal">
+							{titleCase(group)}
 						</Badge>
-						<span className="text-2xs text-muted-foreground">.docx</span>
-					</div>
+					)}
 				</div>
 				<ArrowRight className="size-4 flex-none text-muted-foreground transition-colors group-hover:text-primary" />
 			</Card>
@@ -68,6 +81,7 @@ function GroupChip({
 			type="button"
 			size="sm"
 			variant={active ? 'default' : 'outline'}
+			aria-pressed={active}
 			onClick={onClick}
 			className={
 				active
@@ -94,6 +108,7 @@ export default function Home() {
 		}
 		return Array.from(counts.entries());
 	}, [documents]);
+	const hasGroups = groups.length > 1;
 
 	const filteredDocuments = useMemo(() => {
 		const query = searchTerm.trim().toLowerCase();
@@ -108,13 +123,13 @@ export default function Home() {
 	}, [documents, searchTerm, activeGroup]);
 
 	return (
-		<main className="mx-auto w-full max-w-5xl px-6 py-12">
+		<main className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 sm:py-12">
 			<header className="mb-8 flex items-center gap-3">
 				<span className="flex size-10 flex-none items-center justify-center rounded-xl bg-primary text-primary-foreground">
 					<Scale className="size-5" />
 				</span>
 				<div className="min-w-0 flex-1">
-					<h1 className="text-xl leading-tight font-medium">Clause Impact Explorer</h1>
+					<h1 className="text-xl leading-tight font-medium">{BRAND_NAME}</h1>
 					<p className="text-sm text-muted-foreground">
 						Clause impact per party in legal contracts
 					</p>
@@ -126,11 +141,14 @@ export default function Home() {
 					<BookOpen className="size-4" />
 					Docs
 				</Link>
+				<ThemeToggle className="size-[34px]" />
 			</header>
 
 			<div className="relative mb-4">
 				<Search className="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-muted-foreground" />
 				<Input
+					type="search"
+					aria-label="Search contracts"
 					value={searchTerm}
 					onChange={(event) => setSearchTerm(event.target.value)}
 					className="h-12 rounded-xl pl-12"
@@ -139,20 +157,24 @@ export default function Home() {
 			</div>
 
 			<div className="mb-6 flex flex-wrap items-center gap-2">
-				<GroupChip active={activeGroup === 'all'} onClick={() => setActiveGroup('all')}>
-					All · {documents.length}
-				</GroupChip>
-				{groups.map(([group, count]) => (
-					<GroupChip
-						key={group}
-						active={activeGroup === group}
-						onClick={() => setActiveGroup(group)}
-					>
-						{titleCase(group)} · {count}
-					</GroupChip>
-				))}
-				<span className="ml-auto text-sm text-muted-foreground">
-					{filteredDocuments.length} contracts
+				{hasGroups && (
+					<>
+						<GroupChip active={activeGroup === 'all'} onClick={() => setActiveGroup('all')}>
+							All · {documents.length}
+						</GroupChip>
+						{groups.map(([group, count]) => (
+							<GroupChip
+								key={group}
+								active={activeGroup === group}
+								onClick={() => setActiveGroup(group)}
+							>
+								{titleCase(group)} · {count}
+							</GroupChip>
+						))}
+					</>
+				)}
+				<span className="ml-auto text-sm text-muted-foreground" aria-live="polite">
+					{filteredDocuments.length} {filteredDocuments.length === 1 ? 'contract' : 'contracts'}
 				</span>
 			</div>
 
@@ -176,7 +198,7 @@ export default function Home() {
 			) : (
 				<div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
 					{filteredDocuments.map((doc) => (
-						<DocumentCard key={doc.id} doc={doc} />
+						<DocumentCard key={doc.id} doc={doc} showGroup={hasGroups} />
 					))}
 				</div>
 			)}

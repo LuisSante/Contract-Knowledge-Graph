@@ -2,9 +2,11 @@
 
 import {
 	Fragment,
+	memo,
 	useEffect,
 	useRef,
-	type MouseEvent as ReactMouseEvent,
+	useState,
+	type KeyboardEvent,
 	type ReactNode,
 } from 'react';
 import { ChevronDownIcon, Forward } from 'lucide-react';
@@ -14,7 +16,7 @@ import type {
 	GridRow,
 	MarkKind,
 } from '@/features/docx/utils/knowledge/statement-grid';
-import { Mark } from '@/features/docx/components/clause-analyzer/grid/Mark';
+import { Mark, type HoverPoint } from '@/features/docx/components/clause-analyzer/grid/Mark';
 import {
 	AxisMark,
 	GraphLink,
@@ -25,7 +27,7 @@ import {
 import { favourOf } from '@/features/docx/utils/knowledge/clause-favour';
 import type { DeonticKind } from '@/types/knowledge';
 import {
-	KIND_COLORS,
+	KIND_TEXT_COLORS,
 	LABEL_MIN_WIDTH,
 	LABEL_WIDTH,
 	LANE_COLUMNS,
@@ -90,7 +92,7 @@ interface ClauseRowProps {
 	expandable?: boolean;
 	/** The detail is unfolded under the row. */
 	detailOpen?: boolean;
-	onToggleDetail?: () => void;
+	onToggleDetail?: (clauseId: string) => void;
 	/** What unfolds under the row while it is the picked one and «Details» is open. */
 	detail?: ReactNode;
 	/** Goes to a clause that modifies this one, in the tab of its changing sentence's type, or
@@ -98,11 +100,56 @@ interface ClauseRowProps {
 	onGoToModifier?: (clauseId: string, kind: DeonticKind | null) => void;
 	onOpenMark: (nodeId: string) => void;
 	onFocusMark: (nodeId: string) => void;
-	onHoverMark: (event: ReactMouseEvent, mark: GridMark) => void;
+	onHoverMark: (point: HoverPoint, mark: GridMark) => void;
 	onLeaveMark: () => void;
 }
 
-export function ClauseRow({
+/** The keys that move between a row's marks once one has focus. */
+const MARK_KEYS = new Set(['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End']);
+
+/**
+ * Moves focus among a row's marks as they are drawn: left and right in reading order (a
+ * line of both columns, then the next), up and down to the nearest mark on the line above
+ * or below. Read from the layout, since the first party's column fills right to left.
+ */
+function moveAmongMarks(event: KeyboardEvent<HTMLElement>) {
+	if (!MARK_KEYS.has(event.key)) return;
+	const marks = [...event.currentTarget.querySelectorAll<HTMLElement>('[data-mark]')];
+	const at = marks.indexOf(document.activeElement as HTMLElement);
+	if (at < 0) return;
+	event.preventDefault();
+	const placed = marks.map((element) => ({ element, rect: element.getBoundingClientRect() }));
+	const current = placed[at];
+	let target: HTMLElement | undefined;
+	if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+		const below = event.key === 'ArrowDown';
+		const x = current.rect.left;
+		target = placed
+			.filter(({ rect }) =>
+				below ? rect.top > current.rect.top + 1 : rect.top < current.rect.top - 1
+			)
+			.sort(
+				(p, q) =>
+					Math.abs(p.rect.top - current.rect.top) - Math.abs(q.rect.top - current.rect.top) ||
+					Math.abs(p.rect.left - x) - Math.abs(q.rect.left - x)
+			)[0]?.element;
+	} else {
+		const order = placed
+			.slice()
+			.sort((p, q) => Math.round(p.rect.top - q.rect.top) || p.rect.left - q.rect.left)
+			.map(({ element }) => element);
+		const index = order.indexOf(current.element);
+		target =
+			event.key === 'Home'
+				? order[0]
+				: event.key === 'End'
+					? order[order.length - 1]
+					: order[index + (event.key === 'ArrowRight' ? 1 : -1)];
+	}
+	target?.focus();
+}
+
+export const ClauseRow = memo(function ClauseRow({
 	row,
 	striped,
 	active,
@@ -137,6 +184,13 @@ export function ClauseRow({
 	useEffect(() => {
 		if (active) rowRef.current?.scrollIntoView({ block: 'nearest' });
 	}, [active]);
+	// One tab stop for the row's marks: the last one focused, else the first drawn.
+	const [roverId, setRoverId] = useState<string | null>(null);
+	const shownMarks = (lane: GridLane) =>
+		row.marks[lane].filter((mark) => visibleKinds.has(mark.kind));
+	const tabStop = lanes.some((lane) => shownMarks(lane).some((mark) => mark.id === roverId))
+		? roverId
+		: (lanes.flatMap(shownMarks)[0]?.id ?? null);
 	const unfiled = clauseId === null;
 	const background = active
 		? 'bg-primary/10 ring-1 ring-inset ring-primary/30'
@@ -151,8 +205,7 @@ export function ClauseRow({
 	const title = row.heading;
 
 	// The squares shown on each side, so the mark on the rule says what the row shows.
-	const shownIn = (lane: 'a' | 'b') =>
-		row.marks[lane].filter((mark) => visibleKinds.has(mark.kind)).length;
+	const shownIn = (lane: 'a' | 'b') => shownMarks(lane).length;
 	const axis = (() => {
 		if (!axisMark || !centerLanes || unfiled) return null;
 		const count = { a: shownIn('a'), b: shownIn('b') };
@@ -200,7 +253,7 @@ export function ClauseRow({
 							)}
 							{against && (
 								<span
-									className="ml-1.5 inline-block rounded-full bg-destructive/10 px-2 py-px align-[1px] text-2xs font-semibold whitespace-nowrap text-destructive"
+									className="ml-1.5 inline-block rounded-full bg-destructive/10 px-2 py-px align-[1px] text-2xs font-semibold whitespace-nowrap text-[#b90009] dark:text-destructive"
 									title="Against you in this type: you carry more obligations or prohibitions here, or the other party holds more rights"
 								>
 									Against you
@@ -217,7 +270,7 @@ export function ClauseRow({
 												onClick={() => onGoToModifier?.(m.clauseId, m.kind)}
 												disabled={!onGoToModifier}
 												className="font-semibold hover:underline disabled:cursor-default"
-												style={{ color: m.kind ? KIND_COLORS[m.kind] : undefined }}
+												style={{ color: m.kind ? KIND_TEXT_COLORS[m.kind] : undefined }}
 												title={
 													m.kind
 														? `Go to ${m.label}, in ${TAB_NAME[m.kind]}: the ${m.kind} there modifies this clause`
@@ -283,12 +336,14 @@ export function ClauseRow({
 				)}
 
 				{/* Lane A fills right-to-left so it grows outward from the axis. */}
+				{/* Tab reaches the row's marks once; the arrows move among them. */}
 				<div
 					className={
 						centerLanes
 							? `flex flex-1 items-start justify-center ${axisMark ? 'gap-3.5' : 'gap-2'}`
 							: 'contents'
 					}
+					onKeyDown={moveAmongMarks}
 				>
 					{lanes.map((lane) => (
 						<Fragment key={lane}>
@@ -313,20 +368,20 @@ export function ClauseRow({
 									gridTemplateColumns: `repeat(${laneColumns}, ${MARK_SIZE}px)`,
 								}}
 							>
-								{row.marks[lane]
-									.filter((mark) => visibleKinds.has(mark.kind))
-									.map((mark) => (
-										<Mark
-											key={mark.id}
-											mark={mark}
-											muted={dimmed || !paintLanes[lane]}
-											conditional={conditionalIds?.has(mark.id)}
-											onHover={onHoverMark}
-											onLeave={onLeaveMark}
-											onOpen={onOpenMark}
-											onFocus={onFocusMark}
-										/>
-									))}
+								{shownMarks(lane).map((mark) => (
+									<Mark
+										key={mark.id}
+										mark={mark}
+										muted={dimmed || !paintLanes[lane]}
+										conditional={conditionalIds?.has(mark.id)}
+										tabbable={mark.id === tabStop}
+										onHover={onHoverMark}
+										onLeave={onLeaveMark}
+										onOpen={onOpenMark}
+										onFocusNode={onFocusMark}
+										onRove={setRoverId}
+									/>
+								))}
 							</div>
 						</Fragment>
 					))}
@@ -335,7 +390,7 @@ export function ClauseRow({
 				{clauseId && expandable && (
 					<button
 						type="button"
-						onClick={() => (onToggleDetail ? onToggleDetail() : onSelect(clauseId))}
+						onClick={() => (onToggleDetail ? onToggleDetail(clauseId) : onSelect(clauseId))}
 						aria-expanded={detailOpen}
 						aria-label={`Details of ${lead?.heading ?? row.heading}`}
 						title={detailOpen ? 'Hide the detail' : 'Each party’s statements in this clause'}
@@ -356,7 +411,7 @@ export function ClauseRow({
 			)}
 		</div>
 	);
-}
+});
 
 /** «depends on §5», «refers to §1.4»: the clauses a row's clause points to, each a button
  *  that goes to it. Grey, since the edge names a whole clause and no sentence type. */

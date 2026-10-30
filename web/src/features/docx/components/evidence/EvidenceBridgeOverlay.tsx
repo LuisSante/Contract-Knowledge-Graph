@@ -1,6 +1,6 @@
 'use client';
 
-import type { MouseEvent, ReactNode } from 'react';
+import type { PointerEvent, ReactNode } from 'react';
 import type { EvidenceBridge } from '@/features/docx/utils/evidence/evidence-bridge';
 
 /** Room the label needs left of the margin line. */
@@ -19,7 +19,9 @@ export interface LinkLabel {
 interface EvidenceBridgeOverlayProps {
 	bridge: EvidenceBridge;
 	onJumpToParagraph: (paragraphId: string) => void;
-	onRailMouseDown?: (event: MouseEvent) => void;
+	onRailPointerDown?: (event: PointerEvent<HTMLElement>) => void;
+	/** How a linked paragraph is named to assistive tech («§7, “The Tenant shall…”»). */
+	paragraphLabel?: (paragraphId: string) => string;
 	/**
 	 * Clause Analyzer deontic rail: when provided, scroll markers are colored by
 	 * burden/benefit and faded by attention score instead of reference/similarity.
@@ -38,7 +40,8 @@ interface EvidenceBridgeOverlayProps {
 export function EvidenceBridgeOverlay({
 	bridge,
 	onJumpToParagraph,
-	onRailMouseDown,
+	onRailPointerDown,
+	paragraphLabel = () => 'paragraph',
 	toneByParagraph,
 	scoreByParagraph,
 	linkLabels,
@@ -74,7 +77,9 @@ export function EvidenceBridgeOverlay({
 	return (
 		<>
 			{connectors.length > 0 ? (
-				<div className="pointer-events-none absolute inset-0 z-20 overflow-hidden">
+				// The line, its tags and the collapsed cards are drawn on the paper, which stays light
+				// in the dark theme: they keep the light tokens and the paper's dark text.
+				<div className="theme-light pointer-events-none absolute inset-0 z-20 overflow-hidden text-foreground">
 					{primaryConnector ? (
 						<>
 							<span
@@ -86,7 +91,7 @@ export function EvidenceBridgeOverlay({
 								}}
 								role="button"
 								tabIndex={0}
-								aria-label={`Go to related paragraph ${primaryConnector.paragraphId}`}
+								aria-label={`Go to related paragraph ${paragraphLabel(primaryConnector.paragraphId)}`}
 								onClick={() => onJumpToParagraph(primaryConnector.paragraphId)}
 								onKeyDown={(event) => {
 									if (event.key === 'Enter' || event.key === ' ') {
@@ -117,7 +122,7 @@ export function EvidenceBridgeOverlay({
 							}}
 							role="button"
 							tabIndex={0}
-							aria-label={`Go to evidence paragraph ${connector.paragraphId}`}
+							aria-label={`Go to related paragraph ${paragraphLabel(connector.paragraphId)}`}
 							onClick={() => onJumpToParagraph(connector.paragraphId)}
 							onKeyDown={(event) => {
 								if (event.key === 'Enter' || event.key === ' ') {
@@ -204,7 +209,10 @@ export function EvidenceBridgeOverlay({
 			) : null}
 
 			{scrollMarkers.length > 0 ? (
-				<div className="absolute top-2 right-1 bottom-2 z-20 w-2" onMouseDown={onRailMouseDown}>
+				<div
+					className="absolute top-2 right-1 bottom-2 z-20 w-2 touch-none"
+					onPointerDown={onRailPointerDown}
+				>
 					{scrollMarkers.map((marker) => {
 						if (deonticRail) {
 							const tone = toneByParagraph?.[marker.paragraphId] ?? 'burden';
@@ -216,7 +224,7 @@ export function EvidenceBridgeOverlay({
 									style={{ top: `${marker.topPercent}%`, opacity: 0.35 + 0.65 * score }}
 									role="button"
 									tabIndex={0}
-									aria-label={`Go to ${tone} paragraph ${marker.paragraphId}`}
+									aria-label={`Go to ${tone} paragraph ${paragraphLabel(marker.paragraphId)}`}
 									onClick={() => onJumpToParagraph(marker.paragraphId)}
 									onKeyDown={(event) => {
 										if (event.key === 'Enter' || event.key === ' ') {
@@ -234,7 +242,7 @@ export function EvidenceBridgeOverlay({
 								style={{ top: `${marker.topPercent}%` }}
 								role="button"
 								tabIndex={0}
-								aria-label={`Go to evidence paragraph ${marker.paragraphId}`}
+								aria-label={`Go to related paragraph ${paragraphLabel(marker.paragraphId)}`}
 								onClick={() => onJumpToParagraph(marker.paragraphId)}
 								onKeyDown={(event) => {
 									if (event.key === 'Enter' || event.key === ' ') {

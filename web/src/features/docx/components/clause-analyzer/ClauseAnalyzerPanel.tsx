@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { Button } from '@/components/ui/button';
 import { useDocumentStore } from '@/stores/document';
 import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
 import {
@@ -28,10 +29,11 @@ import { PartyManager } from '@/features/docx/components/clause-analyzer/PartyMa
 import { PartyEntry } from '@/features/docx/components/clause-analyzer/PartyEntry';
 import { ClauseGrid } from '@/features/docx/components/clause-analyzer/grid/ClauseGrid';
 import {
-	MarkTooltip,
+	createMarkHoverStore,
+	LiveMarkTooltip,
 	markDetails,
-	type HoverInfo,
 } from '@/features/docx/components/clause-analyzer/grid/MarkTooltip';
+import type { HoverPoint } from '@/features/docx/components/clause-analyzer/grid/Mark';
 import { RedFlagsTable } from '@/features/docx/components/clause-analyzer/RedFlagsTable';
 import {
 	AgainstFilter,
@@ -62,7 +64,9 @@ const NO_CONDITIONS: KgCondition[] = [];
 
 export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelProps) {
 	const containerRef = useRef<HTMLDivElement>(null);
-	const [hover, setHover] = useState<HoverInfo | null>(null);
+	// The mark card lives in a store of its own: a mouse move redraws the card, not the table.
+	const [hoverStore] = useState(createMarkHoverStore);
+	const tabsId = useId();
 
 	const selectedClause = useClauseAnalyzerStore((s) => s.selectedClause);
 	const selectClause = useClauseAnalyzerStore((s) => s.selectClause);
@@ -95,7 +99,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 	const paragraphs = useDocumentStore((s) => s.paragraphs);
 	const nodesById = useMemo(() => new Map(paragraphs.map((n) => [n.id, n])), [paragraphs]);
 
-	const { kg, viewKg, status } = useKnowledgeGraphData(docId, clearFocus);
+	const { kg, viewKg, status, retry } = useKnowledgeGraphData(docId, clearFocus);
 
 	const isPartyFocus = useMemo(
 		() => Boolean(focusNodeId && viewKg?.parties.some((p) => p.id === focusNodeId)),
@@ -200,32 +204,44 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		paintConditions: showConditions,
 	});
 
-	const setPaintLane = (lane: GridLane, on: boolean) =>
-		setPaintLanes((prev) => ({ ...prev, [lane]: on }));
+	// The rows are memoised: what they are handed keeps its identity between draws.
+	const setPaintLane = useCallback(
+		(lane: GridLane, on: boolean) => setPaintLanes((prev) => ({ ...prev, [lane]: on })),
+		[]
+	);
 
-	const openInDocument = (nodeId: string) => {
-		if (!viewKg) return;
-		setDocumentTarget(
-			buildDocumentTarget(viewKg, nodeId, nodesById, { withConditions: showConditions })
-		);
-	};
+	const openInDocument = useCallback(
+		(nodeId: string) => {
+			if (!viewKg) return;
+			setDocumentTarget(
+				buildDocumentTarget(viewKg, nodeId, nodesById, { withConditions: showConditions })
+			);
+		},
+		[viewKg, nodesById, showConditions, setDocumentTarget]
+	);
 
-	const openClauseInGraph =
-		onOpenGraph &&
-		((clauseId: string) => {
-			selectClause(docId, clauseId);
-			openInDocument(clauseId);
-			onOpenGraph();
-		});
+	const openClauseInGraph = useMemo(
+		() =>
+			onOpenGraph &&
+			((clauseId: string) => {
+				selectClause(docId, clauseId);
+				openInDocument(clauseId);
+				onOpenGraph();
+			}),
+		[onOpenGraph, selectClause, docId, openInDocument]
+	);
 
-	const laneName = (lane: GridLane) =>
-		lane === 'a'
-			? (focusedPartyName ?? 'Party A')
-			: lane === 'b'
-				? secondPartyId
-					? (partyNameById.get(secondPartyId) ?? 'Party B')
-					: 'Party B'
-				: 'Both parties';
+	const laneName = useCallback(
+		(lane: GridLane) =>
+			lane === 'a'
+				? (focusedPartyName ?? 'Party A')
+				: lane === 'b'
+					? secondPartyId
+						? (partyNameById.get(secondPartyId) ?? 'Party B')
+						: 'Party B'
+					: 'Both parties',
+		[focusedPartyName, secondPartyId, partyNameById]
+	);
 
 	const pairIds =
 		status === 'ready' &&
@@ -246,17 +262,28 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 	);
 
 	const { me, pickMe, againstIds, onlyAgainst, setOnlyAgainst, filtering, tableRows } =
-		useAgainstYou(pairIds, clauseRows, typeShown, activeClause?.clauseId ?? null);
+		useAgainstYou(docId, pairIds, clauseRows, typeShown, activeClause?.clauseId ?? null);
 
 	// «modified by §11»: to §11, in the tab of the sentence that does the
 	// modifying (a right of §11 opens Rights), picked and shown in the contract.
 	// «depends on §5», «refers to §1.4»: to that clause in the same tab, since the edge names
 	// no sentence.
-	const goToModifier = (clauseId: string, kind: DeonticKind | null) => {
-		if (kind) setTypeShown(kind);
-		selectClause(docId, clauseId);
-		openInDocument(clauseId);
-	};
+	const goToModifier = useCallback(
+		(clauseId: string, kind: DeonticKind | null) => {
+			if (kind) setTypeShown(kind);
+			selectClause(docId, clauseId);
+			openInDocument(clauseId);
+		},
+		[selectClause, docId, openInDocument]
+	);
+
+	const pickClause = useCallback(
+		(clauseId: string) => {
+			selectClause(docId, selectedClauseId === clauseId ? null : clauseId);
+			openInDocument(clauseId);
+		},
+		[selectClause, docId, selectedClauseId, openInDocument]
+	);
 
 	const detailsOf = useMemo(
 		() => (viewKg && shownGrid ? markDetails(viewKg, shownGrid, showConditions) : null),
@@ -307,13 +334,27 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		);
 	};
 
-	const showTooltip = (event: ReactMouseEvent, mark: GridMark) => {
-		const rect = containerRef.current?.getBoundingClientRect();
-		if (!rect || !detailsOf) return;
-		setHover({ x: event.clientX - rect.left, y: event.clientY - rect.top, ...detailsOf(mark) });
-	};
+	const showTooltip = useCallback(
+		(point: HoverPoint, mark: GridMark) => {
+			const rect = containerRef.current?.getBoundingClientRect();
+			if (!rect || !detailsOf) return;
+			hoverStore.setState({
+				hover: { x: point.clientX - rect.left, y: point.clientY - rect.top, ...detailsOf(mark) },
+			});
+		},
+		[detailsOf, hoverStore]
+	);
+	const hideTooltip = useCallback(() => hoverStore.setState({ hover: null }), [hoverStore]);
 
 	useAnalyzerPairSync(pairIds, status === 'ready' ? viewKg : null);
+
+	// The reader is told the contract is not analysed; where the graph comes from is for us.
+	useEffect(() => {
+		if (status === 'missing')
+			console.info(
+				`No knowledge graph for ${docId}: build it with notebooks/KG/build_kg.ipynb into infra/json/kg/.`
+			);
+	}, [status, docId]);
 
 	return (
 		<div className="flex h-full flex-col">
@@ -332,6 +373,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 
 			{pairIds && (
 				<KindTabs
+					id={tabsId}
 					kind={typeShown}
 					onPick={setTypeShown}
 					counts={kindCounts}
@@ -348,7 +390,15 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 			{/* The table fills the panel; the graph has a tab of its own. */}
 			<div className="flex min-h-0 flex-1">
 				{/* min-w-0: a table wider than the panel scrolls inside it instead of widening it. */}
-				<div ref={containerRef} className="relative min-h-0 min-w-0 flex-1">
+				<div
+					ref={containerRef}
+					className="relative min-h-0 min-w-0 flex-1"
+					{...(pairIds && {
+						id: `${tabsId}-panel`,
+						role: 'tabpanel',
+						'aria-labelledby': `${tabsId}-tab-${typeShown}`,
+					})}
+				>
 					{status === 'loading' && (
 						<div className="flex h-full items-center justify-center text-sm text-muted-foreground">
 							Loading knowledge graph…
@@ -356,13 +406,15 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 					)}
 					{status === 'missing' && (
 						<div className="flex h-full items-center justify-center px-6 text-center text-sm text-muted-foreground">
-							No knowledge graph generated for this document yet. Build it with the notebook
-							(notebooks/KG/build_kg.ipynb) into infra/json/kg/.
+							This contract has not been analysed yet.
 						</div>
 					)}
 					{status === 'error' && (
-						<div className="flex h-full items-center justify-center text-sm text-destructive">
-							Failed to load the knowledge graph.
+						<div className="flex h-full flex-col items-center justify-center gap-2 px-6 text-center">
+							<p className="text-sm text-destructive">Could not load this contract’s analysis.</p>
+							<Button size="sm" variant="outline" onClick={retry}>
+								Retry
+							</Button>
 						</div>
 					)}
 					{/* Entry view: the pair is chosen before anything is drawn, in one place. */}
@@ -401,19 +453,16 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 										? `Nothing goes against ${short(names[me])} in ${KIND_LABEL[typeShown].toLowerCase()}.`
 										: undefined
 								}
-								onSelectClause={(clauseId) => {
-									selectClause(docId, selectedClauseId === clauseId ? null : clauseId);
-									openInDocument(clauseId);
-								}}
+								onSelectClause={pickClause}
 								onOpenGraph={openClauseInGraph}
 								renderDetail={renderDetail}
 								onGoToModifier={goToModifier}
 								onOpenMark={openInDocument}
 								onFocusMark={focusNode}
 								onHoverMark={showTooltip}
-								onLeaveMark={() => setHover(null)}
+								onLeaveMark={hideTooltip}
 							/>
-							<MarkTooltip hover={hover} />
+							<LiveMarkTooltip store={hoverStore} />
 						</>
 					)}
 				</div>

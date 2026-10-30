@@ -1,6 +1,7 @@
 'use client';
 
 import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/parts/bits';
+import { textColorOf } from '@/features/docx/components/clause-analyzer/constants';
 import {
 	Fragment,
 	KIND_LABEL,
@@ -75,20 +76,21 @@ export function PartyStatements({
 	const column = (side: Side) => {
 		const gets = ownedBy(tally, side, kinds);
 		return (
-			<div
-				key={side}
-				className="overflow-hidden rounded-lg border"
-				style={{ borderColor: tint(SIDE_COLOR[side], 35) }}
-			>
+			// No border of its own: the band it unfolds in is the one frame, the tinted head and
+			// the white list set the two columns apart.
+			<div key={side} className="overflow-hidden rounded-lg">
 				<div
 					className="flex items-center gap-2 px-3 py-2 text-xs font-semibold"
-					style={{ backgroundColor: tint(SIDE_COLOR[side], 10), color: SIDE_COLOR[side] }}
+					style={{
+						backgroundColor: tint(SIDE_COLOR[side], 10),
+						color: textColorOf(SIDE_COLOR[side]),
+					}}
 				>
 					<span className="size-2 rounded-full" style={{ backgroundColor: SIDE_COLOR[side] }} />
 					{short(names[side])}
 					<span
-						className="rounded-full px-1.5 text-[10px] text-white tabular-nums"
-						style={{ backgroundColor: SIDE_COLOR[side] }}
+						className="rounded-full px-1.5 text-[10px] text-white tabular-nums dark:text-neutral-950"
+						style={{ backgroundColor: textColorOf(SIDE_COLOR[side]) }}
 					>
 						{gets.length}
 					</span>

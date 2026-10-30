@@ -7,7 +7,9 @@
 @import 'tw-animate-css';
 @import '@fontsource-variable/inter';
 
-@custom-variant dark (&:is(.dark *));
+/* `dark:` stops at a light island (`.theme-light`, the contract's paper): inside it nothing
+   restyles for the dark theme. `:where` keeps the variant's specificity what it was. */
+@custom-variant dark (&:is(.dark *):not(:where(.theme-light *)));
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
@@ -43,7 +45,9 @@
 	font-display: swap;
 }
 
-@theme {
+/* Inline: utilities read the token (`var(--primary)`) where they are used, not a copy resolved
+   on <html>, so a light island (`.theme-light`) that re-declares the tokens gets light colours. */
+@theme inline {
 	--font-sans: 'Avenir Web', 'Inter Variable', sans-serif;
 	--text-2xs: 0.6875rem;
 	--text-2xs--line-height: 1.25;
@@ -101,10 +105,22 @@
 		@apply bg-background text-foreground;
 	}
 	* {
-		@apply border-border outline-ring/50;
+		@apply border-border;
+	}
+	/* Keyboard focus is plain to see: a full-strength 2px ring set off from the control. Only for
+	   :focus-visible, so a mouse click leaves no ring; controls that draw their own focus
+	   (outline-none plus a ring utility) keep theirs. */
+	:focus-visible {
+		outline: 2px solid var(--ring);
+		outline-offset: 2px;
 	}
 	html {
 		@apply font-sans;
+	}
+	/* Selected text in the dark theme takes the brand's indigo; the light theme and the paper
+	   keep the browser's own. */
+	.dark :not(:where(.theme-light, .theme-light *))::selection {
+		background-color: color-mix(in oklab, var(--primary) 40%, transparent);
 	}
 }
 
@@ -160,7 +176,29 @@
 	}
 }
 
-:root {
+/* Less motion, same states: menus, dialogs and toasts still fade in and out (tw-animate-css),
+   but nothing slides, zooms, spins or blurs on its way. Unlayered, so it outranks the
+   slide-in-from-* / zoom-in-* utilities that set these variables. */
+@media (prefers-reduced-motion: reduce) {
+	[class*='animate-in'],
+	[class*='animate-out'] {
+		--tw-enter-translate-x: 0;
+		--tw-enter-translate-y: 0;
+		--tw-enter-scale: 1;
+		--tw-enter-rotate: 0;
+		--tw-enter-blur: 0;
+		--tw-exit-translate-x: 0;
+		--tw-exit-translate-y: 0;
+		--tw-exit-scale: 1;
+		--tw-exit-rotate: 0;
+		--tw-exit-blur: 0;
+	}
+}
+
+/* `.theme-light` is a light island inside the dark theme: the contract stays white paper, and
+   what is drawn on it (highlights, outlines, marks, margin tags) keeps its light colours. */
+:root,
+.theme-light {
 	--background: oklch(0.985 0.006 285);
 	--foreground: oklch(0.24 0.012 280);
 	--card: oklch(1 0 0);
@@ -211,6 +249,26 @@
 	--docx-reference-chip-border-hover: #38bdf8;
 	--docx-reference-chip-bg-hover: #bae6fd;
 	--docx-reference-chip-text-hover: #075985;
+	/* The analysis palette as text and as a square's edge. The fills stay fixed (constants.ts);
+	   these follow the theme so text keeps ≥4.5:1 and edges ≥3:1 on light and on dark. */
+	--kind-obligation-text: #d2181a;
+	--kind-right-text: #357933;
+	--kind-prohibition-text: #a85400;
+	--kind-definedTerm-text: #a45528;
+	--kind-condition-text: #cd0d72;
+	--kind-value-text: #86650f;
+	--kind-reference-text: #6a6a6a;
+	--kind-obligation-edge: #e41a1c;
+	--kind-right-edge: #459d43;
+	--kind-prohibition-edge: #da6d00;
+	--kind-definedTerm-edge: #a65628;
+	--kind-condition-edge: #ee4da1;
+	--kind-value-edge: #b08513;
+	--kind-reference-edge: #8b8b8b;
+	--party-a-text: #964da1;
+	--party-b-text: #0b786e;
+	--party-neutral-text: #6a6a6a;
+	color-scheme: light;
 }
 
 .dark {
@@ -219,10 +277,13 @@
 	--canvas: oklch(0.18 0.004 60);
 	--card: oklch(0.205 0 0);
 	--card-foreground: oklch(0.985 0 0);
-	--popover: oklch(0.205 0 0);
+	/* A step above the cards, so a menu opened over the side panel stands apart from it. */
+	--popover: oklch(0.26 0.006 262);
 	--popover-foreground: oklch(0.985 0 0);
-	--primary: oklch(0.6 0.2 277);
-	--primary-foreground: oklch(0.985 0 0);
+	/* Light enough to read as text on the header and cards (≥6:1), so a filled primary
+	   carries dark text (7:1). */
+	--primary: oklch(0.72 0.15 277);
+	--primary-foreground: oklch(0.2 0.04 277);
 	--secondary: oklch(0.27 0.012 262);
 	--secondary-foreground: oklch(0.985 0 0);
 	--muted: oklch(0.27 0.012 262);
@@ -237,8 +298,9 @@
 	--info: oklch(0.62 0.16 262);
 	--info-foreground: oklch(0.145 0 0);
 	--border: oklch(1 0 0 / 10%);
-	--input: oklch(1 0 0 / 15%);
-	--ring: oklch(0.55 0.16 262);
+	/* A field's edge and the focus ring stand ≥3:1 off the background, the cards and the header. */
+	--input: oklch(1 0 0 / 38%);
+	--ring: oklch(0.65 0.16 262);
 	--chart-1: oklch(0.62 0.19 262);
 	--chart-2: oklch(0.65 0.13 200);
 	--chart-3: oklch(0.66 0.16 300);
@@ -248,16 +310,34 @@
 	--header-foreground: oklch(0.97 0.004 264);
 	--sidebar: oklch(0.205 0.008 262);
 	--sidebar-foreground: oklch(0.985 0 0);
-	--sidebar-primary: oklch(0.6 0.2 277);
-	--sidebar-primary-foreground: oklch(0.985 0 0);
+	--sidebar-primary: oklch(0.72 0.15 277);
+	--sidebar-primary-foreground: oklch(0.2 0.04 277);
 	--sidebar-accent: oklch(0.3 0.03 262);
 	--sidebar-accent-foreground: oklch(0.985 0 0);
 	--sidebar-border: oklch(1 0 0 / 10%);
-	--sidebar-ring: oklch(0.55 0.16 262);
+	--sidebar-ring: oklch(0.65 0.16 262);
 	--docx-reference-chip-border: #0ea5e9;
 	--docx-reference-chip-bg: rgba(12, 74, 110, 0.45);
 	--docx-reference-chip-text: #bae6fd;
 	--docx-reference-chip-border-hover: #38bdf8;
 	--docx-reference-chip-bg-hover: rgba(7, 89, 133, 0.6);
 	--docx-reference-chip-text-hover: #e0f2fe;
+	--kind-obligation-text: #ee6e6f;
+	--kind-right-text: #4daf4a;
+	--kind-prohibition-text: #ff7f00;
+	--kind-definedTerm-text: #d58050;
+	--kind-condition-text: #f781bf;
+	--kind-value-text: #d4a017;
+	--kind-reference-text: #a3a3a3;
+	--kind-obligation-edge: #ee5a5b;
+	--kind-right-edge: #4daf4a;
+	--kind-prohibition-edge: #ff7f00;
+	--kind-definedTerm-edge: #b8602c;
+	--kind-condition-edge: #f781bf;
+	--kind-value-edge: #d4a017;
+	--kind-reference-edge: #999999;
+	--party-a-text: #bb82c3;
+	--party-b-text: #0fa99b;
+	--party-neutral-text: #a3a3a3;
+	color-scheme: dark;
 }

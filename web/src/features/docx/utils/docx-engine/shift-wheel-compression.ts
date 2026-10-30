@@ -58,12 +58,19 @@ export function attachShiftWheelCompression({
 		if (nextTarget === target && tween != null) return;
 
 		target = nextTarget;
-		const startValue = compression;
-		const startTime = typeof performance !== 'undefined' ? performance.now() : Date.now();
 		if (tween != null) {
 			cancelAnimationFrame(tween);
 			tween = null;
 		}
+		// A reader who asked for less motion sees the paragraphs moved, not travelling there.
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			if (compression === target) return;
+			compression = target;
+			refresh(compression);
+			return;
+		}
+		const startValue = compression;
+		const startTime = typeof performance !== 'undefined' ? performance.now() : Date.now();
 		tween = requestAnimationFrame((next) => animate(next, startValue, startTime));
 	};
 

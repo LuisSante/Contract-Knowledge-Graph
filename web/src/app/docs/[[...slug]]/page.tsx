@@ -3,6 +3,13 @@ import { notFound } from 'next/navigation';
 import { getDocs, readDoc } from '@/features/docs/lib/catalog';
 import { renderDoc } from '@/features/docs/lib/render';
 
+// A label is the title cut at its first dash, so only the rest of the title is new.
+function subtitle(doc: { title: string; label: string }): string {
+	if (doc.title === doc.label) return '';
+	if (!doc.title.startsWith(doc.label)) return doc.title;
+	return doc.title.slice(doc.label.length).replace(/^\s*[—–-]\s*/, '');
+}
+
 export async function generateStaticParams() {
 	const docs = await getDocs();
 	return [{ slug: [] as string[] }, ...docs.map((doc) => ({ slug: doc.slug.split('/') }))];
@@ -31,12 +38,15 @@ export default async function DocsPage({ params }: { params: Promise<{ slug?: st
 						<ul>
 							{docs
 								.filter((doc) => doc.group === group)
-								.map((doc) => (
-									<li key={doc.slug}>
-										<Link href={`/docs/${doc.slug}`}>{doc.label}</Link>
-										{doc.title !== doc.label && <span className="docs-ref"> — {doc.title}</span>}
-									</li>
-								))}
+								.map((doc) => {
+									const rest = subtitle(doc);
+									return (
+										<li key={doc.slug}>
+											<Link href={`/docs/${doc.slug}`}>{doc.label}</Link>
+											{rest && <span className="text-muted-foreground"> — {rest}</span>}
+										</li>
+									);
+								})}
 						</ul>
 					</section>
 				))}
@@ -48,17 +58,20 @@ export default async function DocsPage({ params }: { params: Promise<{ slug?: st
 	if (!doc) notFound();
 
 	const { html, headings } = await renderDoc(await readDoc(doc), doc.sourcePath, docs);
+	// The layout marks the docs as Spanish; the repository guides outside docs/ are English.
+	const lang = doc.sourcePath.startsWith('docs/') ? undefined : 'en';
 
 	return (
 		<div className="flex min-w-0 gap-8">
 			<article
+				lang={lang}
 				className="docs-markdown min-w-0 flex-1"
 				dangerouslySetInnerHTML={{ __html: html }}
 			/>
 			{headings.length > 2 && (
 				<nav className="sticky top-8 hidden h-fit w-52 shrink-0 self-start text-sm xl:block">
 					<p className="mb-2 font-medium text-muted-foreground">En esta página</p>
-					<ul className="space-y-1.5 border-l border-border pl-3">
+					<ul lang={lang} className="space-y-1.5 border-l border-border pl-3">
 						{headings.map((heading) => (
 							<li key={heading.id} className={heading.level === 3 ? 'pl-3' : ''}>
 								<a

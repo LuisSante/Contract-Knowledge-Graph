@@ -32,16 +32,13 @@ const TICKS = 320;
 /**
  * Runs the simulation to completion up front instead of animating it: the layout is
  * a still frame, so React never re-renders per tick and the result is stable across
- * mounts for the same input.
+ * mounts for the same input. It is laid out around the origin, in a space of its own:
+ * the canvas fits it to whatever size it has, so a resize refits and never reruns it.
  */
-export function useForceLayout(
-	graph: KgVizGraph | null,
-	width: number,
-	height: number
-): Map<string, NodePosition> {
+export function useForceLayout(graph: KgVizGraph | null): Map<string, NodePosition> {
 	return useMemo(() => {
 		const positions = new Map<string, NodePosition>();
-		if (!graph || graph.nodes.length === 0 || width <= 0 || height <= 0) return positions;
+		if (!graph || graph.nodes.length === 0) return positions;
 
 		const nodes: SimNode[] = graph.nodes.map((node) => ({
 			id: node.id,
@@ -65,12 +62,12 @@ export function useForceLayout(
 				'collide',
 				forceCollide<SimNode>().radius((node) => node.radius + 14)
 			)
-			.force('center', forceCenter(width / 2, height / 2))
+			.force('center', forceCenter(0, 0))
 			.stop();
 
 		simulation.tick(TICKS);
 
 		for (const node of nodes) positions.set(node.id, { x: node.x ?? 0, y: node.y ?? 0 });
 		return positions;
-	}, [graph, width, height]);
+	}, [graph]);
 }

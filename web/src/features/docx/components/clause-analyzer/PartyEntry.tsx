@@ -17,6 +17,22 @@ import {
 	PARTY_COLOR,
 } from '@/features/docx/components/clause-analyzer/constants';
 
+/** A name with case, accents, punctuation and spacing set aside. */
+const loose = (name: string) =>
+	name
+		.normalize('NFKD')
+		.replace(/\p{M}/gu, '')
+		.toLowerCase()
+		.replace(/[^\p{L}\p{N}]+/gu, ' ')
+		.trim();
+
+/** Two names for one party: equal once loosened, or one the start of the other. */
+function sameName(x: string, y: string): boolean {
+	const a = loose(x);
+	const b = loose(y);
+	return a !== '' && b !== '' && (a.startsWith(b) || b.startsWith(a));
+}
+
 interface PartyEntryProps {
 	docId: string;
 	kg: KnowledgeGraph;
@@ -41,21 +57,26 @@ export function PartyEntry({
 
 	const parties = useMemo<PartyCardData[]>(() => {
 		// The abstract says what each party does; its role, when it gives one, reads better than
-		// the graph's. A merged entity has no line of its own there and keeps the graph's role.
-		const written = new Map(
-			(summary?.parties ?? []).flatMap((p) => (p.partyId ? [[p.partyId, p] as const] : []))
-		);
+		// the graph's. Its party ids come from the run that wrote it, so a line speaks for a party
+		// only when the names agree: by id first, else by name. A party no line names, such as a
+		// merged entity, keeps the graph's role and says nothing more.
+		const lines = summary?.parties ?? [];
+		const merged = new Set(mergeGroups.map((group) => group.id));
+		const lineFor = (party: { id: string; name: string }) => {
+			// «A + B» starts with A's name, yet A's line does not speak for the pair.
+			if (merged.has(party.id)) return null;
+			const byId = lines.find((line) => line.partyId === party.id);
+			if (byId && sameName(byId.name, party.name)) return byId;
+			return lines.find((line) => sameName(line.name, party.name)) ?? null;
+		};
 		const tally = new Map<string, PartyCardData>(
-			kg.parties.map((p) => [
-				p.id,
-				{
-					id: p.id,
-					name: p.name,
-					role: written.get(p.id)?.role || p.role,
-					does: written.get(p.id)?.does ?? '',
-					total: 0,
-				},
-			])
+			kg.parties.map((p) => {
+				const line = lineFor(p);
+				return [
+					p.id,
+					{ id: p.id, name: p.name, role: line?.role || p.role, does: line?.does ?? '', total: 0 },
+				];
+			})
 		);
 		for (const v of deonticNodes(kg)) {
 			for (const partyId of new Set([v.burdenPartyId, v.benefitPartyId])) {
@@ -64,7 +85,7 @@ export function PartyEntry({
 			}
 		}
 		return [...tally.values()].sort((a, b) => b.total - a.total || a.name.localeCompare(b.name));
-	}, [kg, summary]);
+	}, [kg, summary, mergeGroups]);
 
 	const slots = useMemo<[string | null, string | null]>(() => {
 		const known = new Set(kg.parties.map((p) => p.id));
@@ -107,9 +128,24 @@ export function PartyEntry({
 		return byId;
 	}, [slots, mergeGroups]);
 
+	/** The party an abstract's mention means: its own id, unless the abstract names someone
+	 *  else under that id, and then the party with that name. */
+	const mentionedParty = useCallback(
+		(partyId: string) => {
+			const line = summary?.parties.find((p) => p.partyId === partyId);
+			const party = kg.parties.find((p) => p.id === partyId);
+			if (!line || !party || sameName(line.name, party.name)) return partyId;
+			return kg.parties.find((p) => sameName(line.name, p.name))?.id ?? null;
+		},
+		[summary, kg]
+	);
+
 	const colorOf = useCallback(
-		(partyId: string | null) => (partyId ? (colorByPartyId.get(partyId) ?? null) : null),
-		[colorByPartyId]
+		(partyId: string | null) => {
+			const id = partyId ? mentionedParty(partyId) : null;
+			return id ? (colorByPartyId.get(id) ?? null) : null;
+		},
+		[colorByPartyId, mentionedParty]
 	);
 
 	return (

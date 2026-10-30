@@ -99,12 +99,15 @@ export function computeEvidenceBridge({
 		paragraphEnum: number;
 		top: number;
 		width: number;
-		html: string;
+		element: HTMLElement;
 	}> = [];
+	// One measurement per paragraph and run, shared by the connectors and the scroll markers.
+	const rectByParagraphId = new Map<string, DOMRect>();
 	for (const item of evidence) {
 		const relatedElement = paragraphElementById.get(item.node.id);
 		if (!relatedElement) continue;
 		const relatedRect = relatedElement.getBoundingClientRect();
+		rectByParagraphId.set(item.node.id, relatedRect);
 		const relatedY = relatedRect.top - hostRect.top + relatedRect.height / 2;
 		anchors.push({
 			y: relatedY,
@@ -114,7 +117,7 @@ export function computeEvidenceBridge({
 			paragraphEnum: item.node.paragraph_enum,
 			top: relatedRect.top - hostRect.top,
 			width: relatedRect.width,
-			html: cloneParagraphForCard(relatedElement),
+			element: relatedElement,
 		});
 	}
 
@@ -251,6 +254,7 @@ export function computeEvidenceBridge({
 	}
 
 	const cardsLeft = Math.max(14, selectedRect.left - hostRect.left);
+	// Cards exist only once the paragraphs have moved, so only then are they cloned.
 	const collapsedCards: EvidenceCollapsedCard[] =
 		compression > 0.02 && movedNodeIds.size > 0
 			? anchors
@@ -260,7 +264,7 @@ export function computeEvidenceBridge({
 						topPx: compressedTopByParagraphId.get(anchor.paragraphId) ?? anchor.top,
 						leftPx: cardsLeft,
 						widthPx: Math.min(anchor.width, hostRect.width - cardsLeft - 20),
-						html: anchor.html,
+						html: cloneParagraphForCard(anchor.element),
 					}))
 					.sort((left, right) => left.topPx - right.topPx)
 			: [];
@@ -269,9 +273,8 @@ export function computeEvidenceBridge({
 	const hostScrollHeight = scrollHost.scrollHeight;
 	if (Number.isFinite(hostScrollHeight) && hostScrollHeight > 0) {
 		for (const item of evidence) {
-			const relatedElement = paragraphElementById.get(item.node.id);
-			if (!relatedElement) continue;
-			const relatedRect = relatedElement.getBoundingClientRect();
+			const relatedRect = rectByParagraphId.get(item.node.id);
+			if (!relatedRect) continue;
 			const centerOffset =
 				relatedRect.top - hostRect.top + scrollHost.scrollTop + relatedRect.height / 2;
 			const rawTopPercent = (centerOffset / hostScrollHeight) * 100;
@@ -292,4 +295,26 @@ export function computeEvidenceBridge({
 		scrollMarkers,
 		movedNodeIds,
 	};
+}
+
+function sameList<T>(left: T[], right: T[], same: (a: T, b: T) => boolean): boolean {
+	return left.length === right.length && left.every((item, index) => same(item, right[index]));
+}
+
+function sameFields<T extends object>(left: T, right: T): boolean {
+	return (Object.keys(left) as Array<keyof T>).every((key) => left[key] === right[key]);
+}
+
+/** Whether two runs drew the same bridge, so a re-render can be skipped. */
+export function sameEvidenceBridge(left: EvidenceBridge, right: EvidenceBridge): boolean {
+	if (left === right) return true;
+	return (
+		left.selectedRightPx === right.selectedRightPx &&
+		sameList(left.connectors, right.connectors, sameFields) &&
+		sameList(left.folds, right.folds, sameFields) &&
+		sameList(left.collapsedCards, right.collapsedCards, sameFields) &&
+		sameList(left.scrollMarkers, right.scrollMarkers, sameFields) &&
+		left.movedNodeIds.size === right.movedNodeIds.size &&
+		[...left.movedNodeIds].every((id) => right.movedNodeIds.has(id))
+	);
 }

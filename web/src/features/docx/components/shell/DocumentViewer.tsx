@@ -1,8 +1,11 @@
 'use client';
 
-import { useRef, type MouseEvent as ReactMouseEvent, type ReactNode, type RefObject } from 'react';
-
-const MANUAL_SCROLL_DRAG_SPEED = 100;
+import {
+	useRef,
+	type PointerEvent as ReactPointerEvent,
+	type ReactNode,
+	type RefObject,
+} from 'react';
 import type { DocumentViewerStatus } from '@/features/docx/hooks/useDocumentViewer';
 import { useEvidenceBridge } from '@/features/docx/hooks/useEvidenceBridge';
 import {
@@ -58,22 +61,35 @@ export function DocumentViewer({
 
 	const suppressMarkerClickRef = useRef(false);
 
-	const startRailScrub = (event: ReactMouseEvent) => {
+	// The rail is the whole document in miniature, as a scrollbar is: dragging along it scrolls
+	// the document by the same share of its height. The pointer is captured only once it moves,
+	// so a plain click still lands on the marker under it.
+	const startRailScrub = (event: ReactPointerEvent<HTMLElement>) => {
 		const host = scrollHostRef.current;
-		if (!host || event.button !== 0) return;
+		const rail = event.currentTarget;
+		if (!host || !event.isPrimary || event.button !== 0) return;
 		event.preventDefault();
+		const pointerId = event.pointerId;
 		const startY = event.clientY;
 		const startTop = host.scrollTop;
+		const scrollPerPx = host.scrollHeight / Math.max(1, rail.getBoundingClientRect().height);
 		let moved = false;
 		document.body.style.userSelect = 'none';
-		const onMove = (moveEvent: MouseEvent) => {
-			const delta = (moveEvent.clientY - startY) * MANUAL_SCROLL_DRAG_SPEED;
-			if (Math.abs(delta) > 2) moved = true;
-			host.scrollTop = startTop + delta;
+		const onMove = (moveEvent: PointerEvent) => {
+			if (moveEvent.pointerId !== pointerId) return;
+			const offset = moveEvent.clientY - startY;
+			if (!moved && Math.abs(offset) > 2) {
+				moved = true;
+				if (rail.isConnected) rail.setPointerCapture(pointerId);
+			}
+			if (moved) host.scrollTop = startTop + offset * scrollPerPx;
 		};
-		const onUp = () => {
-			window.removeEventListener('mousemove', onMove);
-			window.removeEventListener('mouseup', onUp);
+		const onEnd = (endEvent: PointerEvent) => {
+			if (endEvent.pointerId !== pointerId) return;
+			window.removeEventListener('pointermove', onMove);
+			window.removeEventListener('pointerup', onEnd);
+			window.removeEventListener('pointercancel', onEnd);
+			rail.removeEventListener('lostpointercapture', onEnd);
 			document.body.style.userSelect = '';
 			if (moved) {
 				suppressMarkerClickRef.current = true;
@@ -82,15 +98,42 @@ export function DocumentViewer({
 				}, 140);
 			}
 		};
-		window.addEventListener('mousemove', onMove);
-		window.addEventListener('mouseup', onUp);
+		window.addEventListener('pointermove', onMove);
+		window.addEventListener('pointerup', onEnd);
+		window.addEventListener('pointercancel', onEnd);
+		rail.addEventListener('lostpointercapture', onEnd);
+	};
+
+	// What a reader is told a link or marker leads to: the clause number the graph gives the
+	// linked paragraph, and its first words.
+	const paragraphLabel = (paragraphId: string) => {
+		const item = evidenceParagraphs.find((p) => p.node.id === paragraphId);
+		if (!item) return 'paragraph';
+		const relation = item.relation;
+		const clause =
+			relation?.kind === 'modifies'
+				? relation.from
+				: relation?.kind === 'depends_on' || relation?.kind === 'references'
+					? relation.to
+					: relation?.kind === 'uses'
+						? relation.definedIn
+						: relation?.kind === 'defines'
+							? relation.usedIn
+							: null;
+		const words = item.node.text.trim().split(/\s+/).filter(Boolean);
+		const opening =
+			words.length > 0 ? `“${words.slice(0, 8).join(' ')}${words.length > 8 ? '…' : ''}”` : '';
+		return [clause, opening].filter(Boolean).join(', ') || 'paragraph';
 	};
 
 	const jumpToParagraph = (paragraphId: string) => {
 		if (suppressMarkerClickRef.current) return;
 		const element = paragraphElementById.get(paragraphId);
 		if (!element) return;
-		element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+		element.scrollIntoView({
+			behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+			block: 'center',
+		});
 		element.classList.remove('docx-citation-flash');
 		void element.offsetHeight;
 		element.classList.add('docx-citation-flash');
@@ -102,7 +145,8 @@ export function DocumentViewer({
 			<section
 				ref={scrollHostRef}
 				inert={dimmed || undefined}
-				className={`flex min-h-0 flex-1 flex-col items-start overflow-auto px-2 py-4 shadow-inner transition-opacity duration-300 lg:items-center ${
+				// Safe centring: centred while the page fits, from its left edge (scrollable) when not.
+				className={`flex min-h-0 flex-1 flex-col items-center-safe overflow-auto px-2 py-4 shadow-inner transition-opacity duration-300 ${
 					dimmed ? 'pointer-events-none opacity-60 select-none' : ''
 				}`}
 			>
@@ -119,7 +163,8 @@ export function DocumentViewer({
 				<EvidenceBridgeOverlay
 					bridge={evidenceBridge}
 					onJumpToParagraph={jumpToParagraph}
-					onRailMouseDown={startRailScrub}
+					onRailPointerDown={startRailScrub}
+					paragraphLabel={paragraphLabel}
 					toneByParagraph={toneByParagraph}
 					scoreByParagraph={scoreByParagraph}
 					linkLabels={linkLabels}

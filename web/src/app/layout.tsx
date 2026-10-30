@@ -10,9 +10,20 @@ export const metadata: Metadata = {
 	icons: { icon: '/legal.svg' },
 };
 
+/**
+ * The reader's saved theme (ThemeToggle writes `theme` to localStorage), or the system's when
+ * there is none, applied before anything paints so a dark page never flashes white.
+ */
+const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem('theme');var d=t?t==='dark':matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',d)}catch(e){}})()`;
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
 	return (
-		<html lang="en" className="h-full antialiased">
+		// The inline script below sets `dark` on <html> before the first paint, so the server's
+		// class list and the DOM differ on purpose.
+		<html lang="en" className="h-full antialiased" suppressHydrationWarning>
+			<head>
+				<script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+			</head>
 			<body className="min-h-full">
 				<Providers>
 					<TooltipProvider>

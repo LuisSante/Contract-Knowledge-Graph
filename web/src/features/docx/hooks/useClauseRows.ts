@@ -13,7 +13,6 @@ import {
 	type StatementGrid,
 } from '@/features/docx/utils/knowledge/statement-grid';
 import {
-	byImportance,
 	clauseTitle,
 	DEONTIC_KINDS,
 	tallyClauses,
@@ -75,8 +74,8 @@ export function useClauseRows({
 	}, [shownGrid]);
 
 	// One importance for the pair, counted on every obligation, right and prohibition between
-	// the two parties: it orders and numbers the rows, the same in every type shown, and weighs
-	// what the contract and the graph light up.
+	// the two parties: it orders the rows, the same in every type shown, numbers them within
+	// each tab, and weighs what the contract and the graph light up.
 	const countedIds = useMemo(() => {
 		const ids = new Set<string>();
 		for (const row of grid?.rows ?? []) {
@@ -149,12 +148,27 @@ export function useClauseRows({
 		[tallies]
 	);
 
-	// A clause's place by relevance: the number in its row's circle.
-	const rankByClause = useMemo(() => {
-		if (!tallies || !rowImportance) return null;
-		const ranked = byImportance(tallies, rowImportance.byClause);
-		return new Map(ranked.map((t, i) => [t.clauseId, i + 1] as const));
-	}, [tallies, rowImportance]);
+	// A clause's place by relevance among the rows of each type's tab: the number in its row's
+	// circle, 1 to n in each tab, in the order the rows take there.
+	const rankByKind = useMemo(() => {
+		if (!shownGrid || !rowImportance) return null;
+		const weight = (row: GridRow) =>
+			row.clauseId ? (rowImportance.byClause[row.clauseId] ?? 0) : -1;
+		return Object.fromEntries(
+			DEONTIC_KINDS.map((kind) => {
+				const ranked = shownGrid.rows
+					.filter(
+						(row) =>
+							row.clauseId !== null &&
+							SHOWN_LANES.some((lane) => row.marks[lane].some((mark) => mark.kind === kind))
+					)
+					.sort((x, y) => weight(y) - weight(x));
+				return [kind, new Map(ranked.map((row, i) => [row.clauseId, i + 1] as const))];
+			})
+		) as Record<DeonticKind, Map<string | null, number>>;
+	}, [shownGrid, rowImportance]);
+	const kindShown = DEONTIC_KINDS.find((kind) => kindsShown.has(kind)) ?? null;
+	const rankByClause = rankByKind && kindShown ? rankByKind[kindShown] : null;
 
 	// Each row is named by the clause's place in importance, its number and heading (a
 	// numbered subclause borrows its section's), and a link to the graph.
@@ -202,17 +216,19 @@ export function useClauseRows({
 		};
 	}, [grid, viewKg, rankByClause]);
 
-	// Where a red flag's statement sits in the table: its row's place and its clause number.
+	// Where a red flag's statement sits in the table: its row's place in that type's tab and its
+	// clause number. A condition has no tab of its own, so no place.
 	const placeOfClause = useMemo(() => {
 		if (!viewKg) return undefined;
 		const clauseOf = new Map(viewKg.clauses.map((c) => [c.id, c] as const));
-		return (clauseId: string) => {
+		return (clauseId: string, kind?: DeonticKind) => {
 			const clause = clauseOf.get(clauseId);
 			if (!clause) return null;
 			const title = clauseTitle(clause, clause.heading || clause.ref || clause.id, viewKg.clauses);
-			return { rank: rankByClause?.get(clauseId), section: title.section, heading: title.heading };
+			const rank = kind ? rankByKind?.[kind].get(clauseId) : undefined;
+			return { rank, section: title.section, heading: title.heading };
 		};
-	}, [viewKg, rankByClause]);
+	}, [viewKg, rankByKind]);
 
 	return {
 		kindCounts,

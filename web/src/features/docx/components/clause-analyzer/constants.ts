@@ -16,6 +16,36 @@ export const KIND_COLORS: Record<MarkKind, string> = {
 	reference: '#999999',
 };
 
+/**
+ * The same hues as text: darker on light, lighter on dark, so they reach ≥4.5:1 on the cards and
+ * the soft row fills in either theme. They are CSS variables (globals.css) that follow the theme;
+ * the bright KIND_COLORS stay for fills only.
+ */
+const kindVar = (suffix: 'text' | 'edge') =>
+	Object.fromEntries(
+		(Object.keys(KIND_COLORS) as MarkKind[]).map((k) => [k, `var(--kind-${k}-${suffix})`])
+	) as Record<MarkKind, string>;
+
+export const KIND_TEXT_COLORS: Record<MarkKind, string> = kindVar('text');
+
+/** A square's 1px edge, so the lighter fills still reach 3:1 against the card and the table's
+ *  stripes in either theme (WCAG 1.4.11). */
+export const KIND_EDGE_COLORS: Record<MarkKind, string> = kindVar('edge');
+
+export const PARTY_TEXT_COLOR = 'var(--party-a-text)';
+export const PAIR_SECOND_TEXT_COLOR = 'var(--party-b-text)';
+export const NEUTRAL_TEXT_COLOR = 'var(--party-neutral-text)';
+
+/** The text-safe variant of any palette colour above; colours outside the palette pass through. */
+export function textColorOf(color: string): string {
+	const fill = color.toLowerCase();
+	if (fill === PAIR_SECOND_COLOR) return PAIR_SECOND_TEXT_COLOR;
+	if (fill === PARTY_COLOR) return PARTY_TEXT_COLOR;
+	if (fill === NEUTRAL_COLOR) return NEUTRAL_TEXT_COLOR;
+	const kind = (Object.keys(KIND_COLORS) as MarkKind[]).find((k) => KIND_COLORS[k] === fill);
+	return kind ? KIND_TEXT_COLORS[kind] : color;
+}
+
 export const KIND_LABEL: Record<MarkKind, string> = {
 	obligation: 'Obligation',
 	right: 'Right',

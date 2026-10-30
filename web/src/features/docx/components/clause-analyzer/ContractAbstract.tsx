@@ -6,8 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { ContractSummary } from '@/types/summary';
 import type { ContractSummaryStatus } from '@/features/docx/hooks/useContractSummary';
+import { textColorOf } from '@/features/docx/components/clause-analyzer/constants';
 
-/** `{{partyId|short text}}` — the model marks its own mentions, so nothing is matched by name. */
+/** `{{partyId|short text}}` — the model marks its own mentions. PartyEntry checks each id against
+ *  the abstract's own name for it, since a stored abstract may carry another run's ids. */
 const MENTION = /\{\{([^|}]+)\|([^}]+)\}\}/g;
 
 interface ContractAbstractProps {
@@ -30,7 +32,7 @@ function Prose({ text, colorOf }: { text: string; colorOf: (id: string | null) =
 			<span
 				key={`${at}-${match[1]}`}
 				className="font-semibold"
-				style={color ? { color } : undefined}
+				style={color ? { color: textColorOf(color) } : undefined}
 			>
 				{match[2]}
 			</span>

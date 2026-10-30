@@ -27,8 +27,10 @@ import { useAssistantChat } from '@/features/docx/hooks/useAssistantChat';
 import { useLlmTotalCost } from '@/features/docx/hooks/useLlmTotalCost';
 import { useDocumentStore } from '@/stores/document';
 import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
-import { RIGHT_DRAWER_KEYBOARD_STEP } from '@/constants/docx-viewer';
+import { DESKTOP_MIN_VIEWPORT, RIGHT_DRAWER_KEYBOARD_STEP } from '@/constants/docx-viewer';
 import { extractParagraphs } from '@/services/paragraphs';
+
+const RIGHT_PANEL_ID = 'docx-right-panel';
 
 interface DocxViewerProps {
 	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -60,7 +62,7 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 
 	const [model, setModel] = useState('gpt-4.1');
 	const { data: llmCost } = useLlmTotalCost();
-	const costLabel = llmCost ? `Cost: ${llmCost.totalCostUsdFormatted} $` : null;
+	const costLabel = llmCost ? `Cost: ${llmCost.totalCostLabel}` : null;
 
 	const clauseAnalyzerActive = drawer.isOpen && drawer.activeTab === 'clause_analyzer';
 	// The graph tab opens clauses on the left too, without the analyzer's highlights.
@@ -187,7 +189,7 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 						),
 					]
 				: [];
-		(words[0] ?? paragraph).scrollIntoView({ behavior: 'smooth', block: 'center' });
+		(words[0] ?? paragraph).scrollIntoView({ behavior: scrollBehavior(), block: 'center' });
 		for (const element of words.length > 0 ? words : [paragraph]) flashElement(element);
 	}, [
 		clauseAnalyzerActive,
@@ -216,29 +218,42 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 			});
 	}, [docId, viewer.renderEpoch, nodeEditStateById]);
 
-	const startDrawerResize = (event: React.MouseEvent) => {
-		if (window.innerWidth < 1024 || !drawer.isOpen) return;
+	// The splitter follows the pointer from where it was grabbed, so it never jumps under it;
+	// capturing the pointer keeps the drag alive over the panel, outside the window or by touch.
+	const drawerDragRef = useRef<{ pointerId: number; startX: number; startWidth: number } | null>(
+		null
+	);
+	const startDrawerResize = (event: React.PointerEvent<HTMLDivElement>) => {
+		if (window.innerWidth < DESKTOP_MIN_VIEWPORT || !drawer.isOpen) return;
+		if (!event.isPrimary || event.button !== 0) return;
 		event.preventDefault();
+		event.currentTarget.setPointerCapture(event.pointerId);
+		drawerDragRef.current = {
+			pointerId: event.pointerId,
+			startX: event.clientX,
+			startWidth: drawer.width,
+		};
 		document.body.style.userSelect = 'none';
-		const sidebarWidth = drawer.sidebarWidth;
-		const onMove = (moveEvent: MouseEvent) => {
-			drawer.setWidth(window.innerWidth - sidebarWidth - moveEvent.clientX);
-		};
-		const onUp = () => {
-			window.removeEventListener('mousemove', onMove);
-			window.removeEventListener('mouseup', onUp);
-			document.body.style.userSelect = '';
-		};
-		window.addEventListener('mousemove', onMove);
-		window.addEventListener('mouseup', onUp);
+	};
+	const moveDrawerResize = (event: React.PointerEvent<HTMLDivElement>) => {
+		const drag = drawerDragRef.current;
+		if (!drag || drag.pointerId !== event.pointerId) return;
+		// The panel is on the right: the handle going left widens it.
+		drawer.setWidth(drag.startWidth + drag.startX - event.clientX);
+	};
+	const endDrawerResize = () => {
+		if (!drawerDragRef.current) return;
+		drawerDragRef.current = null;
+		document.body.style.userSelect = '';
 	};
 
 	const handleDrawerResizeKeydown = (event: React.KeyboardEvent) => {
 		if (!drawer.isOpen) return;
-		if (event.key === 'ArrowRight') {
+		// The arrows move the handle: left widens the panel, right narrows it.
+		if (event.key === 'ArrowLeft') {
 			event.preventDefault();
 			drawer.setWidth(drawer.width + RIGHT_DRAWER_KEYBOARD_STEP);
-		} else if (event.key === 'ArrowLeft') {
+		} else if (event.key === 'ArrowRight') {
 			event.preventDefault();
 			drawer.setWidth(drawer.width - RIGHT_DRAWER_KEYBOARD_STEP);
 		}
@@ -248,7 +263,7 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 		const node = useDocumentStore.getState().paragraphs.find((n) => n.id === nodeId) ?? null;
 		setSelectedParagraph(node);
 		const element = paragraphElementById.current.get(nodeId);
-		element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+		element?.scrollIntoView({ behavior: scrollBehavior(), block: 'center' });
 		if (emphasize && element) flashElement(element);
 	};
 
@@ -266,14 +281,20 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 		? `calc(100% - ${drawer.sidebarWidth + (drawer.isOpen ? drawer.width : 0)}px)`
 		: `calc(100% - ${drawer.sidebarWidth}px)`;
 	const overlayPanel = !isDesktop;
+	// Over the contract on small screens the panel is a dialog: the contract behind it rests.
+	const panelIsModal = overlayPanel && drawer.isOpen;
 
 	return (
-		<main className="relative flex h-screen w-screen overflow-hidden bg-[var(--canvas)] font-sans">
+		<main className="relative flex h-dvh w-full overflow-hidden bg-[var(--canvas)] font-sans">
 			<div
-				className="relative flex min-w-0 flex-col border-r border-gray-300"
+				className="relative flex min-w-0 flex-col border-r border-gray-300 dark:border-border"
 				style={{ width: leftWidth }}
+				inert={panelIsModal || undefined}
 			>
-				<DocxPageHeader documentName={viewer.documentName} />
+				<DocxPageHeader
+					documentName={viewer.documentName}
+					loading={viewer.status === 'idle' || viewer.status === 'loading'}
+				/>
 				<DocumentViewer
 					containerRef={viewer.containerRef}
 					status={viewer.status}
@@ -291,6 +312,8 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 			</div>
 
 			<RightPanel
+				id={RIGHT_PANEL_ID}
+				modal={overlayPanel}
 				activeTab={drawer.activeTab}
 				isOpen={drawer.isOpen}
 				width={drawer.width}
@@ -328,10 +351,20 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 					role="separator"
 					aria-orientation="vertical"
 					aria-label="Resize side panel"
+					aria-controls={RIGHT_PANEL_ID}
+					aria-valuenow={Math.round(drawer.width)}
+					aria-valuemin={drawer.minWidth}
+					aria-valuemax={drawer.maxWidth == null ? undefined : Math.round(drawer.maxWidth)}
 					tabIndex={0}
-					className="absolute top-0 bottom-0 z-50 w-1 cursor-col-resize bg-border transition hover:bg-primary/50 focus:bg-primary focus:outline-none"
+					// 4px to see, 24px to grab: the ::before widens the hit area, not the bar. It
+					// reaches over the panel's edge only, as the contract's marker rail sits just left.
+					className="absolute top-0 bottom-0 z-50 w-1 cursor-col-resize touch-none bg-border transition before:absolute before:inset-y-0 before:left-0 before:-right-5 hover:bg-primary/50 focus-visible:bg-primary focus-visible:outline-none"
 					style={{ right: drawer.sidebarWidth + drawer.width }}
-					onMouseDown={startDrawerResize}
+					onPointerDown={startDrawerResize}
+					onPointerMove={moveDrawerResize}
+					onPointerUp={endDrawerResize}
+					onPointerCancel={endDrawerResize}
+					onLostPointerCapture={endDrawerResize}
 					onKeyDown={handleDrawerResizeKeydown}
 				>
 					<span className="pointer-events-none absolute top-1/2 left-1/2 h-10 w-[2px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-muted-foreground/40" />
@@ -354,6 +387,11 @@ export function DocxViewer({ searchParams }: DocxViewerProps) {
 			/>
 		</main>
 	);
+}
+
+/** Smooth scrolling travels; a reader who asked for less motion is taken straight there. */
+function scrollBehavior(): ScrollBehavior {
+	return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
 }
 
 function flashElement(element: HTMLElement) {

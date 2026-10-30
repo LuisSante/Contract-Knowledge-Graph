@@ -23,7 +23,9 @@ import {
 	NEUTRAL_COLOR,
 	NODE_COLORS,
 	PAIR_SECOND_COLOR,
+	PAIR_SECOND_TEXT_COLOR,
 	PARTY_COLOR,
+	PARTY_TEXT_COLOR,
 } from '@/features/docx/components/clause-analyzer/constants';
 
 // The graph lights every kind and the reciprocal lane, so the row shows them all too.
@@ -127,26 +129,26 @@ export function SelectedRow({
 				<>
 					<div className="flex items-center gap-2 border-b border-border/60 px-3 py-1.5 text-2xs">
 						<span
-							className="mr-2 shrink-0 font-medium text-muted-foreground/70"
+							className="mr-2 shrink-0 font-medium text-muted-foreground"
 							style={{ width: LABEL_WIDTH }}
 						>
 							CLAUSE
 						</span>
 						<span
 							className="shrink-0 truncate text-right font-semibold"
-							style={{ width: LANE_WIDTH, color: PARTY_COLOR }}
+							style={{ width: LANE_WIDTH, color: PARTY_TEXT_COLOR }}
 						>
 							{names.a}
 						</span>
 						<span
 							className="shrink-0 truncate font-semibold"
-							style={{ width: LANE_WIDTH, color: PAIR_SECOND_COLOR }}
+							style={{ width: LANE_WIDTH, color: PAIR_SECOND_TEXT_COLOR }}
 						>
 							{names.b}
 						</span>
 						{withShared && (
 							<span
-								className="shrink-0 truncate font-medium text-muted-foreground/70"
+								className="shrink-0 truncate font-medium text-muted-foreground"
 								style={{ width: LANE_WIDTH }}
 							>
 								Both parties

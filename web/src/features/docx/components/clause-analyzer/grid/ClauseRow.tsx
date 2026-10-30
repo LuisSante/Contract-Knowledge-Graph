@@ -9,7 +9,15 @@ import {
 	type KeyboardEvent,
 	type ReactNode,
 } from 'react';
-import { ChevronDownIcon, Forward } from 'lucide-react';
+import {
+	BookOpen,
+	ChevronDownIcon,
+	CornerDownRight,
+	Forward,
+	Link2,
+	PenLine,
+} from 'lucide-react';
+import { Popover as PopoverPrimitive } from 'radix-ui';
 import type {
 	GridLane,
 	GridMark,
@@ -32,6 +40,7 @@ import {
 	LABEL_WIDTH,
 	LANE_COLUMNS,
 	laneWidth,
+	LINKED_WIDTH,
 	MARK_GAP,
 	MARK_SIZE,
 } from '@/features/docx/components/clause-analyzer/constants';
@@ -50,7 +59,7 @@ export interface ClauseRowLead {
 	/** The clauses this one refers to (the graph's `references`): their number. */
 	refersTo?: Array<{ clauseId: string; label: string }>;
 	/** The clauses that define words this one uses (`uses` → `defines`): their number, and
-	 *  the words, said on hover. */
+	 *  the words, said in the title of its button in the «Linked» list. */
 	usesFrom?: Array<{ clauseId: string; label: string; note: string }>;
 	/** The terms this clause defines (the graph's `defines`), in the graph's order. */
 	defines?: string[];
@@ -259,49 +268,6 @@ export const ClauseRow = memo(function ClauseRow({
 									Against you
 								</span>
 							)}
-							{lead.modifiedBy?.length ? (
-								<span className="mt-0.5 block text-2xs text-muted-foreground">
-									modified by{' '}
-									{lead.modifiedBy.map((m, index) => (
-										<Fragment key={m.clauseId}>
-											{index > 0 && ', '}
-											<button
-												type="button"
-												onClick={() => onGoToModifier?.(m.clauseId, m.kind)}
-												disabled={!onGoToModifier}
-												className="font-semibold hover:underline disabled:cursor-default"
-												style={{ color: m.kind ? KIND_TEXT_COLORS[m.kind] : undefined }}
-												title={
-													m.kind
-														? `Go to ${m.label}, in ${TAB_NAME[m.kind]}: the ${m.kind} there modifies this clause`
-														: `Go to ${m.label}: it modifies this clause`
-												}
-											>
-												{m.label}
-											</button>
-										</Fragment>
-									))}
-								</span>
-							) : null}
-							<LinkedClauses
-								verb="depends on"
-								clauses={lead.dependsOn}
-								why="whether this clause applies is subject to it"
-								onGo={onGoToModifier}
-							/>
-							<LinkedClauses
-								verb="refers to"
-								clauses={lead.refersTo}
-								why="this clause points to it"
-								onGo={onGoToModifier}
-							/>
-							<DefinedTerms terms={lead.defines} />
-							<LinkedClauses
-								verb="uses terms from"
-								clauses={lead.usesFrom}
-								why="it defines words this clause uses"
-								onGo={onGoToModifier}
-							/>
 						</div>
 					</div>
 				) : (
@@ -387,6 +353,8 @@ export const ClauseRow = memo(function ClauseRow({
 					))}
 				</div>
 
+				{lead && <LinkedCell lead={lead} onGo={onGoToModifier} />}
+
 				{clauseId && expandable && (
 					<button
 						type="button"
@@ -413,56 +381,214 @@ export const ClauseRow = memo(function ClauseRow({
 	);
 });
 
-/** «depends on §5», «refers to §1.4»: the clauses a row's clause points to, each a button
- *  that goes to it. Grey, since the edge names a whole clause and no sentence type. */
-function LinkedClauses({
-	verb,
-	clauses,
-	why,
-	onGo,
-}: {
-	verb: string;
-	clauses: Array<{ clauseId: string; label: string; note?: string }> | undefined;
-	why: string;
-	onGo?: (clauseId: string, kind: DeonticKind | null) => void;
-}) {
-	if (!clauses?.length) return null;
-	return (
-		<span className="mt-0.5 block text-2xs text-muted-foreground">
-			{verb}{' '}
-			{clauses.map((c, index) => (
-				<Fragment key={c.clauseId}>
-					{index > 0 && ', '}
-					<button
-						type="button"
-						onClick={() => onGo?.(c.clauseId, null)}
-						disabled={!onGo}
-						className="font-semibold hover:underline disabled:cursor-default"
-						title={`Go to ${c.label}: ${c.note ?? why}`}
-					>
-						{c.label}
-					</button>
-				</Fragment>
-			))}
+/** The relations the «Linked» column counts, in the order it shows them. Defined terms have
+ *  «Aa» where the others have an icon. */
+const LINKS = [
+	{ key: 'modifiedBy', label: 'modified by', Icon: PenLine },
+	{ key: 'dependsOn', label: 'depends on', Icon: CornerDownRight },
+	{ key: 'refersTo', label: 'refers to', Icon: Link2 },
+	{ key: 'defines', label: 'defines', Icon: null },
+	{ key: 'usesFrom', label: 'uses terms from', Icon: BookOpen },
+] as const;
+
+type Link = (typeof LINKS)[number];
+
+function LinkGlyph({ link }: { link: Link }) {
+	return link.Icon ? (
+		<link.Icon className="size-3 shrink-0 text-muted-foreground/70" aria-hidden />
+	) : (
+		<span
+			className="text-[9px] leading-3 font-bold"
+			style={{ color: KIND_TEXT_COLORS.definedTerm }}
+			aria-hidden
+		>
+			Aa
 		</span>
 	);
 }
 
-/** Most terms a row names after «defines»; the rest are counted. */
-const DEFINES_SHOWN = 3;
-
-/** «defines "FATURA", "IOF" +2 more»: the terms the row's clause defines, all on hover. */
-function DefinedTerms({ terms }: { terms: string[] | undefined }) {
-	if (!terms?.length) return null;
-	const shown = terms.slice(0, DEFINES_SHOWN).map((t) => `“${t}”`);
-	const rest = terms.length - shown.length;
+/** The «Linked» column's name, with its icons as the legend, over the rows' cells. */
+export function LinkedHeading() {
 	return (
 		<span
-			className="mt-0.5 block text-2xs text-muted-foreground"
-			title={`Defines ${terms.map((t) => `“${t}”`).join(', ')}`}
+			className="flex shrink-0 flex-col gap-0.5 font-medium text-muted-foreground"
+			style={{ width: LINKED_WIDTH }}
 		>
-			defines <span className="font-semibold">{shown.join(', ')}</span>
-			{rest > 0 && ` +${rest} more`}
+			Linked
+			<span className="flex items-center gap-1.5">
+				{LINKS.map((link) => (
+					<span key={link.key} title={link.label} className="flex">
+						<LinkGlyph link={link} />
+					</span>
+				))}
+			</span>
 		</span>
+	);
+}
+
+/** Wait before a hover-opened list closes, so the pointer can cross into it. */
+const HOVER_CLOSE_MS = 150;
+
+/**
+ * A row's links to other clauses, counted per relation. Hovering the counts opens the list,
+ * each clause a button that goes to it; a click or Enter pins it open until clicking away.
+ */
+function LinkedCell({
+	lead,
+	onGo,
+}: {
+	lead: ClauseRowLead;
+	onGo?: (clauseId: string, kind: DeonticKind | null) => void;
+}) {
+	const [open, setOpen] = useState(false);
+	// Opened by the pointer, not pinned: leaving closes it and focus stays on the table.
+	const pinned = useRef(false);
+	const closing = useRef<ReturnType<typeof setTimeout>>(undefined);
+	useEffect(() => () => clearTimeout(closing.current), []);
+
+	const counts = LINKS.map((link) => ({ link, n: lead[link.key]?.length ?? 0 })).filter(
+		({ n }) => n > 0
+	);
+	if (!counts.length)
+		return (
+			<span
+				className="mt-0.5 shrink-0 text-2xs text-muted-foreground/40"
+				style={{ width: LINKED_WIDTH }}
+				title="No links to other clauses"
+			>
+				—
+			</span>
+		);
+
+	const hoverOpen = () => {
+		clearTimeout(closing.current);
+		setOpen(true);
+	};
+	const hoverClose = () => {
+		if (pinned.current) return;
+		closing.current = setTimeout(() => setOpen(false), HOVER_CLOSE_MS);
+	};
+	const go = (clauseId: string, kind: DeonticKind | null) => {
+		pinned.current = false;
+		setOpen(false);
+		onGo?.(clauseId, kind);
+	};
+	const goButton = (clauseId: string, label: string, title: string, kind: DeonticKind | null) => (
+		<button
+			key={clauseId}
+			type="button"
+			onClick={() => go(clauseId, kind)}
+			disabled={!onGo}
+			className="font-semibold hover:underline disabled:cursor-default"
+			style={{ color: kind ? KIND_TEXT_COLORS[kind] : undefined }}
+			title={title}
+		>
+			{label}
+		</button>
+	);
+	const listOf = (link: Link): ReactNode => {
+		switch (link.key) {
+			case 'modifiedBy':
+				return lead.modifiedBy?.map((m) =>
+					goButton(
+						m.clauseId,
+						m.label,
+						m.kind
+							? `Go to ${m.label}, in ${TAB_NAME[m.kind]}: the ${m.kind} there modifies this clause`
+							: `Go to ${m.label}: it modifies this clause`,
+						m.kind
+					)
+				);
+			case 'dependsOn':
+				return lead.dependsOn?.map((c) =>
+					goButton(
+						c.clauseId,
+						c.label,
+						`Go to ${c.label}: whether this clause applies is subject to it`,
+						null
+					)
+				);
+			case 'refersTo':
+				return lead.refersTo?.map((c) =>
+					goButton(c.clauseId, c.label, `Go to ${c.label}: this clause points to it`, null)
+				);
+			case 'defines':
+				// Each term a pill in the defined-term colour, as in the Figma proposal 3.
+				return lead.defines?.map((t) => (
+					<span
+						key={t}
+						className="rounded-full px-1.5 font-semibold"
+						style={{
+							color: KIND_TEXT_COLORS.definedTerm,
+							backgroundColor: `color-mix(in srgb, ${KIND_TEXT_COLORS.definedTerm} 12%, transparent)`,
+						}}
+					>
+						{t}
+					</span>
+				));
+			case 'usesFrom':
+				return lead.usesFrom?.map((c) =>
+					goButton(c.clauseId, c.label, `Go to ${c.label}: ${c.note}`, null)
+				);
+		}
+	};
+
+	return (
+		<PopoverPrimitive.Root
+			open={open}
+			onOpenChange={(next) => {
+				pinned.current = next;
+				setOpen(next);
+			}}
+		>
+			<PopoverPrimitive.Trigger asChild>
+				<button
+					type="button"
+					onPointerEnter={hoverOpen}
+					onPointerLeave={hoverClose}
+					onClick={(event) => {
+						// Already open from hovering: the click pins it rather than closing it.
+						if (open && !pinned.current) {
+							event.preventDefault();
+							clearTimeout(closing.current);
+							pinned.current = true;
+						}
+					}}
+					className={`mt-0.5 flex shrink-0 flex-wrap items-center gap-x-2.5 gap-y-1 rounded text-2xs hover:bg-muted ${
+						open ? 'bg-muted' : ''
+					}`}
+					style={{ width: LINKED_WIDTH }}
+					aria-label={`Links of ${lead.heading}: ${counts.map(({ link, n }) => `${link.label} ${n}`).join(', ')}`}
+				>
+					{counts.map(({ link, n }) => (
+						<span key={link.key} className="flex items-center gap-0.5">
+							<LinkGlyph link={link} />
+							<span className="font-semibold text-foreground tabular-nums">{n}</span>
+						</span>
+					))}
+				</button>
+			</PopoverPrimitive.Trigger>
+			<PopoverPrimitive.Portal>
+				<PopoverPrimitive.Content
+					side="bottom"
+					align="end"
+					sideOffset={4}
+					// Hovering opens it without taking focus from the table; a pinned one takes it.
+					onOpenAutoFocus={(event) => {
+						if (!pinned.current) event.preventDefault();
+					}}
+					onPointerEnter={hoverOpen}
+					onPointerLeave={hoverClose}
+					className="z-50 grid max-w-80 grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 rounded-md border border-border bg-popover p-2.5 text-2xs text-popover-foreground shadow-md"
+				>
+					{counts.map(({ link }) => (
+						<Fragment key={link.key}>
+							<span className="text-muted-foreground">{link.label}</span>
+							<span className="flex flex-wrap gap-x-1.5 gap-y-1">{listOf(link)}</span>
+						</Fragment>
+					))}
+				</PopoverPrimitive.Content>
+			</PopoverPrimitive.Portal>
+		</PopoverPrimitive.Root>
 	);
 }

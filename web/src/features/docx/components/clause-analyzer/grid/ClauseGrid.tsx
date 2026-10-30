@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
 	ClauseRow,
+	LinkedHeading,
 	type ClauseRowLead,
 } from '@/features/docx/components/clause-analyzer/grid/ClauseRow';
 import type { HoverPoint } from '@/features/docx/components/clause-analyzer/grid/Mark';
@@ -25,10 +26,10 @@ import {
 	ROW_PAGE,
 } from '@/features/docx/components/clause-analyzer/constants';
 
-/** The Clause Analyzer's layout: room for a long clause name on one line, and 15 marks to a
- *  column before it wraps. */
+/** The Clause Analyzer's layout: room for a long clause name on one line, and 10 marks to a
+ *  column before it wraps, which leaves room for the «Linked» column. */
 const NAME_WIDTH = 320;
-const COLUMN_MARKS = 15;
+const COLUMN_MARKS = 10;
 /** The words after "CLAUSE" for each ordering. */
 const SORT_LABELS = { importance: 'by relevance ↓', order: 'by order' };
 
@@ -188,6 +189,7 @@ export function ClauseGrid({
 							</Fragment>
 						))}
 					</div>
+					{leadOf && <LinkedHeading />}
 					{/* As wide as the rows' «Details» button, so the columns stay under their names. */}
 					{renderDetail && <span className="w-16 shrink-0" />}
 				</div>

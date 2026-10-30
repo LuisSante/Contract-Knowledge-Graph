@@ -268,6 +268,10 @@
 	--party-a-text: #964da1;
 	--party-b-text: #0b786e;
 	--party-neutral-text: #6a6a6a;
+	/* The «Linked» column's relations, as icon colour; the margin line's LINK_COLOR in light. */
+	--link-modifiedBy-text: #6d28d9;
+	--link-dependsOn-text: #0e7490;
+	--link-refersTo-text: #475569;
 	color-scheme: light;
 }
 
@@ -339,5 +343,8 @@
 	--party-a-text: #bb82c3;
 	--party-b-text: #0fa99b;
 	--party-neutral-text: #a3a3a3;
+	--link-modifiedBy-text: #a78bfa;
+	--link-dependsOn-text: #22d3ee;
+	--link-refersTo-text: #94a3b8;
 	color-scheme: dark;
 }

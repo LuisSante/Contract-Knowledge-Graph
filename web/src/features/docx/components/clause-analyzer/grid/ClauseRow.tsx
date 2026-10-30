@@ -9,7 +9,7 @@ import {
 	type KeyboardEvent,
 	type ReactNode,
 } from 'react';
-import { BookOpen, ChevronDownIcon, CornerDownRight, Forward, Link2, PenLine } from 'lucide-react';
+import { BookA, ChevronDownIcon, Forward, GitMerge, Link, Quote, SquarePen } from 'lucide-react';
 import { Popover as PopoverPrimitive } from 'radix-ui';
 import type {
 	GridLane,
@@ -28,6 +28,7 @@ import {
 import { favourOf } from '@/features/docx/utils/knowledge/clause-favour';
 import type { DeonticKind } from '@/types/knowledge';
 import {
+	KIND_COLORS,
 	KIND_TEXT_COLORS,
 	LABEL_MIN_WIDTH,
 	LABEL_WIDTH,
@@ -374,47 +375,84 @@ export const ClauseRow = memo(function ClauseRow({
 	);
 });
 
-/** The relations the «Linked» column counts, in the order it shows them. Defined terms have
- *  «Aa» where the others have an icon. */
+/** The relations the «Linked» column counts, in the order it shows them (Figma section 414:2,
+ *  variant 5). Each has the colour of its edge on the document's margin line: `color` for
+ *  the icon, following the theme, and `fill` for the count's badge, which carries white. */
 const LINKS = [
-	{ key: 'modifiedBy', label: 'modified by', Icon: PenLine },
-	{ key: 'dependsOn', label: 'depends on', Icon: CornerDownRight },
-	{ key: 'refersTo', label: 'refers to', Icon: Link2 },
-	{ key: 'defines', label: 'defines', Icon: null },
-	{ key: 'usesFrom', label: 'uses terms from', Icon: BookOpen },
+	{
+		key: 'modifiedBy',
+		label: 'Modified by',
+		Icon: SquarePen,
+		color: 'var(--link-modifiedBy-text)',
+		fill: '#6d28d9',
+	},
+	{
+		key: 'dependsOn',
+		label: 'Depends on',
+		Icon: GitMerge,
+		color: 'var(--link-dependsOn-text)',
+		fill: '#0e7490',
+	},
+	{
+		key: 'refersTo',
+		label: 'Refers to',
+		Icon: Link,
+		color: 'var(--link-refersTo-text)',
+		fill: '#475569',
+	},
+	{
+		key: 'defines',
+		label: 'Defines',
+		Icon: BookA,
+		color: KIND_TEXT_COLORS.definedTerm,
+		fill: '#a45528',
+	},
+	{
+		key: 'usesFrom',
+		label: 'Uses terms from',
+		Icon: Quote,
+		color: KIND_TEXT_COLORS.definedTerm,
+		fill: '#a45528',
+	},
 ] as const;
 
-type Link = (typeof LINKS)[number];
+type LinkRelation = (typeof LINKS)[number];
 
-function LinkGlyph({ link }: { link: Link }) {
-	return link.Icon ? (
-		<link.Icon className="size-3 shrink-0 text-muted-foreground/70" aria-hidden />
-	) : (
+const tint = (color: string, percent: number) =>
+	`color-mix(in srgb, ${color} ${percent}%, transparent)`;
+
+/** A relation's icon on a tile tinted in its colour; with `n`, a badge counts its links. */
+function LinkTile({ link, n, small }: { link: LinkRelation; n?: number; small?: boolean }) {
+	return (
 		<span
-			className="text-[9px] leading-3 font-bold"
-			style={{ color: KIND_TEXT_COLORS.definedTerm }}
+			className={`relative flex shrink-0 items-center justify-center rounded-md ${
+				small ? 'size-[18px]' : 'size-[22px]'
+			}`}
+			style={{ backgroundColor: tint(link.fill, 12) }}
 			aria-hidden
 		>
-			Aa
+			<link.Icon
+				className={small ? 'size-2.5' : 'size-[13px]'}
+				style={{ color: link.color }}
+				strokeWidth={2.25}
+			/>
+			{n !== undefined && (
+				<span
+					className="absolute -top-1.5 left-[13px] flex h-3.5 min-w-3.5 items-center justify-center rounded-full border-[1.5px] border-card px-[3px] text-[9px] leading-none font-bold text-white tabular-nums"
+					style={{ backgroundColor: link.fill }}
+				>
+					{n}
+				</span>
+			)}
 		</span>
 	);
 }
 
-/** The «Linked» column's name, with its icons as the legend, over the rows' cells. */
+/** The «Linked» column's name over the rows' tiles; each tile names its relation on hover. */
 export function LinkedHeading() {
 	return (
-		<span
-			className="flex shrink-0 flex-col gap-0.5 font-medium text-muted-foreground"
-			style={{ width: LINKED_WIDTH }}
-		>
+		<span className="shrink-0 font-medium text-muted-foreground" style={{ width: LINKED_WIDTH }}>
 			Linked
-			<span className="flex items-center gap-1.5">
-				{LINKS.map((link) => (
-					<span key={link.key} title={link.label} className="flex">
-						<LinkGlyph link={link} />
-					</span>
-				))}
-			</span>
 		</span>
 	);
 }
@@ -466,24 +504,49 @@ function LinkedCell({
 		setOpen(false);
 		onGo?.(clauseId, kind);
 	};
-	const goButton = (clauseId: string, label: string, title: string, kind: DeonticKind | null) => (
+	/** A pill per linked clause. One whose link comes from a sentence takes that sentence's
+	 *  type (a square of its fill, its text colour); a term borrowed from another clause has a
+	 *  dashed edge; the rest take their relation's colour. */
+	const goButton = (
+		link: LinkRelation,
+		clauseId: string,
+		label: string,
+		title: string,
+		kind: DeonticKind | null
+	) => (
 		<button
 			key={clauseId}
 			type="button"
 			onClick={() => go(clauseId, kind)}
 			disabled={!onGo}
-			className="font-semibold hover:underline disabled:cursor-default"
-			style={{ color: kind ? KIND_TEXT_COLORS[kind] : undefined }}
+			className={`flex items-center gap-1 rounded-full px-1.5 pt-px pb-0.5 font-semibold hover:underline disabled:cursor-default ${
+				link.key === 'usesFrom' ? 'border border-dashed' : ''
+			}`}
+			style={
+				kind
+					? { color: KIND_TEXT_COLORS[kind], backgroundColor: tint(KIND_COLORS[kind], 12) }
+					: link.key === 'usesFrom'
+						? { color: link.color, borderColor: tint(link.fill, 50) }
+						: { color: link.color, backgroundColor: tint(link.fill, 12) }
+			}
 			title={title}
 		>
+			{kind && (
+				<span
+					className="size-1.5 shrink-0 rounded-[1px]"
+					style={{ backgroundColor: KIND_COLORS[kind] }}
+					aria-hidden
+				/>
+			)}
 			{label}
 		</button>
 	);
-	const listOf = (link: Link): ReactNode => {
+	const listOf = (link: LinkRelation): ReactNode => {
 		switch (link.key) {
 			case 'modifiedBy':
 				return lead.modifiedBy?.map((m) =>
 					goButton(
+						link,
 						m.clauseId,
 						m.label,
 						m.kind
@@ -495,6 +558,7 @@ function LinkedCell({
 			case 'dependsOn':
 				return lead.dependsOn?.map((c) =>
 					goButton(
+						link,
 						c.clauseId,
 						c.label,
 						`Go to ${c.label}: whether this clause applies is subject to it`,
@@ -503,25 +567,21 @@ function LinkedCell({
 				);
 			case 'refersTo':
 				return lead.refersTo?.map((c) =>
-					goButton(c.clauseId, c.label, `Go to ${c.label}: this clause points to it`, null)
+					goButton(link, c.clauseId, c.label, `Go to ${c.label}: this clause points to it`, null)
 				);
 			case 'defines':
-				// Each term a pill in the defined-term colour, as in the Figma proposal 3.
 				return lead.defines?.map((t) => (
 					<span
 						key={t}
-						className="rounded-full px-1.5 font-semibold"
-						style={{
-							color: KIND_TEXT_COLORS.definedTerm,
-							backgroundColor: `color-mix(in srgb, ${KIND_TEXT_COLORS.definedTerm} 12%, transparent)`,
-						}}
+						className="rounded-full px-1.5 pt-px pb-0.5 font-semibold"
+						style={{ color: link.color, backgroundColor: tint(link.fill, 12) }}
 					>
 						{t}
 					</span>
 				));
 			case 'usesFrom':
 				return lead.usesFrom?.map((c) =>
-					goButton(c.clauseId, c.label, `Go to ${c.label}: ${c.note}`, null)
+					goButton(link, c.clauseId, c.label, `Go to ${c.label}: ${c.note}`, null)
 				);
 		}
 	};
@@ -547,16 +607,15 @@ function LinkedCell({
 							pinned.current = true;
 						}
 					}}
-					className={`mt-0.5 flex shrink-0 flex-wrap items-center gap-x-2.5 gap-y-1 rounded text-2xs hover:bg-muted ${
-						open ? 'bg-muted' : ''
+					className={`flex shrink-0 flex-wrap items-center gap-x-2.5 gap-y-2 self-start rounded-md pt-1 pr-1 ${
+						open ? 'bg-muted' : 'hover:bg-muted'
 					}`}
 					style={{ width: LINKED_WIDTH }}
 					aria-label={`Links of ${lead.heading}: ${counts.map(({ link, n }) => `${link.label} ${n}`).join(', ')}`}
 				>
 					{counts.map(({ link, n }) => (
-						<span key={link.key} className="flex items-center gap-0.5">
-							<LinkGlyph link={link} />
-							<span className="font-semibold text-foreground tabular-nums">{n}</span>
+						<span key={link.key} title={`${link.label} ${n}`} className="flex">
+							<LinkTile link={link} n={n} />
 						</span>
 					))}
 				</button>
@@ -572,12 +631,18 @@ function LinkedCell({
 					}}
 					onPointerEnter={hoverOpen}
 					onPointerLeave={hoverClose}
-					className="z-50 grid max-w-80 grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 rounded-md border border-border bg-popover p-2.5 text-2xs text-popover-foreground shadow-md"
+					className="z-50 flex w-[250px] flex-col gap-2 rounded-xl border border-border bg-popover px-3 pt-2.5 pb-3 text-2xs text-popover-foreground shadow-md"
 				>
-					{counts.map(({ link }) => (
+					{counts.map(({ link, n }, i) => (
 						<Fragment key={link.key}>
-							<span className="text-muted-foreground">{link.label}</span>
-							<span className="flex flex-wrap gap-x-1.5 gap-y-1">{listOf(link)}</span>
+							{i > 0 && <span className="h-px bg-border" aria-hidden />}
+							<section className="flex flex-col gap-1.5">
+								<span className="flex items-center gap-[7px] text-[11px] font-semibold">
+									<LinkTile link={link} small />
+									{link.label} {n}
+								</span>
+								<span className="flex flex-wrap gap-1 pl-[25px]">{listOf(link)}</span>
+							</section>
 						</Fragment>
 					))}
 				</PopoverPrimitive.Content>

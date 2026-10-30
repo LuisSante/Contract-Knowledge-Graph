@@ -9,14 +9,7 @@ import {
 	type KeyboardEvent,
 	type ReactNode,
 } from 'react';
-import {
-	BookOpen,
-	ChevronDownIcon,
-	CornerDownRight,
-	Forward,
-	Link2,
-	PenLine,
-} from 'lucide-react';
+import { BookOpen, ChevronDownIcon, CornerDownRight, Forward, Link2, PenLine } from 'lucide-react';
 import { Popover as PopoverPrimitive } from 'radix-ui';
 import type {
 	GridLane,

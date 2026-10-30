@@ -1,199 +1,315 @@
 # Importancia de la cláusula — el orden de las filas
 
-Cuánto manda una cláusula **dentro de su contrato**. Decide el orden de la retícula y
-nada más: no dice a quién favorece, eso lo dice
-[`reparto-beneficio.md`](./reparto-beneficio.md).
+Decide en qué orden aparecen las filas del Clause Analyzer cuando el lector elige
+«by connection». No dice a quién favorece cada cláusula: eso lo dicen los cuadrados de cada
+columna (ver [`reparto-beneficio.md`](./reparto-beneficio.md)).
 
-En `server/services/graph/knowledge/personalized_pagerank.py`, servida por
-`POST /api/v1/knowledge_graph/<doc>/clause_importance`.
+En una frase:
 
----
+> **Sube la cláusula con la que más se conecta el resto del contrato.**
 
-## De dónde sale
+La calcula `server/services/graph/knowledge/personalized_pagerank.py` y la sirve
+`POST /api/v1/knowledge_graph/<doc>/clause_importance`. Todas las cifras de este documento
+las regenera [`notebooks/verify_clause_importance.ipynb`](../../notebooks/verify_clause_importance.ipynb),
+que llama al mismo módulo que usa el servidor. Los métodos anteriores y las variantes
+descartadas están en [`importancia-clausula-historia.md`](./importancia-clausula-historia.md).
 
-De la identificación de entidades clave de **GraphQAG** (Li et al., IEEE TVCG, 2026,
-§IV-A). Allí el prior de reinicio se reparte entre los **párrafos** y, dentro de cada
-uno, entre sus entidades:
+![Resumen: del contrato al grafo, el método anterior y el actual, con SteelVault](../img/explanation1.png)
 
-$$\pi(v_i) = \sum_{\substack{p\in\mathcal{P}\\ v_i\in V_p}} \frac{1}{|\mathcal{P}|\cdot|V_p|}$$
+*Resumen visual de todo el documento con SteelVault. Erratas de la imagen; las cifras
+correctas son las del texto:*
 
-$$PR_i^{(t+1)} = \bigl(1 - d + dD^{(t)}\bigr)\pi_i + d\sum_{j\in\mathcal{N}_i}\frac{PR_j^{(t)}}{\deg(v_j)}$$
-
-Aquí la unidad es la **cláusula** y `V_c` son sus **enunciados**. Como un enunciado
-pertenece a una sola cláusula, el sumatorio se reduce a un término:
-
-$$\pi(v) = \frac{1}{|C|\cdot|V_c|}$$
-
-`d = 0.85`, grafo no dirigido, masa colgante reinyectada **por el prior**, y para hasta
-que dos rondas difieren menos de `1e-9`. La importancia de una cláusula es la masa que
-retienen sus enunciados.
+- *«§8.4 Compliance» (recuadros 2 y 4): §8.4 no se llama Compliance; Compliance es §5.*
+- *Recuadro 4: SteelVault no tiene aristas «remite a» ni «depende de», solo `modifies` e
+  `is_part_of`. Es Liability la que modifica a §8.4 y a §9 Indemnification.*
+- *Recuadro 4, «masa propia (46 %)»: con el método actual, el paseo de Liability se queda el
+  40.7 % en sus propios enunciados (apartado 5). El 46 % salía del método anterior.*
 
 ---
 
-## Qué arregla
+## 1. De dónde sale el grafo
 
-Sustituye a un PPR sembrado en el nodo de la parte, que se descartó con medidas: ordenaba
-por tamaño (ρ = **0.882** contra una simple suma de severidades) y dejaba **cuatro
-cláusulas en cero exacto**. Dos cosas cambian:
+El grafo de conocimiento se extrae del contrato en tres pasos:
 
-**Ya no ordena por tamaño.** El `1/|V_c|` es el desesgo que faltaba: **una cláusula de
-once enunciados no empieza pesando once veces una de uno.** La correlación con
-simplemente contar enunciados baja de ρ = 0.882 a **0.400**.
+1. **Las cláusulas**, por su numeración, sin IA. El mismo texto da siempre las mismas
+   cláusulas, y cada subcláusula queda unida a su sección (`is_part_of`).
+2. **Una lectura completa del contrato** (LLM): las partes y los términos definidos.
+3. **Una lectura por bloques de cláusulas** (LLM): las obligaciones, los derechos, las
+   prohibiciones, sus condiciones, valores y referencias, y las relaciones entre ellos
+   (`modifies`, `references`, `depends_on`, `uses`). Cada enunciado guarda el fragmento del
+   texto que lo justifica.
 
-**Ninguna cláusula puede valer cero.** Todas reciben masa del prior, las alcance el
-grafo o no. *Limitation of Liability*, que antes se hundía por estar en la isla «each
-Party», encabeza la lista cuando la columna bilateral está abierta.
+Ejemplo, **SteelVault** (*Affiliate Agreement*, entre Equidata y National Credit Report.com):
 
----
+| nodos | | aristas | |
+|---|---|---|---|
+| cláusulas | 26 | `is_part_of` | 159 |
+| obligaciones | 52 | `assigns_obligation_to` | 62 |
+| derechos | 19 | `uses` | 22 |
+| prohibiciones | 19 | `grants_right_to` | 19 |
+| condiciones | 32 | `defines` | 8 |
+| valores | 16 | `modifies` | 8 |
+| términos definidos | 10 | | |
+| referencias | 10 | | |
+| partes | 2 | | |
+| **total** | **186** | **total** | **278** |
 
-## Qué cuenta
+## 2. Qué parte del grafo se usa
 
-El prior se construye **solo con los enunciados que están en pantalla**: sin los que el
-contrato no atribuye a nadie, sin los tipos filtrados y sin la columna bilateral cuando
-está cerrada. Un orden apoyado en marcas que el lector no puede contar es un orden que
-no puede comprobar.
+Solo lo que la tabla muestra como filas y cuadrados: **cláusulas, obligaciones, derechos y
+prohibiciones**. Las aristas que quedan entre ellos son:
 
-El **paseo sí recorre el grafo entero**: lo que una cláusula tiene conectado no deja de
-existir porque se cierre una columna.
-
-**Ningún peso por tipo interviene**: un derecho y una prohibición entran en el prior con
-la misma masa. Por eso quitar los pesos de la barra (ver
-[`reparto-beneficio.md`](./reparto-beneficio.md)) no movió este orden: la tabla de abajo
-es la misma antes y después.
-
-| # | cláusula | importancia |
-|---|---|---|
-| 1 | Rights Granted and Restrictions on Bellicum | 100% |
-| 2 | Financial Terms | 89% |
-| 3 | Delivery, Continuity of Supply | 86% |
-| 4 | Forecasts, Orders, Minimum Purchase | 85% |
-| 5 | Visual inspection on Delivery | 82% |
-| 6 | Term and Termination | 63% |
-| 7 | Audit, IP, Confidentiality | 42% |
-
----
-
-## El alcance del prior cambia el orden
-
-El prior admite dos alcances y la diferencia entre ellos es grande. Hoy solo se usa uno:
-la retícula restringe el prior a las marcas que está mostrando, y el grafo que vive
-debajo lee la misma respuesta del servidor, así que no hay dos órdenes que conciliar.
-
-La otra lectura posible —`countedStatementIds: null`, los 62 enunciados con cláusula,
-incluidos los recíprocos de «each Party»— ya no aparece en la interfaz, pero conviene
-tenerla escrita porque es la que separa la métrica de su recorte:
-
-| # | cláusula | importancia |
-|---|---|---|
-| 1 | Limitation of Liability and Indemnification | 100% |
-| 2 | Rights Granted and Restrictions on Bellicum | 85% |
-| 3 | Section 3.2 | 80% |
-| 4 | Term and Termination | 78% |
-| 5 | Financial Terms | 76% |
-| 6 | Visual inspection on Delivery | 75% |
-| 7 | Delivery, Continuity of Supply, Second Sourcing | 73% |
-| 8 | Forecasts, Orders, Minimum Purchase | 73% |
-| 9 | Assignment | 72% |
-| 10 | Audit, IP, Confidentiality | 63% |
-| 11 | Dispute Resolution and Escalation | 47% |
-
-*Limitation of Liability* encabeza porque sus tres disposiciones son recíprocas y aquí sí
-cuentan. Con el prior completo el paseo converge en **132 iteraciones** y el pico vale
-`0.061227`. Reproducible llamando `personalized_pagerank.compute(kg, None)` sobre
-`infra/json/kg/root_BELLICUM_MILTENYI_Supply_Agreement_Summary.json` —el módulo que se
-ejecuta, no una réplica—.
-
-La diferencia entre las dos tablas es la que anticipaba *Qué arregla*: contando todo,
-*Limitation of Liability* encabeza por sus tres disposiciones recíprocas; al restringir
-el prior a lo que la retícula muestra se hunde y sube *Rights Granted*. Es el mismo
-efecto medido, no dos métricas — pero significa que **un orden solo es interpretable
-junto al recorte que lo produjo**.
-
-**`byStatement` no lo lee nadie, y no hace falta.** Llegó a alimentar una vista de
-cláusula que se retiró; el valor por enunciado está de todos modos dentro de `byNode`,
-que es el que dibuja el grafo. Se sigue devolviendo porque es la unidad en la que se
-define la métrica, y quien la verifique querrá verlo sin recalcularlo.
-
----
-
-## El paseo visto por encima
-
-El grafo bajo la retícula dibuja el vector entero.
-Para eso el endpoint devuelve ahora dos campos más —`byNode`, los 147 nodos, y
-`priorByNode`, los 62 que reciben prior—; `compute` ya los calculaba y los tiraba. El
-grafo ofrece tres lecturas del mismo nodo: **PPR** (dónde acaba la masa), **prior** (de
-dónde sale) y **gain** = PPR − prior.
-
-Poner las tres juntas deja ver lo que una tabla de cláusulas no puede:
-
-| tipo | PPR | prior | gain | nodo |
-|---|---|---|---|---|
-| party | 7.67 | 0.00 | **+7.67** | Bellicum Pharmaceuticals, Inc. |
-| party | 5.07 | 0.00 | +5.07 | each Party |
-| obligation | 4.91 | 9.09 | **−4.18** | Advance notification of Material Changes |
-| clause | 4.18 | 0.00 | +4.18 | Section 3.2 |
-| right | 2.90 | 9.09 | **−6.19** | Seek injunctive relief at any time |
-
-*(puntos sobre 100; el vector suma 1. Reproducible con
-`personalized_pagerank.compute(kg, None)`.)*
-
-**Las partes son los nodos más pesados del grafo y no reciben nada del prior.** Los tres
-nodos de parte se llevan el **16.4%** de la masa total, toda por propagación. No
-contamina el orden de cláusulas —`by_clause` solo suma sobre los enunciados de cada
-cláusula—, pero conviene tenerlo escrito: el nodo más pesado de este grafo no es una
-cláusula.
-
-**El prior alto es señal de cláusula pequeña, y esa masa se va.** Un enunciado único en
-su cláusula arranca con `1/(11·1)` = 9.09 y termina en 2.90: el `1/|V_c|` le da mucho de
-salida y la propagación se lo reparte a los vecinos. Es el desesgo funcionando, visible
-nodo a nodo en vez de deducido de un ρ.
-
-Reparto final de la masa por tipo de nodo: cláusula 24.1%, obligation 22.2%, right
-21.1%, party 16.4%, prohibition 8.8%, value 2.8%, condition 2.8%, reference 1.5%,
-definedTerm 0.4%. El último es tan bajo porque **20 de los 22 defined terms no tienen
-ninguna arista** y solo conservan lo que les da el prior, que es cero.
-
----
-
-## Verificación
-
-Contrastada contra `networkx.pagerank` con el mismo grafo, el mismo vector de
-personalización y los mismos parámetros. El script de `scripts/` llama a
-`personalized_pagerank.compute` —el módulo que se ejecuta, no una réplica.
-
-| documento de estudio | |
+| arista | qué une |
 |---|---|
-| nodos · iteraciones hasta `1e-9` | 147 · 132 |
-| masa total · valores negativos | 1.000000000000 · 0 |
-| residuo del punto fijo | 8.2e-10 |
-| **diferencia con `networkx.pagerank`** | **4.3e-11** |
-| diferencia con el TypeScript que sustituyó | 6.9e-18 |
+| `is_part_of` | un enunciado con su cláusula, y una subcláusula con su sección |
+| `modifies` | un enunciado con la cláusula que limita, amplía o anula |
+| `references` | un enunciado o una cláusula con la cláusula que menciona |
+| `depends_on` | un enunciado o una cláusula con la cláusula de la que depende |
 
-Converge al mismo vector partiendo del prior o de un vector uniforme, de modo que el
-punto fijo es único. Al pasarlo al backend se comprobó que el orden y el ρ = 0.400 se
-mantenían cláusula por cláusula.
+Quedan fuera las **partes** y los nodos auxiliares: **términos definidos, condiciones,
+referencias y valores**. El apartado 6 explica por qué.
 
-**Empates.** El grafo puede no tener con qué separar dos cláusulas: mismo número de
-disposiciones y vecindad equivalente, y la propagación no rompe el empate. Cuantas menos
-relaciones informativas tenga el documento, más empates. En el documento de estudio no
-hay ninguno, pero conviene tenerlo presente: **la interfaz muestra un orden estricto que
-en la cola puede no existir**.
+El grafo se recorre **sin dirección** y **sin pesos**: todas las aristas valen lo mismo.
 
----
+## 3. Qué es un paseo
 
-## Límites
+Un paseo es una persona que camina por el grafo:
 
-**Aquí dice poco, y es culpa del documento.** El rango entre la primera y la última
-cláusula es apenas un factor 2, y una cláusula de un solo enunciado puede quedar tercera
-—recibe el prior máximo, `1/(|C|·1)`, y no hay estructura que lo corrija—. La medida
-solo separa cuando hay relaciones que redistribuyan la masa, y el documento de estudio
-tiene **3 aristas informativas**. Es un resumen: no repite referencias cruzadas.
+1. Empieza en los enunciados de una cláusula, que es su «casa».
+2. En cada paso, el **85 %** de las veces sigue por una arista al azar hacia un nodo vecino,
+   y el **15 %** vuelve a casa.
+3. Después de muchísimos pasos se mira **qué fracción del tiempo pasó en cada nodo**. Ese
+   reparto es el PageRank personalizado de ese paseo.
 
-**Es del documento, no de la parte.** El prior es uniforme: responde *«qué cláusula
-importa en este contrato»*, nunca *«para quién»*.
+Si desde la casa de una cláusula se llega a menudo a otra, es que las dos están bien
+conectadas.
 
-**Un candidato sin probar.** Sembrar en los enunciados de una parte y propagar **solo
-por las aristas informativas** —`uses`, `defines`, `references`, `depends_on`— mediría
-el enredo: cuánto más hay que leer para entender la cláusula. Con tres aristas
-informativas ese subgrafo aquí no existe, así que no puede probarse sobre este
-documento.
+## 4. Las tres fórmulas
+
+**Prior.** Hay un paseo por cada cláusula $c$, que arranca repartido por igual entre sus
+enunciados:
+
+$$\pi_c(v_i)=\begin{cases}\dfrac{1}{|V_c|} & v_i\in V_c\\[6pt] 0 & \text{en otro caso}\end{cases}$$
+
+**PPR.** La iteración de siempre, sobre el grafo del apartado 2:
+
+$$PR_{c,i}^{(t+1)}=\bigl(1-d+dD_c^{(t)}\bigr)\,\pi_c(v_i)+d\sum_{j\in\mathcal{N}_i}\frac{PR_{c,j}^{(t)}}{\deg(v_j)}$$
+
+**Importancia.** La masa que los paseos de **las demás** cláusulas dejan en los enunciados
+de $c$:
+
+$$I(c)=\frac{1}{|C|}\sum_{\substack{c'\in C\\ c'\neq c}}\;\sum_{v_i\in V_c}PR_{c',i}$$
+
+| símbolo | significado |
+|---|---|
+| $C$ | las cláusulas con algún enunciado en la tabla |
+| $V_c$ | los enunciados de $c$ que la tabla muestra en las columnas de las dos partes |
+| $\mathcal{N}_i$, $\deg(v_j)$ | vecinos y grado en el grafo del apartado 2 |
+| $d$ | 0.85, la probabilidad de seguir caminando |
+| $D_c^{(t)}$ | la masa que queda en nodos sin vecinos; vuelve por el prior |
+
+Cada paseo para cuando dos rondas difieren menos de $10^{-9}$, o a las 200 rondas. Las
+filas se ordenan de mayor a menor $I(c)$.
+
+El prior solo tiene $1/|V_c|$, sin el $1/|\mathcal{P}|$ de GraphQAG (Li et al., IEEE TVCG,
+2026, §IV-A), porque cada paseo sale de una sola cláusula y no hay masa que repartir entre
+cláusulas. El reparto entre cláusulas está en el $1/|C|$ de la tercera fórmula. Promediando
+los priors de todos los paseos sale exactamente la forma de GraphQAG:
+
+$$\frac{1}{|C|}\sum_{c\in C}\pi_c(v_i)=\frac{1}{|C|\cdot|V_c|}$$
+
+## 5. Cómo leerlo: la tabla de paseos
+
+Un paseo **no** sirve para puntuar a su propia cláusula. Sirve para puntuar a las demás:
+
+- El paseo que empieza en **§11 Liability** deja masa en §8.4 y en §9 Indemnification,
+  porque Liability las modifica. Esa masa **suma puntos a §8.4 y a §9**. Lo que se queda en
+  la propia Liability se descarta.
+- El score de **Liability** sale de los paseos que **empiezan en las otras cláusulas** y
+  llegan hasta ella.
+
+En SteelVault, en porcentaje de la masa de cada paseo:
+
+| el paseo empieza en ↓ / deja masa en → | §11 Liability | §8.4 | §9 Indemnification | §1 Compensation |
+|---|---|---|---|---|
+| §11 Liability | ~~40.7 %~~ | 3.5 % | 5.5 % | 0 % |
+| §8.4 | 11.3 % | ~~26.9 %~~ | 0.8 % | 0 % |
+| §9 Indemnification | 18.0 % | 0.8 % | ~~34.4 %~~ | 0 % |
+| §1 Compensation | 0 % | 0 % | 0 % | ~~52.1 %~~ |
+
+- Cada **fila** es un paseo: empieza en una cláusula y reparte masa por el contrato.
+- Cada **columna** es una cláusula que recibe masa.
+- El **score** de una cláusula es la suma de su columna **sin la diagonal**, sobre las 22
+  cláusulas, dividida por $|C| = 22$.
+
+Lo que falta en cada fila hasta el 100 % se queda en los nodos de cláusula, que no son
+enunciados, y en las cláusulas que no aparecen en esta tabla.
+
+**Liability** recibe sobre todo de §9 Indemnification (18.0 %) y de §8.4 (11.3 %), y un poco
+de §8.1, §8.2 y §8.3. Por eso queda primera.
+
+**Compensation** no tiene ninguna arista hacia otra cláusula:
+
+- su propio paseo nunca sale de ella, así que no da puntos a nadie, y lo que deja en ella
+  misma se descarta;
+- los paseos de las demás nunca llegan a ella, así que su columna suma 0.
+
+Queda con score 0: **sin conexión**.
+
+![De dónde sale el score de cada cláusula: Compensation, Liability y la tabla de paseos](../img/explanation2.png)
+
+*La misma idea en dibujo: arriba Compensation, que ni da ni recibe; en medio Liability, que
+recibe de §8.4 y de §9 y descarta su propia masa; abajo, la tabla de paseos. Errata de la
+imagen: en la barra de Liability, la contribución de §9 es mayor que la de §8.4 (18.0 % frente
+a 11.3 %), y también le llega algo de §8.1, §8.2 y §8.3, que la barra no muestra.*
+
+## 6. Por qué así
+
+### Por qué un paseo por cláusula y no uno solo
+
+Con un solo paseo sobre todo el documento, el valor de cada cláusula es la suma de su
+columna **con** la diagonal, y la diagonal no se puede separar del resto: la masa queda
+mezclada y no se sabe de qué cláusula salió. Esa diagonal es la masa que la cláusula se da a
+sí misma, y en un solo paseo es casi todo:
+
+| contrato | parte del valor que es masa propia, con un solo paseo |
+|---|---|
+| Bellicum | 72 % de media (de 40 % a 97 %) |
+| Santander | 69 % (de 29 % a 100 %) |
+| SteelVault | 82 % (de 53 % a 100 %) |
+| HalversonCorvin | 87 % (de 44 % a 100 %) |
+| OrvaneTalvera | 83 % (de 32 % a 100 %) |
+| lease 10 | 86 % (de 57 % a 100 %) |
+| lease 201 | 82 % (de 50 % a 100 %) |
+| lease 166 | 100 % |
+
+La masa propia depende de cuántos enunciados tiene la cláusula y de cómo se unen entre sí,
+no del resto del contrato. En lease 166 ninguna cláusula conecta con otra y el 100 % del
+valor es masa propia: un solo paseo daría igualmente un orden, pero sería un orden sin
+contenido. Con un paseo por cláusula se ve lo que de verdad pasa: todas tienen entrada 0.
+
+### Por qué el paseo no pasa por las partes
+
+Cada enunciado está unido a su parte, y la parte reparte lo que recibe entre **todos** sus
+enunciados. Una fila con más enunciados recibe más, y el orden vuelve a ser «primero las
+filas con más cuadrados», algo que el lector ya ve en la tabla. Con las partes dentro del
+paseo, la correlación con el tamaño de la fila sube a 0.85–0.97.
+
+Las partes siguen en la tabla como columnas. Solo dejan de ser un camino entre cláusulas.
+
+### Por qué quedan fuera los nodos auxiliares
+
+Los términos definidos, las condiciones, las referencias y los valores no se ven en la
+tabla. Con ellos el orden dependería de cosas que el lector no puede comprobar: dos
+cláusulas parecerían conectadas solo por usar el mismo término definido, aunque ninguna
+mencione a la otra.
+
+## 7. Antes y ahora, en SteelVault
+
+El **método anterior** era un solo paseo sobre el grafo entero, con las partes y los nodos
+auxiliares incluidos, el prior $1/(|C|\cdot|V_c|)$ y la suma de lo que retienen los
+enunciados de cada fila. En ese método las dos partes se quedaban el 15.5 % de toda la masa.
+
+| cláusula | enunciados | antes | puesto | ahora | puesto |
+|---|---|---|---|---|---|
+| 11 Liability | 4 | 36 % | 4.º | **100 %** | **1.º** |
+| 7.2 | 5 | 44 % | 3.º | 63 % | 2.º |
+| 5 Compliance | 2 | 18 % | 20.º | 42 % | 3.º |
+| 8.4 | 2 | 24 % | 12.º | 33 % | 4.º |
+| 9 Indemnification | 2 | 29 % | 7.º | 18 % | 11.º |
+| 1 Compensation | 17 | **100 %** | **1.º** | 0 % | – |
+| 2 Disputes | 12 | 65 % | 2.º | 0 % | – |
+
+*(porcentaje de la cláusula con más valor en cada método)*
+
+Antes, la primera era **Compensation**, la cláusula con más enunciados. El 78 % de su valor
+le llegaba de otras cláusulas, pero a través de las dos partes, no por conexiones reales.
+Ahora la primera es **Liability**, que modifica a §8.4 y a §9 Indemnification.
+
+## 8. Lo que ve el lector
+
+La cabecera de la tabla ofrece tres órdenes, porque responden a preguntas distintas:
+
+| orden | pregunta | de dónde sale |
+|---|---|---|
+| **by size** (por defecto) | ¿dónde hay más en juego? | el número de cuadrados del tipo abierto, en las dos columnas |
+| **by connection** | ¿qué cláusula cambia o condiciona a otras? | este documento: $I(c)$ |
+| **by order** | ¿cómo está escrito? | el orden del documento |
+
+**by size** es el orden por defecto (decisión del 30 de octubre de 2026). Un lector entiende
+«importante» como «muchas obligaciones», y ese orden responde justo a eso, con cuadrados que
+puede contar. **by connection** se llamaba «by relevance»; se renombró porque «relevante»
+sugería importancia en general, y lo que mide es conexión. No se mezclan los dos en un solo
+número: haría falta decidir cuánto pesa cada uno, y eso es un peso.
+
+Con **by size**, el círculo de cada fila es su puesto en esa pestaña: 1, 2, 3… sin saltos.
+Los empates quedan en el orden del documento.
+
+Con **by connection**:
+
+- Las filas conectadas van primero, con su puesto por conexión en el círculo.
+- Las filas con $I(c) = 0$ van al final, en el orden del documento, con «–» en el círculo.
+  Una línea las separa: *«Not connected to any other clause · document order»*.
+- Si **ninguna** fila tiene conexión, como en lease 166, «by connection» queda desactivado.
+- El puesto se calcula una sola vez con los tres tipos de enunciado, así que en cada pestaña
+  los números pueden saltar.
+- La fila que modifica a otra lo dice: «modifies §8.4, §9». Así se ve en la propia fila por
+  qué está arriba.
+
+Con **by order**, el círculo muestra el puesto por conexión.
+
+## 9. Comprobaciones
+
+**El cálculo es exacto.** Rehecho con `networkx` paseo a paseo, la diferencia máxima con el
+módulo va de $3\cdot10^{-13}$ a $3\cdot10^{-11}$ según el contrato.
+
+**Ya no premia el tamaño.** ρ es la correlación de Spearman entre el orden de las filas y su
+número de enunciados: cerca de 1, el orden solo cuenta enunciados; cerca de 0, el tamaño no
+lo decide.
+
+| contrato | filas | ρ antes | ρ ahora | filas sin conexión |
+|---|---|---|---|---|
+| Bellicum | 91 | 0.92 | 0.48 | 0 |
+| Santander | 81 | 0.85 | 0.50 | 3 |
+| SteelVault | 22 | 0.83 | −0.22 | 7 |
+| HalversonCorvin | 19 | 0.89 | −0.22 | 9 |
+| OrvaneTalvera | 48 | 0.59 | −0.03 | 26 |
+| lease 10 | 20 | 0.82 | −0.12 | 8 |
+| lease 201 | 8 | 0.89 | 0.04 | 2 |
+| lease 166 | 9 | 0.81 | — | 9 (todas) |
+
+Un ρ bajo solo dice que el orden ya no es «contar enunciados». No prueba que el orden sea el
+correcto: un orden al azar también daría ρ ≈ 0.
+
+**No depende de $d$.** Con $d$ entre 0.5 y 0.95, el orden apenas cambia frente a
+$d = 0.85$: ρ entre 0.89 y 1.00, y se mantienen entre 7 y 10 de las 10 primeras filas (en
+lease 201, que tiene 8, se mantienen todas).
+
+Entre estos contratos, Bellicum y SteelVault son los grafos que se dan por fiables.
+
+## 10. Qué mide y qué no
+
+- **Mide conexión en los dos sentidos.** Como el grafo no tiene dirección, una cláusula sube
+  tanto si otras la modifican como si ella modifica a otras.
+- **La jerarquía cuenta como conexión.** Una sección recibe masa de sus subcláusulas a
+  través de `is_part_of`. Es razonable, porque forman parte de lo mismo, pero una sección con
+  muchas subcláusulas tiende a subir: puede explicar parte del ρ = 0.48 de Bellicum.
+- **No mide importancia jurídica.** Dice cuánto se conecta una cláusula con el resto del
+  contrato, no cuánto importa para un abogado.
+- **Una fila sin conexión puede ser un hueco de la extracción.** Si el texto menciona otra
+  cláusula y la extracción no lo recogió, la fila queda en 0.
+- **Es del contrato, no de una parte.** Responde «qué cláusula conecta más en este contrato»,
+  nunca «para quién».
+
+### La pestaña del grafo usa otro paseo
+
+La pestaña del grafo sigue mostrando el paseo anterior, sobre el grafo entero, porque dibuja
+también las partes y los nodos auxiliares. El endpoint devuelve los dos:
+
+| campo | de dónde sale |
+|---|---|
+| `byClause` | la importancia $I(c)$ de este documento: ordena las filas |
+| `byNode`, `byStatement`, `priorByNode` | el paseo único sobre el grafo entero, para la pestaña del grafo |
+
+Por eso `byClause` ya no es la suma de `byStatement`, y la importancia de una cláusula en la
+tabla y en el grafo no coincide.

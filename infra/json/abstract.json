@@ -152,6 +152,27 @@
           "does": "Pay rent monthly, use premises lawfully, assist repairs, seek approval for decorations and exchanges, exercise renewal and purchase rights."
         }
       ]
+    },
+    "root::CONTRATO AREQUIPA SERVICE Alicia1": {
+      "documentId": "root::CONTRATO AREQUIPA SERVICE Alicia1",
+      "documentName": "CONTRATO AREQUIPA SERVICE Alicia1.docx",
+      "title": "Contrato de Servicio de Nanas de Fin de Semana",
+      "contractType": "Servicio de intermediación laboral doméstica",
+      "summary": "Por este contrato, {{party-1|Alicia Marybel Diaz Zea}} contrata a través de {{party-2|Arequipa Todo Servicios}} el servicio de nana de fin de semana, cama adentro o afuera, por un sueldo pactado, con garantía de reemplazo por 5 meses y pagos y condiciones específicas detalladas.",
+      "parties": [
+        {
+          "partyId": "party-1",
+          "name": "Alicia Marybel Diaz Zea",
+          "role": "Empleador",
+          "does": "Paga honorarios y sueldo, solicita reemplazos, cumple condiciones de pago y aviso."
+        },
+        {
+          "partyId": "party-2",
+          "name": "Arequipa Todo Servicios",
+          "role": "Agencia de Empleos",
+          "does": "Intermedia la contratación, gestiona reemplazos, valida documentos y administra pagos."
+        }
+      ]
     }
   }
 }

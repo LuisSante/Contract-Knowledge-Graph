@@ -58,7 +58,7 @@ app lee el campo. En los grafos actuales los dos coinciden.
 | `is_part_of` condición → enunciado | Clause Analyzer, su detalle y el documento | A pedido del lector: ver abajo. Con «Mark conditional», en el detalle debajo de la fila cada frase muestra su condición («Condition: IF…»). Solo «Only firm» cambia un conteo, y porque el lector lo pide. |
 | `is_part_of` valor → enunciado | Deadlines | Una duración marca un plazo como «con número». **Se deja fuera del Clause Analyzer a propósito**: ver «Valores» más abajo. |
 | término definido, referencia | Pestaña del grafo | Solo se dibujan ahí. Con la leyenda de Table se fue el único otro lugar donde aparecían. |
-| todas | Orden «by relevance» | El PageRank personalizado recorre todas las aristas, sin dirección y sin peso por tipo. Las aristas influyen en el orden aunque no se vean. |
+| `is_part_of`, `modifies`, `references`, `depends_on` entre cláusulas y enunciados | Orden «by connection» | El PageRank personalizado recorre solo cláusulas, obligaciones, derechos y prohibiciones, sin dirección y sin peso por tipo. Las partes, los términos definidos, las condiciones, las referencias y los valores no entran: ver [`importancia-clausula.md`](../metricas/importancia-clausula.md). |
 | todas | Pestaña del grafo | Se dibujan todas (`kg-graph.ts`). «View in graph» muestra el subgrafo de una cláusula (`clause-subgraph.ts`). |
 
 ### Dónde va cada frase, en detalle
@@ -101,6 +101,11 @@ Responde a «¿qué podría deshacer esta cláusula?».
   naranja si es una prohibición, gris si el grafo une dos cláusulas sin una frase concreta.
   Al hacer clic, la tabla pasa a la pestaña de ese tipo y selecciona la cláusula que
   modifica.
+- **En la fila** de la cláusula que modifica: «modifies §8.4, §9». Cada número va en el color
+  del tipo de la frase de esta cláusula que modifica a la otra. Al hacer clic, la tabla
+  selecciona la cláusula modificada sin cambiar de pestaña. Se añadió el 30 de octubre de 2026
+  porque el orden «by connection» se basa en estas conexiones: sin esta línea, la fila de
+  *Liability* en SteelVault aparecía primera sin ningún motivo visible en ella.
 - **En el documento**, al seleccionar la cláusula: una línea en el margen la une con las
   frases que la modifican, con una etiqueta «modified by §X ⓘ». El ⓘ dice qué la modifica y
   qué significa la relación. Cada etiqueta va a mitad de su propia conexión, entre el
@@ -123,15 +128,18 @@ Responde a «¿qué podría deshacer esta cláusula?».
 Reglas:
 
 - **Solo entre cláusulas distintas.** Una cláusula que se modifica a sí misma no se marca.
-- **Solo la dirección «modified by».** Lo que una cláusula modifica no se muestra en su
-  fila: llenaba la tabla y no responde a la pregunta.
+- **En la fila, las dos direcciones; en el documento, solo «modified by».** Hasta el 30 de
+  octubre de 2026 la fila mostraba solo «modified by»: lo que una cláusula modifica llenaba la
+  tabla y no respondía a la pregunta. Se añadió «modifies» cuando el orden de las filas pasó a
+  depender de estas conexiones (ver
+  [`importancia-clausula.md`](../metricas/importancia-clausula.md)).
 - **Un solo paso, sin cadenas.** Unir todo lo conectado formaba bloques de hasta 17
   cláusulas en Bellicum.
 - **Nunca recalcula conteos.** La arista no distingue «anula» de «limita» ni de «solo
   cita», así que se señala y se deja leer; no se resta ni se suma.
 
 El código está en `graph-payload.ts` (`clauseModifications`, `clauseModifiedBy`,
-`modifiesPartners`), `ClauseRow.tsx` y `EvidenceBridgeOverlay.tsx`.
+`clauseModifies`, `modifiesPartners`), `ClauseRow.tsx` y `EvidenceBridgeOverlay.tsx`.
 
 ### `depends_on`, en detalle
 

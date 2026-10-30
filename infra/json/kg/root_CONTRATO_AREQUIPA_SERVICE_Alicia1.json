@@ -1,0 +1,1513 @@
+{
+  "parties": [
+    {
+      "id": "party-1",
+      "name": "Alicia Marybel Diaz Zea",
+      "role": "Empleador",
+      "address": "Urb. Santa Maria de Lambramani c-8 - JLBR",
+      "aliases": [
+        "Cliente",
+        "El Cliente",
+        "El Empleador",
+        "Empleador"
+      ],
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-10",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-11",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-12",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-14",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-15",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-16",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-17",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-18",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-19",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-20",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-21",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-26",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-7",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-8",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-9"
+      ]
+    },
+    {
+      "id": "party-2",
+      "name": "Arequipa Todo Servicios",
+      "role": "Agencia de Empleos",
+      "address": "",
+      "aliases": [
+        "Agencia",
+        "Agencia Arequipa Todo Servicios",
+        "Agencia de Empleos",
+        "Agencia de Empleos Arequipa todo servicios",
+        "LOGISTIKO"
+      ],
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-15",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-17",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-18",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-20",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-21",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-29",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-30",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-7",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-8"
+      ]
+    }
+  ],
+  "clauses": [
+    {
+      "id": "clause-1",
+      "ref": "1",
+      "heading": "",
+      "level": 1,
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-8"
+      ]
+    },
+    {
+      "id": "clause-2",
+      "ref": "2",
+      "heading": "",
+      "level": 1,
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-9"
+      ]
+    },
+    {
+      "id": "clause-3",
+      "ref": "3",
+      "heading": "",
+      "level": 1,
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-10"
+      ]
+    },
+    {
+      "id": "clause-4",
+      "ref": "4",
+      "heading": "",
+      "level": 1,
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-11"
+      ]
+    },
+    {
+      "id": "clause-5",
+      "ref": "5",
+      "heading": "",
+      "level": 1,
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-12"
+      ]
+    },
+    {
+      "id": "clause-6",
+      "ref": "6",
+      "heading": "",
+      "level": 1,
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-13"
+      ]
+    },
+    {
+      "id": "clause-7",
+      "ref": "7",
+      "heading": "",
+      "level": 1,
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-14"
+      ]
+    },
+    {
+      "id": "clause-8",
+      "ref": "8",
+      "heading": "",
+      "level": 1,
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-15"
+      ]
+    },
+    {
+      "id": "clause-9",
+      "ref": "9",
+      "heading": "",
+      "level": 1,
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-16"
+      ]
+    },
+    {
+      "id": "clause-10",
+      "ref": "10",
+      "heading": "",
+      "level": 1,
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-17"
+      ]
+    },
+    {
+      "id": "clause-11",
+      "ref": "11",
+      "heading": "",
+      "level": 1,
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-18"
+      ]
+    },
+    {
+      "id": "clause-12",
+      "ref": "12",
+      "heading": "",
+      "level": 1,
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-19"
+      ]
+    },
+    {
+      "id": "clause-13",
+      "ref": "13",
+      "heading": "",
+      "level": 1,
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-20"
+      ]
+    },
+    {
+      "id": "clause-14",
+      "ref": "14",
+      "heading": "",
+      "level": 1,
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-21"
+      ]
+    },
+    {
+      "id": "clause-15",
+      "ref": "15",
+      "heading": "",
+      "level": 1,
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-22",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-25",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-26",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-28",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-29",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-30",
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-31"
+      ]
+    }
+  ],
+  "definedTerms": [],
+  "obligations": [
+    {
+      "id": "obligation-1",
+      "action": "Pagar comisión inicial",
+      "summary": "El Empleador debe pagar a la Agencia los porcentajes correspondientes al Cliente y a la Empleada al firmar.",
+      "text": "El Empleador pagará a la Agencia Arequipa Todo Servicios, a la firma del contrato el 25% por parte del Cliente y el 25% por parte de la Empleada, del sueldo pactado.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "El Empleador pagará a la Agencia Arequipa Todo Servicios, a la firma del contrato el 25% por parte del Cliente y el 25% por parte de la Empleada, del sueldo pactado."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-1",
+      "deadline": "a la firma del contrato",
+      "frequency": "",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-8"
+      ]
+    },
+    {
+      "id": "obligation-2",
+      "action": "Trabajar semana adicional",
+      "summary": "La Empleada debe trabajar una semana adicional antes de su primera liquidación.",
+      "text": "La Empleada tendrá que trabajar una semana adicional a su mes para su primera liquidación.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "La Empleada tendrá que trabajar una semana adicional a su mes para su primera liquidación."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-3",
+      "deadline": "para su primera liquidación",
+      "frequency": "",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-10"
+      ]
+    },
+    {
+      "id": "obligation-3",
+      "action": "Descontar adelanto",
+      "summary": "El Cliente debe descontar el 25% correspondiente a la semana adicional.",
+      "text": "Esta semana adicional representa el 25% del descuento que el Cliente tiene que descontar",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Esta semana adicional representa el 25% del descuento que el Cliente tiene que descontar"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": null,
+      "clauseId": "clause-3",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-10"
+      ]
+    },
+    {
+      "id": "obligation-4",
+      "action": "Descontar semana por mes incompleto",
+      "summary": "Si la Empleada no cumple el mes, el Empleador debe descontar una semana para recuperar su adelanto.",
+      "text": "En caso la Empleada no llegara a cumplir su mes, el Empleador descontará siempre una semana a la Empleada, esto es equivalente a lo que pagó por parte de ella como adelanto de sueldo.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "En caso la Empleada no llegara a cumplir su mes, el Empleador descontará siempre una semana a la Empleada, esto es equivalente a lo que pagó por parte de ella como adelanto de sueldo."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": null,
+      "clauseId": "clause-4",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-11"
+      ]
+    },
+    {
+      "id": "obligation-5",
+      "action": "Avisar despido",
+      "summary": "El Empleador debe avisar a la Empleada con quince días de anticipación si desea prescindir de sus servicios.",
+      "text": "En caso el Empleador quisiera prescindir de los servicio de la Empleada, tendrá que avisarle a la Empleada con 15 días de anticipación de acuerdo a ley",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "En caso el Empleador quisiera prescindir de los servicio de la Empleada, tendrá que avisarle a la Empleada con 15 días de anticipación de acuerdo a ley"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": null,
+      "clauseId": "clause-5",
+      "deadline": "con 15 días de anticipación",
+      "frequency": "",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-12"
+      ]
+    },
+    {
+      "id": "obligation-6",
+      "action": "Pagar despido inmediato",
+      "summary": "El Empleador debe pagar quince días previamente para efectuar el despido inmediato.",
+      "text": "previo pago de los 15 días",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "previo pago de los 15 días"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": null,
+      "clauseId": "clause-5",
+      "deadline": "previo",
+      "frequency": "",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-12"
+      ]
+    },
+    {
+      "id": "obligation-7",
+      "action": "Pagar sueldo",
+      "summary": "El Empleador debe pagar a la Empleada el sueldo pactado de mil nuevos soles.",
+      "text": "El sueldo pactado es: 1000 nuevos soles",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "El sueldo pactado es: 1000 nuevos soles"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": null,
+      "clauseId": "clause-6",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-13"
+      ]
+    },
+    {
+      "id": "obligation-8",
+      "action": "Pagar mensualmente",
+      "summary": "El Empleador debe pagar a la Empleada el día dos de cada mes.",
+      "text": "El Empleador pagará a la Empleada los días: 02 de cada mes",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "El Empleador pagará a la Empleada los días: 02 de cada mes"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": null,
+      "clauseId": "clause-7",
+      "deadline": "02 de cada mes",
+      "frequency": "cada mes",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-14"
+      ]
+    },
+    {
+      "id": "obligation-9",
+      "action": "Devolver adelanto mediante días adicionales",
+      "summary": "La Empleada debe dejar siete días adicionales como devolución del adelanto del Empleador.",
+      "text": "dejando la Empleada 7 días adicionales como devolución al Empleador de su 25%.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "dejando la Empleada 7 días adicionales como devolución al Empleador de su 25%."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-7",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-14"
+      ]
+    },
+    {
+      "id": "obligation-10",
+      "action": "Pagar en Agencia tras abandono",
+      "summary": "El Empleador debe realizar en la Agencia el pago de los días trabajados si la Empleada abandona sin el preaviso requerido.",
+      "text": "Si la Empleada hace abandono de trabajo y no avisara con 15 días de anticipación, su pago por los días de trabajo será realizado en la Agencia de Empleos Arequipa todo servicios",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Si la Empleada hace abandono de trabajo y no avisara con 15 días de anticipación, su pago por los días de trabajo será realizado en la Agencia de Empleos Arequipa todo servicios"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": null,
+      "clauseId": "clause-8",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-15"
+      ]
+    },
+    {
+      "id": "obligation-11",
+      "action": "Pagar días trabajados para reemplazo",
+      "summary": "El Cliente debe pagar en la Agencia los días trabajados por la Empleada al efectuar el reemplazo.",
+      "text": "Es requisito indispensable el pago de los días de trabajo de la Empleada en la Agencia al momento del reemplazo que efectúe el Cliente.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Es requisito indispensable el pago de los días de trabajo de la Empleada en la Agencia al momento del reemplazo que efectúe el Cliente."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-10",
+      "deadline": "al momento del reemplazo que efectúe el Cliente",
+      "frequency": "",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-17"
+      ]
+    },
+    {
+      "id": "obligation-12",
+      "action": "Solicitar reemplazo formalmente",
+      "summary": "El Cliente debe solicitar los reemplazos por carta sencilla con quince días de anticipación.",
+      "text": "Para los reemplazos, estos deben pedirse de manera formal, mediante carta sencilla, para tener un registro y un cargo por parte del Cliente con 15 días de anticipación",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Para los reemplazos, estos deben pedirse de manera formal, mediante carta sencilla, para tener un registro y un cargo por parte del Cliente con 15 días de anticipación"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-12",
+      "deadline": "con 15 días de anticipación",
+      "frequency": "",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-19"
+      ]
+    },
+    {
+      "id": "obligation-13",
+      "action": "Pagar comisión de reemplazo",
+      "summary": "El Cliente debe abonar a la Agencia el 25% del sueldo pactado por reemplazo.",
+      "text": "El Cliente tendrá que abonar a la Agencia de Empleos Arequipa todo servicios, el 25 % del sueldo pactado por concepto de reemplazo",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "El Cliente tendrá que abonar a la Agencia de Empleos Arequipa todo servicios, el 25 % del sueldo pactado por concepto de reemplazo"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-13",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-20"
+      ]
+    },
+    {
+      "id": "obligation-14",
+      "action": "Descontar comisión en liquidación",
+      "summary": "El Cliente debe descontar a la Empleada la comisión de reemplazo en su primera liquidación, salvo trabajo adicional.",
+      "text": "el cual será descontado a la Empleada en su primera liquidación (Salvo que la empleada trabaje una semana adicional).",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "el cual será descontado a la Empleada en su primera liquidación (Salvo que la empleada trabaje una semana adicional)."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": null,
+      "clauseId": "clause-13",
+      "deadline": "en su primera liquidación",
+      "frequency": "",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-20"
+      ]
+    }
+  ],
+  "rights": [
+    {
+      "id": "right-1",
+      "action": "Despedir inmediatamente",
+      "summary": "El Empleador puede despedir inmediatamente previo pago de quince días.",
+      "text": "la misma contempla el despido inmediato, previo pago de los 15 días.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "la misma contempla el despido inmediato, previo pago de los 15 días."
+      ],
+      "burdenPartyId": null,
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-5",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-12"
+      ]
+    },
+    {
+      "id": "right-2",
+      "action": "Exigir garantía de reemplazo",
+      "summary": "El Empleador tiene derecho a reemplazos durante cinco meses, con un plazo máximo de quince días hábiles.",
+      "text": "El Empleador tendrá garantía por reemplazo de personal por espacio de 5 meses y su reemplazo no será mayor a 15 días hábiles",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "El Empleador tendrá garantía por reemplazo de personal por espacio de 5 meses y su reemplazo no será mayor a 15 días hábiles"
+      ],
+      "burdenPartyId": "party-2",
+      "benefitPartyId": "party-1",
+      "clauseId": "clause-9",
+      "deadline": "15 días hábiles",
+      "frequency": "",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-16"
+      ]
+    },
+    {
+      "id": "right-3",
+      "action": "Excluir devoluciones",
+      "summary": "La Agencia queda exenta de devolver dinero en cualquier caso.",
+      "text": "no habrá devolución de dinero en ningún caso",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "no habrá devolución de dinero en ningún caso"
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-9",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-16"
+      ]
+    },
+    {
+      "id": "right-4",
+      "action": "Excluir garantía de inmueble y personas",
+      "summary": "La Agencia excluye garantías sobre el inmueble y sus habitantes.",
+      "text": "tampoco se garantiza el inmueble, ni las personas que lo habiten, ya que no somos una Empresa de Seguros.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "tampoco se garantiza el inmueble, ni las personas que lo habiten, ya que no somos una Empresa de Seguros."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-9",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-16"
+      ]
+    },
+    {
+      "id": "right-5",
+      "action": "Quedar liberada de garantía por falta de pago",
+      "summary": "La Agencia queda liberada de la garantía y el contrato se anula si el Cliente incumple el pago requerido para el reemplazo.",
+      "text": "Si no se respeta este punto, el Cliente perderá la garantía de reemplazos, se tomará este hecho como devolución y anulación del presente Contrato.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Si no se respeta este punto, el Cliente perderá la garantía de reemplazos, se tomará este hecho como devolución y anulación del presente Contrato."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-10",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-17"
+      ]
+    },
+    {
+      "id": "right-6",
+      "action": "Quedar liberada por condiciones laborales o maltrato",
+      "summary": "La Agencia queda liberada de la garantía y los contratos se anulan ante las comunicaciones o el maltrato indicados.",
+      "text": "Los Contratos serán anulados, si mediante carta los trabajadores, comuniquen a la Agencia en 2 oportunidades diferentes que no cuentan con las condiciones mínimas para laborar, o si este ha recibido algún maltrato verbal ó físico, cabe señalar que el Cliente perdería su garantía.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Los Contratos serán anulados, si mediante carta los trabajadores, comuniquen a la Agencia en 2 oportunidades diferentes que no cuentan con las condiciones mínimas para laborar, o si este ha recibido algún maltrato verbal ó físico, cabe señalar que el Cliente perdería su garantía."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-11",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-18"
+      ]
+    },
+    {
+      "id": "right-7",
+      "action": "Excluir evaluación por trabajo domiciliario",
+      "summary": "La Agencia excluye que la idoneidad del servicio se mida por el trabajo de la Empleada dentro del domicilio.",
+      "text": "Sobre la idoneidad del servicio, no se puede medir en base al trabajo de la Empleada dentro del domicilio (Ya que es un proceso de adaptación).",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "Sobre la idoneidad del servicio, no se puede medir en base al trabajo de la Empleada dentro del domicilio (Ya que es un proceso de adaptación)."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-14",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-21"
+      ]
+    },
+    {
+      "id": "right-8",
+      "action": "Limitar remedio a reemplazos",
+      "summary": "La Agencia limita el remedio a reemplazos cuando la Empleada no esté de acuerdo con las costumbres del Cliente.",
+      "text": "por cualquier eventualidad en que la Empleada no este de acuerdo con las costumbres del Cliente, sólo existe la posibilidad de reemplazos.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "por cualquier eventualidad en que la Empleada no este de acuerdo con las costumbres del Cliente, sólo existe la posibilidad de reemplazos."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": "party-2",
+      "clauseId": "clause-14",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-21"
+      ]
+    }
+  ],
+  "prohibitions": [
+    {
+      "id": "prohibition-1",
+      "action": "No descontar gastos administrativos",
+      "summary": "El Empleador no puede descontar a la Empleada los gastos administrativos de doscientos nuevos soles.",
+      "text": "los gastos administrativos que ellos demandan, que equivalen a S/. 200.00 Nuevos Soles por concepto de verificaciones y validación documentaría, que no será descontado a la Empleada en ningún caso.",
+      "evidenceVerified": true,
+      "evidenceSpans": [
+        "los gastos administrativos que ellos demandan, que equivalen a S/. 200.00 Nuevos Soles por concepto de verificaciones y validación documentaría, que no será descontado a la Empleada en ningún caso."
+      ],
+      "burdenPartyId": "party-1",
+      "benefitPartyId": null,
+      "clauseId": "clause-2",
+      "deadline": "",
+      "frequency": "",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-9"
+      ]
+    }
+  ],
+  "conditions": [
+    {
+      "id": "condition-1",
+      "trigger": "En caso la Empleada no llegara a cumplir su mes",
+      "operator": "IF",
+      "gatesId": "obligation-4",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-11"
+      ]
+    },
+    {
+      "id": "condition-2",
+      "trigger": "En caso el Empleador quisiera prescindir de los servicio de la Empleada",
+      "operator": "IF",
+      "gatesId": "obligation-5",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-12"
+      ]
+    },
+    {
+      "id": "condition-3",
+      "trigger": "previo pago de los 15 días",
+      "operator": "UPON",
+      "gatesId": "right-1",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-12"
+      ]
+    },
+    {
+      "id": "condition-4",
+      "trigger": "el despido inmediato",
+      "operator": "IF",
+      "gatesId": "obligation-6",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-12"
+      ]
+    },
+    {
+      "id": "condition-5",
+      "trigger": "Si la Empleada hace abandono de trabajo y no avisara con 15 días de anticipación",
+      "operator": "IF",
+      "gatesId": "obligation-10",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-15"
+      ]
+    },
+    {
+      "id": "condition-6",
+      "trigger": "el pago de los días de trabajo de la Empleada en la Agencia al momento del reemplazo que efectúe el Cliente",
+      "operator": "IF",
+      "gatesId": "right-2",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-17"
+      ]
+    },
+    {
+      "id": "condition-7",
+      "trigger": "Si no se respeta este punto",
+      "operator": "IF",
+      "gatesId": "right-5",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-17"
+      ]
+    },
+    {
+      "id": "condition-8",
+      "trigger": "si mediante carta los trabajadores, comuniquen a la Agencia en 2 oportunidades diferentes que no cuentan con las condiciones mínimas para laborar",
+      "operator": "IF",
+      "gatesId": "right-6",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-18"
+      ]
+    },
+    {
+      "id": "condition-9",
+      "trigger": "si este ha recibido algún maltrato verbal ó físico",
+      "operator": "IF",
+      "gatesId": "right-6",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-18"
+      ]
+    },
+    {
+      "id": "condition-10",
+      "trigger": "Salvo que la empleada trabaje una semana adicional",
+      "operator": "UNLESS",
+      "gatesId": "obligation-14",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-20"
+      ]
+    },
+    {
+      "id": "condition-11",
+      "trigger": "por cualquier eventualidad en que la Empleada no este de acuerdo con las costumbres del Cliente",
+      "operator": "IF",
+      "gatesId": "right-8",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-21"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "id": "reference-1",
+      "name": "ley",
+      "citation": "",
+      "citedById": "clause-5",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-12"
+      ]
+    }
+  ],
+  "values": [
+    {
+      "id": "value-1",
+      "valueType": "Percentage",
+      "amount": "25",
+      "unit": "%",
+      "quantifiesId": "obligation-1",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-8"
+      ]
+    },
+    {
+      "id": "value-2",
+      "valueType": "Percentage",
+      "amount": "25",
+      "unit": "%",
+      "quantifiesId": "obligation-1",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-8"
+      ]
+    },
+    {
+      "id": "value-3",
+      "valueType": "Currency",
+      "amount": "200.00",
+      "unit": "Nuevos Soles",
+      "quantifiesId": "prohibition-1",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-9"
+      ]
+    },
+    {
+      "id": "value-4",
+      "valueType": "Percentage",
+      "amount": "25",
+      "unit": "%",
+      "quantifiesId": "clause-2",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-9"
+      ]
+    },
+    {
+      "id": "value-5",
+      "valueType": "Duration",
+      "amount": "5",
+      "unit": "meses",
+      "quantifiesId": "clause-2",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-9"
+      ]
+    },
+    {
+      "id": "value-6",
+      "valueType": "Duration",
+      "amount": "1",
+      "unit": "semana",
+      "quantifiesId": "obligation-2",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-10"
+      ]
+    },
+    {
+      "id": "value-7",
+      "valueType": "Percentage",
+      "amount": "25",
+      "unit": "%",
+      "quantifiesId": "obligation-3",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-10"
+      ]
+    },
+    {
+      "id": "value-8",
+      "valueType": "Duration",
+      "amount": "1",
+      "unit": "semana",
+      "quantifiesId": "obligation-4",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-11"
+      ]
+    },
+    {
+      "id": "value-9",
+      "valueType": "Percentage",
+      "amount": "25",
+      "unit": "%",
+      "quantifiesId": "obligation-4",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-11"
+      ]
+    },
+    {
+      "id": "value-10",
+      "valueType": "Duration",
+      "amount": "15",
+      "unit": "días",
+      "quantifiesId": "obligation-5",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-12"
+      ]
+    },
+    {
+      "id": "value-11",
+      "valueType": "Duration",
+      "amount": "15",
+      "unit": "días",
+      "quantifiesId": "obligation-6",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-12"
+      ]
+    },
+    {
+      "id": "value-12",
+      "valueType": "Currency",
+      "amount": "1000",
+      "unit": "nuevos soles",
+      "quantifiesId": "obligation-7",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-13"
+      ]
+    },
+    {
+      "id": "value-13",
+      "valueType": "Duration",
+      "amount": "7",
+      "unit": "días",
+      "quantifiesId": "obligation-9",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-14"
+      ]
+    },
+    {
+      "id": "value-14",
+      "valueType": "Percentage",
+      "amount": "25",
+      "unit": "%",
+      "quantifiesId": "obligation-9",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-14"
+      ]
+    },
+    {
+      "id": "value-15",
+      "valueType": "Duration",
+      "amount": "15",
+      "unit": "días",
+      "quantifiesId": "obligation-10",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-15"
+      ]
+    },
+    {
+      "id": "value-16",
+      "valueType": "Duration",
+      "amount": "5",
+      "unit": "meses",
+      "quantifiesId": "right-2",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-16"
+      ]
+    },
+    {
+      "id": "value-17",
+      "valueType": "Duration",
+      "amount": "15",
+      "unit": "días hábiles",
+      "quantifiesId": "right-2",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-16"
+      ]
+    },
+    {
+      "id": "value-18",
+      "valueType": "Quantity",
+      "amount": "2",
+      "unit": "oportunidades",
+      "quantifiesId": "right-6",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-18"
+      ]
+    },
+    {
+      "id": "value-19",
+      "valueType": "Duration",
+      "amount": "15",
+      "unit": "días",
+      "quantifiesId": "obligation-12",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-19"
+      ]
+    },
+    {
+      "id": "value-20",
+      "valueType": "Percentage",
+      "amount": "25",
+      "unit": "%",
+      "quantifiesId": "obligation-13",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-20"
+      ]
+    },
+    {
+      "id": "value-21",
+      "valueType": "Duration",
+      "amount": "1",
+      "unit": "semana",
+      "quantifiesId": "obligation-14",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-20"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "right-1",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-1",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-2",
+      "target": "clause-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-2",
+      "target": "party-1",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-3",
+      "target": "clause-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-3",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-4",
+      "target": "clause-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-4",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-5",
+      "target": "clause-10",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-5",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-6",
+      "target": "clause-11",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-6",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-7",
+      "target": "clause-14",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-7",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-8",
+      "target": "clause-14",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-8",
+      "target": "party-2",
+      "type": "grants_right_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-1",
+      "target": "clause-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-1",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-2",
+      "target": "clause-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-3",
+      "target": "clause-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-3",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-4",
+      "target": "clause-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-4",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-5",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-5",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-6",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-6",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-7",
+      "target": "clause-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-7",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-8",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-8",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-9",
+      "target": "clause-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-10",
+      "target": "clause-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-10",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-11",
+      "target": "clause-10",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-11",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-12",
+      "target": "clause-12",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-12",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-13",
+      "target": "clause-13",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-13",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-14",
+      "target": "clause-13",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "obligation-14",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-1",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "prohibition-1",
+      "target": "party-1",
+      "type": "assigns_obligation_to",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-1",
+      "target": "obligation-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-2",
+      "target": "obligation-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-3",
+      "target": "right-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-4",
+      "target": "obligation-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-5",
+      "target": "obligation-10",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-6",
+      "target": "right-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-7",
+      "target": "right-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-8",
+      "target": "right-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-9",
+      "target": "right-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-10",
+      "target": "obligation-14",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "condition-11",
+      "target": "right-8",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "reference-1",
+      "target": "clause-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-1",
+      "target": "obligation-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-2",
+      "target": "obligation-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-3",
+      "target": "prohibition-1",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-4",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-5",
+      "target": "clause-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-6",
+      "target": "obligation-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-7",
+      "target": "obligation-3",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-8",
+      "target": "obligation-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-9",
+      "target": "obligation-4",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-10",
+      "target": "obligation-5",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-11",
+      "target": "obligation-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-12",
+      "target": "obligation-7",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-13",
+      "target": "obligation-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-14",
+      "target": "obligation-9",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-15",
+      "target": "obligation-10",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-16",
+      "target": "right-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-17",
+      "target": "right-2",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-18",
+      "target": "right-6",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-19",
+      "target": "obligation-12",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-20",
+      "target": "obligation-13",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "value-21",
+      "target": "obligation-14",
+      "type": "is_part_of",
+      "evidence": "",
+      "paragraphIds": []
+    },
+    {
+      "source": "right-5",
+      "target": "clause-9",
+      "type": "modifies",
+      "evidence": "el Cliente perderá la garantía de reemplazos",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-17"
+      ]
+    },
+    {
+      "source": "right-6",
+      "target": "clause-9",
+      "type": "modifies",
+      "evidence": "cabe señalar que el Cliente perdería su garantía.",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-18"
+      ]
+    },
+    {
+      "source": "right-8",
+      "target": "clause-9",
+      "type": "modifies",
+      "evidence": "sólo existe la posibilidad de reemplazos.",
+      "paragraphIds": [
+        "root::CONTRATO AREQUIPA SERVICE Alicia1-p-21"
+      ]
+    }
+  ]
+}

@@ -68,6 +68,26 @@ function rewriteLink(node: Element, sourcePath: string, docs: DocEntry[]): void 
 	};
 }
 
+const IMAGE = /\.(?:png|jpe?g|gif|svg|webp)$/i;
+
+/** A relative image inside docs/ is served by /docs-asset, so the Markdown keeps the path
+ *  that also works on disk and on GitHub. */
+function rewriteImage(node: Element, sourcePath: string): void {
+	const src = String(node.properties.src ?? '');
+	if (!src || /^(?:[a-z][\w+.-]*:|\/|#)/i.test(src)) return;
+
+	let decoded: string;
+	try {
+		decoded = decodeURIComponent(src);
+	} catch {
+		return;
+	}
+
+	const target = path.posix.normalize(path.posix.join(path.posix.dirname(sourcePath), decoded));
+	if (!target.startsWith('docs/') || !IMAGE.test(target)) return;
+	node.properties.src = `/docs-asset/${target.slice('docs/'.length).split('/').map(encodeURIComponent).join('/')}`;
+}
+
 function wrapTables(node: Root | Element): void {
 	node.children = node.children.map((child) => {
 		if (child.type !== 'element') return child;
@@ -133,6 +153,7 @@ export async function renderDoc(source: string, sourcePath: string, docs: DocEnt
 					});
 				}
 				if (node.tagName === 'a') rewriteLink(node, sourcePath, docs);
+				if (node.tagName === 'img') rewriteImage(node, sourcePath);
 			});
 		})
 		.use(() => wrapTables)

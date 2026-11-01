@@ -13,8 +13,10 @@ export const DEONTIC_KINDS: DeonticKind[] = ['obligation', 'right', 'prohibition
 export interface Served {
 	mark: GridMark;
 	kind: DeonticKind;
-	/** The party it serves; a reciprocal statement serves both. */
-	to: Side | 'both';
+	/** The party it serves; a reciprocal statement serves both. Null for an obligation or
+	 *  prohibition owed to neither of the two (a third party, or nobody the contract names):
+	 *  it still belongs to the party it binds, and is listed with it. */
+	to: Side | 'both' | null;
 	/** The party that has to honour it, when it is one of the two. */
 	by: Side | 'both' | null;
 	/** The contract's own words for it. */
@@ -90,21 +92,22 @@ export function clauseTitle(
 /**
  * Who a statement in `lane` of the owner grid serves, and who has to honour it: a right
  * serves its holder, an obligation or prohibition the party on its other end, a reciprocal
- * statement both. Null when it serves neither of the two (owed to a third party, or to
- * nobody the contract names).
+ * statement both. An obligation or prohibition owed to neither of the two (a third party, or
+ * nobody the contract names) serves nobody, but is still the bound party's to honour.
  */
-export function creditOf(mark: GridMark, lane: GridLane): Pick<Served, 'to' | 'by'> | null {
+export function creditOf(mark: GridMark, lane: GridLane): Pick<Served, 'to' | 'by'> {
 	const other =
 		mark.counterpartLane === 'a' || mark.counterpartLane === 'b' ? mark.counterpartLane : null;
 	if (lane === 'shared') return { to: 'both', by: 'both' };
 	if (mark.kind === 'right') return { to: lane, by: other };
-	return other ? { to: other, by: lane } : null;
+	return { to: other, by: lane };
 }
 
 /**
  * Every deontic statement in the given lanes, credited to the party it favours:
  * a right to its holder, an obligation or prohibition to the party on its other end, a
- * reciprocal statement to both. Each one counts once; nothing is weighted. By default only
+ * reciprocal statement to both. Each one counts once; nothing is weighted. One owed to neither
+ * party is listed with the party it binds and counts for nobody. By default only
  * the two parties' lanes: the extraction writes a reciprocal provision as one copy per
  * party, so the shared lane is almost always empty.
  */
@@ -137,9 +140,9 @@ export function tallyClauses(
 			for (const mark of row.marks[lane]) {
 				if (!DEONTIC_MARK_KINDS.includes(mark.kind)) continue;
 				const kind = mark.kind as DeonticKind;
-				const credit = creditOf(mark, lane);
-				if (!credit) continue;
-				const { to, by } = credit;
+				// Listed even when it serves neither party: the detail shows each party's own
+				// statements, and the row already shows its square. It counts for nobody.
+				const { to, by } = creditOf(mark, lane);
 				tally.served.push({
 					mark,
 					kind,

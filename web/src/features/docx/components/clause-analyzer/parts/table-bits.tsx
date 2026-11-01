@@ -373,10 +373,8 @@ export function RankBadge({ rank, className }: { rank: number | undefined; class
 
 export function SectionTag({ section }: { section: string }) {
 	return (
-		// Set like a statute book's section mark: the § in the text face, no box around it.
-		<span className="mr-1.5 font-serif font-normal text-muted-foreground tabular-nums">
-			{section}
-		</span>
+		// A section mark beside the name, no box around it.
+		<span className="mr-1.5 font-normal text-muted-foreground tabular-nums">{section}</span>
 	);
 }
 

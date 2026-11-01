@@ -1,14 +1,8 @@
 import type { Metadata } from 'next';
-import { Public_Sans, Source_Serif_4 } from 'next/font/google';
 import { Providers } from '@/app/providers';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { LoadingOverlay } from '@/components/common/LoadingOverlay';
 import '@/styles/globals.css';
-
-/** The interface's face (Public Sans, a civic sans) and the one for what reads as legal text:
- * contract titles, clause names, parties (Source Serif 4, a book face). */
-const sans = Public_Sans({ subsets: ['latin', 'latin-ext'], variable: '--font-public-sans' });
-const serif = Source_Serif_4({ subsets: ['latin', 'latin-ext'], variable: '--font-source-serif' });
 
 export const metadata: Metadata = {
 	title: 'Clause Explorer',
@@ -26,11 +20,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 	return (
 		// The inline script below sets `dark` on <html> before the first paint, so the server's
 		// class list and the DOM differ on purpose.
-		<html
-			lang="en"
-			className={`h-full antialiased ${sans.variable} ${serif.variable}`}
-			suppressHydrationWarning
-		>
+		<html lang="en" className="h-full antialiased" suppressHydrationWarning>
 			<head>
 				<script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
 			</head>

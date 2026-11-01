@@ -28,7 +28,7 @@ export function DocxPageHeader({ documentName, loading = false }: DocxPageHeader
 		>
 			<Link
 				href="/"
-				className="shrink-0 font-serif text-[15px] font-semibold text-primary transition-opacity hover:opacity-75"
+				className="shrink-0 text-sm font-medium text-primary transition-opacity hover:opacity-75"
 			>
 				{BRAND_NAME}
 			</Link>
@@ -36,10 +36,7 @@ export function DocxPageHeader({ documentName, loading = false }: DocxPageHeader
 			<div className="pointer-events-none absolute top-1/2 left-1/2 flex max-w-[58%] -translate-x-1/2 -translate-y-1/2 items-center gap-1.5">
 				<FileText className="size-3.5 shrink-0 text-muted-foreground" />
 				{/* The page's heading: the contract being read. */}
-				<h1
-					className="truncate font-serif text-sm text-header-foreground"
-					title={title || undefined}
-				>
+				<h1 className="truncate text-[13px] text-header-foreground" title={title || undefined}>
 					{title || (loading ? 'Loading document…' : 'No document selected')}
 				</h1>
 			</div>

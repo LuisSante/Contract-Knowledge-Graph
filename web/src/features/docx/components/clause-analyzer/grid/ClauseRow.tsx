@@ -235,7 +235,7 @@ export const ClauseRow = memo(function ClauseRow({
 						<RankBadge rank={lead.rank} />
 						{/* The heading is inline text, not a button box, so the icon follows its last
 					    word when it wraps instead of dropping to a line of its own. */}
-						<div className="min-w-0 flex-1 font-serif text-[15px] leading-snug">
+						<div className="min-w-0 flex-1 text-sm leading-snug">
 							<span
 								role="button"
 								tabIndex={unfiled ? -1 : 0}
@@ -256,7 +256,7 @@ export const ClauseRow = memo(function ClauseRow({
 							)}
 							{against && (
 								<span
-									className="ml-1.5 inline-block rounded-full bg-destructive/10 px-2 py-px align-[1px] font-sans text-2xs font-semibold whitespace-nowrap text-[#b90009] dark:text-destructive"
+									className="ml-1.5 inline-block rounded-full bg-destructive/10 px-2 py-px align-[1px] text-2xs font-semibold whitespace-nowrap text-[#b90009] dark:text-destructive"
 									title="Against you in this type: you carry more obligations or prohibitions here, or the other party holds more rights"
 								>
 									Against you

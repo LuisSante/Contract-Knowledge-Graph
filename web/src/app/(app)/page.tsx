@@ -53,7 +53,7 @@ function DocumentCard({ doc, showGroup }: { doc: DocumentMeta; showGroup: boolea
 					<FileText className="size-[18px]" />
 				</span>
 				<div className="min-w-0 flex-1">
-					<p className="line-clamp-2 font-serif text-[15px] font-semibold break-words">{title}</p>
+					<p className="line-clamp-2 text-sm font-medium break-words">{title}</p>
 					{showHint && <p className="truncate text-xs text-muted-foreground">{hint}</p>}
 					{showGroup && !DEFAULT_GROUPS.has(group) && (
 						<Badge variant="secondary" className="mt-2 rounded-full font-normal">
@@ -129,7 +129,7 @@ export default function Home() {
 					<Scale className="size-5" />
 				</span>
 				<div className="min-w-0 flex-1">
-					<h1 className="font-serif text-2xl leading-tight font-semibold">{BRAND_NAME}</h1>
+					<h1 className="text-xl leading-tight font-medium">{BRAND_NAME}</h1>
 					<p className="text-sm text-muted-foreground">
 						Clause impact per party in legal contracts
 					</p>

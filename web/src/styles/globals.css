@@ -48,8 +48,7 @@
 /* Inline: utilities read the token (`var(--primary)`) where they are used, not a copy resolved
    on <html>, so a light island (`.theme-light`) that re-declares the tokens gets light colours. */
 @theme inline {
-	--font-sans: var(--font-public-sans), 'Inter Variable', sans-serif;
-	--font-serif: var(--font-source-serif), Georgia, serif;
+	--font-sans: 'Avenir Web', 'Inter Variable', sans-serif;
 	--text-2xs: 0.6875rem;
 	--text-2xs--line-height: 1.25;
 	--color-sidebar-ring: var(--sidebar-ring);

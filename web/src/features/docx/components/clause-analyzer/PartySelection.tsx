@@ -162,7 +162,7 @@ export function PartySelection({
 							className="mt-[7px] inline-block size-2.5 shrink-0 rounded-full"
 							style={{ backgroundColor: color }}
 						/>
-						<span className="min-w-0 font-serif text-[17px] leading-snug font-semibold text-foreground">
+						<span className="min-w-0 text-base leading-snug font-semibold text-foreground">
 							{party.name}
 						</span>
 						<span className="ml-auto flex shrink-0 items-center gap-0.5">
@@ -226,7 +226,7 @@ export function PartySelection({
 	return (
 		<section className="flex flex-col gap-4">
 			<div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-				<h3 className="font-serif text-xl font-semibold text-foreground">The two parties</h3>
+				<h3 className="text-lg font-semibold text-foreground">The two parties</h3>
 			</div>
 
 			<div className="flex w-full items-stretch gap-3">

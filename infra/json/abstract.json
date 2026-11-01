@@ -173,6 +173,27 @@
           "does": "Intermedia la contratación, gestiona reemplazos, valida documentos y administra pagos."
         }
       ]
+    },
+    "root::CARTAO DE CREDITO SANTANDER": {
+      "documentId": "root::CARTAO DE CREDITO SANTANDER",
+      "documentName": "CARTAO DE CREDITO SANTANDER.docx",
+      "title": "Contrato de Cartão de Crédito Santander",
+      "contractType": "Cartão de Crédito",
+      "summary": "O {{party-1|Banco Santander}} emite e administra cartões de crédito para o {{party-2|titular}}, que pode utilizá-los para compras, saques, empréstimos e pagamentos, conforme limites e condições definidos, mediante cobrança de tarifas, encargos e juros, enquanto durar a relação contratual ou até rescisão.",
+      "parties": [
+        {
+          "partyId": "party-1",
+          "name": "BANCO SANTANDER (BRASIL) S.A.",
+          "role": "Emissor e administrador",
+          "does": "Emitir, administrar e gerenciar cartões, definir limites, cobrar encargos e prestar serviços relacionados."
+        },
+        {
+          "partyId": "party-2",
+          "name": "Titular do cartão",
+          "role": "Titular",
+          "does": "Solicitar, desbloquear e usar o cartão, pagar faturas e encargos, gerir limites e responder por transações e adicionais."
+        }
+      ]
     }
   }
 }

@@ -30,6 +30,17 @@ import type { ClauseRowLead } from '@/features/docx/components/clause-analyzer/g
 /** The two parties' lanes: the reciprocal one is not shown. */
 export const SHOWN_LANES: GridLane[] = GRID_LANES.filter((lane) => lane !== 'shared');
 
+/** A row's size: how many squares it shows in the types given, both parties together. */
+const sizeOf = (row: GridRow, kinds: Set<MarkKind>) =>
+	SHOWN_LANES.reduce(
+		(n, lane) => n + row.marks[lane].filter((mark) => kinds.has(mark.kind)).length,
+		0
+	);
+
+/** How the rows are ordered: by how many squares each shows in the open type (the default),
+ *  by the pair's importance, or as the contract has them. */
+export type RowOrder = 'size' | 'importance' | 'order';
+
 interface ClauseRowsInput {
 	docId: string;
 	viewKg: KnowledgeGraph | null;
@@ -38,7 +49,7 @@ interface ClauseRowsInput {
 	/** The grid as the condition mode leaves it: the squares, the counts and the rows. */
 	shownGrid: StatementGrid | null;
 	kindsShown: Set<MarkKind>;
-	sortByImportance: boolean;
+	sortBy: RowOrder;
 	selectedClauseId: string | null;
 }
 
@@ -52,7 +63,7 @@ export function useClauseRows({
 	grid,
 	shownGrid,
 	kindsShown,
-	sortByImportance,
+	sortBy,
 	selectedClauseId,
 }: ClauseRowsInput) {
 	// Each type's squares on each side over the clause rows, for the tabs.
@@ -97,11 +108,16 @@ export function useClauseRows({
 		const rows = (shownGrid?.rows ?? []).filter((row) =>
 			SHOWN_LANES.some((lane) => row.marks[lane].some((mark) => kindsShown.has(mark.kind)))
 		);
-		if (!sortByImportance || !rowImportance) return rows;
+		// A stable sort: rows that weigh the same keep the contract's order.
+		if (sortBy === 'size') {
+			const size = (row: GridRow) => (row.clauseId ? sizeOf(row, kindsShown) : -1);
+			return rows.slice().sort((x, y) => size(y) - size(x));
+		}
+		if (sortBy === 'order' || !rowImportance) return rows;
 		const weight = (row: GridRow) =>
 			row.clauseId ? (rowImportance.byClause[row.clauseId] ?? 0) : -1;
 		return rows.slice().sort((x, y) => weight(y) - weight(x));
-	}, [shownGrid, kindsShown, sortByImportance, rowImportance]);
+	}, [shownGrid, kindsShown, sortBy, rowImportance]);
 
 	const laneByStatement = useMemo(() => {
 		const byId = new Map<string, GridLane>();
@@ -148,12 +164,15 @@ export function useClauseRows({
 		[tallies]
 	);
 
-	// A clause's place by relevance among the rows of each type's tab: the number in its row's
-	// circle, 1 to n in each tab, in the order the rows take there.
+	// A clause's place among the rows of each type's tab: the number in its row's circle, 1 to n
+	// in each tab. By size when the rows go by size, so the numbers follow them; otherwise by
+	// relevance, as the contract's order leaves them.
 	const rankByKind = useMemo(() => {
-		if (!shownGrid || !rowImportance) return null;
-		const weight = (row: GridRow) =>
-			row.clauseId ? (rowImportance.byClause[row.clauseId] ?? 0) : -1;
+		if (!shownGrid || (sortBy !== 'size' && !rowImportance)) return null;
+		const weightIn = (kind: DeonticKind) => (row: GridRow) =>
+			sortBy === 'size'
+				? sizeOf(row, new Set<MarkKind>([kind]))
+				: (rowImportance?.byClause[row.clauseId ?? ''] ?? 0);
 		return Object.fromEntries(
 			DEONTIC_KINDS.map((kind) => {
 				const ranked = shownGrid.rows
@@ -162,15 +181,15 @@ export function useClauseRows({
 							row.clauseId !== null &&
 							SHOWN_LANES.some((lane) => row.marks[lane].some((mark) => mark.kind === kind))
 					)
-					.sort((x, y) => weight(y) - weight(x));
+					.sort((x, y) => weightIn(kind)(y) - weightIn(kind)(x));
 				return [kind, new Map(ranked.map((row, i) => [row.clauseId, i + 1] as const))];
 			})
 		) as Record<DeonticKind, Map<string | null, number>>;
-	}, [shownGrid, rowImportance]);
+	}, [shownGrid, rowImportance, sortBy]);
 	const kindShown = DEONTIC_KINDS.find((kind) => kindsShown.has(kind)) ?? null;
 	const rankByClause = rankByKind && kindShown ? rankByKind[kindShown] : null;
 
-	// Each row is named by the clause's place in importance, its number and heading (a
+	// Each row is named by the clause's place in its tab, its number and heading (a
 	// numbered subclause borrows its section's), and a link to the graph.
 	const leadOf = useMemo(() => {
 		if (!grid || !viewKg) return undefined;

@@ -22,7 +22,7 @@ import { computePairScores } from '@/features/docx/utils/knowledge/pair';
 import { useFocusPayload } from '@/features/docx/hooks/useFocusPayload';
 import { useKnowledgeGraphData } from '@/features/docx/hooks/useKnowledgeGraphData';
 import { useAnalyzerPairSync } from '@/features/docx/hooks/useAnalyzerPair';
-import { SHOWN_LANES, useClauseRows } from '@/features/docx/hooks/useClauseRows';
+import { SHOWN_LANES, useClauseRows, type RowOrder } from '@/features/docx/hooks/useClauseRows';
 import { useAgainstYou } from '@/features/docx/hooks/useAgainstYou';
 import { PartyManager } from '@/features/docx/components/clause-analyzer/PartyManager';
 import { PartyEntry } from '@/features/docx/components/clause-analyzer/PartyEntry';
@@ -72,7 +72,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 	const selectClause = useClauseAnalyzerStore((s) => s.selectClause);
 	const selectedClauseId = selectedClause?.docId === docId ? selectedClause.clauseId : null;
 
-	const [sortByImportance, setSortByImportance] = useState(true);
+	const [sortBy, setSortBy] = useState<RowOrder>('size');
 	const [paintLanes, setPaintLanes] = useState<Record<GridLane, boolean>>({
 		a: true,
 		b: true,
@@ -163,7 +163,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		grid,
 		shownGrid,
 		kindsShown,
-		sortByImportance,
+		sortBy,
 		selectedClauseId,
 	});
 
@@ -432,9 +432,19 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 								visibleKinds={kindsShown}
 								activeClauseId={activeClause?.clauseId ?? null}
 								laneName={laneName}
-								sortByImportance={sortByImportance}
-								sortable={Boolean(rowImportance)}
-								onToggleSort={() => setSortByImportance((on) => !on)}
+								sortBy={sortBy}
+								// Size, relevance, order, and round again; relevance waits for the importance.
+								onToggleSort={() =>
+									setSortBy((now) =>
+										now === 'size'
+											? rowImportance
+												? 'importance'
+												: 'order'
+											: now === 'importance'
+												? 'order'
+												: 'size'
+									)
+								}
 								paintLanes={paintLanes}
 								onPaintLane={setPaintLane}
 								canPaintB={Boolean(secondPartyId)}

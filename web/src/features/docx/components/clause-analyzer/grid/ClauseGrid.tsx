@@ -25,13 +25,18 @@ import {
 	PARTY_TEXT_COLOR,
 	ROW_PAGE,
 } from '@/features/docx/components/clause-analyzer/constants';
+import type { RowOrder } from '@/features/docx/hooks/useClauseRows';
 
 /** The Clause Analyzer's layout: room for a long clause name on one line, and 10 marks to a
  *  column before it wraps, which leaves room for the «Linked» column. */
 const NAME_WIDTH = 320;
 const COLUMN_MARKS = 10;
 /** The words after "CLAUSE" for each ordering. */
-const SORT_LABELS = { importance: 'by relevance ↓', order: 'by order' };
+const SORT_LABELS: Record<RowOrder, string> = {
+	size: 'by size ↓',
+	importance: 'by relevance ↓',
+	order: 'by order',
+};
 
 interface ClauseGridProps {
 	clauseRows: GridRow[];
@@ -41,9 +46,8 @@ interface ClauseGridProps {
 	visibleKinds: Set<MarkKind>;
 	activeClauseId: string | null;
 	laneName: (lane: GridLane) => string;
-	sortByImportance: boolean;
-	/** The importance is fetched, so the ordering cannot be offered before it lands. */
-	sortable: boolean;
+	sortBy: RowOrder;
+	/** Goes to the next ordering. */
 	onToggleSort: () => void;
 	paintLanes: Record<GridLane, boolean>;
 	onPaintLane: (lane: GridLane, on: boolean) => void;
@@ -78,8 +82,7 @@ export function ClauseGrid({
 	visibleKinds,
 	activeClauseId,
 	laneName,
-	sortByImportance,
-	sortable,
+	sortBy,
 	onToggleSort,
 	paintLanes,
 	onPaintLane,
@@ -133,18 +136,15 @@ export function ClauseGrid({
 					<button
 						type="button"
 						onClick={onToggleSort}
-						disabled={!sortable}
-						className="mr-2 truncate text-left font-medium text-muted-foreground enabled:hover:text-foreground disabled:cursor-default"
+						className="mr-2 truncate text-left font-medium text-muted-foreground hover:text-foreground"
 						style={{ flexBasis: NAME_WIDTH, minWidth: LABEL_MIN_WIDTH }}
-						title="Order the rows by how much each clause weighs inside the contract (PageRank with a per-clause prior), or by its position in the document"
+						title="Order the rows by size (how many squares each shows in this type, both parties together), by how much each clause weighs inside the contract (PageRank with a per-clause prior), or by its position in the document"
 					>
 						CLAUSE
-						{sortable && (
-							<span className="font-normal">
-								{' · '}
-								{sortByImportance ? SORT_LABELS.importance : SORT_LABELS.order}
-							</span>
-						)}
+						<span className="font-normal">
+							{' · '}
+							{SORT_LABELS[sortBy]}
+						</span>
 					</button>
 					{/* The rows' gap, so each name stays over its column. */}
 					<div className="flex flex-1 items-center justify-center gap-3.5">

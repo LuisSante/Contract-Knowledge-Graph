@@ -8,7 +8,7 @@ import type { GridRow, Side } from '@/features/docx/utils/knowledge/statement-gr
 /**
  * «You are» and «Only against you». The reader's party is kept by id, so another pair forgets
  * it; nobody is picked at first, and the table reads as it always did until someone is. It lives
- * in the store, per document, so the Deadlines tab can start from the same party.
+ * in the store, per document.
  */
 export function useAgainstYou(
 	docId: string,

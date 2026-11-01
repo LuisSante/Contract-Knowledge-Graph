@@ -65,7 +65,7 @@ interface ClauseAnalyzerState extends GraphPayload {
 	/** The clause picked in the table or in the graph; both tabs show the same one. Keyed
 	 *  by document, since every contract has a clause-1. */
 	selectedClause: { docId: string; clauseId: string } | null;
-	/** «You are»: the reader's party, per document, so Deadlines can start from it too. */
+	/** «You are»: the reader's party, per document. */
 	me: { docId: string; partyId: string } | null;
 
 	focusNode: (nodeId: string) => void;

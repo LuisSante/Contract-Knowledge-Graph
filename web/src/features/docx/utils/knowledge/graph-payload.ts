@@ -391,25 +391,6 @@ export function reciprocalStatements(kg: KnowledgeGraph): Set<string> {
 	);
 }
 
-/**
- * For each obligation, the other party's rights written in the same paragraph, and for each
- * right, the other party's obligations there. Only that they sit together: the graph has no
- * edge saying one is the price of the other.
- */
-export function sameParagraphCounterparts(kg: KnowledgeGraph): Map<string, KgDeonticNode[]> {
-	const statements = deonticNodes(kg).filter((v) => v.kind !== 'prohibition' && ownerOf(v));
-	const out = new Map<string, KgDeonticNode[]>();
-	for (const v of statements) {
-		const own = new Set(v.paragraphIds);
-		const across = statements.filter(
-			(w) =>
-				w.kind !== v.kind && ownerOf(w) !== ownerOf(v) && w.paragraphIds.some((pid) => own.has(pid))
-		);
-		if (across.length > 0) out.set(v.id, across);
-	}
-	return out;
-}
-
 function clauseTargets(kg: KnowledgeGraph, type: 'depends_on' | 'references') {
 	const on = new Map<string, string[]>();
 	for (const d of clauseLinks(kg, type)) {

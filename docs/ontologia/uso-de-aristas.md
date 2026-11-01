@@ -15,7 +15,8 @@ existen.
 > - Cada frase va **del lado de la parte a la que pertenece**: una obligación o prohibición,
 >   con la parte que tiene que cumplirla; un derecho, con quien lo tiene. Ya no hay «In favour
 >   of». Lo pidió el asesor.
-> - Los valores de duración los usa la nueva pestaña **Deadlines**.
+> - Desde el 1 de noviembre de 2026 no hay pestaña Deadlines: el plazo, la frecuencia y los
+>   valores de cada frase se ven en el detalle debajo de la fila.
 
 ---
 
@@ -49,14 +50,14 @@ app lee el campo. En los grafos actuales los dos coinciden.
 
 | Arista | Dónde | Cómo |
 |---|---|---|
-| `assigns_obligation_to` / `grants_right_to` | Clause Analyzer, sus pestañas y «You are»; Deadlines | Deciden en qué columna va cada frase: una obligación o prohibición, con la parte que tiene que cumplirla; un derecho, con quien lo tiene (`statement-grid.ts`). Ver «Dónde va cada frase», abajo. En Deadlines, dicen quién tiene que actuar. |
-| `is_part_of` enunciado → cláusula | Clause Analyzer, Deadlines y el documento | Agrupa los enunciados en filas (`statement-grid.ts`) y los plazos por cláusula (`deadlines.ts`). Decide qué se pinta al seleccionar una cláusula: sus enunciados, solo los del tipo de la pestaña abierta (`useFocusPayload.ts`, `graph-payload.ts`). |
+| `assigns_obligation_to` / `grants_right_to` | Clause Analyzer, sus pestañas y «You are» | Deciden en qué columna va cada frase: una obligación o prohibición, con la parte que tiene que cumplirla; un derecho, con quien lo tiene (`statement-grid.ts`). Ver «Dónde va cada frase», abajo. |
+| `is_part_of` enunciado → cláusula | Clause Analyzer y el documento | Agrupa los enunciados en filas (`statement-grid.ts`). Decide qué se pinta al seleccionar una cláusula: sus enunciados, solo los del tipo de la pestaña abierta (`useFocusPayload.ts`, `graph-payload.ts`). |
 | `is_part_of` cláusula → cláusula | Títulos de las filas | Una subcláusula sin título hereda el de su sección (`clauseTitle`). |
 | `modifies` | Clause Analyzer y documento | Ver abajo. |
 | `depends_on` | Clause Analyzer y documento | Igual que `modifies`, en la otra dirección: ver abajo. |
 | `references` | Clause Analyzer y documento | Igual que `depends_on`: ver abajo. |
 | `is_part_of` condición → enunciado | Clause Analyzer, su detalle y el documento | A pedido del lector: ver abajo. Con «Mark conditional», en el detalle debajo de la fila cada frase muestra su condición («Condition: IF…»). Solo «Only firm» cambia un conteo, y porque el lector lo pide. |
-| `is_part_of` valor → enunciado | Deadlines | Una duración marca un plazo como «con número». **Se deja fuera del Clause Analyzer a propósito**: ver «Valores» más abajo. |
+| `is_part_of` valor → enunciado | Detalle debajo de la fila | Cada frase muestra sus valores al final de su línea (`statement-timing.ts`). Una duración se omite si la frase ya tiene plazo o frecuencia, que la dicen en palabras. **No entra en la vista general ni en ningún conteo**: ver «Valores» más abajo. |
 | término definido, referencia | Pestaña del grafo | Solo se dibujan ahí. Con la leyenda de Table se fue el único otro lugar donde aparecían. |
 | `is_part_of`, `modifies`, `references`, `depends_on` entre cláusulas y enunciados | Orden «by connection» | El PageRank personalizado recorre solo cláusulas, obligaciones, derechos y prohibiciones, sin dirección y sin peso por tipo. Las partes, los términos definidos, las condiciones, las referencias y los valores no entran: ver [`importancia-clausula.md`](../metricas/importancia-clausula.md). |
 | todas | Pestaña del grafo | Se dibujan todas (`kg-graph.ts`). «View in graph» muestra el subgrafo de una cláusula (`clause-subgraph.ts`). |
@@ -227,7 +228,7 @@ El código está en `graph-payload.ts` (`paintStatement`, `conditionsElsewhere`)
 7. **Lo nuevo empieza apagado.** La vista por defecto no cambia; lo que se agrega aparece
    cuando el lector lo pide, como «Mark conditional».
 8. **En la vista general entra lo que dice de quién es cada cosa.** Lo que solo precisa el
-   cómo (cifras, plazos) queda para el detalle o para la pestaña Deadlines.
+   cómo (cifras, plazos) queda para el detalle debajo de la fila.
 
 ### Lo que queda de las condiciones
 
@@ -247,47 +248,47 @@ describe arriba; queda:
 **Qué no hacer:** marcar en la fila cuántas condiciones tiene cada cláusula. Repetiría lo
 que ya dicen los cuadrados con borde.
 
-### Valores — `is_part_of` valor → enunciado: fuera del Clause Analyzer, dentro de Deadlines
+### Valores — `is_part_of` valor → enunciado: solo en el detalle
 
-**Decisión:** el Clause Analyzer no usa los valores. La pestaña Deadlines usa las duraciones.
+**Decisión:** la vista general (las filas, los cuadrados, los conteos) no usa los valores.
+Desde el 1 de noviembre de 2026 el detalle debajo de la fila los muestra junto a cada frase,
+con su plazo y su frecuencia.
 
-**Por qué no en el Clause Analyzer:** un valor no dice de quién es una frase ni a quién
+**Por qué no en la vista general:** un valor no dice de quién es una frase ni a quién
 favorece una cláusula; dice cuánto o en qué plazo. «National paga cada factura en
 **30 días**» es una obligación de National con 30 días o con 60. Es información para
-después, y para eso ya está la cita del contrato en la tarjeta, en el documento y en el
-detalle debajo de la fila.
+después, cuando ya se abrió la cláusula.
 
 Usarlos para decir *cuánto* favorece algo (un plazo de 10 días frente a uno de 60, un
 recargo de 1.5 % frente a uno de 5 %) sería comparar magnitudes, es decir, volver a los
 pesos. Por eso tampoco se compararán plazos entre las partes.
 
-Si alguna vez hacen falta en el detalle, son fáciles de comprobar: cada cifra se lee en la
-cita de su frase.
-
-**Deadlines** (desde el 23 de octubre de 2026) responde a «¿qué tengo que hacer, y para
-cuándo?». No usa aristas nuevas:
+**Plazos en el detalle.** Del 23 de octubre al 1 de noviembre de 2026 hubo una pestaña
+Deadlines que listaba, por cláusula, las frases con plazo. Repetía las frases que el
+detalle ya mostraba («Pay service compensation» en los dos lugares), así que se quitó y su
+información pasó al detalle. No usa aristas nuevas:
 
 - Lee dos campos que la extracción ya guarda en cada enunciado: `deadline` («30 days from
   the invoice date», «promptly») y `frequency` («bi-monthly», «during the term»). En
   SteelVault, 25 de 90 enunciados tienen uno de los dos; en Bellicum, 179 de 631.
-- Un plazo es **«con número»** si el enunciado tiene un valor de tipo `Duration`
-  (`quantifiesId`, la misma relación que `is_part_of` valor → enunciado) o si su texto
-  trae un número con unidad de tiempo («thirty (30) days»).
-- Si no, una regla de palabras separa los plazos **vagos** («promptly», «immediately»,
-  «in advance») de los que esperan **un hecho** («upon termination»).
-- Entra todo enunciado con `deadline` o con `frequency`, cada uno bajo su cláusula. Desde el
-  27 de octubre de 2026 ya no hay grupos «Again and again» ni «While the contract lasts»:
-  separarlos pedía una regla de palabras.
-- Los dos campos se dibujan distintos, con su leyenda arriba: `deadline` en un chip de color
-  según su clase; `frequency` en un chip de borde punteado, con el texto tal cual. El campo
-  `frequency` mezcla repeticiones («per month»), vigencias («during the term») y tarifas
+- Cada frase del detalle es una línea con sus palabras. Debajo, una caja con campos
+  nombrados en palabras simples y un ícono: «When» (el plazo, reloj), «How often» (la
+  frecuencia, flechas) y «How much» (los valores, monedas, en dorado, el color de los
+  valores en el documento). La línea se abre para ver el resto: la condición, el lugar en
+  el contrato y la cita.
+- Una duración no se muestra aparte si la frase tiene plazo o frecuencia: ya está en esas
+  palabras («30 days from the invoice date»). Una frase sin esos campos sí la muestra.
+- Los plazos ya no se clasifican en «con número», vagos o «esperan un hecho»: esa clase
+  salía de una regla de palabras. Todo sale de los campos del grafo tal cual.
+- `frequency` mezcla repeticiones («per month»), vigencias («during the term») y tarifas
   («per returned item»), así que no se clasifica.
-- Agrupa por cláusula. Cada línea dice quién actúa: la parte obligada o quien tiene el
-  derecho.
-- No compara plazos entre las partes ni los suma: solo los lista.
+- Con «Mark conditional», una frase con condición lleva además la ficha «only if».
+- No compara plazos entre las partes ni los suma: solo los muestra.
 
-El código está en `deadlines.ts` y `DeadlinesPanel.tsx`. El grafo no guarda fechas de
-calendario, así que todo es relativo: «30 días desde la factura».
+El código está en `statement-timing.ts` y en la línea de cada frase (`Fragment`, en
+`table-bits.tsx`). El grafo no guarda fechas de calendario, así que todo es relativo:
+«30 días desde la factura».
+
 ### `references`, en detalle
 
 Desde el 27 de octubre de 2026, a pedido del usuario, igual que `depends_on`. Es la remisión
@@ -349,17 +350,17 @@ hacia ella.
 - **Definiciones palanca**, en el detalle debajo de la fila: el término que más enunciados
   usan. En Bellicum, «Miltenyi Product» aparece en 25. No en la vista general.
 
-### Frases gemelas y contrapartida en el mismo párrafo
+### Frases gemelas
 
 Desde el 28 de octubre de 2026, en el detalle debajo de la fila, sin cambiar ningún conteo:
 
 - **«reciprocal»**: junto a la etiqueta de la frase cuando la otra parte tiene la misma frase,
   del mismo tipo, con las mismas palabras y en la misma cláusula. Dice que la cláusula obliga
   (o da derecho) a las dos igual (`reciprocalStatements`). En los arrendamientos, 6, 6 y 8.
-- **«Same paragraph: Anhui's right · Decorate house»**: debajo de una obligación, los derechos
-  de la otra parte escritos en el mismo párrafo, y al revés. Al hacer clic se abre esa frase.
-  Solo dice que están juntas: el grafo no tiene una arista que diga que una es el precio de
-  la otra (`sameParagraphCounterparts`).
+- **«Same paragraph» se quitó el 1 de noviembre de 2026.** Mostraba, debajo de una
+  obligación, los derechos de la otra parte escritos en el mismo párrafo, y al revés. Solo
+  decía que estaban juntas (el grafo no tiene una arista que diga que una es el precio de la
+  otra), y el usuario lo juzgó ruido: no se entendía para qué servía.
 
 El código del detalle está en `ClauseAnalyzerPanel.tsx` (`hints`), `party-statements.tsx`
 (`StatementHints`) y `table-bits.tsx` (`Fragment`).
@@ -388,9 +389,9 @@ sentido comparar una regla simple, LegalBERT y el modelo de extracción.
 
 ### Orden propuesto
 
-Hecho: cada frase con su dueño, `modifies` («modified by»), `depends_on` («depends on»), `references` («refers to»), glosario, quién activa la condición, frases gemelas, contrapartida en el mismo párrafo, condiciones (All / Mark
-conditional / Only firm) y Deadlines. Valores: fuera del Clause Analyzer; las duraciones,
-en Deadlines.
+Hecho: cada frase con su dueño, `modifies` («modified by»), `depends_on` («depends on»), `references` («refers to»), glosario, quién activa la condición, frases gemelas, condiciones (All / Mark
+conditional / Only firm) y plazos, frecuencias y valores en el detalle (antes, la pestaña
+Deadlines). Valores: fuera de la vista general y de los conteos.
 
 1. Lo que queda de `modifies`: el verdadero objetivo de negociación y quién cambia las
    reglas.

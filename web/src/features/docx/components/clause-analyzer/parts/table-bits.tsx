@@ -1,12 +1,21 @@
 'use client';
 
-import type { KeyboardEvent, ReactNode } from 'react';
+import {
+	Fragment as ReactFragment,
+	useId,
+	useState,
+	type KeyboardEvent,
+	type ReactNode,
+} from 'react';
 import {
 	ArrowUpRightIcon,
 	ChevronLeftIcon,
 	ChevronRightIcon,
+	ClockIcon,
+	CoinsIcon,
 	EqualIcon,
 	InfoIcon,
+	RepeatIcon,
 } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
@@ -15,6 +24,7 @@ import { cn } from '@/lib/utils';
 import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
 import {
 	KIND_COLORS,
+	KIND_TEXT_COLORS,
 	MUTED_LANE_OPACITY,
 	textColorOf,
 } from '@/features/docx/components/clause-analyzer/constants';
@@ -25,6 +35,7 @@ import {
 	type Served,
 } from '@/features/docx/utils/knowledge/clause-favour';
 import type { Side } from '@/features/docx/utils/knowledge/statement-grid';
+import type { StatementTiming } from '@/features/docx/utils/knowledge/statement-timing';
 import type { DeonticKind } from '@/types/knowledge';
 
 /**
@@ -671,16 +682,71 @@ function conditionText(condition: KgCondition): string {
 	return trigger.toLowerCase().startsWith(`${operator} `) ? trigger : `${operator} ${trigger}`;
 }
 
-/** One statement in the contract's own words; a click underlines it in the contract, and
- *  the one underlined there stays marked here. */
-/** Another party's statement shown beside one: its tag («Anhui's right»), colour and words. */
-export interface StatementAside {
-	id: string;
-	tag: string;
-	color: string;
-	label: string;
+/** «only if» at the end of a statement's line, when the reader marks conditions; the
+ *  conditions themselves are said on hover and when the line opens. */
+function ConditionChip({ conditions }: { conditions: KgCondition[] }) {
+	if (conditions.length === 0) return null;
+	return (
+		<span
+			className="ml-auto shrink-0 rounded-full px-1.5 py-px text-2xs font-medium"
+			style={{
+				color: KIND_TEXT_COLORS.condition,
+				backgroundColor: `color-mix(in srgb, ${KIND_TEXT_COLORS.condition} 12%, transparent)`,
+			}}
+			title={`Only ${conditions.map(conditionText).join('; ')}`}
+		>
+			only if
+		</span>
+	);
 }
 
+/**
+ * What a statement says about time and money, under its words: «When» (its deadline), «How
+ * often» (its frequency) and «How much» (its values), each named in plain words with an icon,
+ * so nothing has to be read from a colour.
+ */
+function TimingFields({ timing }: { timing: StatementTiming }) {
+	const fields = [
+		{ key: 'when', Icon: ClockIcon, label: 'When', value: timing.deadline, money: false },
+		{ key: 'often', Icon: RepeatIcon, label: 'How often', value: timing.frequency, money: false },
+		{
+			key: 'much',
+			Icon: CoinsIcon,
+			label: 'How much',
+			value: timing.amounts.join(', '),
+			money: true,
+		},
+	].filter((field) => field.value);
+	return (
+		// Padding, not margin, around the box: a bottom margin would slip out of the last line
+		// and leave the column's white ending flush with the box.
+		<div className="pr-3 pb-2 pl-8">
+			<dl className="grid grid-cols-[auto_auto_1fr] items-baseline gap-x-2 gap-y-1 rounded-md bg-muted/60 px-2.5 py-1.5">
+				{fields.map(({ key, Icon, label, value, money }) => (
+					<ReactFragment key={key}>
+						<Icon className="size-3 translate-y-0.5 self-start text-muted-foreground" aria-hidden />
+						<dt className="text-[10px] font-semibold tracking-wide text-muted-foreground uppercase">
+							{label}
+						</dt>
+						<dd
+							className={cn('text-xs', money ? 'font-semibold' : 'text-foreground')}
+							style={money ? { color: KIND_TEXT_COLORS.value } : undefined}
+						>
+							{value}
+						</dd>
+					</ReactFragment>
+				))}
+			</dl>
+		</div>
+	);
+}
+
+/**
+ * One statement as a line, with its deadline, frequency and values named under it. The line
+ * opens the rest: whose it is when both parties share it, its conditions, where it sits and
+ * the contract's own words. A click on the place underlines it in the contract, and the one
+ * underlined there stays marked.
+ */
 export function Fragment({
 	served,
 	section,
@@ -688,108 +754,139 @@ export function Fragment({
 	tagColor,
 	conditions = [],
 	reciprocal = false,
-	counterparts = [],
 	conditionParty,
+	timing,
 	onOpen,
 }: {
 	served: Served;
 	section: string | null;
-	/** Said before the title, so the reader knows whose statement it is. */
+	/** Said first when the statement opens, for one the column alone does not tell. */
 	tag?: string;
 	/** The colour of the party the tag names. */
 	tagColor?: string;
 	conditions?: KgCondition[];
 	/** The other party has the same statement, word for word. */
 	reciprocal?: boolean;
-	/** The other party's statements of the other type written in the same paragraph. */
-	counterparts?: StatementAside[];
 	/** The party a condition's trigger names, when it names just one. */
 	conditionParty?: (condition: KgCondition) => { name: string; color: string } | null;
+	/** Its deadline, frequency and values; absent when the graph gives none. */
+	timing?: StatementTiming;
 	onOpen: (nodeId: string) => void;
 }) {
 	const shown = useClauseAnalyzerStore(
 		(s) => s.focusNodeIds.length === 1 && s.focusNodeIds[0] === served.mark.id
 	);
+	const [open, setOpen] = useState(false);
+	const [evidenceOpen, setEvidenceOpen] = useState(false);
+	const bodyId = useId();
+	const evidenceId = useId();
 	// "§1 ¶2": the clause's number and, when it runs over several paragraphs, which one.
 	const place =
 		[section, served.paragraph ? `¶${served.paragraph}` : null].filter(Boolean).join(' ') || 'View';
 	return (
 		<article
-			className={cn('space-y-2 px-3 py-3 text-left', shown && 'bg-accent')}
+			className={cn('text-left', shown && 'bg-accent')}
 			style={shown ? { boxShadow: `inset 3px 0 0 ${tagColor ?? 'var(--primary)'}` } : undefined}
 		>
-			<div className="flex items-start justify-between gap-3">
-				<div className="min-w-0 space-y-1">
+			<button
+				type="button"
+				onClick={() => setOpen((was) => !was)}
+				aria-expanded={open}
+				aria-controls={bodyId}
+				className="flex w-full flex-wrap items-center gap-x-2 gap-y-1 px-3 py-2 text-left hover:bg-muted/40"
+			>
+				<span className="flex min-w-0 flex-1 items-center gap-1.5">
+					<ChevronRightIcon
+						className={cn(
+							'size-3.5 shrink-0 text-muted-foreground transition-transform',
+							open && 'rotate-90'
+						)}
+						aria-hidden
+					/>
+					<span className="min-w-0 text-sm text-foreground">{served.mark.label}</span>
+					{reciprocal && (
+						<span
+							className="shrink-0 rounded-full bg-muted px-1.5 py-px text-2xs font-medium text-foreground/70"
+							title={`The other party has the same ${served.kind}, word for word: it binds or entitles both alike.`}
+						>
+							reciprocal
+						</span>
+					)}
+				</span>
+				<ConditionChip conditions={conditions} />
+			</button>
+			{timing && <TimingFields timing={timing} />}
+			{open && (
+				<div id={bodyId} className="space-y-2 pr-3 pb-3 pl-8">
 					{tag && (
 						<p
 							className={cn('text-xs font-medium', !tagColor && 'text-foreground/80')}
 							style={tagColor ? { color: textColorOf(tagColor) } : undefined}
 						>
 							{tag}
-							{reciprocal && (
-								<span
-									className="ml-1.5 rounded-full bg-muted px-1.5 py-px text-2xs font-medium text-foreground/70"
-									title={`The other party has the same ${served.kind}, word for word: it binds or entitles both alike.`}
-								>
-									reciprocal
-								</span>
-							)}
 						</p>
 					)}
-					<p className="text-sm font-medium text-foreground">{served.mark.label}</p>
+					{conditions.map((condition) => {
+						const party = conditionParty?.(condition) ?? null;
+						return (
+							<p key={condition.id} className="text-xs text-foreground/90">
+								<span className="font-medium">Condition: </span>
+								{conditionText(condition)}
+								{party && (
+									<span
+										className="ml-1.5 inline-flex items-center gap-1 align-[1px] font-medium whitespace-nowrap"
+										style={{ color: textColorOf(party.color) }}
+										title={`The condition names ${party.name}: it turns on what ${party.name} does or what happens to it.`}
+									>
+										<span
+											className="size-1.5 rounded-full"
+											style={{ backgroundColor: party.color }}
+										/>
+										{party.name}
+									</span>
+								)}
+							</p>
+						);
+					})}
+					{/* The evidence toggle and the place share a line; the quote opens under both. */}
+					<div className="flex items-center gap-2 text-xs font-medium">
+						<button
+							type="button"
+							onClick={() => setEvidenceOpen((was) => !was)}
+							aria-expanded={evidenceOpen}
+							aria-controls={evidenceId}
+							className="inline-flex items-center gap-1 text-primary hover:underline"
+						>
+							<ChevronRightIcon
+								className={cn('size-3 transition-transform', evidenceOpen && 'rotate-90')}
+								aria-hidden
+							/>
+							View evidence
+						</button>
+						<span className="text-muted-foreground" aria-hidden>
+							·
+						</span>
+						<button
+							type="button"
+							onClick={() => onOpen(served.mark.id)}
+							aria-current={shown || undefined}
+							aria-label={`Show ${served.mark.label} in the document`}
+							className="inline-flex items-center gap-1 text-primary hover:underline"
+						>
+							{place === 'View' ? 'Document' : place}
+							<ArrowUpRightIcon className="size-3" />
+						</button>
+					</div>
+					{evidenceOpen && (
+						<blockquote
+							id={evidenceId}
+							className="border-l-2 border-border pl-3 text-xs leading-relaxed text-foreground/90"
+						>
+							{served.text}
+						</blockquote>
+					)}
 				</div>
-				<button
-					type="button"
-					onClick={() => onOpen(served.mark.id)}
-					aria-current={shown || undefined}
-					aria-label={`Show ${served.mark.label} in the document`}
-					className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-primary hover:underline"
-				>
-					{place === 'View' ? 'Document' : place}
-					<ArrowUpRightIcon className="size-3" />
-				</button>
-			</div>
-			{conditions.map((condition) => {
-				const party = conditionParty?.(condition) ?? null;
-				return (
-					<p key={condition.id} className="text-xs text-foreground/90">
-						<span className="font-medium">Condition: </span>
-						{conditionText(condition)}
-						{party && (
-							<span
-								className="ml-1.5 inline-flex items-center gap-1 align-[1px] font-medium whitespace-nowrap"
-								style={{ color: textColorOf(party.color) }}
-								title={`The condition names ${party.name}: it turns on what ${party.name} does or what happens to it.`}
-							>
-								<span className="size-1.5 rounded-full" style={{ backgroundColor: party.color }} />
-								{party.name}
-							</span>
-						)}
-					</p>
-				);
-			})}
-			{counterparts.map((other) => (
-				<p key={other.id} className="text-xs text-muted-foreground">
-					<span className="font-medium">Same paragraph: </span>
-					<button
-						type="button"
-						onClick={() => onOpen(other.id)}
-						className="text-left hover:underline"
-						title="Written in the same paragraph. The graph does not say one is the price of the other."
-					>
-						<span className="font-medium" style={{ color: textColorOf(other.color) }}>
-							{other.tag}
-						</span>{' '}
-						· {other.label}
-					</button>
-				</p>
-			))}
-			<details className="text-xs">
-				<summary className="cursor-pointer font-medium text-primary">View evidence</summary>
-				<blockquote className="mt-2 border-l-2 border-border pl-3 leading-relaxed text-foreground/90">
-					{served.text}
-				</blockquote>
-			</details>
+			)}
 		</article>
 	);
 }

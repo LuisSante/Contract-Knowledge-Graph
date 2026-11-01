@@ -6,7 +6,6 @@ import {
 	Fragment,
 	KIND_LABEL,
 	tint,
-	type StatementAside,
 } from '@/features/docx/components/clause-analyzer/parts/table-bits';
 import {
 	DEONTIC_KINDS,
@@ -14,6 +13,7 @@ import {
 	type Served,
 } from '@/features/docx/utils/knowledge/clause-favour';
 import type { GridRow, Side } from '@/features/docx/utils/knowledge/statement-grid';
+import type { StatementTiming } from '@/features/docx/utils/knowledge/statement-timing';
 import type { DeonticKind, KgCondition } from '@/types/knowledge';
 
 const SIDES: Side[] = ['a', 'b'];
@@ -22,10 +22,10 @@ const SIDES: Side[] = ['a', 'b'];
 export interface StatementHints {
 	/** Statements the other party has word for word. */
 	reciprocal: ReadonlySet<string>;
-	/** The other party's statements of the other type in the same paragraph. */
-	counterparts: Map<string, Array<{ id: string; kind: DeonticKind; label: string; side: Side }>>;
 	/** The side a condition's trigger names, when it names just one of the two. */
 	conditionSide: Map<string, Side>;
+	/** Each statement's deadline, frequency and values, for the end of its line. */
+	timing: Map<string, StatementTiming>;
 }
 
 /** A clause's statements that belong to one party in the types shown: the obligations and
@@ -46,7 +46,8 @@ function originOf(s: Served, names: Record<Side, string>): { text: string; side:
 	return { text: `${short(names[side])}'s ${s.kind}`, side };
 }
 
-/** Each party's own statements in the clause, side by side, in the contract's own words. */
+/** Each party's own statements in the clause, side by side, a line each with its deadline,
+ *  frequency and values; a line opens the contract's own words. */
 export function PartyStatements({
 	tally,
 	kinds,
@@ -62,13 +63,6 @@ export function PartyStatements({
 	hints?: StatementHints;
 	onOpen: (nodeId: string) => void;
 }) {
-	const asides = (id: string): StatementAside[] =>
-		(hints?.counterparts.get(id) ?? []).map((other) => ({
-			id: other.id,
-			tag: `${short(names[other.side])}'s ${other.kind}`,
-			color: SIDE_COLOR[other.side],
-			label: other.label,
-		}));
 	const conditionParty = (condition: KgCondition) => {
 		const side = hints?.conditionSide.get(condition.id);
 		return side ? { name: short(names[side]), color: SIDE_COLOR[side] } : null;
@@ -110,12 +104,14 @@ export function PartyStatements({
 									key={`${s.mark.id}-${s.to}`}
 									served={s}
 									section={tally.section}
-									tag={origin.text}
+									// The column and the tab already say whose and which type; only a
+									// statement both parties share needs saying.
+									tag={origin.side === null ? origin.text : undefined}
 									tagColor={SIDE_COLOR[side]}
 									conditions={conditions.filter((c) => c.gatesId === s.mark.id)}
 									reciprocal={hints?.reciprocal.has(s.mark.id) ?? false}
-									counterparts={asides(s.mark.id)}
 									conditionParty={conditionParty}
+									timing={hints?.timing.get(s.mark.id)}
 									onOpen={onOpen}
 								/>
 							);

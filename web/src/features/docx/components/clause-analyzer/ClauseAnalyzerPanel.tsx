@@ -8,7 +8,6 @@ import {
 	buildDocumentTarget,
 	conditionParty,
 	reciprocalStatements,
-	sameParagraphCounterparts,
 } from '@/features/docx/utils/knowledge/graph-payload';
 import {
 	buildStatementGrid,
@@ -47,6 +46,7 @@ import {
 import { KIND_COLORS } from '@/features/docx/components/clause-analyzer/constants';
 import { short } from '@/features/docx/components/clause-analyzer/parts/bits';
 import { withoutServed } from '@/features/docx/utils/knowledge/clause-favour';
+import { statementTiming } from '@/features/docx/utils/knowledge/statement-timing';
 import {
 	ClauseDetail,
 	type StatementHints,
@@ -290,28 +290,22 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		[viewKg, shownGrid, showConditions]
 	);
 
-	// What the detail says beside each statement: a twin the other party has word for word, the
-	// other party's statements in the same paragraph, and which party a condition names.
+	// What the detail says beside each statement: a twin the other party has word for word,
+	// which party a condition names, and its deadline, frequency and values.
 	const hints = useMemo((): StatementHints | undefined => {
 		if (!viewKg || !pairA || !pairB) return undefined;
 		const sideOf = (id: string | null): Side | null =>
 			id === pairA ? 'a' : id === pairB ? 'b' : null;
-		const counterparts: StatementHints['counterparts'] = new Map();
-		for (const [id, others] of sameParagraphCounterparts(viewKg)) {
-			const list = others.flatMap((o) => {
-				const side = sideOf(o.kind === 'right' ? o.benefitPartyId : o.burdenPartyId);
-				return side
-					? [{ id: o.id, kind: o.kind, label: o.action || o.summary || o.text, side }]
-					: [];
-			});
-			if (list.length > 0) counterparts.set(id, list);
-		}
 		const conditionSide: StatementHints['conditionSide'] = new Map();
 		for (const [conditionId, partyId] of conditionParty(viewKg)) {
 			const side = sideOf(partyId);
 			if (side) conditionSide.set(conditionId, side);
 		}
-		return { reciprocal: reciprocalStatements(viewKg), counterparts, conditionSide };
+		return {
+			reciprocal: reciprocalStatements(viewKg),
+			conditionSide,
+			timing: statementTiming(viewKg),
+		};
 	}, [viewKg, pairA, pairB]);
 
 	// The picked row unfolds each party's own statements in it, for the open type only and in the

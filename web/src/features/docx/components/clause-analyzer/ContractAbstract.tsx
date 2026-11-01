@@ -101,7 +101,7 @@ export function ContractAbstract({ status, summary, onGenerate, colorOf }: Contr
 			<div className="space-y-3">
 				<div className="flex items-start justify-between gap-3">
 					<div className="min-w-0 space-y-2">
-						<h2 className="text-2xl leading-8 font-bold text-foreground">
+						<h2 className="font-serif text-[1.75rem] leading-9 font-semibold text-foreground">
 							{summary.title || summary.documentName}
 						</h2>
 						{summary.contractType && (

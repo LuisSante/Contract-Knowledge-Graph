@@ -48,7 +48,8 @@
 /* Inline: utilities read the token (`var(--primary)`) where they are used, not a copy resolved
    on <html>, so a light island (`.theme-light`) that re-declares the tokens gets light colours. */
 @theme inline {
-	--font-sans: 'Avenir Web', 'Inter Variable', sans-serif;
+	--font-sans: var(--font-public-sans), 'Inter Variable', sans-serif;
+	--font-serif: var(--font-source-serif), Georgia, serif;
 	--text-2xs: 0.6875rem;
 	--text-2xs--line-height: 1.25;
 	--color-sidebar-ring: var(--sidebar-ring);
@@ -117,7 +118,7 @@
 	html {
 		@apply font-sans;
 	}
-	/* Selected text in the dark theme takes the brand's indigo; the light theme and the paper
+	/* Selected text in the dark theme takes the brand's graphite; the light theme and the paper
 	   keep the browser's own. */
 	.dark :not(:where(.theme-light, .theme-light *))::selection {
 		background-color: color-mix(in oklab, var(--primary) 40%, transparent);
@@ -199,50 +200,51 @@
    what is drawn on it (highlights, outlines, marks, margin tags) keeps its light colours. */
 :root,
 .theme-light {
-	--background: oklch(0.985 0.006 285);
-	--foreground: oklch(0.24 0.012 280);
-	--card: oklch(1 0 0);
-	--card-foreground: oklch(0.24 0.012 280);
-	--popover: oklch(1 0 0);
-	--popover-foreground: oklch(0.24 0.012 280);
-	--primary: oklch(0.51 0.214 277);
-	--primary-foreground: oklch(0.985 0 0);
-	--secondary: oklch(0.965 0.012 285);
-	--secondary-foreground: oklch(0.27 0.015 280);
-	--muted: oklch(0.965 0.012 285);
-	--muted-foreground: oklch(0.48 0.02 285);
-	--accent: oklch(0.95 0.025 285);
-	--accent-foreground: oklch(0.42 0.15 277);
+	/* Graphite: the chrome is toneless ink on paper, like a printed contract, so every colour on
+	   screen is the analysis's (the squares, the parties, the links). */
+	--background: #f3f3f1;
+	--foreground: #1e2024;
+	--card: #ffffff;
+	--card-foreground: #1e2024;
+	--popover: #ffffff;
+	--popover-foreground: #1e2024;
+	--primary: #2e3138;
+	--primary-foreground: #fafaf9;
+	--secondary: #ebebe8;
+	--secondary-foreground: #1e2024;
+	--muted: #ebebe8;
+	--muted-foreground: #63656b;
+	--accent: #e4e4e0;
+	--accent-foreground: #1e2024;
 	--destructive: oklch(0.577 0.245 27.325);
 	/* Semantic state colors (ready for the color-migration semantic sub-pass). */
 	--success: oklch(0.55 0.13 150);
 	--success-foreground: oklch(0.985 0 0);
 	--warning: oklch(0.72 0.15 75);
 	--warning-foreground: oklch(0.27 0.05 75);
-	--info: oklch(0.55 0.16 262);
-	--info-foreground: oklch(0.985 0 0);
-	--border: oklch(0.91 0.012 285);
-	--input: oklch(0.91 0.012 285);
-	--canvas: oklch(0.95 0.012 285);
-	--ring: oklch(0.58 0.19 277);
+	--info: #2f5596;
+	--info-foreground: #f7f8fa;
+	--border: #dcdcd7;
+	--input: #c8c8c2;
+	--canvas: #e7e7e4;
+	--ring: #2e3138;
 	--chart-1: oklch(0.62 0.18 262);
 	--chart-2: oklch(0.6 0.13 200);
 	--chart-3: oklch(0.6 0.16 300);
 	--chart-4: oklch(0.68 0.15 75);
 	--chart-5: oklch(0.62 0.18 150);
-	--radius: 0.625rem;
-	/* Header bar — light/neutral (near-white slate) with dark slate text, so the
-	   chrome recedes and data/semantic colors stand out. Recolor the bar here. */
-	--header: oklch(0.97 0.01 285);
-	--header-foreground: oklch(0.26 0.012 280);
-	--sidebar: oklch(0.984 0.004 262);
-	--sidebar-foreground: oklch(0.145 0 0);
-	--sidebar-primary: oklch(0.51 0.214 277);
-	--sidebar-primary-foreground: oklch(0.985 0 0);
-	--sidebar-accent: oklch(0.95 0.016 262);
-	--sidebar-accent-foreground: oklch(0.42 0.15 262);
-	--sidebar-border: oklch(0.92 0.008 262);
-	--sidebar-ring: oklch(0.58 0.19 277);
+	--radius: 0.375rem;
+	/* Header bar: the same paper as the page, so the chrome recedes behind the contract. */
+	--header: #fafaf9;
+	--header-foreground: #1e2024;
+	--sidebar: #fafaf9;
+	--sidebar-foreground: #1e2024;
+	--sidebar-primary: #2e3138;
+	--sidebar-primary-foreground: #fafaf9;
+	--sidebar-accent: #e4e4e0;
+	--sidebar-accent-foreground: #1e2024;
+	--sidebar-border: #dcdcd7;
+	--sidebar-ring: #2e3138;
 	--docx-reference-chip-border: #7dd3fc;
 	--docx-reference-chip-bg: #e0f2fe;
 	--docx-reference-chip-text: #0369a1;
@@ -276,50 +278,51 @@
 }
 
 .dark {
-	--background: oklch(0.145 0 0);
-	--foreground: oklch(0.985 0 0);
-	--canvas: oklch(0.18 0.004 60);
-	--card: oklch(0.205 0 0);
-	--card-foreground: oklch(0.985 0 0);
+	/* Night graphite: a soft charcoal, never a flat near-black. */
+	--background: #1b1c1f;
+	--foreground: #ebebe8;
+	--canvas: #161719;
+	--card: #222327;
+	--card-foreground: #ebebe8;
 	/* A step above the cards, so a menu opened over the side panel stands apart from it. */
-	--popover: oklch(0.26 0.006 262);
-	--popover-foreground: oklch(0.985 0 0);
+	--popover: #2b2c31;
+	--popover-foreground: #ebebe8;
 	/* Light enough to read as text on the header and cards (≥6:1), so a filled primary
-	   carries dark text (7:1). */
-	--primary: oklch(0.72 0.15 277);
-	--primary-foreground: oklch(0.2 0.04 277);
-	--secondary: oklch(0.27 0.012 262);
-	--secondary-foreground: oklch(0.985 0 0);
-	--muted: oklch(0.27 0.012 262);
-	--muted-foreground: oklch(0.708 0.012 262);
-	--accent: oklch(0.3 0.03 262);
-	--accent-foreground: oklch(0.985 0 0);
+	   carries dark text. */
+	--primary: #d6d6d1;
+	--primary-foreground: #1b1c1f;
+	--secondary: #2b2c30;
+	--secondary-foreground: #ebebe8;
+	--muted: #2b2c30;
+	--muted-foreground: #a4a5a0;
+	--accent: #323338;
+	--accent-foreground: #ebebe8;
 	--destructive: oklch(0.704 0.191 22.216);
 	--success: oklch(0.68 0.15 150);
 	--success-foreground: oklch(0.145 0 0);
 	--warning: oklch(0.78 0.15 75);
 	--warning-foreground: oklch(0.2 0.03 75);
-	--info: oklch(0.62 0.16 262);
-	--info-foreground: oklch(0.145 0 0);
+	--info: #8fa9d8;
+	--info-foreground: #141925;
 	--border: oklch(1 0 0 / 10%);
 	/* A field's edge and the focus ring stand ≥3:1 off the background, the cards and the header. */
 	--input: oklch(1 0 0 / 38%);
-	--ring: oklch(0.65 0.16 262);
+	--ring: #c4c4be;
 	--chart-1: oklch(0.62 0.19 262);
 	--chart-2: oklch(0.65 0.13 200);
 	--chart-3: oklch(0.66 0.16 300);
 	--chart-4: oklch(0.7 0.15 75);
 	--chart-5: oklch(0.66 0.18 150);
-	--header: oklch(0.26 0.035 264);
-	--header-foreground: oklch(0.97 0.004 264);
-	--sidebar: oklch(0.205 0.008 262);
-	--sidebar-foreground: oklch(0.985 0 0);
-	--sidebar-primary: oklch(0.72 0.15 277);
-	--sidebar-primary-foreground: oklch(0.2 0.04 277);
-	--sidebar-accent: oklch(0.3 0.03 262);
-	--sidebar-accent-foreground: oklch(0.985 0 0);
+	--header: #222327;
+	--header-foreground: #ebebe8;
+	--sidebar: #222327;
+	--sidebar-foreground: #ebebe8;
+	--sidebar-primary: #d6d6d1;
+	--sidebar-primary-foreground: #1b1c1f;
+	--sidebar-accent: #323338;
+	--sidebar-accent-foreground: #ebebe8;
 	--sidebar-border: oklch(1 0 0 / 10%);
-	--sidebar-ring: oklch(0.65 0.16 262);
+	--sidebar-ring: #c4c4be;
 	--docx-reference-chip-border: #0ea5e9;
 	--docx-reference-chip-bg: rgba(12, 74, 110, 0.45);
 	--docx-reference-chip-text: #bae6fd;

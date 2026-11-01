@@ -362,7 +362,7 @@ export function RankBadge({ rank, className }: { rank: number | undefined; class
 	return (
 		<span
 			className={cn(
-				'flex size-6 shrink-0 items-center justify-center rounded-full border border-border bg-card text-2xs font-semibold tabular-nums',
+				'flex size-6 shrink-0 items-center justify-center rounded-full border border-border text-2xs font-medium text-muted-foreground tabular-nums',
 				className
 			)}
 		>
@@ -373,7 +373,8 @@ export function RankBadge({ rank, className }: { rank: number | undefined; class
 
 export function SectionTag({ section }: { section: string }) {
 	return (
-		<span className="mr-1.5 inline-block rounded-[5px] border border-border bg-card px-1.5 align-[1px] text-2xs leading-4 font-medium text-muted-foreground tabular-nums">
+		// Set like a statute book's section mark: the § in the text face, no box around it.
+		<span className="mr-1.5 font-serif font-normal text-muted-foreground tabular-nums">
 			{section}
 		</span>
 	);

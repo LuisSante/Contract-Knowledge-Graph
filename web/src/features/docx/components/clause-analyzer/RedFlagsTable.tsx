@@ -57,27 +57,73 @@ function wordRuns(text: string): Set<string> {
 	return runs;
 }
 
-function detect(kg: KnowledgeGraph, flag: RedFlag): Detection {
+/** A flag's detection plus the graph texts that matched it, to mark the shared words. */
+interface FlagMatch {
+	detection: Detection;
+	matched: string[];
+}
+
+function detect(kg: KnowledgeGraph, flag: RedFlag): FlagMatch {
 	const runs = wordRuns(flag.text);
-	if (runs.size === 0) return 'short';
+	if (runs.size === 0) return { detection: 'short', matched: [] };
 	const shares = (text: string) => [...wordRuns(text)].some((run) => runs.has(run));
 
 	const found: Partial<Record<FoundAs, Array<string | null>>> = {};
+	const matched: string[] = [];
 	const statements = deonticNodes(kg);
 	for (const statement of statements) {
-		if ((statement.evidenceSpans ?? []).some(shares)) {
+		const spans = (statement.evidenceSpans ?? []).filter(shares);
+		if (spans.length > 0) {
 			(found[statement.kind] ??= []).push(statement.clauseId ?? null);
+			matched.push(...spans);
 		}
 	}
-	if (Object.keys(found).length > 0) return found;
+	if (Object.keys(found).length > 0) return { detection: found, matched };
 	// A condition sits in the clause of the statement it gates.
 	const clauseOfStatement = new Map(statements.map((s) => [s.id, s.clauseId ?? null] as const));
-	const conditions = kg.conditions
-		.filter((condition) => shares(condition.trigger ?? ''))
-		.map((condition) =>
-			condition.gatesId ? (clauseOfStatement.get(condition.gatesId) ?? null) : null
-		);
-	return conditions.length > 0 ? { condition: conditions } : null;
+	const conditions = kg.conditions.filter((condition) => shares(condition.trigger ?? ''));
+	return {
+		detection:
+			conditions.length > 0
+				? {
+						condition: conditions.map((condition) =>
+							condition.gatesId ? (clauseOfStatement.get(condition.gatesId) ?? null) : null
+						),
+					}
+				: null,
+		matched: conditions.map((condition) => condition.trigger ?? ''),
+	};
+}
+
+/** The flag's text cut into pieces, `shared` on the words that sit in a run of
+ *  MIN_SHARED_WORDS the graph texts also hold: the words the match rests on. */
+function sharedPieces(text: string, matched: string[]): Array<{ text: string; shared: boolean }> {
+	const lower = text.toLowerCase();
+	// Lowercasing that changes the length would shift the offsets: show the text unmarked.
+	if (matched.length === 0 || lower.length !== text.length) return [{ text, shared: false }];
+	const words = [...lower.matchAll(/[a-z0-9]+/g)];
+	const graphRuns = new Set(matched.flatMap((m) => [...wordRuns(m)]));
+	const marked = new Array<boolean>(words.length).fill(false);
+	for (let i = 0; i + MIN_SHARED_WORDS <= words.length; i++) {
+		const run = words.slice(i, i + MIN_SHARED_WORDS).map((w) => w[0]);
+		if (graphRuns.has(run.join(' '))) marked.fill(true, i, i + MIN_SHARED_WORDS);
+	}
+
+	const pieces: Array<{ text: string; shared: boolean }> = [];
+	let cursor = 0;
+	for (let i = 0; i < words.length; i++) {
+		if (!marked[i]) continue;
+		let last = i;
+		while (last + 1 < words.length && marked[last + 1]) last++;
+		const start = words[i].index;
+		const end = words[last].index + words[last][0].length;
+		if (start > cursor) pieces.push({ text: text.slice(cursor, start), shared: false });
+		pieces.push({ text: text.slice(start, end), shared: true });
+		cursor = end;
+		i = last;
+	}
+	if (cursor < text.length) pieces.push({ text: text.slice(cursor), shared: false });
+	return pieces;
 }
 
 /** `right_of_first_refusal_to_lease` → «Right of first refusal to lease»; the dataset's spelling is kept. */
@@ -220,10 +266,8 @@ export function RedFlagsTable({
 	const flags = useMemo(() => (loaded?.docId === docId ? loaded.flags : []), [loaded, docId]);
 	const openedIndex = opened?.docId === docId ? opened.index : null;
 	// Worked out from the graph on every load, never stored: a new extraction shows its own.
-	const detections = useMemo(
-		() => (kg ? flags.map((flag) => detect(kg, flag)) : null),
-		[kg, flags]
-	);
+	const matches = useMemo(() => (kg ? flags.map((flag) => detect(kg, flag)) : null), [kg, flags]);
+	const detections = matches?.map((m) => m.detection) ?? null;
 	const detectedCount = detections?.filter((d) => d !== null && d !== 'short').length ?? null;
 
 	/** Paints the flag blue in the contract and scrolls to it, as a clause row does. */
@@ -307,8 +351,17 @@ export function RedFlagsTable({
 							<td className="px-3 py-1.5 font-medium text-foreground/85">{typeLabel(flag.type)}</td>
 							{detections && <DetectionCells detection={detections[index]} placeOf={placeOf} />}
 							<td className="px-3 py-1.5 text-foreground/80">
-								<span className="line-clamp-2" title={flag.text}>
-									{flag.text}
+								{/* The opened flag shows whole, so its marked words are never cut off. */}
+								<span className={cn(openedIndex !== index && 'line-clamp-2')} title={flag.text}>
+									{sharedPieces(flag.text, matches?.[index].matched ?? []).map((piece, i) =>
+										piece.shared ? (
+											<span key={i} className="font-semibold text-blue-700 dark:text-blue-300">
+												{piece.text}
+											</span>
+										) : (
+											piece.text
+										)
+									)}
 								</span>
 							</td>
 						</tr>

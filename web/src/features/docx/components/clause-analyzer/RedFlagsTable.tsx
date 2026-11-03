@@ -1,9 +1,17 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import { ChevronDownIcon } from 'lucide-react';
 import { KIND_COLORS, KIND_LABEL } from '@/features/docx/components/clause-analyzer/constants';
+import {
+	RedFlagPath,
+	type PartyColorOf,
+} from '@/features/docx/components/clause-analyzer/RedFlagPath';
 import { RankBadge, SectionTag } from '@/features/docx/components/clause-analyzer/parts/table-bits';
+import { tint } from '@/features/docx/components/clause-analyzer/parts/table-bits';
+import { flagPath, type FlagPath } from '@/features/docx/utils/knowledge/red-flag-path';
+import type { EntityHighlight } from '@/features/docx/utils/assistant/entity-marks';
+import type { EvidenceParagraph } from '@/types/evidence';
 import { cn } from '@/lib/utils';
 import { fetchRedFlags } from '@/services/red-flags';
 import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
@@ -11,6 +19,7 @@ import { useDocumentStore } from '@/stores/document';
 import type { Node } from '@/types/document';
 import { deonticNodes, type DeonticKind, type KnowledgeGraph } from '@/types/knowledge';
 import type { RedFlag } from '@/types/red-flags';
+import { conditionLead } from '@/features/docx/utils/knowledge/clause-favour';
 
 // Blue, so a flag in the contract never reads as one of the deontic types' colours.
 const FLAG_COLOR = '#2563eb';
@@ -64,11 +73,14 @@ interface FlagMatch {
 	/** The statements whose squares stand for the flag: the ones that matched, or the ones
 	 *  the matching conditions gate. */
 	statementIds: string[];
+	/** The conditions it matched, when it was found as one. */
+	conditionIds: string[];
 }
 
 function detect(kg: KnowledgeGraph, flag: RedFlag): FlagMatch {
 	const runs = wordRuns(flag.text);
-	if (runs.size === 0) return { detection: 'short', matched: [], statementIds: [] };
+	if (runs.size === 0)
+		return { detection: 'short', matched: [], statementIds: [], conditionIds: [] };
 	const shares = (text: string) => [...wordRuns(text)].some((run) => runs.has(run));
 
 	const found: Partial<Record<FoundAs, Array<string | null>>> = {};
@@ -83,7 +95,8 @@ function detect(kg: KnowledgeGraph, flag: RedFlag): FlagMatch {
 			statementIds.push(statement.id);
 		}
 	}
-	if (Object.keys(found).length > 0) return { detection: found, matched, statementIds };
+	if (Object.keys(found).length > 0)
+		return { detection: found, matched, statementIds, conditionIds: [] };
 	// A condition sits in the clause of the statement it gates.
 	const clauseOfStatement = new Map(statements.map((s) => [s.id, s.clauseId ?? null] as const));
 	const conditions = kg.conditions.filter((condition) => shares(condition.trigger ?? ''));
@@ -98,6 +111,7 @@ function detect(kg: KnowledgeGraph, flag: RedFlag): FlagMatch {
 				: null,
 		matched: conditions.map((condition) => condition.trigger ?? ''),
 		statementIds: conditions.flatMap((condition) => (condition.gatesId ? [condition.gatesId] : [])),
+		conditionIds: conditions.map((condition) => condition.id),
 	};
 }
 
@@ -234,12 +248,88 @@ function DetectionCells({ detection, placeOf }: { detection: Detection; placeOf?
 	);
 }
 
+const CONDITION_COLOR = '#e7298a';
+
+function sectionLabel(kg: KnowledgeGraph, clauseId: string | null, placeOf?: PlaceOf): string {
+	if (!clauseId) return '—';
+	const section = placeOf?.(clauseId)?.section;
+	const ref = kg.clauses.find((c) => c.id === clauseId)?.ref;
+	return section ?? (ref ? `§${ref}` : '—');
+}
+
+/** The path in the contract, beside the flag: its statements and conditions painted in their
+ *  colours, and the paragraphs of the other steps linked to the flag's by the margin line. */
+function pathInDocument(
+	kg: KnowledgeGraph,
+	path: FlagPath,
+	paragraphs: Node[],
+	anchorId: string,
+	placeOf?: PlaceOf
+): { entities: EntityHighlight[]; related: EvidenceParagraph[] } {
+	const nodeById = new Map(paragraphs.map((p) => [p.id, p] as const));
+	const entities: EntityHighlight[] = [];
+	const related = new Map<string, EvidenceParagraph>();
+	const link = (pid: string, relation?: EvidenceParagraph['relation']) => {
+		const node = nodeById.get(pid);
+		if (!node || pid === anchorId || related.has(pid)) return;
+		related.set(pid, { node, ...(relation && { relation }) });
+	};
+	const paint = (s: FlagPath['statements'][number]) => {
+		const color = KIND_COLORS[s.statement.kind];
+		for (const span of s.statement.evidenceSpans ?? []) {
+			entities.push({
+				label: span,
+				key: `kg-${s.statement.id}`,
+				color,
+				softColor: tint(color, 16),
+			});
+		}
+		for (const { condition } of s.conditions) {
+			entities.push({
+				label: condition.trigger,
+				key: `kg-${condition.id}`,
+				color: CONDITION_COLOR,
+				softColor: tint(CONDITION_COLOR, 14),
+			});
+		}
+	};
+	const home = sectionLabel(kg, path.clauseIds[0] ?? null, placeOf);
+	for (const s of path.statements) {
+		paint(s);
+		s.statement.paragraphIds.forEach((pid) => link(pid));
+		for (const { condition } of s.conditions) {
+			condition.paragraphIds.forEach((pid) =>
+				link(pid, {
+					kind: 'condition',
+					lead: conditionLead(condition.operator),
+					trigger: condition.trigger,
+				})
+			);
+		}
+	}
+	for (const c of path.consequences) {
+		paint(c);
+		const from = sectionLabel(kg, c.clauseId, placeOf);
+		c.statement.paragraphIds.forEach((pid) => link(pid, { kind: 'depends_on', from, to: home }));
+	}
+	for (const m of path.modifiers) {
+		const from = sectionLabel(kg, m.clauseId, placeOf);
+		const pids =
+			m.statement?.paragraphIds ??
+			kg.clauses.find((c) => c.id === m.clauseId)?.paragraphIds.slice(0, 1) ??
+			[];
+		pids.forEach((pid) => link(pid, { kind: 'modifies', from, to: home }));
+	}
+	return { entities, related: [...related.values()] };
+}
+
 /** The dataset's red flags under the analyzer, as a reference to set against the table above. */
 export function RedFlagsTable({
 	docId,
 	kg,
 	placeOf,
 	onFlagged,
+	colorOf,
 }: {
 	docId: string;
 	kg: KnowledgeGraph | null;
@@ -247,6 +337,8 @@ export function RedFlagsTable({
 	placeOf?: PlaceOf;
 	/** Hands up the statements some flag matched, so the table above can mark their squares. */
 	onFlagged?: (docId: string, statementIds: ReadonlySet<string>) => void;
+	/** A party's colour, as the analyzer's columns paint it. */
+	colorOf: PartyColorOf;
 }) {
 	// Kept with the document they belong to, so another contract never shows them while it loads.
 	const [loaded, setLoaded] = useState<{ docId: string; flags: RedFlag[] } | null>(null);
@@ -279,6 +371,26 @@ export function RedFlagsTable({
 	const detections = matches?.map((m) => m.detection) ?? null;
 	const detectedCount = detections?.filter((d) => d !== null && d !== 'short').length ?? null;
 
+	// The opened flag's path through the graph, and the other flags that lead to its statements.
+	const opening = useMemo(() => {
+		if (!kg || !matches || openedIndex === null) return null;
+		const flag = flags[openedIndex];
+		const match = matches[openedIndex];
+		const path = flagPath(kg, match.statementIds, paragraphOf(paragraphs, flag)?.id ?? null);
+		if (!path) return null;
+		const ids = new Set(path.statements.map((s) => s.statement.id));
+		const sharing = new Set(
+			matches.flatMap((m, i) =>
+				i !== openedIndex && m.statementIds.some((id) => ids.has(id)) ? [i] : []
+			)
+		);
+		return { path, sharing };
+	}, [kg, matches, openedIndex, flags, paragraphs]);
+	const flaggedConditionIds = useMemo(
+		() => new Set(matches?.flatMap((m) => m.conditionIds) ?? []),
+		[matches]
+	);
+
 	useEffect(() => {
 		onFlagged?.(docId, new Set(matches?.flatMap((m) => m.statementIds) ?? []));
 	}, [onFlagged, docId, matches]);
@@ -288,12 +400,18 @@ export function RedFlagsTable({
 		const paragraph = paragraphOf(paragraphs, flag);
 		if (!paragraph) return;
 		const key = `red-flag-${index}`;
+		const path = kg && matches ? flagPath(kg, matches[index].statementIds, paragraph.id) : null;
+		const around = path && kg ? pathInDocument(kg, path, paragraphs, paragraph.id, placeOf) : null;
 		setDocumentTarget({
 			anchorParagraphId: paragraph.id,
 			anchorLabel: null,
-			relatedParagraphs: [],
-			entities: [{ label: flag.text, key: `kg-${key}`, color: FLAG_COLOR, softColor: FLAG_SOFT }],
-			paragraphIds: [paragraph.id],
+			relatedParagraphs: around?.related ?? [],
+			// The flag first: where its words and a statement's overlap, the longer one shows.
+			entities: [
+				{ label: flag.text, key: `kg-${key}`, color: FLAG_COLOR, softColor: FLAG_SOFT },
+				...(around?.entities ?? []),
+			],
+			paragraphIds: [paragraph.id, ...(around?.related.map((p) => p.node.id) ?? [])],
 			// One focused id: the viewer lands on the flag's words, not the paragraph's top.
 			focusNodeIds: [key],
 			scoreByParagraph: {},
@@ -349,35 +467,53 @@ export function RedFlagsTable({
 				</thead>
 				<tbody>
 					{flags.map((flag, index) => (
-						<tr
-							key={index}
-							onClick={() => openInDocument(flag, index)}
-							title="Show in the contract"
-							className={cn(
-								'cursor-pointer border-b border-border/30 align-top last:border-b-0 hover:bg-muted/60',
-								openedIndex === index && 'bg-blue-50 hover:bg-blue-50 dark:bg-blue-950/40'
+						<Fragment key={index}>
+							<tr
+								onClick={() => openInDocument(flag, index)}
+								title="Show in the contract"
+								className={cn(
+									'cursor-pointer border-b border-border/30 align-top last:border-b-0 hover:bg-muted/60',
+									openedIndex === index && 'bg-blue-50 hover:bg-blue-50 dark:bg-blue-950/40',
+									opening?.sharing.has(index) && 'bg-blue-50/50 shadow-[inset_3px_0_0_#2563eb]'
+								)}
+							>
+								<td className="truncate px-3 py-1.5 text-foreground/70" title={flag.article}>
+									{flag.article || '—'}
+								</td>
+								<td className="px-3 py-1.5 font-medium text-foreground/85">
+									{typeLabel(flag.type)}
+								</td>
+								{detections && <DetectionCells detection={detections[index]} placeOf={placeOf} />}
+								<td className="px-3 py-1.5 text-foreground/80">
+									{/* The opened flag shows whole, so its marked words are never cut off. */}
+									<span className={cn(openedIndex !== index && 'line-clamp-2')} title={flag.text}>
+										{sharedPieces(flag.text, matches?.[index].matched ?? []).map((piece, i) =>
+											piece.shared ? (
+												<span key={i} className="font-semibold text-blue-700 dark:text-blue-300">
+													{piece.text}
+												</span>
+											) : (
+												piece.text
+											)
+										)}
+									</span>
+								</td>
+							</tr>
+							{openedIndex === index && opening && kg && (
+								<tr className="border-b border-border/30 bg-blue-50/40 dark:bg-blue-950/20">
+									<td colSpan={detections ? 5 : 3} className="px-3 pt-1 pb-3">
+										<RedFlagPath
+											path={opening.path}
+											kg={kg}
+											colorOf={colorOf}
+											placeOf={placeOf}
+											flaggedConditionIds={flaggedConditionIds}
+											sharedWith={opening.sharing.size}
+										/>
+									</td>
+								</tr>
 							)}
-						>
-							<td className="truncate px-3 py-1.5 text-foreground/70" title={flag.article}>
-								{flag.article || '—'}
-							</td>
-							<td className="px-3 py-1.5 font-medium text-foreground/85">{typeLabel(flag.type)}</td>
-							{detections && <DetectionCells detection={detections[index]} placeOf={placeOf} />}
-							<td className="px-3 py-1.5 text-foreground/80">
-								{/* The opened flag shows whole, so its marked words are never cut off. */}
-								<span className={cn(openedIndex !== index && 'line-clamp-2')} title={flag.text}>
-									{sharedPieces(flag.text, matches?.[index].matched ?? []).map((piece, i) =>
-										piece.shared ? (
-											<span key={i} className="font-semibold text-blue-700 dark:text-blue-300">
-												{piece.text}
-											</span>
-										) : (
-											piece.text
-										)
-									)}
-								</span>
-							</td>
-						</tr>
+						</Fragment>
 					))}
 				</tbody>
 			</table>

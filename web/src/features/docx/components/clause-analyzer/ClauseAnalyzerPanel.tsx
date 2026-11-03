@@ -43,8 +43,8 @@ import {
 	YouArePicker,
 	type ConditionMode,
 } from '@/features/docx/components/clause-analyzer/parts/table-bits';
-import { KIND_COLORS } from '@/features/docx/components/clause-analyzer/constants';
-import { short } from '@/features/docx/components/clause-analyzer/parts/bits';
+import { KIND_COLORS, NEUTRAL_COLOR } from '@/features/docx/components/clause-analyzer/constants';
+import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/parts/bits';
 import { withoutServed } from '@/features/docx/utils/knowledge/clause-favour';
 import { statementTiming } from '@/features/docx/utils/knowledge/statement-timing';
 import {
@@ -266,6 +266,12 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 			b: viewKg?.parties.find((p) => p.id === pairB)?.name ?? 'Party B',
 		}),
 		[viewKg, pairA, pairB]
+	);
+
+	// A party in the red flags' paths as its column paints it; grey until the pair is picked.
+	const partyColorOf = useCallback(
+		(id: string) => (id === pairA ? SIDE_COLOR.a : id === pairB ? SIDE_COLOR.b : NEUTRAL_COLOR),
+		[pairA, pairB]
 	);
 
 	const { me, pickMe, againstIds, onlyAgainst, setOnlyAgainst, filtering, tableRows } =
@@ -494,6 +500,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 				kg={status === 'ready' ? kg : null}
 				placeOf={placeOfClause}
 				onFlagged={onFlagged}
+				colorOf={partyColorOf}
 			/>
 		</div>
 	);

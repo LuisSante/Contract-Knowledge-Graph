@@ -81,6 +81,8 @@ interface ClauseRowProps {
 	boldStripes?: boolean;
 	/** Statements a condition gates; their squares are drawn as outlines. */
 	conditionalIds?: ReadonlySet<string>;
+	/** Statements a red flag matched; their squares get a black outline. */
+	flaggedIds?: ReadonlySet<string>;
 	/** A mark on the rule between the parties' columns points to the one with more squares
 	 *  in this row, or says «=» when both have as many. Needs `centerLanes`. */
 	axisMark?: boolean;
@@ -166,6 +168,7 @@ export const ClauseRow = memo(function ClauseRow({
 	labelWidth = LABEL_WIDTH,
 	boldStripes = false,
 	conditionalIds,
+	flaggedIds,
 	axisMark = false,
 	against = false,
 	laneName,
@@ -334,6 +337,7 @@ export const ClauseRow = memo(function ClauseRow({
 										mark={mark}
 										muted={dimmed || !paintLanes[lane]}
 										conditional={conditionalIds?.has(mark.id)}
+										flagged={flaggedIds?.has(mark.id)}
 										tabbable={mark.id === tabStop}
 										onHover={onHoverMark}
 										onLeave={onLeaveMark}

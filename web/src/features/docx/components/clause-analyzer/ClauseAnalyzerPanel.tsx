@@ -131,6 +131,13 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 	// Conditions are shown anywhere (outlines, the card, pink in the contract) only when the
 	// reader asks for them: under All the view is the one it always was.
 	const showConditions = conditionMode === 'mark';
+	// The statements a red flag of the dataset matched, from the table below; kept with their
+	// document so another contract never shows them while it loads.
+	const [flagged, setFlagged] = useState<{ docId: string; ids: ReadonlySet<string> } | null>(null);
+	const onFlagged = useCallback(
+		(flagsDocId: string, ids: ReadonlySet<string>) => setFlagged({ docId: flagsDocId, ids }),
+		[]
+	);
 	const conditionalIds = useMemo(
 		() =>
 			viewKg
@@ -450,6 +457,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 								canPaintB={Boolean(secondPartyId)}
 								leadOf={leadOf}
 								conditionalIds={showConditions ? conditionalIds : undefined}
+								flaggedIds={flagged?.docId === docId ? flagged.ids : undefined}
 								youLane={me}
 								againstIds={againstIds}
 								emptyNote={
@@ -481,7 +489,12 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 				/>
 			)}
 
-			<RedFlagsTable docId={docId} kg={status === 'ready' ? kg : null} placeOf={placeOfClause} />
+			<RedFlagsTable
+				docId={docId}
+				kg={status === 'ready' ? kg : null}
+				placeOf={placeOfClause}
+				onFlagged={onFlagged}
+			/>
 		</div>
 	);
 }

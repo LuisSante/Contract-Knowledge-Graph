@@ -61,24 +61,29 @@ function wordRuns(text: string): Set<string> {
 interface FlagMatch {
 	detection: Detection;
 	matched: string[];
+	/** The statements whose squares stand for the flag: the ones that matched, or the ones
+	 *  the matching conditions gate. */
+	statementIds: string[];
 }
 
 function detect(kg: KnowledgeGraph, flag: RedFlag): FlagMatch {
 	const runs = wordRuns(flag.text);
-	if (runs.size === 0) return { detection: 'short', matched: [] };
+	if (runs.size === 0) return { detection: 'short', matched: [], statementIds: [] };
 	const shares = (text: string) => [...wordRuns(text)].some((run) => runs.has(run));
 
 	const found: Partial<Record<FoundAs, Array<string | null>>> = {};
 	const matched: string[] = [];
+	const statementIds: string[] = [];
 	const statements = deonticNodes(kg);
 	for (const statement of statements) {
 		const spans = (statement.evidenceSpans ?? []).filter(shares);
 		if (spans.length > 0) {
 			(found[statement.kind] ??= []).push(statement.clauseId ?? null);
 			matched.push(...spans);
+			statementIds.push(statement.id);
 		}
 	}
-	if (Object.keys(found).length > 0) return { detection: found, matched };
+	if (Object.keys(found).length > 0) return { detection: found, matched, statementIds };
 	// A condition sits in the clause of the statement it gates.
 	const clauseOfStatement = new Map(statements.map((s) => [s.id, s.clauseId ?? null] as const));
 	const conditions = kg.conditions.filter((condition) => shares(condition.trigger ?? ''));
@@ -92,6 +97,7 @@ function detect(kg: KnowledgeGraph, flag: RedFlag): FlagMatch {
 					}
 				: null,
 		matched: conditions.map((condition) => condition.trigger ?? ''),
+		statementIds: conditions.flatMap((condition) => (condition.gatesId ? [condition.gatesId] : [])),
 	};
 }
 
@@ -233,11 +239,14 @@ export function RedFlagsTable({
 	docId,
 	kg,
 	placeOf,
+	onFlagged,
 }: {
 	docId: string;
 	kg: KnowledgeGraph | null;
 	/** A clause's place and number in the table. */
 	placeOf?: PlaceOf;
+	/** Hands up the statements some flag matched, so the table above can mark their squares. */
+	onFlagged?: (docId: string, statementIds: ReadonlySet<string>) => void;
 }) {
 	// Kept with the document they belong to, so another contract never shows them while it loads.
 	const [loaded, setLoaded] = useState<{ docId: string; flags: RedFlag[] } | null>(null);
@@ -269,6 +278,10 @@ export function RedFlagsTable({
 	const matches = useMemo(() => (kg ? flags.map((flag) => detect(kg, flag)) : null), [kg, flags]);
 	const detections = matches?.map((m) => m.detection) ?? null;
 	const detectedCount = detections?.filter((d) => d !== null && d !== 'short').length ?? null;
+
+	useEffect(() => {
+		onFlagged?.(docId, new Set(matches?.flatMap((m) => m.statementIds) ?? []));
+	}, [onFlagged, docId, matches]);
 
 	/** Paints the flag blue in the contract and scrolls to it, as a clause row does. */
 	const openInDocument = (flag: RedFlag, index: number) => {

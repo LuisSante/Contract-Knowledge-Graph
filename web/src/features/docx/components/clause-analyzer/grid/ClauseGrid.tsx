@@ -56,6 +56,8 @@ interface ClauseGridProps {
 	leadOf?: (row: GridRow) => ClauseRowLead;
 	/** Statements a condition gates; their squares are drawn as outlines. */
 	conditionalIds?: ReadonlySet<string>;
+	/** Statements a red flag matched; their squares get a black outline. */
+	flaggedIds?: ReadonlySet<string>;
 	/** The reader's party («You are»): its column's name is marked «(you)». */
 	youLane?: GridLane | null;
 	/** Clauses where the other party has more squares than the reader in the type shown. */
@@ -89,6 +91,7 @@ export function ClauseGrid({
 	canPaintB,
 	leadOf,
 	conditionalIds,
+	flaggedIds,
 	youLane = null,
 	againstIds = null,
 	emptyNote,
@@ -214,6 +217,7 @@ export function ClauseGrid({
 						labelWidth={NAME_WIDTH}
 						boldStripes
 						conditionalIds={conditionalIds}
+						flaggedIds={flaggedIds}
 						axisMark
 						against={row.clauseId !== null && Boolean(againstIds?.has(row.clauseId))}
 						laneName={laneName}

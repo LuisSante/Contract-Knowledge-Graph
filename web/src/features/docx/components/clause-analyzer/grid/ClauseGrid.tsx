@@ -17,6 +17,7 @@ import {
 } from '@/features/docx/components/clause-analyzer/grid/ClauseRow';
 import type { HoverPoint } from '@/features/docx/components/clause-analyzer/grid/Mark';
 import {
+	LABEL_MAX_WIDTH,
 	LABEL_MIN_WIDTH,
 	laneWidth,
 	PAIR_SECOND_COLOR,
@@ -24,13 +25,19 @@ import {
 	PARTY_COLOR,
 	PARTY_TEXT_COLOR,
 	ROW_PAGE,
+	BOTH_COLUMNS,
+	bothWidth,
 } from '@/features/docx/components/clause-analyzer/constants';
+import { pairShort } from '@/features/docx/components/clause-analyzer/parts/bits';
 import type { RowOrder } from '@/features/docx/hooks/useClauseRows';
 
 /** The Clause Analyzer's layout: room for a long clause name on one line, and 10 marks to a
  *  column before it wraps, which leaves room for the «Linked» column. */
 const NAME_WIDTH = 320;
+/** A party's column wraps after this many squares; it is only as wide as its fullest row
+ *  needs, and never narrower than MIN_MARKS, so its name still reads above it. */
 const COLUMN_MARKS = 10;
+const MIN_MARKS = 6;
 /** The words after "CLAUSE" for each ordering. */
 const SORT_LABELS: Record<RowOrder, string> = {
 	size: 'by size ↓',
@@ -58,6 +65,10 @@ interface ClauseGridProps {
 	conditionalIds?: ReadonlySet<string>;
 	/** Statements a red flag matched; their squares get a black outline. */
 	flaggedIds?: ReadonlySet<string>;
+	/** The statements a red flag just picked: their squares get a blue ring. */
+	spotlightIds?: ReadonlySet<string>;
+	/** «Set shared aside»: a Both column between the parties for the reciprocal pairs. */
+	bothLane?: boolean;
 	/** The reader's party («You are»): its column's name is marked «(you)». */
 	youLane?: GridLane | null;
 	/** Clauses where the other party has more squares than the reader in the type shown. */
@@ -68,6 +79,9 @@ interface ClauseGridProps {
 	onOpenGraph?: (clauseId: string) => void;
 	/** Each row unfolds this under it while it is the picked one and «Details» is open. */
 	renderDetail?: (row: GridRow) => ReactNode;
+	/** Opens a row's «Details» from outside, such as a red flag picked from its square; a new
+	 *  `seq` asks again. */
+	detailRequest?: { clauseId: string; seq: number } | null;
 	/** Goes to a clause that modifies a row, or that it depends on or refers to, from that row's
 	 *  «modified by», «depends on» or «refers to». */
 	onGoToModifier?: (clauseId: string, kind: DeonticKind | null) => void;
@@ -92,12 +106,15 @@ export function ClauseGrid({
 	leadOf,
 	conditionalIds,
 	flaggedIds,
+	spotlightIds,
+	bothLane = false,
 	youLane = null,
 	againstIds = null,
 	emptyNote,
 	onSelectClause,
 	onOpenGraph,
 	renderDetail,
+	detailRequest = null,
 	onGoToModifier,
 	onOpenMark,
 	onFocusMark,
@@ -105,9 +122,36 @@ export function ClauseGrid({
 	onLeaveMark,
 }: ClauseGridProps) {
 	const [rowLimit, setRowLimit] = useState(ROW_PAGE);
-	// Picking a row paints it in the contract; its detail opens only from «Details».
+	// Picking a row paints it in the contract; its detail opens only from «Details», or when a
+	// red flag in it is picked.
 	const [detailOf, setDetailOf] = useState<string | null>(null);
+	const [askedSeq, setAskedSeq] = useState(0);
+	if (detailRequest && detailRequest.seq !== askedSeq) {
+		setAskedSeq(detailRequest.seq);
+		setDetailOf(detailRequest.clauseId);
+	}
 	const [showUnfiled, setShowUnfiled] = useState(false);
+
+	// Each column as wide as its fullest row in the type shown, over every row (not only those
+	// on screen), so «Show more» never shifts the columns: the clause names take the rest.
+	const columns = useMemo(() => {
+		const most = (count: (row: GridRow) => number) =>
+			Math.max(0, ...clauseRows.map(count), ...(unfiledRow ? [count(unfiledRow)] : []));
+		const shown = (marks: GridMark[] | undefined) =>
+			(marks ?? []).filter((mark) => visibleKinds.has(mark.kind)).length;
+		const clamp = (n: number) => Math.min(COLUMN_MARKS, Math.max(MIN_MARKS, n));
+		return {
+			a: clamp(most((row) => shown(row.marks.a))),
+			b: clamp(most((row) => shown(row.marks.b))),
+			both: Math.min(
+				BOTH_COLUMNS,
+				Math.max(
+					1,
+					most((row) => shown(row.both))
+				)
+			),
+		};
+	}, [clauseRows, unfiledRow, visibleKinds]);
 
 	// The picked row is always shown, even when it sits past «Show more».
 	const activeIndex = clauseRows.findIndex((row) => row.clauseId === activeClauseId);
@@ -139,8 +183,8 @@ export function ClauseGrid({
 					<button
 						type="button"
 						onClick={onToggleSort}
-						className="mr-2 truncate text-left font-medium text-muted-foreground hover:text-foreground"
-						style={{ flexBasis: NAME_WIDTH, minWidth: LABEL_MIN_WIDTH }}
+						className="flex-1 truncate text-left font-medium text-muted-foreground hover:text-foreground"
+						style={{ flexBasis: NAME_WIDTH, minWidth: LABEL_MIN_WIDTH, maxWidth: LABEL_MAX_WIDTH }}
 						title="Order the rows by size (how many squares each shows in this type, both parties together), by how much each clause weighs inside the contract (PageRank with a per-clause prior), or by its position in the document"
 					>
 						CLAUSE
@@ -154,13 +198,31 @@ export function ClauseGrid({
 						{(['a', 'b'] as const).map((lane) => (
 							<Fragment key={lane}>
 								{/* The rows put a rule between the two columns; the header keeps its width. */}
-								{lane === 'b' && <span className="w-px shrink-0" />}
+								{lane === 'b' &&
+									(bothLane ? (
+										<label
+											className="flex shrink-0 cursor-pointer items-center justify-center gap-1.5 font-semibold text-slate-600 dark:text-slate-300"
+											style={{ width: bothWidth(columns.both) }}
+											title="Statements written once per party with the same words: they bind or entitle both alike, so they count for neither. Tick to paint them in the document"
+										>
+											<Checkbox
+												checked={paintLanes.shared}
+												onCheckedChange={(value) => onPaintLane('shared', value === true)}
+												className="size-3.5 shrink-0 border-current"
+												style={{ backgroundColor: paintLanes.shared ? '#64748b' : undefined }}
+												aria-label="Paint the statements both parties share"
+											/>
+											Both
+										</label>
+									) : (
+										<span className="w-px shrink-0" />
+									))}
 								<label
 									className={`flex min-w-0 shrink-0 cursor-pointer items-center gap-1.5 font-semibold ${
 										lane === 'a' ? 'justify-end' : 'justify-start'
 									}`}
 									style={{
-										width: laneWidth(COLUMN_MARKS),
+										width: laneWidth(columns[lane]),
 										color: lane === 'a' ? PARTY_TEXT_COLOR : PAIR_SECOND_TEXT_COLOR,
 									}}
 									title={`Paint ${laneName(lane)}’s statements in the document`}
@@ -176,7 +238,7 @@ export function ClauseGrid({
 										/>
 									)}
 									<span className="truncate">
-										{laneName(lane)}
+										{pairShort({ a: laneName('a'), b: laneName('b') })[lane]}
 										{youLane === lane && <span className="font-normal"> (you)</span>}
 									</span>
 									{lane === 'a' && (
@@ -212,13 +274,15 @@ export function ClauseGrid({
 						visibleKinds={visibleKinds}
 						paintLanes={paintLanes}
 						centerLanes
-						laneColumns={COLUMN_MARKS}
+						laneColumns={columns}
+						bothColumns={columns.both}
 						lead={leads.get(row)}
 						labelWidth={NAME_WIDTH}
 						boldStripes
 						conditionalIds={conditionalIds}
 						flaggedIds={flaggedIds}
-						axisMark
+						spotlightIds={spotlightIds}
+						bothLane={bothLane}
 						against={row.clauseId !== null && Boolean(againstIds?.has(row.clauseId))}
 						laneName={laneName}
 						onSelect={onSelectClause}

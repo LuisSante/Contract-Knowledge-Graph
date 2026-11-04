@@ -24,6 +24,9 @@ export interface GridMark {
 	counterpartLane: GridLane | null;
 	label: string;
 	detail: string;
+	/** A square in the Both column stands for a pair: the same statement written once per
+	 *  party. These are the pair's ids, its own first. */
+	twinIds?: string[];
 }
 
 export interface GridRow {
@@ -31,6 +34,9 @@ export interface GridRow {
 	heading: string;
 	marks: Record<GridLane, GridMark[]>;
 	total: number;
+	/** «Set shared aside»: the reciprocal pairs taken out of the two parties' columns, a square
+	 *  per pair. They count for neither party. */
+	both?: GridMark[];
 }
 
 export interface StatementGrid {
@@ -70,6 +76,54 @@ export function withoutMarks(grid: StatementGrid, ids: ReadonlySet<string>): Sta
 		countByKind,
 		unfiled: rows.find((row) => row.clauseId === null)?.total ?? 0,
 	};
+}
+
+/**
+ * The grid with each reciprocal pair set aside: a statement written once per party with the
+ * same words, of the same type and in the same clause, binds or entitles both alike. Both
+ * squares leave the parties' columns, so no count, size, axis mark or «Against you» reads them,
+ * and one square stands for the pair in the row's Both column.
+ */
+export function withSharedAside(grid: StatementGrid, kg: KnowledgeGraph): StatementGrid {
+	const keyOf = new Map(
+		deonticNodes(kg).map(
+			(s) => [s.id, [s.kind, s.clauseId, (s.text ?? '').trim()].join('|')] as const
+		)
+	);
+	const rows = grid.rows.map((row) => {
+		const groups = new Map<string, { a: GridMark[]; b: GridMark[] }>();
+		for (const lane of ['a', 'b'] as const) {
+			for (const mark of row.marks[lane]) {
+				const key = keyOf.get(mark.id);
+				if (!key || key.endsWith('|')) continue;
+				const group = groups.get(key) ?? { a: [], b: [] };
+				group[lane].push(mark);
+				groups.set(key, group);
+			}
+		}
+		const aside = new Set<string>();
+		const both: GridMark[] = [];
+		for (const group of groups.values()) {
+			if (group.a.length === 0 || group.b.length === 0) continue;
+			const twins = [...group.a, ...group.b];
+			twins.forEach((mark) => aside.add(mark.id));
+			both.push({
+				...group.a[0],
+				lane: 'shared',
+				ownerName: 'both parties',
+				counterpartLane: null,
+				twinIds: twins.map((mark) => mark.id),
+			});
+		}
+		if (both.length === 0) return row;
+		const marks = {
+			a: row.marks.a.filter((mark) => !aside.has(mark.id)),
+			b: row.marks.b.filter((mark) => !aside.has(mark.id)),
+			shared: row.marks.shared,
+		};
+		return { ...row, marks, both };
+	});
+	return { ...grid, rows };
 }
 
 export function buildStatementGrid(

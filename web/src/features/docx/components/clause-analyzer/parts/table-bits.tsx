@@ -21,14 +21,14 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import type { KgCondition } from '@/types/knowledge';
 import { cn } from '@/lib/utils';
-import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
+import { useClauseAnalyzerStore, type PathVersion } from '@/stores/clause-analyzer';
 import {
 	KIND_COLORS,
 	KIND_TEXT_COLORS,
 	MUTED_LANE_OPACITY,
 	textColorOf,
 } from '@/features/docx/components/clause-analyzer/constants';
-import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/parts/bits';
+import { pairShort, SIDE_COLOR } from '@/features/docx/components/clause-analyzer/parts/bits';
 import {
 	DEONTIC_KINDS,
 	type Favour,
@@ -56,7 +56,7 @@ export const tint = (color: string, percent: number) =>
  * Arrow keys, Home and End over a row of options where only the picked one is a tab stop
  * (tabs, radios): picks the next one and moves focus to it.
  */
-function roveOptions<T extends string>(
+function roveOptions<T extends string | number>(
 	event: KeyboardEvent<HTMLElement>,
 	options: readonly T[],
 	current: T,
@@ -90,6 +90,7 @@ export function KindTabs({
 	names,
 	labels = KIND_LABEL,
 	aside,
+	shared = null,
 }: {
 	/** Names the tabs and their panel: `${id}-tab-<type>` controls `${id}-panel`. */
 	id: string;
@@ -100,6 +101,8 @@ export function KindTabs({
 	labels?: Record<DeonticKind, string>;
 	/** A small key at the right end of the tabs' row. */
 	aside?: ReactNode;
+	/** The pairs set aside in the Both column, per type («· 4 both»); null when not set aside. */
+	shared?: Record<DeonticKind, number> | null;
 }) {
 	return (
 		// The tabs sit on the bottom rule even when the key beside them wraps to two lines; a
@@ -114,7 +117,11 @@ export function KindTabs({
 				{DEONTIC_KINDS.map((k) => {
 					const active = kind === k;
 					const count = counts?.[k];
-					const said = count ? `${count.a} for ${names.a} and ${count.b} for ${names.b}` : '';
+					const said = count
+						? shared
+							? `${count.a} for ${names.a}, ${shared[k]} shared by both and ${count.b} for ${names.b}`
+							: `${count.a} for ${names.a} and ${count.b} for ${names.b}`
+						: '';
 					return (
 						<button
 							key={k}
@@ -142,18 +149,18 @@ export function KindTabs({
 							/>
 							{labels[k]}
 							{count && (
-								<span className="inline-flex gap-1.5 text-xs tabular-nums">
-									{(['a', 'b'] as const).map((side) => (
+								// In the columns' order: the first party, what both share, the second party.
+								<span className="inline-flex gap-1.5 text-xs font-bold tabular-nums">
+									<span style={{ color: textColorOf(SIDE_COLOR.a) }}>{count.a}</span>
+									{shared && (
 										<span
-											key={side}
-											className={
-												count[side] > count[side === 'a' ? 'b' : 'a'] ? 'font-bold' : 'font-normal'
-											}
-											style={{ color: textColorOf(SIDE_COLOR[side]) }}
+											className="text-slate-500 dark:text-slate-400"
+											title={`${shared[k]} shared by both parties, word for word: they count for neither`}
 										>
-											{count[side]}
+											{shared[k]}
 										</span>
-									))}
+									)}
+									<span style={{ color: textColorOf(SIDE_COLOR.b) }}>{count.b}</span>
 								</span>
 							)}
 						</button>
@@ -282,6 +289,56 @@ export function ConditionModePicker({
 	);
 }
 
+const PATH_VERSIONS: Array<{ version: PathVersion; label: string; hint: string }> = [
+	{ version: 1, label: 'Version 1', hint: 'A red flag’s path opens under its line in Details' },
+	{ version: 2, label: 'Version 2', hint: 'A red flag’s path is drawn in the Knowledge Graph tab' },
+];
+
+const VERSION_ORDER = PATH_VERSIONS.map((option) => option.version);
+
+/** Where a red flag's path is read, picked from its outlined square: the two versions under
+ *  study, the rest of the analyzer the same in both. */
+export function PathVersionPicker({
+	version,
+	onPick,
+}: {
+	version: PathVersion;
+	onPick: (version: PathVersion) => void;
+}) {
+	return (
+		<div
+			role="radiogroup"
+			aria-label="Where a red flag’s path is shown"
+			className="inline-flex items-center gap-2"
+			onKeyDown={(event) => roveOptions(event, VERSION_ORDER, version, onPick)}
+		>
+			<span className="text-2xs text-muted-foreground">Red-flag path</span>
+			<span className="inline-flex rounded-md border border-border bg-secondary p-0.5">
+				{PATH_VERSIONS.map((option) => (
+					<button
+						key={option.version}
+						type="button"
+						role="radio"
+						data-option={option.version}
+						aria-checked={version === option.version}
+						tabIndex={version === option.version ? 0 : -1}
+						onClick={() => onPick(option.version)}
+						title={option.hint}
+						className={cn(
+							'rounded px-2 py-0.5 text-2xs font-medium whitespace-nowrap',
+							version === option.version
+								? 'bg-card text-foreground shadow-sm'
+								: 'text-muted-foreground hover:text-foreground'
+						)}
+					>
+						{option.label}
+					</button>
+				))}
+			</span>
+		</div>
+	);
+}
+
 /** «You are»: the reader says which party they are, so the table can say what
  *  goes against them. Picking the chosen party again leaves nobody picked, the default. */
 export function YouArePicker({
@@ -314,7 +371,7 @@ export function YouArePicker({
 						)}
 					>
 						<span className="size-2 rounded-full" style={{ backgroundColor: SIDE_COLOR[side] }} />
-						{short(names[side])}
+						{pairShort(names)[side]}
 					</button>
 				))}
 			</div>
@@ -326,14 +383,10 @@ export function YouArePicker({
 export function AgainstFilter({
 	on,
 	onChange,
-	count,
-	total,
 	disabled,
 }: {
 	on: boolean;
 	onChange: (on: boolean) => void;
-	count: number;
-	total: number;
 	disabled: boolean;
 }) {
 	return (
@@ -357,14 +410,6 @@ export function AgainstFilter({
 			<span className={cn('font-medium whitespace-nowrap', disabled && 'text-muted-foreground/60')}>
 				Only against you
 			</span>
-			{/* Said, not only on hover: why it is off and how to turn it on. */}
-			{disabled ? (
-				<span className="text-muted-foreground">Pick which party you are first</span>
-			) : (
-				<span className="whitespace-nowrap text-muted-foreground tabular-nums">
-					{count} of {total}
-				</span>
-			)}
 		</label>
 	);
 }
@@ -539,7 +584,7 @@ export function ClauseAnchorTag({ label }: { label: string }) {
 
 /** Each kind of link between clauses has its own fill, so the three tell apart on the margin
  *  line without a legend. None is a statement type's colour, nor the picked clause's blue. */
-const LINK_COLOR = {
+export const LINK_COLOR = {
 	modifies: '#6d28d9',
 	dependsOn: '#0e7490',
 	refersTo: '#475569',
@@ -757,6 +802,9 @@ export function Fragment({
 	conditionParty,
 	timing,
 	onOpen,
+	flagged = false,
+	path,
+	onPickFlag,
 }: {
 	served: Served;
 	section: string | null;
@@ -772,11 +820,18 @@ export function Fragment({
 	/** Its deadline, frequency and values; absent when the graph gives none. */
 	timing?: StatementTiming;
 	onOpen: (nodeId: string) => void;
+	/** A red flag of the dataset matched it: its square in the line gets the black outline. */
+	flagged?: boolean;
+	/** Why it is a red flag, under its words: present while it is the picked flag. */
+	path?: ReactNode;
+	/** Shows its red-flag path. */
+	onPickFlag?: () => void;
 }) {
 	const shown = useClauseAnalyzerStore(
 		(s) => s.focusNodeIds.length === 1 && s.focusNodeIds[0] === served.mark.id
 	);
-	const [open, setOpen] = useState(false);
+	// The picked flag's line opens with its path; it is remounted when picked.
+	const [open, setOpen] = useState(Boolean(path));
 	const [evidenceOpen, setEvidenceOpen] = useState(false);
 	const bodyId = useId();
 	const evidenceId = useId();
@@ -804,6 +859,32 @@ export function Fragment({
 						aria-hidden
 					/>
 					<span className="min-w-0 text-sm text-foreground">{served.mark.label}</span>
+					{flagged && (
+						<span
+							role={onPickFlag ? 'button' : undefined}
+							tabIndex={onPickFlag ? 0 : undefined}
+							onClick={
+								onPickFlag &&
+								((event) => {
+									event.stopPropagation();
+									onPickFlag();
+								})
+							}
+							onKeyDown={
+								onPickFlag &&
+								((event) => {
+									if (event.key !== 'Enter' && event.key !== ' ') return;
+									event.preventDefault();
+									event.stopPropagation();
+									onPickFlag();
+								})
+							}
+							className="shrink-0 rounded px-1.5 py-px text-[10px] font-semibold text-blue-700 ring-1 ring-black/70 hover:bg-blue-50 dark:text-blue-300 dark:ring-white/70 dark:hover:bg-blue-950/40"
+							title="A red flag of the lease dataset: show why"
+						>
+							red flag
+						</span>
+					)}
 					{reciprocal && (
 						<span
 							className="shrink-0 rounded-full bg-muted px-1.5 py-px text-2xs font-medium text-foreground/70"
@@ -885,6 +966,7 @@ export function Fragment({
 							{served.text}
 						</blockquote>
 					)}
+					{path}
 				</div>
 			)}
 		</article>

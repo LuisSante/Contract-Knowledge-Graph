@@ -57,10 +57,17 @@ export function useFocusPayload({
 
 	useEffect(() => {
 		if (!kg || !focusNodeId) return;
+		// A pair set aside in the Both column is painted as both its statements, unless its
+		// checkbox is off.
 		const clauseStatements = activeClause
-			? [...activeClause.marks.a, ...activeClause.marks.b, ...activeClause.marks.shared].map(
-					(mark) => mark.id
-				)
+			? [
+					...[...activeClause.marks.a, ...activeClause.marks.b, ...activeClause.marks.shared].map(
+						(mark) => mark.id
+					),
+					...(paintLanes.shared ? (activeClause.both ?? []) : []).flatMap(
+						(mark) => mark.twinIds ?? [mark.id]
+					),
+				]
 			: null;
 		const allLanesOn = lanes.every((lane) => paintLanes[lane]) && showShared;
 		const statementIds =

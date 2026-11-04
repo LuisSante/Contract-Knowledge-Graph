@@ -83,6 +83,21 @@ export function useClauseRows({
 		}
 		return counts;
 	}, [shownGrid]);
+	// The pairs set aside in the Both column, per type: shown beside the tab's two counts.
+	const bothCounts = useMemo(() => {
+		if (!shownGrid) return null;
+		const counts = Object.fromEntries(DEONTIC_KINDS.map((k) => [k, 0])) as Record<
+			DeonticKind,
+			number
+		>;
+		for (const row of shownGrid.rows) {
+			if (!row.clauseId) continue;
+			for (const mark of row.both ?? []) {
+				if (DEONTIC_MARK_KINDS.includes(mark.kind)) counts[mark.kind as DeonticKind] += 1;
+			}
+		}
+		return counts;
+	}, [shownGrid]);
 
 	// One importance for the pair, counted on every obligation, right and prohibition between
 	// the two parties: it orders the rows, the same in every type shown, numbers them within
@@ -105,8 +120,11 @@ export function useClauseRows({
 	const rowImportance = countedIds ? clauseImportance : null;
 
 	const visibleRows = useMemo(() => {
-		const rows = (shownGrid?.rows ?? []).filter((row) =>
-			SHOWN_LANES.some((lane) => row.marks[lane].some((mark) => kindsShown.has(mark.kind)))
+		// A row whose squares in the type are all shared still shows, with only its Both column.
+		const rows = (shownGrid?.rows ?? []).filter(
+			(row) =>
+				SHOWN_LANES.some((lane) => row.marks[lane].some((mark) => kindsShown.has(mark.kind))) ||
+				(row.both ?? []).some((mark) => kindsShown.has(mark.kind))
 		);
 		// A stable sort: rows that weigh the same keep the contract's order.
 		if (sortBy === 'size') {
@@ -179,7 +197,8 @@ export function useClauseRows({
 					.filter(
 						(row) =>
 							row.clauseId !== null &&
-							SHOWN_LANES.some((lane) => row.marks[lane].some((mark) => mark.kind === kind))
+							(SHOWN_LANES.some((lane) => row.marks[lane].some((mark) => mark.kind === kind)) ||
+								(row.both ?? []).some((mark) => mark.kind === kind))
 					)
 					.sort((x, y) => weightIn(kind)(y) - weightIn(kind)(x));
 				return [kind, new Map(ranked.map((row, i) => [row.clauseId, i + 1] as const))];
@@ -251,6 +270,7 @@ export function useClauseRows({
 
 	return {
 		kindCounts,
+		bothCounts,
 		clauseImportance,
 		rowImportance,
 		clauseRows,

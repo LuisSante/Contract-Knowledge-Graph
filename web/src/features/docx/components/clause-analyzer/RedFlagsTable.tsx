@@ -3,10 +3,6 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { ChevronDownIcon } from 'lucide-react';
 import { KIND_COLORS, KIND_LABEL } from '@/features/docx/components/clause-analyzer/constants';
-import {
-	RedFlagPath,
-	type PartyColorOf,
-} from '@/features/docx/components/clause-analyzer/RedFlagPath';
 import { RankBadge, SectionTag } from '@/features/docx/components/clause-analyzer/parts/table-bits';
 import { tint } from '@/features/docx/components/clause-analyzer/parts/table-bits';
 import { flagPath, type FlagPath } from '@/features/docx/utils/knowledge/red-flag-path';
@@ -18,35 +14,22 @@ import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
 import { useDocumentStore } from '@/stores/document';
 import type { Node } from '@/types/document';
 import { deonticNodes, type DeonticKind, type KnowledgeGraph } from '@/types/knowledge';
+import type { DocumentTarget } from '@/features/docx/utils/knowledge/graph-payload';
 import type { RedFlag } from '@/types/red-flags';
 import { conditionLead } from '@/features/docx/utils/knowledge/clause-favour';
+import {
+	detect,
+	flagTypeLabel,
+	FOUND_AS,
+	MIN_SHARED_WORDS,
+	paragraphOf,
+	wordRuns,
+	type Detection,
+} from '@/features/docx/utils/knowledge/red-flags';
 
 // Blue, so a flag in the contract never reads as one of the deontic types' colours.
 const FLAG_COLOR = '#2563eb';
 const FLAG_SOFT = 'rgba(37, 99, 235, 0.18)';
-
-function squash(text: string): string {
-	return text.replace(/\s+/g, ' ').trim().toLowerCase();
-}
-
-/** The paragraph holding the flagged text; when several do, the nearest to its DOCX position. */
-function paragraphOf(paragraphs: Node[], flag: RedFlag): Node | null {
-	const needle = squash(flag.text);
-	const holders = paragraphs.filter((p) => squash(p.text).includes(needle));
-	if (holders.length === 0) return null;
-	const distance = (p: Node) => Math.abs(p.paragraph_enum - flag.docxParagraph);
-	return holders.reduce((best, p) => (distance(p) < distance(best) ? p : best));
-}
-
-// A flag counts as found when a statement's evidence, or failing that a condition's trigger,
-// shares this many consecutive words with it: the criterion fixed for the evaluation.
-const MIN_SHARED_WORDS = 6;
-const FOUND_AS = ['obligation', 'right', 'prohibition', 'condition'] as const;
-type FoundAs = (typeof FOUND_AS)[number];
-
-/** What the graph holds for a flag: by type, the clause of each match (null when it has none),
- *  `null` when nothing matches, or `short` when it has fewer words than the criterion needs. */
-type Detection = Partial<Record<FoundAs, Array<string | null>>> | null | 'short';
 
 /** A clause as the table shows it: the place in its row's circle and the tag beside it. */
 export type PlaceOf = (clauseId: string, kind?: DeonticKind) => ClausePlace | null;
@@ -55,64 +38,6 @@ export interface ClausePlace {
 	rank: number | undefined;
 	section: string | null;
 	heading: string;
-}
-
-function wordRuns(text: string): Set<string> {
-	const words = text.toLowerCase().match(/[a-z0-9]+/g) ?? [];
-	const runs = new Set<string>();
-	for (let i = 0; i + MIN_SHARED_WORDS <= words.length; i++) {
-		runs.add(words.slice(i, i + MIN_SHARED_WORDS).join(' '));
-	}
-	return runs;
-}
-
-/** A flag's detection plus the graph texts that matched it, to mark the shared words. */
-interface FlagMatch {
-	detection: Detection;
-	matched: string[];
-	/** The statements whose squares stand for the flag: the ones that matched, or the ones
-	 *  the matching conditions gate. */
-	statementIds: string[];
-	/** The conditions it matched, when it was found as one. */
-	conditionIds: string[];
-}
-
-function detect(kg: KnowledgeGraph, flag: RedFlag): FlagMatch {
-	const runs = wordRuns(flag.text);
-	if (runs.size === 0)
-		return { detection: 'short', matched: [], statementIds: [], conditionIds: [] };
-	const shares = (text: string) => [...wordRuns(text)].some((run) => runs.has(run));
-
-	const found: Partial<Record<FoundAs, Array<string | null>>> = {};
-	const matched: string[] = [];
-	const statementIds: string[] = [];
-	const statements = deonticNodes(kg);
-	for (const statement of statements) {
-		const spans = (statement.evidenceSpans ?? []).filter(shares);
-		if (spans.length > 0) {
-			(found[statement.kind] ??= []).push(statement.clauseId ?? null);
-			matched.push(...spans);
-			statementIds.push(statement.id);
-		}
-	}
-	if (Object.keys(found).length > 0)
-		return { detection: found, matched, statementIds, conditionIds: [] };
-	// A condition sits in the clause of the statement it gates.
-	const clauseOfStatement = new Map(statements.map((s) => [s.id, s.clauseId ?? null] as const));
-	const conditions = kg.conditions.filter((condition) => shares(condition.trigger ?? ''));
-	return {
-		detection:
-			conditions.length > 0
-				? {
-						condition: conditions.map((condition) =>
-							condition.gatesId ? (clauseOfStatement.get(condition.gatesId) ?? null) : null
-						),
-					}
-				: null,
-		matched: conditions.map((condition) => condition.trigger ?? ''),
-		statementIds: conditions.flatMap((condition) => (condition.gatesId ? [condition.gatesId] : [])),
-		conditionIds: conditions.map((condition) => condition.id),
-	};
 }
 
 /** The flag's text cut into pieces, `shared` on the words that sit in a run of
@@ -144,13 +69,6 @@ function sharedPieces(text: string, matched: string[]): Array<{ text: string; sh
 	}
 	if (cursor < text.length) pieces.push({ text: text.slice(cursor), shared: false });
 	return pieces;
-}
-
-/** `right_of_first_refusal_to_lease` → «Right of first refusal to lease»; the dataset's spelling is kept. */
-function typeLabel(type: string | null): string {
-	if (!type) return '—';
-	const words = type.replace(/_/g, ' ');
-	return words.charAt(0).toUpperCase() + words.slice(1);
 }
 
 /** The rows of the table a type's matches sit in: each clause once, with its place and number. */
@@ -329,7 +247,7 @@ export function RedFlagsTable({
 	kg,
 	placeOf,
 	onFlagged,
-	colorOf,
+	onReveal,
 }: {
 	docId: string;
 	kg: KnowledgeGraph | null;
@@ -337,8 +255,10 @@ export function RedFlagsTable({
 	placeOf?: PlaceOf;
 	/** Hands up the statements some flag matched, so the table above can mark their squares. */
 	onFlagged?: (docId: string, statementIds: ReadonlySet<string>) => void;
-	/** A party's colour, as the analyzer's columns paint it. */
-	colorOf: PartyColorOf;
+	/** A row was picked: the analyzer opens the tab and row of the statement it matched, marks its
+	 *  square and paints the contract with `target` once the row is selected. Absent, the table
+	 *  paints the contract itself. */
+	onReveal?: (statementIds: string[], target: DocumentTarget) => void;
 }) {
 	// Kept with the document they belong to, so another contract never shows them while it loads.
 	const [loaded, setLoaded] = useState<{ docId: string; flags: RedFlag[] } | null>(null);
@@ -371,7 +291,7 @@ export function RedFlagsTable({
 	const detections = matches?.map((m) => m.detection) ?? null;
 	const detectedCount = detections?.filter((d) => d !== null && d !== 'short').length ?? null;
 
-	// The opened flag's path through the graph, and the other flags that lead to its statements.
+	// The other flags that lead to the opened flag's statements: their rows are marked.
 	const opening = useMemo(() => {
 		if (!kg || !matches || openedIndex === null) return null;
 		const flag = flags[openedIndex];
@@ -384,12 +304,8 @@ export function RedFlagsTable({
 				i !== openedIndex && m.statementIds.some((id) => ids.has(id)) ? [i] : []
 			)
 		);
-		return { path, sharing };
+		return { sharing };
 	}, [kg, matches, openedIndex, flags, paragraphs]);
-	const flaggedConditionIds = useMemo(
-		() => new Set(matches?.flatMap((m) => m.conditionIds) ?? []),
-		[matches]
-	);
 
 	useEffect(() => {
 		onFlagged?.(docId, new Set(matches?.flatMap((m) => m.statementIds) ?? []));
@@ -402,7 +318,7 @@ export function RedFlagsTable({
 		const key = `red-flag-${index}`;
 		const path = kg && matches ? flagPath(kg, matches[index].statementIds, paragraph.id) : null;
 		const around = path && kg ? pathInDocument(kg, path, paragraphs, paragraph.id, placeOf) : null;
-		setDocumentTarget({
+		const target: DocumentTarget = {
 			anchorParagraphId: paragraph.id,
 			anchorLabel: null,
 			relatedParagraphs: around?.related ?? [],
@@ -416,7 +332,16 @@ export function RedFlagsTable({
 			focusNodeIds: [key],
 			scoreByParagraph: {},
 			toneByParagraph: {},
-		});
+		};
+		// The statement written in the flag's own paragraph first: a twin elsewhere comes after.
+		const ids = matches?.[index].statementIds ?? [];
+		const byId = new Map(kg ? deonticNodes(kg).map((s) => [s.id, s] as const) : []);
+		const ordered = [
+			...ids.filter((id) => byId.get(id)?.paragraphIds.includes(paragraph.id)),
+			...ids.filter((id) => !byId.get(id)?.paragraphIds.includes(paragraph.id)),
+		];
+		if (onReveal) onReveal(ordered, target);
+		else setDocumentTarget(target);
 		setOpened({ docId, index });
 	};
 
@@ -481,7 +406,7 @@ export function RedFlagsTable({
 									{flag.article || '—'}
 								</td>
 								<td className="px-3 py-1.5 font-medium text-foreground/85">
-									{typeLabel(flag.type)}
+									{flagTypeLabel(flag.type)}
 								</td>
 								{detections && <DetectionCells detection={detections[index]} placeOf={placeOf} />}
 								<td className="px-3 py-1.5 text-foreground/80">
@@ -499,20 +424,6 @@ export function RedFlagsTable({
 									</span>
 								</td>
 							</tr>
-							{openedIndex === index && opening && kg && (
-								<tr className="border-b border-border/30 bg-blue-50/40 dark:bg-blue-950/20">
-									<td colSpan={detections ? 5 : 3} className="px-3 pt-1 pb-3">
-										<RedFlagPath
-											path={opening.path}
-											kg={kg}
-											colorOf={colorOf}
-											placeOf={placeOf}
-											flaggedConditionIds={flaggedConditionIds}
-											sharedWith={opening.sharing.size}
-										/>
-									</td>
-								</tr>
-							)}
 						</Fragment>
 					))}
 				</tbody>

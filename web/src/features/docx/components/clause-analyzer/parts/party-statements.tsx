@@ -1,6 +1,6 @@
 'use client';
 
-import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/parts/bits';
+import { pairShort, SIDE_COLOR } from '@/features/docx/components/clause-analyzer/parts/bits';
 import { textColorOf } from '@/features/docx/components/clause-analyzer/constants';
 import {
 	Fragment,
@@ -14,6 +14,8 @@ import {
 } from '@/features/docx/utils/knowledge/clause-favour';
 import type { GridRow, Side } from '@/features/docx/utils/knowledge/statement-grid';
 import type { StatementTiming } from '@/features/docx/utils/knowledge/statement-timing';
+import type { ReactNode } from 'react';
+import { cn } from '@/lib/utils';
 import type { DeonticKind, KgCondition } from '@/types/knowledge';
 
 const SIDES: Side[] = ['a', 'b'];
@@ -26,6 +28,16 @@ export interface StatementHints {
 	conditionSide: Map<string, Side>;
 	/** Each statement's deadline, frequency and values, for the end of its line. */
 	timing: Map<string, StatementTiming>;
+}
+
+/** Version 1 of the red-flag paths: flagged lines are marked, and the picked one opens with
+ *  its path under it. */
+export interface FlagLines {
+	flaggedIds: ReadonlySet<string>;
+	/** The picked flagged statement; `seq` reopens it when picked again. */
+	picked: { statementId: string; seq: number } | null;
+	renderPath: (statementId: string) => ReactNode;
+	onPick: (statementId: string) => void;
 }
 
 /** A clause's statements that belong to one party in the types shown: the obligations and
@@ -43,11 +55,15 @@ const ownedBy = (t: ClauseTally, side: Side, kinds: DeonticKind[]): Served[] =>
 function originOf(s: Served, names: Record<Side, string>): { text: string; side: Side | null } {
 	const side = s.kind === 'right' ? s.to : s.by;
 	if (side !== 'a' && side !== 'b') return { text: `Both parties’ ${s.kind}`, side: null };
-	return { text: `${short(names[side])}'s ${s.kind}`, side };
+	return { text: `${pairShort(names)[side]}'s ${s.kind}`, side };
 }
 
+/** The Both column's head colour: slate, never a party's or a statement type's. */
+const BOTH_COLOR = '#64748b';
+
 /** Each party's own statements in the clause, side by side, a line each with its deadline,
- *  frequency and values; a line opens the contract's own words. */
+ *  frequency and values; a line opens the contract's own words. With «Set shared aside» the
+ *  reciprocal pairs sit in a Both column between them, one line per pair. */
 export function PartyStatements({
 	tally,
 	kinds,
@@ -55,6 +71,8 @@ export function PartyStatements({
 	conditions,
 	hints,
 	onOpen,
+	flags,
+	sharedAside = false,
 }: {
 	tally: ClauseTally;
 	kinds: DeonticKind[];
@@ -62,71 +80,130 @@ export function PartyStatements({
 	conditions: KgCondition[];
 	hints?: StatementHints;
 	onOpen: (nodeId: string) => void;
+	flags?: FlagLines;
+	sharedAside?: boolean;
 }) {
 	const conditionParty = (condition: KgCondition) => {
 		const side = hints?.conditionSide.get(condition.id);
-		return side ? { name: short(names[side]), color: SIDE_COLOR[side] } : null;
+		return side ? { name: pairShort(names)[side], color: SIDE_COLOR[side] } : null;
 	};
-	const column = (side: Side) => {
-		const gets = ownedBy(tally, side, kinds);
-		return (
-			// No border of its own: the band it unfolds in is the one frame, the tinted head and
-			// the white list set the two columns apart.
-			<div key={side} className="overflow-hidden rounded-lg">
-				<div
-					className="flex items-center gap-2 px-3 py-2 text-xs font-semibold"
-					style={{
-						backgroundColor: tint(SIDE_COLOR[side], 10),
-						color: textColorOf(SIDE_COLOR[side]),
-					}}
-				>
-					<span className="size-2 rounded-full" style={{ backgroundColor: SIDE_COLOR[side] }} />
-					{short(names[side])}
-					<span
-						className="rounded-full px-1.5 text-[10px] text-white tabular-nums dark:text-neutral-950"
-						style={{ backgroundColor: textColorOf(SIDE_COLOR[side]) }}
-					>
-						{gets.length}
-					</span>
-				</div>
-				{gets.length === 0 ? (
-					<p className="px-3 py-3 text-2xs text-muted-foreground">
-						{short(names[side])} has no{' '}
-						{kinds.length === 1 ? KIND_LABEL[kinds[0]].toLowerCase() : 'statements of these types'}{' '}
-						here.
-					</p>
-				) : (
-					<div className="divide-y divide-border/60 bg-card">
-						{gets.map((s) => {
-							const origin = originOf(s, names);
-							return (
-								<Fragment
-									key={`${s.mark.id}-${s.to}`}
-									served={s}
-									section={tally.section}
-									// The column and the tab already say whose and which type; only a
-									// statement both parties share needs saying.
-									tag={origin.side === null ? origin.text : undefined}
-									tagColor={SIDE_COLOR[side]}
-									conditions={conditions.filter((c) => c.gatesId === s.mark.id)}
-									reciprocal={hints?.reciprocal.has(s.mark.id) ?? false}
-									conditionParty={conditionParty}
-									timing={hints?.timing.get(s.mark.id)}
-									onOpen={onOpen}
-								/>
-							);
-						})}
-					</div>
-				)}
-			</div>
+	const aside = sharedAside && hints ? hints.reciprocal : null;
+	const own = (side: Side) => ownedBy(tally, side, kinds).filter((s) => !aside?.has(s.mark.id));
+	// One line per pair, standing for the flagged twin when one of them is a red flag.
+	const shared = (() => {
+		if (!aside) return [];
+		const byKey = new Map<string, Served[]>();
+		for (const s of tally.served) {
+			if (!kinds.includes(s.kind) || !aside.has(s.mark.id)) continue;
+			const key = `${s.kind}|${s.text.trim()}`;
+			byKey.set(key, [...(byKey.get(key) ?? []), s]);
+		}
+		return [...byKey.values()].map(
+			(twins) => twins.find((t) => flags?.flaggedIds.has(t.mark.id)) ?? twins[0]
 		);
-	};
+	})();
+	const noun =
+		kinds.length === 1 ? KIND_LABEL[kinds[0]].toLowerCase() : 'statements of these types';
 
-	return <div className="grid grid-cols-2 gap-3">{SIDES.map(column)}</div>;
+	const column = (
+		key: string,
+		head: string,
+		color: string,
+		gets: Served[],
+		empty: string,
+		tagColor?: string
+	) => (
+		// No border of its own: the band it unfolds in is the one frame, the tinted head and the
+		// white list set the columns apart.
+		<div key={key} className="overflow-hidden rounded-lg">
+			<div
+				className="flex items-center gap-2 px-3 py-2 text-xs font-semibold"
+				style={{ backgroundColor: tint(color, 10), color: textColorOf(color) }}
+			>
+				<span className="size-2 rounded-full" style={{ backgroundColor: color }} />
+				{head}
+				<span
+					className="rounded-full px-1.5 text-[10px] text-white tabular-nums dark:text-neutral-950"
+					style={{ backgroundColor: textColorOf(color) }}
+				>
+					{gets.length}
+				</span>
+			</div>
+			{gets.length === 0 ? (
+				<p className="px-3 py-3 text-2xs text-muted-foreground">{empty}</p>
+			) : (
+				<div className="divide-y divide-border/60 bg-card">
+					{gets.map((s) => {
+						const origin = originOf(s, names);
+						const picked = flags?.picked?.statementId === s.mark.id ? flags.picked : null;
+						return (
+							<Fragment
+								key={`${s.mark.id}-${s.to}${picked ? `-picked-${picked.seq}` : ''}`}
+								served={s}
+								section={tally.section}
+								// The column and the tab already say whose and which type; only a
+								// statement both parties share needs saying, outside the Both column.
+								tag={origin.side === null && key !== 'both' ? origin.text : undefined}
+								tagColor={tagColor ?? color}
+								conditions={conditions.filter((c) => c.gatesId === s.mark.id)}
+								// In the Both column the column already says it.
+								reciprocal={key !== 'both' && (hints?.reciprocal.has(s.mark.id) ?? false)}
+								conditionParty={conditionParty}
+								timing={hints?.timing.get(s.mark.id)}
+								onOpen={onOpen}
+								flagged={flags?.flaggedIds.has(s.mark.id)}
+								path={picked ? flags?.renderPath(s.mark.id) : undefined}
+								onPickFlag={flags && (() => flags.onPick(s.mark.id))}
+							/>
+						);
+					})}
+				</div>
+			)}
+		</div>
+	);
+
+	const sideColumn = (side: Side) =>
+		column(
+			side,
+			pairShort(names)[side],
+			SIDE_COLOR[side],
+			own(side),
+			`${pairShort(names)[side]} has no ${noun} of its own here.`
+		);
+	const bothColumn = aside
+		? column('both', 'Both', BOTH_COLOR, shared, `Nothing shared in ${noun} here.`)
+		: null;
+
+	// The column holding an open red-flag path takes more of the width, as its steps need it.
+	const pickedId = flags?.picked?.statementId;
+	const pathIn: 'a' | 'b' | 'both' | undefined = pickedId
+		? (SIDES.find((side) => own(side).some((s) => s.mark.id === pickedId)) ??
+			(shared.some((s) => s.mark.id === pickedId) ? 'both' : undefined))
+		: undefined;
+	const widths = bothColumn
+		? pathIn === 'a'
+			? 'grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)]'
+			: pathIn === 'b'
+				? 'grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,2fr)]'
+				: pathIn === 'both'
+					? 'grid-cols-[minmax(0,1fr)_minmax(0,2fr)_minmax(0,1fr)]'
+					: 'grid-cols-3'
+		: pathIn === 'a'
+			? 'grid-cols-[minmax(0,3fr)_minmax(0,2fr)]'
+			: pathIn === 'b'
+				? 'grid-cols-[minmax(0,2fr)_minmax(0,3fr)]'
+				: 'grid-cols-2';
+	return (
+		<div className={cn('grid gap-3', widths)}>
+			{sideColumn('a')}
+			{bothColumn}
+			{sideColumn('b')}
+		</div>
+	);
 }
 
 /** What the picked row unfolds: which party has more of the open type, by the same count its
- *  squares show, then each party's own statements. */
+ *  squares show, then each party's own statements (and, set aside, what both share). */
 export function ClauseDetail({
 	row,
 	tally,
@@ -135,6 +212,8 @@ export function ClauseDetail({
 	conditions,
 	hints,
 	onOpen,
+	flags,
+	sharedAside = false,
 }: {
 	row: GridRow;
 	tally: ClauseTally;
@@ -143,18 +222,27 @@ export function ClauseDetail({
 	conditions: KgCondition[];
 	hints?: StatementHints;
 	onOpen: (nodeId: string) => void;
+	flags?: FlagLines;
+	sharedAside?: boolean;
 }) {
 	const count = (side: Side) => row.marks[side].filter((mark) => mark.kind === kind).length;
 	const a = count('a');
 	const b = count('b');
+	const both = sharedAside ? (row.both ?? []).filter((mark) => mark.kind === kind).length : 0;
 	const label = KIND_LABEL[kind].toLowerCase();
 	const lead = a === b ? null : a > b ? 'a' : 'b';
 	return (
 		<div className="space-y-3">
 			<p className="text-sm font-medium text-foreground">
 				{lead
-					? `${short(names[lead])} has more ${label} (${Math.max(a, b)} vs ${Math.min(a, b)}).`
+					? `${pairShort(names)[lead]} has more ${label} (${Math.max(a, b)} vs ${Math.min(a, b)}).`
 					: `As many ${label} for each party (${a} each).`}
+				{both > 0 && (
+					<span className="font-normal text-muted-foreground">
+						{' '}
+						Both share {both}: {both === 1 ? 'it counts' : 'they count'} for neither.
+					</span>
+				)}
 			</p>
 			<PartyStatements
 				tally={tally}
@@ -163,6 +251,8 @@ export function ClauseDetail({
 				conditions={conditions}
 				hints={hints}
 				onOpen={onOpen}
+				flags={flags}
+				sharedAside={sharedAside}
 			/>
 		</div>
 	);

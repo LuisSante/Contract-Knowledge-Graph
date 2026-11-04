@@ -62,11 +62,19 @@ export const MARK_GAP = 4;
 /** How wide a lane is that wraps its marks after `columns` of them. */
 export const laneWidth = (columns: number) => columns * MARK_SIZE + (columns - 1) * MARK_GAP;
 export const LANE_WIDTH = laneWidth(LANE_COLUMNS);
+/** The Both column («Set shared aside»): up to this many pairs a line. */
+export const BOTH_COLUMNS = 3;
+/** The Both column's width for `columns` squares a line, with its side padding; never narrower
+ *  than its heading. */
+export const bothWidth = (columns: number) => Math.max(64, laneWidth(columns) + 20);
 export const LABEL_WIDTH = 176;
 /** The «Linked» column: a row's links to other clauses, counted per relation. */
 export const LINKED_WIDTH = 130;
 /** How narrow a centred-lane table's clause column may get before the table scrolls sideways. */
-export const LABEL_MIN_WIDTH = 200;
+export const LABEL_MIN_WIDTH = 160;
+/** How wide the clause column may grow: past it, the spare room centres the squares instead,
+ *  so a contract with few squares does not push them against the row's end. */
+export const LABEL_MAX_WIDTH = 400;
 
 export const ROW_PAGE = 10;
 

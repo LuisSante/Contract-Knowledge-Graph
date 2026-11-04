@@ -17,6 +17,7 @@ import {
 	type MarkKind,
 	type Side,
 	withoutMarks,
+	withSharedAside,
 } from '@/features/docx/utils/knowledge/statement-grid';
 import { computePairScores } from '@/features/docx/utils/knowledge/pair';
 import { useFocusPayload } from '@/features/docx/hooks/useFocusPayload';
@@ -40,18 +41,26 @@ import {
 	FirmKey,
 	KIND_LABEL,
 	KindTabs,
+	PathVersionPicker,
 	YouArePicker,
 	type ConditionMode,
 } from '@/features/docx/components/clause-analyzer/parts/table-bits';
 import { KIND_COLORS, NEUTRAL_COLOR } from '@/features/docx/components/clause-analyzer/constants';
-import { SIDE_COLOR, short } from '@/features/docx/components/clause-analyzer/parts/bits';
+import { pairShort, SIDE_COLOR } from '@/features/docx/components/clause-analyzer/parts/bits';
 import { withoutServed } from '@/features/docx/utils/knowledge/clause-favour';
 import { statementTiming } from '@/features/docx/utils/knowledge/statement-timing';
 import {
 	ClauseDetail,
 	type StatementHints,
 } from '@/features/docx/components/clause-analyzer/parts/party-statements';
-import type { DeonticKind, KgCondition } from '@/types/knowledge';
+import { useRedFlags } from '@/features/docx/hooks/useRedFlags';
+import { flagHopPath } from '@/features/docx/utils/knowledge/red-flag-hops';
+import { flagPathTarget } from '@/features/docx/utils/knowledge/red-flag-document';
+import { PathLadder } from '@/features/docx/components/clause-analyzer/flag-path/PathLadder';
+import type { PathCtx } from '@/features/docx/components/clause-analyzer/flag-path/path-bits';
+import type { FlagLines } from '@/features/docx/components/clause-analyzer/parts/party-statements';
+import { deonticNodes, type DeonticKind, type KgCondition } from '@/types/knowledge';
+import type { DocumentTarget } from '@/features/docx/utils/knowledge/graph-payload';
 
 interface ClauseAnalyzerPanelProps {
 	docId: string;
@@ -131,13 +140,14 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 	// Conditions are shown anywhere (outlines, the card, pink in the contract) only when the
 	// reader asks for them: under All the view is the one it always was.
 	const showConditions = conditionMode === 'mark';
-	// The statements a red flag of the dataset matched, from the table below; kept with their
-	// document so another contract never shows them while it loads.
-	const [flagged, setFlagged] = useState<{ docId: string; ids: ReadonlySet<string> } | null>(null);
-	const onFlagged = useCallback(
-		(flagsDocId: string, ids: ReadonlySet<string>) => setFlagged({ docId: flagsDocId, ids }),
-		[]
-	);
+	// The dataset's red flags and the statements they matched: those squares get the black
+	// outline, and picking one shows why it is a red flag.
+	const redFlags = useRedFlags(docId, status === 'ready' ? kg : null);
+	const pathVersion = useClauseAnalyzerStore((s) => s.pathVersion);
+	const setPathVersion = useClauseAnalyzerStore((s) => s.setPathVersion);
+	const pickedFlag = useClauseAnalyzerStore((s) => s.pickedFlag);
+	const pickFlag = useClauseAnalyzerStore((s) => s.pickFlag);
+	const picked = pickedFlag?.docId === docId ? pickedFlag : null;
 	const conditionalIds = useMemo(
 		() =>
 			viewKg
@@ -147,13 +157,25 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 	);
 	// Each square sits in the column of the party it belongs to: an obligation or prohibition
 	// with the party it binds, a right with its holder.
+	// Each reciprocal pair sits in the Both column, a square per pair, and counts for neither
+	// party. Its checkbox, like the parties', only paints or quiets those squares in the contract.
+	// A contract with no pair written word for word for both parties gets no Both column: there
+	// is nothing to set aside.
+	const hasPairs = useMemo(
+		() =>
+			Boolean(grid && viewKg && withSharedAside(grid, viewKg).rows.some((row) => row.both?.length)),
+		[grid, viewKg]
+	);
 	const shownGrid = useMemo(() => {
 		if (!grid) return grid;
-		return conditionMode === 'firm' && conditionalIds ? withoutMarks(grid, conditionalIds) : grid;
-	}, [grid, conditionMode, conditionalIds]);
+		const firm =
+			conditionMode === 'firm' && conditionalIds ? withoutMarks(grid, conditionalIds) : grid;
+		return viewKg ? withSharedAside(firm, viewKg) : firm;
+	}, [grid, conditionMode, conditionalIds, viewKg]);
 
 	const {
 		kindCounts,
+		bothCounts,
 		clauseImportance,
 		rowImportance,
 		clauseRows,
@@ -210,6 +232,17 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		importanceByNode: clauseImportance?.byNode ?? null,
 		paintConditions: showConditions,
 	});
+
+	// What a red flag paints in the contract waits for the row it picks: selecting a clause
+	// repaints the contract with the row (the effect above), so this one runs after it.
+	const [flagTarget, setFlagTarget] = useState<DocumentTarget | null>(null);
+	useEffect(() => {
+		if (flagTarget) setDocumentTarget(flagTarget);
+	}, [flagTarget, setDocumentTarget]);
+	// The squares a red flag picked, ringed in blue until another row is picked.
+	const [spotlight, setSpotlight] = useState<{ docId: string; ids: ReadonlySet<string> } | null>(
+		null
+	);
 
 	// The rows are memoised: what they are handed keeps its identity between draws.
 	const setPaintLane = useCallback(
@@ -274,6 +307,89 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		[pairA, pairB]
 	);
 
+	const pathCtx = useMemo(
+		(): PathCtx | null => (viewKg ? { kg: viewKg, colorOf: partyColorOf } : null),
+		[viewKg, partyColorOf]
+	);
+	const pickedPath = useMemo(
+		() =>
+			viewKg && picked
+				? flagHopPath(viewKg, picked.statementId, redFlags.flags, redFlags.matches)
+				: null,
+		[viewKg, picked, redFlags]
+	);
+
+	// A flagged square, or the «red flag» tag on its line: its clause is picked and painted with
+	// the path, then version 1 opens the row's detail and version 2 the graph tab.
+	const showFlag = useCallback(
+		(statementId: string) => {
+			if (!viewKg) return;
+			const path = flagHopPath(viewKg, statementId, redFlags.flags, redFlags.matches);
+			if (!path) return;
+			pickFlag(docId, statementId);
+			setSpotlight({ docId, ids: new Set([statementId]) });
+			if (path.clauseId) selectClause(docId, path.clauseId);
+			setFlagTarget(flagPathTarget(viewKg, path, nodesById));
+			if (pathVersion === 2) onOpenGraph?.();
+		},
+		[viewKg, redFlags, pickFlag, docId, selectClause, nodesById, pathVersion, onOpenGraph]
+	);
+	// A row of the RED FLAGS table: the tab and row of the statement it matched, its square
+	// ringed, and the flag painted in the contract.
+	const revealFlag = useCallback(
+		(statementIds: string[], target: DocumentTarget) => {
+			const statement = viewKg
+				? statementIds
+						.map((id) => deonticNodes(viewKg).find((s) => s.id === id))
+						.find((s) => s !== undefined)
+				: undefined;
+			if (statement) {
+				setTypeShown(statement.kind);
+				// Every statement the flag matched in that row and tab: «Obligation ×2» rings both.
+				const same = statementIds.filter((id) => {
+					const s = viewKg && deonticNodes(viewKg).find((x) => x.id === id);
+					return s && s.kind === statement.kind && s.clauseId === statement.clauseId;
+				});
+				setSpotlight({ docId, ids: new Set(same) });
+				if (statement.clauseId) selectClause(docId, statement.clauseId);
+			}
+			setFlagTarget(target);
+		},
+		[viewKg, docId, selectClause]
+	);
+	const openMark = useCallback(
+		(nodeId: string) => {
+			if (redFlags.statementIds.has(nodeId)) showFlag(nodeId);
+			else openInDocument(nodeId);
+		},
+		[redFlags, showFlag, openInDocument]
+	);
+	const detailRequest = useMemo(
+		() =>
+			pathVersion === 1 && picked && pickedPath?.clauseId
+				? { clauseId: pickedPath.clauseId, seq: picked.seq }
+				: null,
+		[pathVersion, picked, pickedPath]
+	);
+	const flagLines = useMemo(
+		(): FlagLines | undefined =>
+			redFlags.statementIds.size > 0
+				? {
+						flaggedIds: redFlags.statementIds,
+						picked: pathVersion === 1 && picked ? picked : null,
+						renderPath: (statementId) =>
+							pathVersion === 1 &&
+							pickedPath &&
+							pathCtx &&
+							pickedPath.root.statement.id === statementId ? (
+								<PathLadder path={pickedPath} ctx={pathCtx} />
+							) : null,
+						onPick: showFlag,
+					}
+				: undefined,
+		[redFlags, pathVersion, picked, pickedPath, pathCtx, showFlag]
+	);
+
 	const { me, pickMe, againstIds, onlyAgainst, setOnlyAgainst, filtering, tableRows } =
 		useAgainstYou(docId, pairIds, clauseRows, typeShown, activeClause?.clauseId ?? null);
 
@@ -292,6 +408,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 
 	const pickClause = useCallback(
 		(clauseId: string) => {
+			setSpotlight(null);
 			selectClause(docId, selectedClauseId === clauseId ? null : clauseId);
 			openInDocument(clauseId);
 		},
@@ -337,6 +454,8 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 				conditions={showConditions ? viewKg.conditions : NO_CONDITIONS}
 				hints={hints}
 				onOpen={openInDocument}
+				flags={flagLines}
+				sharedAside={hasPairs}
 			/>
 		);
 	};
@@ -368,13 +487,12 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 			{pairIds && (
 				<div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-border/60 px-6 py-2">
 					<YouArePicker names={names} me={me} onPick={pickMe} />
-					<AgainstFilter
-						on={onlyAgainst}
-						onChange={setOnlyAgainst}
-						count={againstIds?.size ?? 0}
-						total={clauseRows.length}
-						disabled={me === null}
-					/>
+					<AgainstFilter on={onlyAgainst} onChange={setOnlyAgainst} disabled={me === null} />
+					{redFlags.statementIds.size > 0 && (
+						<div className="ml-auto">
+							<PathVersionPicker version={pathVersion} onPick={setPathVersion} />
+						</div>
+					)}
 				</div>
 			)}
 
@@ -384,6 +502,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 					kind={typeShown}
 					onPick={setTypeShown}
 					counts={kindCounts}
+					shared={hasPairs ? bothCounts : null}
 					names={names}
 					aside={
 						<div className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1.5">
@@ -463,19 +582,22 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 								canPaintB={Boolean(secondPartyId)}
 								leadOf={leadOf}
 								conditionalIds={showConditions ? conditionalIds : undefined}
-								flaggedIds={flagged?.docId === docId ? flagged.ids : undefined}
+								flaggedIds={redFlags.statementIds.size > 0 ? redFlags.statementIds : undefined}
+								spotlightIds={spotlight?.docId === docId ? spotlight.ids : undefined}
+								bothLane={hasPairs}
 								youLane={me}
 								againstIds={againstIds}
 								emptyNote={
 									filtering && me
-										? `Nothing goes against ${short(names[me])} in ${KIND_LABEL[typeShown].toLowerCase()}.`
+										? `Nothing goes against ${pairShort(names)[me]} in ${KIND_LABEL[typeShown].toLowerCase()}.`
 										: undefined
 								}
 								onSelectClause={pickClause}
 								onOpenGraph={openClauseInGraph}
 								renderDetail={renderDetail}
+								detailRequest={detailRequest}
 								onGoToModifier={goToModifier}
-								onOpenMark={openInDocument}
+								onOpenMark={openMark}
 								onFocusMark={focusNode}
 								onHoverMark={showTooltip}
 								onLeaveMark={hideTooltip}
@@ -499,8 +621,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 				docId={docId}
 				kg={status === 'ready' ? kg : null}
 				placeOf={placeOfClause}
-				onFlagged={onFlagged}
-				colorOf={partyColorOf}
+				onReveal={revealFlag}
 			/>
 		</div>
 	);

@@ -30,10 +30,13 @@ import type { DeonticKind } from '@/types/knowledge';
 import {
 	KIND_COLORS,
 	KIND_TEXT_COLORS,
+	LABEL_MAX_WIDTH,
 	LABEL_MIN_WIDTH,
 	LABEL_WIDTH,
 	LANE_COLUMNS,
 	laneWidth,
+	BOTH_COLUMNS,
+	bothWidth,
 	LINKED_WIDTH,
 	MARK_GAP,
 	MARK_SIZE,
@@ -71,8 +74,11 @@ interface ClauseRowProps {
 	paintLanes: Record<GridLane, boolean>;
 	/** Centres the parties' columns in the room the clause name leaves. */
 	centerLanes?: boolean;
-	/** How many marks a lane holds before it wraps to a new line. */
-	laneColumns?: number;
+	/** How many marks a lane holds before it wraps to a new line: one number for both parties,
+	 *  or one each, so a party with few squares leaves its room to the clause names. */
+	laneColumns?: number | Record<'a' | 'b', number>;
+	/** How many pairs the Both column holds a line. */
+	bothColumns?: number;
 	/** Names the row by rank, number and heading, with the graph icon right after it, instead
 	 *  of the plain heading and arrow. */
 	lead?: ClauseRowLead;
@@ -83,11 +89,16 @@ interface ClauseRowProps {
 	conditionalIds?: ReadonlySet<string>;
 	/** Statements a red flag matched; their squares get a black outline. */
 	flaggedIds?: ReadonlySet<string>;
+	/** The statements a red flag just picked: their squares get a blue ring. */
+	spotlightIds?: ReadonlySet<string>;
 	/** A mark on the rule between the parties' columns points to the one with more squares
 	 *  in this row, or says «=» when both have as many. Needs `centerLanes`. */
 	axisMark?: boolean;
 	/** The clause goes against the reader («You are») in the type shown. */
 	against?: boolean;
+	/** «Set shared aside»: a Both column between the parties holds the row's reciprocal pairs,
+	 *  a square per pair, with the axis mark at its head. */
+	bothLane?: boolean;
 	laneName: (lane: GridLane) => string;
 	onSelect: (clauseId: string) => void;
 	/** Opens the clause in the knowledge graph tab; absent where there is no such tab. */
@@ -164,13 +175,16 @@ export const ClauseRow = memo(function ClauseRow({
 	paintLanes,
 	centerLanes = false,
 	laneColumns = LANE_COLUMNS,
+	bothColumns = BOTH_COLUMNS,
 	lead,
 	labelWidth = LABEL_WIDTH,
 	boldStripes = false,
 	conditionalIds,
 	flaggedIds,
+	spotlightIds,
 	axisMark = false,
 	against = false,
+	bothLane = false,
 	laneName,
 	onSelect,
 	onOpenGraph,
@@ -194,9 +208,18 @@ export const ClauseRow = memo(function ClauseRow({
 	const [roverId, setRoverId] = useState<string | null>(null);
 	const shownMarks = (lane: GridLane) =>
 		row.marks[lane].filter((mark) => visibleKinds.has(mark.kind));
-	const tabStop = lanes.some((lane) => shownMarks(lane).some((mark) => mark.id === roverId))
+	const shownBoth = bothLane ? (row.both ?? []).filter((mark) => visibleKinds.has(mark.kind)) : [];
+	const allShown = [...lanes.flatMap(shownMarks), ...shownBoth];
+	const tabStop = allShown.some((mark) => mark.id === roverId)
 		? roverId
-		: (lanes.flatMap(shownMarks)[0]?.id ?? null);
+		: (allShown[0]?.id ?? null);
+	// A pair's square answers for both its statements: flagged, ringed or conditional when either
+	// is, and it opens the flagged one.
+	const twinsOf = (mark: GridMark) => mark.twinIds ?? [mark.id];
+	const columnsOf = (lane: GridLane) =>
+		typeof laneColumns === 'number' ? laneColumns : lane === 'b' ? laneColumns.b : laneColumns.a;
+	const anyTwin = (mark: GridMark, ids?: ReadonlySet<string>) =>
+		Boolean(ids && twinsOf(mark).some((id) => ids.has(id)));
 	const unfiled = clauseId === null;
 	const background = active
 		? 'bg-primary/10 ring-1 ring-inset ring-primary/30'
@@ -232,8 +255,9 @@ export const ClauseRow = memo(function ClauseRow({
 					// It narrows before the row overflows: a tight panel wraps the heading rather than
 					// pushing the row's end past the edge.
 					<div
-						className="flex items-start gap-2"
-						style={{ flexBasis: labelWidth, minWidth: LABEL_MIN_WIDTH }}
+						// The name takes whatever room the columns leave, so headings wrap less.
+						className="flex flex-1 items-start gap-2"
+						style={{ flexBasis: labelWidth, minWidth: LABEL_MIN_WIDTH, maxWidth: LABEL_MAX_WIDTH }}
 					>
 						<RankBadge rank={lead.rank} />
 						{/* The heading is inline text, not a button box, so the icon follows its last
@@ -301,16 +325,16 @@ export const ClauseRow = memo(function ClauseRow({
 				{/* Lane A fills right-to-left so it grows outward from the axis. */}
 				{/* Tab reaches the row's marks once; the arrows move among them. */}
 				<div
+					// As tall as the row (a two-line heading, a wrapped «Linked»), so the Both column's
+					// band runs from the row's top to its bottom.
 					className={
-						centerLanes
-							? `flex flex-1 items-start justify-center ${axisMark ? 'gap-3.5' : 'gap-2'}`
-							: 'contents'
+						centerLanes ? 'flex flex-1 items-start justify-center gap-3.5 self-stretch' : 'contents'
 					}
 					onKeyDown={moveAmongMarks}
 				>
 					{lanes.map((lane) => (
 						<Fragment key={lane}>
-							{lane === 'b' && (
+							{lane === 'b' && !bothLane && (
 								<span className="relative w-px shrink-0 self-stretch bg-border">
 									{axis && (
 										<AxisMark
@@ -322,13 +346,52 @@ export const ClauseRow = memo(function ClauseRow({
 									)}
 								</span>
 							)}
+							{lane === 'b' && bothLane && (
+								// The middle column: what binds or entitles both alike. It never counts for
+								// either side, so the axis mark at its head still compares only the two.
+								<div
+									className="-my-1.5 flex shrink-0 items-start justify-center gap-1.5 self-stretch border-x border-border bg-slate-500/[0.07] py-1.5"
+									style={{ width: bothWidth(bothColumns) }}
+								>
+									{axis && <AxisMark favour={axis.favour} title={axis.title} muted={dimmed} />}
+									{shownBoth.length > 0 && (
+										<div
+											className="grid content-start"
+											style={{
+												gap: MARK_GAP,
+												gridTemplateColumns: `repeat(${Math.min(shownBoth.length, bothColumns)}, ${MARK_SIZE}px)`,
+											}}
+										>
+											{shownBoth.map((mark) => {
+												const opens = twinsOf(mark).find((id) => flaggedIds?.has(id)) ?? mark.id;
+												return (
+													<Mark
+														key={mark.id}
+														mark={{ ...mark, id: opens }}
+														muted={dimmed || !paintLanes.shared}
+														conditional={anyTwin(mark, conditionalIds)}
+														flagged={anyTwin(mark, flaggedIds)}
+														spotlight={anyTwin(mark, spotlightIds)}
+														tabbable={mark.id === tabStop}
+														onHover={onHoverMark}
+														onLeave={onLeaveMark}
+														onOpen={onOpenMark}
+														onFocusNode={onFocusMark}
+														onRove={setRoverId}
+													/>
+												);
+											})}
+										</div>
+									)}
+								</div>
+							)}
 							<div
 								dir={lane === 'a' ? 'rtl' : 'ltr'}
 								className="grid shrink-0 content-start"
 								style={{
-									width: laneWidth(laneColumns),
+									width: laneWidth(columnsOf(lane)),
 									gap: MARK_GAP,
-									gridTemplateColumns: `repeat(${laneColumns}, ${MARK_SIZE}px)`,
+									gridTemplateColumns: `repeat(${columnsOf(lane)}, ${MARK_SIZE}px)`,
 								}}
 							>
 								{shownMarks(lane).map((mark) => (
@@ -338,6 +401,7 @@ export const ClauseRow = memo(function ClauseRow({
 										muted={dimmed || !paintLanes[lane]}
 										conditional={conditionalIds?.has(mark.id)}
 										flagged={flaggedIds?.has(mark.id)}
+										spotlight={spotlightIds?.has(mark.id)}
 										tabbable={mark.id === tabStop}
 										onHover={onHoverMark}
 										onLeave={onLeaveMark}

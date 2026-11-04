@@ -24,6 +24,8 @@ interface MarkProps {
 	conditional?: boolean;
 	/** A red flag of the dataset matched the statement: a black outline around the square. */
 	flagged?: boolean;
+	/** The statement a red flag just picked: a blue ring around it, so it is found at a glance. */
+	spotlight?: boolean;
 	/** The row's one tab stop among its marks; the arrows move between the rest. */
 	tabbable?: boolean;
 	onHover: (point: HoverPoint, mark: GridMark) => void;
@@ -40,6 +42,7 @@ export const Mark = memo(function Mark({
 	muted,
 	conditional = false,
 	flagged = false,
+	spotlight = false,
 	tabbable = true,
 	onHover,
 	onLeave,
@@ -79,7 +82,9 @@ export const Mark = memo(function Mark({
 			// square still 14px.
 			className={`relative shrink-0 rounded-[3px] inset-ring-[color:var(--edge)] transition-opacity before:absolute before:-inset-0.5 before:content-[''] hover:ring-2 hover:ring-foreground/30 focus-visible:ring-2 focus-visible:ring-ring ${
 				conditional ? 'inset-ring-2' : 'inset-ring-1'
-			} ${flagged ? 'outline-2 outline-offset-0 outline-black dark:outline-white' : 'outline-none'}`}
+			} ${flagged ? 'outline-2 outline-offset-0 outline-black dark:outline-white' : 'outline-none'} ${
+				spotlight ? 'shadow-[0_0_0_4px_#2563eb] motion-safe:animate-pulse' : ''
+			}`}
 			style={
 				{
 					'--edge': edge,

@@ -160,32 +160,34 @@ export function KnowledgeGraphPanel({ docId }: { docId: string }) {
 
 	return (
 		<div className="flex min-h-0 flex-1 flex-col">
-			<div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-border/60 px-3 py-1.5 text-2xs text-muted-foreground">
-				<label className="flex cursor-pointer items-center gap-1.5">
-					<Checkbox
-						checked={showLabels}
-						onCheckedChange={(value) => setShowLabels(value === true)}
-						className="size-3.5 shrink-0"
-						aria-label="Show node labels"
-					/>
-					<span>Labels</span>
-				</label>
-				{/* <span className="tabular-nums">
+			{!showPath && (
+				<div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-border/60 px-3 py-1.5 text-2xs text-muted-foreground">
+					<label className="flex cursor-pointer items-center gap-1.5">
+						<Checkbox
+							checked={showLabels}
+							onCheckedChange={(value) => setShowLabels(value === true)}
+							className="size-3.5 shrink-0"
+							aria-label="Show node labels"
+						/>
+						<span>Labels</span>
+					</label>
+					{/* <span className="tabular-nums">
 					{graph.nodes.length} nodes {graph.edges.length} edges
 				</span> */}
-				<span className="ml-auto flex flex-wrap items-center gap-x-2.5 gap-y-1">
-					{KG_NODE_KINDS.filter((kind) => graph.countByKind[kind] > 0).map((kind) => (
-						<span key={kind} className="inline-flex items-center gap-1">
-							<span
-								className="size-2 rounded-full"
-								style={{ backgroundColor: NODE_COLORS[kind] }}
-							/>
-							{NODE_LABEL[kind]}
-							<span className="tabular-nums">{graph.countByKind[kind]}</span>
-						</span>
-					))}
-				</span>
-			</div>
+					<span className="ml-auto flex flex-wrap items-center gap-x-2.5 gap-y-1">
+						{KG_NODE_KINDS.filter((kind) => graph.countByKind[kind] > 0).map((kind) => (
+							<span key={kind} className="inline-flex items-center gap-1">
+								<span
+									className="size-2 rounded-full"
+									style={{ backgroundColor: NODE_COLORS[kind] }}
+								/>
+								{NODE_LABEL[kind]}
+								<span className="tabular-nums">{graph.countByKind[kind]}</span>
+							</span>
+						))}
+					</span>
+				</div>
+			)}
 			{flagPath && (
 				<div
 					role="radiogroup"
@@ -220,7 +222,8 @@ export function KnowledgeGraphPanel({ docId }: { docId: string }) {
 			)}
 			{showPath && flagPath && pathCtx ? (
 				<FlagPathGraph
-					key={flagPath.root.statement.id}
+					key={`${docId}:${flagPath.root.statement.id}`}
+					docId={docId}
 					path={flagPath}
 					ctx={pathCtx}
 					onOpen={openInDocument}
@@ -238,7 +241,7 @@ export function KnowledgeGraphPanel({ docId }: { docId: string }) {
 					}}
 				/>
 			)}
-			{viewKg && grid && (
+			{!showPath && viewKg && grid && (
 				<SelectedRow
 					kg={viewKg}
 					grid={grid}

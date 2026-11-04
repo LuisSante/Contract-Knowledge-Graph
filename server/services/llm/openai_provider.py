@@ -110,6 +110,7 @@ class OpenAIProvider(LLMProvider):
         user_prompt: str,
         temperature: float = 0.2,
         json_schema: dict[str, Any] | None = None,
+        max_output_tokens: int | None = None,
     ) -> str:
         request: dict[str, Any] = {
             "model": self._model,
@@ -124,6 +125,8 @@ class OpenAIProvider(LLMProvider):
             request["reasoning_effort"] = self._reasoning_effort
         if json_schema is not None:
             request["response_format"] = {"type": "json_schema", "json_schema": {**json_schema, "strict": True}}
+        if max_output_tokens is not None:
+            request["max_completion_tokens"] = max_output_tokens
 
         try:
             response = self._client.chat.completions.create(**request)

@@ -1,6 +1,7 @@
 from django.urls import path
 
 from api import views, views_assistant, views_llm, views_summary
+from api.views_flag_explanation import FlagExplanationView
 
 urlpatterns = [
     path("list_documents", views.ListDocumentsView.as_view()),
@@ -13,6 +14,7 @@ urlpatterns = [
     ),
     path("contract_summary/<str:doc_id>", views_summary.ContractSummaryView.as_view()),
     path("red_flags/<str:doc_id>", views.RedFlagsView.as_view()),
+    path("red_flag_explanation/<str:doc_id>", FlagExplanationView.as_view()),
     path("assistant/chat", views_assistant.AssistantChatView.as_view()),
     path("llm/estimate", views_llm.LlmEstimateView.as_view()),
     path("llm/cost/total", views_llm.LlmTotalCostView.as_view()),

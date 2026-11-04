@@ -18,6 +18,7 @@ class LLMProvider(ABC):
         user_prompt: str,
         temperature: float = 0.2,
         json_schema: dict[str, Any] | None = None,
+        max_output_tokens: int | None = None,
     ) -> str:
         """json_schema: {"name": ..., "schema": ...}; when given, the reply is guaranteed to
         parse as that schema instead of being asked for it in the prompt."""

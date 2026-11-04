@@ -219,7 +219,12 @@ export function KnowledgeGraphPanel({ docId }: { docId: string }) {
 				</div>
 			)}
 			{showPath && flagPath && pathCtx ? (
-				<FlagPathGraph path={flagPath} ctx={pathCtx} onOpen={openInDocument} />
+				<FlagPathGraph
+					key={flagPath.root.statement.id}
+					path={flagPath}
+					ctx={pathCtx}
+					onOpen={openInDocument}
+				/>
 			) : (
 				<GraphCanvas
 					graph={graph}

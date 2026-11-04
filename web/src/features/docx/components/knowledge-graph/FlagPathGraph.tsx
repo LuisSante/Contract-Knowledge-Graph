@@ -14,6 +14,7 @@ import {
 	KIND_COLORS,
 	KIND_LABEL,
 	NODE_COLORS,
+	NEUTRAL_TEXT_COLOR,
 	textColorOf,
 } from '@/features/docx/components/clause-analyzer/constants';
 import { short } from '@/features/docx/components/clause-analyzer/parts/bits';
@@ -31,6 +32,10 @@ import {
 } from '@/features/docx/components/clause-analyzer/flag-path/path-bits';
 import { conditionLead } from '@/features/docx/utils/knowledge/clause-favour';
 import {
+	serviceChargeReading,
+	type ServiceChargeReading,
+} from '@/features/docx/utils/knowledge/service-charge-reading';
+import {
 	valuePhrase,
 	type FlagHopPath,
 	type HopCondition,
@@ -39,32 +44,22 @@ import {
 	type LinkType,
 } from '@/features/docx/utils/knowledge/red-flag-hops';
 
-/**
- * The red flag's path as a mind map: the flagged statement in the middle and one branch per
- * question a reader asks of it (who, only if, what it changes, where). Every branch grows from
- * the statement outward and carries no arrowheads; an edge stored the other way round is named
- * as it reads outward («gates» → «gated by», «part of» → «contains»), never redrawn. The
- * question pills are a reading aid, not graph nodes: the twigs below them are the graph's edges.
- */
-
 interface MapNode {
 	id: string;
 	color: string;
-	label: string;
+	label: ReactNode;
 	text: ReactNode;
 	sub?: string;
-	/** Its part in the explanation («carries it», «trigger 1»): a reading, in italics. */
+	evidence?: string[];
 	note?: string;
 	flagged?: boolean;
 	flagLabel?: string;
-	/** Shares the clause and nothing more: drawn dashed and dim. */
 	context?: boolean;
 	onOpen?: () => void;
 }
 
 interface Twig {
 	node: MapNode;
-	/** The relation as it reads from the statement outward. */
 	label: string;
 	color: string;
 }
@@ -77,7 +72,6 @@ interface Branch {
 	twigs: Twig[];
 }
 
-/** What hangs from the clause, one hop further than the clause itself. */
 interface ClauseSub {
 	twigs: Twig[];
 	context: MapNode[];
@@ -140,6 +134,59 @@ function statementNode(
 		onOpen: () => onOpen(s.id),
 		...extra,
 	};
+}
+
+/** Agrupa la presentación de pares recíprocos sin modificar los nodos del grafo.
+ * Los calificadores deben coincidir para no ocultar diferencias entre las partes. */
+function statementGroups(hops: HopStatement[]): HopStatement[][] {
+	const groups: HopStatement[][] = [];
+	const signature = (hop: HopStatement) =>
+		JSON.stringify([
+			hop.statement.kind,
+			hop.statement.clauseId,
+			hop.statement.text?.trim(),
+			hop.statement.action,
+			hop.timing,
+			hop.conditions.map(({ condition }) => [condition.operator, condition.trigger]),
+			hop.flagged,
+		]);
+	for (const hop of hops) {
+		const twin = groups.find(
+			([first]) =>
+				first.ownerId &&
+				first.otherId &&
+				first.ownerId !== first.otherId &&
+				hop.ownerId === first.otherId &&
+				hop.otherId === first.ownerId &&
+				hop.statement.clauseId &&
+				hop.statement.text?.trim() &&
+				signature(hop) === signature(first)
+		);
+		if (twin) twin.push(hop);
+		else groups.push([hop]);
+	}
+	return groups;
+}
+
+function groupedStatementNodes(
+	hops: HopStatement[],
+	ctx: PathCtx,
+	onOpen: (id: string) => void,
+	extra: (hop: HopStatement) => Partial<MapNode>
+): MapNode[] {
+	return statementGroups(hops).map((group) => {
+		const hop = group[0];
+		const node = statementNode(hop, ctx, onOpen, extra(hop));
+		if (group.length > 1) {
+			node.label = (
+				<>
+					{KIND_LABEL[hop.statement.kind]} · <span style={{ color: NEUTRAL_TEXT_COLOR }}>Both</span>{' '}
+					· {clauseLabel(ctx.kg, hop.statement.clauseId)}
+				</>
+			);
+		}
+		return node;
+	});
 }
 
 function partyNode(id: string, ctx: PathCtx, note: string): MapNode {
@@ -301,14 +348,6 @@ function buildMap(path: FlagHopPath, ctx: PathCtx, onOpen: (id: string) => void)
 						text: valuePhrase(v),
 					},
 				})),
-				// Matched by the same annotation: shown, but it shares the flag, not an edge.
-				...path.siblings
-					.filter((x) => same.has(x.statement.id))
-					.map((x) => ({
-						label: 'contains',
-						color: NODE_COLORS.clause,
-						node: statementNode(x, ctx, onOpen, { flagLabel: 'same red flag' }),
-					})),
 				...path.incoming.map((l) => ({
 					label: `${PASSIVE[l.type]} ${clauseLabel(ctx.kg, l.fromClauseId)}`,
 					color: LINK_STYLE[l.type].color,
@@ -320,21 +359,33 @@ function buildMap(path: FlagHopPath, ctx: PathCtx, onOpen: (id: string) => void)
 					node: linkNode(l, l.toClauseId, ctx, onOpen),
 				})),
 			],
-			context: path.siblings
-				.filter((x) => !same.has(x.statement.id))
-				.map((x) =>
-					statementNode(x, ctx, onOpen, {
-						context: true,
-						flagLabel: x.flagged ? 'other red flag' : undefined,
-					})
-				),
+			context: groupedStatementNodes(
+				path.siblings.filter((x) => !same.has(x.statement.id)),
+				ctx,
+				onOpen,
+				(x) => ({
+					context: true,
+					flagLabel: x.flagged ? 'other red flag' : undefined,
+				})
+			),
 		};
 	}
 
 	const leadHere = path.flags.length > 1 ? `${path.flags.length} red flags lead here` : '';
 	const root = statementNode(path.root, ctx, onOpen, { note: 'the provision under review' }, false);
 	root.sub = [leadHere, root.sub].filter(Boolean).join(' · ') || undefined;
-	return { root, branches, clauseSub };
+	const same = new Set(path.sameFlag);
+	const companions = groupedStatementNodes(
+		path.siblings.filter((x) => same.has(x.statement.id)),
+		ctx,
+		onOpen,
+		(x) => ({
+			flagLabel: 'same red flag',
+			evidence: x.statement.evidenceSpans,
+		})
+	);
+	if (companions.length) root.evidence = path.root.statement.evidenceSpans;
+	return { root, companions, branches, clauseSub };
 }
 
 interface Geo {
@@ -359,12 +410,13 @@ export function FlagPathGraph({
 	ctx: PathCtx;
 	onOpen: (statementId: string) => void;
 }) {
-	const { root, branches, clauseSub } = useMemo(
+	const { root, companions, branches, clauseSub } = useMemo(
 		() => buildMap(path, ctx, onOpen),
 		[path, ctx, onOpen]
 	);
 	const left = useMemo(() => branches.filter((b) => b.side === 'left'), [branches]);
 	const right = useMemo(() => branches.filter((b) => b.side === 'right'), [branches]);
+	const reading = useMemo(() => serviceChargeReading(path, ctx.kg), [path, ctx.kg]);
 	const [showContext, setShowContext] = useState(false);
 
 	const boxRef = useRef<HTMLDivElement>(null);
@@ -463,6 +515,20 @@ export function FlagPathGraph({
 					});
 				});
 			}
+			// La cercanía representa la anotación compartida; no se añade una arista entre enunciados.
+			if (path.clauseId) {
+				const clause = node(`clause:${path.clauseId}`);
+				if (clause)
+					for (const companion of companions) {
+						const source = node(companion.id);
+						if (source)
+							twig(source.r, source.mid, clause.l, clause.mid, {
+								node: companion,
+								label: 'part of',
+								color: NODE_COLORS.clause,
+							});
+					}
+			}
 			// What hangs from the clause sits under it: an elbow down its left side, still outward.
 			if (clauseSub && path.clauseId) {
 				const clause = node(`clause:${path.clauseId}`);
@@ -484,7 +550,7 @@ export function FlagPathGraph({
 		const observer = new ResizeObserver(measure);
 		observer.observe(map);
 		return () => observer.disconnect();
-	}, [root, left, right, clauseSub, path.clauseId, showContext]);
+	}, [root, companions, left, right, clauseSub, path.clauseId, showContext]);
 
 	const isRight = path.root.statement.kind === 'right';
 	const t = path.root.timing;
@@ -502,6 +568,7 @@ export function FlagPathGraph({
 					{clauseLabel(ctx.kg, path.clauseId)}
 				</span>
 			</div>
+			{reading && <ServiceReading reading={reading} ctx={ctx} onOpen={onOpen} />}
 			{/* What the map below answers, read from it: no sentence the graph does not hold. */}
 			<div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-border/60 bg-muted/30 px-3 py-1.5 text-2xs">
 				<span
@@ -548,8 +615,18 @@ export function FlagPathGraph({
 						))}
 					</div>
 					<div className={cn('shrink-0', left.length ? 'w-[150px]' : 'w-6')} />
-					<div className="w-[220px] shrink-0">
+					<div className={cn('shrink-0', companions.length ? 'w-[320px]' : 'w-[220px]')}>
 						<NodeBox node={root} strong />
+						{companions.length > 0 && (
+							<div className="mt-5 space-y-2.5">
+								<p className="text-[9px] font-bold tracking-wide text-muted-foreground uppercase">
+									Same annotated fragment
+								</p>
+								{companions.map((n) => (
+									<NodeBox key={n.id} node={n} />
+								))}
+							</div>
+						)}
 					</div>
 					<div className={cn('shrink-0', right.length ? 'w-[150px]' : 'w-6')} />
 					<div data-map-col="right" className="flex flex-col gap-6">
@@ -570,6 +647,7 @@ export function FlagPathGraph({
 											>
 												<button
 													type="button"
+													aria-expanded={showContext}
 													onClick={() => setShowContext((v) => !v)}
 													className="flex w-full items-center gap-1.5 text-left text-[9px] font-bold tracking-wide text-muted-foreground uppercase"
 												>
@@ -577,9 +655,6 @@ export function FlagPathGraph({
 													Context · {clauseSub.context.length} more in{' '}
 													{clauseLabel(ctx.kg, path.clauseId)}
 												</button>
-												<p className="mt-0.5 text-[10px] text-muted-foreground italic">
-													Shares the clause; does not prove the risk.
-												</p>
 												{showContext && (
 													<div className="mt-2 flex flex-col gap-2">
 														{clauseSub.context.map((n) => (
@@ -656,6 +731,58 @@ function Fact({ question, children }: { question: string; children: ReactNode })
 	);
 }
 
+/** Lectura acotada a la evidencia del pago y del contador, con sus límites separados. */
+function ServiceReading({
+	reading,
+	ctx,
+	onOpen,
+}: {
+	reading: ServiceChargeReading;
+	ctx: PathCtx;
+	onOpen: (id: string) => void;
+}) {
+	const { payment, calculation } = reading;
+	const payer = ctx.kg.parties.find((p) => p.id === payment.ownerId);
+	const frequency = payment.statement.frequency.trim();
+	return (
+		<section className="border-b border-border/60 bg-muted/30 px-3 py-3" aria-label="Risk reading">
+			<p className="mb-1 text-[9px] font-bold tracking-wide text-muted-foreground uppercase">
+				Reading · based on the two statements below
+			</p>
+			<p className="text-sm leading-relaxed">
+				{payer?.name ?? 'The recorded payer'} must pay utility costs
+				{frequency ? ` ${frequency}` : ''}, calculated from actual meter readings.
+			</p>
+			<div className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 text-xs">
+				{[payment, calculation].map((s) => (
+					<button
+						key={s.statement.id}
+						type="button"
+						onClick={() => onOpen(s.statement.id)}
+						className="text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
+						title="Show the supporting text in the contract"
+					>
+						{s.statement.action} · evidence
+					</button>
+				))}
+			</div>
+			{(reading.missingAmount || reading.missingCalculationParty) && (
+				<p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+					Limits of this explanation:{' '}
+					{[
+						reading.missingAmount &&
+							'no monetary amount is linked to these statements in the graph',
+						reading.missingCalculationParty && 'no party is assigned the calculation',
+					]
+						.filter(Boolean)
+						.join('; ')}
+					. These gaps do not establish a risk by themselves.
+				</p>
+			)}
+		</section>
+	);
+}
+
 function NodeBox({ node, strong, via }: { node: MapNode; strong?: boolean; via?: Twig }) {
 	const Tag = node.onOpen ? 'button' : 'div';
 	return (
@@ -703,6 +830,14 @@ function NodeBox({ node, strong, via }: { node: MapNode; strong?: boolean; via?:
 			{node.sub && (
 				<span className="mt-0.5 block text-[10px] text-muted-foreground">{node.sub}</span>
 			)}
+			{node.evidence?.map((span, i) => (
+				<span key={i} className="mt-2 block border-l-2 border-border pl-2 text-xs leading-relaxed">
+					<span className="mb-0.5 block text-[9px] font-semibold text-muted-foreground uppercase">
+						Evidence
+					</span>
+					«{span}»
+				</span>
+			))}
 			{node.note && (
 				<span
 					className="mt-0.5 block text-[10px] font-semibold italic"

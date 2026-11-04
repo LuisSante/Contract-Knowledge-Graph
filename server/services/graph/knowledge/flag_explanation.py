@@ -31,10 +31,8 @@ class StrictModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
 
-class ExplanationReason(StrictModel):
-    id: str = Field(pattern=r"^explanation-[1-9][0-9]*$", max_length=40)
+class ExplanationPiece(StrictModel):
     concept: str = Field(min_length=1, max_length=48)
-    kind: Literal["interpretation", "missing_information"]
     targetId: str = Field(min_length=1, max_length=150)
     relation: str = Field(min_length=1, max_length=32)
     evidenceIds: list[str] = Field(min_length=1, max_length=12)
@@ -47,11 +45,22 @@ class ExplanationReason(StrictModel):
         return value.strip()
 
 
+class ExplanationReason(ExplanationPiece):
+    id: str = Field(pattern=r"^explanation-[1-9][0-9]*$", max_length=40)
+    kind: Literal["interpretation", "missing_information"]
+
+
+class ExplanationSafeguard(ExplanationPiece):
+    # Siempre hay respuesta: lo que protege a la parte expuesta o que nada la protege en el camino.
+    found: bool
+
+
 class FlagExplanation(StrictModel):
     status: Literal["explained", "partial", "insufficient"]
     summary: str = Field(min_length=1, max_length=48)
     exposedPartyIds: list[str] = Field(max_length=8)
     reasons: list[ExplanationReason] = Field(max_length=4)
+    safeguard: ExplanationSafeguard
 
 
 SYSTEM_PROMPT = """Explicas un fragmento de contrato anotado como red flag a un ciudadano sin formación jurídica.
@@ -61,17 +70,17 @@ La anotación identifica un caso para estudiar: no demuestra que el grafo conten
 Explica el mecanismo concreto de exposición: qué puede ocurrir, a quién, por qué y bajo qué condiciones; evita limitarte a repetir una obligación.
 La interfaz YA muestra los hechos y sus citas en las tarjetas originales, antes de llamar al modelo.
 No devuelvas tarjetas de hechos, citas literales, aristas copiadas ni paráfrasis de una obligación como motivos.
-Devuelve solo interpretaciones útiles: consecuencias, comparaciones, posibles inconsistencias o salvaguardas, sin inventarlas.
+Devuelve solo interpretaciones útiles: consecuencias, comparaciones o posibles inconsistencias, sin inventarlas. Las salvaguardas van aparte, en safeguard.
 También puedes aportar información faltante relevante, vinculada al nodo cuya evaluación queda incompleta.
 Cada aporte es una pieza atómica con id único explanation-1, explanation-2, etc., concept, kind,
 targetId y relation. concept es un concepto breve, no un título seguido de una explicación.
 targetId es el ID de un nodo existente del camino o el id de otro aporte de esta respuesta.
 Elige el destino por su significado: debe nombrar exactamente aquello que la relación afecta, estima o limita.
 No elijas el enunciado inicial como destino por defecto solo porque es la red flag.
-relation es el verbo o relación explicativa que se lee concept → relation → destino como una frase natural.
-Puedes conectar aportes entre sí para descomponer la explicación; cada cadena debe terminar en un nodo del camino.
+relation es el verbo o relación explicativa que se lee destino → relation → concept como una frase natural, del elemento del camino hacia el aporte: la vista dibuja cada aporte a la derecha de su destino y se lee de izquierda a derecha.
+Puedes conectar aportes entre sí para descomponer la explicación; cada cadena debe partir de un nodo del camino (el destino del primer aporte).
 No crees referencias a sí mismo ni ciclos. Los aportes son anotaciones visuales, no nuevos nodos de la ontología.
-relation describe el vínculo concreto, por ejemplo cómo afecta, condiciona, protege o impide cuantificar el elemento de destino;
+relation describe el vínculo concreto visto desde el destino, por ejemplo qué enfrenta, debe presupuestar, no puede estimar o está protegido por;
 elige la etiqueta que corresponda al contenido, sin limitarte a una lista fija. Son conectores explicativos, no tipos nuevos de arista del KG.
 Una carencia del grafo limita lo que podemos evaluar del nodo: no la conviertas en una restricción contractual o un hecho que perjudica a una parte.
 Si falta un dato en la entrada, el propio concept debe indicar el alcance: por ejemplo, "Rates absent from this path".
@@ -89,17 +98,22 @@ En status explained o partial, reasons debe contener al menos un aporte interpre
 summary nombra la exposición principal sin añadir afirmaciones nuevas. exposedPartyIds contiene solo IDs de partes de la entrada o está vacío.
 La respuesta alimenta una lectura nodo → relación → nodo, no párrafos ni tarjetas con título y cuerpo.
 summary: un concepto de hasta 6 palabras y 48 caracteres; si no alcanza la evidencia, nombra esa incertidumbre.
-Incluye como máximo 4 aportes distintos. concept: hasta 6 palabras y 48 caracteres, siempre un sintagma nominal, sin una oración con sujeto y predicado.
-Por ejemplo, usa "Higher service fees" como concepto y "increase costs for" como relación hacia la parte responsable;
+Incluye como máximo 4 aportes distintos; no añadas uno solo para llegar a 4.
+Además devuelve siempre safeguard, una pieza aparte de los aportes: si algo del camino protege a la parte expuesta.
+Con found true, concept nombra esa protección (un derecho, una condición o un valor que acota la exposición) y evidenceIds cita el elemento del camino que la sustenta, distinto del enunciado inicial.
+Con found false, concept indica su alcance, por ejemplo "No safeguard in this path": su ausencia en el camino no prueba su ausencia en el contrato.
+El targetId de safeguard es lo que esa protección limita o deja sin limitar: un aporte o un nodo del camino. relation se lee igual, destino → relation → concept, por ejemplo "limited by".
+concept: hasta 6 palabras y 48 caracteres, siempre un sintagma nominal, sin una oración con sujeto y predicado.
+Por ejemplo, usa "Higher service fees" como concepto con la parte responsable como destino y "faces" como relación: parte → faces → Higher service fees;
 no escribas "Higher fees increase tenant spending" dentro de una tarjeta. Un posible aumento debe leerse como escenario, no como un aumento ya demostrado.
 No devuelvas title ni explanation. Distribuye el significado entre concept, relation y el nodo de destino, sin repetir la misma afirmación.
 Conserva cualquier condición indispensable para que la afirmación siga siendo cierta; no reduzcas matices a una afirmación absoluta.
-relation tiene como máximo 3 palabras y 32 caracteres, se lee tarjeta → destino y no debe copiar el texto de una arista extraída.
-Usa una relación corta como "prevent estimating", no "prevent estimating financial exposure under".
+relation tiene como máximo 3 palabras y 32 caracteres, se lee destino → tarjeta y no debe copiar el texto de una arista extraída.
+Usa una relación corta como "cannot estimate", no "cannot estimate financial exposure under".
 El objeto o consecuencia pertenece al concept de destino: si necesitas nombrar "Tenant's service costs", crea ese aporte breve y enlázalo con la parte pertinente.
-Si la relación expresa que no se puede estimar un importe, su destino debe ser ese costo o exposición cuantificable, no una obligación, una cláusula o una parte.
-Cuando ese concepto no existe en la entrada, crea un aporte intermedio y usa su id como targetId; después enlaza ese aporte con el elemento del camino que corresponda.
-Ejemplo de estructura, solo cuando la evidencia lo sustente: "Rates absent from this path" → "prevent estimating" → "Total service cost" → "borne by" → parte responsable.
+Si el aporte es un dato que falta para estimar un importe, su destino debe ser ese costo o exposición cuantificable, no una obligación, una cláusula o una parte: costo → cannot estimate → dato faltante.
+Cuando ese costo no existe en la entrada, crea primero un aporte intermedio enlazado al elemento del camino que corresponda, y usa su id como targetId del dato faltante.
+Ejemplo de estructura, solo cuando la evidencia lo sustente: parte responsable → "has to budget" → "Total service cost" → "cannot estimate" → "Rates absent from this path".
 Usa el mismo principio para otros asuntos: el destino completa el objeto de la relación. No añadas tarifas, servicios ni partes de este ejemplo si no aparecen en el caso real.
 La frase completa debe ser comprensible al leer origen, relación y destino; no acortes eliminando condiciones necesarias ni dejando preposiciones sin sentido.
 No repitas la misma asignación en summary y en todos los aportes. No añadas una pieza solo para llenar espacio.
@@ -213,6 +227,13 @@ def validate_explanation(raw: str, context: dict) -> FlagExplanation:
         raise ValueError("Los identificadores de los aportes deben ser únicos y distintos de los nodos del grafo.")
     if any(reason.targetId not in nodes | contributions.keys() for reason in result.reasons):
         raise ValueError("La explicación apunta a un nodo que no está en el camino.")
+    guard = result.safeguard
+    if set(guard.evidenceIds) - allowed or guard.targetId not in nodes | contributions.keys():
+        raise ValueError("La salvaguarda cita evidencia o un destino que no están en el camino.")
+    # Una salvaguarda nombrada se apoya en un elemento del camino distinto de la red flag.
+    statements = {n["id"] for n in context["nodes"] if n["kind"] not in {"party", "clause"}} - {context["rootId"]}
+    if guard.found and not statements & set(guard.evidenceIds):
+        raise ValueError("La salvaguarda debe citar el elemento del camino que protege.")
     for reason in result.reasons:
         seen = {reason.id}
         target = reason.targetId

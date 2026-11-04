@@ -18,6 +18,15 @@ export interface ExplanationReason {
 	evidenceIds: string[];
 }
 
+/** What protects the exposed party, or that nothing in the path does: always answered. */
+export interface ExplanationSafeguard {
+	concept: string;
+	found: boolean;
+	targetId: string;
+	relation: string;
+	evidenceIds: string[];
+}
+
 export interface FlagExplanationResponse {
 	model: string;
 	explanation: {
@@ -25,6 +34,7 @@ export interface FlagExplanationResponse {
 		summary: string;
 		exposedPartyIds: string[];
 		reasons: ExplanationReason[];
+		safeguard?: ExplanationSafeguard;
 	};
 	evidence: ExplanationEvidence[];
 }

@@ -53,6 +53,13 @@ class FlagExplanationTests(unittest.TestCase):
                     "evidenceIds": ["o"],
                 }
             ],
+            "safeguard": {
+                "concept": "No safeguard in this path",
+                "found": False,
+                "targetId": "explanation-1",
+                "relation": "limited by",
+                "evidenceIds": ["o"],
+            },
         }
 
     def test_context_preserves_direction_and_literal_condition(self):
@@ -121,6 +128,35 @@ class FlagExplanationTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate_explanation(json.dumps(self.reply), self.context)
 
+    def test_at_most_four_reasons(self):
+        base = self.reply["reasons"][0]
+        self.reply["reasons"] = [base] + [{**base, "id": f"explanation-{i}", "targetId": f"explanation-{i - 1}"} for i in range(2, 6)]
+        with self.assertRaises(ValueError):
+            validate_explanation(json.dumps(self.reply), self.context)
+        self.reply["reasons"] = self.reply["reasons"][:4]
+        self.assertEqual(len(validate_explanation(json.dumps(self.reply), self.context).reasons), 4)
+
+    def test_safeguard_is_always_answered(self):
+        del self.reply["safeguard"]
+        with self.assertRaises(ValueError):
+            validate_explanation(json.dumps(self.reply), self.context)
+
+    def test_found_safeguard_cites_what_protects(self):
+        self.reply["safeguard"].update(found=True, concept="Only if services are used")
+        with self.assertRaises(ValueError):
+            validate_explanation(json.dumps(self.reply), self.context)
+        self.reply["safeguard"]["evidenceIds"] = ["if"]
+        self.assertTrue(validate_explanation(json.dumps(self.reply), self.context).safeguard.found)
+
+    def test_safeguard_stays_on_the_path(self):
+        self.reply["safeguard"]["targetId"] = "nodo inventado"
+        with self.assertRaises(ValueError):
+            validate_explanation(json.dumps(self.reply), self.context)
+        self.reply["safeguard"]["targetId"] = "b"
+        self.reply["safeguard"]["evidenceIds"] = ["inventado"]
+        with self.assertRaises(ValueError):
+            validate_explanation(json.dumps(self.reply), self.context)
+
     def test_duplicate_concept_ids_are_rejected(self):
         self.reply["reasons"].append(dict(self.reply["reasons"][0]))
         with self.assertRaises(ValueError):
@@ -153,6 +189,7 @@ class FlagExplanationTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate_explanation(json.dumps(self.reply), self.context)
         self.reply["status"] = "insufficient"
+        self.reply["safeguard"]["targetId"] = "b"
         self.assertEqual(validate_explanation(json.dumps(self.reply), self.context).status, "insufficient")
 
     @patch("services.graph.knowledge.flag_explanation.LLMProviderFactory.create")

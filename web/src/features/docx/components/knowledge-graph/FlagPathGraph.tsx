@@ -11,8 +11,7 @@ import {
 	type PointerEvent as ReactPointerEvent,
 	type ReactNode,
 } from 'react';
-import { ExplanationCards, FlagExplanation } from './FlagExplanation';
-import { explanationLayout } from '@/features/docx/utils/knowledge/explanation-layout';
+import { FlagExplanation } from './FlagExplanation';
 import type { FlagExplanationResponse } from '@/types/flag-explanation';
 import { flagExplanationInput } from '@/features/docx/utils/knowledge/flag-explanation-input';
 import { cn } from '@/lib/utils';
@@ -423,6 +422,8 @@ interface Geo {
 	pills: Array<{ x: number; y: number; text: string; color: string }>;
 }
 
+/** The safeguard card's id among the reasons: never one of the model's explanation-N ids. */
+const SAFEGUARD_ID = 'safeguard';
 const HighlightContext = createContext<ReadonlySet<string>>(new Set());
 const idsOf = (node: MapNode) =>
 	node.nodeIds ?? [node.id.replace(/^(?:party:|clause:|out:[^:]+:|link:[^:]+:)/, '')];
@@ -472,7 +473,19 @@ export function FlagPathGraph({
 										reason.targetId ??
 										('targetNodeId' in reason ? String(reason.targetNodeId) : root.id),
 									relation: reason.relation ?? 'explains',
-								})),
+								}))
+								// The safeguard is one more card, after the reasons, hanging from what it limits.
+								.concat(
+									rawExplanation.explanation.safeguard
+										? [
+												{
+													...rawExplanation.explanation.safeguard,
+													id: SAFEGUARD_ID,
+													kind: 'interpretation' as const,
+												},
+											]
+										: []
+								),
 						},
 					}
 				: null,
@@ -556,6 +569,59 @@ export function FlagPathGraph({
 		drag.current = null;
 	};
 
+	// T layout: the provision on the left, neither party's; a lane per party on the right, with
+	// WHO at the corner. Every line reads forward, to the right or down.
+	const ownerId = path.root.ownerId;
+	const otherId = path.root.otherId && path.root.otherId !== ownerId ? path.root.otherId : null;
+	const laneKey = [ownerId, otherId].filter(Boolean).join('|');
+	const laneIds = useMemo(() => (laneKey ? laneKey.split('|') : []), [laneKey]);
+	const who = left.find((b) => b.key === 'who') ?? null;
+	const onlyIf = left.find((b) => b.key === 'only-if') ?? null;
+	// A condition goes in the lane of the party its trigger names; one naming none stays neutral.
+	const conditionLane = useMemo(() => {
+		const lane = new Map<string, string | null>();
+		for (const c of path.root.conditions)
+			lane.set(c.condition.id, c.partyId && laneIds.includes(c.partyId) ? c.partyId : null);
+		return lane;
+	}, [path.root.conditions, laneIds]);
+	const spine = useMemo(() => {
+		const neutralConditions = onlyIf?.twigs.filter((t) => !conditionLane.get(t.node.id)) ?? [];
+		return [
+			...(onlyIf && neutralConditions.length ? [{ ...onlyIf, twigs: neutralConditions }] : []),
+			...right,
+		];
+	}, [onlyIf, right, conditionLane]);
+	// Each reason sits in the lane of the party its chain starts from, one column per step.
+	const placedReasons = useMemo(() => {
+		const reasons = explanation?.explanation.reasons ?? [];
+		const byId = new Map(reasons.map((r) => [r.id, r] as const));
+		const exposed =
+			explanation?.explanation.exposedPartyIds.find((id) => laneIds.includes(id)) ?? null;
+		return reasons.map((reason, index) => {
+			let base = reason;
+			let depth = 1;
+			const seen = new Set([reason.id]);
+			while (byId.has(base.targetId) && !seen.has(base.targetId)) {
+				base = byId.get(base.targetId)!;
+				seen.add(base.id);
+				depth += 1;
+			}
+			const lane = laneIds.includes(base.targetId)
+				? base.targetId
+				: (exposed ?? laneIds[0] ?? null);
+			// A card's column is its chain's length, so every line reads left to right: the
+			// mechanism next to the party, then what hangs from it.
+			return { reason, index, depth, lane };
+		});
+	}, [explanation, laneIds]);
+
+	// The risk (the explanation's summary) sits in the exposed party's lane, joined to the
+	// provision by one line: «why it is a risk». With no exposed party in a lane, it stays above
+	// the provision.
+	const riskLane =
+		explanation?.explanation.exposedPartyIds.find((id) => laneIds.includes(id)) ?? null;
+
+	const [split, setSplit] = useState<number | null>(null);
 	const [geo, setGeo] = useState<Geo | null>(null);
 	useLayoutEffect(() => {
 		const map = mapRef.current;
@@ -573,14 +639,19 @@ export function FlagPathGraph({
 					b: r.bottom - o.top,
 				};
 			};
+			// A node's own box first: the provision also lists its conditions among its ids.
 			const node = (id: string) =>
 				box(
-					map.querySelector(
-						`[data-map-node="${CSS.escape(id)}"], [data-map-ids~="${CSS.escape(id)}"]`
-					)
+					map.querySelector(`[data-map-node="${CSS.escape(id)}"]`) ??
+						map.querySelector(`[data-map-ids~="${CSS.escape(id)}"]`)
 				);
 			const rootBox = node(root.id);
 			if (!rootBox) return;
+			// The first lane ends where the provision's middle is, so WHO sits on the boundary.
+			if (laneIds.length)
+				setSplit((prev) =>
+					prev !== null && Math.abs(prev - rootBox.mid) < 1 ? prev : rootBox.mid
+				);
 			const out: Geo = {
 				width: map.offsetWidth,
 				height: map.offsetHeight,
@@ -588,52 +659,60 @@ export function FlagPathGraph({
 				labels: [],
 				pills: [],
 			};
-			const twig = (x1: number, y1: number, x2: number, y2: number, t: Twig) => {
+			const twig = (x1: number, y1: number, x2: number, y2: number, t: Twig, label = true) => {
 				out.paths.push({
 					d: curve(x1, y1, x2, y2),
 					color: t.color,
 					width: 1.75,
 					nodeIds: idsOf(t.node),
 				});
-				out.labels.push({ x: (x1 + x2) / 2, y: (y1 + y2) / 2, text: t.label, color: t.color });
+				if (label)
+					out.labels.push({ x: (x1 + x2) / 2, y: (y1 + y2) / 2, text: t.label, color: t.color });
 			};
-			for (const side of ['left', 'right'] as const) {
-				const own = side === 'left' ? left : right;
-				own.forEach((b, i) => {
-					const boxes = b.twigs.map((t) => node(t.node.id));
-					const placed = boxes.filter((x): x is NonNullable<typeof x> => x !== null);
-					if (!placed.length) return;
-					const hy = placed.reduce((s, x) => s + x.mid, 0) / placed.length;
-					const hx = side === 'left' ? rootBox.l - 56 : rootBox.r + 56;
-					const sx = side === 'left' ? rootBox.l : rootBox.r;
-					const sy = rootBox.mid + (i - (own.length - 1) / 2) * 18;
-					out.paths.push({
-						d: curve(sx, sy, hx, hy),
-						color: b.color,
-						width: 5,
-						opacity: 0.7,
-						nodeIds: b.twigs.flatMap((t) => idsOf(t.node)),
-					});
-					out.pills.push({ x: hx, y: hy, text: b.question, color: b.color });
-					b.twigs.forEach((t, j) => {
-						const x = boxes[j];
-						if (x) twig(hx, hy, side === 'left' ? x.r : x.l, x.mid, t);
-					});
+			// WHO at the corner: one thick line from the provision, then a twig into each lane.
+			const neutral = box(map.querySelector('[data-zone="neutral"]'));
+			const firstLane = box(map.querySelector('[data-zone="lane-0"]'));
+			if (who && neutral && firstLane) {
+				const hub = { x: neutral.r + 46, y: firstLane.b };
+				out.paths.push({
+					d: curve(rootBox.r, rootBox.mid, hub.x - 22, hub.y),
+					color: who.color,
+					width: 5,
+					opacity: 0.7,
+					nodeIds: who.twigs.flatMap((t) => idsOf(t.node)),
 				});
+				out.pills.push({ x: hub.x, y: hub.y, text: who.question, color: who.color });
+				for (const t of who.twigs) {
+					const x = node(t.node.id);
+					if (x) twig(hub.x + 22, hub.y, x.l, x.mid, t);
+				}
 			}
-			// La cercanía representa la anotación compartida; no se añade una arista entre enunciados.
-			if (path.clauseId) {
-				const clause = node(`clause:${path.clauseId}`);
-				if (clause)
-					for (const companion of companions) {
-						const source = node(companion.id);
-						if (source)
-							twig(source.r, source.mid, clause.l, clause.mid, {
-								node: companion,
-								label: 'part of',
-								color: NODE_COLORS.clause,
-							});
+			// A condition that names a party sits in that party's lane, gating the provision.
+			for (const t of onlyIf?.twigs ?? []) {
+				if (!conditionLane.get(t.node.id)) continue;
+				const x = node(t.node.id);
+				if (x) twig(rootBox.r, rootBox.mid + 16, x.l, x.mid, { ...t, label: 'only if' });
+			}
+			// The spine under the provision: WHERE, what it changes, what it cites, each a stop.
+			const pills = spine
+				.map((b) => box(map.querySelector(`[data-spine-pill="${CSS.escape(b.key)}"]`)))
+				.filter((x): x is NonNullable<typeof x> => x !== null);
+			if (pills.length) {
+				const x = (pills[0].l + pills[0].r) / 2;
+				out.paths.push({
+					d: `M ${x} ${rootBox.b} V ${pills[pills.length - 1].t}`,
+					color: '#7d9cc6',
+					width: 5,
+					opacity: 0.7,
+				});
+				spine.forEach((b, i) => {
+					const pill = pills[i];
+					if (!pill) return;
+					for (const t of b.twigs) {
+						const n = node(t.node.id);
+						if (n) twig(pill.r, pill.mid, n.l, Math.min(n.mid, n.t + 22), t, false);
 					}
+				});
 			}
 			// What hangs from the clause sits under it: an elbow down its left side, still outward.
 			if (clauseSub && path.clauseId) {
@@ -651,36 +730,45 @@ export function FlagPathGraph({
 					if (fold) out.paths.push({ d: elbow(fold), color: '#a3a3a3', width: 1.25, dash: '5 4' });
 				}
 			}
-			// La capa de explicación usa carriles separados de la lectura del grafo.
+			// The reading layer: from the summary down to the provision, and from each card's
+			// destination forward to the card. Its lines are dashed: they are not the graph's.
 			if (explanation) {
-				const conclusion = box(map.querySelector('[data-explanation-card="conclusion"]'));
-				if (conclusion) {
-					const reasons = explanation.explanation.reasons.map((_, index) =>
-						box(map.querySelector(`[data-explanation-card="reason-${index}"]`))
-					);
-					const targets = explanation.explanation.reasons.map((item) => {
-						const index = explanation.explanation.reasons.findIndex(
-							(other) => other.id === item.targetId
-						);
-						return {
-							box: index < 0 ? node(item.targetId) : reasons[index],
-							label: item.relation,
-							annotation: index >= 0,
-						};
+				const color = 'var(--muted-foreground)';
+				const derived = (d: string) =>
+					out.paths.push({ d, color, width: 1.25, dash: '4 5', derived: true });
+				const summary = box(map.querySelector('[data-explanation-card="conclusion"]'));
+				if (summary && riskLane) {
+					// Leaves the provision on the side of the risk's lane, so it clears WHO's line.
+					const y = laneIds.indexOf(riskLane) === 0 ? rootBox.t + 26 : rootBox.b - 26;
+					derived(curve(rootBox.r, y, summary.l, summary.mid));
+					out.labels.push({
+						x: rootBox.r + (summary.l - rootBox.r) * 0.62,
+						y: y + (summary.mid - y) * 0.62,
+						text: 'why it is a risk',
+						color,
 					});
-					const layout = explanationLayout(rootBox, conclusion, reasons, targets);
-					const color = 'var(--muted-foreground)';
-					out.paths.push(
-						...layout.paths.map((connector) => ({
-							...connector,
-							color,
-							width: 1.25,
-							dash: '4 5',
-							derived: true,
-						}))
-					);
-					out.labels.push(...layout.labels.map((label) => ({ ...label, color })));
+				} else if (summary) {
+					const x = rootBox.l + (rootBox.r - rootBox.l) / 2;
+					derived(`M ${x} ${summary.b} V ${rootBox.t}`);
+					out.labels.push({ x: x + 30, y: (summary.b + rootBox.t) / 2, text: 'explains', color });
 				}
+				const reasons = explanation.explanation.reasons;
+				reasons.forEach((reason, index) => {
+					const card = box(map.querySelector(`[data-explanation-card="reason-${index}"]`));
+					const at = reasons.findIndex((other) => other.id === reason.targetId);
+					const from =
+						at >= 0
+							? box(map.querySelector(`[data-explanation-card="reason-${at}"]`))
+							: node(reason.targetId);
+					if (!card || !from) return;
+					derived(curve(from.r, from.mid, card.l, card.mid));
+					out.labels.push({
+						x: (from.r + card.l) / 2,
+						y: (from.mid + card.mid) / 2,
+						text: reason.relation,
+						color,
+					});
+				});
 			}
 
 			setGeo(out);
@@ -689,12 +777,77 @@ export function FlagPathGraph({
 		const observer = new ResizeObserver(measure);
 		observer.observe(map);
 		return () => observer.disconnect();
-	}, [root, companions, left, right, clauseSub, path.clauseId, showContext, explanation]);
+	}, [
+		root,
+		who,
+		onlyIf,
+		spine,
+		clauseSub,
+		conditionLane,
+		laneIds,
+		path.clauseId,
+		showContext,
+		explanation,
+		riskLane,
+	]);
 
 	const isRight = path.root.statement.kind === 'right';
 	const t = path.root.timing;
 	const when = [t?.deadline, t?.frequency].filter(Boolean).join(' · ');
 	const conditions = path.root.conditions.length;
+	const neutralReasons = placedReasons.filter((p) => p.lane === null);
+	const riskCard = explanation && (
+		<article
+			data-explanation-card="conclusion"
+			className="relative z-10 rounded-md border border-dashed border-muted-foreground bg-card p-3 text-xs"
+		>
+			<span className="text-[9px] font-bold tracking-wide text-muted-foreground uppercase">
+				{riskLane ? 'Risk · reading' : 'Reading · summary'}
+			</span>
+			<h3 className="mt-0.5 text-sm font-semibold" aria-label="Risk summary">
+				{explanation.explanation.summary}
+			</h3>
+		</article>
+	);
+
+	const reasonCard = ({ reason, index }: (typeof placedReasons)[number]) => {
+		const active = selectedReason === index;
+		const missing = reason.kind === 'missing_information';
+		const label = reason.id === SAFEGUARD_ID ? 'Safeguard' : missing ? 'Information gap' : null;
+		return (
+			<article
+				key={reason.id}
+				data-explanation-card={`reason-${index}`}
+				className={cn(
+					'relative z-10 rounded-md border border-dashed border-muted-foreground/60 bg-card p-3 text-xs',
+					active && 'ring-2 ring-primary/50'
+				)}
+			>
+				<button
+					type="button"
+					aria-pressed={active}
+					className="w-full text-left"
+					onClick={() => selectReason(active ? null : index)}
+				>
+					{label && (
+						<span className="text-[9px] font-bold tracking-wide text-muted-foreground uppercase">
+							{label}
+						</span>
+					)}
+					<h4 className="mt-0.5 font-semibold">{reason.concept}</h4>
+				</button>
+			</article>
+		);
+	};
+
+	const zoneLabel = (text: string, color?: string) => (
+		<p
+			className="text-[10px] font-bold tracking-wide uppercase"
+			style={{ color: color ? textColorOf(color) : 'var(--muted-foreground)' }}
+		>
+			{text}
+		</p>
+	);
 
 	return (
 		<HighlightContext.Provider value={highlightIds}>
@@ -744,87 +897,151 @@ export function FlagPathGraph({
 						dragging ? 'cursor-grabbing' : 'cursor-grab'
 					)}
 				>
-					<div ref={mapRef} className="relative mx-auto flex w-max flex-col items-center px-6 py-6">
-						<div className="flex items-center">
-							<div data-map-col="left" className="flex w-[200px] flex-col gap-6">
-								{left.map((b) => (
-									<div key={b.key} className="flex flex-col gap-2.5">
-										{b.twigs.map((t) => (
-											<NodeBox key={t.node.id} node={t.node} />
-										))}
-									</div>
-								))}
-							</div>
-							<div className={cn('shrink-0', left.length ? 'w-[150px]' : 'w-6')} />
-							<div className="w-[320px] shrink-0">
-								<NodeBox node={root} strong />
-								{!explanation && (
+					<div ref={mapRef} className="relative flex min-h-full w-max items-stretch">
+						{/* The provision: neither party's, read top to bottom. */}
+						<div
+							data-zone="neutral"
+							className="flex w-[420px] shrink-0 flex-col border-r border-border/70 bg-muted/25 px-6 pt-4 pb-8"
+						>
+							{zoneLabel('The provision · neither party')}
+							{!explanation ? (
+								<div className="mt-3">
 									<FlagExplanation
 										key={JSON.stringify(explanationInput)}
 										docId={docId}
 										input={explanationInput}
 										onResult={showExplanation}
 									/>
-								)}
-								{companions.length > 0 && (
-									<div className="mt-5 space-y-2.5">
-										<p className="text-[9px] font-bold tracking-wide text-muted-foreground uppercase">
-											Same annotated fragment
-										</p>
-										{companions.map((n) => (
-											<NodeBox key={n.id} node={n} />
-										))}
-									</div>
-								)}
+								</div>
+							) : (
+								!riskLane && <div className="mt-3">{riskCard}</div>
+							)}
+							<div className={explanation && !riskLane ? 'mt-10' : 'mt-4'}>
+								<NodeBox node={root} strong />
 							</div>
-							<div className={cn('shrink-0', right.length ? 'w-[150px]' : 'w-6')} />
-							<div data-map-col="right" className="flex flex-col gap-6">
-								{right.map((b) => (
-									<div key={b.key} className="flex w-[200px] flex-col gap-2.5">
-										{b.twigs.map((t) => (
-											<NodeBox key={t.node.id} node={t.node} />
-										))}
-										{b.key === 'where' && clauseSub && (
-											<div className="ml-6 flex flex-col gap-2">
-												{clauseSub.twigs.map((t) => (
+							{companions.length > 0 && (
+								<div className="mt-4 space-y-2.5">
+									<p className="text-[9px] font-bold tracking-wide text-muted-foreground uppercase">
+										Same annotated fragment
+									</p>
+									{companions.map((n) => (
+										<NodeBox key={n.id} node={n} />
+									))}
+								</div>
+							)}
+							{spine.length > 0 && (
+								<div className="mt-7 flex flex-col gap-6">
+									{spine.map((b) => (
+										<div key={b.key} className="flex items-start gap-5">
+											<span
+												data-spine-pill={b.key}
+												className="relative z-20 mt-2 w-[76px] shrink-0 rounded-full border bg-card px-1.5 py-0.5 text-center text-[9px] font-bold tracking-wide uppercase"
+												style={{
+													color: textColorOf(b.color),
+													borderColor: b.color,
+													backgroundImage: `linear-gradient(${tint(b.color, 16)}, ${tint(b.color, 16)})`,
+												}}
+											>
+												{b.question}
+											</span>
+											<div className="flex min-w-0 flex-1 flex-col gap-2.5">
+												{b.twigs.map((t) => (
 													<NodeBox key={t.node.id} node={t.node} via={t} />
 												))}
-												{clauseSub.context.length > 0 && (
-													<div
-														data-map-context
-														className="rounded-md border border-dashed border-border p-2"
-													>
-														<button
-															type="button"
-															aria-expanded={showContext}
-															onClick={() => setShowContext((v) => !v)}
-															className="flex w-full items-center gap-1.5 text-left text-[9px] font-bold tracking-wide text-muted-foreground uppercase"
-														>
-															<span>{showContext ? '▾' : '▸'}</span>
-															Context · {clauseSub.context.length} more in{' '}
-															{clauseLabel(ctx.kg, path.clauseId)}
-														</button>
-														{showContext && (
-															<div className="mt-2 flex flex-col gap-2">
-																{clauseSub.context.map((n) => (
-																	<NodeBox key={n.id} node={n} />
-																))}
+												{b.key === 'where' && clauseSub && (
+													<div className="ml-5 flex flex-col gap-2">
+														{clauseSub.twigs.map((t) => (
+															<NodeBox key={t.node.id} node={t.node} via={t} />
+														))}
+														{clauseSub.context.length > 0 && (
+															<div
+																data-map-context
+																className="rounded-md border border-dashed border-border p-2"
+															>
+																<button
+																	type="button"
+																	aria-expanded={showContext}
+																	onClick={() => setShowContext((v) => !v)}
+																	className="flex w-full items-center gap-1.5 text-left text-[9px] font-bold tracking-wide text-muted-foreground uppercase"
+																>
+																	<span>{showContext ? '▾' : '▸'}</span>
+																	Context · {clauseSub.context.length} more in{' '}
+																	{clauseLabel(ctx.kg, path.clauseId)}
+																</button>
+																{showContext && (
+																	<div className="mt-2 flex flex-col gap-2">
+																		{clauseSub.context.map((n) => (
+																			<NodeBox key={n.id} node={n} />
+																		))}
+																	</div>
+																)}
 															</div>
 														)}
 													</div>
 												)}
 											</div>
-										)}
-									</div>
-								))}
-							</div>
+										</div>
+									))}
+								</div>
+							)}
+							{neutralReasons.length > 0 && (
+								<div className="mt-8 flex flex-col gap-3">{neutralReasons.map(reasonCard)}</div>
+							)}
 						</div>
-						{explanation && (
-							<ExplanationCards
-								result={explanation}
-								selected={selectedReason}
-								onSelect={selectReason}
-							/>
+						{/* A lane per party: what reaches it, read left to right from the party. */}
+						{laneIds.length > 0 && (
+							<div className="flex min-w-[600px] flex-col">
+								{laneIds.map((id, i) => {
+									const color = ctx.colorOf(id);
+									const party = ctx.kg.parties.find((p) => p.id === id);
+									const partyTwig = who?.twigs.find((t) => t.node.id === `party:${id}`);
+									const conds =
+										onlyIf?.twigs.filter((t) => conditionLane.get(t.node.id) === id) ?? [];
+									const mine = placedReasons.filter((p) => p.lane === id);
+									const depth = Math.max(0, ...mine.map((p) => p.depth));
+									const first = i === 0;
+									const partyCol = [
+										...(first ? conds : []),
+										...(partyTwig ? [partyTwig] : []),
+										...(first ? [] : conds),
+									];
+									return (
+										<div
+											key={id}
+											data-zone={`lane-${i}`}
+											className={cn(
+												'relative flex gap-[110px] pr-10 pl-[120px]',
+												first ? 'items-end pt-12 pb-6' : 'flex-1 items-start pt-10 pb-12'
+											)}
+											style={{
+												backgroundColor: tint(color, 7),
+												minHeight: first && split !== null ? split : undefined,
+											}}
+										>
+											<span className="absolute top-3 left-[120px]">
+												{zoneLabel(
+													party
+														? `${short(party.name)}${party.role ? ` (${party.role})` : ''}`
+														: id,
+													color
+												)}
+											</span>
+											<div className="flex w-[210px] shrink-0 flex-col gap-2.5">
+												{first && riskLane === id && <div className="mb-6">{riskCard}</div>}
+												{partyCol.map((t) => (
+													<NodeBox key={t.node.id} node={t.node} />
+												))}
+												{!first && riskLane === id && <div className="mt-6">{riskCard}</div>}
+											</div>
+											{Array.from({ length: depth }, (_, d) => (
+												<div key={d} className="flex w-[230px] shrink-0 flex-col gap-4">
+													{mine.filter((p) => p.depth === d + 1).map(reasonCard)}
+												</div>
+											))}
+										</div>
+									);
+								})}
+							</div>
 						)}
 						{geo && (
 							<svg

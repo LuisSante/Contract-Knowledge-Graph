@@ -14,11 +14,8 @@ import {
 } from '@/features/docx/utils/knowledge/clause-favour';
 import type { GridRow, Side } from '@/features/docx/utils/knowledge/statement-grid';
 import type { StatementTiming } from '@/features/docx/utils/knowledge/statement-timing';
-import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import type { DeonticKind, KgCondition } from '@/types/knowledge';
-
-const SIDES: Side[] = ['a', 'b'];
 
 /** What the detail adds to each statement from the graph, without changing any count. */
 export interface StatementHints {
@@ -30,13 +27,9 @@ export interface StatementHints {
 	timing: Map<string, StatementTiming>;
 }
 
-/** Version 1 of the red-flag paths: flagged lines are marked, and the picked one opens with
- *  its path under it. */
+/** Flagged lines are marked, and their «red flag» tag shows the path in the graph tab. */
 export interface FlagLines {
 	flaggedIds: ReadonlySet<string>;
-	/** The picked flagged statement; `seq` reopens it when picked again. */
-	picked: { statementId: string; seq: number } | null;
-	renderPath: (statementId: string) => ReactNode;
 	onPick: (statementId: string) => void;
 }
 
@@ -135,10 +128,9 @@ export function PartyStatements({
 				<div className="divide-y divide-border/60 bg-card">
 					{gets.map((s) => {
 						const origin = originOf(s, names);
-						const picked = flags?.picked?.statementId === s.mark.id ? flags.picked : null;
 						return (
 							<Fragment
-								key={`${s.mark.id}-${s.to}${picked ? `-picked-${picked.seq}` : ''}`}
+								key={`${s.mark.id}-${s.to}`}
 								served={s}
 								section={tally.section}
 								// The column and the tab already say whose and which type; only a
@@ -152,7 +144,6 @@ export function PartyStatements({
 								timing={hints?.timing.get(s.mark.id)}
 								onOpen={onOpen}
 								flagged={flags?.flaggedIds.has(s.mark.id)}
-								path={picked ? flags?.renderPath(s.mark.id) : undefined}
 								onPickFlag={flags && (() => flags.onPick(s.mark.id))}
 							/>
 						);
@@ -174,27 +165,8 @@ export function PartyStatements({
 		? column('both', 'Both', BOTH_COLOR, shared, `Nothing shared in ${noun} here.`)
 		: null;
 
-	// The column holding an open red-flag path takes more of the width, as its steps need it.
-	const pickedId = flags?.picked?.statementId;
-	const pathIn: 'a' | 'b' | 'both' | undefined = pickedId
-		? (SIDES.find((side) => own(side).some((s) => s.mark.id === pickedId)) ??
-			(shared.some((s) => s.mark.id === pickedId) ? 'both' : undefined))
-		: undefined;
-	const widths = bothColumn
-		? pathIn === 'a'
-			? 'grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)]'
-			: pathIn === 'b'
-				? 'grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,2fr)]'
-				: pathIn === 'both'
-					? 'grid-cols-[minmax(0,1fr)_minmax(0,2fr)_minmax(0,1fr)]'
-					: 'grid-cols-3'
-		: pathIn === 'a'
-			? 'grid-cols-[minmax(0,3fr)_minmax(0,2fr)]'
-			: pathIn === 'b'
-				? 'grid-cols-[minmax(0,2fr)_minmax(0,3fr)]'
-				: 'grid-cols-2';
 	return (
-		<div className={cn('grid gap-3', widths)}>
+		<div className={cn('grid gap-3', bothColumn ? 'grid-cols-3' : 'grid-cols-2')}>
 			{sideColumn('a')}
 			{bothColumn}
 			{sideColumn('b')}

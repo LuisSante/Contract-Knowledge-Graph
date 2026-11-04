@@ -79,9 +79,6 @@ interface ClauseGridProps {
 	onOpenGraph?: (clauseId: string) => void;
 	/** Each row unfolds this under it while it is the picked one and «Details» is open. */
 	renderDetail?: (row: GridRow) => ReactNode;
-	/** Opens a row's «Details» from outside, such as a red flag picked from its square; a new
-	 *  `seq` asks again. */
-	detailRequest?: { clauseId: string; seq: number } | null;
 	/** Goes to a clause that modifies a row, or that it depends on or refers to, from that row's
 	 *  «modified by», «depends on» or «refers to». */
 	onGoToModifier?: (clauseId: string, kind: DeonticKind | null) => void;
@@ -114,7 +111,6 @@ export function ClauseGrid({
 	onSelectClause,
 	onOpenGraph,
 	renderDetail,
-	detailRequest = null,
 	onGoToModifier,
 	onOpenMark,
 	onFocusMark,
@@ -122,14 +118,8 @@ export function ClauseGrid({
 	onLeaveMark,
 }: ClauseGridProps) {
 	const [rowLimit, setRowLimit] = useState(ROW_PAGE);
-	// Picking a row paints it in the contract; its detail opens only from «Details», or when a
-	// red flag in it is picked.
+	// Picking a row paints it in the contract; its detail opens only from «Details».
 	const [detailOf, setDetailOf] = useState<string | null>(null);
-	const [askedSeq, setAskedSeq] = useState(0);
-	if (detailRequest && detailRequest.seq !== askedSeq) {
-		setAskedSeq(detailRequest.seq);
-		setDetailOf(detailRequest.clauseId);
-	}
 	const [showUnfiled, setShowUnfiled] = useState(false);
 
 	// Each column as wide as its fullest row in the type shown, over every row (not only those

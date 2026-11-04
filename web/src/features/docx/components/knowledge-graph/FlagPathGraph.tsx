@@ -1,6 +1,7 @@
 'use client';
 
 import {
+	useId,
 	useLayoutEffect,
 	useMemo,
 	useRef,
@@ -20,14 +21,10 @@ import { short } from '@/features/docx/components/clause-analyzer/parts/bits';
 import {
 	FLAG_COLOR,
 	FlagTag,
-	INFERRED_COLOR,
-	InferredLine,
 	LINK_STYLE,
-	PathKey,
 	clauseGist,
 	clauseLabel,
 	flagTypes,
-	missingLines,
 	type PathCtx,
 } from '@/features/docx/components/clause-analyzer/flag-path/path-bits';
 import { conditionLead } from '@/features/docx/utils/knowledge/clause-favour';
@@ -36,15 +33,12 @@ import {
 	type FlagHopPath,
 	type HopCondition,
 	type HopStatement,
-	type Inferred,
 } from '@/features/docx/utils/knowledge/red-flag-hops';
-
-type Style = 'graph' | 'ghost' | 'inferred';
 
 interface PathNode {
 	id: string;
-	col: 0 | 1 | 2 | 3 | 4;
-	style: Style;
+	col: 0 | 1 | 2 | 3;
+	style: 'graph';
 	color: string;
 	label: string;
 	text: ReactNode;
@@ -54,26 +48,25 @@ interface PathNode {
 }
 
 interface PathEdge {
-	/** Drawn from the left node to the right one; `label` names the edge and its real direction. */
+	/** La posición visual y el sentido de la relación se guardan por separado. */
 	left: string;
 	right: string;
+	direction: 'left' | 'right';
 	color: string;
 	label?: string;
-	style: Style;
+	style: 'graph';
 	width?: number;
 }
 
-// Five fixed columns with wide gaps for the edges and their labels. The canvas may run past the
-// panel: it is dragged sideways with the mouse, not scrolled.
-const GRID = 'relative grid w-max grid-cols-[repeat(5,210px)] gap-x-24 px-4';
+// Solo se reservan columnas para los hops con contenido.
+const GRID = 'relative grid w-max gap-x-24 px-4';
 
 const COLUMNS = [
-	{ hop: '0', title: 'The red flag' },
-	{ hop: '1', title: 'Attached to it' },
-	{ hop: '2', title: 'Its clause and links' },
-	{ hop: '3', title: 'Their conditions' },
-	{ hop: '≈', title: 'What it means (inferred)' },
-];
+	{ col: 0, title: 'Hop 0' },
+	{ col: 1, title: 'Hop 1' },
+	{ col: 2, title: 'Hop 2' },
+	{ col: 3, title: 'Hop 3' },
+] as const;
 
 function conditionNode(id: string, hop: HopCondition, col: 1 | 3, ctx: PathCtx): PathNode {
 	const party = hop.partyId ? ctx.kg.parties.find((p) => p.id === hop.partyId) : null;
@@ -120,8 +113,7 @@ function statementNode(
 	};
 }
 
-/** The nodes and edges of a path, laid out by hop: every edge is one the hop is allowed to
- *  follow, and what is inferred is joined to what it compares. */
+/** Nodos y relaciones permitidos por hop; las inferencias quedan aparte, sin conexiones. */
 function layout(path: FlagHopPath, ctx: PathCtx, onOpen: (id: string) => void) {
 	const nodes: PathNode[] = [];
 	const edges: PathEdge[] = [];
@@ -154,16 +146,18 @@ function layout(path: FlagHopPath, ctx: PathCtx, onOpen: (id: string) => void) {
 		edges.push({
 			left: rootId,
 			right: partyNode(path.root.ownerId),
+			direction: 'right',
 			color: ctx.colorOf(path.root.ownerId),
-			label: s.kind === 'right' ? 'grants_right_to →' : 'assigns_obligation_to →',
+			label: s.kind === 'right' ? 'grants right' : 'assigns obligation',
 			style: 'graph',
 		});
 	if (path.root.otherId && path.root.otherId !== path.root.ownerId)
 		edges.push({
 			left: rootId,
 			right: partyNode(path.root.otherId),
+			direction: 'right',
 			color: ctx.colorOf(path.root.otherId),
-			label: s.kind === 'right' ? 'burdenPartyId →' : 'benefitPartyId →',
+			label: s.kind === 'right' ? 'burdens' : 'benefits',
 			style: 'graph',
 			width: 1,
 		});
@@ -173,8 +167,9 @@ function layout(path: FlagHopPath, ctx: PathCtx, onOpen: (id: string) => void) {
 		edges.push({
 			left: rootId,
 			right: c.condition.id,
+			direction: 'left',
 			color: KIND_COLORS.condition,
-			label: '← gates',
+			label: 'gates',
 			style: 'graph',
 			width: 1.2,
 		});
@@ -193,8 +188,9 @@ function layout(path: FlagHopPath, ctx: PathCtx, onOpen: (id: string) => void) {
 		edges.push({
 			left: rootId,
 			right: clauseNodeId,
+			direction: 'right',
 			color: NODE_COLORS.clause,
-			label: 'is_part_of →',
+			label: 'part of',
 			style: 'graph',
 			width: 1.2,
 		});
@@ -213,8 +209,9 @@ function layout(path: FlagHopPath, ctx: PathCtx, onOpen: (id: string) => void) {
 		edges.push({
 			left: rootId,
 			right: id,
+			direction: 'right',
 			color: LINK_STYLE[link.type].color,
-			label: `${link.type} →`,
+			label: LINK_STYLE[link.type].verb,
 			style: 'graph',
 			width: 2.5,
 		});
@@ -231,8 +228,9 @@ function layout(path: FlagHopPath, ctx: PathCtx, onOpen: (id: string) => void) {
 		edges.push({
 			left: rootId,
 			right: r.id,
+			direction: 'left',
 			color: NODE_COLORS.reference,
-			label: '← cited by',
+			label: 'cited by',
 			style: 'graph',
 			width: 1,
 		});
@@ -250,25 +248,13 @@ function layout(path: FlagHopPath, ctx: PathCtx, onOpen: (id: string) => void) {
 		edges.push({
 			left: rootId,
 			right: t.id,
+			direction: 'right',
 			color: NODE_COLORS.definedTerm,
-			label: 'uses →',
+			label: 'uses',
 			style: 'graph',
 			width: 1,
 		});
 	}
-	const missing = missingLines(path, ctx).filter((m) => !m.startsWith('No edge joins'));
-	if (missing.length > 0) {
-		node({
-			id: 'missing:root',
-			col: 1,
-			style: 'ghost',
-			color: '',
-			label: 'Not in the graph',
-			text: missing.join(' · '),
-		});
-		edges.push({ left: rootId, right: 'missing:root', color: '', style: 'ghost' });
-	}
-
 	// Hop 2: the rest of the clause, its values, and the clauses linked to it.
 	if (clauseNodeId) {
 		for (const x of path.siblings) {
@@ -276,8 +262,9 @@ function layout(path: FlagHopPath, ctx: PathCtx, onOpen: (id: string) => void) {
 			edges.push({
 				left: clauseNodeId,
 				right: x.statement.id,
+				direction: 'left',
 				color: NODE_COLORS.clause,
-				label: '← is_part_of',
+				label: 'part of',
 				style: 'graph',
 				width: 1,
 			});
@@ -294,8 +281,9 @@ function layout(path: FlagHopPath, ctx: PathCtx, onOpen: (id: string) => void) {
 			edges.push({
 				left: clauseNodeId,
 				right: v.id,
+				direction: 'left',
 				color: KIND_COLORS.value,
-				label: '← quantifies',
+				label: 'quantifies',
 				style: 'graph',
 				width: 1.2,
 			});
@@ -319,24 +307,14 @@ function layout(path: FlagHopPath, ctx: PathCtx, onOpen: (id: string) => void) {
 			edges.push({
 				left: clauseNodeId,
 				right: id,
+				direction: into ? 'left' : 'right',
 				color,
 				label: into
-					? `← ${clauseLabel(ctx.kg, link.fromClauseId)} ${LINK_STYLE[link.type].verb}`
-					: `${LINK_STYLE[link.type].verb} ${clauseLabel(ctx.kg, link.toClauseId)} →`,
+					? `${clauseLabel(ctx.kg, link.fromClauseId)} ${LINK_STYLE[link.type].verb}`
+					: `${LINK_STYLE[link.type].verb} ${clauseLabel(ctx.kg, link.toClauseId)}`,
 				style: 'graph',
 				width: 2,
 			});
-		}
-		if (path.missing.links) {
-			node({
-				id: 'missing:links',
-				col: 2,
-				style: 'ghost',
-				color: '',
-				label: 'Not in the graph',
-				text: `Nothing modifies ${clauseLabel(ctx.kg, path.clauseId)}; it depends on or refers to no other clause`,
-			});
-			edges.push({ left: clauseNodeId, right: 'missing:links', color: '', style: 'ghost' });
 		}
 	}
 
@@ -353,50 +331,16 @@ function layout(path: FlagHopPath, ctx: PathCtx, onOpen: (id: string) => void) {
 			edges.push({
 				left: x.statement.id,
 				right: c.condition.id,
+				direction: 'left',
 				color: KIND_COLORS.condition,
-				label: '← gates',
+				label: 'gates',
 				style: 'graph',
 				width: 1,
 			});
 		}
 	}
 
-	// Inferred: each finding joined to what it compares.
-	path.inferred.forEach((item, i) => {
-		const id = `inferred:${i}`;
-		node({
-			id,
-			col: 4,
-			style: 'inferred',
-			color: INFERRED_COLOR,
-			label: '≈ Inferred',
-			text: <InferredLine item={item} path={path} ctx={ctx} />,
-		});
-		for (const from of comparedBy(item, path))
-			if (has.has(from))
-				edges.push({ left: from, right: id, color: INFERRED_COLOR, style: 'inferred' });
-	});
 	return { nodes, edges };
-}
-
-/** The nodes an inferred finding reads. */
-function comparedBy(item: Inferred, path: FlagHopPath): string[] {
-	const clause = path.clauseId ? `clause:${path.clauseId}` : null;
-	switch (item.kind) {
-		case 'conduct':
-			return path.root.conditions
-				.filter((c) => c.partyId === item.partyId)
-				.map((c) => c.condition.id);
-		case 'counterpart':
-			return [path.root.statement.id, ...(clause ? [clause] : [])];
-		case 'safeguard':
-			return item.candidates.map((c) => c.statement.id);
-		case 'no-safeguard':
-			return [...(clause ? [clause] : []), 'missing:links'];
-		case 'amounts':
-		case 'timing':
-			return [path.root.statement.id, item.withId];
-	}
 }
 
 interface Placed {
@@ -406,9 +350,8 @@ interface Placed {
 }
 
 /**
- * Version 2: a red flag's path in the Knowledge Graph tab, in columns by hop. Each edge is
- * named and points the way the graph has it; what is missing is a grey ghost, and what is
- * inferred sits apart, joined by dotted lines to the nodes it compares.
+ * Camino de una red flag por hops. Solo se conectan relaciones del grafo;
+ * las inferencias no se muestran en esta vista.
  */
 export function FlagPathGraph({
 	path,
@@ -419,8 +362,12 @@ export function FlagPathGraph({
 	ctx: PathCtx;
 	onOpen: (statementId: string) => void;
 }) {
+	const arrowMarkerId = useId();
 	const { nodes, edges } = useMemo(() => layout(path, ctx, onOpen), [path, ctx, onOpen]);
+	const columns = COLUMNS.filter((c) => nodes.some((n) => n.col === c.col));
+	const gridStyle = { gridTemplateColumns: `repeat(${columns.length}, 210px)` };
 	const boxRef = useRef<HTMLDivElement>(null);
+	const columnsRef = useRef<HTMLDivElement>(null);
 	// Dragging the canvas moves it; a drag that ends on a node does not open it.
 	const drag = useRef<{ x: number; y: number; left: number; top: number; moved: boolean } | null>(
 		null
@@ -470,7 +417,8 @@ export function FlagPathGraph({
 
 	useLayoutEffect(() => {
 		const box = boxRef.current;
-		if (!box) return;
+		const content = columnsRef.current;
+		if (!box || !content) return;
 		const measure = () => {
 			const origin = box.getBoundingClientRect();
 			const rect = (id: string) => {
@@ -501,7 +449,11 @@ export function FlagPathGraph({
 					u * u * u * a.mid + 3 * u * u * t * a.mid + 3 * u * t * t * b.mid + t * t * t * b.mid;
 				out.push({ ...e, d, lx, ly });
 			}
-			setPlaced({ edges: out, width: box.scrollWidth, height: box.scrollHeight });
+			setPlaced({
+				edges: out,
+				width: Math.max(box.clientWidth, content.offsetWidth),
+				height: Math.max(box.clientHeight, content.offsetTop + content.offsetHeight),
+			});
 		};
 		measure();
 		const observer = new ResizeObserver(measure);
@@ -519,8 +471,6 @@ export function FlagPathGraph({
 					from {KIND_LABEL[path.root.statement.kind].toLowerCase()} «{path.root.statement.action}» ·{' '}
 					{clauseLabel(ctx.kg, path.clauseId)}
 				</span>
-				<span className="ml-auto text-[10px] text-muted-foreground">Drag to move ✥</span>
-				<PathKey />
 			</div>
 			{/* No sideways scrollbar: what runs past the panel is reached by dragging. */}
 			<div
@@ -536,43 +486,24 @@ export function FlagPathGraph({
 				)}
 			>
 				{/* Headers in a row of their own, so each column's nodes centre on the same line. */}
-				<div className={cn(GRID, 'pt-3 pb-2')}>
-					{COLUMNS.map((c, i) => (
+				<div className={cn(GRID, 'pt-3 pb-2')} style={gridStyle}>
+					{columns.map((c) => (
 						<p
-							key={c.hop}
-							className={cn(
-								'text-[10px] font-bold tracking-wide uppercase',
-								i === 4 && 'border-l border-border/60 pl-4'
-							)}
-							style={{ color: i === 4 ? INFERRED_COLOR : undefined }}
+							key={c.col}
+							className="text-[10px] font-bold tracking-wide text-muted-foreground uppercase"
 						>
-							<span className={cn('mr-1.5', i === 4 ? '' : 'text-muted-foreground/50')}>
-								{c.hop}
-							</span>
-							<span className={i === 4 ? '' : 'text-muted-foreground'}>{c.title}</span>
+							{c.title}
 						</p>
 					))}
 				</div>
-				<div className={cn(GRID, 'items-center pb-4')}>
-					{COLUMNS.map((c, i) => (
-						<div
-							key={c.hop}
-							className={cn(
-								'space-y-2.5 self-stretch',
-								'flex flex-col justify-center',
-								i === 4 && 'border-l border-border/60 pl-4'
-							)}
-						>
+				<div ref={columnsRef} className={cn(GRID, 'items-center pb-4')} style={gridStyle}>
+					{columns.map((c) => (
+						<div key={c.col} className="flex flex-col justify-center space-y-2.5 self-stretch">
 							{nodes
-								.filter((n) => n.col === i)
+								.filter((n) => n.col === c.col)
 								.map((n) => (
 									<NodeBox key={n.id} node={n} />
 								))}
-							{i === 3 && !nodes.some((n) => n.col === 3) && (
-								<p className="text-[11px] text-muted-foreground/70 italic">
-									No conditions on the statements of hop 2.
-								</p>
-							)}
 						</div>
 					))}
 				</div>
@@ -583,17 +514,30 @@ export function FlagPathGraph({
 						height={placed.height}
 						aria-hidden
 					>
+						<defs>
+							<marker
+								id={arrowMarkerId}
+								viewBox="0 0 10 10"
+								refX="9"
+								refY="5"
+								markerWidth="8"
+								markerHeight="8"
+								markerUnits="userSpaceOnUse"
+								orient="auto-start-reverse"
+							>
+								<path d="M 0 0 L 10 5 L 0 10 Z" fill="context-stroke" />
+							</marker>
+						</defs>
 						{placed.edges.map((e, i) => (
 							<path
 								key={i}
 								d={e.d}
 								fill="none"
-								stroke={e.style === 'ghost' ? 'var(--muted-foreground)' : e.color}
-								strokeOpacity={e.style === 'ghost' ? 0.5 : e.style === 'inferred' ? 0.7 : 0.85}
-								strokeWidth={e.width ?? (e.style === 'graph' ? 1.5 : 1)}
-								strokeDasharray={
-									e.style === 'ghost' ? '3 3' : e.style === 'inferred' ? '2 3' : undefined
-								}
+								stroke={e.color}
+								strokeOpacity={0.85}
+								strokeWidth={e.width ?? 1.5}
+								markerStart={e.direction === 'left' ? `url(#${arrowMarkerId})` : undefined}
+								markerEnd={e.direction === 'right' ? `url(#${arrowMarkerId})` : undefined}
 							/>
 						))}
 					</svg>
@@ -615,8 +559,6 @@ export function FlagPathGraph({
 }
 
 function NodeBox({ node }: { node: PathNode }) {
-	const ghost = node.style === 'ghost';
-	const inferred = node.style === 'inferred';
 	const Tag = node.onOpen ? 'button' : 'div';
 	return (
 		<Tag
@@ -625,36 +567,24 @@ function NodeBox({ node }: { node: PathNode }) {
 			data-path-node={node.id}
 			title={node.onOpen ? 'Show it in the contract' : undefined}
 			className={cn(
-				'relative z-10 block w-full rounded-md border px-2.5 py-1.5 text-left',
-				ghost || inferred ? 'border-dashed bg-background' : 'bg-card',
+				'relative z-10 block w-full rounded-md border bg-card px-2.5 py-1.5 text-left',
 				node.onOpen && 'cursor-pointer hover:bg-muted/50'
 			)}
 			style={{
-				borderColor: ghost ? 'var(--muted-foreground)' : node.color,
-				borderWidth: ghost || inferred ? 1 : 1.5,
-				opacity: ghost ? 0.8 : 1,
+				borderColor: node.color,
+				borderWidth: 1.5,
 			}}
 		>
 			<span className="flex flex-wrap items-center gap-1.5">
 				<span
 					className="text-[9px] font-bold tracking-wide uppercase"
-					style={{ color: ghost ? 'var(--muted-foreground)' : textColorOf(node.color) }}
+					style={{ color: textColorOf(node.color) }}
 				>
 					{node.label}
 				</span>
 				{node.flagged && <FlagTag />}
 			</span>
-			<span
-				className={cn(
-					'mt-0.5 block text-xs leading-snug',
-					ghost
-						? 'text-muted-foreground italic'
-						: inferred
-							? 'text-slate-700 italic dark:text-slate-300'
-							: 'font-medium text-foreground'
-				)}
-			>
-				{ghost && <span className="mr-1 not-italic">∅</span>}
+			<span className="mt-0.5 block text-xs leading-snug font-medium text-foreground">
 				{node.text}
 			</span>
 			{node.sub && (

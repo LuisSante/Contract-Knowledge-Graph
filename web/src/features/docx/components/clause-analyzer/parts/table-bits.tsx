@@ -21,7 +21,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import type { KgCondition } from '@/types/knowledge';
 import { cn } from '@/lib/utils';
-import { useClauseAnalyzerStore, type PathVersion } from '@/stores/clause-analyzer';
+import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
 import {
 	KIND_COLORS,
 	KIND_TEXT_COLORS,
@@ -285,56 +285,6 @@ export function ConditionModePicker({
 					{option.label}
 				</button>
 			))}
-		</div>
-	);
-}
-
-const PATH_VERSIONS: Array<{ version: PathVersion; label: string; hint: string }> = [
-	{ version: 1, label: 'Version 1', hint: 'A red flag’s path opens under its line in Details' },
-	{ version: 2, label: 'Version 2', hint: 'A red flag’s path is drawn in the Knowledge Graph tab' },
-];
-
-const VERSION_ORDER = PATH_VERSIONS.map((option) => option.version);
-
-/** Where a red flag's path is read, picked from its outlined square: the two versions under
- *  study, the rest of the analyzer the same in both. */
-export function PathVersionPicker({
-	version,
-	onPick,
-}: {
-	version: PathVersion;
-	onPick: (version: PathVersion) => void;
-}) {
-	return (
-		<div
-			role="radiogroup"
-			aria-label="Where a red flag’s path is shown"
-			className="inline-flex items-center gap-2"
-			onKeyDown={(event) => roveOptions(event, VERSION_ORDER, version, onPick)}
-		>
-			<span className="text-2xs text-muted-foreground">Red-flag path</span>
-			<span className="inline-flex rounded-md border border-border bg-secondary p-0.5">
-				{PATH_VERSIONS.map((option) => (
-					<button
-						key={option.version}
-						type="button"
-						role="radio"
-						data-option={option.version}
-						aria-checked={version === option.version}
-						tabIndex={version === option.version ? 0 : -1}
-						onClick={() => onPick(option.version)}
-						title={option.hint}
-						className={cn(
-							'rounded px-2 py-0.5 text-2xs font-medium whitespace-nowrap',
-							version === option.version
-								? 'bg-card text-foreground shadow-sm'
-								: 'text-muted-foreground hover:text-foreground'
-						)}
-					>
-						{option.label}
-					</button>
-				))}
-			</span>
 		</div>
 	);
 }
@@ -803,7 +753,6 @@ export function Fragment({
 	timing,
 	onOpen,
 	flagged = false,
-	path,
 	onPickFlag,
 }: {
 	served: Served;
@@ -822,16 +771,13 @@ export function Fragment({
 	onOpen: (nodeId: string) => void;
 	/** A red flag of the dataset matched it: its square in the line gets the black outline. */
 	flagged?: boolean;
-	/** Why it is a red flag, under its words: present while it is the picked flag. */
-	path?: ReactNode;
 	/** Shows its red-flag path. */
 	onPickFlag?: () => void;
 }) {
 	const shown = useClauseAnalyzerStore(
 		(s) => s.focusNodeIds.length === 1 && s.focusNodeIds[0] === served.mark.id
 	);
-	// The picked flag's line opens with its path; it is remounted when picked.
-	const [open, setOpen] = useState(Boolean(path));
+	const [open, setOpen] = useState(false);
 	const [evidenceOpen, setEvidenceOpen] = useState(false);
 	const bodyId = useId();
 	const evidenceId = useId();
@@ -966,7 +912,6 @@ export function Fragment({
 							{served.text}
 						</blockquote>
 					)}
-					{path}
 				</div>
 			)}
 		</article>

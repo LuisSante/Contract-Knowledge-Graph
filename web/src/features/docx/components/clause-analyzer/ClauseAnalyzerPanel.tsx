@@ -41,12 +41,11 @@ import {
 	FirmKey,
 	KIND_LABEL,
 	KindTabs,
-	PathVersionPicker,
 	YouArePicker,
 	type ConditionMode,
 } from '@/features/docx/components/clause-analyzer/parts/table-bits';
-import { KIND_COLORS, NEUTRAL_COLOR } from '@/features/docx/components/clause-analyzer/constants';
-import { pairShort, SIDE_COLOR } from '@/features/docx/components/clause-analyzer/parts/bits';
+import { KIND_COLORS } from '@/features/docx/components/clause-analyzer/constants';
+import { pairShort } from '@/features/docx/components/clause-analyzer/parts/bits';
 import { withoutServed } from '@/features/docx/utils/knowledge/clause-favour';
 import { statementTiming } from '@/features/docx/utils/knowledge/statement-timing';
 import {
@@ -56,8 +55,6 @@ import {
 import { useRedFlags } from '@/features/docx/hooks/useRedFlags';
 import { flagHopPath } from '@/features/docx/utils/knowledge/red-flag-hops';
 import { flagPathTarget } from '@/features/docx/utils/knowledge/red-flag-document';
-import { PathLadder } from '@/features/docx/components/clause-analyzer/flag-path/PathLadder';
-import type { PathCtx } from '@/features/docx/components/clause-analyzer/flag-path/path-bits';
 import type { FlagLines } from '@/features/docx/components/clause-analyzer/parts/party-statements';
 import { deonticNodes, type DeonticKind, type KgCondition } from '@/types/knowledge';
 import type { DocumentTarget } from '@/features/docx/utils/knowledge/graph-payload';
@@ -143,11 +140,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 	// The dataset's red flags and the statements they matched: those squares get the black
 	// outline, and picking one shows why it is a red flag.
 	const redFlags = useRedFlags(docId, status === 'ready' ? kg : null);
-	const pathVersion = useClauseAnalyzerStore((s) => s.pathVersion);
-	const setPathVersion = useClauseAnalyzerStore((s) => s.setPathVersion);
-	const pickedFlag = useClauseAnalyzerStore((s) => s.pickedFlag);
 	const pickFlag = useClauseAnalyzerStore((s) => s.pickFlag);
-	const picked = pickedFlag?.docId === docId ? pickedFlag : null;
 	const conditionalIds = useMemo(
 		() =>
 			viewKg
@@ -301,26 +294,8 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		[viewKg, pairA, pairB]
 	);
 
-	// A party in the red flags' paths as its column paints it; grey until the pair is picked.
-	const partyColorOf = useCallback(
-		(id: string) => (id === pairA ? SIDE_COLOR.a : id === pairB ? SIDE_COLOR.b : NEUTRAL_COLOR),
-		[pairA, pairB]
-	);
-
-	const pathCtx = useMemo(
-		(): PathCtx | null => (viewKg ? { kg: viewKg, colorOf: partyColorOf } : null),
-		[viewKg, partyColorOf]
-	);
-	const pickedPath = useMemo(
-		() =>
-			viewKg && picked
-				? flagHopPath(viewKg, picked.statementId, redFlags.flags, redFlags.matches)
-				: null,
-		[viewKg, picked, redFlags]
-	);
-
 	// A flagged square, or the «red flag» tag on its line: its clause is picked and painted with
-	// the path, then version 1 opens the row's detail and version 2 the graph tab.
+	// the path, and the graph tab opens on it.
 	const showFlag = useCallback(
 		(statementId: string) => {
 			if (!viewKg) return;
@@ -330,9 +305,9 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 			setSpotlight({ docId, ids: new Set([statementId]) });
 			if (path.clauseId) selectClause(docId, path.clauseId);
 			setFlagTarget(flagPathTarget(viewKg, path, nodesById));
-			if (pathVersion === 2) onOpenGraph?.();
+			onOpenGraph?.();
 		},
-		[viewKg, redFlags, pickFlag, docId, selectClause, nodesById, pathVersion, onOpenGraph]
+		[viewKg, redFlags, pickFlag, docId, selectClause, nodesById, onOpenGraph]
 	);
 	// A row of the RED FLAGS table: the tab and row of the statement it matched, its square
 	// ringed, and the flag painted in the contract.
@@ -364,30 +339,15 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		},
 		[redFlags, showFlag, openInDocument]
 	);
-	const detailRequest = useMemo(
-		() =>
-			pathVersion === 1 && picked && pickedPath?.clauseId
-				? { clauseId: pickedPath.clauseId, seq: picked.seq }
-				: null,
-		[pathVersion, picked, pickedPath]
-	);
 	const flagLines = useMemo(
 		(): FlagLines | undefined =>
 			redFlags.statementIds.size > 0
 				? {
 						flaggedIds: redFlags.statementIds,
-						picked: pathVersion === 1 && picked ? picked : null,
-						renderPath: (statementId) =>
-							pathVersion === 1 &&
-							pickedPath &&
-							pathCtx &&
-							pickedPath.root.statement.id === statementId ? (
-								<PathLadder path={pickedPath} ctx={pathCtx} />
-							) : null,
 						onPick: showFlag,
 					}
 				: undefined,
-		[redFlags, pathVersion, picked, pickedPath, pathCtx, showFlag]
+		[redFlags, showFlag]
 	);
 
 	const { me, pickMe, againstIds, onlyAgainst, setOnlyAgainst, filtering, tableRows } =
@@ -488,11 +448,6 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 				<div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-border/60 px-6 py-2">
 					<YouArePicker names={names} me={me} onPick={pickMe} />
 					<AgainstFilter on={onlyAgainst} onChange={setOnlyAgainst} disabled={me === null} />
-					{redFlags.statementIds.size > 0 && (
-						<div className="ml-auto">
-							<PathVersionPicker version={pathVersion} onPick={setPathVersion} />
-						</div>
-					)}
 				</div>
 			)}
 
@@ -595,7 +550,6 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 								onSelectClause={pickClause}
 								onOpenGraph={openClauseInGraph}
 								renderDetail={renderDetail}
-								detailRequest={detailRequest}
 								onGoToModifier={goToModifier}
 								onOpenMark={openMark}
 								onFocusMark={focusNode}

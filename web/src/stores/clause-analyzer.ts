@@ -17,8 +17,6 @@ export function mergeGroupId(members: Iterable<string>): string {
 
 export const DEFAULT_TOP_K = 10;
 
-export type PathVersion = 1 | 2;
-
 export interface GraphPayload {
 	anchorParagraphId: string | null;
 	/** The picked clause's number («§6»), shown where the margin line leaves it. */
@@ -69,9 +67,6 @@ interface ClauseAnalyzerState extends GraphPayload {
 	selectedClause: { docId: string; clauseId: string } | null;
 	/** «You are»: the reader's party, per document. */
 	me: { docId: string; partyId: string } | null;
-	/** Where a red flag's path is read: version 1 in the row's detail, version 2 in the
-	 *  Knowledge Graph tab. Everything else is the same in both. */
-	pathVersion: PathVersion;
 	/** The flagged statement whose path is shown, picked from its outlined square. */
 	pickedFlag: { docId: string; statementId: string; seq: number } | null;
 
@@ -88,7 +83,6 @@ interface ClauseAnalyzerState extends GraphPayload {
 	focusPair: (anchorId: string, secondId: string) => void;
 	selectClause: (docId: string, clauseId: string | null) => void;
 	setMe: (docId: string, partyId: string | null) => void;
-	setPathVersion: (version: PathVersion) => void;
 	pickFlag: (docId: string, statementId: string | null) => void;
 }
 
@@ -104,7 +98,6 @@ export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
 	documentTargetSeq: 0,
 	selectedClause: null,
 	me: null,
-	pathVersion: 1,
 	pickedFlag: null,
 	...EMPTY_PAYLOAD,
 
@@ -173,8 +166,7 @@ export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
 	focusPair: (focusNodeId, secondPartyId) => set({ focusNodeId, secondPartyId, hops: 1 }),
 	selectClause: (docId, clauseId) => set({ selectedClause: clauseId ? { docId, clauseId } : null }),
 	setMe: (docId, partyId) => set({ me: partyId ? { docId, partyId } : null }),
-	setPathVersion: (pathVersion) => set({ pathVersion }),
-	// The count lets the same flag be picked again and still open its row.
+	// The count lets the same flag be picked again and still open its path in the graph tab.
 	pickFlag: (docId, statementId) =>
 		set((state) => ({
 			pickedFlag: statementId

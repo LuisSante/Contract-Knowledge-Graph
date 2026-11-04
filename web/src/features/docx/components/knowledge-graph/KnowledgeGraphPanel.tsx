@@ -51,11 +51,10 @@ export function KnowledgeGraphPanel({ docId }: { docId: string }) {
 	const { kg, viewKg, status, retry } = useKnowledgeGraphData(docId);
 	const { aId, bId } = useComparedPair(viewKg);
 
-	// Version 2 of the red-flag paths: a flag picked in the Clause Analyzer is drawn here.
+	// The red-flag paths: a flag picked in the Clause Analyzer is drawn here.
 	const redFlags = useRedFlags(docId, status === 'ready' ? kg : null);
-	const pathVersion = useClauseAnalyzerStore((s) => s.pathVersion);
 	const pickedFlag = useClauseAnalyzerStore((s) => s.pickedFlag);
-	const picked = pathVersion === 2 && pickedFlag?.docId === docId ? pickedFlag : null;
+	const picked = pickedFlag?.docId === docId ? pickedFlag : null;
 	const partyColor = useCallback(
 		(id: string) => (id === aId ? PARTY_COLOR : id === bId ? PAIR_SECOND_COLOR : NEUTRAL_COLOR),
 		[aId, bId]

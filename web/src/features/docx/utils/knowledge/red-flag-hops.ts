@@ -105,6 +105,8 @@ export interface FlagHopPath {
 	terms: KgDefinedTerm[];
 	/** Hop 2 (their conditions and values are hop 3). */
 	siblings: HopStatement[];
+	/** Other statements the same flags matched: they share the annotation, not an edge. */
+	sameFlag: string[];
 	/** Edges from another clause into this one: «§7 modifies §3», «§6 depends on §4». */
 	incoming: HopLink[];
 	/** Edges from the clause's other statements to another clause. */
@@ -226,16 +228,23 @@ export function flagHopPath(
 	const siblings = siblingNodes.map(around);
 	const rootHop = around(root);
 	const clauseValues = clauseId ? kg.values.filter((v) => v.quantifiesId === clauseId) : [];
+	const leading = flagsOfStatement(kg, flags, matches, root.id);
+	const sameFlag = [
+		...new Set(
+			flags.flatMap((f, i) => (leading.includes(f) ? (matches[i]?.statementIds ?? []) : []))
+		),
+	].filter((id) => id !== root.id);
 
 	return {
 		root: rootHop,
-		flags: flagsOfStatement(kg, flags, matches, root.id),
+		flags: leading,
 		clauseId,
 		clauseValues,
 		outgoing,
 		cites: kg.references.filter((r) => r.citedById === root.id),
 		terms: kg.definedTerms.filter((t) => usedTerms.has(t.id)),
 		siblings,
+		sameFlag,
 		incoming,
 		clauseOutgoing,
 		missing: {

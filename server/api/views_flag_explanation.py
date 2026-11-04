@@ -46,6 +46,11 @@ class FlagExplanationView(APIView):
         try:
             return Response(generate_explanation(context))
         except ValueError:
-            return Response({"detail": "The response could not be linked to the path evidence. An explanation with invalid references will not be shown."}, status=502)
+            return Response(
+                {"detail": "The response could not be linked to the path evidence. An explanation with invalid references will not be shown."},
+                status=502,
+            )
         except RuntimeError:
-            return Response({"detail": "Could not get the model explanation. You can try again; this request will not be retried automatically."}, status=502)
+            return Response(
+                {"detail": "Could not get the model explanation. You can try again; this request will not be retried automatically."}, status=502
+            )

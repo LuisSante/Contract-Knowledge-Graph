@@ -15,9 +15,15 @@ ESTIMATED_OUTPUT_TOKENS = 2400  # Incluye una provisión para razonamiento; no e
 MAX_OUTPUT_TOKENS = 4000
 ALLOWED_EDGES = {"is_part_of", "assigns_obligation_to", "grants_right_to", "modifies", "depends_on", "references", "defines", "uses"}
 COLLECTIONS = {
-    "parties": "party", "clauses": "clause", "obligations": "obligation", "rights": "right",
-    "prohibitions": "prohibition", "conditions": "condition", "values": "value",
-    "references": "reference", "definedTerms": "definedTerm",
+    "parties": "party",
+    "clauses": "clause",
+    "obligations": "obligation",
+    "rights": "right",
+    "prohibitions": "prohibition",
+    "conditions": "condition",
+    "values": "value",
+    "references": "reference",
+    "definedTerms": "definedTerm",
 }
 
 
@@ -103,11 +109,7 @@ Escribe la respuesta en inglés sencillo. Devuelve únicamente el objeto JSON de
 
 def build_context(kg: dict, root_id: str, node_ids: list[str], flags: list[dict]) -> dict:
     """Relee los datos del servidor: el cliente solo selecciona los IDs del camino."""
-    all_nodes = {
-        node["id"]: {**node, "kind": kind}
-        for collection, kind in COLLECTIONS.items()
-        for node in kg.get(collection, [])
-    }
+    all_nodes = {node["id"]: {**node, "kind": kind} for collection, kind in COLLECTIONS.items() for node in kg.get(collection, [])}
     ids = set(node_ids)
     root = all_nodes.get(root_id)
     if not root or root["kind"] not in {"obligation", "right", "prohibition"} or root_id not in ids:
@@ -121,8 +123,15 @@ def build_context(kg: dict, root_id: str, node_ids: list[str], flags: list[dict]
         node = all_nodes[node_id]
         return node.get("action") or node.get("heading") or node.get("name") or node.get("term") or node.get("trigger") or node_id
 
-    field_labels = {"burdenPartyId": "burdens", "benefitPartyId": "benefits", "gatesId": "gates",
-                    "quantifiesId": "quantifies", "citedById": "cited by", "clauseId": "part of", "definedInClauseId": "defined in"}
+    field_labels = {
+        "burdenPartyId": "burdens",
+        "benefitPartyId": "benefits",
+        "gatesId": "gates",
+        "quantifiesId": "quantifies",
+        "citedById": "cited by",
+        "clauseId": "part of",
+        "definedInClauseId": "defined in",
+    }
 
     nodes = [all_nodes[i] for i in node_ids if i in ids]
     evidence = []
@@ -141,8 +150,15 @@ def build_context(kg: dict, root_id: str, node_ids: list[str], flags: list[dict]
             continue  # No se incorpora el árbol entre cláusulas.
         edge_id = f"edge:{i}"
         edges.append({"id": edge_id, **edge})
-        evidence.append({"id": edge_id, "nodeIds": [edge["source"], edge["target"]],
-                         "label": f"{node_label(edge['source'])} → {edge['type']} → {node_label(edge['target'])}", "quote": edge.get("evidence", ""), "kind": "edge"})
+        evidence.append(
+            {
+                "id": edge_id,
+                "nodeIds": [edge["source"], edge["target"]],
+                "label": f"{node_label(edge['source'])} → {edge['type']} → {node_label(edge['target'])}",
+                "quote": edge.get("evidence", ""),
+                "kind": "edge",
+            }
+        )
     # Estos enlaces son campos de la ontología, no aristas inventadas por la explicación.
     fields = []
     for node in nodes:
@@ -151,7 +167,15 @@ def build_context(kg: dict, root_id: str, node_ids: list[str], flags: list[dict]
             if target in ids:
                 fact_id = f"field:{node['id']}:{key}"
                 fields.append({"id": fact_id, "source": node["id"], "field": key, "target": target})
-                evidence.append({"id": fact_id, "nodeIds": [node["id"], target], "label": f"{node_label(node['id'])} · {field_labels[key]} · {node_label(target)}", "quote": "", "kind": "field"})
+                evidence.append(
+                    {
+                        "id": fact_id,
+                        "nodeIds": [node["id"], target],
+                        "label": f"{node_label(node['id'])} · {field_labels[key]} · {node_label(target)}",
+                        "quote": "",
+                        "kind": "field",
+                    }
+                )
 
     return {"rootId": root_id, "annotations": flags, "nodes": nodes, "edges": edges, "fields": fields, "evidence": evidence}
 
@@ -203,7 +227,12 @@ def validate_explanation(raw: str, context: dict) -> FlagExplanation:
 def generate_explanation(context: dict) -> dict:
     system, user = prompts(context)
     provider = LLMProviderFactory.create("openai", model=MODEL, reasoning_effort="low", max_retries=0)
-    raw = provider.generate(system_prompt=system, user_prompt=user, json_schema={"name": "flag_explanation", "schema": FlagExplanation.model_json_schema()}, max_output_tokens=MAX_OUTPUT_TOKENS)
+    raw = provider.generate(
+        system_prompt=system,
+        user_prompt=user,
+        json_schema={"name": "flag_explanation", "schema": FlagExplanation.model_json_schema()},
+        max_output_tokens=MAX_OUTPUT_TOKENS,
+    )
     result = validate_explanation(raw, context)
     # Solo devuelve los enlaces para el resaltado. Las citas se leen del KG en la tarjeta original.
     links = [{"id": e["id"], "nodeIds": e["nodeIds"]} for e in context["evidence"]]

@@ -18,17 +18,42 @@ class FlagExplanationTests(unittest.TestCase):
         self.kg = {
             "parties": [{"id": "a", "name": "Arrendador"}, {"id": "b", "name": "Arrendatario"}],
             "clauses": [{"id": "c", "heading": "Servicios"}, {"id": "parent", "heading": "Contrato"}],
-            "obligations": [{"id": "o", "action": "Pagar servicios", "text": "B paga los servicios.",
-                             "evidenceSpans": ["B paga los servicios."], "burdenPartyId": "b", "benefitPartyId": "a", "clauseId": "c"}],
+            "obligations": [
+                {
+                    "id": "o",
+                    "action": "Pagar servicios",
+                    "text": "B paga los servicios.",
+                    "evidenceSpans": ["B paga los servicios."],
+                    "burdenPartyId": "b",
+                    "benefitPartyId": "a",
+                    "clauseId": "c",
+                }
+            ],
             "conditions": [{"id": "if", "trigger": "Si se consumen", "gatesId": "o"}],
-            "edges": [{"source": "o", "type": "is_part_of", "target": "c"},
-                      {"source": "c", "type": "is_part_of", "target": "parent"},
-                      {"source": "o", "type": "contradicts", "target": "c"}],
+            "edges": [
+                {"source": "o", "type": "is_part_of", "target": "c"},
+                {"source": "c", "type": "is_part_of", "target": "parent"},
+                {"source": "o", "type": "contradicts", "target": "c"},
+            ],
         }
-        self.context = build_context(self.kg, "o", ["o", "c", "a", "b", "if", "parent"], [{"type": "services_charges", "text": "B paga los servicios."}])
-        self.reply = {"status": "partial", "summary": "B asume los gastos.", "exposedPartyIds": ["b"],
-                      "reasons": [{"id": "explanation-1", "concept": "Exposición al pago",
-                                   "kind": "interpretation", "targetId": "b", "relation": "exposes to costs", "evidenceIds": ["o"]}]}
+        self.context = build_context(
+            self.kg, "o", ["o", "c", "a", "b", "if", "parent"], [{"type": "services_charges", "text": "B paga los servicios."}]
+        )
+        self.reply = {
+            "status": "partial",
+            "summary": "B asume los gastos.",
+            "exposedPartyIds": ["b"],
+            "reasons": [
+                {
+                    "id": "explanation-1",
+                    "concept": "Exposición al pago",
+                    "kind": "interpretation",
+                    "targetId": "b",
+                    "relation": "exposes to costs",
+                    "evidenceIds": ["o"],
+                }
+            ],
+        }
 
     def test_context_preserves_direction_and_literal_condition(self):
         self.assertEqual([(e["source"], e["type"], e["target"]) for e in self.context["edges"]], [("o", "is_part_of", "c")])
@@ -55,8 +80,16 @@ class FlagExplanationTests(unittest.TestCase):
             validate_explanation(json.dumps(self.reply), self.context)
 
     def test_gap_is_anchored_without_becoming_a_risk_reason(self):
-        self.reply["reasons"] = [{"id": "explanation-1", "concept": "Importe no registrado",
-                                  "kind": "missing_information", "targetId": "o", "relation": "prevents estimating", "evidenceIds": ["o"]}]
+        self.reply["reasons"] = [
+            {
+                "id": "explanation-1",
+                "concept": "Importe no registrado",
+                "kind": "missing_information",
+                "targetId": "o",
+                "relation": "prevents estimating",
+                "evidenceIds": ["o"],
+            }
+        ]
         with self.assertRaises(ValueError):
             validate_explanation(json.dumps(self.reply), self.context)
         self.reply["status"] = "insufficient"
@@ -65,9 +98,16 @@ class FlagExplanationTests(unittest.TestCase):
         self.assertEqual(result.reasons[0].relation, "prevents estimating")
 
     def test_concept_chain_ends_at_existing_node(self):
-        self.reply["reasons"].append({"id": "explanation-2", "concept": "Tarifas ausentes del camino",
-                                      "kind": "missing_information", "targetId": "explanation-1",
-                                      "relation": "impiden cuantificar", "evidenceIds": ["o"]})
+        self.reply["reasons"].append(
+            {
+                "id": "explanation-2",
+                "concept": "Tarifas ausentes del camino",
+                "kind": "missing_information",
+                "targetId": "explanation-1",
+                "relation": "impiden cuantificar",
+                "evidenceIds": ["o"],
+            }
+        )
         result = validate_explanation(json.dumps(self.reply), self.context)
         self.assertEqual(result.reasons[1].targetId, result.reasons[0].id)
         self.assertEqual(result.reasons[0].targetId, "b")

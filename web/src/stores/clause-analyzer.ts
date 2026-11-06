@@ -67,8 +67,6 @@ interface ClauseAnalyzerState extends GraphPayload {
 	selectedClause: { docId: string; clauseId: string } | null;
 	/** «You are»: the reader's party, per document. */
 	me: { docId: string; partyId: string } | null;
-	/** The flagged statement whose path is shown, picked from its outlined square. */
-	pickedFlag: { docId: string; statementId: string; seq: number } | null;
 
 	focusNode: (nodeId: string) => void;
 	setFocusMeta: (meta: FocusMeta | null) => void;
@@ -83,7 +81,6 @@ interface ClauseAnalyzerState extends GraphPayload {
 	focusPair: (anchorId: string, secondId: string) => void;
 	selectClause: (docId: string, clauseId: string | null) => void;
 	setMe: (docId: string, partyId: string | null) => void;
-	pickFlag: (docId: string, statementId: string | null) => void;
 }
 
 export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
@@ -98,7 +95,6 @@ export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
 	documentTargetSeq: 0,
 	selectedClause: null,
 	me: null,
-	pickedFlag: null,
 	...EMPTY_PAYLOAD,
 
 	focusNode: (focusNodeId) => set({ focusNodeId, hops: 1, secondPartyId: null }),
@@ -166,11 +162,4 @@ export const useClauseAnalyzerStore = create<ClauseAnalyzerState>((set) => ({
 	focusPair: (focusNodeId, secondPartyId) => set({ focusNodeId, secondPartyId, hops: 1 }),
 	selectClause: (docId, clauseId) => set({ selectedClause: clauseId ? { docId, clauseId } : null }),
 	setMe: (docId, partyId) => set({ me: partyId ? { docId, partyId } : null }),
-	// The count lets the same flag be picked again and still open its path in the graph tab.
-	pickFlag: (docId, statementId) =>
-		set((state) => ({
-			pickedFlag: statementId
-				? { docId, statementId, seq: (state.pickedFlag?.seq ?? 0) + 1 }
-				: null,
-		})),
 }));

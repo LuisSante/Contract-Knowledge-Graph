@@ -384,31 +384,24 @@ export function SectionTag({ section }: { section: string }) {
 	);
 }
 
-/** What a `modifies` link means, for the ⓘ beside it. */
 const MODIFIES_NOTE =
 	'One clause changes what another says: it can limit it, add an exception or cancel it. Read them together.';
 
-/** What a `depends_on` link means, for the ⓘ beside it. */
 const DEPENDS_ON_NOTE =
 	'Whether this clause applies is subject to another one: what that one says decides it. Read them together.';
 
-/** What a `references` link means, for the ⓘ beside it. */
 const REFERS_TO_NOTE =
 	'This clause points to another one, without making anything depend on it: what that one says helps to read this one.';
 
-/** What a `uses` link means, for the ⓘ beside it. */
 const USES_NOTE =
 	'This clause uses a word whose meaning is written in another clause, in the linked paragraph.';
 
-/** What a `defines` link means, for the ⓘ beside it. */
 const DEFINES_NOTE =
 	'This clause defines a word that the linked clause uses: its meaning is written here.';
 
-/** What a condition written apart from its statement means, for the ⓘ beside it. */
 const CONDITION_NOTE =
 	'The condition is written in this paragraph, apart from the statement it gates: that statement only applies under it.';
 
-/** The ⓘ that explains a `modifies` link; `about` names the two clauses when known. */
 export function ModifiesInfo({ about, inverse }: { about?: string; inverse?: boolean }) {
 	return (
 		<RelationInfo
@@ -753,7 +746,6 @@ export function Fragment({
 	timing,
 	onOpen,
 	flagged = false,
-	onPickFlag,
 }: {
 	served: Served;
 	section: string | null;
@@ -772,7 +764,6 @@ export function Fragment({
 	/** A red flag of the dataset matched it: its square in the line gets the black outline. */
 	flagged?: boolean;
 	/** Shows its red-flag path. */
-	onPickFlag?: () => void;
 }) {
 	const shown = useClauseAnalyzerStore(
 		(s) => s.focusNodeIds.length === 1 && s.focusNodeIds[0] === served.mark.id
@@ -807,26 +798,8 @@ export function Fragment({
 					<span className="min-w-0 text-sm text-foreground">{served.mark.label}</span>
 					{flagged && (
 						<span
-							role={onPickFlag ? 'button' : undefined}
-							tabIndex={onPickFlag ? 0 : undefined}
-							onClick={
-								onPickFlag &&
-								((event) => {
-									event.stopPropagation();
-									onPickFlag();
-								})
-							}
-							onKeyDown={
-								onPickFlag &&
-								((event) => {
-									if (event.key !== 'Enter' && event.key !== ' ') return;
-									event.preventDefault();
-									event.stopPropagation();
-									onPickFlag();
-								})
-							}
-							className="shrink-0 rounded px-1.5 py-px text-[10px] font-semibold text-blue-700 ring-1 ring-black/70 hover:bg-blue-50 dark:text-blue-300 dark:ring-white/70 dark:hover:bg-blue-950/40"
-							title="A red flag of the lease dataset: show why"
+							className="shrink-0 rounded px-1.5 py-px text-[10px] font-semibold text-blue-700 ring-1 ring-black/70 dark:text-blue-300 dark:ring-white/70"
+							title="A red flag of the lease dataset"
 						>
 							red flag
 						</span>

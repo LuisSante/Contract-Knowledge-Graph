@@ -290,6 +290,23 @@ export function RedFlagsTable({
 	const matches = useMemo(() => (kg ? flags.map((flag) => detect(kg, flag)) : null), [kg, flags]);
 	const detections = matches?.map((m) => m.detection) ?? null;
 	const detectedCount = detections?.filter((d) => d !== null && d !== 'short').length ?? null;
+	// The flags with a square in the table above come first, in the dataset's order; the ones
+	// without (not found, or found only in statements no party carries) go at the end.
+	const order = useMemo(() => {
+		const all = flags.map((_, index) => index);
+		if (!kg || !matches) return { withSquare: all, without: [] };
+		const parties = new Set(kg.parties.map((p) => p.id));
+		const owned = new Set(
+			deonticNodes(kg)
+				.filter((s) => {
+					const owner = s.kind === 'right' ? s.benefitPartyId : s.burdenPartyId;
+					return owner !== null && parties.has(owner);
+				})
+				.map((s) => s.id)
+		);
+		const hasSquare = (index: number) => matches[index].statementIds.some((id) => owned.has(id));
+		return { withSquare: all.filter(hasSquare), without: all.filter((i) => !hasSquare(i)) };
+	}, [flags, kg, matches]);
 
 	// The other flags that lead to the opened flag's statements: their rows are marked.
 	const opening = useMemo(() => {
@@ -391,41 +408,54 @@ export function RedFlagsTable({
 					</tr>
 				</thead>
 				<tbody>
-					{flags.map((flag, index) => (
-						<Fragment key={index}>
-							<tr
-								onClick={() => openInDocument(flag, index)}
-								title="Show in the contract"
-								className={cn(
-									'cursor-pointer border-b border-border/30 align-top last:border-b-0 hover:bg-muted/60',
-									openedIndex === index && 'bg-blue-50 hover:bg-blue-50 dark:bg-blue-950/40',
-									opening?.sharing.has(index) && 'bg-blue-50/50 shadow-[inset_3px_0_0_#2563eb]'
+					{[...order.withSquare, ...order.without].map((index) => {
+						const flag = flags[index];
+						return (
+							<Fragment key={index}>
+								{index === order.without[0] && order.withSquare.length > 0 && (
+									<tr className="border-b border-border/40">
+										<td
+											colSpan={detections ? 5 : 3}
+											className="px-3 pt-3 pb-1 text-2xs font-medium text-muted-foreground"
+										>
+											No square in the table above · {order.without.length}
+										</td>
+									</tr>
 								)}
-							>
-								<td className="truncate px-3 py-1.5 text-foreground/70" title={flag.article}>
-									{flag.article || '—'}
-								</td>
-								<td className="px-3 py-1.5 font-medium text-foreground/85">
-									{flagTypeLabel(flag.type)}
-								</td>
-								{detections && <DetectionCells detection={detections[index]} placeOf={placeOf} />}
-								<td className="px-3 py-1.5 text-foreground/80">
-									{/* The opened flag shows whole, so its marked words are never cut off. */}
-									<span className={cn(openedIndex !== index && 'line-clamp-2')} title={flag.text}>
-										{sharedPieces(flag.text, matches?.[index].matched ?? []).map((piece, i) =>
-											piece.shared ? (
-												<span key={i} className="font-semibold text-blue-700 dark:text-blue-300">
-													{piece.text}
-												</span>
-											) : (
-												piece.text
-											)
-										)}
-									</span>
-								</td>
-							</tr>
-						</Fragment>
-					))}
+								<tr
+									onClick={() => openInDocument(flag, index)}
+									title="Show in the contract"
+									className={cn(
+										'cursor-pointer border-b border-border/30 align-top last:border-b-0 hover:bg-muted/60',
+										openedIndex === index && 'bg-blue-50 hover:bg-blue-50 dark:bg-blue-950/40',
+										opening?.sharing.has(index) && 'bg-blue-50/50 shadow-[inset_3px_0_0_#2563eb]'
+									)}
+								>
+									<td className="truncate px-3 py-1.5 text-foreground/70" title={flag.article}>
+										{flag.article || '—'}
+									</td>
+									<td className="px-3 py-1.5 font-medium text-foreground/85">
+										{flagTypeLabel(flag.type)}
+									</td>
+									{detections && <DetectionCells detection={detections[index]} placeOf={placeOf} />}
+									<td className="px-3 py-1.5 text-foreground/80">
+										{/* The opened flag shows whole, so its marked words are never cut off. */}
+										<span className={cn(openedIndex !== index && 'line-clamp-2')} title={flag.text}>
+											{sharedPieces(flag.text, matches?.[index].matched ?? []).map((piece, i) =>
+												piece.shared ? (
+													<span key={i} className="font-semibold text-blue-700 dark:text-blue-300">
+														{piece.text}
+													</span>
+												) : (
+													piece.text
+												)
+											)}
+										</span>
+									</td>
+								</tr>
+							</Fragment>
+						);
+					})}
 				</tbody>
 			</table>
 		</section>

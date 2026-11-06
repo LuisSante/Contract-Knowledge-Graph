@@ -53,8 +53,6 @@ import {
 	type StatementHints,
 } from '@/features/docx/components/clause-analyzer/parts/party-statements';
 import { useRedFlags } from '@/features/docx/hooks/useRedFlags';
-import { flagHopPath } from '@/features/docx/utils/knowledge/red-flag-hops';
-import { flagPathTarget } from '@/features/docx/utils/knowledge/red-flag-document';
 import type { FlagLines } from '@/features/docx/components/clause-analyzer/parts/party-statements';
 import { deonticNodes, type DeonticKind, type KgCondition } from '@/types/knowledge';
 import type { DocumentTarget } from '@/features/docx/utils/knowledge/graph-payload';
@@ -138,9 +136,8 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 	// reader asks for them: under All the view is the one it always was.
 	const showConditions = conditionMode === 'mark';
 	// The dataset's red flags and the statements they matched: those squares get the black
-	// outline, and picking one shows why it is a red flag.
+	// outline.
 	const redFlags = useRedFlags(docId, status === 'ready' ? kg : null);
-	const pickFlag = useClauseAnalyzerStore((s) => s.pickFlag);
 	const conditionalIds = useMemo(
 		() =>
 			viewKg
@@ -294,21 +291,6 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		[viewKg, pairA, pairB]
 	);
 
-	// A flagged square, or the «red flag» tag on its line: its clause is picked and painted with
-	// the path, and the graph tab opens on it.
-	const showFlag = useCallback(
-		(statementId: string) => {
-			if (!viewKg) return;
-			const path = flagHopPath(viewKg, statementId, redFlags.flags, redFlags.matches);
-			if (!path) return;
-			pickFlag(docId, statementId);
-			setSpotlight({ docId, ids: new Set([statementId]) });
-			if (path.clauseId) selectClause(docId, path.clauseId);
-			setFlagTarget(flagPathTarget(viewKg, path, nodesById));
-			onOpenGraph?.();
-		},
-		[viewKg, redFlags, pickFlag, docId, selectClause, nodesById, onOpenGraph]
-	);
 	// A row of the RED FLAGS table: the tab and row of the statement it matched, its square
 	// ringed, and the flag painted in the contract.
 	const revealFlag = useCallback(
@@ -332,22 +314,10 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		},
 		[viewKg, docId, selectClause]
 	);
-	const openMark = useCallback(
-		(nodeId: string) => {
-			if (redFlags.statementIds.has(nodeId)) showFlag(nodeId);
-			else openInDocument(nodeId);
-		},
-		[redFlags, showFlag, openInDocument]
-	);
 	const flagLines = useMemo(
 		(): FlagLines | undefined =>
-			redFlags.statementIds.size > 0
-				? {
-						flaggedIds: redFlags.statementIds,
-						onPick: showFlag,
-					}
-				: undefined,
-		[redFlags, showFlag]
+			redFlags.statementIds.size > 0 ? { flaggedIds: redFlags.statementIds } : undefined,
+		[redFlags]
 	);
 
 	const { me, pickMe, againstIds, onlyAgainst, setOnlyAgainst, filtering, tableRows } =
@@ -551,7 +521,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 								onOpenGraph={openClauseInGraph}
 								renderDetail={renderDetail}
 								onGoToModifier={goToModifier}
-								onOpenMark={openMark}
+								onOpenMark={openInDocument}
 								onFocusMark={focusNode}
 								onHoverMark={showTooltip}
 								onLeaveMark={hideTooltip}

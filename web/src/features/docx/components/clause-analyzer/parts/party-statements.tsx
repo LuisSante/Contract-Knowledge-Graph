@@ -27,10 +27,9 @@ export interface StatementHints {
 	timing: Map<string, StatementTiming>;
 }
 
-/** Flagged lines are marked, and their «red flag» tag shows the path in the graph tab. */
+/** Flagged lines are marked with a «red flag» tag. */
 export interface FlagLines {
 	flaggedIds: ReadonlySet<string>;
-	onPick: (statementId: string) => void;
 }
 
 /** A clause's statements that belong to one party in the types shown: the obligations and
@@ -144,7 +143,6 @@ export function PartyStatements({
 								timing={hints?.timing.get(s.mark.id)}
 								onOpen={onOpen}
 								flagged={flags?.flaggedIds.has(s.mark.id)}
-								onPickFlag={flags && (() => flags.onPick(s.mark.id))}
 							/>
 						);
 					})}

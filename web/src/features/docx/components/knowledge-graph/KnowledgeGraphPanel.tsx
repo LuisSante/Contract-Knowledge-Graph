@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { KgNodeKind } from '@/types/knowledge';
 import { useDocumentStore } from '@/stores/document';
 import { useClauseAnalyzerStore } from '@/stores/clause-analyzer';
@@ -23,13 +23,6 @@ import {
 	PARTY_COLOR,
 } from '@/features/docx/components/clause-analyzer/constants';
 import type { KgVizNode } from '@/features/docx/utils/knowledge/kg-graph';
-import { useRedFlags } from '@/features/docx/hooks/useRedFlags';
-import { flagHopPath } from '@/features/docx/utils/knowledge/red-flag-hops';
-import { FlagPathGraph } from '@/features/docx/components/knowledge-graph/FlagPathGraph';
-import type { PathCtx } from '@/features/docx/components/clause-analyzer/flag-path/path-bits';
-import { cn } from '@/lib/utils';
-
-type GraphMode = 'whole' | 'path';
 
 const ALL_KINDS = new Set<KgNodeKind>(KG_NODE_KINDS);
 
@@ -48,36 +41,8 @@ export function KnowledgeGraphPanel({ docId }: { docId: string }) {
 	const paragraphs = useDocumentStore((s) => s.paragraphs);
 	const nodesById = useMemo(() => new Map(paragraphs.map((n) => [n.id, n])), [paragraphs]);
 
-	const { kg, viewKg, status, retry } = useKnowledgeGraphData(docId);
+	const { viewKg, status, retry } = useKnowledgeGraphData(docId);
 	const { aId, bId } = useComparedPair(viewKg);
-
-	// The red-flag paths: a flag picked in the Clause Analyzer is drawn here.
-	const redFlags = useRedFlags(docId, status === 'ready' ? kg : null);
-	const pickedFlag = useClauseAnalyzerStore((s) => s.pickedFlag);
-	const picked = pickedFlag?.docId === docId ? pickedFlag : null;
-	const partyColor = useCallback(
-		(id: string) => (id === aId ? PARTY_COLOR : id === bId ? PAIR_SECOND_COLOR : NEUTRAL_COLOR),
-		[aId, bId]
-	);
-	const pathCtx = useMemo(
-		(): PathCtx | null => (viewKg ? { kg: viewKg, colorOf: partyColor } : null),
-		[viewKg, partyColor]
-	);
-	const flagPath = useMemo(
-		() =>
-			viewKg && picked
-				? flagHopPath(viewKg, picked.statementId, redFlags.flags, redFlags.matches)
-				: null,
-		[viewKg, picked, redFlags]
-	);
-	// A newly picked flag opens on its path; the reader can go back to the whole graph.
-	const [mode, setMode] = useState<GraphMode>('path');
-	const [seenSeq, setSeenSeq] = useState(0);
-	if (picked && picked.seq !== seenSeq) {
-		setSeenSeq(picked.seq);
-		setMode('path');
-	}
-	const showPath = mode === 'path' && flagPath !== null && pathCtx !== null;
 	// null counts every statement: the document-wide reading, with no view filtering it.
 	const importance = useClauseImportance(docId, null);
 
@@ -125,12 +90,9 @@ export function KnowledgeGraphPanel({ docId }: { docId: string }) {
 
 	const nameOf = (id: string | null) =>
 		(id && viewKg?.parties.find((p) => p.id === id)?.name) || 'Party';
-	const openInDocument = useCallback(
-		(nodeId: string) => {
-			if (viewKg) setDocumentTarget(buildDocumentTarget(viewKg, nodeId, nodesById));
-		},
-		[viewKg, nodesById, setDocumentTarget]
-	);
+	const openInDocument = (nodeId: string) => {
+		if (viewKg) setDocumentTarget(buildDocumentTarget(viewKg, nodeId, nodesById));
+	};
 
 	if (status === 'error') {
 		return (
@@ -160,88 +122,44 @@ export function KnowledgeGraphPanel({ docId }: { docId: string }) {
 
 	return (
 		<div className="flex min-h-0 flex-1 flex-col">
-			{!showPath && (
-				<div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-border/60 px-3 py-1.5 text-2xs text-muted-foreground">
-					<label className="flex cursor-pointer items-center gap-1.5">
-						<Checkbox
-							checked={showLabels}
-							onCheckedChange={(value) => setShowLabels(value === true)}
-							className="size-3.5 shrink-0"
-							aria-label="Show node labels"
-						/>
-						<span>Labels</span>
-					</label>
-					{/* <span className="tabular-nums">
+			<div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-border/60 px-3 py-1.5 text-2xs text-muted-foreground">
+				<label className="flex cursor-pointer items-center gap-1.5">
+					<Checkbox
+						checked={showLabels}
+						onCheckedChange={(value) => setShowLabels(value === true)}
+						className="size-3.5 shrink-0"
+						aria-label="Show node labels"
+					/>
+					<span>Labels</span>
+				</label>
+				{/* <span className="tabular-nums">
 					{graph.nodes.length} nodes {graph.edges.length} edges
 				</span> */}
-					<span className="ml-auto flex flex-wrap items-center gap-x-2.5 gap-y-1">
-						{KG_NODE_KINDS.filter((kind) => graph.countByKind[kind] > 0).map((kind) => (
-							<span key={kind} className="inline-flex items-center gap-1">
-								<span
-									className="size-2 rounded-full"
-									style={{ backgroundColor: NODE_COLORS[kind] }}
-								/>
-								{NODE_LABEL[kind]}
-								<span className="tabular-nums">{graph.countByKind[kind]}</span>
-							</span>
-						))}
-					</span>
-				</div>
-			)}
-			{flagPath && (
-				<div
-					role="radiogroup"
-					aria-label="What the graph shows"
-					className="flex items-center gap-2 border-b border-border/60 px-3 py-1.5"
-				>
-					<span className="inline-flex rounded-md border border-border bg-secondary p-0.5">
-						{(
-							[
-								['whole', 'Whole graph'],
-								['path', 'Red flag path'],
-							] as const
-						).map(([value, label]) => (
-							<button
-								key={value}
-								type="button"
-								role="radio"
-								aria-checked={mode === value}
-								onClick={() => setMode(value)}
-								className={cn(
-									'rounded px-2 py-0.5 text-2xs font-medium whitespace-nowrap',
-									mode === value
-										? 'bg-card text-foreground shadow-sm'
-										: 'text-muted-foreground hover:text-foreground'
-								)}
-							>
-								{label}
-							</button>
-						))}
-					</span>
-				</div>
-			)}
-			{showPath && flagPath && pathCtx ? (
-				<FlagPathGraph
-					key={`${docId}:${flagPath.root.statement.id}`}
-					docId={docId}
-					path={flagPath}
-					ctx={pathCtx}
-					onOpen={openInDocument}
-				/>
-			) : (
-				<GraphCanvas
-					graph={graph}
-					showLabels={showLabels}
-					selectedClauseId={selectedClauseId}
-					highlightIds={highlightIds}
-					colorOf={colorOf}
-					onSelectClause={(clauseId) => {
-						selectClause(docId, selectedClauseId === clauseId ? null : clauseId);
-						if (viewKg) setDocumentTarget(buildDocumentTarget(viewKg, clauseId, nodesById));
-					}}
-				/>
-			)}
-			{!showPath && viewKg && grid && (
+				<span className="ml-auto flex flex-wrap items-center gap-x-2.5 gap-y-1">
+					{KG_NODE_KINDS.filter((kind) => graph.countByKind[kind] > 0).map((kind) => (
+						<span key={kind} className="inline-flex items-center gap-1">
+							<span
+								className="size-2 rounded-full"
+								style={{ backgroundColor: NODE_COLORS[kind] }}
+							/>
+							{NODE_LABEL[kind]}
+							<span className="tabular-nums">{graph.countByKind[kind]}</span>
+						</span>
+					))}
+				</span>
+			</div>
+			<GraphCanvas
+				graph={graph}
+				showLabels={showLabels}
+				selectedClauseId={selectedClauseId}
+				highlightIds={highlightIds}
+				colorOf={colorOf}
+				onSelectClause={(clauseId) => {
+					selectClause(docId, selectedClauseId === clauseId ? null : clauseId);
+					if (viewKg) setDocumentTarget(buildDocumentTarget(viewKg, clauseId, nodesById));
+				}}
+			/>
+			{viewKg && grid && (
 				<SelectedRow
 					kg={viewKg}
 					grid={grid}

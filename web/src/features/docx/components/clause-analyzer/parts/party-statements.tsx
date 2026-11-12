@@ -16,6 +16,7 @@ import type { GridRow, Side } from '@/features/docx/utils/knowledge/statement-gr
 import type { StatementTiming } from '@/features/docx/utils/knowledge/statement-timing';
 import { cn } from '@/lib/utils';
 import type { DeonticKind, KgCondition } from '@/types/knowledge';
+import type { ContractRisk } from '@/types/risks';
 
 /** What the detail adds to each statement from the graph, without changing any count. */
 export interface StatementHints {
@@ -27,9 +28,13 @@ export interface StatementHints {
 	timing: Map<string, StatementTiming>;
 }
 
-/** Flagged lines are marked with a «red flag» tag. */
+/** What the detail marks on a line: the system's risk, with its type and reason, and the
+ *  dataset's red flag, which only validates it. Either may be absent. */
 export interface FlagLines {
-	flaggedIds: ReadonlySet<string>;
+	/** Statements the system's detector judged risky. */
+	risks?: ReadonlyMap<string, ContractRisk>;
+	/** Statements a red flag of the dataset matched; absent when the reader hides them. */
+	flaggedIds?: ReadonlySet<string>;
 }
 
 /** A clause's statements that belong to one party in the types shown: the obligations and
@@ -81,7 +86,8 @@ export function PartyStatements({
 	};
 	const aside = sharedAside && hints ? hints.reciprocal : null;
 	const own = (side: Side) => ownedBy(tally, side, kinds).filter((s) => !aside?.has(s.mark.id));
-	// One line per pair, standing for the flagged twin when one of them is a red flag.
+	// One line per pair, standing for the risky twin when one of them is a risk, or failing that
+	// for the one a red flag matched.
 	const shared = (() => {
 		if (!aside) return [];
 		const byKey = new Map<string, Served[]>();
@@ -91,7 +97,10 @@ export function PartyStatements({
 			byKey.set(key, [...(byKey.get(key) ?? []), s]);
 		}
 		return [...byKey.values()].map(
-			(twins) => twins.find((t) => flags?.flaggedIds.has(t.mark.id)) ?? twins[0]
+			(twins) =>
+				twins.find((t) => flags?.risks?.has(t.mark.id)) ??
+				twins.find((t) => flags?.flaggedIds?.has(t.mark.id)) ??
+				twins[0]
 		);
 	})();
 	const noun =
@@ -142,7 +151,8 @@ export function PartyStatements({
 								conditionParty={conditionParty}
 								timing={hints?.timing.get(s.mark.id)}
 								onOpen={onOpen}
-								flagged={flags?.flaggedIds.has(s.mark.id)}
+								risk={flags?.risks?.get(s.mark.id)}
+								flagged={flags?.flaggedIds?.has(s.mark.id)}
 							/>
 						);
 					})}

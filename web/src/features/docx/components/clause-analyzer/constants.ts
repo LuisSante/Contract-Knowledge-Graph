@@ -59,6 +59,9 @@ export const KIND_LABEL: Record<MarkKind, string> = {
 export const LANE_COLUMNS = 10;
 export const MARK_SIZE = 14;
 export const MARK_GAP = 4;
+/** Extra room under each line of squares when the dataset's red flags are shown: their dot
+ *  hangs below the square, and a second line of squares must not sit on it. */
+export const DOT_ROOM = 8;
 /** How wide a lane is that wraps its marks after `columns` of them. */
 export const laneWidth = (columns: number) => columns * MARK_SIZE + (columns - 1) * MARK_GAP;
 export const LANE_WIDTH = laneWidth(LANE_COLUMNS);

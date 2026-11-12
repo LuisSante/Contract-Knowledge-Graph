@@ -53,6 +53,11 @@ import {
 	type StatementHints,
 } from '@/features/docx/components/clause-analyzer/parts/party-statements';
 import { useRedFlags } from '@/features/docx/hooks/useRedFlags';
+import { useRisks } from '@/features/docx/hooks/useRisks';
+import {
+	DatasetFlagsToggle,
+	RiskControl,
+} from '@/features/docx/components/clause-analyzer/parts/risk-control';
 import type { FlagLines } from '@/features/docx/components/clause-analyzer/parts/party-statements';
 import { deonticNodes, type DeonticKind, type KgCondition } from '@/types/knowledge';
 import type { DocumentTarget } from '@/features/docx/utils/knowledge/graph-payload';
@@ -135,9 +140,28 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 	// Conditions are shown anywhere (outlines, the card, pink in the contract) only when the
 	// reader asks for them: under All the view is the one it always was.
 	const showConditions = conditionMode === 'mark';
-	// The dataset's red flags and the statements they matched: those squares get the black
-	// outline.
+	// What the system's detector judged risky: those squares get the black outline. Nothing is
+	// marked until the reader asks, with «Free» (the saved answer) or «AI» (the model, now).
+	const {
+		risks,
+		byStatement: riskByStatement,
+		source: risksSource,
+		unsaved: risksUnsaved,
+		hasSaved: hasSavedRisks,
+		status: risksStatus,
+		toggleSaved: toggleSavedRisks,
+		detectWithAI: detectRisksWithAI,
+	} = useRisks(docId);
+	const riskyIds = useMemo(
+		() => (riskByStatement.size > 0 ? new Set(riskByStatement.keys()) : undefined),
+		[riskByStatement]
+	);
+	// The dataset's red flags and the statements they matched: those squares get a dot under
+	// them. They only validate the system's marks, so the reader can hide them.
 	const redFlags = useRedFlags(docId, status === 'ready' ? kg : null);
+	const [showDatasetFlags, setShowDatasetFlags] = useState(true);
+	const hasDatasetFlags = redFlags.statementIds.size > 0;
+	const flaggedIds = hasDatasetFlags && showDatasetFlags ? redFlags.statementIds : undefined;
 	const conditionalIds = useMemo(
 		() =>
 			viewKg
@@ -316,9 +340,27 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 	);
 	const flagLines = useMemo(
 		(): FlagLines | undefined =>
-			redFlags.statementIds.size > 0 ? { flaggedIds: redFlags.statementIds } : undefined,
-		[redFlags]
+			riskyIds || flaggedIds
+				? { risks: riskyIds ? riskByStatement : undefined, flaggedIds }
+				: undefined,
+		[riskyIds, riskByStatement, flaggedIds]
 	);
+	// Risky squares in the open tab and in the whole contract. A reciprocal pair is one square.
+	const riskCounts = useMemo(() => {
+		const counts = { shown: 0, total: 0 };
+		if (!shownGrid || !riskyIds) return counts;
+		const count = (kind: MarkKind) => {
+			counts.total += 1;
+			if (kind === typeShown) counts.shown += 1;
+		};
+		for (const row of shownGrid.rows) {
+			for (const lane of ['a', 'b'] as const)
+				for (const mark of row.marks[lane]) if (riskyIds.has(mark.id)) count(mark.kind);
+			for (const mark of row.both ?? [])
+				if ((mark.twinIds ?? [mark.id]).some((id) => riskyIds.has(id))) count(mark.kind);
+		}
+		return counts;
+	}, [shownGrid, riskyIds, typeShown]);
 
 	const { me, pickMe, againstIds, onlyAgainst, setOnlyAgainst, filtering, tableRows } =
 		useAgainstYou(docId, pairIds, clauseRows, typeShown, activeClause?.clauseId ?? null);
@@ -346,8 +388,9 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 	);
 
 	const detailsOf = useMemo(
-		() => (viewKg && shownGrid ? markDetails(viewKg, shownGrid, showConditions) : null),
-		[viewKg, shownGrid, showConditions]
+		() =>
+			viewKg && shownGrid ? markDetails(viewKg, shownGrid, showConditions, riskByStatement) : null,
+		[viewKg, shownGrid, showConditions, riskByStatement]
 	);
 
 	// What the detail says beside each statement: a twin the other party has word for word,
@@ -431,6 +474,20 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 					names={names}
 					aside={
 						<div className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1.5">
+							<RiskControl
+								status={risksStatus}
+								source={risksSource}
+								hasSaved={hasSavedRisks}
+								unsaved={risksUnsaved}
+								shown={riskCounts.shown}
+								total={riskCounts.total}
+								failed={risks?.clausesFailed ?? 0}
+								onFree={toggleSavedRisks}
+								onAI={detectRisksWithAI}
+							/>
+							{hasDatasetFlags && (
+								<DatasetFlagsToggle on={showDatasetFlags} onChange={setShowDatasetFlags} />
+							)}
 							{conditionMode === 'mark' && <FirmKey color={KIND_COLORS[typeShown]} />}
 							<ConditionModePicker mode={conditionMode} onPick={setConditionMode} />
 						</div>
@@ -507,7 +564,8 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 								canPaintB={Boolean(secondPartyId)}
 								leadOf={leadOf}
 								conditionalIds={showConditions ? conditionalIds : undefined}
-								flaggedIds={redFlags.statementIds.size > 0 ? redFlags.statementIds : undefined}
+								riskyIds={riskyIds}
+								flaggedIds={flaggedIds}
 								spotlightIds={spotlight?.docId === docId ? spotlight.ids : undefined}
 								bothLane={hasPairs}
 								youLane={me}

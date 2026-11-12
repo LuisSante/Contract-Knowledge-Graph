@@ -16,6 +16,7 @@ import {
 	EqualIcon,
 	InfoIcon,
 	RepeatIcon,
+	TriangleAlertIcon,
 } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
@@ -37,6 +38,8 @@ import {
 import type { Side } from '@/features/docx/utils/knowledge/statement-grid';
 import type { StatementTiming } from '@/features/docx/utils/knowledge/statement-timing';
 import type { DeonticKind } from '@/types/knowledge';
+import { flagTypeLabel } from '@/features/docx/utils/knowledge/red-flags';
+import type { ContractRisk } from '@/types/risks';
 
 /**
  * The types by their plain names, as the table shows them. Each sits with the party it
@@ -745,6 +748,7 @@ export function Fragment({
 	conditionParty,
 	timing,
 	onOpen,
+	risk,
 	flagged = false,
 }: {
 	served: Served;
@@ -761,9 +765,10 @@ export function Fragment({
 	/** Its deadline, frequency and values; absent when the graph gives none. */
 	timing?: StatementTiming;
 	onOpen: (nodeId: string) => void;
-	/** A red flag of the dataset matched it: its square in the line gets the black outline. */
+	/** The system's detector judged it risky: its type as a tag, its reason under the line. */
+	risk?: ContractRisk;
+	/** A red flag of the dataset matched it: a quiet tag with the dot its square carries. */
 	flagged?: boolean;
-	/** Shows its red-flag path. */
 }) {
 	const shown = useClauseAnalyzerStore(
 		(s) => s.focusNodeIds.length === 1 && s.focusNodeIds[0] === served.mark.id
@@ -795,26 +800,46 @@ export function Fragment({
 						)}
 						aria-hidden
 					/>
-					<span className="min-w-0 text-sm text-foreground">{served.mark.label}</span>
-					{flagged && (
-						<span
-							className="shrink-0 rounded px-1.5 py-px text-[10px] font-semibold text-blue-700 ring-1 ring-black/70 dark:text-blue-300 dark:ring-white/70"
-							title="A red flag of the lease dataset"
-						>
-							red flag
-						</span>
-					)}
-					{reciprocal && (
-						<span
-							className="shrink-0 rounded-full bg-muted px-1.5 py-px text-2xs font-medium text-foreground/70"
-							title={`The other party has the same ${served.kind}, word for word: it binds or entitles both alike.`}
-						>
-							reciprocal
-						</span>
-					)}
+					{/* The tags drop under the label when the column is too narrow for both, so the
+					    label keeps its line instead of breaking word by word. */}
+					<span className="flex min-w-0 flex-1 flex-wrap items-center gap-x-1.5 gap-y-1">
+						<span className="min-w-0 text-sm text-foreground">{served.mark.label}</span>
+						{risk && (
+							<span
+								className="inline-flex shrink-0 items-center gap-1 rounded px-1.5 py-px text-[10px] font-semibold text-foreground ring-1 ring-black/80 dark:ring-white/80"
+								title="The system judged this statement risky"
+							>
+								<TriangleAlertIcon className="size-3" aria-hidden />
+								risk · {flagTypeLabel(risk.type)}
+							</span>
+						)}
+						{flagged && (
+							<span
+								className="inline-flex shrink-0 items-center gap-1 text-[10px] font-medium text-muted-foreground"
+								title="A red flag of the lease dataset: it validates what the system marks"
+							>
+								<span className="size-[5px] rounded-full bg-black dark:bg-white" aria-hidden />
+								red flag
+							</span>
+						)}
+						{reciprocal && (
+							<span
+								className="shrink-0 rounded-full bg-muted px-1.5 py-px text-2xs font-medium text-foreground/70"
+								title={`The other party has the same ${served.kind}, word for word: it binds or entitles both alike.`}
+							>
+								reciprocal
+							</span>
+						)}
+					</span>
 				</span>
 				<ConditionChip conditions={conditions} />
 			</button>
+			{risk?.reason && (
+				<p className="pr-3 pb-2 pl-8 text-xs leading-relaxed text-muted-foreground">
+					<span className="font-medium text-foreground/80">Why: </span>
+					{risk.reason}
+				</p>
+			)}
 			{timing && <TimingFields timing={timing} />}
 			{open && (
 				<div id={bodyId} className="space-y-2 pr-3 pb-3 pl-8">

@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useMemo, useRef, useState } from 'react';
+import { TriangleAlertIcon } from 'lucide-react';
 import { createStore, useStore, type StoreApi } from 'zustand';
 import { deonticNodes, type KnowledgeGraph } from '@/types/knowledge';
 import {
@@ -18,6 +19,8 @@ import {
 } from '@/features/docx/components/clause-analyzer/constants';
 import type { HoverPoint } from '@/features/docx/components/clause-analyzer/grid/Mark';
 import { afterLead } from '@/features/docx/components/clause-analyzer/parts/table-bits';
+import { flagTypeLabel } from '@/features/docx/utils/knowledge/red-flags';
+import type { ContractRisk } from '@/types/risks';
 
 /** Where the pointer is, relative to the panel, plus what it is over. */
 export interface HoverInfo {
@@ -32,6 +35,8 @@ export interface HoverInfo {
 	clause: string | null;
 	/** What the statement waits on, when a condition gates it: «Only if…», «Unless…». */
 	conditions?: Array<{ lead: string; trigger: string }>;
+	/** Why the system's detector judged it risky, when it did. */
+	risk?: ContractRisk;
 }
 
 type MarkDetails = Omit<HoverInfo, 'x' | 'y'>;
@@ -44,7 +49,9 @@ export function markDetails(
 	kg: KnowledgeGraph,
 	grid: StatementGrid,
 	/** Add the conditions that gate each statement, as the mark's card shows them. */
-	withConditions = false
+	withConditions = false,
+	/** What the system's detector found, by statement; a pair's card answers for either twin. */
+	risks?: ReadonlyMap<string, ContractRisk>
 ): (mark: GridMark) => MarkDetails {
 	const conditionsOf = new Map<string, Array<{ lead: string; trigger: string }>>();
 	if (withConditions) {
@@ -77,6 +84,7 @@ export function markDetails(
 		quote: textOf.get(mark.id) || mark.detail,
 		clause: clauseByMark.get(mark.id) ?? null,
 		conditions: conditionsOf.get(mark.id),
+		risk: risks && (mark.twinIds ?? [mark.id]).map((id) => risks.get(id)).find((risk) => risk),
 	});
 }
 
@@ -171,6 +179,17 @@ export function MarkTooltip({
 					<span className="font-semibold">{condition.lead}</span> {trim(condition.trigger, 160)}
 				</p>
 			))}
+			{hover.risk && (
+				<div className="mt-2.5">
+					<p className="flex items-center gap-1.5 font-semibold text-foreground">
+						<TriangleAlertIcon className="size-3.5 shrink-0" aria-hidden />
+						Risk · {flagTypeLabel(hover.risk.type)}
+					</p>
+					{hover.risk.reason && (
+						<p className="mt-1 leading-relaxed text-muted-foreground">{hover.risk.reason}</p>
+					)}
+				</div>
+			)}
 			<div className="mt-2.5 flex items-center justify-between gap-2 border-t border-border pt-2">
 				<span className="truncate text-muted-foreground">
 					{hover.clause ?? 'No clause assigned'}

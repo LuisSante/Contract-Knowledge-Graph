@@ -38,6 +38,7 @@ import {
 	BOTH_COLUMNS,
 	bothWidth,
 	LINKED_WIDTH,
+	DOT_ROOM,
 	MARK_GAP,
 	MARK_SIZE,
 } from '@/features/docx/components/clause-analyzer/constants';
@@ -87,7 +88,9 @@ interface ClauseRowProps {
 	boldStripes?: boolean;
 	/** Statements a condition gates; their squares are drawn as outlines. */
 	conditionalIds?: ReadonlySet<string>;
-	/** Statements a red flag matched; their squares get a black outline. */
+	/** Statements the system's detector judged risky; their squares get a black outline. */
+	riskyIds?: ReadonlySet<string>;
+	/** Statements a red flag of the dataset matched; their squares get a dot underneath. */
 	flaggedIds?: ReadonlySet<string>;
 	/** The statements a red flag just picked: their squares get a blue ring. */
 	spotlightIds?: ReadonlySet<string>;
@@ -180,6 +183,7 @@ export const ClauseRow = memo(function ClauseRow({
 	labelWidth = LABEL_WIDTH,
 	boldStripes = false,
 	conditionalIds,
+	riskyIds,
 	flaggedIds,
 	spotlightIds,
 	axisMark = false,
@@ -213,13 +217,17 @@ export const ClauseRow = memo(function ClauseRow({
 	const tabStop = allShown.some((mark) => mark.id === roverId)
 		? roverId
 		: (allShown[0]?.id ?? null);
-	// A pair's square answers for both its statements: flagged, ringed or conditional when either
-	// is, and it opens the flagged one.
+	// A pair's square answers for both its statements: risky, flagged, ringed or conditional when
+	// either is, and it opens the risky one, or failing that the flagged one.
 	const twinsOf = (mark: GridMark) => mark.twinIds ?? [mark.id];
 	const columnsOf = (lane: GridLane) =>
 		typeof laneColumns === 'number' ? laneColumns : lane === 'b' ? laneColumns.b : laneColumns.a;
 	const anyTwin = (mark: GridMark, ids?: ReadonlySet<string>) =>
 		Boolean(ids && twinsOf(mark).some((id) => ids.has(id)));
+	// With the dataset's red flags shown, each line of squares leaves room for the dots under it.
+	const lineGap = flaggedIds ? MARK_GAP + DOT_ROOM : MARK_GAP;
+	// The last line's dots reach 2px past the row's own padding; this keeps them inside the row.
+	const lastLineRoom = flaggedIds ? 2 : 0;
 	const unfiled = clauseId === null;
 	const background = active
 		? 'bg-primary/10 ring-1 ring-inset ring-primary/30'
@@ -358,18 +366,24 @@ export const ClauseRow = memo(function ClauseRow({
 										<div
 											className="grid content-start"
 											style={{
-												gap: MARK_GAP,
+												columnGap: MARK_GAP,
+												rowGap: lineGap,
+												paddingBottom: lastLineRoom,
 												gridTemplateColumns: `repeat(${Math.min(shownBoth.length, bothColumns)}, ${MARK_SIZE}px)`,
 											}}
 										>
 											{shownBoth.map((mark) => {
-												const opens = twinsOf(mark).find((id) => flaggedIds?.has(id)) ?? mark.id;
+												const opens =
+													twinsOf(mark).find((id) => riskyIds?.has(id)) ??
+													twinsOf(mark).find((id) => flaggedIds?.has(id)) ??
+													mark.id;
 												return (
 													<Mark
 														key={mark.id}
 														mark={{ ...mark, id: opens }}
 														muted={dimmed || !paintLanes.shared}
 														conditional={anyTwin(mark, conditionalIds)}
+														risky={anyTwin(mark, riskyIds)}
 														flagged={anyTwin(mark, flaggedIds)}
 														spotlight={anyTwin(mark, spotlightIds)}
 														tabbable={mark.id === tabStop}
@@ -390,7 +404,9 @@ export const ClauseRow = memo(function ClauseRow({
 								className="grid shrink-0 content-start"
 								style={{
 									width: laneWidth(columnsOf(lane)),
-									gap: MARK_GAP,
+									columnGap: MARK_GAP,
+									rowGap: lineGap,
+									paddingBottom: lastLineRoom,
 									gridTemplateColumns: `repeat(${columnsOf(lane)}, ${MARK_SIZE}px)`,
 								}}
 							>
@@ -400,6 +416,7 @@ export const ClauseRow = memo(function ClauseRow({
 										mark={mark}
 										muted={dimmed || !paintLanes[lane]}
 										conditional={conditionalIds?.has(mark.id)}
+										risky={riskyIds?.has(mark.id)}
 										flagged={flaggedIds?.has(mark.id)}
 										spotlight={spotlightIds?.has(mark.id)}
 										tabbable={mark.id === tabStop}

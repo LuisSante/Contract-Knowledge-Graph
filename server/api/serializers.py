@@ -152,3 +152,27 @@ class ContractSummaryRequestSerializer(serializers.Serializer):
     force = serializers.BooleanField(required=False, default=False)
     provider = serializers.ChoiceField(choices=_ASSISTANT_PROVIDER_CHOICES, default="openai")
     model = serializers.CharField(required=False, allow_null=True)
+
+
+class ContractRiskSerializer(serializers.Serializer):
+    statementId = serializers.CharField()
+    type = serializers.CharField()
+    reason = serializers.CharField(allow_blank=True)
+
+
+class ContractRisksSerializer(serializers.Serializer):
+    documentId = serializers.CharField()
+    model = serializers.CharField(allow_blank=True)
+    promptVersion = serializers.CharField(allow_blank=True)
+    clausesReviewed = serializers.IntegerField()
+    clausesFailed = serializers.IntegerField()
+    risks = ContractRiskSerializer(many=True)
+
+
+class ContractRisksRequestSerializer(serializers.Serializer):
+    # Without it a contract already reviewed gets its saved answer back and nothing is paid.
+    # With it the model is asked again; the saved answer, the first one, is never replaced.
+    force = serializers.BooleanField(required=False, default=False)
+    provider = serializers.ChoiceField(choices=_ASSISTANT_PROVIDER_CHOICES, default="openai")
+    # Absent means the detector's own default model.
+    model = serializers.CharField(required=False, allow_null=True)

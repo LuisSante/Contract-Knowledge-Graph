@@ -63,7 +63,9 @@ interface ClauseGridProps {
 	leadOf?: (row: GridRow) => ClauseRowLead;
 	/** Statements a condition gates; their squares are drawn as outlines. */
 	conditionalIds?: ReadonlySet<string>;
-	/** Statements a red flag matched; their squares get a black outline. */
+	/** Statements the system's detector judged risky; their squares get a black outline. */
+	riskyIds?: ReadonlySet<string>;
+	/** Statements a red flag of the dataset matched; their squares get a dot underneath. */
 	flaggedIds?: ReadonlySet<string>;
 	/** The statements a red flag just picked: their squares get a blue ring. */
 	spotlightIds?: ReadonlySet<string>;
@@ -102,6 +104,7 @@ export function ClauseGrid({
 	canPaintB,
 	leadOf,
 	conditionalIds,
+	riskyIds,
 	flaggedIds,
 	spotlightIds,
 	bothLane = false,
@@ -270,6 +273,7 @@ export function ClauseGrid({
 						labelWidth={NAME_WIDTH}
 						boldStripes
 						conditionalIds={conditionalIds}
+						riskyIds={riskyIds}
 						flaggedIds={flaggedIds}
 						spotlightIds={spotlightIds}
 						bothLane={bothLane}

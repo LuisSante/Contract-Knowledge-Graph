@@ -22,7 +22,10 @@ interface MarkProps {
 	/** A condition gates the statement: only its outline is drawn, so firm and conditional
 	 *  read apart at a glance. */
 	conditional?: boolean;
-	/** A red flag of the dataset matched the statement: a black outline around the square. */
+	/** The system's detector judged the statement risky: a black outline around the square. */
+	risky?: boolean;
+	/** A red flag of the dataset matched the statement: a dot under the square. It only
+	 *  validates what the system marks, so it is the quieter of the two. */
 	flagged?: boolean;
 	/** The statement a red flag just picked: a blue ring around it, so it is found at a glance. */
 	spotlight?: boolean;
@@ -41,6 +44,7 @@ export const Mark = memo(function Mark({
 	mark,
 	muted,
 	conditional = false,
+	risky = false,
 	flagged = false,
 	spotlight = false,
 	tabbable = true,
@@ -55,7 +59,9 @@ export const Mark = memo(function Mark({
 	// A 1px edge keeps the lighter fills apart from the white; an outline is drawn in it too.
 	// An inset ring, not an inline box-shadow, so the hover and focus rings still compose.
 	const edge = KIND_EDGE_COLORS[mark.kind];
-	const label = `${KIND_LABEL[mark.kind]} — ${owner}${conditional ? ' (conditional)' : ''}`;
+	const label = `${KIND_LABEL[mark.kind]} — ${owner}${conditional ? ' (conditional)' : ''}${
+		risky ? ' · risk' : ''
+	}${flagged ? ' · red flag in the dataset' : ''}`;
 
 	const showCard = (event: FocusEvent<HTMLButtonElement>) => {
 		onRove?.(mark.id);
@@ -82,9 +88,12 @@ export const Mark = memo(function Mark({
 			// square still 14px.
 			className={`relative shrink-0 rounded-[3px] inset-ring-[color:var(--edge)] transition-opacity before:absolute before:-inset-0.5 before:content-[''] hover:ring-2 hover:ring-foreground/30 focus-visible:ring-2 focus-visible:ring-ring ${
 				conditional ? 'inset-ring-2' : 'inset-ring-1'
-			} ${flagged ? 'outline-2 outline-offset-0 outline-black dark:outline-white' : 'outline-none'} ${
-				spotlight ? 'shadow-[0_0_0_4px_#2563eb] motion-safe:animate-pulse' : ''
-			}`}
+			} ${risky ? 'outline-2 outline-offset-0 outline-black dark:outline-white' : 'outline-none'} ${
+				// The dot hangs in the gap under the square; the lane leaves room for it (DOT_ROOM).
+				flagged
+					? "after:absolute after:top-full after:left-1/2 after:mt-[3px] after:size-[5px] after:-translate-x-1/2 after:rounded-full after:bg-black after:content-[''] dark:after:bg-white"
+					: ''
+			} ${spotlight ? 'shadow-[0_0_0_4px_#2563eb] motion-safe:animate-pulse' : ''}`}
 			style={
 				{
 					'--edge': edge,

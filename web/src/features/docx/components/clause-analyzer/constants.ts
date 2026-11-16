@@ -57,7 +57,7 @@ export const KIND_LABEL: Record<MarkKind, string> = {
 };
 
 export const LANE_COLUMNS = 10;
-export const MARK_SIZE = 14;
+export const MARK_SIZE = 12;
 export const MARK_GAP = 4;
 /** Extra room under each line of squares when the dataset's red flags are shown: their dot
  *  hangs below the square, and a second line of squares must not sit on it. */
@@ -71,13 +71,14 @@ export const BOTH_COLUMNS = 3;
  *  than its heading. */
 export const bothWidth = (columns: number) => Math.max(64, laneWidth(columns) + 20);
 export const LABEL_WIDTH = 176;
-/** The «Linked» column: a row's links to other clauses, counted per relation. */
-export const LINKED_WIDTH = 130;
+/** The «Linked» column: what a row needs, a tile per relation, then a rule and who needs it.
+ *  Room for four relation tiles, the rule and the «Needed by» tile on one line. */
+export const LINKED_WIDTH = 180;
 /** How narrow a centred-lane table's clause column may get before the table scrolls sideways. */
 export const LABEL_MIN_WIDTH = 160;
 /** How wide the clause column may grow: past it, the spare room centres the squares instead,
  *  so a contract with few squares does not push them against the row's end. */
-export const LABEL_MAX_WIDTH = 400;
+export const LABEL_MAX_WIDTH = 320;
 
 export const ROW_PAGE = 10;
 

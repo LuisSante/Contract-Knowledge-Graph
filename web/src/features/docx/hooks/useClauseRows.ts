@@ -25,6 +25,7 @@ import {
 	clauseUsesFrom,
 } from '@/features/docx/utils/knowledge/graph-payload';
 import { useClauseImportance } from '@/features/docx/hooks/useClauseImportance';
+import type { NeedRelation } from '@/services/knowledge';
 import type { ClauseRowLead } from '@/features/docx/components/clause-analyzer/grid/ClauseRow';
 
 /** The two parties' lanes: the reciprocal one is not shown. */
@@ -37,8 +38,12 @@ const sizeOf = (row: GridRow, kinds: Set<MarkKind>) =>
 		0
 	);
 
+/** The ways a clause needs another, in the order «Needed by» lists them. */
+const NEED_RELATIONS: NeedRelation[] = ['modified_by', 'depends_on', 'refers_to'];
+
 /** How the rows are ordered: by how many squares each shows in the open type (the default),
- *  by the pair's importance, or as the contract has them. */
+ *  by relevance (how much the other clauses need each one to be read), or as the contract
+ *  has them. */
 export type RowOrder = 'size' | 'importance' | 'order';
 
 interface ClauseRowsInput {
@@ -184,19 +189,23 @@ export function useClauseRows({
 
 	// A clause's place among the rows of each type's tab: the number in its row's circle, 1 to n
 	// in each tab. By size when the rows go by size, so the numbers follow them; otherwise by
-	// relevance, as the contract's order leaves them.
+	// relevance, as the contract's order leaves them. By relevance only a row some clause needs
+	// has a place: the rest all weigh the same, and keep the contract's order after them.
 	const rankByKind = useMemo(() => {
 		if (!shownGrid || (sortBy !== 'size' && !rowImportance)) return null;
 		const weightIn = (kind: DeonticKind) => (row: GridRow) =>
 			sortBy === 'size'
 				? sizeOf(row, new Set<MarkKind>([kind]))
 				: (rowImportance?.byClause[row.clauseId ?? ''] ?? 0);
+		const placed = (row: GridRow) =>
+			sortBy === 'size' || Boolean(rowImportance?.neededBy[row.clauseId ?? '']?.length);
 		return Object.fromEntries(
 			DEONTIC_KINDS.map((kind) => {
 				const ranked = shownGrid.rows
 					.filter(
 						(row) =>
 							row.clauseId !== null &&
+							placed(row) &&
 							(SHOWN_LANES.some((lane) => row.marks[lane].some((mark) => mark.kind === kind)) ||
 								(row.both ?? []).some((mark) => mark.kind === kind))
 					)
@@ -224,12 +233,49 @@ export function useClauseRows({
 			const title = clauseTitle(clause, clause?.heading || id, viewKg.clauses);
 			return title.section ?? title.heading;
 		};
+		// The clauses that need a row to be read, by how: the «Needed by» tile of its «Linked»
+		// cell, and why it has a place by relevance.
+		const neededBy = (clauseId: string) => {
+			const needs = rowImportance?.neededBy[clauseId];
+			if (!needs?.length) return undefined;
+			const groups = NEED_RELATIONS.map((relation) => ({
+				relation,
+				clauses: needs
+					.filter((need) => need.relation === relation)
+					.map((need) => ({ clauseId: need.clauseId, label: numberOf(need.clauseId) })),
+			})).filter((group) => group.clauses.length > 0);
+			const count = new Set(needs.map((need) => need.clauseId)).size;
+			const reasons = groups.map(({ relation, clauses }) => {
+				const names = clauses.map((clause) => clause.label).join(', ');
+				if (relation === 'modified_by') return `it modifies ${names}`;
+				const many = clauses.length > 1;
+				return relation === 'depends_on'
+					? `${names} ${many ? 'depend' : 'depends'} on it`
+					: `${names} ${many ? 'refer' : 'refers'} to it`;
+			});
+			return {
+				count,
+				groups,
+				title: `Needed to read ${count === 1 ? 'one clause' : `${count} clauses`}: ${reasons.join('; ')}`,
+			};
+		};
+		// The circle says the place by relevance unless the rows go by size.
+		const byRelevance = sortBy !== 'size' && Boolean(rowImportance);
 		return (row: GridRow): ClauseRowLead => {
 			const title = row.clauseId
 				? clauseTitle(clauseOf.get(row.clauseId), row.heading, viewKg.clauses)
 				: { heading: row.heading, section: null };
+			const need = row.clauseId ? neededBy(row.clauseId) : undefined;
 			return {
-				rank: row.clauseId ? rank.get(row.clauseId) : undefined,
+				rank: row.clauseId
+					? (rank.get(row.clauseId) ?? (byRelevance ? '–' : undefined))
+					: undefined,
+				rankTitle:
+					row.clauseId && byRelevance
+						? (need?.title ??
+							'No other clause needs this one to be read: it keeps the contract’s order')
+						: undefined,
+				neededBy: need && { count: need.count, groups: need.groups },
 				...title,
 				modifiedBy: row.clauseId
 					? modifiedBy
@@ -252,7 +298,7 @@ export function useClauseRows({
 					: undefined,
 			};
 		};
-	}, [grid, viewKg, rankByClause]);
+	}, [grid, viewKg, rankByClause, rowImportance, sortBy]);
 
 	// Where a red flag's statement sits in the table: its row's place in that type's tab and its
 	// clause number. A condition has no tab of its own, so no place.

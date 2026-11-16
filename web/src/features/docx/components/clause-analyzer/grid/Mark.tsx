@@ -84,8 +84,8 @@ export const Mark = memo(function Mark({
 			type="button"
 			data-mark=""
 			tabIndex={tabbable ? 0 : -1}
-			// The ::before reaches 2px past each side, into the gap: an 18px target, the
-			// square still 14px.
+			// The ::before reaches 2px past each side, into the gap: a 16px target, the
+			// square still 12px.
 			className={`relative shrink-0 rounded-[3px] inset-ring-[color:var(--edge)] transition-opacity before:absolute before:-inset-0.5 before:content-[''] hover:ring-2 hover:ring-foreground/30 focus-visible:ring-2 focus-visible:ring-ring ${
 				conditional ? 'inset-ring-2' : 'inset-ring-1'
 			} ${risky ? 'outline-2 outline-offset-0 outline-black dark:outline-white' : 'outline-none'} ${

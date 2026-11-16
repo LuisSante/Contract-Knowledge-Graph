@@ -9,7 +9,16 @@ import {
 	type KeyboardEvent,
 	type ReactNode,
 } from 'react';
-import { BookA, ChevronDownIcon, Forward, GitMerge, Link, Quote, SquarePen } from 'lucide-react';
+import {
+	BookA,
+	ChevronDownIcon,
+	Forward,
+	GitMerge,
+	Link,
+	LogIn,
+	Quote,
+	SquarePen,
+} from 'lucide-react';
 import { Popover as PopoverPrimitive } from 'radix-ui';
 import type {
 	GridLane,
@@ -27,6 +36,7 @@ import {
 } from '@/features/docx/components/clause-analyzer/parts/table-bits';
 import { favourOf } from '@/features/docx/utils/knowledge/clause-favour';
 import type { DeonticKind } from '@/types/knowledge';
+import type { NeedRelation } from '@/services/knowledge';
 import {
 	KIND_COLORS,
 	KIND_TEXT_COLORS,
@@ -43,11 +53,24 @@ import {
 	MARK_SIZE,
 } from '@/features/docx/components/clause-analyzer/constants';
 
-/** A row named by its importance rank, number and heading. */
+/** A row named by its place, number and heading. */
 export interface ClauseRowLead {
-	rank: number | undefined;
+	/** The row's place in its tab; «–» when it has none by relevance: no clause needs it. */
+	rank: number | '–' | undefined;
+	/** What that place stands on, said on hovering the circle. */
+	rankTitle?: string;
 	section: string | null;
 	heading: string;
+	/** The clauses that need this one to be read, by how: it modifies them, they depend on it
+	 *  or they refer to it. `count` is how many different clauses. Absent when none does. This
+	 *  is what gives the row its place by relevance. */
+	neededBy?: {
+		count: number;
+		groups: Array<{
+			relation: NeedRelation;
+			clauses: Array<{ clauseId: string; label: string }>;
+		}>;
+	};
 	/** The clauses that modify this one (the graph's `modifies`): their number, and the type
 	 *  of the sentence that does it, for its colour; null when the graph gives none. */
 	modifiedBy?: Array<{ clauseId: string; label: string; kind: DeonticKind | null }>;
@@ -240,6 +263,9 @@ export const ClauseRow = memo(function ClauseRow({
 				: '';
 
 	const title = row.heading;
+	// The name ends in an arrow to the graph; where its last word starts, to keep them together.
+	const arrowed = Boolean(lead && clauseId && onOpenGraph);
+	const lastWordAt = (lead?.heading.lastIndexOf(' ') ?? -1) + 1;
 
 	// The squares shown on each side, so the mark on the rule says what the row shows.
 	const shownIn = (lane: 'a' | 'b') => shownMarks(lane).length;
@@ -267,10 +293,10 @@ export const ClauseRow = memo(function ClauseRow({
 						className="flex flex-1 items-start gap-2"
 						style={{ flexBasis: labelWidth, minWidth: LABEL_MIN_WIDTH, maxWidth: LABEL_MAX_WIDTH }}
 					>
-						<RankBadge rank={lead.rank} />
+						<RankBadge rank={lead.rank} hint={lead.rankTitle} />
 						{/* The heading is inline text, not a button box, so the icon follows its last
 					    word when it wraps instead of dropping to a line of its own. */}
-						<div className="min-w-0 flex-1 text-sm leading-snug">
+						<div className="min-w-0 flex-1 text-[13px] leading-snug">
 							<span
 								role="button"
 								tabIndex={unfiled ? -1 : 0}
@@ -281,13 +307,29 @@ export const ClauseRow = memo(function ClauseRow({
 									event.preventDefault();
 									onSelect(clauseId);
 								}}
-								className={`font-semibold text-foreground ${unfiled ? '' : 'cursor-pointer hover:underline'}`}
+								className={`font-medium text-foreground ${unfiled ? '' : 'cursor-pointer hover:underline'}`}
 							>
 								{lead.section && <SectionTag section={lead.section} />}
-								{lead.heading}
+								{arrowed ? (
+									<>
+										{lead.heading.slice(0, lastWordAt)}
+										{/* The last word keeps room beside it for the arrow, which is drawn in that
+										    room: when the line is full the word wraps and takes the arrow down, so
+										    the arrow never stands on a line of its own. */}
+										<span className="pr-[23px] whitespace-nowrap">
+											{lead.heading.slice(lastWordAt)}
+										</span>
+									</>
+								) : (
+									lead.heading
+								)}
 							</span>
 							{clauseId && onOpenGraph && (
-								<GraphLink onClick={() => onOpenGraph(clauseId)} heading={lead.heading} />
+								<GraphLink
+									onClick={() => onOpenGraph(clauseId)}
+									heading={lead.heading}
+									className="-ml-[19px]"
+								/>
 							)}
 							{against && (
 								<span
@@ -503,6 +545,17 @@ const LINKS = [
 
 type LinkRelation = (typeof LINKS)[number];
 
+/** A clause that needs this one, named from this one's side by the relation that joins them. */
+const NEEDED_AS: Record<NeedRelation, { label: string; link: LinkRelation; why: string }> = {
+	modified_by: { label: 'Modifies', link: LINKS[0], why: 'this clause modifies it' },
+	depends_on: {
+		label: 'Depended on by',
+		link: LINKS[1],
+		why: 'whether it applies is subject to this clause',
+	},
+	refers_to: { label: 'Referred to by', link: LINKS[2], why: 'it points to this clause' },
+};
+
 const tint = (color: string, percent: number) =>
 	`color-mix(in srgb, ${color} ${percent}%, transparent)`;
 
@@ -533,6 +586,29 @@ function LinkTile({ link, n, small }: { link: LinkRelation; n?: number; small?: 
 	);
 }
 
+/** The tile of the clauses that need this one. Solid where the others are tinted: these
+ *  links come in, the others go out. It takes the text colour, so it turns with the theme. */
+function NeededByTile({ n, small }: { n?: number; small?: boolean }) {
+	return (
+		<span
+			className={`relative flex shrink-0 items-center justify-center rounded-md bg-foreground ${
+				small ? 'size-[18px]' : 'size-[22px]'
+			}`}
+			aria-hidden
+		>
+			<LogIn
+				className={`text-background ${small ? 'size-2.5' : 'size-[13px]'}`}
+				strokeWidth={2.25}
+			/>
+			{n !== undefined && (
+				<span className="absolute -top-1.5 left-[13px] flex h-3.5 min-w-3.5 items-center justify-center rounded-full border-[1.5px] border-card bg-foreground px-[3px] text-[9px] leading-none font-bold text-background tabular-nums">
+					{n}
+				</span>
+			)}
+		</span>
+	);
+}
+
 /** The «Linked» column's name over the rows' tiles; each tile names its relation on hover. */
 export function LinkedHeading() {
 	return (
@@ -546,8 +622,9 @@ export function LinkedHeading() {
 const HOVER_CLOSE_MS = 150;
 
 /**
- * A row's links to other clauses, counted per relation. Hovering the counts opens the list,
- * each clause a button that goes to it; a click or Enter pins it open until clicking away.
+ * A row's links to other clauses, counted: what it needs, a tile per relation, then a rule and
+ * the clauses that need it, in one solid tile. Hovering the counts opens the list, each clause
+ * a button that goes to it; a click or Enter pins it open until clicking away.
  */
 function LinkedCell({
 	lead,
@@ -565,7 +642,8 @@ function LinkedCell({
 	const counts = LINKS.map((link) => ({ link, n: lead[link.key]?.length ?? 0 })).filter(
 		({ n }) => n > 0
 	);
-	if (!counts.length)
+	const needed = lead.neededBy;
+	if (!counts.length && !needed)
 		return (
 			<span
 				className="mt-0.5 shrink-0 text-2xs text-muted-foreground/40"
@@ -692,17 +770,32 @@ function LinkedCell({
 							pinned.current = true;
 						}
 					}}
-					className={`flex shrink-0 flex-wrap items-center gap-x-2.5 gap-y-2 self-start rounded-md pt-1 pr-1 ${
+					className={`flex shrink-0 items-start gap-x-2.5 self-start rounded-md pt-1 pr-1 ${
 						open ? 'bg-muted' : 'hover:bg-muted'
 					}`}
 					style={{ width: LINKED_WIDTH }}
-					aria-label={`Links of ${lead.heading}: ${counts.map(({ link, n }) => `${link.label} ${n}`).join(', ')}`}
+					aria-label={`Links of ${lead.heading}: ${[
+						...counts.map(({ link, n }) => `${link.label} ${n}`),
+						...(needed ? [`Needed by ${needed.count}`] : []),
+					].join(', ')}`}
 				>
-					{counts.map(({ link, n }) => (
-						<span key={link.key} title={`${link.label} ${n}`} className="flex">
-							<LinkTile link={link} n={n} />
+					{/* What the row needs, left of the rule; who needs it, right of it, always at the
+					    cell's end so the solid tiles line up down the column. */}
+					<span className="flex min-w-0 flex-1 flex-wrap items-center gap-x-2.5 gap-y-2">
+						{counts.map(({ link, n }) => (
+							<span key={link.key} title={`${link.label} ${n}`} className="flex">
+								<LinkTile link={link} n={n} />
+							</span>
+						))}
+					</span>
+					{needed && counts.length > 0 && (
+						<span className="mt-0.5 h-[18px] w-px shrink-0 bg-border" aria-hidden />
+					)}
+					{needed && (
+						<span title={`Needed by ${needed.count}`} className="mr-1.5 flex">
+							<NeededByTile n={needed.count} />
 						</span>
-					))}
+					)}
 				</button>
 			</PopoverPrimitive.Trigger>
 			<PopoverPrimitive.Portal>
@@ -716,7 +809,9 @@ function LinkedCell({
 					}}
 					onPointerEnter={hoverOpen}
 					onPointerLeave={hoverClose}
-					className="z-50 flex w-[250px] flex-col gap-2 rounded-xl border border-border bg-popover px-3 pt-2.5 pb-3 text-2xs text-popover-foreground shadow-md"
+					// A long list scrolls inside the room the window leaves under the row.
+					className="z-50 flex w-[250px] flex-col gap-2 overflow-y-auto rounded-xl border border-border bg-popover px-3 pt-2.5 pb-3 text-2xs text-popover-foreground shadow-md"
+					style={{ maxHeight: 'var(--radix-popover-content-available-height)' }}
 				>
 					{counts.map(({ link, n }, i) => (
 						<Fragment key={link.key}>
@@ -730,6 +825,31 @@ function LinkedCell({
 							</section>
 						</Fragment>
 					))}
+					{needed && counts.length > 0 && <span className="h-px bg-border" aria-hidden />}
+					{needed && (
+						<section className="flex flex-col gap-1.5">
+							<span className="flex items-center gap-[7px] text-[11px] font-semibold">
+								<NeededByTile small />
+								Needed by {needed.count}
+							</span>
+							{needed.groups.map(({ relation, clauses }) => (
+								<span key={relation} className="flex flex-col gap-1 pl-[25px]">
+									<span className="text-muted-foreground">{NEEDED_AS[relation].label}</span>
+									<span className="flex flex-wrap gap-1">
+										{clauses.map((clause) =>
+											goButton(
+												NEEDED_AS[relation].link,
+												clause.clauseId,
+												clause.label,
+												`Go to ${clause.label}: ${NEEDED_AS[relation].why}`,
+												null
+											)
+										)}
+									</span>
+								</span>
+							))}
+						</section>
+					)}
 				</PopoverPrimitive.Content>
 			</PopoverPrimitive.Portal>
 		</PopoverPrimitive.Root>

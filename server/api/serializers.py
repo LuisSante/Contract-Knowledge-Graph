@@ -27,14 +27,26 @@ class ClauseImportanceRequestSerializer(serializers.Serializer):
     countedStatementIds = serializers.ListField(child=serializers.CharField(), required=False, allow_null=True, default=None)
 
 
+class ClauseNeedSerializer(serializers.Serializer):
+    # A clause that needs the row's one to be read, and how.
+    clauseId = serializers.CharField()
+    relation = serializers.ChoiceField(choices=["modified_by", "depends_on", "refers_to"])
+
+
 class ClauseImportanceResponseSerializer(serializers.Serializer):
     status = serializers.CharField(default="success")
     documentId = serializers.CharField()
+    # The rows' relevance: the walk between clauses.
     byClause = serializers.DictField(child=serializers.FloatField())
+    # Why a row stands above the base value: the clauses that need it. A row left out is at
+    # the base and has no place by relevance.
+    neededBy = serializers.DictField(child=ClauseNeedSerializer(many=True))
     byStatement = serializers.DictField(child=serializers.FloatField())
     # The whole fixed point and its restart vector; the graph view draws both.
     byNode = serializers.DictField(child=serializers.FloatField())
     priorByNode = serializers.DictField(child=serializers.FloatField())
+    # What that walk leaves on each row's statements: which clauses the contract paints first.
+    graphByClause = serializers.DictField(child=serializers.FloatField())
     peak = serializers.FloatField()
     iterations = serializers.IntegerField()
 

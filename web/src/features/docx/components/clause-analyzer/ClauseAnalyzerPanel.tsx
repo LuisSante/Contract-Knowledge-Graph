@@ -219,7 +219,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 						secondPartyId,
 						topK,
 						severity,
-						clauseImportance?.byClause ?? null
+						clauseImportance?.graphByClause ?? null
 					)
 				: null,
 		[viewKg, isPartyFocus, focusNodeId, secondPartyId, topK, severity, clauseImportance]

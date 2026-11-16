@@ -5,6 +5,7 @@ import {
 	useId,
 	useState,
 	type KeyboardEvent,
+	type ReactElement,
 	type ReactNode,
 } from 'react';
 import {
@@ -41,24 +42,15 @@ import type { DeonticKind } from '@/types/knowledge';
 import { flagTypeLabel } from '@/features/docx/utils/knowledge/red-flags';
 import type { ContractRisk } from '@/types/risks';
 
-/**
- * The types by their plain names, as the table shows them. Each sits with the party it
- * belongs to: a right with its holder, an obligation or prohibition with the party it binds.
- */
 export const KIND_LABEL: Record<DeonticKind, string> = {
 	obligation: 'Obligations',
 	right: 'Rights',
 	prohibition: 'Prohibitions',
 };
 
-/** A colour washed out to a background, for hex and CSS variables alike. */
 export const tint = (color: string, percent: number) =>
 	`color-mix(in oklab, ${color} ${percent}%, transparent)`;
 
-/**
- * Arrow keys, Home and End over a row of options where only the picked one is a tab stop
- * (tabs, radios): picks the next one and moves focus to it.
- */
 function roveOptions<T extends string | number>(
 	event: KeyboardEvent<HTMLElement>,
 	options: readonly T[],
@@ -82,9 +74,6 @@ function roveOptions<T extends string | number>(
 	event.currentTarget.querySelector<HTMLElement>(`[data-option="${next}"]`)?.focus();
 }
 
-/** One deontic type on screen at a time, as tabs: obligations, rights and prohibitions are
- *  never shown or counted together. Each tab carries its two counts, the first party's then
- *  the second's, with the larger in bold, so who leads a type shows before opening it. */
 export function KindTabs({
 	id,
 	kind,
@@ -95,21 +84,16 @@ export function KindTabs({
 	aside,
 	shared = null,
 }: {
-	/** Names the tabs and their panel: `${id}-tab-<type>` controls `${id}-panel`. */
 	id: string;
 	kind: DeonticKind;
 	onPick: (kind: DeonticKind) => void;
 	counts: Record<DeonticKind, Record<Side, number>> | null;
 	names: Record<Side, string>;
 	labels?: Record<DeonticKind, string>;
-	/** A small key at the right end of the tabs' row. */
 	aside?: ReactNode;
-	/** The pairs set aside in the Both column, per type («· 4 both»); null when not set aside. */
 	shared?: Record<DeonticKind, number> | null;
 }) {
 	return (
-		// The tabs sit on the bottom rule even when the key beside them wraps to two lines; a
-		// narrow panel wraps the key, then the tabs, instead of cutting them off.
 		<div className="flex flex-wrap items-end gap-x-8 border-b border-border/60 px-6">
 			<div
 				role="tablist"
@@ -139,7 +123,7 @@ export function KindTabs({
 							onClick={() => onPick(k)}
 							title={said || undefined}
 							className={cn(
-								'-mb-px inline-flex items-center gap-2 border-b-2 pt-3 pb-2.5 text-sm',
+								'-mb-px inline-flex items-center gap-0.5 border-b-2 pt-3 pb-2.5 text-sm',
 								active
 									? 'font-semibold text-foreground'
 									: 'border-transparent font-medium text-muted-foreground hover:text-foreground'
@@ -152,7 +136,6 @@ export function KindTabs({
 							/>
 							{labels[k]}
 							{count && (
-								// In the columns' order: the first party, what both share, the second party.
 								<span className="inline-flex gap-1.5 text-xs font-bold tabular-nums">
 									<span style={{ color: textColorOf(SIDE_COLOR.a) }}>{count.a}</span>
 									{shared && (
@@ -175,11 +158,8 @@ export function KindTabs({
 	);
 }
 
-/** What firm and conditional mean, said wherever the words appear. */
 const FIRM_NOTE = 'Firm: applies always. Conditional: only if something happens.';
 
-/** The key for the table's squares when conditional ones are marked: filled when the
- *  statement is firm, only an outline when a condition gates it. */
 export function FirmKey({ color }: { color: string }) {
 	return (
 		<span
@@ -201,8 +181,6 @@ export function FirmKey({ color }: { color: string }) {
 	);
 }
 
-/** The mark on the rule between the two columns: an arrow, in that party's colour,
- *  towards the column with more squares, or «=» when both have as many. */
 export function AxisMark({
 	favour,
 	title,
@@ -210,7 +188,6 @@ export function AxisMark({
 	className,
 }: {
 	favour: Favour;
-	/** Said on hover and to screen readers; absent, the mark is only decoration (a key). */
 	title?: string;
 	muted?: boolean;
 	className?: string;
@@ -241,7 +218,6 @@ export function AxisMark({
 	);
 }
 
-/** How the table treats statements a condition gates. */
 export type ConditionMode = 'all' | 'mark' | 'firm';
 
 const CONDITION_MODES: Array<{ mode: ConditionMode; label: string; hint: string }> = [
@@ -252,7 +228,6 @@ const CONDITION_MODES: Array<{ mode: ConditionMode; label: string; hint: string 
 
 const MODE_ORDER = CONDITION_MODES.map((option) => option.mode);
 
-/** One of three views, like the type tabs: nothing is weighted, the reader picks. */
 export function ConditionModePicker({
 	mode,
 	onPick,
@@ -292,8 +267,6 @@ export function ConditionModePicker({
 	);
 }
 
-/** «You are»: the reader says which party they are, so the table can say what
- *  goes against them. Picking the chosen party again leaves nobody picked, the default. */
 export function YouArePicker({
 	names,
 	me,
@@ -332,7 +305,6 @@ export function YouArePicker({
 	);
 }
 
-/** Leaves only the rows that go against the reader, in the type shown; it needs «You are». */
 export function AgainstFilter({
 	on,
 	onChange,
@@ -367,17 +339,43 @@ export function AgainstFilter({
 	);
 }
 
-export function RankBadge({ rank, className }: { rank: number | undefined; className?: string }) {
+export function WithHint({ hint, children }: { hint: string; children: ReactElement }) {
 	return (
+		<Tooltip>
+			<TooltipTrigger asChild>{children}</TooltipTrigger>
+			<TooltipContent
+				side="top"
+				sideOffset={6}
+				className="max-w-72 border border-border bg-card text-card-foreground shadow-sm [&_svg]:bg-card [&_svg]:fill-card"
+			>
+				{hint}
+			</TooltipContent>
+		</Tooltip>
+	);
+}
+
+/** A row's place in a circle; `hint` says what the place stands on. */
+export function RankBadge({
+	rank,
+	hint,
+	className,
+}: {
+	rank: number | string | undefined;
+	hint?: string;
+	className?: string;
+}) {
+	const badge = (
 		<span
 			className={cn(
 				'flex size-6 shrink-0 items-center justify-center rounded-full border border-border text-2xs font-medium text-muted-foreground tabular-nums',
+				hint && 'cursor-help',
 				className
 			)}
 		>
 			{rank}
 		</span>
 	);
+	return hint ? <WithHint hint={hint}>{badge}</WithHint> : badge;
 }
 
 export function SectionTag({ section }: { section: string }) {
@@ -416,7 +414,6 @@ export function ModifiesInfo({ about, inverse }: { about?: string; inverse?: boo
 	);
 }
 
-/** The ⓘ that explains a `depends_on` link; `about` names the two clauses when known. */
 export function DependsOnInfo({ about, inverse }: { about?: string; inverse?: boolean }) {
 	return (
 		<RelationInfo
@@ -428,7 +425,6 @@ export function DependsOnInfo({ about, inverse }: { about?: string; inverse?: bo
 	);
 }
 
-/** The ⓘ that explains a `references` link; `about` names the two clauses when known. */
 export function RefersToInfo({ about, inverse }: { about?: string; inverse?: boolean }) {
 	return (
 		<RelationInfo
@@ -440,19 +436,16 @@ export function RefersToInfo({ about, inverse }: { about?: string; inverse?: boo
 	);
 }
 
-/** The ⓘ that explains a `uses` link; `about` names the words and where they are defined. */
 export function UsesInfo({ about, inverse }: { about?: string; inverse?: boolean }) {
 	return <RelationInfo about={about} note={USES_NOTE} label="What uses means" inverse={inverse} />;
 }
 
-/** The ⓘ that explains a `defines` link; `about` names the words and where they are used. */
 export function DefinesInfo({ about, inverse }: { about?: string; inverse?: boolean }) {
 	return (
 		<RelationInfo about={about} note={DEFINES_NOTE} label="What defines means" inverse={inverse} />
 	);
 }
 
-/** An ⓘ with a short explanation, and what it is about in bold above it. */
 function RelationInfo({
 	about,
 	note,
@@ -462,7 +455,6 @@ function RelationInfo({
 	about?: string;
 	note: string;
 	label: string;
-	/** On a filled tag: light, so it reads on the colour. */
 	inverse?: boolean;
 }) {
 	return (
@@ -493,8 +485,6 @@ function RelationInfo({
 	);
 }
 
-/** The trigger after its lead, without the word the lead already says: «Only upon» + «upon
- *  the expiration date» reads «Only upon the expiration date». */
 export function afterLead(lead: string, trigger: string): string {
 	const word = lead.trim().split(/\s+/).pop()?.toLowerCase() ?? '';
 	return word && trigger.toLowerCase().startsWith(`${word} `)
@@ -502,8 +492,6 @@ export function afterLead(lead: string, trigger: string): string {
 		: trigger;
 }
 
-/** On the contract's margin line, by a paragraph that holds the condition of a statement
- *  written apart from it: «only if ⓘ», «unless ⓘ». */
 export function ConditionTag({ lead, trigger }: { lead: string; trigger: string }) {
 	return (
 		<span className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-1.5 py-0.5 text-2xs font-medium whitespace-nowrap text-foreground shadow-sm">
@@ -518,8 +506,6 @@ export function ConditionTag({ lead, trigger }: { lead: string; trigger: string 
 	);
 }
 
-/** On the contract's margin line, where it leaves the picked clause: its number, filled, so the
- *  start of every link stands apart from the white labels along them. */
 export function ClauseAnchorTag({ label }: { label: string }) {
 	return (
 		<span className="inline-flex items-center rounded-full bg-primary px-2 py-0.5 text-2xs font-semibold whitespace-nowrap text-primary-foreground shadow-sm">
@@ -528,8 +514,6 @@ export function ClauseAnchorTag({ label }: { label: string }) {
 	);
 }
 
-/** Each kind of link between clauses has its own fill, so the three tell apart on the margin
- *  line without a legend. None is a statement type's colour, nor the picked clause's blue. */
 export const LINK_COLOR = {
 	modifies: '#6d28d9',
 	dependsOn: '#0e7490',
@@ -538,8 +522,6 @@ export const LINK_COLOR = {
 	defines: '#facc15',
 } as const;
 
-/** A filled tag on the contract's margin line, halfway along its link. It never grows past
- *  the room its holder gives it: a long label is cut with «…» and said whole on hover. */
 function LinkTag({
 	color,
 	label,
@@ -548,7 +530,6 @@ function LinkTag({
 }: {
 	color: string;
 	label: string;
-	/** Dark text, for a light fill. */
 	dark?: boolean;
 	children: ReactNode;
 }) {
@@ -567,7 +548,6 @@ function LinkTag({
 	);
 }
 
-/** On the contract's margin line, by the picked clause: the linked sentences modify it. */
 export function ModifiedByTag({ clause, by }: { clause: string; by: string[] }) {
 	return (
 		<LinkTag color={LINK_COLOR.modifies} label={`modified by ${by.join(', ')}`}>
@@ -576,7 +556,6 @@ export function ModifiedByTag({ clause, by }: { clause: string; by: string[] }) 
 	);
 }
 
-/** On the contract's margin line, by the picked clause: it depends on the linked clauses. */
 export function DependsOnTag({ clause, on }: { clause: string; on: string[] }) {
 	return (
 		<LinkTag color={LINK_COLOR.dependsOn} label={`depends on ${on.join(', ')}`}>
@@ -585,7 +564,6 @@ export function DependsOnTag({ clause, on }: { clause: string; on: string[] }) {
 	);
 }
 
-/** On the contract's margin line, by the picked clause: it refers to the linked clauses. */
 export function RefersToTag({ clause, to }: { clause: string; to: string[] }) {
 	return (
 		<LinkTag color={LINK_COLOR.refersTo} label={`refers to ${to.join(', ')}`}>
@@ -594,8 +572,6 @@ export function RefersToTag({ clause, to }: { clause: string; to: string[] }) {
 	);
 }
 
-/** On the contract's margin line, halfway to a paragraph that defines words the picked clause
- *  uses: «uses "Licensee"»; the last such tag also says how many more have no line. */
 export function UsesTag({
 	terms,
 	definedIn,
@@ -613,9 +589,6 @@ export function UsesTag({
 	);
 }
 
-/** On the contract's margin line, halfway to a clause that uses words the picked clause
- *  defines: «defines "IOF" → §11.1», since one word may reach several clauses; the last such
- *  tag also says how many more have no line. */
 export function DefinesTag({
 	terms,
 	usedIn,
@@ -637,8 +610,6 @@ export function DefinesTag({
 	);
 }
 
-/** Jumps to the clause in the knowledge graph tab: an arrow right after the clause's name,
- *  inline, so it follows the name's last word when the name wraps. */
 export function GraphLink({
 	onClick,
 	heading,
@@ -665,16 +636,12 @@ export function GraphLink({
 	);
 }
 
-/** «upon the expiration date»: the operator once, in lower case, and not at all when the
- *  trigger already opens with it. */
 function conditionText(condition: KgCondition): string {
 	const operator = (condition.operator || 'IF').toLowerCase();
 	const trigger = condition.trigger;
 	return trigger.toLowerCase().startsWith(`${operator} `) ? trigger : `${operator} ${trigger}`;
 }
 
-/** «only if» at the end of a statement's line, when the reader marks conditions; the
- *  conditions themselves are said on hover and when the line opens. */
 function ConditionChip({ conditions }: { conditions: KgCondition[] }) {
 	if (conditions.length === 0) return null;
 	return (
@@ -691,11 +658,6 @@ function ConditionChip({ conditions }: { conditions: KgCondition[] }) {
 	);
 }
 
-/**
- * What a statement says about time and money, under its words: «When» (its deadline), «How
- * often» (its frequency) and «How much» (its values), each named in plain words with an icon,
- * so nothing has to be read from a colour.
- */
 function TimingFields({ timing }: { timing: StatementTiming }) {
 	const fields = [
 		{ key: 'when', Icon: ClockIcon, label: 'When', value: timing.deadline, money: false },
@@ -709,8 +671,6 @@ function TimingFields({ timing }: { timing: StatementTiming }) {
 		},
 	].filter((field) => field.value);
 	return (
-		// Padding, not margin, around the box: a bottom margin would slip out of the last line
-		// and leave the column's white ending flush with the box.
 		<div className="pr-3 pb-2 pl-8">
 			<dl className="grid grid-cols-[auto_auto_1fr] items-baseline gap-x-2 gap-y-1 rounded-md bg-muted/60 px-2.5 py-1.5">
 				{fields.map(({ key, Icon, label, value, money }) => (
@@ -732,12 +692,6 @@ function TimingFields({ timing }: { timing: StatementTiming }) {
 	);
 }
 
-/**
- * One statement as a line, with its deadline, frequency and values named under it. The line
- * opens the rest: whose it is when both parties share it, its conditions, where it sits and
- * the contract's own words. A click on the place underlines it in the contract, and the one
- * underlined there stays marked.
- */
 export function Fragment({
 	served,
 	section,
@@ -753,21 +707,14 @@ export function Fragment({
 }: {
 	served: Served;
 	section: string | null;
-	/** Said first when the statement opens, for one the column alone does not tell. */
 	tag?: string;
-	/** The colour of the party the tag names. */
 	tagColor?: string;
 	conditions?: KgCondition[];
-	/** The other party has the same statement, word for word. */
 	reciprocal?: boolean;
-	/** The party a condition's trigger names, when it names just one. */
 	conditionParty?: (condition: KgCondition) => { name: string; color: string } | null;
-	/** Its deadline, frequency and values; absent when the graph gives none. */
 	timing?: StatementTiming;
 	onOpen: (nodeId: string) => void;
-	/** The system's detector judged it risky: its type as a tag, its reason under the line. */
 	risk?: ContractRisk;
-	/** A red flag of the dataset matched it: a quiet tag with the dot its square carries. */
 	flagged?: boolean;
 }) {
 	const shown = useClauseAnalyzerStore(
@@ -800,8 +747,6 @@ export function Fragment({
 						)}
 						aria-hidden
 					/>
-					{/* The tags drop under the label when the column is too narrow for both, so the
-					    label keeps its line instead of breaking word by word. */}
 					<span className="flex min-w-0 flex-1 flex-wrap items-center gap-x-1.5 gap-y-1">
 						<span className="min-w-0 text-sm text-foreground">{served.mark.label}</span>
 						{risk && (
@@ -873,7 +818,6 @@ export function Fragment({
 							</p>
 						);
 					})}
-					{/* The evidence toggle and the place share a line; the quote opens under both. */}
 					<div className="flex items-center gap-2 text-xs font-medium">
 						<button
 							type="button"

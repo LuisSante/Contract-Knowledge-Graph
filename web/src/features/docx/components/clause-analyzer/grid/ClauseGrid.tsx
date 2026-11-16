@@ -31,12 +31,12 @@ import {
 import { pairShort } from '@/features/docx/components/clause-analyzer/parts/bits';
 import type { RowOrder } from '@/features/docx/hooks/useClauseRows';
 
-/** The Clause Analyzer's layout: room for a long clause name on one line, and 10 marks to a
- *  column before it wraps, which leaves room for the «Linked» column. */
-const NAME_WIDTH = 320;
+/** The Clause Analyzer's layout: the clause names give room to the squares, 8 to a column
+ *  before it wraps, and to the «Linked» column. */
+const NAME_WIDTH = 280;
 /** A party's column wraps after this many squares; it is only as wide as its fullest row
  *  needs, and never narrower than MIN_MARKS, so its name still reads above it. */
-const COLUMN_MARKS = 10;
+const COLUMN_MARKS = 8;
 const MIN_MARKS = 6;
 /** The words after "CLAUSE" for each ordering. */
 const SORT_LABELS: Record<RowOrder, string> = {
@@ -178,7 +178,7 @@ export function ClauseGrid({
 						onClick={onToggleSort}
 						className="flex-1 truncate text-left font-medium text-muted-foreground hover:text-foreground"
 						style={{ flexBasis: NAME_WIDTH, minWidth: LABEL_MIN_WIDTH, maxWidth: LABEL_MAX_WIDTH }}
-						title="Order the rows by size (how many squares each shows in this type, both parties together), by how much each clause weighs inside the contract (PageRank with a per-clause prior), or by its position in the document"
+						title="Order the rows by size (how many squares each shows in this type, both parties together), by relevance (how much the other clauses need each one to be read: a PageRank over the links between clauses), or by its position in the document"
 					>
 						CLAUSE
 						<span className="font-normal">

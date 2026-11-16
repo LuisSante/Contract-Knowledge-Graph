@@ -126,9 +126,14 @@ class ClauseImportanceView(APIView):
                 "status": "success",
                 "documentId": canonical_id,
                 "byClause": result.by_clause,
+                "neededBy": {
+                    clause_id: [{"clauseId": need.reader, "relation": need.relation} for need in found]
+                    for clause_id, found in result.needed_by.items()
+                },
                 "byStatement": result.by_statement,
                 "byNode": result.by_node,
                 "priorByNode": result.prior_by_node,
+                "graphByClause": result.graph_by_clause,
                 "peak": result.peak,
                 "iterations": result.iterations,
             }

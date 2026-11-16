@@ -39,8 +39,8 @@ export function computePairScores(
 	const scoresB = computePartyScores(kg, partyBId, severity);
 	const clauseOfStatement = new Map(deonticNodes(kg).map((v) => [v.id, v.clauseId] as const));
 
-	// The top is a set of CLAUSES, ranked by the server's clause importance — the same
-	// value that orders the rows. Until it arrives, severity alone stands in for it.
+	// The top is a set of CLAUSES, ranked by what the server's walk over the whole graph
+	// leaves on each one's statements. Until it arrives, severity alone stands in for it.
 	const rankOf = (clauseId: string | null) =>
 		clauseId ? (importanceByClause?.[clauseId] ?? scoresA.clauseScore.get(clauseId) ?? 0) : 0;
 	const topClauseIds = new Set(

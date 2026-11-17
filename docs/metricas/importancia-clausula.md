@@ -19,6 +19,54 @@ size» cuenta los cuadrados de la fila y «by order» sigue el contrato.
 
 ---
 
+## De un vistazo
+
+El recorrido entero, del contrato al puesto de cada fila, con un contrato inventado de cuatro
+cláusulas entre Buyer y Supplier. Es más pequeño que el ejemplo del apartado 3 para que quepa
+en una imagen:
+
+![Del contrato a la relevancia en cinco pasos: el documento, el grafo, la tabla, el paseo y la cuenta](../img/relevancia-recorrido.webp)
+
+1. **The contract.** El documento de entrada, con sus cláusulas.
+2. **Knowledge graph.** Lo que la extracción saca del documento. Para la relevancia se usan
+   tres clases de nodos: las partes, las cláusulas y los enunciados («O» es una obligación y
+   «R» un derecho). Y seis aristas. Tres dicen de quién es cada enunciado y en qué cláusula
+   está: `assigns_obligation_to`, `grants_right_to` e `is_part_of`. Las otras tres, en
+   naranja, unen una cláusula con otra: `depends_on`, `references` y `modifies` (apartado 1).
+3. **Clause table.** Cada cláusula con enunciados es una fila, y cada enunciado un cuadrado
+   en la columna de su parte. El lector dice quién es en «You are», y las filas donde esa
+   parte tiene algún cuadrado son las suyas. La imagen junta obligaciones y derechos en una
+   sola tabla; en la app van en pestañas distintas.
+4. **The walk.** Buyer reparte su peso inicial entre sus dos filas, 1/2 a cada una, y desde
+   ellas el paseo sigue las flechas hacia las cláusulas que hacen falta para leerlas.
+   `modifies` se recorre al revés de como está en el grafo: Liability cap modifica Indemnity,
+   así que quien lee Indemnity necesita Liability cap.
+5. **The score.** La relevancia $S$ de una fila es lo que le llega por las flechas. Delivery
+   queda primera porque la necesitan las dos filas de Buyer. Liability cap queda segunda
+   porque solo la necesita Indemnity, que además reparte lo suyo entre dos.
+
+**$R$ no es la relevancia.** En el paso 4, Buyer da 1/2 a Payment y 1/2 a Indemnity, pero las
+dos acaban con $R = 0.33$. El 1/2 es con lo que empiezan. Después, en cada ronda, la mitad
+de lo que tiene una cláusula sigue sus flechas y la otra mitad vuelve a Buyer, que la reparte
+otra vez. Lo que llega a Delivery y a Liability cap, que no necesitan a ninguna, vuelve
+entero:
+
+| | Payment | Delivery | Indemnity | Liability cap |
+|---|---|---|---|---|
+| $R$, ronda 0 | 0.5 | 0 | 0.5 | 0 |
+| $R$, ronda 1 | 0.25 | 0.375 | 0.25 | 0.125 |
+| $R$, ronda 2 | 0.375 | 0.1875 | 0.375 | 0.0625 |
+| $R$, ronda 31 | 0.3333 | 0.25 | 0.3333 | 0.0833 |
+| $S$ | 0 | 0.25 | 0 | 0.0833 |
+
+$R$ es la parte del paseo que pasa por cada cláusula, y entre las cuatro suma 1. La
+relevancia es $S$, la última línea: solo lo que llega por flechas. Payment e Indemnity tienen
+$R = 0.33$ y $S = 0$ porque todo lo suyo viene del reparto de Buyer y ninguna cláusula las
+necesita: quedan sin puesto. Y $D = 0.33$ es lo que hay en Delivery y Liability cap juntas
+($0.25 + 0.08$).
+
+---
+
 ## 1. Los enlaces, y hacia dónde apuntan
 
 Tres aristas del grafo unen una cláusula con otra. Las tres salen del texto: la cláusula
@@ -66,13 +114,24 @@ Tres reglas más:
 Es un PageRank personalizado sobre ese grafo de cláusulas, leído desde la parte $a$ que el
 lector eligió.
 
-**El inicio.** El paseo empieza, y vuelve a empezar, solo en las filas donde la parte tiene
-algún enunciado: una obligación o una prohibición que debe cumplir, o un derecho que tiene.
-Todas por igual:
+**El inicio.** La parte es el origen del paseo: reparte su peso inicial, a partes iguales,
+entre las filas donde tiene algún enunciado (una obligación o una prohibición que debe
+cumplir, o un derecho que tiene). Cada vez que el paseo vuelve a empezar, lo reparte otra
+vez igual:
 
 $$
 \pi_a(c)=\begin{cases}\dfrac{1}{|F_a|} & c\in F_a\\[8pt] 0 & c\notin F_a\end{cases}
 $$
+
+En el grafo, cada enunciado está unido a su parte (`assigns_obligation_to` para las
+obligaciones y las prohibiciones, `grants_right_to` para los derechos) y a su cláusula
+(`is_part_of`): de ahí sale en qué filas empieza cada una. Dos precisiones:
+
+- **El paseo no pasa por la parte.** El código pone su peso directamente en esas filas. Es
+  lo mismo que tratar a la parte como el nodo inicial que da un primer paso hacia ellas: el
+  orden no cambia.
+- **El reparto es por fila, no por enunciado.** Una fila con diez enunciados de la parte
+  recibe lo mismo que una con uno (apartado 4).
 
 **La iteración.** En cada ronda, cada cláusula reparte la mitad de lo que tiene entre las
 cláusulas que necesita, y la otra mitad vuelve al inicio:
@@ -133,7 +192,9 @@ $$
   qué necesitan las cláusulas de la parte, sean de quien sean las que necesitan.
 
 Sin el reinicio, una cláusula donde la parte no tiene ningún enunciado puede quedar primera
-si condiciona las suyas.
+si condiciona las suyas. En la imagen del apartado 3 se ve: contando el reinicio, las
+cláusulas 1, 3 y 4 de Party A valdrían 0.2105, lo mismo que la 7, y empatarían en el primer
+puesto solo por ser suyas.
 
 ### Las filas sin puesto
 
@@ -257,24 +318,45 @@ La cláusula 6 queda segunda con solo dos cláusulas que la necesitan porque una
 Para Party B sale lo mismo, porque empieza en las mismas siete filas. La cabecera de la
 tabla lo diría: «same for both parties».
 
-### Cuando las dos partes no empiezan en las mismas filas
+### Cuando cada parte empieza en filas distintas
 
-Las dos lecturas se separan en cuanto una parte no tiene nada en alguna cláusula. Supón que
-Party B no tuviera ningún cuadrado, ni propio ni de «Both», en las cláusulas 1, 3 y 4.
-Entonces empieza solo en cuatro filas, $F_B = \{2, 5, 6, 7\}$, con inicio $1/4$:
+Las dos lecturas se separan en cuanto las partes no tienen enunciados en las mismas
+cláusulas. El mismo contrato, con los mismos enlaces, pero con Party A solo en las cláusulas
+1, 3 y 4, y Party B solo en la 2, la 5, la 6 y la 7:
 
-| Puesto | By relevance for Party B | $S_B$ | La necesitan, en el camino de Party B |
-|---|---|---|---|
-| 1 | Cláusula 6 | 0.1667 | la 2 (dos veces) y la 5 |
-| 2 | Cláusula 7 | 0.0333 | la 2 |
-| – | Cláusulas 1, 2, 3, 4 y 5 | 0 | ninguna |
+![La relevancia del mismo contrato leída desde Party A y desde Party B](../img/relevancia-por-parte.webp)
 
-- **La cláusula 7 baja de la primera a la segunda.** La 1 y la 3 la necesitan, pero Party B
-  no tiene nada en ellas y su paseo no pasa por ahí: solo le manda la 2.
-- **La cláusula 5 pierde su puesto.** Solo la necesita la 4, que no está en el camino de
-  Party B. Su ficha «Needed by 1» sigue en «Linked»: es un hecho del contrato, no de la
-  lectura.
-- **Para Party A no cambia nada:** sigue teniendo cuadrados en las siete cláusulas.
+Cómo leer la imagen:
+
+- **Línea punteada: el reparto inicial.** La parte reparte su peso a partes iguales entre las
+  cláusulas donde tiene enunciados: $1/3$ a cada una para Party A, $1/4$ para Party B. Es el
+  inicio $\pi_a$ del apartado 2.
+- **Flecha sólida: un enlace.** Para leer la cláusula de origen hace falta la de destino. Son
+  las mismas en los dos paneles; en color, las que recorre el paseo de esa parte.
+- **El puesto y el número: la relevancia $S_a$.** Solo cuenta lo que llega por flechas. Por
+  eso una cláusula puede decir «starts with 1/3 · no place»: la parte empieza en ella, pero
+  ninguna cláusula de su camino la necesita.
+- **Gris, «off the path»:** cláusulas por las que el paseo de esa parte no pasa.
+
+| Puesto | Para Party A | $S_A$ | La necesitan | Para Party B | $S_B$ | La necesitan |
+|---|---|---|---|---|---|---|
+| 1 | Cláusula 7 | 0.2105 | la 1 y la 3 | Cláusula 6 | 0.1667 | la 2 (dos veces) y la 5 |
+| 2 | Cláusula 5 | 0.1053 | la 4 | Cláusula 7 | 0.0333 | la 2 |
+| 3 | Cláusula 6 | 0.0526 | la 5 | | | |
+| – | Cláusulas 1, 2, 3 y 4 | 0 | ninguna de su camino | Cláusulas 1, 2, 3, 4 y 5 | 0 | ninguna de su camino |
+
+Lo que enseña:
+
+- **La cláusula 7 es la primera para Party A sin que tenga nada en ella.** La necesitan dos
+  de sus cláusulas, la 1 y la 3. La 2 también la necesita, pero no está en el camino de
+  Party A y no cuenta.
+- **A la cláusula 6 le llega de rebote.** Party A empieza en la 4, que necesita la 5, que
+  necesita la 6: por eso queda tercera, con la mitad que la 5.
+- **La cláusula 5 no tiene puesto para Party B aunque es suya.** Solo la necesita la 4, que
+  no está en su camino. Su ficha «Needed by 1» sigue en «Linked»: es un hecho del contrato,
+  no de la lectura.
+- **Empezar en una cláusula no le da puesto.** La 6 y la 7 son de Party B y tienen puesto,
+  pero porque la 2 y la 5 las necesitan, no por ser suyas.
 
 ### Relevancia y tamaño
 
@@ -526,8 +608,9 @@ elegida (el orden y el círculo) y con la otra (para saber si dan el mismo orden
 
 ## Cómo regenerar las cifras
 
-Desde `server/`. Primero sale el ejemplo inventado del apartado 3, con su variante, y después
-los nueve contratos leídos desde cada parte:
+Desde `server/`. Primero sale el ejemplo inventado del apartado 3, con su variante; después
+el contrato de la imagen del principio; y al final los nueve contratos leídos desde cada
+parte:
 
 ```bash
 uv run python - <<'EOF'
@@ -634,14 +717,31 @@ show_toy(example, 'A', 0.85)
 for kind, rows in TABLES.items():
     size = [a + b for a, _, b in rows]
     print(f'  por tamaño en {kind}:', sorted(range(1, 8), key=lambda i: (-size[i - 1], i)), 'tamaños', size)
-# La variante: Party B sin cuadrados, ni propios ni compartidos, en las cláusulas 1, 3 y 4.
-without = {kind: [(a + both, 0, 0) if i in (1, 3, 4) else (a, both, b) for i, (a, both, b) in enumerate(rows, 1)] for kind, rows in TABLES.items()}
-variant = toy(without)
-print('  VARIANTE: Party B sin cuadrados en 1, 3 y 4')
+# La variante de la imagen: Party A solo con cuadrados en las cláusulas 1, 3 y 4, y Party B solo en las demás.
+apart = {kind: [(a + both, 0, 0) if i in (1, 3, 4) else (0, 0, b + both) for i, (a, both, b) in enumerate(rows, 1)] for kind, rows in TABLES.items()}
+variant = toy(apart)
+print('  VARIANTE: Party A solo en 1, 3 y 4; Party B solo en 2, 5, 6 y 7')
 for party in 'AB':
     show_toy(variant, party)
+rounds(variant, 'A')
 
-# ---- 2. Los nueve contratos, leídos desde las dos partes con más enunciados
+# ---- 2. El contrato de la imagen del principio: cuatro cláusulas, Party A es Buyer y Party B es Supplier
+PICTURE = {
+    'clauses': [{'id': f'c{i}', 'ref': str(i)} for i in range(1, 5)],
+    'parties': [{'id': 'A', 'name': 'Buyer'}, {'id': 'B', 'name': 'Supplier'}],
+    'obligations': [{'id': 'o1', 'clauseId': 'c1', 'burdenPartyId': 'A'}, {'id': 'o2', 'clauseId': 'c2', 'burdenPartyId': 'B'},
+                    {'id': 'o3', 'clauseId': 'c3', 'burdenPartyId': 'B'}],
+    'rights': [{'id': 'r3', 'clauseId': 'c3', 'benefitPartyId': 'A'}, {'id': 'r4', 'clauseId': 'c4', 'benefitPartyId': 'B'}],
+    'prohibitions': [],
+    'edges': [{'type': 'depends_on', 'source': 'o1', 'target': 'c2'}, {'type': 'references', 'source': 'o3', 'target': 'c2'},
+              {'type': 'modifies', 'source': 'r4', 'target': 'c3'}],
+}
+print('LA IMAGEN DEL PRINCIPIO (1 Payment, 2 Delivery, 3 Indemnity, 4 Liability cap; Party A es Buyer)')
+print('  flechas:', ', '.join(f'{n.reader[1:]}->{n.needed[1:]}' for n in ppr.needs(PICTURE)))
+show_toy(PICTURE, 'A')
+rounds(PICTURE, 'A')
+
+# ---- 3. Los nueve contratos, leídos desde las dos partes con más enunciados
 print('CONTRATOS')
 for path in sorted(glob.glob('../infra/json/kg/root_*.json')):
     kg = json.load(open(path, encoding='utf-8'))

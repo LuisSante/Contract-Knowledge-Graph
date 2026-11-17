@@ -25,7 +25,6 @@ const SHELVES: Array<{ folder: string; group: string; order: number }> = [
 const WITHIN: Record<string, number> = {
 	'ontologia/esquema': 1,
 	'metricas/importancia-clausula': 1,
-	'metricas/reparto-beneficio': 2,
 };
 
 function shelfOf(slug: string) {

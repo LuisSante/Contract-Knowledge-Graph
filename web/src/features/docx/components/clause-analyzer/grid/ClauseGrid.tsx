@@ -10,6 +10,7 @@ import type {
 import type { DeonticKind } from '@/types/knowledge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
 	ClauseRow,
 	LinkedHeading,
@@ -20,6 +21,7 @@ import {
 	LABEL_MAX_WIDTH,
 	LABEL_MIN_WIDTH,
 	laneWidth,
+	LINKED_WIDTH,
 	PAIR_SECOND_COLOR,
 	PAIR_SECOND_TEXT_COLOR,
 	PARTY_COLOR,
@@ -38,6 +40,10 @@ const NAME_WIDTH = 280;
  *  needs, and never narrower than MIN_MARKS, so its name still reads above it. */
 const COLUMN_MARKS = 8;
 const MIN_MARKS = 6;
+/** A waiting row's bars, row after row: how much of the name's room one takes (in %), and how
+ *  many squares wide the one in a party's column is. Uneven, so the rows do not read as a block. */
+const WAITING_NAMES = [72, 54, 86, 63, 78, 48];
+const WAITING_MARKS = [5, 3, 6, 2, 4, 1];
 /** The words after "CLAUSE" for each ordering. */
 const SORT_LABELS: Record<RowOrder, string> = {
 	size: 'by size ↓',
@@ -54,6 +60,16 @@ interface ClauseGridProps {
 	activeClauseId: string | null;
 	laneName: (lane: GridLane) => string;
 	sortBy: RowOrder;
+	/** «You are»: the party the relevance is read from, by name; null, nobody is picked and
+	 *  the rows do not go by relevance. */
+	relevanceFor?: string | null;
+	/** The other party would read the rows by relevance in the same order. */
+	sameForBoth?: boolean;
+	/** The party's relevance is on its way: the rows have no order to be shown in yet, so as
+	 *  many waiting rows stand in their place. */
+	pending?: boolean;
+	/** Relevance was asked for and the party picked has none: said beside the order kept. */
+	relevanceMissing?: boolean;
 	/** Goes to the next ordering. */
 	onToggleSort: () => void;
 	paintLanes: Record<GridLane, boolean>;
@@ -98,6 +114,10 @@ export function ClauseGrid({
 	activeClauseId,
 	laneName,
 	sortBy,
+	relevanceFor = null,
+	sameForBoth = false,
+	pending = false,
+	relevanceMissing = false,
 	onToggleSort,
 	paintLanes,
 	onPaintLane,
@@ -178,12 +198,18 @@ export function ClauseGrid({
 						onClick={onToggleSort}
 						className="flex-1 truncate text-left font-medium text-muted-foreground hover:text-foreground"
 						style={{ flexBasis: NAME_WIDTH, minWidth: LABEL_MIN_WIDTH, maxWidth: LABEL_MAX_WIDTH }}
-						title="Order the rows by size (how many squares each shows in this type, both parties together), by relevance (how much the other clauses need each one to be read: a PageRank over the links between clauses), or by its position in the document"
+						title="Order the rows by size (how many squares each shows in this type, both parties together) or by their position in the document. With «You are» picked, also by relevance for that party: how much the clauses where it has a statement need each one to be read (a PageRank over the links between clauses)"
 					>
 						CLAUSE
 						<span className="font-normal">
 							{' · '}
-							{SORT_LABELS[sortBy]}
+							{sortBy === 'importance' && relevanceFor
+								? `by relevance for ${relevanceFor} ↓${sameForBoth ? ' · same for both parties' : ''}`
+								: `${SORT_LABELS[sortBy]}${
+										relevanceMissing && relevanceFor
+											? ` · relevance for ${relevanceFor} unavailable`
+											: ''
+									}`}
 						</span>
 					</button>
 					{/* The rows' gap, so each name stays over its column. */}
@@ -256,102 +282,184 @@ export function ClauseGrid({
 					<p className="px-6 py-4 text-sm text-muted-foreground">{emptyNote}</p>
 				)}
 
-				{shownRows.map((row, index) => (
-					<ClauseRow
-						key={row.clauseId ?? 'unfiled'}
-						row={row}
-						striped={index % 2 === 0}
-						active={activeClauseId !== null && row.clauseId === activeClauseId}
-						dimmed={activeClauseId !== null && row.clauseId !== activeClauseId}
-						lanes={lanes}
-						visibleKinds={visibleKinds}
-						paintLanes={paintLanes}
-						centerLanes
-						laneColumns={columns}
-						bothColumns={columns.both}
-						lead={leads.get(row)}
-						labelWidth={NAME_WIDTH}
-						boldStripes
-						conditionalIds={conditionalIds}
-						riskyIds={riskyIds}
-						flaggedIds={flaggedIds}
-						spotlightIds={spotlightIds}
-						bothLane={bothLane}
-						against={row.clauseId !== null && Boolean(againstIds?.has(row.clauseId))}
-						laneName={laneName}
-						onSelect={onSelectClause}
-						onOpenGraph={onOpenGraph}
-						expandable={Boolean(renderDetail)}
-						detailOpen={
-							row.clauseId !== null && row.clauseId === activeClauseId && detailOf === row.clauseId
-						}
-						onToggleDetail={toggleDetail}
-						detail={
-							renderDetail &&
-							activeClauseId !== null &&
-							row.clauseId === activeClauseId &&
-							detailOf === row.clauseId
-								? renderDetail(row)
-								: null
-						}
-						onGoToModifier={onGoToModifier}
-						onOpenMark={onOpenMark}
-						onFocusMark={onFocusMark}
-						onHoverMark={onHoverMark}
-						onLeaveMark={onLeaveMark}
-					/>
-				))}
-
-				<div className="flex items-center gap-3 px-3 py-2 text-2xs text-muted-foreground">
-					{/* Both steps stay available at once: opening ten and closing ten are
-					    the same move in opposite directions. */}
-					{hiddenRows > 0 && (
-						<Button
-							variant="ghost"
-							size="xs"
-							className="h-6 px-1.5 text-2xs"
-							onClick={() => setRowLimit((limit) => Math.min(clauseRows.length, limit + ROW_PAGE))}
-						>
-							↓ Show {Math.min(ROW_PAGE, hiddenRows)} more · {hiddenRows} left
-						</Button>
-					)}
-					{hiddenRows > ROW_PAGE && (
-						<Button
-							variant="ghost"
-							size="xs"
-							className="h-6 px-1.5 text-2xs"
-							onClick={() => setRowLimit(clauseRows.length)}
-						>
-							Show all
-						</Button>
-					)}
-					{rowLimit > ROW_PAGE && (
-						<Button
-							variant="ghost"
-							size="xs"
-							className="h-6 px-1.5 text-2xs"
-							onClick={() => setRowLimit((limit) => Math.max(ROW_PAGE, limit - ROW_PAGE))}
-						>
-							↑ Hide {Math.min(ROW_PAGE, rowLimit - ROW_PAGE)}
-						</Button>
-					)}
-					{unfiledRow && (
-						<label
-							className="flex cursor-pointer items-center gap-1.5"
-							title="Entities the extraction filed under no clause. A gap in the graph, not a part of the contract."
-						>
-							<Checkbox
-								checked={showUnfiled}
-								onCheckedChange={(value) => setShowUnfiled(value === true)}
-								className="size-3.5 shrink-0"
-								aria-label="Show the No clause assigned band"
+				{pending && (
+					<div
+						role="status"
+						aria-busy="true"
+						aria-label={`Ordering the clauses${relevanceFor ? ` for ${relevanceFor}` : ''}`}
+					>
+						{shownRows.map((row, index) => (
+							<WaitingRow
+								key={row.clauseId ?? 'unfiled'}
+								index={index}
+								columns={columns}
+								bothLane={bothLane}
+								linked={Boolean(leadOf)}
+								detail={Boolean(renderDetail)}
 							/>
-							Show “No clause assigned”
-							<span className="tabular-nums">{unfiledRow.total}</span>
-						</label>
-					)}
+						))}
+					</div>
+				)}
+
+				{!pending &&
+					shownRows.map((row, index) => (
+						<ClauseRow
+							key={row.clauseId ?? 'unfiled'}
+							row={row}
+							striped={index % 2 === 0}
+							active={activeClauseId !== null && row.clauseId === activeClauseId}
+							dimmed={activeClauseId !== null && row.clauseId !== activeClauseId}
+							lanes={lanes}
+							visibleKinds={visibleKinds}
+							paintLanes={paintLanes}
+							centerLanes
+							laneColumns={columns}
+							bothColumns={columns.both}
+							lead={leads.get(row)}
+							labelWidth={NAME_WIDTH}
+							boldStripes
+							conditionalIds={conditionalIds}
+							riskyIds={riskyIds}
+							flaggedIds={flaggedIds}
+							spotlightIds={spotlightIds}
+							bothLane={bothLane}
+							against={row.clauseId !== null && Boolean(againstIds?.has(row.clauseId))}
+							laneName={laneName}
+							onSelect={onSelectClause}
+							onOpenGraph={onOpenGraph}
+							expandable={Boolean(renderDetail)}
+							detailOpen={
+								row.clauseId !== null &&
+								row.clauseId === activeClauseId &&
+								detailOf === row.clauseId
+							}
+							onToggleDetail={toggleDetail}
+							detail={
+								renderDetail &&
+								activeClauseId !== null &&
+								row.clauseId === activeClauseId &&
+								detailOf === row.clauseId
+									? renderDetail(row)
+									: null
+							}
+							onGoToModifier={onGoToModifier}
+							onOpenMark={onOpenMark}
+							onFocusMark={onFocusMark}
+							onHoverMark={onHoverMark}
+							onLeaveMark={onLeaveMark}
+						/>
+					))}
+
+				{/* Nothing to page through while the rows are still to come. */}
+				{!pending && (
+					<div className="flex items-center gap-3 px-3 py-2 text-2xs text-muted-foreground">
+						{/* Both steps stay available at once: opening ten and closing ten are
+					    the same move in opposite directions. */}
+						{hiddenRows > 0 && (
+							<Button
+								variant="ghost"
+								size="xs"
+								className="h-6 px-1.5 text-2xs"
+								onClick={() =>
+									setRowLimit((limit) => Math.min(clauseRows.length, limit + ROW_PAGE))
+								}
+							>
+								↓ Show {Math.min(ROW_PAGE, hiddenRows)} more · {hiddenRows} left
+							</Button>
+						)}
+						{hiddenRows > ROW_PAGE && (
+							<Button
+								variant="ghost"
+								size="xs"
+								className="h-6 px-1.5 text-2xs"
+								onClick={() => setRowLimit(clauseRows.length)}
+							>
+								Show all
+							</Button>
+						)}
+						{rowLimit > ROW_PAGE && (
+							<Button
+								variant="ghost"
+								size="xs"
+								className="h-6 px-1.5 text-2xs"
+								onClick={() => setRowLimit((limit) => Math.max(ROW_PAGE, limit - ROW_PAGE))}
+							>
+								↑ Hide {Math.min(ROW_PAGE, rowLimit - ROW_PAGE)}
+							</Button>
+						)}
+						{unfiledRow && (
+							<label
+								className="flex cursor-pointer items-center gap-1.5"
+								title="Entities the extraction filed under no clause. A gap in the graph, not a part of the contract."
+							>
+								<Checkbox
+									checked={showUnfiled}
+									onCheckedChange={(value) => setShowUnfiled(value === true)}
+									className="size-3.5 shrink-0"
+									aria-label="Show the No clause assigned band"
+								/>
+								Show “No clause assigned”
+								<span className="tabular-nums">{unfiledRow.total}</span>
+							</label>
+						)}
+					</div>
+				)}
+			</div>
+		</div>
+	);
+}
+
+/** A row still to come: grey bars where its place, its name, each party's squares and its
+ *  links will be, in the same columns as a row. */
+function WaitingRow({
+	index,
+	columns,
+	bothLane,
+	linked,
+	detail,
+}: {
+	index: number;
+	columns: { a: number; b: number; both: number };
+	bothLane: boolean;
+	linked: boolean;
+	detail: boolean;
+}) {
+	const marks = (lane: 'a' | 'b') =>
+		Math.min(columns[lane], WAITING_MARKS[(index + (lane === 'a' ? 0 : 2)) % WAITING_MARKS.length]);
+	return (
+		<div className="flex items-center gap-2 px-3 py-1.5">
+			<div
+				className="flex flex-1 items-center gap-2"
+				style={{ flexBasis: NAME_WIDTH, minWidth: LABEL_MIN_WIDTH, maxWidth: LABEL_MAX_WIDTH }}
+			>
+				<Skeleton className="size-6 shrink-0 rounded-full" />
+				<Skeleton
+					className="h-3.5"
+					style={{ width: `${WAITING_NAMES[index % WAITING_NAMES.length]}%` }}
+				/>
+			</div>
+			<div className="flex flex-1 items-center justify-center gap-3.5 self-stretch">
+				<div className="flex shrink-0 justify-end" style={{ width: laneWidth(columns.a) }}>
+					<Skeleton className="h-3 rounded-sm" style={{ width: laneWidth(marks('a')) }} />
+				</div>
+				{bothLane ? (
+					<div
+						className="-my-1.5 shrink-0 self-stretch border-x border-border bg-slate-500/[0.07]"
+						style={{ width: bothWidth(columns.both) }}
+					/>
+				) : (
+					<span className="w-px shrink-0 self-stretch bg-border" />
+				)}
+				<div className="flex shrink-0 justify-start" style={{ width: laneWidth(columns.b) }}>
+					<Skeleton className="h-3 rounded-sm" style={{ width: laneWidth(marks('b')) }} />
 				</div>
 			</div>
+			{linked && (
+				<div className="flex shrink-0" style={{ width: LINKED_WIDTH }}>
+					<Skeleton className="h-[18px] w-10" />
+				</div>
+			)}
+			{detail && <span className="w-16 shrink-0" />}
 		</div>
 	);
 }

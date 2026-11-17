@@ -24,7 +24,7 @@ import { useFocusPayload } from '@/features/docx/hooks/useFocusPayload';
 import { useKnowledgeGraphData } from '@/features/docx/hooks/useKnowledgeGraphData';
 import { useAnalyzerPairSync } from '@/features/docx/hooks/useAnalyzerPair';
 import { SHOWN_LANES, useClauseRows, type RowOrder } from '@/features/docx/hooks/useClauseRows';
-import { useAgainstYou } from '@/features/docx/hooks/useAgainstYou';
+import { useAgainstYou, useYouAre } from '@/features/docx/hooks/useAgainstYou';
 import { PartyManager } from '@/features/docx/components/clause-analyzer/PartyManager';
 import { PartyEntry } from '@/features/docx/components/clause-analyzer/PartyEntry';
 import { ClauseGrid } from '@/features/docx/components/clause-analyzer/grid/ClauseGrid';
@@ -187,11 +187,42 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		return viewKg ? withSharedAside(firm, viewKg) : firm;
 	}, [grid, conditionMode, conditionalIds, viewKg]);
 
+	const pairIds =
+		status === 'ready' &&
+		isPartyFocus &&
+		focusNodeId &&
+		secondPartyId &&
+		secondPartyId !== focusNodeId
+			? { a: focusNodeId, b: secondPartyId }
+			: null;
+	const pairA = pairIds?.a ?? null;
+	const pairB = pairIds?.b ?? null;
+	const names = useMemo(
+		() => ({
+			a: viewKg?.parties.find((p) => p.id === pairA)?.name ?? 'Party A',
+			b: viewKg?.parties.find((p) => p.id === pairB)?.name ?? 'Party B',
+		}),
+		[viewKg, pairA, pairB]
+	);
+
+	// «You are»: the reader's party. The rows are read from it by relevance, and «Only against
+	// you» filters by it.
+	const { me, pickMe } = useYouAre(docId, pairIds);
+	const viewpoint = useMemo(
+		() => (me ? { side: me, name: pairShort(names)[me] } : null),
+		[me, names]
+	);
+
+	// Relevance is one party's: with nobody picked, or with none to be had for the one picked,
+	// the rows go by size or by the contract's order. `order` is the one they are in.
 	const {
 		kindCounts,
 		bothCounts,
 		clauseImportance,
-		rowImportance,
+		order,
+		reading,
+		relevanceFor,
+		sameForBoth,
 		clauseRows,
 		unfiledRow,
 		activeClause,
@@ -208,6 +239,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		kindsShown,
 		sortBy,
 		selectedClauseId,
+		viewpoint,
 	});
 
 	const pair = useMemo(
@@ -297,24 +329,6 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		[focusedPartyName, secondPartyId, partyNameById]
 	);
 
-	const pairIds =
-		status === 'ready' &&
-		isPartyFocus &&
-		focusNodeId &&
-		secondPartyId &&
-		secondPartyId !== focusNodeId
-			? { a: focusNodeId, b: secondPartyId }
-			: null;
-	const pairA = pairIds?.a ?? null;
-	const pairB = pairIds?.b ?? null;
-	const names = useMemo(
-		() => ({
-			a: viewKg?.parties.find((p) => p.id === pairA)?.name ?? 'Party A',
-			b: viewKg?.parties.find((p) => p.id === pairB)?.name ?? 'Party B',
-		}),
-		[viewKg, pairA, pairB]
-	);
-
 	// A row of the RED FLAGS table: the tab and row of the statement it matched, its square
 	// ringed, and the flag painted in the contract.
 	const revealFlag = useCallback(
@@ -362,8 +376,17 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		return counts;
 	}, [shownGrid, riskyIds, typeShown]);
 
-	const { me, pickMe, againstIds, onlyAgainst, setOnlyAgainst, filtering, tableRows } =
-		useAgainstYou(docId, pairIds, clauseRows, typeShown, activeClause?.clauseId ?? null);
+	const { againstIds, onlyAgainst, setOnlyAgainst, filtering, tableRows } = useAgainstYou(
+		me,
+		clauseRows,
+		typeShown,
+		activeClause?.clauseId ?? null
+	);
+	// Picking a party asks what matters to it: the rows go by relevance, read from that party.
+	const pickViewpoint = (side: Side | null) => {
+		pickMe(side);
+		if (side) setSortBy('importance');
+	};
 
 	// «modified by §11»: to §11, in the tab of the sentence that does the
 	// modifying (a right of §11 opens Rights), picked and shown in the contract.
@@ -459,7 +482,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		<div className="flex h-full flex-col">
 			{pairIds && (
 				<div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-border/60 px-6 py-2">
-					<YouArePicker names={names} me={me} onPick={pickMe} />
+					<YouArePicker names={names} me={me} onPick={pickViewpoint} />
 					<AgainstFilter on={onlyAgainst} onChange={setOnlyAgainst} disabled={me === null} />
 				</div>
 			)}
@@ -546,15 +569,22 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 								visibleKinds={kindsShown}
 								activeClauseId={activeClause?.clauseId ?? null}
 								laneName={laneName}
-								sortBy={sortBy}
-								// Size, relevance, order, and round again; relevance waits for the importance.
+								sortBy={order}
+								relevanceFor={relevanceFor}
+								sameForBoth={sameForBoth === true}
+								// The party's relevance is on its way and the rows wait for it: by size they
+								// do not, since neither their order nor their place comes from it.
+								pending={reading === 'pending' && order !== 'size'}
+								// Relevance was asked for and there is none for the party picked.
+								relevanceMissing={sortBy === 'importance' && me !== null && reading === 'none'}
+								// Size, order, and round again; with a party's relevance to give, it comes between.
 								onToggleSort={() =>
-									setSortBy((now) =>
-										now === 'size'
-											? rowImportance
+									setSortBy(
+										order === 'size'
+											? reading !== 'none'
 												? 'importance'
 												: 'order'
-											: now === 'importance'
+											: order === 'importance'
 												? 'order'
 												: 'size'
 									)

@@ -120,7 +120,11 @@ class ClauseImportanceView(APIView):
         if kg is None:
             raise NotFound("Knowledge graph not generated for this document")
 
-        result = personalized_pagerank.compute(kg, serializer.validated_data["countedStatementIds"])
+        result = personalized_pagerank.compute(
+            kg,
+            serializer.validated_data["countedStatementIds"],
+            serializer.validated_data["startStatementIds"],
+        )
         response = ClauseImportanceResponseSerializer(
             {
                 "status": "success",

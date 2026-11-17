@@ -10,3 +10,4 @@ __pycache__/
 server_old
 graphify-out
 .vscode
+.venv

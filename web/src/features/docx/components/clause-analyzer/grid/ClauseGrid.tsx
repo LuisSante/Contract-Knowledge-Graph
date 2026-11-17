@@ -54,6 +54,11 @@ interface ClauseGridProps {
 	activeClauseId: string | null;
 	laneName: (lane: GridLane) => string;
 	sortBy: RowOrder;
+	/** «You are»: the party the relevance is read from, by name; null, nobody is picked and
+	 *  the rows do not go by relevance. */
+	relevanceFor?: string | null;
+	/** The other party would read the rows by relevance in the same order. */
+	sameForBoth?: boolean;
 	/** Goes to the next ordering. */
 	onToggleSort: () => void;
 	paintLanes: Record<GridLane, boolean>;
@@ -98,6 +103,8 @@ export function ClauseGrid({
 	activeClauseId,
 	laneName,
 	sortBy,
+	relevanceFor = null,
+	sameForBoth = false,
 	onToggleSort,
 	paintLanes,
 	onPaintLane,
@@ -178,12 +185,14 @@ export function ClauseGrid({
 						onClick={onToggleSort}
 						className="flex-1 truncate text-left font-medium text-muted-foreground hover:text-foreground"
 						style={{ flexBasis: NAME_WIDTH, minWidth: LABEL_MIN_WIDTH, maxWidth: LABEL_MAX_WIDTH }}
-						title="Order the rows by size (how many squares each shows in this type, both parties together), by relevance (how much the other clauses need each one to be read: a PageRank over the links between clauses), or by its position in the document"
+						title="Order the rows by size (how many squares each shows in this type, both parties together) or by their position in the document. With «You are» picked, also by relevance for that party: how much the clauses where it has a statement need each one to be read (a PageRank over the links between clauses)"
 					>
 						CLAUSE
 						<span className="font-normal">
 							{' · '}
-							{SORT_LABELS[sortBy]}
+							{sortBy === 'importance' && relevanceFor
+								? `by relevance for ${relevanceFor} ↓${sameForBoth ? ' · same for both parties' : ''}`
+								: SORT_LABELS[sortBy]}
 						</span>
 					</button>
 					{/* The rows' gap, so each name stays over its column. */}

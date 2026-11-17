@@ -25,6 +25,8 @@ class ProcessPageSerializer(serializers.Serializer):
 class ClauseImportanceRequestSerializer(serializers.Serializer):
     # Absent means every statement; present restricts the prior to those on screen.
     countedStatementIds = serializers.ListField(child=serializers.CharField(), required=False, allow_null=True, default=None)
+    # One party's statements among those: present, the relevance is read from that party.
+    startStatementIds = serializers.ListField(child=serializers.CharField(), required=False, allow_null=True, default=None)
 
 
 class ClauseNeedSerializer(serializers.Serializer):

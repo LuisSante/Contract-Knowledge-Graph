@@ -39,15 +39,18 @@ export interface ClauseImportance {
 	iterations: number;
 }
 
+/** `startIds` are one party's statements among the counted ones: with them the relevance is
+ *  read from that party, the walk starting only on the clauses that hold one. */
 export async function fetchClauseImportance(
 	docId: string,
 	countedIds: string[] | null,
+	startIds: string[] | null,
 	signal?: AbortSignal
 ): Promise<ClauseImportance | null> {
 	try {
 		const response = await api.post<Partial<ClauseImportance>>(
 			`/knowledge_graph/${encodeURIComponent(docId)}/clause_importance`,
-			{ countedStatementIds: countedIds },
+			{ countedStatementIds: countedIds, startStatementIds: startIds },
 			{ signal }
 		);
 		return {

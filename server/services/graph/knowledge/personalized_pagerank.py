@@ -7,6 +7,9 @@ clause is needed to read another. A clause is relevant when others need it.
     A depends on B    reading A needs B
     A refers to B     reading A needs B
 
+Read from one party, the walk starts only on the clauses where that party has a statement:
+a clause is relevant to the party when its own clauses need it.
+
 The whole graph, for the graph tab: one walk over every node and every edge, both ways.
 """
 
@@ -143,23 +146,39 @@ def needs(kg: dict) -> list[Need]:
     return out
 
 
-def _relevance(kg: dict, rows: list[str]) -> tuple[dict[str, float], dict[str, list[Need]]]:
-    """How much the clauses need each row: the walk starts on any row alike and goes from a
-    clause to one it needs. Two edges that say the same are two ways there."""
+def _relevance(kg: dict, rows: list[str], start: set[str] | None = None) -> tuple[dict[str, float], dict[str, list[Need]]]:
+    """How much the clauses need each row: the walk goes from a clause to one it needs. Two
+    edges that say the same are two ways there.
+
+    It starts on any row alike. With `start` it starts only on those rows, one party's own
+    clauses, and a row weighs what the clauses on that party's way send it: being one of the
+    party's own gives a row no share, so a clause of the other party that conditions them
+    can stand first."""
     ids = [clause["id"] for clause in kg.get("clauses") or []]
     index = {clause_id: at for at, clause_id in enumerate(ids)}
     shown = [clause_id for clause_id in rows if clause_id in index]
     if not shown:
         return dict.fromkeys(rows, 0.0), {}
+    # A party with no row to start on reads the contract like everyone.
+    begins = [clause_id for clause_id in shown if clause_id in start] if start else []
 
     links = needs(kg)
     successors: list[list[int]] = [[] for _ in ids]
     for link in links:
         successors[index[link.reader]].append(index[link.needed])
     prior = [0.0] * len(ids)
-    for clause_id in shown:
-        prior[index[clause_id]] = 1 / len(shown)
+    for clause_id in begins or shown:
+        prior[index[clause_id]] = 1 / len(begins or shown)
     rank, _ = walk(successors, prior, RELEVANCE_DAMPING)
+
+    weight = rank
+    if begins:
+        # What each clause is sent by the ones that need it: the walk's second term, without
+        # the restart that only the party's own clauses get.
+        weight = [0.0] * len(ids)
+        for reader, targets in enumerate(successors):
+            for target in targets:
+                weight[target] += RELEVANCE_DAMPING * rank[reader] / len(targets)
 
     # Only the clauses the walk passes through bring anything: one that is not a row and
     # that nobody needs carries no weight, so it is no reason for a place.
@@ -168,14 +187,19 @@ def _relevance(kg: dict, rows: list[str]) -> tuple[dict[str, float], dict[str, l
     for link in sorted(set(links), key=lambda link: (index[link.reader], link.relation)):
         if link.needed in on_screen and rank[index[link.reader]] > 0:
             needed_by[link.needed].append(link)
-    by_clause = {clause_id: rank[index[clause_id]] if clause_id in index else 0.0 for clause_id in rows}
+    by_clause = {clause_id: weight[index[clause_id]] if clause_id in index else 0.0 for clause_id in rows}
     return by_clause, dict(needed_by)
 
 
-def compute(kg: dict, counted: Iterable[str] | None = None) -> PersonalizedPageRank:
+def compute(kg: dict, counted: Iterable[str] | None = None, start: Iterable[str] | None = None) -> PersonalizedPageRank:
     """`counted` restricts both restarts to the statements on screen: the rows are the clauses
-    that hold one. Both walks still run over the whole contract."""
+    that hold one. Both walks still run over the whole contract.
+
+    `start` is one party's statements among them: the relevance is then read from that
+    party, the walk between clauses starting only on the rows that hold one. The walk over
+    the whole graph does not change."""
     allowed = set(counted) if counted is not None else None
+    begun = set(start) if start is not None else None
 
     members: dict[str, list[str]] = {}
     for statement in _statements(kg):
@@ -211,7 +235,8 @@ def compute(kg: dict, counted: Iterable[str] | None = None) -> PersonalizedPageR
     rank, iterations = walk(adjacency, prior, DAMPING)
 
     by_statement = {node_id: rank[index[node_id]] for group in members.values() for node_id in group if node_id in index}
-    by_clause, needed_by = _relevance(kg, list(members))
+    own = None if begun is None else {clause_id for clause_id, group in members.items() if not begun.isdisjoint(group)}
+    by_clause, needed_by = _relevance(kg, list(members), own)
     return PersonalizedPageRank(
         by_clause=by_clause,
         by_statement=by_statement,

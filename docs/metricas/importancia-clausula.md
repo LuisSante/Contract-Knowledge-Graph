@@ -1,15 +1,27 @@
 # Relevancia de la cláusula — el orden «by relevance»
 
 Decide en qué orden aparecen las filas del Clause Analyzer cuando el lector elige
-«by relevance».
+«by relevance», que solo existe con una parte elegida en «You are».
 
 En una frase:
 
-> **Sube la cláusula que las demás necesitan para leerse.**
+> **Para la parte que lee, sube la cláusula que sus cláusulas necesitan para leerse.**
 
 La calcula `server/services/graph/knowledge/personalized_pagerank.py` y la sirve
 `POST /api/v1/knowledge_graph/<doc>/clause_importance`. Todas las cifras de este documento
 salen del fragmento del final, que llama al mismo módulo que usa el servidor.
+
+Desde el 17 de noviembre de 2026 la tabla **solo ordena por relevancia con una parte
+elegida**. Qué cláusula importa depende de quién lee, porque cada parte tiene intereses
+distintos: un orden único para las dos no decía mucho. Sin parte, la tabla se ordena por
+tamaño o por el orden del contrato.
+
+Cómo leer este documento:
+
+- Los apartados 1 a 4 explican el paseo **sin parte**, que es la base del cálculo.
+- Lo que cambia con una parte está en el apartado 2, «Leída desde una parte».
+- El paseo sin parte se sigue calculando: de él sale la ficha «Needed by», y es el de las
+  cifras de los apartados 3, 4 y 6.
 
 Los otros dos órdenes no cambian: «by size» cuenta los cuadrados de la fila y «by order»
 sigue el contrato.
@@ -120,6 +132,41 @@ $$
 Todas las filas que nadie necesita valen exactamente $b$. El grafo no da ningún motivo para
 poner una delante de otra: empatan y quedan en el orden del contrato, detrás de las que
 suben. El tamaño de la fila no entra en ningún paso.
+
+### Leída desde una parte («You are»)
+
+Desde el 17 de noviembre de 2026. Qué cláusula importa depende de quién lee, así que el
+lector puede decir quién es. Con una parte $a$ elegida cambia una sola cosa: **dónde empieza
+el paseo**. Las flechas, $d$ y la iteración son los mismos.
+
+**El prior.** El paseo empieza, y vuelve a empezar, solo en las filas donde la parte tiene
+algún enunciado: una obligación o una prohibición que debe cumplir, o un derecho que tiene.
+
+$$
+\pi_a(c)=\begin{cases}\dfrac{1}{|F_a|} & c\in F_a\\[8pt] 0 & c\notin F_a\end{cases}
+$$
+
+**La relevancia para la parte.** Con ese prior sale $R_a$. Las filas se ordenan por lo que
+les mandan las cláusulas que las necesitan, que es el segundo término de la iteración:
+
+$$
+S_a(c)=d\sum_{(c'\to c)\,\in\,E}\frac{R_a(c')}{\operatorname{sal}(c')}
+$$
+
+| Término | Significado |
+|---|---|
+| $F_a$ | Las filas donde la parte $a$ tiene algún enunciado. |
+| $R_a(c)$ | El paseo que empieza en $F_a$: la parte del tiempo que pasa en $c$. |
+| $S_a(c)$ | Lo que las cláusulas del camino de $a$ le mandan a $c$. Es cero si ninguna la necesita. |
+
+Se ordena por $S_a$ y no por $R_a$ porque $R_a(c)=(1-d+dD)\,\pi_a(c)+S_a(c)$: el primer
+término solo lo tienen las filas de la propia parte. Con él, sus cláusulas saldrían con
+ventaja, y lo que se pregunta es qué necesitan esas cláusulas, sean de quien sean. Sin él,
+una cláusula donde la parte no tiene ningún enunciado puede quedar primera si condiciona las
+suyas. Sin parte elegida no hay diferencia: $R(c)=b+S(c)$ y el orden es el mismo.
+
+Las filas con $S_a(c)=0$ empatan y quedan en el orden del contrato, igual que las que valen
+la base. Qué filas suben sí depende de la parte: solo las que alcanza el paseo desde $F_a$.
 
 ---
 
@@ -278,32 +325,53 @@ los dos órdenes es mejor. Lo que no cambia con $d$ es qué filas suben.
 
 ## 5. Lo que ve el lector
 
-La cabecera de la tabla ofrece tres órdenes, porque responden a preguntas distintas:
+La cabecera de la tabla ofrece dos órdenes, y un tercero cuando el lector dice quién es,
+porque responden a preguntas distintas:
 
 | orden | pregunta | de dónde sale |
 |---|---|---|
 | **by size** (por defecto) | ¿dónde hay más en juego? | el número de cuadrados del tipo abierto, en las dos columnas |
-| **by relevance** | ¿qué cláusula hace falta para leer las demás? | este documento: $R(c)$ |
 | **by order** | ¿cómo está escrito? | el orden del contrato |
+| **by relevance for** *parte* (solo con «You are») | ¿qué tengo que leer para entender mis cláusulas? | este documento: $S_a(c)$ |
+
+Sin parte elegida, el botón de la cabecera alterna entre «by size» y «by order», y el círculo
+de cada fila es su puesto en ese orden.
 
 Con **by relevance**:
 
-- **Primero van las filas que alguna cláusula necesita**, con su puesto en el círculo. El
-  puesto se cuenta dentro de la pestaña abierta: 1, 2, 3… sin saltos.
+- **Primero van las filas que alguna cláusula de la parte necesita**, con su puesto en el
+  círculo. El puesto se cuenta dentro de la pestaña abierta: 1, 2, 3… sin saltos.
 - **Después van las demás, en el orden del contrato**, con «–» en el círculo. Al pasar el
-  cursor dice por qué: ninguna cláusula la necesita.
+  cursor dice por qué: ninguna de las cláusulas que esa parte tiene que leer la necesita.
 - **Cada fila que sube enseña su motivo en «Linked»:** una ficha oscura al final de la celda,
   a la derecha de una línea fina, cuenta cuántas cláusulas la necesitan («Needed by 10»). A la
   izquierda de la línea siguen las fichas de color, que dicen lo que la fila necesita.
 - **La lista que se abre sobre «Linked» sigue el mismo orden** y termina con «Needed by»: las
   cláusulas agrupadas por relación («Modifies», «Depended on by», «Referred to by»), cada una
   un botón que lleva a esa cláusula.
-- **Al pasar el cursor por el círculo** sale el motivo en una frase: «Needed to read 10
-  clauses: it modifies §3.1, §5.1…; §1.1, §6.7, §8.4 refer to it».
+- **Al pasar el cursor por el círculo** sale el motivo en una frase: «For Talvera, needed to
+  read one clause: §8.4 depends on it».
 
-La ficha «Needed by» está en «Linked» con cualquiera de los tres órdenes: dice un hecho del
-contrato, no del orden. Con **by order**, el círculo sigue diciendo el puesto por relevancia,
-o «–». Con **by size**, el círculo es el puesto por tamaño.
+Con **«You are»**:
+
+- **Elegir una parte ordena la tabla por relevancia, leída desde esa parte.** La cabecera lo
+  dice: «by relevance for Orvane ↓». El lector puede volver a «by size» o «by order» cuando
+  quiera.
+- **Quitar la parte** (pulsándola otra vez) quita el orden por relevancia: si la tabla estaba
+  así, vuelve a «by size».
+- **Si las dos partes dan el mismo orden**, la cabecera añade «same for both parties». Pasa
+  en los contratos con pocos enlaces, y evita que el selector parezca no hacer nada.
+- **El círculo dice el motivo desde esa parte:** «For Talvera, needed to read one clause:
+  §8.4 depends on it», o que ninguna de las cláusulas que esa parte tiene que leer la
+  necesita.
+- **La ficha «Needed by» no cambia:** sigue contando todas las cláusulas del contrato que
+  necesitan la fila. Por eso una fila puede enseñar «Needed by 3» y tener «–» en el círculo:
+  la necesitan cláusulas que no están en el camino de esa parte.
+
+La ficha «Needed by» está en «Linked» con cualquier orden y con o sin parte: dice un hecho
+del contrato, no del orden. Con **by order** y una parte elegida, el círculo sigue diciendo
+el puesto por relevancia para esa parte, o «–»; sin parte, el puesto en el orden del
+contrato. Con **by size**, el círculo es el puesto por tamaño.
 
 El documento no cambia: al elegir una cláusula sigue dibujando solo lo que ella necesita.
 Quien la necesita se ve en la tabla, y pulsando una de esas cláusulas el documento dibuja el
@@ -311,8 +379,8 @@ enlace desde su lado. Hay una excepción: cuando el enlace nombra una sección e
 Artículo 11»), hoy solo se ve desde «Needed by». La fila de la subcláusula y el documento
 todavía leen la arista tal como está escrita y no lo muestran.
 
-En un contrato sin enlaces entre cláusulas, como lease_contract_166, todas las filas llevan
-«–» y «by relevance» coincide con «by order».
+En un contrato sin enlaces entre cláusulas, como lease_contract_166, con cualquiera de las
+dos partes todas las filas llevan «–» y «by relevance» coincide con «by order».
 
 ---
 
@@ -345,6 +413,29 @@ Las primeras filas de tres contratos:
 | SteelVault | §11 Liability | 6 | §8.4 y §9 Indemnification |
 | lease_contract_10 | §13.1 (fuerza mayor) | 15 | §11.1, §11.2, §12.1 y §13.2 |
 
+### Por parte
+
+Las dos partes con más enunciados de cada contrato, y las primeras filas de cada una. «Igual»
+es que las dos dan el mismo orden entre las filas que suben.
+
+| contrato | parte | filas propias | suben | primeras filas |
+|---|---|---|---|---|
+| Bellicum | Miltenyi | 80 | 58 | §4.10, §3.2, §6.5, §7.7, §14.3 |
+| | Bellicum | 79 | 59 | §4.10, §3.2, §7.7, §6.5, §14.3 |
+| Santander | Banco | 55 | 16 | §18.8, §6.1, §6.3, §8.1, §13.1 |
+| | Titular | 52 | 22 | §18.8, §5.4, §6.1, §6.3, §8.1 |
+| OrvaneTalvera | Orvane | 35 | 19 | §11.2, §9.1, §9.3, §2.2, §10.1 |
+| | Talvera | 33 | 18 | §2.2, §8.4, §9.2, §5.2, §12.2 |
+| HalversonCorvin | Halverson | 13 | 4 | §9, §8.2, §7.1, §7.2 |
+| | Corvin | 14 | 4 | §7.2, §9, §8.2, §7.1 |
+| lease_contract_201 | Bozhou | 7 | 3 | §2, §7, §4 |
+| | Anhui | 7 | 2 | §7, §4 |
+| Arequipa, SteelVault, lease_contract_10, lease_contract_166 | | | | igual para las dos |
+
+El orden cambia con la parte en cinco de los nueve contratos. En OrvaneTalvera las cinco
+primeras filas de una y otra solo coinciden en §2.2: al proveedor le sube §11.2, el tope de
+su responsabilidad, y al comprador §2.2 y §8.4, la compra exclusiva y la segunda fuente.
+
 ---
 
 ## 7. Qué mide y qué no
@@ -359,8 +450,14 @@ Las primeras filas de tres contratos:
   cuánto importa cada una para un abogado.
 - **No está validado.** No hay todavía un criterio externo con el que comparar el orden: es
   una ayuda para revisar, no un resultado medido.
-- **Es del contrato, no de una parte.** Responde «qué cláusula hace falta para leer las
-  demás», nunca «para quién».
+- **Sin parte elegida no ordena la tabla.** El paseo del contrato entero se sigue calculando
+  para la ficha «Needed by», pero no hay un orden por relevancia que valga para las dos.
+- **Con una parte, dice qué condiciona sus cláusulas, no qué le conviene.** Empieza donde la
+  parte tiene algo en juego y sigue los enlaces; no sabe si lo que encuentra la favorece o
+  la perjudica, ni conoce sus intereses. Y «parte» es lo único que el grafo distingue: no
+  separa a un abogado de un consumidor.
+- **Donde hay pocos enlaces, las dos partes ven lo mismo.** En cuatro de los nueve contratos
+  el orden no cambia con la parte.
 
 ---
 
@@ -381,6 +478,13 @@ principales de un par de partes (`computePairScores`). La ruta devuelve los dos:
 Por eso la relevancia de una cláusula en la tabla y su tamaño en la pestaña del grafo no
 coinciden.
 
+La ruta recibe `countedStatementIds`, los enunciados en pantalla, que deciden las filas, y
+`startStatementIds`, los de la parte elegida. Con el segundo, `byClause` es $S_a(c)$ y
+`neededBy` solo trae las cláusulas por las que pasa el paseo de esa parte; los campos del
+paseo sobre el grafo entero no cambian. La web pide tres veces: sin parte (la ficha «Needed
+by» y la pestaña del grafo), con la parte elegida (el orden y el círculo) y con la otra (para
+saber si dan el mismo orden).
+
 ---
 
 ## Dónde está cada cosa
@@ -389,6 +493,8 @@ coinciden.
 |---|---|
 | Las flechas y la regla de las secciones | `needs`, en `server/services/graph/knowledge/personalized_pagerank.py` |
 | El prior, el paseo y quién necesita a quién | `_relevance`, en el mismo módulo |
+| La lectura desde una parte | el argumento `start` de `compute` y de `_relevance` |
+| «You are» y las tres peticiones | `useYouAre` (en `hooks/useAgainstYou.ts`), `usePartyImportance` (en `hooks/useClauseImportance.ts`) y `useClauseRows`, dentro de `web/src/features/docx/` |
 | La iteración, compartida por los dos paseos | `walk`, en el mismo módulo |
 | La ruta | `ClauseImportanceView`, en `server/api/views.py` |
 | El orden de las filas, el puesto y quién necesita a cada fila | `web/src/features/docx/hooks/useClauseRows.ts` |
@@ -398,8 +504,8 @@ coinciden.
 
 ## Cómo regenerar las cifras
 
-Desde `server/`. Primero sale el ejemplo inventado del apartado 3 y después los nueve
-contratos:
+Desde `server/`. Primero sale el ejemplo inventado del apartado 3, después los nueve
+contratos y al final la lectura desde cada parte:
 
 ```bash
 uv run python - <<'EOF'
@@ -507,6 +613,30 @@ for path in sorted(glob.glob('../infra/json/kg/root_*.json')):
             ppr.RELEVANCE_DAMPING = damping
             print(f'  con d = {damping}:')
             first_rows(kg, ppr.compute(kg), size, 3)
+ppr.RELEVANCE_DAMPING = 0.5
+
+# ---- 3. Por parte: las dos con más enunciados de cada contrato
+print('POR PARTE')
+for path in sorted(glob.glob('../infra/json/kg/root_*.json')):
+    kg = json.load(open(path, encoding='utf-8'))
+    ref = {c['id']: c.get('ref') for c in kg['clauses']}
+    own = {}
+    for kind in ppr.DEONTIC_COLLECTIONS:
+        for statement in kg.get(kind) or []:
+            party = statement.get('benefitPartyId') if kind == 'rights' else statement.get('burdenPartyId')
+            if statement.get('clauseId') and party:
+                own.setdefault(party, []).append(statement)
+    pair = sorted(own, key=lambda party: -len(own[party]))[:2]
+    counted = [statement['id'] for party in pair for statement in own[party]]
+    orders = []
+    for party in pair:
+        result = ppr.compute(kg, counted, [statement['id'] for statement in own[party]])
+        rows = list(result.by_clause)
+        orders.append(sorted(result.needed_by, key=lambda c: (-result.by_clause[c], rows.index(c))))
+        name = next(p['name'] for p in kg['parties'] if p['id'] == party)
+        print(f"{path[22:44]:23s} {name[:24]:25s} filas propias {len({s['clauseId'] for s in own[party]}):3d} | suben {len(orders[-1]):3d} | "
+              + ', '.join('§' + ref[c] for c in orders[-1][:5]))
+    print(f"{'':23s} mismo orden para las dos: {'sí' if orders[0] == orders[1] else 'no'}")
 EOF
 ```
 

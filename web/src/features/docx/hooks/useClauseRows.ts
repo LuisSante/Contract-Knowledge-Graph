@@ -46,6 +46,11 @@ const NEED_RELATIONS: NeedRelation[] = ['modified_by', 'depends_on', 'refers_to'
  *  each one to be read. Relevance is one party's, so it is there only with «You are» picked. */
 export type RowOrder = 'size' | 'importance' | 'order';
 
+/** Where the relevance read from the reader's party stands: there is none to order by (nobody
+ *  is picked, the party holds no statement, or its answer failed), it is on its way, or it is
+ *  here. */
+export type RelevanceReading = 'none' | 'pending' | 'ready';
+
 interface ClauseRowsInput {
 	docId: string;
 	viewKg: KnowledgeGraph | null;
@@ -54,6 +59,7 @@ interface ClauseRowsInput {
 	/** The grid as the condition mode leaves it: the squares, the counts and the rows. */
 	shownGrid: StatementGrid | null;
 	kindsShown: Set<MarkKind>;
+	/** The order the reader asked for. Relevance is given only once there is one to give. */
 	sortBy: RowOrder;
 	selectedClauseId: string | null;
 	/** «You are»: the party the relevance is read from, and how to name it. Null, there is no
@@ -71,7 +77,7 @@ export function useClauseRows({
 	grid,
 	shownGrid,
 	kindsShown,
-	sortBy,
+	sortBy: askedOrder,
 	selectedClauseId,
 	viewpoint,
 }: ClauseRowsInput) {
@@ -108,9 +114,9 @@ export function useClauseRows({
 		return counts;
 	}, [shownGrid]);
 
-	// One importance for the pair, counted on every obligation, right and prohibition between
-	// the two parties: it orders the rows, the same in every type shown, numbers them within
-	// each tab, and weighs what the contract and the graph light up.
+	// The pair's statements, every obligation, right and prohibition between the two parties:
+	// they decide the rows, and what the walk over the whole graph weighs for the contract and
+	// the graph to light up.
 	const countedIds = useMemo(() => {
 		const ids = new Set<string>();
 		for (const row of grid?.rows ?? []) {
@@ -125,7 +131,7 @@ export function useClauseRows({
 		return ids.size > 0 ? [...ids].sort() : null;
 	}, [grid]);
 	const clauseImportance = useClauseImportance(docId, countedIds);
-	// The rows go by the pair's importance only, never by the document-wide one.
+	// «Needed by» is told within the pair only, never document-wide.
 	const pairImportance = countedIds ? clauseImportance : null;
 
 	// Each party's own statements: where its reading of the contract starts.
@@ -141,11 +147,28 @@ export function useClauseRows({
 		return { a: ids.a.sort(), b: ids.b.sort() };
 	}, [grid]);
 	const side = viewpoint?.side ?? null;
-	const mine = usePartyImportance(docId, countedIds, side && ownIds[side]);
-	const theirs = usePartyImportance(docId, countedIds, side && ownIds[side === 'a' ? 'b' : 'a']);
+	const { importance: mine, pending: mineOnItsWay } = usePartyImportance(
+		docId,
+		countedIds,
+		side && ownIds[side]
+	);
+	const { importance: theirs } = usePartyImportance(
+		docId,
+		countedIds,
+		side && ownIds[side === 'a' ? 'b' : 'a']
+	);
 	// The rows go by relevance only as one party reads them: what matters depends on who reads,
 	// so with nobody picked there is none to order by. Null too until that party's lands.
 	const rowImportance = viewpoint ? mine : null;
+	const reading: RelevanceReading = rowImportance
+		? 'ready'
+		: viewpoint && mineOnItsWay
+			? 'pending'
+			: 'none';
+	// With no relevance to be had the rows go by size, whatever was asked. While it is on its
+	// way the order stays the one asked: the table shows no row until it lands, so none is
+	// shown in an order it does not have.
+	const sortBy: RowOrder = askedOrder === 'importance' && reading === 'none' ? 'size' : askedOrder;
 	// Whether the other party would read the rows in the same order. A contract with few links
 	// between clauses gives both the same one: said beside the ordering, so that picking a
 	// party does not look as if it did nothing.
@@ -230,7 +253,8 @@ export function useClauseRows({
 	// the rest all weigh the same and keep the contract's order after them. With nobody picked
 	// there is no relevance, and the place is the row's in the contract's order.
 	const rankByKind = useMemo(() => {
-		if (!shownGrid) return null;
+		// No place to say while the relevance that gives it is on its way.
+		if (!shownGrid || (sortBy !== 'size' && reading === 'pending')) return null;
 		const weightIn = (kind: DeonticKind) => (row: GridRow) =>
 			sortBy === 'size'
 				? sizeOf(row, new Set<MarkKind>([kind]))
@@ -253,7 +277,7 @@ export function useClauseRows({
 				return [kind, new Map(ranked.map((row, i) => [row.clauseId, i + 1] as const))];
 			})
 		) as Record<DeonticKind, Map<string | null, number>>;
-	}, [shownGrid, rowImportance, sortBy]);
+	}, [shownGrid, rowImportance, reading, sortBy]);
 	const kindShown = DEONTIC_KINDS.find((kind) => kindsShown.has(kind)) ?? null;
 	const rankByClause = rankByKind && kindShown ? rankByKind[kindShown] : null;
 
@@ -359,6 +383,9 @@ export function useClauseRows({
 		kindCounts,
 		bothCounts,
 		clauseImportance,
+		// The order the rows are in, and where the party's relevance stands.
+		order: sortBy,
+		reading,
 		// The party the relevance is read from, by name; null, nobody is picked.
 		relevanceFor: viewpoint?.name ?? null,
 		sameForBoth,

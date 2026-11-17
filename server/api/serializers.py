@@ -23,9 +23,11 @@ class ProcessPageSerializer(serializers.Serializer):
 
 
 class ClauseImportanceRequestSerializer(serializers.Serializer):
-    # Absent means every statement; present restricts the prior to those on screen.
+    # Absent means every statement; present restricts the rows, and the prior of the walk
+    # over the whole graph, to those on screen.
     countedStatementIds = serializers.ListField(child=serializers.CharField(), required=False, allow_null=True, default=None)
-    # One party's statements among those: present, the relevance is read from that party.
+    # One party's statements among those: the relevance is read from that party. Absent,
+    # there is no relevance.
     startStatementIds = serializers.ListField(child=serializers.CharField(), required=False, allow_null=True, default=None)
 
 
@@ -38,10 +40,11 @@ class ClauseNeedSerializer(serializers.Serializer):
 class ClauseImportanceResponseSerializer(serializers.Serializer):
     status = serializers.CharField(default="success")
     documentId = serializers.CharField()
-    # The rows' relevance: the walk between clauses.
+    # The rows' relevance for the party of `startStatementIds`: the walk between clauses that
+    # starts on that party's own. Empty without a party.
     byClause = serializers.DictField(child=serializers.FloatField())
-    # Why a row stands above the base value: the clauses that need it. A row left out is at
-    # the base and has no place by relevance.
+    # The clauses that need each row. With a party, only those on its way: why the row has a
+    # place by relevance, and a row left out has none.
     neededBy = serializers.DictField(child=ClauseNeedSerializer(many=True))
     byStatement = serializers.DictField(child=serializers.FloatField())
     # The whole fixed point and its restart vector; the graph view draws both.

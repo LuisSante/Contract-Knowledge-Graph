@@ -24,11 +24,12 @@ export async function fetchKnowledgeGraph(docId: string): Promise<KnowledgeGraph
 export type NeedRelation = 'modified_by' | 'depends_on' | 'refers_to';
 
 export interface ClauseImportance {
-	/** Each row's relevance: how much the other clauses need it to be read. A walk between
-	 *  clauses only, along `modifies`, `depends_on` and `references`. */
+	/** Each row's relevance for the party the contract is read from: how much that party's
+	 *  clauses need it to be read. A walk between clauses only, along `modifies`, `depends_on`
+	 *  and `references`. Empty when no party was given: there is no relevance without one. */
 	byClause: Record<string, number>;
-	/** Why a row stands above the base value every row starts with: the clauses that need it,
-	 *  in the contract's order. A row left out is at the base: no clause needs it. */
+	/** The clauses that need each row, in the contract's order. Read from a party, only the
+	 *  ones on its way: a row left out has no place by relevance. */
 	neededBy: Record<string, Array<{ clauseId: string; relation: NeedRelation }>>;
 	/** The walk over the whole graph, every node kind included. Sums to 1. */
 	byNode: Record<string, number>;

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 430" width="680" height="430" role="img" font-family="Inter, system-ui, -apple-system, 'Segoe UI', sans-serif">
   <title>Ejemplo inventado: siete cláusulas y los enlaces entre ellas</title>
-  <desc>Las cláusulas 1, 2 y 3 necesitan la cláusula 7. La 2 necesita además la 6, con dos enlaces. La 4 necesita la 5 y la 5 necesita la 6. Las cláusulas 7, 6 y 5 quedan por encima de la base; las cláusulas 1 a 4 se quedan en la base.</desc>
+  <desc>Las cláusulas 1, 2 y 3 necesitan la cláusula 7. La 2 necesita además la 6, con dos enlaces. La 4 necesita la 5 y la 5 necesita la 6. Leído desde cualquiera de las dos partes, las cláusulas 7, 6 y 5 tienen puesto; a las cláusulas 1 a 4 no las necesita ninguna y no lo tienen.</desc>
   <defs>
     <marker id="flecha" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -35,15 +35,15 @@
   </g>
   <g text-anchor="middle" font-size="12">
     <g fill="#534AB7">
-      <text x="115" y="153">2.17 b · puesto 1</text>
-      <text x="565" y="153">2.08 b · puesto 2</text>
-      <text x="565" y="333">1.50 b · puesto 3</text>
+      <text x="115" y="153">S = 0.1197 · puesto 1</text>
+      <text x="565" y="153">S = 0.1111 · puesto 2</text>
+      <text x="565" y="333">S = 0.0513 · puesto 3</text>
     </g>
     <g fill="#5F5E5A">
-      <text x="340" y="83">b · sin puesto</text>
-      <text x="340" y="153">b · sin puesto</text>
-      <text x="340" y="223">b · sin puesto</text>
-      <text x="340" y="333">b · sin puesto</text>
+      <text x="340" y="83">S = 0 · sin puesto</text>
+      <text x="340" y="153">S = 0 · sin puesto</text>
+      <text x="340" y="223">S = 0 · sin puesto</text>
+      <text x="340" y="333">S = 0 · sin puesto</text>
     </g>
   </g>
 
@@ -59,6 +59,6 @@
 
   <g font-size="12" fill="#5F5E5A">
     <text x="40" y="384">Flecha: para leer la cláusula de origen hace falta la de destino.</text>
-    <text x="40" y="404">Morado: alguna cláusula la necesita. Gris: ninguna la necesita y se queda en la base b.</text>
+    <text x="40" y="404">Morado: alguna cláusula la necesita; debajo, su relevancia S. Gris: ninguna la necesita y no tiene puesto.</text>
   </g>
 </svg>

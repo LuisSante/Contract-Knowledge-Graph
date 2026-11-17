@@ -212,13 +212,15 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		() => (me ? { side: me, name: pairShort(names)[me] } : null),
 		[me, names]
 	);
-	// Relevance is one party's: with nobody picked the rows go by size or by the contract's order.
-	const order: RowOrder = sortBy === 'importance' && !me ? 'size' : sortBy;
 
+	// Relevance is one party's: with nobody picked, or with none to be had for the one picked,
+	// the rows go by size or by the contract's order. `order` is the one they are in.
 	const {
 		kindCounts,
 		bothCounts,
 		clauseImportance,
+		order,
+		reading,
 		relevanceFor,
 		sameForBoth,
 		clauseRows,
@@ -235,7 +237,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		grid,
 		shownGrid,
 		kindsShown,
-		sortBy: order,
+		sortBy,
 		selectedClauseId,
 		viewpoint,
 	});
@@ -570,11 +572,16 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 								sortBy={order}
 								relevanceFor={relevanceFor}
 								sameForBoth={sameForBoth === true}
-								// Size, order, and round again; with «You are» picked, relevance comes between.
+								// The party's relevance is on its way and the rows wait for it: by size they
+								// do not, since neither their order nor their place comes from it.
+								pending={reading === 'pending' && order !== 'size'}
+								// Relevance was asked for and there is none for the party picked.
+								relevanceMissing={sortBy === 'importance' && me !== null && reading === 'none'}
+								// Size, order, and round again; with a party's relevance to give, it comes between.
 								onToggleSort={() =>
 									setSortBy(
 										order === 'size'
-											? me
+											? reading !== 'none'
 												? 'importance'
 												: 'order'
 											: order === 'importance'

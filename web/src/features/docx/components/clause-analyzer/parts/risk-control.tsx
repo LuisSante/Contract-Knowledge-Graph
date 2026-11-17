@@ -9,7 +9,6 @@ export function RiskControl({
 	status,
 	source,
 	hasSaved,
-	unsaved,
 	shown,
 	total,
 	failed,
@@ -19,7 +18,6 @@ export function RiskControl({
 	status: RisksStatus;
 	source: RisksSource | null;
 	hasSaved: boolean;
-	unsaved: boolean;
 	shown: number;
 	total: number;
 	failed: number;
@@ -38,9 +36,7 @@ export function RiskControl({
 			{source && (
 				<span
 					className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-2 py-1 font-semibold whitespace-nowrap text-foreground"
-					title={`Squares with a black outline: what the system judged risky. ${total} in the whole contract.${
-						unsaved ? ' This answer is not saved: «Free» keeps showing the first one.' : ''
-					}`}
+					title={`Squares with a black outline: what the system judged risky. ${total} in the whole contract.`}
 				>
 					<TriangleAlertIcon className="size-3" aria-hidden />
 					{shown} {shown === 1 ? 'risk' : 'risks'}
@@ -72,7 +68,7 @@ export function RiskControl({
 					aria-pressed={source === 'saved'}
 					title={
 						hasSaved
-							? 'Shows the answer saved from the first time the model reviewed this contract. It costs nothing.'
+							? 'Shows the answer saved from the last time the model reviewed this contract. It costs nothing.'
 							: 'Nothing saved for this contract yet: ask the AI once and its answer is kept.'
 					}
 					className={option(source === 'saved')}
@@ -86,7 +82,7 @@ export function RiskControl({
 					aria-pressed={source === 'ai'}
 					title={
 						hasSaved
-							? 'Asks the model now, a call per clause: it costs money. Its answer is shown but not saved; «Free» keeps the first one.'
+							? 'Asks the model now, a call per clause: it costs money. Its answer replaces the saved one, so «Free» shows it afterwards.'
 							: 'Asks the model now, a call per clause: it costs money. The answer is saved, so «Free» can show it afterwards.'
 					}
 					className={option(source === 'ai')}

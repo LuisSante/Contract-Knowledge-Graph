@@ -1,4 +1,5 @@
-/** A statement the system's detector judged risky, as the server keeps it (infra/json/risks.json).
+/** A statement the system's detector judged risky, as the server keeps it (a file per contract
+ *  in infra/json/risks/).
  *  Not to be confused with a red flag, which is the dataset's annotation and only validates. */
 export interface ContractRisk {
 	/** The obligation, right or prohibition it points at: the square to mark. */
@@ -12,7 +13,6 @@ export interface ContractRisk {
 export interface ContractRisks {
 	documentId: string;
 	model: string;
-	promptVersion: string;
 	clausesReviewed: number;
 	/** Clauses whose review failed: their statements were never judged. */
 	clausesFailed: number;

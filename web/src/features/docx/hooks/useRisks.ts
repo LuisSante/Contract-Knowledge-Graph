@@ -12,9 +12,9 @@ const NO_RISKS: ReadonlyMap<string, ContractRisk> = new Map();
 
 /**
  * The risks the system's detector found in a contract. Nothing is shown until the reader asks,
- * and there are two ways to ask: «Free» shows the answer saved from the first time the model
- * reviewed the contract, «AI» asks the model now and costs a call per clause. The server keeps
- * only that first answer, so «Free» always shows the same one.
+ * and there are two ways to ask: «Free» shows the answer saved from the last time the model
+ * reviewed the contract, «AI» asks the model now and costs a call per clause. Each new answer
+ * takes the saved one's place, so «Free» always shows the latest.
  */
 export function useRisks(docId: string) {
 	// Each is kept with the document it belongs to, so another contract never shows it while
@@ -24,8 +24,6 @@ export function useRisks(docId: string) {
 		docId: string;
 		source: RisksSource;
 		risks: ContractRisks;
-		/** An answer from the model that the server did not keep, because an earlier one stays. */
-		unsaved: boolean;
 	} | null>(null);
 	const [status, setStatus] = useState<RisksStatus>('idle');
 
@@ -56,21 +54,21 @@ export function useRisks(docId: string) {
 			now?.docId === docId && now.source === 'saved'
 				? null
 				: savedRisks
-					? { docId, source: 'saved', risks: savedRisks, unsaved: false }
+					? { docId, source: 'saved', risks: savedRisks }
 					: now
 		);
 	}, [docId, savedRisks]);
 
-	/** «AI»: asks the model now. Its answer is shown; the server keeps it only if it is the
-	 *  contract's first. */
+	/** «AI»: asks the model now. Its answer is shown and becomes the saved one, the one «Free»
+	 *  shows from then on. A request that fails leaves the saved answer as it was. */
 	const detectWithAI = useCallback(async () => {
 		if (!docId) return;
 		setStatus('detecting');
 		try {
-			const result = await detectRisksWithAI(docId);
-			if (result.risks) {
-				setShown({ docId, source: 'ai', risks: result.risks, unsaved: !result.saved });
-				if (result.saved) setSaved({ docId, risks: result.risks });
+			const answer = await detectRisksWithAI(docId);
+			if (answer) {
+				setShown({ docId, source: 'ai', risks: answer });
+				setSaved({ docId, risks: answer });
 			}
 			setStatus('idle');
 		} catch {
@@ -93,8 +91,6 @@ export function useRisks(docId: string) {
 		byStatement,
 		/** What is on screen: null until the reader asks. */
 		source: current?.source ?? null,
-		/** The answer on screen came from the model and was not kept. */
-		unsaved: current?.unsaved ?? false,
 		/** There is a saved answer for «Free» to show. */
 		hasSaved: savedRisks !== null,
 		status,

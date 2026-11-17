@@ -27,7 +27,6 @@ logger = logging.getLogger(__name__)
 # The cheapest model that answers in the forced format; it does not reason, so a call costs
 # what its tokens cost and nothing more.
 DEFAULT_MODEL = "gpt-6-luna"
-PROMPT_VERSION = "risks/lease-types/v1"
 
 MAX_WORKERS = 8
 MAX_OUTPUT_TOKENS = 1500
@@ -282,7 +281,6 @@ def detect_contract_risks(
     return ContractRisks(
         documentId=doc_id,
         model=resolved_model,
-        promptVersion=PROMPT_VERSION,
         clausesReviewed=len(rows) - failed,
         clausesFailed=failed,
         risks=risks,

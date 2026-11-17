@@ -15,19 +15,28 @@ Lo calcula `server/services/risks/detector.py` y lo sirve `/api/v1/risks/<docume
 
 ## 1. Cómo se pide
 
-Junto a las pestañas del Clause Analyzer está «Detect risks», con dos opciones. Mientras el
-lector no elige ninguna, la tabla no marca nada.
+En la fila de «You are» del Clause Analyzer, a la derecha y justo encima del selector All /
+Mark conditional / Only firm, está «Detect risks», con dos opciones. Mientras el lector no
+elige ninguna, la tabla no marca nada.
+
+El conteo y los avisos aparecen a la izquierda de «Detect risks», así que al pulsar una
+opción no se mueve nada más. Con el panel estrecho (menos de 864 px) «Detect risks» y «Red
+flags» tienen siempre su propia línea, también encima de las pestañas.
 
 | Opción | Qué hace | Cuesta |
 |---|---|---|
-| **Free** | Muestra la respuesta guardada: la primera que dio el modelo para ese contrato | Nada |
+| **Free** | Muestra la respuesta guardada: la última que dio el modelo para ese contrato | Nada |
 | **AI** | Le pregunta al modelo ahora, una llamada por cláusula | Sí |
 
-- **El archivo guarda solo la primera respuesta de cada contrato**, en
-  `infra/json/risks.json`. Si se vuelve a preguntar con «AI», la respuesta nueva se muestra
-  pero no reemplaza a la guardada. Así «Free» enseña siempre lo mismo.
+- **Se guarda la última respuesta de cada contrato**, en un archivo por contrato dentro de
+  `infra/json/risks/`, con el mismo nombre que su grafo (`root_lease_contract_201.json`). Si
+  se vuelve a preguntar con «AI», la respuesta nueva reemplaza a la guardada, y «Free» pasa a
+  enseñar esa. La anterior se pierde.
+- **Si el modelo falla en todas las cláusulas** no se guarda nada y queda la respuesta que
+  había. Si falla solo en algunas, la respuesta se guarda igual, con el aviso de cuántas
+  quedaron sin revisar.
 - **«Free» está apagado** en un contrato que el modelo nunca revisó: no hay nada que mostrar.
-  La primera vez hay que usar «AI», y esa respuesta es la que queda.
+  La primera vez hay que usar «AI», y esa respuesta queda guardada.
 - **Volver a pulsar «Free»** quita las marcas.
 
 El modelo es `gpt-6-luna`, el más barato de los que usa el proyecto. No razona, así que una
@@ -110,9 +119,9 @@ enunciados no se juzgaron, que no es lo mismo que juzgarlos y hallarlos sin ries
 | Qué | Dónde |
 |---|---|
 | Filas, tipos, instrucciones y llamadas | `server/services/risks/detector.py` |
-| Lectura y escritura del archivo | `server/services/risks/store.py` |
+| Lectura y escritura de los archivos | `server/services/risks/store.py` |
 | Ruta `GET` (guardada) y `POST` (modelo) | `server/api/views_risks.py` |
-| Respuestas guardadas | `infra/json/risks.json` |
+| Respuestas guardadas, un archivo por contrato | `infra/json/risks/` |
 | Las dos opciones y el conteo | `web/src/features/docx/components/clause-analyzer/parts/risk-control.tsx` |
 | Qué se muestra y de dónde viene | `web/src/features/docx/hooks/useRisks.ts` |
 | El contorno y el punto | `web/src/features/docx/components/clause-analyzer/grid/Mark.tsx` |

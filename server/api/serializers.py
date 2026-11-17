@@ -180,7 +180,6 @@ class ContractRiskSerializer(serializers.Serializer):
 class ContractRisksSerializer(serializers.Serializer):
     documentId = serializers.CharField()
     model = serializers.CharField(allow_blank=True)
-    promptVersion = serializers.CharField(allow_blank=True)
     clausesReviewed = serializers.IntegerField()
     clausesFailed = serializers.IntegerField()
     risks = ContractRiskSerializer(many=True)
@@ -188,7 +187,7 @@ class ContractRisksSerializer(serializers.Serializer):
 
 class ContractRisksRequestSerializer(serializers.Serializer):
     # Without it a contract already reviewed gets its saved answer back and nothing is paid.
-    # With it the model is asked again; the saved answer, the first one, is never replaced.
+    # With it the model is asked again, and its answer replaces the saved one.
     force = serializers.BooleanField(required=False, default=False)
     provider = serializers.ChoiceField(choices=_ASSISTANT_PROVIDER_CHOICES, default="openai")
     # Absent means the detector's own default model.

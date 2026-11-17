@@ -1,0 +1,63 @@
+{
+  "documentId": "root::lease_contract_201",
+  "model": "gpt-6-luna",
+  "clausesReviewed": 8,
+  "clausesFailed": 0,
+  "risks": [
+    {
+      "statementId": "right-2",
+      "type": "right_of_first_refusal_to_lease",
+      "reason": "It gives the lessee priority to lease the house after the contract expires."
+    },
+    {
+      "statementId": "right-3",
+      "type": "extension_period",
+      "reason": "It allows the lease term to be extended by negotiation if the lessee cannot promptly find another house."
+    },
+    {
+      "statementId": "obligation-4",
+      "type": "landlord_repairs",
+      "reason": "Party A takes responsibility for repairing the leased house."
+    },
+    {
+      "statementId": "obligation-10",
+      "type": "landlord_repairs",
+      "reason": "Party A contributes to and organizes repair work."
+    },
+    {
+      "statementId": "obligation-6",
+      "type": "warranties_of_the_owner",
+      "reason": "Party A guarantees that the house has no leakage."
+    },
+    {
+      "statementId": "obligation-7",
+      "type": "warranties_of_the_owner",
+      "reason": "Party A guarantees that specified facilities are in good condition and safe for use."
+    },
+    {
+      "statementId": "right-5",
+      "type": "right_of_first_refusal_to_purchase",
+      "reason": "Party B has priority to purchase the house on the same terms before it is sold to another buyer."
+    },
+    {
+      "statementId": "right-8",
+      "type": "compulsory_reconstruction",
+      "reason": "It disclaims responsibility when force majeure damages the leased house, addressing damage or destruction of the property."
+    },
+    {
+      "statementId": "right-9",
+      "type": "compulsory_reconstruction",
+      "reason": "It disclaims responsibility when force majeure damages the leased house, addressing damage or destruction of the property."
+    },
+    {
+      "statementId": "right-10",
+      "type": "special_stipulations",
+      "reason": "It provides a special exemption from mutual liability if municipal construction requires the house to be removed or rebuilt."
+    },
+    {
+      "statementId": "right-11",
+      "type": "special_stipulations",
+      "reason": "It provides a special exemption from mutual liability if municipal construction requires the house to be removed or rebuilt."
+    }
+  ]
+}

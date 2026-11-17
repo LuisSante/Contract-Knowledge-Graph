@@ -160,10 +160,13 @@ export function KindTabs({
 
 const FIRM_NOTE = 'Firm: applies always. Conditional: only if something happens.';
 
-export function FirmKey({ color }: { color: string }) {
+export function FirmKey({ color, className }: { color: string; className?: string }) {
 	return (
 		<span
-			className="flex items-center gap-3 text-2xs whitespace-nowrap text-muted-foreground"
+			className={cn(
+				'flex items-center gap-3 text-2xs whitespace-nowrap text-muted-foreground',
+				className
+			)}
 			title={FIRM_NOTE}
 		>
 			<span className="flex items-center gap-1.5">

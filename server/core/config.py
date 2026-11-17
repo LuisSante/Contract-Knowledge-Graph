@@ -14,10 +14,11 @@ class Settings(BaseSettings):
     # Red flags annotated in the ALeaseBERT dataset, keyed by document id; written by
     # notebooks/red_flags.ipynb, never by the system.
     RED_FLAGS_PATH: Path = Path("../infra/json/red_flags.json")
-    # Risks the detector found, keyed by document id: the first answer the model gave for each
-    # contract, which the app then serves for free. Written by the server, never by a notebook,
-    # and kept apart from the red flags above, which only validate them.
-    RISKS_PATH: Path = Path("../infra/json/risks.json")
+    # Risks the detector found, one file per contract (named like its knowledge graph): the
+    # latest answer the model gave for it, which the app then serves for free. Written by the
+    # server, never by a notebook, and kept apart from the red flags above, which only validate
+    # them.
+    RISKS_DIR: Path = Path("../infra/json/risks")
 
     # this extract paragraphs from a document
     EXTRACT_PARAGRAPHS: bool = True

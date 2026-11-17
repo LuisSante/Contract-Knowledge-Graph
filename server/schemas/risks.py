@@ -12,7 +12,6 @@ class ContractRisk(BaseModel):
 class ContractRisks(BaseModel):
     documentId: str
     model: str = ""
-    promptVersion: str = ""
     # A clause that holds statements is one call. A failed call is counted, not hidden: its
     # statements were never judged, which is not the same as judged and found safe.
     clausesReviewed: int = 0

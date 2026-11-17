@@ -146,7 +146,6 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		risks,
 		byStatement: riskByStatement,
 		source: risksSource,
-		unsaved: risksUnsaved,
 		hasSaved: hasSavedRisks,
 		status: risksStatus,
 		toggleSaved: toggleSavedRisks,
@@ -480,28 +479,25 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 
 	return (
 		<div className="flex h-full flex-col">
+			{/* The two rows share a container: how they are laid out depends on the panel's width
+			    alone, never on what is switched on, so pressing a control moves nothing. */}
 			{pairIds && (
-				<div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-border/60 px-6 py-2">
-					<YouArePicker names={names} me={me} onPick={pickViewpoint} />
-					<AgainstFilter on={onlyAgainst} onChange={setOnlyAgainst} disabled={me === null} />
-				</div>
-			)}
-
-			{pairIds && (
-				<KindTabs
-					id={tabsId}
-					kind={typeShown}
-					onPick={setTypeShown}
-					counts={kindCounts}
-					shared={hasPairs ? bothCounts : null}
-					names={names}
-					aside={
-						<div className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1.5">
+				<div className="@container shrink-0">
+					<div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-border/60 px-6 py-2">
+						<YouArePicker names={names} me={me} onPick={pickViewpoint} />
+						<AgainstFilter on={onlyAgainst} onChange={setOnlyAgainst} disabled={me === null} />
+						{/* The risks, right above the conditions picker. A count or a notice shows up on
+						    this group's left, so nothing else moves. In a wide panel it shares the row
+						    with «You are»; in a narrower one it always has a line of its own, still above
+						    the tabs. */}
+						<div className="ml-auto flex basis-full flex-wrap items-center justify-end gap-x-3 gap-y-1.5 @[54rem]:basis-auto">
+							{conditionMode === 'mark' && (
+								<FirmKey color={KIND_COLORS[typeShown]} className="@[54rem]:hidden" />
+							)}
 							<RiskControl
 								status={risksStatus}
 								source={risksSource}
 								hasSaved={hasSavedRisks}
-								unsaved={risksUnsaved}
 								shown={riskCounts.shown}
 								total={riskCounts.total}
 								failed={risks?.clausesFailed ?? 0}
@@ -511,11 +507,29 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 							{hasDatasetFlags && (
 								<DatasetFlagsToggle on={showDatasetFlags} onChange={setShowDatasetFlags} />
 							)}
-							{conditionMode === 'mark' && <FirmKey color={KIND_COLORS[typeShown]} />}
-							<ConditionModePicker mode={conditionMode} onPick={setConditionMode} />
 						</div>
-					}
-				/>
+					</div>
+
+					{/* The tabs share their line with the conditions picker only, so the two stay level.
+					    The key sits beside the picker in a wide panel; in a narrower one it opens the
+					    risks' line above. */}
+					<KindTabs
+						id={tabsId}
+						kind={typeShown}
+						onPick={setTypeShown}
+						counts={kindCounts}
+						shared={hasPairs ? bothCounts : null}
+						names={names}
+						aside={
+							<div className="flex items-center justify-end gap-x-3">
+								{conditionMode === 'mark' && (
+									<FirmKey color={KIND_COLORS[typeShown]} className="hidden @[54rem]:flex" />
+								)}
+								<ConditionModePicker mode={conditionMode} onPick={setConditionMode} />
+							</div>
+						}
+					/>
+				</div>
 			)}
 
 			{/* The table fills the panel; the graph has a tab of its own. */}

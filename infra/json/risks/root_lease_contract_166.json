@@ -1,0 +1,18 @@
+{
+  "documentId": "root::lease_contract_166",
+  "model": "gpt-6-luna",
+  "clausesReviewed": 9,
+  "clausesFailed": 0,
+  "risks": [
+    {
+      "statementId": "obligation-11",
+      "type": "sublease_permitted",
+      "reason": "It addresses the tenant’s ability to sublet the leased property, requiring the lessor’s prior consent."
+    },
+    {
+      "statementId": "obligation-17",
+      "type": "reinstatement",
+      "reason": "Requires the lessee to restore the premises to their original state after damage caused by improper use."
+    }
+  ]
+}

@@ -5,9 +5,19 @@
   "clausesFailed": 0,
   "risks": [
     {
+      "statementId": "right-2",
+      "type": "special_stipulations",
+      "reason": "It modifies rental and decoration term calculations if the premises and facilities are delayed in being exchanged."
+    },
+    {
+      "statementId": "obligation-11",
+      "type": "reinstatement",
+      "reason": "It requires Party B to return the leased house to Party A at the end of the lease."
+    },
+    {
       "statementId": "obligation-21",
       "type": "service_charges",
-      "reason": "The lessee must bear premises administration fees, which are service costs charged for building services."
+      "reason": "The lessee must bear premises administration fees and utility costs incurred during the rental term."
     },
     {
       "statementId": "obligation-24",
@@ -27,17 +37,12 @@
     {
       "statementId": "prohibition-3",
       "type": "sublease_permitted",
-      "reason": "The clause addresses subleasing by Party B, requiring written consent to lease any part of the premises to a third party."
-    },
-    {
-      "statementId": "right-7",
-      "type": "break_option",
-      "reason": "Allows the lessor to terminate the contract and take back the premises if specified tenant breaches occur."
+      "reason": "This clause governs whether Party B may sublease all or part of the premises, requiring Party A’s written consent."
     },
     {
       "statementId": "right-9",
       "type": "right_of_first_refusal_to_lease",
-      "reason": "Party B has priority to continue leasing the property over other parties under the same conditions."
+      "reason": "It grants Party B priority to continue the lease over other parties on the same conditions."
     },
     {
       "statementId": "obligation-31",
@@ -45,14 +50,14 @@
       "reason": "Party A guarantees that the premises and attached facilities and equipment are in good condition."
     },
     {
-      "statementId": "obligation-32",
-      "type": "reinstatement",
-      "reason": "It requires the tenant to return the premises and attached facilities and equipment when the lease ends."
+      "statementId": "obligation-33",
+      "type": "landlord_repairs",
+      "reason": "The lessor is responsible for keeping the leased house and attached facilities in sound condition."
     },
     {
       "statementId": "obligation-37",
       "type": "break_option",
-      "reason": "It imposes a penalty when the lessee terminates the lease before its end without the lessor’s consent."
+      "reason": "It imposes a penalty when the lessee terminates the lease early without the lessor’s consent."
     }
   ]
 }

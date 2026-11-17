@@ -7,12 +7,22 @@
     {
       "statementId": "obligation-11",
       "type": "sublease_permitted",
-      "reason": "It addresses the tenant’s ability to sublet the leased property, requiring the lessor’s prior consent."
+      "reason": "The clause addresses the tenant's subletting of the leased property, subject to the lessor's prior consent."
     },
     {
       "statementId": "obligation-17",
       "type": "reinstatement",
-      "reason": "Requires the lessee to restore the premises to their original state after damage caused by improper use."
+      "reason": "Party B must restore the premises to their original state if it impairs the structure or facilities through improper use."
+    },
+    {
+      "statementId": "obligation-23",
+      "type": "extension_period",
+      "reason": "It provides for renewal of the lease term by agreement within thirty days before expiry."
+    },
+    {
+      "statementId": "obligation-24",
+      "type": "extension_period",
+      "reason": "It provides for renewal of the lease term by agreement within thirty days before expiry."
     }
   ]
 }

@@ -7,57 +7,52 @@
     {
       "statementId": "right-2",
       "type": "right_of_first_refusal_to_lease",
-      "reason": "It gives the lessee priority to lease the house after the contract expires."
+      "reason": "It gives Party B priority to lease the house after the existing contract expires."
     },
     {
       "statementId": "right-3",
       "type": "extension_period",
-      "reason": "It allows the lease term to be extended by negotiation if the lessee cannot promptly find another house."
+      "reason": "It allows Party B to extend the lease term by negotiation if it cannot promptly find another house."
     },
     {
       "statementId": "obligation-4",
       "type": "landlord_repairs",
-      "reason": "Party A takes responsibility for repairing the leased house."
+      "reason": "Party A is responsible for repairing the house."
     },
     {
       "statementId": "obligation-10",
       "type": "landlord_repairs",
-      "reason": "Party A contributes to and organizes repair work."
-    },
-    {
-      "statementId": "obligation-6",
-      "type": "warranties_of_the_owner",
-      "reason": "Party A guarantees that the house has no leakage."
-    },
-    {
-      "statementId": "obligation-7",
-      "type": "warranties_of_the_owner",
-      "reason": "Party A guarantees that specified facilities are in good condition and safe for use."
+      "reason": "Party A contributes to and organizes repairs according to the maintenance scope."
     },
     {
       "statementId": "right-5",
       "type": "right_of_first_refusal_to_purchase",
-      "reason": "Party B has priority to purchase the house on the same terms before it is sold to another buyer."
+      "reason": "Party B receives priority to purchase the house on the same conditions, before another buyer."
+    },
+    {
+      "statementId": "obligation-17",
+      "type": "landlord_repairs",
+      "reason": "The obligation imposes compensation for breach of Article 4, which includes the lessor’s repair and maintenance duties."
     },
     {
       "statementId": "right-8",
       "type": "compulsory_reconstruction",
-      "reason": "It disclaims responsibility when force majeure damages the leased house, addressing damage or destruction of the property."
+      "reason": "It addresses responsibility when the leased house is damaged by force majeure."
     },
     {
       "statementId": "right-9",
       "type": "compulsory_reconstruction",
-      "reason": "It disclaims responsibility when force majeure damages the leased house, addressing damage or destruction of the property."
+      "reason": "It addresses responsibility when the leased house is damaged by force majeure."
     },
     {
       "statementId": "right-10",
-      "type": "special_stipulations",
-      "reason": "It provides a special exemption from mutual liability if municipal construction requires the house to be removed or rebuilt."
+      "type": "compulsory_reconstruction",
+      "reason": "It addresses responsibility when the property is removed or rebuilt due to municipal construction."
     },
     {
       "statementId": "right-11",
-      "type": "special_stipulations",
-      "reason": "It provides a special exemption from mutual liability if municipal construction requires the house to be removed or rebuilt."
+      "type": "compulsory_reconstruction",
+      "reason": "It addresses responsibility when the property is removed or rebuilt due to municipal construction."
     }
   ]
 }

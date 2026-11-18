@@ -1,0 +1,53 @@
+{
+  "documentId": "root::SteelVaultCorp_20081224_10-K_EX-10.16_3074935_EX-10.16_Affiliate Agreement",
+  "model": "gpt-6-luna",
+  "clausesReviewed": 22,
+  "clausesFailed": 0,
+  "risks": [
+    {
+      "statementId": "right-11",
+      "type": "break_option",
+      "reason": "Equidata may terminate the agreement without notice upon the Marketing Affiliate’s payment default or other breach."
+    },
+    {
+      "statementId": "right-9",
+      "type": "break_option",
+      "reason": "Either party may terminate the agreement for cause on thirty days’ written notice."
+    },
+    {
+      "statementId": "right-10",
+      "type": "break_option",
+      "reason": "Either party may terminate the agreement for cause on thirty days’ written notice."
+    },
+    {
+      "statementId": "obligation-38",
+      "type": "damage",
+      "reason": "This makes the Marketing Affiliate liable for costs, including reasonable attorney fees, if the data is not voluntarily removed."
+    },
+    {
+      "statementId": "right-14",
+      "type": "break_option",
+      "reason": "Equidata may terminate the agreement immediately if a credit reporting agency declines or orders it to stop providing services."
+    },
+    {
+      "statementId": "obligation-45",
+      "type": "damage",
+      "reason": "Each party must defend and indemnify the other for claims arising from warranty breaches or failure to provide services."
+    },
+    {
+      "statementId": "obligation-46",
+      "type": "damage",
+      "reason": "Each party must defend and indemnify the other for claims arising from warranty breaches or failure to provide services."
+    },
+    {
+      "statementId": "right-17",
+      "type": "damage",
+      "reason": "It limits Equidata’s liability for specified damages and third-party claims."
+    },
+    {
+      "statementId": "obligation-47",
+      "type": "damage",
+      "reason": "It requires the Marketing Affiliate to indemnify Equidata against claims and associated attorney fees."
+    }
+  ]
+}

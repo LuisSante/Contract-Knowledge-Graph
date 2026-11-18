@@ -1,16 +1,3 @@
-"""Risky statements of a contract, found by an LLM that reads one clause at a time.
-
-Each call is a row of the Clause Analyzer: a clause with every obligation, right and
-prohibition it holds, grouped by party as the table shows them, each with its conditions,
-values and timing, plus the clauses one edge away. The model answers which of those
-statements are red flags, of which type, and why.
-
-The types are the lease red flags of Leivaditi, Rossi and Kanoulas (2020), "A Benchmark for
-Lease Contract Review", Section 3.2. The ones its dataset annotates most are told as its
-annotators apply them, by topic; the rest keep the paper's definition. The list is for leases:
-another kind of contract needs its own. The graph is only read; nothing here changes it.
-"""
-
 from __future__ import annotations
 
 import json
@@ -25,24 +12,12 @@ from services.llm.factory import LLMProviderFactory
 
 logger = logging.getLogger(__name__)
 
-# The cheapest model that answers in the forced format; it does not reason, so a call costs
-# what its tokens cost and nothing more.
 DEFAULT_MODEL = "gpt-6-luna"
 
 MAX_WORKERS = 8
 MAX_OUTPUT_TOKENS = 1500
-# A second try covers a dropped connection; a third would only repeat the same failure.
 ATTEMPTS = 2
 
-# What each type covers, as the instructions tell it.
-#
-# The paper defines a type by its textbook case ("a clause that allows the sudden termination of
-# a lease"). Its annotators flag by topic instead: every sentence about ending the lease early,
-# whoever it favours, each ground for it, its notice and its penalty. Told the textbook case,
-# the model found 14 of the 38 squares the dataset's flags land on in the three annotated
-# leases; told the topic, 36. So the types the dataset annotates often, and assignment with
-# sublease, are worded by topic, from what it flags in its other contracts. The ones it hardly
-# annotates keep the paper's words: worded wide, they only added marks no flag backs.
 RED_FLAG_TYPES: dict[str, str] = {
     "break_option": "ending the lease before its term: a right of either party to terminate, cancel, rescind or break the contract or to take the premises back, each event or breach that gives that right, the notice it takes, and the penalty or compensation for ending early",
     "extension_period": "a clause stating the period by which the lease can be extended",
@@ -63,17 +38,11 @@ RED_FLAG_TYPES: dict[str, str] = {
     "change_of_control": "a change in who owns or controls: the lessor selling, transferring or mortgaging the property, the lease continuing under the new owner, the notice or consent it takes, a change in the control of the lessee, and exchanging or handing the premises over to others",
 }
 
-# What a lease always says and no reviewer flags for saying it. Named, so the wide topics above
-# do not take them in.
 NOT_TOPICS = (
     "the rent, rent-free periods and payment dates; the description, handover or permitted use of the premises; the lessee's "
     "alterations or decoration; the term; taxes and insurance premiums; notices; disputes; governing law; signing"
 )
 
-# The role the model gives each statement it lists. Only `core` ones are kept: asked to tell the
-# statement that sets the rule from the one that only touches the topic, it lists both and
-# sorts them, and dropping the second kind took out a quarter of the marks no flag backs for a
-# tenth of the ones a flag does.
 KEPT_ROLE = "core"
 ROLES = (KEPT_ROLE, "related")
 
@@ -134,17 +103,13 @@ _LINK_PASSIVE = {"modifies": "is modified by", "depends_on": "is depended on by"
 
 @dataclass
 class ClauseRow:
-    """What one call reads, and which statements its answer may name."""
-
     clause_id: str
     content: str
     statement_ids: list[str] = field(default_factory=list)
-    # A reciprocal pair is written once: the id shown stands for both of its statements.
     stands_for: dict[str, list[str]] = field(default_factory=dict)
 
 
 def _owner(statement: dict[str, Any]) -> str | None:
-    """Whose a statement is: the party an obligation or prohibition binds, or a right's holder."""
     return statement.get("benefitPartyId") if statement["kind"] == "right" else statement.get("burdenPartyId")
 
 
@@ -153,7 +118,6 @@ def _text(statement: dict[str, Any]) -> str:
 
 
 def clause_rows(kg: dict[str, Any]) -> list[ClauseRow]:
-    """One row per clause that holds statements, laid out as the Clause Analyzer shows it."""
     statements = [dict(s, kind=kind) for key, kind in _STATEMENT_KEYS for s in kg.get(key, []) if isinstance(s, dict)]
     by_id = {s["id"]: s for s in statements}
     parties = [p for p in kg.get("parties", []) if isinstance(p, dict) and p.get("id")]
@@ -177,7 +141,6 @@ def clause_rows(kg: dict[str, Any]) -> list[ClauseRow]:
     for value in kg.get("values", []):
         values[value.get("quantifiesId")].append(value)
 
-    # Reciprocal pairs, as the table sets them aside: same type, clause and words, one copy per party.
     def pair_key(statement: dict[str, Any]) -> tuple[str, Any, str]:
         return (statement["kind"], statement.get("clauseId"), _text(statement))
 
@@ -238,7 +201,6 @@ def clause_rows(kg: dict[str, Any]) -> list[ClauseRow]:
                 ids.append(group[0]["id"])
                 stands_for[group[0]["id"]] = [s["id"] for s in group]
 
-        # A statement the contract gives to nobody has no square, but the clause still says it.
         loose = [s for s in mine if s["id"] not in twins and not has_both_parties(s)]
         if loose:
             out += ["", "Stated without naming a party:", *(line(s) for s in loose)]
@@ -279,7 +241,6 @@ def detect_contract_risks(
     provider = LLMProviderFactory.create(provider_name, model=resolved_model)
 
     def review(row: ClauseRow) -> list[ContractRisk] | None:
-        """The row's risks, or None when the call failed: its statements were never judged."""
         for attempt in range(1, ATTEMPTS + 1):
             try:
                 raw = provider.generate(
@@ -290,16 +251,13 @@ def detect_contract_risks(
                 )
                 answer = json.loads(raw)
             except Exception:
-                # One clause failing must not lose the rest: it is counted, and the others go on.
                 logger.warning("Risk review of %s clause %s failed (attempt %d)", doc_id, row.clause_id, attempt, exc_info=True)
                 continue
             known = set(row.statement_ids)
             found: list[ContractRisk] = []
             for item in answer.get("risks", []):
-                # An id the row never showed is the model's invention: there is no square for it.
                 if item.get("id") not in known:
                     continue
-                # It only touches the topic: the rule is in another statement, and that one is marked.
                 if item.get("role") != KEPT_ROLE:
                     continue
                 for statement_id in row.stands_for.get(item["id"], [item["id"]]):

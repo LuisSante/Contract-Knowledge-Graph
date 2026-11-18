@@ -7,22 +7,22 @@
     {
       "statementId": "right-1",
       "type": "break_option",
-      "reason": "Party A may terminate the contract and take back the house upon specified conduct by Party B."
+      "reason": "Party A may terminate the contract and take back the house upon specified breaches."
     },
     {
       "statementId": "right-1",
       "type": "sublease_permitted",
-      "reason": "The clause identifies subleasing as prohibited conduct that permits Party A to terminate and take back the house."
+      "reason": "The clause makes subleasing a ground for termination, thereby prohibiting it."
     },
     {
       "statementId": "right-2",
       "type": "right_of_first_refusal_to_lease",
-      "reason": "Party B has priority to lease the house after the contract expires."
+      "reason": "Party B receives priority to lease the house after the contract expires."
     },
     {
       "statementId": "right-3",
       "type": "extension_period",
-      "reason": "Party B may extend the lease term by negotiation if it cannot promptly find another house."
+      "reason": "The clause permits extending the lease term by negotiation if Party B cannot promptly find another house."
     },
     {
       "statementId": "obligation-3",
@@ -32,32 +32,32 @@
     {
       "statementId": "obligation-4",
       "type": "landlord_repairs",
-      "reason": "Party A is responsible for repairing the house."
+      "reason": "It assigns responsibility for repairing the house to the lessor."
     },
     {
       "statementId": "obligation-5",
       "type": "landlord_repairs",
-      "reason": "Party A must examine the facilities."
+      "reason": "It requires the lessor to examine the facilities."
     },
     {
       "statementId": "obligation-6",
       "type": "landlord_repairs",
-      "reason": "Party A must ensure the house has no leakage."
+      "reason": "It requires the lessor to ensure the house has no leakage."
     },
     {
       "statementId": "obligation-7",
       "type": "landlord_repairs",
-      "reason": "Party A must keep specified facilities and fixtures in good condition for safe, normal use."
+      "reason": "It requires the lessor to maintain specified facilities in good condition for safe use."
     },
     {
       "statementId": "obligation-8",
       "type": "landlord_repairs",
-      "reason": "The repair scope and standard are governed by the stated construction department notice."
+      "reason": "It sets the scope and standard for repairs."
     },
     {
       "statementId": "obligation-10",
       "type": "landlord_repairs",
-      "reason": "Party A contributes to and organizes repairs according to the maintenance scope."
+      "reason": "It requires the lessor to fund and organize repairs."
     },
     {
       "statementId": "obligation-14",
@@ -67,47 +67,47 @@
     {
       "statementId": "obligation-15",
       "type": "change_of_control",
-      "reason": "Makes the lessee's exchange of the property subject to the lessor's approval."
+      "reason": "Requires the lessee to obtain consent before exchanging the property with others."
     },
     {
       "statementId": "right-5",
       "type": "right_of_first_refusal_to_purchase",
-      "reason": "Gives the lessee priority to purchase the house on the same conditions."
+      "reason": "Gives the lessee priority to purchase the property on the same conditions."
     },
     {
       "statementId": "right-7",
       "type": "sublease_permitted",
-      "reason": "It addresses Party B transferring the house to others and gives Party A a right to stop that transfer."
+      "reason": "Party A may stop a transfer of the house by Party B, setting a consequence for transferring it to others."
     },
     {
       "statementId": "right-6",
       "type": "service_charges",
-      "reason": "It gives Party B the right to refuse fees charged by Party A in addition to rent."
+      "reason": "Party B may refuse fees other than rent, establishing a right concerning additional charges."
     },
     {
       "statementId": "obligation-17",
       "type": "damage",
-      "reason": "It requires compensation of 50,000 Yuan for noncompliance with Article 4."
+      "reason": "It requires compensation of 50,000 Yuan for breach of Article 4."
     },
     {
       "statementId": "right-8",
       "type": "damage",
-      "reason": "It exempts both parties from responsibility for damage to the house or the lessee’s loss caused by force majeure."
+      "reason": "It exempts both parties from responsibility for damage to the house or Party B’s loss caused by force majeure."
     },
     {
       "statementId": "right-9",
       "type": "damage",
-      "reason": "It exempts both parties from responsibility for damage to the house or the lessee’s loss caused by force majeure."
+      "reason": "It exempts both parties from responsibility for damage to the house or Party B’s loss caused by force majeure."
     },
     {
       "statementId": "right-10",
       "type": "damage",
-      "reason": "It exempts both parties from responsibility for losses when municipal construction requires the house to be removed or rebuilt."
+      "reason": "It exempts both parties from responsibility for losses caused by removal or reconstruction required by municipal construction."
     },
     {
       "statementId": "right-11",
       "type": "damage",
-      "reason": "It exempts both parties from responsibility for losses when municipal construction requires the house to be removed or rebuilt."
+      "reason": "It exempts both parties from responsibility for losses caused by removal or reconstruction required by municipal construction."
     }
   ]
 }

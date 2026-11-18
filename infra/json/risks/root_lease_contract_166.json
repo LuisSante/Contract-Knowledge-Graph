@@ -7,17 +7,12 @@
     {
       "statementId": "obligation-4",
       "type": "service_charges",
-      "reason": "It sets the amount and annual payment deadline for a safety-related fee."
+      "reason": "It sets the annual safety insurance fee and payment deadline."
     },
     {
       "statementId": "obligation-5",
       "type": "service_charges",
-      "reason": "It states how utility fees are calculated."
-    },
-    {
-      "statementId": "obligation-6",
-      "type": "service_charges",
-      "reason": "It sets the monthly payment deadline for the previous fees."
+      "reason": "It specifies how utility fees are calculated."
     },
     {
       "statementId": "obligation-7",
@@ -27,12 +22,12 @@
     {
       "statementId": "obligation-8",
       "type": "landlord_repairs",
-      "reason": "It allocates responsibility for maintenance of the leased property between the lessor and lessee."
+      "reason": "It assigns responsibility for maintenance of the leased property to both parties."
     },
     {
       "statementId": "obligation-9",
       "type": "landlord_repairs",
-      "reason": "It allocates responsibility for maintenance of the leased property between the lessor and lessee."
+      "reason": "It assigns responsibility for maintenance of the leased property to both parties."
     },
     {
       "statementId": "obligation-10",
@@ -42,7 +37,7 @@
     {
       "statementId": "right-1",
       "type": "change_of_control",
-      "reason": "Allows the lessor to transfer ownership during the lease without the lessee’s consent."
+      "reason": "Allows transfer of ownership without obtaining the lessee’s consent."
     },
     {
       "statementId": "obligation-11",
@@ -52,47 +47,57 @@
     {
       "statementId": "obligation-12",
       "type": "service_charges",
-      "reason": "It allocates responsibility for tap-water and electricity supply expenses and meter installation fees."
+      "reason": "Party A bears expenses for water, electricity supply, and installing the meters."
     },
     {
       "statementId": "obligation-13",
       "type": "service_charges",
-      "reason": "It assigns responsibility for TV access and its initial connection fee."
+      "reason": "Party B bears the initial fee for connecting TV service."
     },
     {
       "statementId": "obligation-14",
       "type": "service_charges",
-      "reason": "It assigns responsibility for TV access and its initial connection fee."
+      "reason": "Party B bears the initial fee for connecting TV service."
     },
     {
       "statementId": "obligation-17",
       "type": "reinstatement",
-      "reason": "It requires Party B to restore the premises to their original state after specified impairment."
+      "reason": "Party B must restore the premises to their original state after damage caused by its improper use."
     },
     {
       "statementId": "obligation-18",
       "type": "damage",
-      "reason": "It requires compensation for losses caused by Party B's improper use that impairs the premises."
+      "reason": "Party B must compensate losses resulting from damage caused by its improper use."
     },
     {
       "statementId": "obligation-19",
       "type": "damage",
-      "reason": "It imposes liquidated damages for breach of contract."
+      "reason": "Either party owes liquidated damages equal to half a year's rent for breach."
     },
     {
       "statementId": "obligation-20",
       "type": "damage",
-      "reason": "It imposes liquidated damages for breach of contract."
+      "reason": "Either party owes liquidated damages equal to half a year's rent for breach."
     },
     {
       "statementId": "obligation-23",
       "type": "right_of_first_refusal_to_lease",
-      "reason": "It sets the parties’ obligation to sign a new lease when they agree to renew before expiry."
+      "reason": "It provides for renewal of the lease by mutual agreement and requires the parties to sign a new contract."
     },
     {
       "statementId": "obligation-24",
       "type": "right_of_first_refusal_to_lease",
-      "reason": "It sets the parties’ obligation to sign a new lease when they agree to renew before expiry."
+      "reason": "It provides for renewal of the lease by mutual agreement and requires the parties to sign a new contract."
+    },
+    {
+      "statementId": "right-4",
+      "type": "special_stipulations",
+      "reason": "It expressly permits the parties to supplement the lease by a negotiated supplementary agreement."
+    },
+    {
+      "statementId": "right-5",
+      "type": "special_stipulations",
+      "reason": "It expressly permits the parties to supplement the lease by a negotiated supplementary agreement."
     }
   ]
 }

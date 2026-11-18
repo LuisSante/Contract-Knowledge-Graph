@@ -7,27 +7,12 @@
     {
       "statementId": "right-2",
       "type": "special_stipulations",
-      "reason": "It expressly modifies the rent and decoration terms if interchange is delayed."
-    },
-    {
-      "statementId": "right-3",
-      "type": "change_of_control",
-      "reason": "It gives the lessor a right to take back the premises upon expiration."
-    },
-    {
-      "statementId": "obligation-9",
-      "type": "service_charges",
-      "reason": "It makes the lessee responsible for negotiating settlement of fees including utilities."
+      "reason": "It expressly modifies the rent and decoration term calculations under Clause 5 if interchange is delayed."
     },
     {
       "statementId": "obligation-14",
       "type": "service_charges",
-      "reason": "It assigns responsibility for water, electricity, and other utility fees to Party A."
-    },
-    {
-      "statementId": "obligation-16",
-      "type": "guarantee_transferable",
-      "reason": "It sets the amount and payment deadline for the deposit."
+      "reason": "Party A is responsible for water, electricity, and related service fees."
     },
     {
       "statementId": "obligation-21",
@@ -37,107 +22,107 @@
     {
       "statementId": "obligation-24",
       "type": "landlord_repairs",
-      "reason": "Party A must repair and pay for repairs when the premises or attached facilities are damaged."
+      "reason": "It makes the lessor responsible for repairing damage to the premises and attached facilities and paying the expenses."
     },
     {
       "statementId": "obligation-25",
       "type": "landlord_repairs",
-      "reason": "Party A must repair and pay the related expenses in the stated circumstances."
+      "reason": "It assigns the lessor responsibility for repairs and their costs."
     },
     {
       "statementId": "obligation-27",
       "type": "damage",
-      "reason": "Party B must compensate for damage to the premises and attached facilities caused by its fault or negligence."
+      "reason": "It requires the lessee to compensate for damage to the premises and facilities caused by its fault or negligence."
     },
     {
       "statementId": "prohibition-2",
       "type": "assignment_permitted",
-      "reason": "Transfer of the lease is prohibited unless Party A approves."
+      "reason": "It prohibits transferring the lease without the lessor’s approval."
     },
     {
       "statementId": "prohibition-2",
       "type": "sublease_permitted",
-      "reason": "Subletting is prohibited unless Party A approves."
+      "reason": "It prohibits subletting without the lessor’s approval."
+    },
+    {
+      "statementId": "obligation-28",
+      "type": "right_of_first_refusal_to_purchase",
+      "reason": "Party A must notify Party B of an intended sale, triggering Party B’s priority to purchase."
     },
     {
       "statementId": "right-6",
       "type": "right_of_first_refusal_to_purchase",
-      "reason": "It grants the lessee priority to buy the premises if the lessor intends to sell."
+      "reason": "Party B receives priority to buy the premises if Party A intends to sell."
     },
     {
       "statementId": "prohibition-3",
       "type": "sublease_permitted",
-      "reason": "It prohibits subleasing all or part of the premises without the lessor’s written consent."
+      "reason": "Party B may not sublet any part of the premises without Party A’s written consent."
     },
     {
       "statementId": "right-7",
       "type": "break_option",
-      "reason": "It gives the lessor a right to terminate the contract and repossess the premises for specified breaches."
+      "reason": "Party A may terminate the contract and take back the premises upon the listed breaches."
+    },
+    {
+      "statementId": "right-7",
+      "type": "sublease_permitted",
+      "reason": "Subleasing or transferring the lease without Party A’s approval is listed as a breach allowing termination."
     },
     {
       "statementId": "right-8",
       "type": "damage",
-      "reason": "It requires twice the monthly rent as liquidated damages for specified breaches."
+      "reason": "The clause imposes liquidated damages of twice the monthly rent for the listed breaches."
     },
     {
       "statementId": "obligation-29",
       "type": "damage",
-      "reason": "It requires additional compensation when the default fine does not cover the loss."
+      "reason": "The breaching party must pay additional compensation when the default fine does not cover the loss."
     },
     {
       "statementId": "right-9",
       "type": "right_of_first_refusal_to_lease",
-      "reason": "It grants Party B priority over other parties to continue the lease under the same conditions."
+      "reason": "It grants Party B priority to continue the lease over other parties on the same conditions."
     },
     {
       "statementId": "obligation-31",
       "type": "landlord_repairs",
-      "reason": "It requires the lessor to ensure the premises and attached facilities and equipment remain in good condition."
+      "reason": "It requires the lessor to maintain the premises and attached facilities and equipment in good condition."
     },
     {
       "statementId": "obligation-33",
       "type": "landlord_repairs",
-      "reason": "It requires the lessor to keep the house and attached facilities in sound condition."
+      "reason": "It requires the lessor to keep the house and attached facilities in sound condition for normal use."
     },
     {
       "statementId": "right-10",
       "type": "reinstatement",
-      "reason": "It sets the consequence for items left behind when the lessee vacates."
+      "reason": "It treats items left behind as disposed of by the lessee and lets the lessor handle them."
     },
     {
       "statementId": "obligation-34",
       "type": "break_option",
-      "reason": "It sets the penalty if Party A demands the house back before the contract ends."
+      "reason": "It sets a penalty for Party A taking back the premises before the contract ends."
     },
     {
       "statementId": "obligation-35",
       "type": "damage",
-      "reason": "It requires additional compensation when the penalty does not cover the relevant loss."
+      "reason": "It requires Party A to pay additional compensation when the penalty does not cover the loss."
     },
     {
       "statementId": "obligation-38",
       "type": "damage",
-      "reason": "It requires additional compensation when the penalty does not cover the relevant loss."
+      "reason": "It requires Party A to pay additional compensation when the penalty does not cover the loss."
     },
     {
       "statementId": "obligation-36",
       "type": "damage",
-      "reason": "Party A must compensate Party B for losses if flaws or illegality of the house make the contract ineffective."
-    },
-    {
-      "statementId": "right-11",
-      "type": "guarantee_transferable",
-      "reason": "Party A may deduct amounts from the deposit when the penalty is insufficient."
+      "reason": "Party A must compensate Party B for losses if the contract is ineffective due to flaws or illegality of the house."
     },
     {
       "statementId": "obligation-37",
       "type": "break_option",
-      "reason": "It imposes a penalty for Party B terminating the lease early without Party A’s consent."
-    },
-    {
-      "statementId": "obligation-39",
-      "type": "guarantee_transferable",
-      "reason": "Party B must pay any remainder when the deposit is insufficient."
+      "reason": "It sets a penalty for Party B terminating the lease early without Party A’s consent."
     },
     {
       "statementId": "right-12",

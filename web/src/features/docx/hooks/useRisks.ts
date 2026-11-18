@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { detectRisksWithAI, fetchSavedRisks } from '@/services/risks';
 import type { ContractRisk, ContractRisks } from '@/types/risks';
 
@@ -26,6 +26,16 @@ export function useRisks(docId: string) {
 		risks: ContractRisks;
 	} | null>(null);
 	const [status, setStatus] = useState<RisksStatus>('idle');
+	// An answer has just gone on screen, the model's or the saved one: the reader is told, until
+	// the notice leaves (closed, or timed out) or the risks come off the screen. Each notice
+	// gets a number no other one has, so the clock of one that already left never closes the
+	// one that followed it.
+	const [notice, setNotice] = useState<{ docId: string; id: number } | null>(null);
+	const lastNoticeId = useRef(0);
+	const announce = useCallback(() => {
+		lastNoticeId.current += 1;
+		setNotice({ docId, id: lastNoticeId.current });
+	}, [docId]);
 
 	// Reading what is saved costs nothing, so it is known up front: it decides whether «Free»
 	// has anything to show. It is not put on screen until the reader asks.
@@ -50,31 +60,39 @@ export function useRisks(docId: string) {
 	/** «Free»: the saved answer goes on screen, or comes off it when it is already there. */
 	const toggleSaved = useCallback(() => {
 		setStatus('idle');
-		setShown((now) =>
-			now?.docId === docId && now.source === 'saved'
-				? null
-				: savedRisks
-					? { docId, source: 'saved', risks: savedRisks }
-					: now
-		);
-	}, [docId, savedRisks]);
+		if (current?.source === 'saved') {
+			setShown(null);
+			setNotice(null);
+		} else if (savedRisks) {
+			setShown({ docId, source: 'saved', risks: savedRisks });
+			announce();
+		}
+	}, [docId, savedRisks, current, announce]);
 
 	/** «AI»: asks the model now. Its answer is shown and becomes the saved one, the one «Free»
 	 *  shows from then on. A request that fails leaves the saved answer as it was. */
 	const detectWithAI = useCallback(async () => {
 		if (!docId) return;
 		setStatus('detecting');
+		setNotice(null);
 		try {
 			const answer = await detectRisksWithAI(docId);
 			if (answer) {
 				setShown({ docId, source: 'ai', risks: answer });
 				setSaved({ docId, risks: answer });
+				announce();
 			}
 			setStatus('idle');
 		} catch {
 			setStatus('error');
 		}
-	}, [docId]);
+	}, [docId, announce]);
+
+	/** Closes one notice, by its number: asked of one that is no longer there, it does nothing. */
+	const closeNotice = useCallback(
+		(id: number) => setNotice((was) => (was?.id === id ? null : was)),
+		[]
+	);
 
 	const risks = current?.risks ?? null;
 	/** Each risky statement's type and reason, by statement id. */
@@ -94,6 +112,10 @@ export function useRisks(docId: string) {
 		/** There is a saved answer for «Free» to show. */
 		hasSaved: savedRisks !== null,
 		status,
+		/** The number of the answer that has just gone on screen, while the reader is being told
+		 *  of it; null once the notice has left. */
+		noticeId: notice?.docId === docId && current ? notice.id : null,
+		closeNotice,
 		toggleSaved,
 		detectWithAI,
 	};

@@ -5,14 +5,29 @@
   "clausesFailed": 0,
   "risks": [
     {
+      "statementId": "right-1",
+      "type": "break_option",
+      "reason": "Party A may terminate the contract and take back the house upon specified conduct by Party B."
+    },
+    {
+      "statementId": "right-1",
+      "type": "sublease_permitted",
+      "reason": "The clause identifies subleasing as prohibited conduct that permits Party A to terminate and take back the house."
+    },
+    {
       "statementId": "right-2",
       "type": "right_of_first_refusal_to_lease",
-      "reason": "It gives Party B priority to lease the house after the existing contract expires."
+      "reason": "Party B has priority to lease the house after the contract expires."
     },
     {
       "statementId": "right-3",
       "type": "extension_period",
-      "reason": "It allows Party B to extend the lease term by negotiation if it cannot promptly find another house."
+      "reason": "Party B may extend the lease term by negotiation if it cannot promptly find another house."
+    },
+    {
+      "statementId": "obligation-3",
+      "type": "service_charges",
+      "reason": "It requires water and electricity fees to be settled separately."
     },
     {
       "statementId": "obligation-4",
@@ -20,39 +35,79 @@
       "reason": "Party A is responsible for repairing the house."
     },
     {
+      "statementId": "obligation-5",
+      "type": "landlord_repairs",
+      "reason": "Party A must examine the facilities."
+    },
+    {
+      "statementId": "obligation-6",
+      "type": "landlord_repairs",
+      "reason": "Party A must ensure the house has no leakage."
+    },
+    {
+      "statementId": "obligation-7",
+      "type": "landlord_repairs",
+      "reason": "Party A must keep specified facilities and fixtures in good condition for safe, normal use."
+    },
+    {
+      "statementId": "obligation-8",
+      "type": "landlord_repairs",
+      "reason": "The repair scope and standard are governed by the stated construction department notice."
+    },
+    {
       "statementId": "obligation-10",
       "type": "landlord_repairs",
       "reason": "Party A contributes to and organizes repairs according to the maintenance scope."
     },
     {
+      "statementId": "obligation-14",
+      "type": "change_of_control",
+      "reason": "Requires advance notice when the lessor sells the property."
+    },
+    {
+      "statementId": "obligation-15",
+      "type": "change_of_control",
+      "reason": "Makes the lessee's exchange of the property subject to the lessor's approval."
+    },
+    {
       "statementId": "right-5",
       "type": "right_of_first_refusal_to_purchase",
-      "reason": "Party B receives priority to purchase the house on the same conditions, before another buyer."
+      "reason": "Gives the lessee priority to purchase the house on the same conditions."
+    },
+    {
+      "statementId": "right-7",
+      "type": "sublease_permitted",
+      "reason": "It addresses Party B transferring the house to others and gives Party A a right to stop that transfer."
+    },
+    {
+      "statementId": "right-6",
+      "type": "service_charges",
+      "reason": "It gives Party B the right to refuse fees charged by Party A in addition to rent."
     },
     {
       "statementId": "obligation-17",
-      "type": "landlord_repairs",
-      "reason": "The obligation imposes compensation for breach of Article 4, which includes the lessor’s repair and maintenance duties."
+      "type": "damage",
+      "reason": "It requires compensation of 50,000 Yuan for noncompliance with Article 4."
     },
     {
       "statementId": "right-8",
-      "type": "compulsory_reconstruction",
-      "reason": "It addresses responsibility when the leased house is damaged by force majeure."
+      "type": "damage",
+      "reason": "It exempts both parties from responsibility for damage to the house or the lessee’s loss caused by force majeure."
     },
     {
       "statementId": "right-9",
-      "type": "compulsory_reconstruction",
-      "reason": "It addresses responsibility when the leased house is damaged by force majeure."
+      "type": "damage",
+      "reason": "It exempts both parties from responsibility for damage to the house or the lessee’s loss caused by force majeure."
     },
     {
       "statementId": "right-10",
-      "type": "compulsory_reconstruction",
-      "reason": "It addresses responsibility when the property is removed or rebuilt due to municipal construction."
+      "type": "damage",
+      "reason": "It exempts both parties from responsibility for losses when municipal construction requires the house to be removed or rebuilt."
     },
     {
       "statementId": "right-11",
-      "type": "compulsory_reconstruction",
-      "reason": "It addresses responsibility when the property is removed or rebuilt due to municipal construction."
+      "type": "damage",
+      "reason": "It exempts both parties from responsibility for losses when municipal construction requires the house to be removed or rebuilt."
     }
   ]
 }

@@ -6,7 +6,8 @@ values and timing, plus the clauses one edge away. The model answers which of th
 statements are red flags, of which type, and why.
 
 The types are the lease red flags of Leivaditi, Rossi and Kanoulas (2020), "A Benchmark for
-Lease Contract Review", Section 3.2, with the paper's definitions. The list is for leases:
+Lease Contract Review", Section 3.2. The ones its dataset annotates most are told as its
+annotators apply them, by topic; the rest keep the paper's definition. The list is for leases:
 another kind of contract needs its own. The graph is only read; nothing here changes it.
 """
 
@@ -33,38 +34,71 @@ MAX_OUTPUT_TOKENS = 1500
 # A second try covers a dropped connection; a third would only repeat the same failure.
 ATTEMPTS = 2
 
+# What each type covers, as the instructions tell it.
+#
+# The paper defines a type by its textbook case ("a clause that allows the sudden termination of
+# a lease"). Its annotators flag by topic instead: every sentence about ending the lease early,
+# whoever it favours, each ground for it, its notice and its penalty. Told the textbook case,
+# the model found 14 of the 38 squares the dataset's flags land on in the three annotated
+# leases; told the topic, 36. So the types the dataset annotates often, and assignment with
+# sublease, are worded by topic, from what it flags in its other contracts. The ones it hardly
+# annotates keep the paper's words: worded wide, they only added marks no flag backs.
 RED_FLAG_TYPES: dict[str, str] = {
-    "break_option": "a clause that allows the sudden termination of a lease",
+    "break_option": "ending the lease before its term: a right of either party to terminate, cancel, rescind or break the contract or to take the premises back, each event or breach that gives that right, the notice it takes, and the penalty or compensation for ending early",
     "extension_period": "a clause stating the period by which the lease can be extended",
-    "special_stipulations": "a clause that supplements and, in certain events, modifies or varies the other provisions of the lease",
+    "special_stipulations": "a clause that supplements and, in certain events, modifies or varies the other provisions of the lease; only when the statement says so in terms",
     "compulsory_reconstruction": "a clause about the reconstruction of the leased property in case of complete disaster, such as an earthquake or fire",
-    "damage": "a clause stating how the cost for repairing damages is split among the lessee and the lessor",
+    "damage": "who answers for damage and loss: damage to the premises or to a party's property, compensation or liquidated damages owed for a breach, and force majeure or other exemptions from liability",
     "expansion": "a clause stating the obligation of the lessor to expand part of the property at its own cost and expense",
-    "landlord_repairs": "a clause stating the obligation of a landlord to pay all the expenses of maintenance repairs",
-    "service_charges": "a clause stating the service costs the lessor charges the lessee to recover the cost of providing services to the building",
-    "warranties_of_the_owner": "written guarantees of the landlord, promising to execute specific property-related actions, such as repairs, within a set period",
-    "guarantee_transferable": "a clause stating that in the event of a sale or other transfer of the building or of the lease, the lessor transfers the cash deposit or letter of credit to the transferee and is released from liability for its return",
-    "assignment_permitted": "a clause stating that the tenant has the right to assign the lease contract to its successors or assigns",
-    "sublease_permitted": "the tenant is allowed to sublease the leased property",
+    "landlord_repairs": "repairs and maintenance of the premises and their facilities: who must do or pay for them, inspections, the condition or standard they must be kept in, the scope of the repairs and how their cost is shared",
+    "service_charges": "utilities and building services (water, electricity, gas, heating, TV, telephone, property management or service fees): who pays them, how they are calculated and when they are settled, and a right to refuse extra charges",
+    "warranties_of_the_owner": "a written guarantee by the lessor that it will carry out a specific action on the property, such as a repair, within a set period",
+    "guarantee_transferable": "the security deposit or other guarantee: its amount, payment, interest, deductions and return, and its transfer when the property or the lease changes hands",
+    "assignment_permitted": "assigning or transferring the lease to someone else: allowed, forbidden or subject to consent",
+    "sublease_permitted": "subletting, or letting a third party use the premises: allowed, forbidden or subject to consent",
     "no_obligation_to_operate": "a clause stating that the lessee is not obliged to operate the leased property for its primary intended purpose",
-    "reinstatement": "a clause stating the tenant's obligations to return the property to the condition it was in before the lease began",
-    "right_of_first_refusal_to_purchase": "a clause that gives a tenant the right to buy a leased property before the landlord negotiates any other offers",
-    "right_of_first_refusal_to_lease": "a clause that gives a tenant the right to lease a leased property before the landlord negotiates any other offers",
-    "change_of_control": "a clause providing that where the lessee is a corporate entity and its control changes through a transfer or sale of shares, it must obtain the lessor's consent",
+    "reinstatement": "the state in which the lessee must hand the premises back: restoring them to their original condition, removing alterations or fixtures, and what it owes if it does not",
+    "right_of_first_refusal_to_purchase": "the lessee's priority or option to buy the property, and the lessor's duty to tell it of an intended sale",
+    "right_of_first_refusal_to_lease": "the lessee's priority or option to renew the lease or to lease the property again",
+    "change_of_control": "a change in who owns or controls: the lessor selling, transferring or mortgaging the property, the lease continuing under the new owner, the notice or consent it takes, a change in the control of the lessee, and exchanging or handing the premises over to others",
 }
+
+# What a lease always says and no reviewer flags for saying it. Named, so the wide topics above
+# do not take them in.
+NOT_TOPICS = (
+    "the rent, rent-free periods and payment dates; the description, handover or permitted use of the premises; the lessee's "
+    "alterations or decoration; the term; taxes and insurance premiums; notices; disputes; governing law; signing"
+)
+
+# The role the model gives each statement it lists. Only `core` ones are kept: asked to tell the
+# statement that sets the rule from the one that only touches the topic, it lists both and
+# sorts them, and dropping the second kind took out a quarter of the marks no flag backs for a
+# tenth of the ones a flag does.
+KEPT_ROLE = "core"
+ROLES = (KEPT_ROLE, "related")
 
 SYSTEM_PROMPT = (
     "You review one clause of a lease contract, given as the obligations, rights and prohibitions it sets for each party.\n"
     "\n"
-    "A red flag is a term or sentence that indicates some danger or other potentially problematic situation for one or more "
-    "of the signing parties. In lease review, red flags are the clauses of these types:\n"
-    "\n" + "\n".join(f"- {name}: {definition}" for name, definition in RED_FLAG_TYPES.items()) + "\n"
+    "Lease reviewers mark as red flags the statements that deal with certain topics, because those are the ones a party "
+    "must look at before signing. A statement is a red flag when it is about one of the topics below, whoever it binds or "
+    "favours, and whether it grants, limits, forbids or conditions the thing: a ban on subletting is a red flag just as a "
+    "permission to sublet is.\n"
     "\n"
-    "Decide which of these statements are red flags: those that belong to a clause of one of these types. "
-    "Use only what is given below.\n"
+    "Topics:\n" + "\n".join(f"- {name}: {definition}" for name, definition in RED_FLAG_TYPES.items()) + "\n"
+    "\n"
+    "How to decide:\n"
+    "- Go through every statement of the clause, one by one.\n"
+    '- For each red flag say its role. "core": the statement itself sets the rule on the topic (who may or must do what, '
+    'on which terms, with which consequence). "related": it only touches the topic (a procedural detail, a follow-up, a '
+    "passing mention) and the rule is set elsewhere.\n"
+    "- When several topics fit, choose the most specific one.\n"
+    f"- Statements about none of the topics are not red flags: {NOT_TOPICS}.\n"
+    "- Use only what is given below.\n"
     "\n"
     "Answer in JSON:\n"
-    '{"risks": [{"id": "<statement id>", "type": "<one of the types above>", "reason": "<one sentence, at most 25 words>"}]}\n'
+    '{"risks": [{"id": "<statement id>", "type": "<one of the topics above>", "role": "core" or "related", '
+    '"reason": "<one sentence, at most 25 words>"}]}\n'
     'List only the statements that are red flags. If none is, answer {"risks": []}.'
 )
 
@@ -80,9 +114,10 @@ RESPONSE_SCHEMA: dict[str, Any] = {
                     "properties": {
                         "id": {"type": "string"},
                         "type": {"type": "string", "enum": list(RED_FLAG_TYPES)},
+                        "role": {"type": "string", "enum": list(ROLES)},
                         "reason": {"type": "string"},
                     },
-                    "required": ["id", "type", "reason"],
+                    "required": ["id", "type", "role", "reason"],
                     "additionalProperties": False,
                 },
             }
@@ -263,6 +298,9 @@ def detect_contract_risks(
             for item in answer.get("risks", []):
                 # An id the row never showed is the model's invention: there is no square for it.
                 if item.get("id") not in known:
+                    continue
+                # It only touches the topic: the rule is in another statement, and that one is marked.
+                if item.get("role") != KEPT_ROLE:
                     continue
                 for statement_id in row.stands_for.get(item["id"], [item["id"]]):
                     found.append(ContractRisk(statementId=statement_id, type=item["type"], reason=str(item.get("reason", "")).strip()))

@@ -57,6 +57,8 @@ import { useRisks } from '@/features/docx/hooks/useRisks';
 import {
 	DatasetFlagsToggle,
 	RiskControl,
+	RisksNotice,
+	type RisksByKind,
 } from '@/features/docx/components/clause-analyzer/parts/risk-control';
 import type { FlagLines } from '@/features/docx/components/clause-analyzer/parts/party-statements';
 import { deonticNodes, type DeonticKind, type KgCondition } from '@/types/knowledge';
@@ -148,6 +150,8 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 		source: risksSource,
 		hasSaved: hasSavedRisks,
 		status: risksStatus,
+		noticeId: risksNoticeId,
+		closeNotice: closeRisksNotice,
 		toggleSaved: toggleSavedRisks,
 		detectWithAI: detectRisksWithAI,
 	} = useRisks(docId);
@@ -358,22 +362,30 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 				: undefined,
 		[riskyIds, riskByStatement, flaggedIds]
 	);
-	// Risky squares in the open tab and in the whole contract. A reciprocal pair is one square.
+	// Risky squares in the whole contract and in each tab, and how they sit against the
+	// dataset's red flags: the ones a flag lands on, outline and dot on the same square, and the
+	// ones no flag lands on. The two add up to all of them. Whether the dots are shown changes
+	// none of it. A reciprocal pair is one square.
 	const riskCounts = useMemo(() => {
-		const counts = { shown: 0, total: 0 };
+		const byKind: RisksByKind = { obligation: 0, right: 0, prohibition: 0 };
+		const counts = { byKind, total: 0, flagged: 0, unflagged: 0 };
 		if (!shownGrid || !riskyIds) return counts;
-		const count = (kind: MarkKind) => {
+		const count = (kind: MarkKind, ids: readonly string[]) => {
 			counts.total += 1;
-			if (kind === typeShown) counts.shown += 1;
+			if (kind in byKind) byKind[kind as keyof RisksByKind] += 1;
+			if (ids.some((id) => redFlags.statementIds.has(id))) counts.flagged += 1;
+			else counts.unflagged += 1;
 		};
 		for (const row of shownGrid.rows) {
 			for (const lane of ['a', 'b'] as const)
-				for (const mark of row.marks[lane]) if (riskyIds.has(mark.id)) count(mark.kind);
-			for (const mark of row.both ?? [])
-				if ((mark.twinIds ?? [mark.id]).some((id) => riskyIds.has(id))) count(mark.kind);
+				for (const mark of row.marks[lane]) if (riskyIds.has(mark.id)) count(mark.kind, [mark.id]);
+			for (const mark of row.both ?? []) {
+				const ids = mark.twinIds ?? [mark.id];
+				if (ids.some((id) => riskyIds.has(id))) count(mark.kind, ids);
+			}
 		}
 		return counts;
-	}, [shownGrid, riskyIds, typeShown]);
+	}, [shownGrid, riskyIds, redFlags.statementIds]);
 
 	const { againstIds, onlyAgainst, setOnlyAgainst, filtering, tableRows } = useAgainstYou(
 		me,
@@ -498,9 +510,14 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 								status={risksStatus}
 								source={risksSource}
 								hasSaved={hasSavedRisks}
-								shown={riskCounts.shown}
-								total={riskCounts.total}
+								found={riskCounts.total}
+								byKind={riskCounts.byKind}
+								flags={redFlags.flags.length}
+								flagged={riskCounts.flagged}
+								unflagged={riskCounts.unflagged}
 								failed={risks?.clausesFailed ?? 0}
+								color={KIND_COLORS[typeShown]}
+								flagsShown={hasDatasetFlags && showDatasetFlags}
 								onFree={toggleSavedRisks}
 								onAI={detectRisksWithAI}
 							/>
@@ -509,6 +526,20 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 							)}
 						</div>
 					</div>
+
+					{/* An answer has just gone on screen, the model's or the saved one: the reader is
+					    told, and what it found in each tab, on a card in the window's corner that
+					    takes no room here. */}
+					<RisksNotice
+						noticeId={risksNoticeId}
+						found={riskCounts.total}
+						byKind={riskCounts.byKind}
+						flags={redFlags.flags.length}
+						flagged={riskCounts.flagged}
+						unflagged={riskCounts.unflagged}
+						failed={risks?.clausesFailed ?? 0}
+						onClose={closeRisksNotice}
+					/>
 
 					{/* The tabs share their line with the conditions picker only, so the two stay level.
 					    The key sits beside the picker in a wide panel; in a narrower one it opens the

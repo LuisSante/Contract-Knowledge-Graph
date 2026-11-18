@@ -108,7 +108,7 @@ function Places({
 	);
 }
 
-/** «Detected» and «Found as» for one flag: each type the graph holds it as, with the analyzer's
+/** «Match» and «Found as» for one flag: each type the graph holds it as, with the analyzer's
  *  square, and the rows of the table it is in. */
 function DetectionCells({ detection, placeOf }: { detection: Detection; placeOf?: PlaceOf }) {
 	if (detection === 'short') {
@@ -381,10 +381,12 @@ export function RedFlagsTable({
 				className="sticky top-0 z-10 flex h-8 w-full items-center gap-2 border-b border-border/60 bg-background/95 px-3 text-left text-2xs backdrop-blur hover:bg-muted/60"
 			>
 				<span className="font-medium text-muted-foreground">
-					RED FLAGS <span className="font-normal">· {flags.length}</span>
-					{detectedCount !== null && (
-						<span className="font-normal"> · {detectedCount} detected</span>
-					)}
+					RED FLAGS{' '}
+					<span className="font-normal">
+						{detectedCount === null
+							? `· ${flags.length}`
+							: `· ${detectedCount} / ${flags.length} MATCH TEXT`}
+					</span>
 				</span>
 				<ChevronDownIcon
 					className={cn(
@@ -400,7 +402,7 @@ export function RedFlagsTable({
 						<th className="w-[14%] px-3 py-1 text-left font-medium">Type</th>
 						{detections && (
 							<>
-								<th className="w-[8%] px-3 py-1 text-left font-medium">Detected</th>
+								<th className="w-[8%] px-3 py-1 text-left font-medium">Match</th>
 								<th className="w-[20%] px-3 py-1 text-left font-medium">Found as</th>
 							</>
 						)}

@@ -5,24 +5,94 @@
   "clausesFailed": 0,
   "risks": [
     {
+      "statementId": "obligation-4",
+      "type": "service_charges",
+      "reason": "It sets the amount and annual payment deadline for a safety-related fee."
+    },
+    {
+      "statementId": "obligation-5",
+      "type": "service_charges",
+      "reason": "It states how utility fees are calculated."
+    },
+    {
+      "statementId": "obligation-6",
+      "type": "service_charges",
+      "reason": "It sets the monthly payment deadline for the previous fees."
+    },
+    {
+      "statementId": "obligation-7",
+      "type": "service_charges",
+      "reason": "It sets the settlement frequency for TV fees."
+    },
+    {
+      "statementId": "obligation-8",
+      "type": "landlord_repairs",
+      "reason": "It allocates responsibility for maintenance of the leased property between the lessor and lessee."
+    },
+    {
+      "statementId": "obligation-9",
+      "type": "landlord_repairs",
+      "reason": "It allocates responsibility for maintenance of the leased property between the lessor and lessee."
+    },
+    {
+      "statementId": "obligation-10",
+      "type": "change_of_control",
+      "reason": "Requires the lessor to notify the lessee when ownership of the leased property is transferred."
+    },
+    {
+      "statementId": "right-1",
+      "type": "change_of_control",
+      "reason": "Allows the lessor to transfer ownership during the lease without the lessee’s consent."
+    },
+    {
       "statementId": "obligation-11",
       "type": "sublease_permitted",
-      "reason": "The clause addresses the tenant's subletting of the leased property, subject to the lessor's prior consent."
+      "reason": "Makes subletting to a third party for work needs conditional on the lessor’s prior consent."
+    },
+    {
+      "statementId": "obligation-12",
+      "type": "service_charges",
+      "reason": "It allocates responsibility for tap-water and electricity supply expenses and meter installation fees."
+    },
+    {
+      "statementId": "obligation-13",
+      "type": "service_charges",
+      "reason": "It assigns responsibility for TV access and its initial connection fee."
+    },
+    {
+      "statementId": "obligation-14",
+      "type": "service_charges",
+      "reason": "It assigns responsibility for TV access and its initial connection fee."
     },
     {
       "statementId": "obligation-17",
       "type": "reinstatement",
-      "reason": "Party B must restore the premises to their original state if it impairs the structure or facilities through improper use."
+      "reason": "It requires Party B to restore the premises to their original state after specified impairment."
+    },
+    {
+      "statementId": "obligation-18",
+      "type": "damage",
+      "reason": "It requires compensation for losses caused by Party B's improper use that impairs the premises."
+    },
+    {
+      "statementId": "obligation-19",
+      "type": "damage",
+      "reason": "It imposes liquidated damages for breach of contract."
+    },
+    {
+      "statementId": "obligation-20",
+      "type": "damage",
+      "reason": "It imposes liquidated damages for breach of contract."
     },
     {
       "statementId": "obligation-23",
-      "type": "extension_period",
-      "reason": "It provides for renewal of the lease term by agreement within thirty days before expiry."
+      "type": "right_of_first_refusal_to_lease",
+      "reason": "It sets the parties’ obligation to sign a new lease when they agree to renew before expiry."
     },
     {
       "statementId": "obligation-24",
-      "type": "extension_period",
-      "reason": "It provides for renewal of the lease term by agreement within thirty days before expiry."
+      "type": "right_of_first_refusal_to_lease",
+      "reason": "It sets the parties’ obligation to sign a new lease when they agree to renew before expiry."
     }
   ]
 }

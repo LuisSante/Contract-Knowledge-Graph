@@ -110,20 +110,32 @@ busca estos mismos tipos. Para que sirva ahí hace falta otra lista.
 - **Contorno negro: riesgo, la marca del sistema.** Es la que verá cualquier contrato.
 - **Punto bajo el cuadrado: red flag del dataset.** Solo existe en los arrendamientos
   anotados y solo valida. Se oculta con la casilla «Red flags».
+  - Lleva punto el enunciado que comparte seis palabras seguidas con la frase marcada **y
+    sale del mismo párrafo que ella**. Si lo que comparte las palabras es una condición, el
+    punto va al enunciado que esa condición gobierna.
+  - Lo del mismo párrafo se exige desde el 18 de noviembre de 2026. Un contrato repite su
+    redacción de un artículo a otro (la penalidad del arrendador y la del arrendatario, «sin
+    el consentimiento escrito de la Parte A») y el dataset marca uno solo de esos lugares;
+    antes el punto caía también en los otros.
 - **Las dos a la vez** en un cuadrado quieren decir que el sistema y el dataset coinciden.
 - **El conteo** junto a «Detect risks» dice «A/B risks + C» (desde el 18 de noviembre de
   2026; antes contaba los cuadrados de riesgo de la pestaña abierta):
   - **A** son los cuadrados de riesgo que además llevan el punto de un red flag: contorno y
     punto en el mismo cuadrado, donde el sistema y el dataset coinciden.
-  - **B** son los red flags que el dataset anota en el contrato.
+  - **B** son los cuadrados que llevan punto: todos aquellos donde cae un red flag del
+    dataset, tengan contorno o no. Es lo que el dataset marca, contado en cuadrados.
   - **C** son los cuadrados de riesgo sin punto: lo que el sistema marcó y el dataset no.
 
-  A y C se cuentan en cuadrados y suman todos los que el sistema juzgó riesgo. Un riesgo en
-  la misma cláusula que un red flag, pero en otro cuadrado, va en C: no es acierto. Cuenta el
-  contrato entero, las tres pestañas juntas, y no cambia al ocultar los puntos. Un par
-  recíproco es un cuadrado. B se cuenta en red flags, así que A puede pasar de B si un mismo
-  red flag cae en varios cuadrados y el sistema marca más de uno. El desglose por pestaña
-  sale al pasar el cursor. En un contrato fuera del dataset no hay B y dice solo «N risks».
+  Se lee «A riesgos encontrados de B cuadrados con punto, más C riesgos encontrados que los
+  red flags no marcan». Los tres números cuentan cuadrados, así que A nunca pasa de B, y A y
+  C suman todos los que el sistema juzgó riesgo. B no es el número de red flags: suele ser
+  mayor, porque un red flag puede ocupar más de una obligación o derecho de la tabla.
+  Cuántos red flags anota el dataset sale al pasar el cursor.
+
+  Un riesgo en la misma cláusula que un red flag, pero en otro cuadrado, va en C: no es
+  acierto. Cuenta el contrato entero, las tres pestañas juntas, y no cambia al ocultar los
+  puntos. Un par recíproco es un cuadrado. El desglose por pestaña sale al pasar el cursor.
+  En un contrato fuera del dataset no hay B y dice solo «N risks».
 - **La leyenda** al lado del conteo repite las dos marcas: «R. System» con el contorno y
   «R. Dataset» con el punto, este último solo mientras la casilla «Red flags» está marcada.
 - **El aviso «Analysis successful»** es una tarjeta en la esquina superior derecha de la
@@ -165,6 +177,11 @@ arrendamientos anotados que tienen grafo (10, 166 y 201). La medida es la del co
 cuadrados de riesgo con punto, **C** cuadrados de riesgo sin punto. Entre los tres contratos
 hay 38 cuadrados con punto, el techo de A, y 32 red flags.
 
+> **Estas cifras son de antes de exigir el mismo párrafo para el punto** (sección 4). Con la
+> regla actual hay 34 cuadrados con punto: 13, 6 y 15. Los 4 que sobraban estaban en el
+> contrato 10. Ni la tabla ni el resultado de abajo se volvieron a medir, así que pueden
+> contar como acierto hasta 4 cuadrados que ya no llevan punto.
+
 | # | Qué se cambió | A (de 38) | C | Se queda |
 |---|---|---|---|---|
 | 0 | Nada: el detector anterior, repetido | 14–15 | 5–7 | — |
@@ -205,6 +222,9 @@ Los rangos son de dos corridas, cinco en las versiones 3 y 4.
 | lease_contract_10 | 7/13 + 4 | 15/13 + 11 |
 | lease_contract_166 | 1/5 + 2 | 6/5 + 8 |
 | lease_contract_201 | 6/14 + 1 | 14/14 + 2 |
+
+En esta tabla B es todavía el número de red flags. El conteo de la aplicación usa ahora los
+cuadrados con punto (sección 4).
 
 **Lo que estos números no dicen**
 

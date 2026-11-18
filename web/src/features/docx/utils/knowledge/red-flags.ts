@@ -4,11 +4,14 @@ import type { RedFlag } from '@/types/red-flags';
 
 /**
  * Where the graph holds each red flag of the dataset: the statements, or failing that the
- * conditions, that share a run of words with it. Worked out on every load, never stored.
+ * conditions, that share a run of words with it and sit in the paragraph the flag is in.
+ * Worked out on every load, never stored.
  */
 
 // A flag counts as found when a statement's evidence, or failing that a condition's trigger,
-// shares this many consecutive words with it: the criterion fixed for the evaluation.
+// shares this many consecutive words with it: the criterion fixed for the evaluation. The
+// words alone are not enough, though: what shares them has to sit in the flag's paragraph
+// (see `detect`).
 export const MIN_SHARED_WORDS = 6;
 export const FOUND_AS = ['obligation', 'right', 'prohibition', 'condition'] as const;
 export type FoundAs = (typeof FOUND_AS)[number];
@@ -50,17 +53,34 @@ export function wordRuns(text: string): Set<string> {
 	return runs;
 }
 
-export function detect(kg: KnowledgeGraph, flag: RedFlag): FlagMatch {
+/**
+ * A statement, or a condition, matches a flag when it shares the words and comes from the
+ * paragraph that holds the flagged text: a statement is part of a flag only if its words are
+ * the flag's, at the flag's spot.
+ *
+ * A contract repeats its wording: from one article to another (the penalty for the lessor's
+ * default and for the lessee's, «without the written consent of Party A») and from one
+ * sentence to the next («the leased property to any third party»). The dataset flags one of
+ * those places, and with the words alone the others got its dot too.
+ *
+ * When no paragraph holds the flagged text there is no place to ask for, and the words decide
+ * alone.
+ */
+export function detect(kg: KnowledgeGraph, flag: RedFlag, paragraphs: Node[]): FlagMatch {
 	const runs = wordRuns(flag.text);
 	if (runs.size === 0)
 		return { detection: 'short', matched: [], statementIds: [], conditionIds: [] };
 	const shares = (text: string) => [...wordRuns(text)].some((run) => runs.has(run));
+	const paragraph = paragraphOf(paragraphs, flag);
+	const there = (paragraphIds: string[]) =>
+		paragraph === null || paragraphIds.includes(paragraph.id);
 
 	const found: Partial<Record<FoundAs, Array<string | null>>> = {};
 	const matched: string[] = [];
 	const statementIds: string[] = [];
 	const statements = deonticNodes(kg);
 	for (const statement of statements) {
+		if (!there(statement.paragraphIds)) continue;
 		const spans = (statement.evidenceSpans ?? []).filter(shares);
 		if (spans.length > 0) {
 			(found[statement.kind as DeonticKind] ??= []).push(statement.clauseId ?? null);
@@ -72,7 +92,9 @@ export function detect(kg: KnowledgeGraph, flag: RedFlag): FlagMatch {
 		return { detection: found, matched, statementIds, conditionIds: [] };
 	// A condition sits in the clause of the statement it gates.
 	const clauseOfStatement = new Map(statements.map((s) => [s.id, s.clauseId ?? null] as const));
-	const conditions = kg.conditions.filter((condition) => shares(condition.trigger ?? ''));
+	const conditions = kg.conditions.filter(
+		(condition) => there(condition.paragraphIds) && shares(condition.trigger ?? '')
+	);
 	return {
 		detection:
 			conditions.length > 0

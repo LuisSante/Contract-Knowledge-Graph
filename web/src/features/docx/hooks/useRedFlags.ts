@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { fetchRedFlags } from '@/services/red-flags';
 import { detect, type FlagMatch } from '@/features/docx/utils/knowledge/red-flags';
+import type { Node } from '@/types/document';
 import type { KnowledgeGraph } from '@/types/knowledge';
 import type { RedFlag } from '@/types/red-flags';
 
@@ -38,9 +39,14 @@ const NONE: RedFlagsOfDocument = {
 	conditionIds: new Set(),
 };
 
-/** The dataset's red flags for a contract and where the graph holds each one. Most contracts
- *  are not in the dataset: they get none. */
-export function useRedFlags(docId: string, kg: KnowledgeGraph | null): RedFlagsOfDocument {
+/** The dataset's red flags for a contract and where the graph holds each one. The contract's
+ *  paragraphs say where each flag sits, so only what comes from that paragraph can match it.
+ *  Most contracts are not in the dataset: they get none. */
+export function useRedFlags(
+	docId: string,
+	kg: KnowledgeGraph | null,
+	paragraphs: Node[]
+): RedFlagsOfDocument {
 	// Kept with the document they belong to, so another contract never shows them while it loads.
 	const [loaded, setLoaded] = useState<{ docId: string; flags: RedFlag[] } | null>(null);
 
@@ -58,12 +64,12 @@ export function useRedFlags(docId: string, kg: KnowledgeGraph | null): RedFlagsO
 	return useMemo(() => {
 		const flags = loaded?.docId === docId ? loaded.flags : [];
 		if (!kg || flags.length === 0) return flags.length === 0 ? NONE : { ...NONE, flags };
-		const matches = flags.map((flag) => detect(kg, flag));
+		const matches = flags.map((flag) => detect(kg, flag, paragraphs));
 		return {
 			flags,
 			matches,
 			statementIds: new Set(matches.flatMap((m) => m.statementIds)),
 			conditionIds: new Set(matches.flatMap((m) => m.conditionIds)),
 		};
-	}, [loaded, docId, kg]);
+	}, [loaded, docId, kg, paragraphs]);
 }

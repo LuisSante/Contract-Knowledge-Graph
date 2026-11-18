@@ -161,7 +161,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 	);
 	// The dataset's red flags and the statements they matched: those squares get a dot under
 	// them. They only validate the system's marks, so the reader can hide them.
-	const redFlags = useRedFlags(docId, status === 'ready' ? kg : null);
+	const redFlags = useRedFlags(docId, status === 'ready' ? kg : null, paragraphs);
 	const [showDatasetFlags, setShowDatasetFlags] = useState(true);
 	const hasDatasetFlags = redFlags.statementIds.size > 0;
 	const flaggedIds = hasDatasetFlags && showDatasetFlags ? redFlags.statementIds : undefined;
@@ -364,25 +364,27 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 	);
 	// Risky squares in the whole contract and in each tab, and how they sit against the
 	// dataset's red flags: the ones a flag lands on, outline and dot on the same square, and the
-	// ones no flag lands on. The two add up to all of them. Whether the dots are shown changes
-	// none of it. A reciprocal pair is one square.
+	// ones no flag lands on. The two add up to all of them. `dotted` is every square a flag
+	// lands on, risky or not: what the first is read against, in squares too, since one red flag
+	// can land on several. Whether the dots are shown changes none of it. A reciprocal pair is
+	// one square.
 	const riskCounts = useMemo(() => {
 		const byKind: RisksByKind = { obligation: 0, right: 0, prohibition: 0 };
-		const counts = { byKind, total: 0, flagged: 0, unflagged: 0 };
+		const counts = { byKind, total: 0, flagged: 0, unflagged: 0, dotted: 0 };
 		if (!shownGrid || !riskyIds) return counts;
 		const count = (kind: MarkKind, ids: readonly string[]) => {
+			const dotted = ids.some((id) => redFlags.statementIds.has(id));
+			if (dotted) counts.dotted += 1;
+			if (!ids.some((id) => riskyIds.has(id))) return;
 			counts.total += 1;
 			if (kind in byKind) byKind[kind as keyof RisksByKind] += 1;
-			if (ids.some((id) => redFlags.statementIds.has(id))) counts.flagged += 1;
+			if (dotted) counts.flagged += 1;
 			else counts.unflagged += 1;
 		};
 		for (const row of shownGrid.rows) {
 			for (const lane of ['a', 'b'] as const)
-				for (const mark of row.marks[lane]) if (riskyIds.has(mark.id)) count(mark.kind, [mark.id]);
-			for (const mark of row.both ?? []) {
-				const ids = mark.twinIds ?? [mark.id];
-				if (ids.some((id) => riskyIds.has(id))) count(mark.kind, ids);
-			}
+				for (const mark of row.marks[lane]) count(mark.kind, [mark.id]);
+			for (const mark of row.both ?? []) count(mark.kind, mark.twinIds ?? [mark.id]);
 		}
 		return counts;
 	}, [shownGrid, riskyIds, redFlags.statementIds]);
@@ -513,6 +515,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 								found={riskCounts.total}
 								byKind={riskCounts.byKind}
 								flags={redFlags.flags.length}
+								dotted={riskCounts.dotted}
 								flagged={riskCounts.flagged}
 								unflagged={riskCounts.unflagged}
 								failed={risks?.clausesFailed ?? 0}
@@ -534,7 +537,7 @@ export function ClauseAnalyzerPanel({ docId, onOpenGraph }: ClauseAnalyzerPanelP
 						noticeId={risksNoticeId}
 						found={riskCounts.total}
 						byKind={riskCounts.byKind}
-						flags={redFlags.flags.length}
+						dotted={riskCounts.dotted}
 						flagged={riskCounts.flagged}
 						unflagged={riskCounts.unflagged}
 						failed={risks?.clausesFailed ?? 0}

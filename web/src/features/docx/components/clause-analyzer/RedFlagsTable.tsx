@@ -287,7 +287,10 @@ export function RedFlagsTable({
 	const flags = useMemo(() => (loaded?.docId === docId ? loaded.flags : []), [loaded, docId]);
 	const openedIndex = opened?.docId === docId ? opened.index : null;
 	// Worked out from the graph on every load, never stored: a new extraction shows its own.
-	const matches = useMemo(() => (kg ? flags.map((flag) => detect(kg, flag)) : null), [kg, flags]);
+	const matches = useMemo(
+		() => (kg ? flags.map((flag) => detect(kg, flag, paragraphs)) : null),
+		[kg, flags, paragraphs]
+	);
 	const detections = matches?.map((m) => m.detection) ?? null;
 	const detectedCount = detections?.filter((d) => d !== null && d !== 'short').length ?? null;
 	// The flags with a square in the table above come first, in the dataset's order; the ones

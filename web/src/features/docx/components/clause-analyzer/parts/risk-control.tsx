@@ -25,11 +25,12 @@ const KINDS: readonly DeonticKind[] = ['obligation', 'right', 'prohibition'];
 const squares = (count: number) => `${count} ${count === 1 ? 'square' : 'squares'}`;
 
 /** The count as the reader sees it: «A/B risks + C» against the dataset's red flags, or the
- *  risky squares alone in a contract the dataset does not annotate. A and C are squares and
- *  add up to the risky ones; B is the dataset's flags. */
-const riskCount = (found: number, flags: number, flagged: number, unflagged: number) =>
-	flags > 0
-		? `${flagged}/${flags} risks + ${unflagged}`
+ *  risky squares alone in a contract the dataset does not annotate. The three count squares:
+ *  A the risky ones with a red flag's dot, B every square with a dot (one red flag can put
+ *  its dot on several), C the risky ones without. A and C add up to the risky ones. */
+const riskCount = (found: number, dotted: number, flagged: number, unflagged: number) =>
+	dotted > 0
+		? `${flagged}/${dotted} risks + ${unflagged}`
 		: `${found} ${found === 1 ? 'risk' : 'risks'}`;
 
 const perTab = (byKind: RisksByKind) =>
@@ -73,6 +74,7 @@ export function RiskControl({
 	found,
 	byKind,
 	flags,
+	dotted,
 	flagged,
 	unflagged,
 	failed,
@@ -87,9 +89,12 @@ export function RiskControl({
 	/** The squares the system judged risky, the three tabs together, and tab by tab. */
 	found: number;
 	byKind: RisksByKind;
-	/** The red flags the dataset annotates in this contract: what the count is read against.
-	 *  Zero for a contract outside the dataset, and then the count stands alone. */
+	/** The red flags the dataset annotates in this contract; zero outside the dataset. */
 	flags: number;
+	/** The squares those flags put a dot on, risky or not: what the count is read against.
+	 *  A red flag can land on several squares, or on none. With no such square the count
+	 *  stands alone. */
+	dotted: number;
 	/** The risky squares a red flag lands on, outline and dot together: where the system and
 	 *  the dataset agree. */
 	flagged: number;
@@ -114,13 +119,13 @@ export function RiskControl({
 				<span
 					className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-2 py-1 font-semibold whitespace-nowrap text-foreground"
 					title={
-						flags > 0
-							? `${squares(found)} with a black outline in the whole contract (${perTab(byKind)}): ${flagged} also ${flagged === 1 ? 'carries' : 'carry'} a red flag's dot, ${unflagged} ${unflagged === 1 ? 'does' : 'do'} not. The dataset annotates ${flags} red ${flags === 1 ? 'flag' : 'flags'} in this contract.`
+						dotted > 0
+							? `${squares(found)} with a black outline in the whole contract (${perTab(byKind)}): ${flagged} of the ${squares(dotted)} that carry a red flag's dot, and ${unflagged} without one. The dataset annotates ${flags} red ${flags === 1 ? 'flag' : 'flags'} in this contract; one red flag can put its dot on more than one square.`
 							: `Squares with a black outline: what the system judged risky, ${found} in the whole contract (${perTab(byKind)}).`
 					}
 				>
 					<TriangleAlertIcon className="size-3" aria-hidden />
-					{riskCount(found, flags, flagged, unflagged)}
+					{riskCount(found, dotted, flagged, unflagged)}
 				</span>
 			)}
 			{source && <RiskKey color={color} flagsShown={flagsShown} />}
@@ -199,7 +204,7 @@ export function RisksNotice({
 	noticeId,
 	found,
 	byKind,
-	flags,
+	dotted,
 	flagged,
 	unflagged,
 	failed,
@@ -211,7 +216,7 @@ export function RisksNotice({
 	/** The same counts the control shows, so the card says what the chip says. */
 	found: number;
 	byKind: RisksByKind;
-	flags: number;
+	dotted: number;
 	flagged: number;
 	unflagged: number;
 	failed: number;
@@ -244,7 +249,7 @@ export function RisksNotice({
 						<AlertDescription className="text-xs">
 							{/* The count on a line of its own, as the chip says it; the tabs on the next. */}
 							<p className="font-semibold text-foreground">
-								{riskCount(found, flags, flagged, unflagged)}
+								{riskCount(found, dotted, flagged, unflagged)}
 							</p>
 							<p className="flex flex-wrap items-center gap-x-3 gap-y-1">
 								{KINDS.map((kind) => (
